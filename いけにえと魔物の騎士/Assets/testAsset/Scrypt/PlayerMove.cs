@@ -206,7 +206,7 @@ float avoidJudge;
 
 
         }
-            else if (isJump &&)
+            else if (isJump)
 
             {
                 SetLayer(0);
@@ -231,12 +231,7 @@ float avoidJudge;
                 jumpTime = 0.0f;
             }
 
-            if (IsDownAnimEnd())
-            {
-                isDown = false;
-
-                anim.Play("SisterStand");
-            }
+         
             //移動速度を設定
             Vector2 addVelocity = Vector2.zero;
             if (moveObj != null)
@@ -254,7 +249,7 @@ float avoidJudge;
             //アタックを入れるとこ
 
         }
-    }
+    
 
 
 
@@ -341,8 +336,8 @@ public void SetLayer(int layerNumber)
 
 }
 
-
 }
+
 
 
 
