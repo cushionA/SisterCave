@@ -196,6 +196,8 @@
     <Compile Include="Assets\ProCamera2D\Code\Triggers\Editor\ProCamera2DTriggerInfluenceEditor.cs" />
     <Compile Include="Assets\ProCamera2D\Code\Triggers\Editor\ProCamera2DTriggerRailsEditor.cs" />
     <Compile Include="Assets\ProCamera2D\Code\Triggers\Editor\ProCamera2DTriggerZoomEditor.cs" />
+    <Compile Include="Assets\StaTech\AnimationValidator\Editor\AnimationValidator.cs" />
+    <Compile Include="Assets\StaTech\AnimationValidator\Editor\AnimationValidatorView.cs" />
     <Compile Include="Assets\net.fabrejean\Editor\Common\Utils.cs" />
     <Compile Include="Assets\net.fabrejean\Editor\Common\VersionInfo.cs" />
     <Compile Include="Assets\net.fabrejean\Editor\Common\WWW.cs" />
@@ -214,6 +216,7 @@
     <Compile Include="Assets\net.fabrejean\Editor\Plugins\EditorCoroutine.cs" />
     <Compile Include="Assets\net.fabrejean\Editor\Plugins\HttpWrapper.cs" />
     <Compile Include="Assets\net.fabrejean\Editor\Plugins\JSON.cs" />
+    <Compile Include="Assets\testAsset\Editor\ReplaceMissingAnimationCurve.cs" />
     <None Include="Assets\PlayMaker\Editor\Resources\CustomVariableTypes.txt" />
     <None Include="Assets\PlayMaker\Editor\UnityEngine.UI.xml" />
     <None Include="Assets\PlayMaker\Editor\Resources\VersionInfo.txt" />
@@ -527,6 +530,12 @@
     <Reference Include="DOTweenProEditor">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Assets/Demigiant/DOTweenPro/Editor/DOTweenProEditor.dll</HintPath>
     </Reference>
+    <Reference Include="ConditionalExpression">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Assets/PlayMaker/ConditionalExpression.dll</HintPath>
+    </Reference>
+    <Reference Include="ConditionalExpressionEditor">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Assets/PlayMaker/Editor/ConditionalExpressionEditor.dll</HintPath>
+    </Reference>
     <Reference Include="PlayMakerEditor">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Assets/PlayMaker/Editor/PlayMakerEditor.dll</HintPath>
     </Reference>
@@ -535,12 +544,6 @@
     </Reference>
     <Reference Include="PlayMaker">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Assets/Plugins/PlayMaker/PlayMaker.dll</HintPath>
-    </Reference>
-    <Reference Include="ConditionalExpressionEditor">
-      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Assets/PlayMaker/Editor/ConditionalExpressionEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="ConditionalExpression">
-      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Assets/PlayMaker/ConditionalExpression.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>

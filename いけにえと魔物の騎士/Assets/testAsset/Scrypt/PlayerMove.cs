@@ -13,9 +13,12 @@ public float dashSpeed;
     public float gravity;
 public float jumpSpeed;
 public float jumpRes;
+    public float avoidRes;
+    public float avoidWait;
 public AnimationCurve dashCurve;
     public AnimationCurve rushCurve;
     public AnimationCurve jumpCurve;
+    public float avoidSpeed;
 public GameObject Player;
 public GameObject attack;
 MoveObject moveObj;
@@ -49,10 +52,11 @@ CapsuleCollider2D capcol;
 string enemyTag = "Enemy";
 float avoidJudge;
     float horizontalkey;
-    float avoidKey;
     float verticalkey;
     float xSpeed;
     float ySpeed;
+    float avoidTime;
+    bool AKey;
 
     private void Awake()
     {
@@ -69,20 +73,42 @@ float avoidJudge;
 
     public void Update()
     {
-
+        
         horizontalkey = Input.GetAxisRaw("Horizontal");
-        avoidKey = Input.GetAxisRaw("Avoid");
         verticalkey = Input.GetAxisRaw("Vertical");
+        if (Input.GetButton("Avoid"))
+        {
+            avoidTime = 0.0f;
+            avoidJudge += Time.deltaTime;
+            isDash = true;
+
+        }
+        if (Input.GetButtonUp("Avoid"))
+        {
+            if (avoidJudge > 0.0f && avoidJudge < 1.5f)
+            {
+                isAvoid = true;
+                isDash = false;
+                avoidJudge = 0.0f;
+
+            }
+          else if(avoidJudge >= 1.5)
+                {
+                avoidJudge = 0.0f;
+                isDash = false;
+            }
+
+        }
 
     }
 
     void FixedUpdate()
     {
-
+      
         if (isGroundEnter || isGroundStay)
         {
             isGround = true;
-            Debug.Log("接地");
+
         }
         else if (isGroundExit)
         {
@@ -95,73 +121,54 @@ float avoidJudge;
 
         if (!isDown && !isAvoid)
         {
+            Debug.Log("Getback");
             if (isGround && !isJump)
             {
-
-                Debug.Log("ddd");
-                if (avoidKey > 0)
-                {
-                    avoidJudge += Time.fixedDeltaTime;
-                    isDash = true;
-
-                }
-
-                if (avoidJudge > 0.0f && avoidJudge < 0.5f)
-                {
-                    isAvoid = true;
-                    isDash = false;
-                    avoidJudge = 0.0f;
-
-                }
-                else if(avoidJudge >= 0.5f){
-                    isDash = false;
-                    avoidJudge = 0.0f;
-                }
-
                 if (horizontalkey > 0)
                 {
                     anim.SetBool("run", true);
-                    //transform.localScale = new Vector3(1, 1, 1);
+                    transform.localScale = new Vector3(1, 1, 1);
                     Debug.Log("右入力");
+                    isRight = true;
                     if (isDash)
                     {
                         xSpeed = dashSpeed;
-                        rushTime += Time.deltaTime;
+                        rushTime += Time.fixedDeltaTime;
 
                     }
                     else if (isSquat)
                     {
                         xSpeed = squatSpeed;
-                        return;
+             
                     }
                     else
                     {
                         xSpeed = speed;
-                        dashTime += Time.deltaTime;
+                        dashTime += Time.fixedDeltaTime;
                     }
                 }
                 else if (horizontalkey < 0)
                 {
                     anim.SetBool("run", true);
-                    //transform.localScale = new Vector3(-1, 1, 1);
+                    transform.localScale = new Vector3(-1, 1, 1);
 
                     isRight = false;
 
                     if (isDash)
                     {
                         xSpeed = -dashSpeed;
-                        rushTime += Time.deltaTime;
+                        rushTime += Time.fixedDeltaTime;
 
                     }
                     else if (isSquat)
                     {
                         xSpeed = -squatSpeed;
-                        return;
+                     
                     }
                     else
                     {
                         xSpeed = -speed;
-                        dashTime += Time.deltaTime;
+                        dashTime += Time.fixedDeltaTime;
                     }
                 }
 
@@ -184,7 +191,7 @@ float avoidJudge;
                 else if (verticalkey < 0)
                 {
                     isSquat = true;
-                    SetLayer(10);
+                    SetLayer(9);
                 }
                 else
                 {
@@ -205,53 +212,107 @@ float avoidJudge;
             }
 
 
-        }
+
             else if (isJump)
 
             {
+                jumpTime += Time.fixedDeltaTime;
                 SetLayer(0);
                 if (jumpTime <= jumpRes)
                 {
                     ySpeed = jumpSpeed;
                     ySpeed *= jumpCurve.Evaluate(jumpTime);
-                    jumpTime += Time.fixedDeltaTime;
-                    Debug.Log("跳躍");
+                   
+
                 }
                 else
                 {
                     isJump = false;
                 }
 
-                jumpTime = 0.0f;
-
             }
-            else
+            else if (!isGround)
             {
-                ySpeed = -gravity;
                 jumpTime = 0.0f;
+                ySpeed = -gravity;
+ 
             }
-
-         
             //移動速度を設定
             Vector2 addVelocity = Vector2.zero;
             if (moveObj != null)
             {
                 addVelocity = moveObj.GetVelocity();
             }
+
             rb.velocity = new Vector2(xSpeed, ySpeed) + addVelocity;
 
+        }
+
+
+        if (isGround && isAvoid)
+        {
+            avoidTime += Time.fixedDeltaTime;
+
+            if (isRight)
+            {
+                //プレイヤーが右側、かつクールタイム消化。
+               if(avoidTime < avoidRes)
+                {
+                    SetLayer(10);
+                    rb.velocity = new Vector2(avoidSpeed, 0);
+
+                }
+                else
+                {
+            
+                    rb.velocity = new Vector2(0, 0);
+
+                    SetLayer(0);
+
+                    Invoke("AChange", 0.1f);
+                }
+
+
+            }
+
+            else if (!isRight)
+            { //プレイヤーが左側、かつクールタイム消化。
+                if(avoidTime < avoidRes)
+                {
+                    SetLayer(10);
+                    //突進の制限時間三秒である以内は方向転換を禁じて進み続ける。
+                    rb.velocity = new Vector2(-avoidSpeed, 0);
+ 
+                }
+                else
+                {
+             
+                    rb.velocity = new Vector2(0, 0);
+
+                    SetLayer(0);
+
+                    Invoke("AChange", 0.1f);
+                }
+
+            }
 
 
 
 
+
+        }
 
 
             //アタックを入れるとこ
 
+
         }
     
+   void AChange (){
+        Debug.Log("avoid");
+        isAvoid = false;
 
-
+    }
 
 
 
