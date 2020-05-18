@@ -1619,9 +1619,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="SimpleAnimationComponent.csproj">
+      <Project>{C58A847F-FEA4-B63D-C657-3F8799D8E6F4}</Project>
+      <Name>SimpleAnimationComponent</Name>
+    </ProjectReference>
     <ProjectReference Include="DOTweenPro.Scripts.csproj">
       <Project>{2F9EEAD6-3A1B-E7B0-7986-FA5E8175A217}</Project>
       <Name>DOTweenPro.Scripts</Name>
+    </ProjectReference>
+    <ProjectReference Include="SimpleAnimationComponent-Editor.csproj">
+      <Project>{EBD9E5E3-6249-7B07-0AE4-FDD8D02A1C75}</Project>
+      <Name>SimpleAnimationComponent-Editor</Name>
     </ProjectReference>
     <ProjectReference Include="DOTween.Modules.csproj">
       <Project>{F7F46C5D-6B51-A380-261E-0B283412236E}</Project>
