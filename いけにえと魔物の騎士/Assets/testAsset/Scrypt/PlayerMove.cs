@@ -32,6 +32,7 @@ MoveObject moveObj;
 [HideInInspector] public bool isSquat;
 [HideInInspector] public bool isUp;
     public PlayMakerFSM fsm;
+    public bool isEnAt;
 
 
     //変数を宣言
@@ -42,8 +43,7 @@ string groundTag = "Ground";
 bool isGround = false;
 bool isGroundEnter, isGroundStay, isGroundExit;
 string moveFloorTag = "MoveFloor";
-bool isJump = false;
-bool isAttack = false;
+public bool isJump = false;
 float dashTime, jumpTime,rushTime;
 float beforeAttack;
 float stepOnHeight;
@@ -57,6 +57,10 @@ float avoidJudge;
     float ySpeed;
     float avoidTime;
     bool AKey;
+    SimpleAnimation sAni;
+    PlayMakerFSM pm;
+    FsmBool isAttack;
+
 
     private void Awake()
     {
@@ -66,8 +70,11 @@ float avoidJudge;
 {
     anim = GetComponent<Animator>();
     rb = GetComponent<Rigidbody2D>();
+        sAni = GetComponent<SimpleAnimation>();
+       pm = GetComponent<PlayMakerFSM>();
+        FsmBool isAttack = pm.FsmVariables.GetFsmBool("isAttack");
 
-}
+    }
 
     // Update is called once per frame
 
@@ -104,6 +111,7 @@ float avoidJudge;
 
     void FixedUpdate()
     {
+    
       
         if (isGroundEnter || isGroundStay)
         {
@@ -121,8 +129,11 @@ float avoidJudge;
 
         if (!isDown && !isAvoid)
         {
-            Debug.Log("Getback");
+           
             if (isGround && !isJump)
+
+
+
             {
                 if (horizontalkey > 0)
                 {
@@ -132,17 +143,20 @@ float avoidJudge;
                     isRight = true;
                     if (isDash)
                     {
+                        sAni.Play("Dash");
                         xSpeed = dashSpeed;
                         rushTime += Time.fixedDeltaTime;
 
                     }
                     else if (isSquat)
                     {
+                        sAni.Play("SquatM");
                         xSpeed = squatSpeed;
              
                     }
                     else
                     {
+                        sAni.Play("Move");
                         xSpeed = speed;
                         dashTime += Time.fixedDeltaTime;
                     }
@@ -156,17 +170,20 @@ float avoidJudge;
 
                     if (isDash)
                     {
+                        sAni.Play("Dash");
                         xSpeed = -dashSpeed;
                         rushTime += Time.fixedDeltaTime;
 
                     }
                     else if (isSquat)
                     {
+                        sAni.Play("SquatM");
                         xSpeed = -squatSpeed;
                      
                     }
                     else
                     {
+                        sAni.Play("Move");
                         xSpeed = -speed;
                         dashTime += Time.fixedDeltaTime;
                     }
@@ -174,7 +191,7 @@ float avoidJudge;
 
                 else
                 {
-
+                    sAni.Play("Default");
                     xSpeed = 0.0f;
                     dashTime = 0.0f;
                     rushTime = 0.0f;
@@ -190,12 +207,15 @@ float avoidJudge;
                 }
                 else if (verticalkey < 0)
                 {
+                    if (horizontalkey == 0)
+                    {
+                        sAni.Play("Squat");
+                    }
                     isSquat = true;
                     SetLayer(9);
                 }
                 else
                 {
-
                     isSquat = false;
                     SetLayer(0);
                 }
@@ -222,7 +242,8 @@ float avoidJudge;
                 {
                     ySpeed = jumpSpeed;
                     ySpeed *= jumpCurve.Evaluate(jumpTime);
-                   
+                    sAni.Play("Jump");
+                        
 
                 }
                 else
@@ -231,11 +252,13 @@ float avoidJudge;
                 }
 
             }
-            else if (!isGround)
+            else
             {
+                sAni.Play("Fall");
                 jumpTime = 0.0f;
                 ySpeed = -gravity;
- 
+                Debug.Log("Getback");
+
             }
             //移動速度を設定
             Vector2 addVelocity = Vector2.zero;
@@ -258,6 +281,8 @@ float avoidJudge;
                 //プレイヤーが右側、かつクールタイム消化。
                if(avoidTime < avoidRes)
                 {
+                    sAni.Play("Roll");
+
                     SetLayer(10);
                     rb.velocity = new Vector2(avoidSpeed, 0);
 
@@ -279,6 +304,7 @@ float avoidJudge;
             { //プレイヤーが左側、かつクールタイム消化。
                 if(avoidTime < avoidRes)
                 {
+                    sAni.Play("Roll");
                     SetLayer(10);
                     //突進の制限時間三秒である以内は方向転換を禁じて進み続ける。
                     rb.velocity = new Vector2(-avoidSpeed, 0);
@@ -295,10 +321,6 @@ float avoidJudge;
                 }
 
             }
-
-
-
-
 
         }
 
@@ -396,6 +418,12 @@ public void SetLayer(int layerNumber)
         Player.layer = layerNumber;
 
 }
+
+   // public bool isEnableAt()
+   // {
+     //   if(!isAvoid && isGround)
+
+   // }
 
 }
 
