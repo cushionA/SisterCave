@@ -16,9 +16,12 @@ public float jumpRes;
     public float avoidRes;
     public float avoidWait;
 public AnimationCurve dashCurve;
-    public AnimationCurve rushCurve;
-    public AnimationCurve jumpCurve;
-    public float avoidSpeed;
+public AnimationCurve rushCurve;
+public AnimationCurve jumpCurve;
+    public AnimationCurve jumpMCurve;
+    public AnimationCurve fallCurve;
+public AnimationCurve fallMCurve;
+public float avoidSpeed;
 public GameObject Player;
 public GameObject attack;
 MoveObject moveObj;
@@ -44,7 +47,7 @@ bool isGround = false;
 bool isGroundEnter, isGroundStay, isGroundExit;
 string moveFloorTag = "MoveFloor";
 public bool isJump = false;
-float dashTime, jumpTime,rushTime;
+float dashTime, jumpTime,rushTime,fallTime;
 float beforeAttack;
 float stepOnHeight;
 float judgePos;
@@ -126,15 +129,13 @@ float avoidJudge;
         isGroundStay = false;
         isGroundExit = false;
 
+       
 
         if (!isDown && !isAvoid)
         {
            
-            if (isGround && !isJump)
-
-
-
-            {
+            if (isGround && !isJump) {
+                fallTime = 0.0f;
                 if (horizontalkey > 0)
                 {
                     anim.SetBool("run", true);
@@ -241,6 +242,7 @@ float avoidJudge;
                 if (jumpTime <= jumpRes)
                 {
                     ySpeed = jumpSpeed;
+                    xSpeed *= jumpMCurve.Evaluate(jumpTime);
                     ySpeed *= jumpCurve.Evaluate(jumpTime);
                     sAni.Play("Jump");
                         
@@ -252,11 +254,14 @@ float avoidJudge;
                 }
 
             }
-            else
+            else if(!isJump && !isGround)
             {
+                fallTime += Time.fixedDeltaTime;
                 sAni.Play("Fall");
                 jumpTime = 0.0f;
                 ySpeed = -gravity;
+                ySpeed *= fallCurve.Evaluate(fallTime);
+                xSpeed *= fallMCurve.Evaluate(fallTime);
                 Debug.Log("Getback");
 
             }
