@@ -3,57 +3,60 @@ using System.Collections.Generic;
 using UnityEngine;
 using HutongGames.PlayMaker;
 
-public class PlayerMove : MonoBehaviour { 
+public class PlayerMove : MonoBehaviour
+{
 
     //インスペクタで設定
-public float speed;
-public float dashSpeed;
+    public float speed;
+    public float dashSpeed;
     public float squatSpeed;
     public float fallMSpeed;
     public float gravity;
-public float jumpSpeed;
-public float jumpRes;
+    public float jumpSpeed;
+    public float jumpRes;
     public float avoidRes;
     public float avoidWait;
-public AnimationCurve dashCurve;
-public AnimationCurve rushCurve;
-public AnimationCurve jumpCurve;
+    public AnimationCurve dashCurve;
+    public AnimationCurve rushCurve;
+    public AnimationCurve jumpCurve;
     public AnimationCurve jumpMCurve;
     public AnimationCurve fallCurve;
-public AnimationCurve fallMCurve;
-public float avoidSpeed;
-public GameObject Player;
-public GameObject attack;
-MoveObject moveObj;
-[HideInInspector] public bool isContinue = false;
-[HideInInspector] public bool isRMove;
-[HideInInspector] public bool isLMove;
-[HideInInspector] public bool isDown;
-[HideInInspector] public bool isRight;
-[HideInInspector] public bool isAvoid;
-[HideInInspector] public bool isDash;
-[HideInInspector] public bool isSquat;
-[HideInInspector] public bool isUp;
+    public AnimationCurve fallMCurve;
+    public float avoidSpeed;
+    public GameObject Player;
+    public GameObject attack;
+
+    [HideInInspector] public bool isGround;
+    [HideInInspector] public bool isContinue = false;
+    [HideInInspector] public bool isRMove;
+    [HideInInspector] public bool isLMove;
+    [HideInInspector] public bool isDown;
+    [HideInInspector] public bool isRight;
+    [HideInInspector] public bool isAvoid;
+    [HideInInspector] public bool isDash;
+    [HideInInspector] public bool isSquat;
+    [HideInInspector] public bool isUp;
+    [HideInInspector] public bool isEnAt;
+
     public PlayMakerFSM fsm;
-    public bool isEnAt;
+
 
 
     //変数を宣言
 
     Animator anim;
-Rigidbody2D rb;
-string groundTag = "Ground";
-bool isGround = false;
-bool isGroundEnter, isGroundStay, isGroundExit;
-string moveFloorTag = "MoveFloor";
-public bool isJump = false;
-float dashTime, jumpTime,rushTime,fallTime;
-float beforeAttack;
-float stepOnHeight;
-float judgePos;
-CapsuleCollider2D capcol;
-string enemyTag = "Enemy";
-float avoidJudge;
+    Rigidbody2D rb;
+    string groundTag = "Ground";
+    bool isGroundEnter, isGroundStay, isGroundExit;
+    string moveFloorTag = "MoveFloor";
+    public bool isJump = false;
+    float dashTime, jumpTime, rushTime, fallTime;
+    float beforeAttack;
+    float stepOnHeight;
+    float judgePos;
+    CapsuleCollider2D capcol;
+    string enemyTag = "Enemy";
+    float avoidJudge;
     float horizontalkey;
     float verticalkey;
     float xSpeed;
@@ -62,7 +65,10 @@ float avoidJudge;
     bool AKey;
     SimpleAnimation sAni;
     PlayMakerFSM pm;
-    FsmBool isAttack;
+    AttackM at;
+
+    MoveObject moveObj;
+
 
 
     private void Awake()
@@ -70,12 +76,13 @@ float avoidJudge;
         Application.targetFrameRate = 30;
     }
     void Start()
-{
-    anim = GetComponent<Animator>();
-    rb = GetComponent<Rigidbody2D>();
+    {
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
         sAni = GetComponent<SimpleAnimation>();
-       pm = GetComponent<PlayMakerFSM>();
-        FsmBool isAttack = pm.FsmVariables.GetFsmBool("isAttack");
+        pm = GetComponent<PlayMakerFSM>();
+        at = Player.GetComponent<AttackM>();
+
 
     }
 
@@ -83,7 +90,7 @@ float avoidJudge;
 
     public void Update()
     {
-        
+
         horizontalkey = Input.GetAxisRaw("Horizontal");
         verticalkey = Input.GetAxisRaw("Vertical");
         if (Input.GetButton("Avoid"))
@@ -102,8 +109,8 @@ float avoidJudge;
                 avoidJudge = 0.0f;
 
             }
-          else if(avoidJudge >= 1.5)
-                {
+            else if (avoidJudge >= 1.5)
+            {
                 avoidJudge = 0.0f;
                 isDash = false;
             }
@@ -114,8 +121,7 @@ float avoidJudge;
 
     void FixedUpdate()
     {
-    
-      
+
         if (isGroundEnter || isGroundStay)
         {
             isGround = true;
@@ -129,16 +135,22 @@ float avoidJudge;
         isGroundStay = false;
         isGroundExit = false;
 
-       
 
-        if (!isDown && !isAvoid)
+
+        if (!isDown && !isAvoid && !at.isAttack)
         {
-           
-            if (isGround && !isJump) {
+            isEnAt = true;
+
+
+            if (isGround && !isJump)
+            {
+                ySpeed = 0.0f;
+
+
                 fallTime = 0.0f;
                 if (horizontalkey > 0)
                 {
-                    anim.SetBool("run", true);
+
                     transform.localScale = new Vector3(1, 1, 1);
                     Debug.Log("右入力");
                     isRight = true;
@@ -153,7 +165,7 @@ float avoidJudge;
                     {
                         sAni.Play("SquatM");
                         xSpeed = squatSpeed;
-             
+
                     }
                     else
                     {
@@ -164,7 +176,7 @@ float avoidJudge;
                 }
                 else if (horizontalkey < 0)
                 {
-                    anim.SetBool("run", true);
+
                     transform.localScale = new Vector3(-1, 1, 1);
 
                     isRight = false;
@@ -180,7 +192,7 @@ float avoidJudge;
                     {
                         sAni.Play("SquatM");
                         xSpeed = -squatSpeed;
-                     
+
                     }
                     else
                     {
@@ -218,6 +230,7 @@ float avoidJudge;
                 else
                 {
                     isSquat = false;
+                    isJump = false;
                     SetLayer(0);
                 }
 
@@ -239,13 +252,14 @@ float avoidJudge;
             {
                 jumpTime += Time.fixedDeltaTime;
                 SetLayer(0);
-                if (jumpTime <= jumpRes)
+                if (jumpTime <= jumpRes && verticalkey > 0)
                 {
                     ySpeed = jumpSpeed;
                     xSpeed *= jumpMCurve.Evaluate(jumpTime);
                     ySpeed *= jumpCurve.Evaluate(jumpTime);
                     sAni.Play("Jump");
-                        
+                    Debug.Log("Getback");
+
 
                 }
                 else
@@ -254,7 +268,7 @@ float avoidJudge;
                 }
 
             }
-            else if(!isJump && !isGround)
+            else if (!isJump && !isGround)
             {
                 fallTime += Time.fixedDeltaTime;
                 sAni.Play("Fall");
@@ -262,7 +276,7 @@ float avoidJudge;
                 ySpeed = -gravity;
                 ySpeed *= fallCurve.Evaluate(fallTime);
                 xSpeed *= fallMCurve.Evaluate(fallTime);
-                Debug.Log("Getback");
+
 
             }
             //移動速度を設定
@@ -279,12 +293,14 @@ float avoidJudge;
 
         if (isGround && isAvoid)
         {
+            isEnAt = false;
+
             avoidTime += Time.fixedDeltaTime;
 
             if (isRight)
             {
                 //プレイヤーが右側、かつクールタイム消化。
-               if(avoidTime < avoidRes)
+                if (avoidTime < avoidRes)
                 {
                     sAni.Play("Roll");
 
@@ -294,7 +310,7 @@ float avoidJudge;
                 }
                 else
                 {
-            
+
                     rb.velocity = new Vector2(0, 0);
 
                     SetLayer(0);
@@ -307,17 +323,17 @@ float avoidJudge;
 
             else if (!isRight)
             { //プレイヤーが左側、かつクールタイム消化。
-                if(avoidTime < avoidRes)
+                if (avoidTime < avoidRes)
                 {
                     sAni.Play("Roll");
                     SetLayer(10);
                     //突進の制限時間三秒である以内は方向転換を禁じて進み続ける。
                     rb.velocity = new Vector2(-avoidSpeed, 0);
- 
+
                 }
                 else
                 {
-             
+
                     rb.velocity = new Vector2(0, 0);
 
                     SetLayer(0);
@@ -330,12 +346,13 @@ float avoidJudge;
         }
 
 
-            //アタックを入れるとこ
+        //アタックを入れるとこ
 
 
-        }
-    
-   void AChange (){
+    }
+
+    void AChange()
+    {
         Debug.Log("avoid");
         isAvoid = false;
 
@@ -343,92 +360,93 @@ float avoidJudge;
 
 
 
-/// <summary>
-/// ダウンアニメーションが終わっているかどうか
-/// </summary>
-/// <returns>終了しているかどうか</returns> 
-public bool IsDownAnimEnd()
-{
-    if (isDown && anim != null)
+    /// <summary>
+    /// ダウンアニメーションが終わっているかどうか
+    /// </summary>
+    /// <returns>終了しているかどうか</returns> 
+    public bool IsDownAnimEnd()
     {
-        AnimatorStateInfo currentState = anim.GetCurrentAnimatorStateInfo(0);
-        if (currentState.IsName("SisterDamage"))
+        if (isDown && anim != null)
         {
-            if (currentState.normalizedTime >= 1)
+            AnimatorStateInfo currentState = anim.GetCurrentAnimatorStateInfo(0);
+            if (currentState.IsName("SisterDamage"))
             {
-                return true;
+                if (currentState.normalizedTime >= 1)
+                {
+                    return true;
+                }
             }
         }
+        return false;
     }
-    return false;
-}
 
-/// <summary>
-/// コンティニューする
-/// </summary>
-public void ContinuePlayer()
-{
-    isDown = false;
-    anim.Play("SisterStand");
-    isJump = false;
-    isContinue = true;
-
-
-}
-
-private void OnTriggerEnter2D(Collider2D collision)
-{
-    
-        if (collision.tag == groundTag)
+    /// <summary>
+    /// コンティニューする
+    /// </summary>
+    public void ContinuePlayer()
     {
-        isGroundEnter = true;
-         
+        isDown = false;
+        anim.Play("SisterStand");
+        isJump = false;
+        isContinue = true;
+
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.tag == groundTag)
+        {
+            isGroundEnter = true;
+
         }
 
 
-    //動く床
-    if (collision.tag == moveFloorTag)
-    {
+        //動く床
+        if (collision.tag == moveFloorTag)
+        {
             isGroundEnter = true;
             moveObj = collision.gameObject.GetComponent<MoveObject>();
 
+        }
     }
-}
 
-private void OnTriggerStay2D(Collider2D collision)
-{
-    if (collision.tag == groundTag || collision.tag == moveFloorTag)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        isGroundStay = true;
+        if (collision.tag == groundTag || collision.tag == moveFloorTag)
+        {
+            isGroundStay = true;
 
         }
 
-}
-private void OnTriggerExit2D(Collider2D collision)
-{
-    if (collision.tag == groundTag || collision.tag == moveFloorTag)
-    {
-        isGroundExit = true;
     }
-    if (collision.tag == moveFloorTag)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        //動く床から離れた
-        moveObj = null;
+        if (collision.tag == groundTag || collision.tag == moveFloorTag)
+        {
+            isGroundExit = true;
+        }
+        if (collision.tag == moveFloorTag)
+        {
+            //動く床から離れた
+            moveObj = null;
+        }
     }
-}
 
-public void SetLayer(int layerNumber)
-{
+
+    public void SetLayer(int layerNumber)
+    {
 
         Player.layer = layerNumber;
 
-}
+    }
 
-   // public bool isEnableAt()
-   // {
-     //   if(!isAvoid && isGround)
+    // public bool isEnableAt()
+    // {
+    //   if(!isAvoid && isGround)
 
-   // }
+    // }
 
 }
 
