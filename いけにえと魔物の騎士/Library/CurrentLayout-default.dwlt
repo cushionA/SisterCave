@@ -112,10 +112,10 @@ MonoBehaviour:
     y: 30
     width: 1350
     height: 619
-  m_MinSize: {x: 678, y: 492}
+  m_MinSize: {x: 679, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
-  controlID: 126
+  controlID: 18
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -137,10 +137,10 @@ MonoBehaviour:
     y: 0
     width: 976
     height: 619
-  m_MinSize: {x: 402, y: 492}
+  m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 104
+  controlID: 19
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -162,10 +162,10 @@ MonoBehaviour:
     y: 0
     width: 976
     height: 348
-  m_MinSize: {x: 402, y: 221}
-  m_MaxSize: {x: 8002, y: 4021}
+  m_MinSize: {x: 403, y: 221}
+  m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 105
+  controlID: 91
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -185,8 +185,8 @@ MonoBehaviour:
     y: 0
     width: 268
     height: 348
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}
@@ -361,9 +361,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: fc2e0000
+      m_SelectedIDs: 583d0000
       m_LastClickedID: 0
-      m_ExpandedIDs: 6afbffff
+      m_ExpandedIDs: 4cfbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -423,7 +423,7 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -4.212713, y: -1.4016142, z: 8.72431}
+    m_Target: {x: -2.8837538, y: -2.553478, z: -19.894531}
     speed: 2
     m_Value: {x: -4.212713, y: -1.4016142, z: 8.72431}
   m_RenderMode: 0
@@ -475,7 +475,7 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 11.854853
+    m_Target: 8.762503
     speed: 2
     m_Value: 11.854853
   m_Ortho:
@@ -568,23 +568,23 @@ MonoBehaviour:
     m_DrawArea:
       serializedVersion: 2
       x: 0
-      y: 21
+      y: 0
       width: 706
-      height: 306
-    m_Scale: {x: 0.37777779, y: 0.37777779}
-    m_Translation: {x: 353, y: 153}
+      height: 327
+    m_Scale: {x: 0.4037037, y: 0.4037037}
+    m_Translation: {x: 353, y: 163.5}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -934.41174
+      x: -874.4037
       y: -405
-      width: 1868.8235
+      width: 1748.8074
       height: 810
     m_MinimalGUI: 1
-  m_defaultScale: 0.37777779
+  m_defaultScale: 0.4037037
   m_LastWindowPixelSize: {x: 706, y: 327}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
@@ -711,20 +711,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/testAsset/anime
+    - Assets/testAsset/Scrypt
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/testAsset/anime
+  - Assets/testAsset/Scrypt
   m_LastFoldersGridSize: -1
   m_LastProjectPath: "C:\\Users\\user\\OneDrive\\\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8\\SisterCave\\\u3044\u3051\u306B\u3048\u3068\u9B54\u7269\u306E\u9A0E\u58EB"
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 634}
-    m_SelectedIDs: 7e5a0000
-    m_LastClickedID: 23166
-    m_ExpandedIDs: 000000004a5400004c5400004e54000050540000525400005454000056540000585400005a5400005c5400005e540000
+    scrollPos: {x: 0, y: 682}
+    m_SelectedIDs: b4580000
+    m_LastClickedID: 22708
+    m_ExpandedIDs: 0000000056540000585400005a5400005c5400005e54000060540000625400006454000066540000685400006a540000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -752,7 +752,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000004a5400004c5400004e54000050540000525400005454000056540000585400005a5400005c5400005e540000
+    m_ExpandedIDs: 0000000056540000585400005a5400005c5400005e54000060540000625400006454000066540000685400006a540000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
