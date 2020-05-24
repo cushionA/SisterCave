@@ -24,8 +24,9 @@ public AnimationCurve fallMCurve;
 public float avoidSpeed;
 public GameObject Player;
 public GameObject attack;
-MoveObject moveObj;
-[HideInInspector] public bool isContinue = false;
+
+    [HideInInspector] public bool isGround;
+    [HideInInspector] public bool isContinue = false;
 [HideInInspector] public bool isRMove;
 [HideInInspector] public bool isLMove;
 [HideInInspector] public bool isDown;
@@ -34,8 +35,10 @@ MoveObject moveObj;
 [HideInInspector] public bool isDash;
 [HideInInspector] public bool isSquat;
 [HideInInspector] public bool isUp;
+    [HideInInspector] public bool isEnAt;
+
     public PlayMakerFSM fsm;
-    public bool isEnAt;
+
 
 
     //変数を宣言
@@ -43,7 +46,6 @@ MoveObject moveObj;
     Animator anim;
 Rigidbody2D rb;
 string groundTag = "Ground";
-bool isGround = false;
 bool isGroundEnter, isGroundStay, isGroundExit;
 string moveFloorTag = "MoveFloor";
 public bool isJump = false;
@@ -62,7 +64,10 @@ float avoidJudge;
     bool AKey;
     SimpleAnimation sAni;
     PlayMakerFSM pm;
-    FsmBool isAttack;
+    AttackM at;
+
+    MoveObject moveObj;
+   
 
 
     private void Awake()
@@ -75,7 +80,8 @@ float avoidJudge;
     rb = GetComponent<Rigidbody2D>();
         sAni = GetComponent<SimpleAnimation>();
        pm = GetComponent<PlayMakerFSM>();
-        FsmBool isAttack = pm.FsmVariables.GetFsmBool("isAttack");
+        at = Player.GetComponent<AttackM>();
+
 
     }
 
@@ -83,7 +89,7 @@ float avoidJudge;
 
     public void Update()
     {
-        
+   
         horizontalkey = Input.GetAxisRaw("Horizontal");
         verticalkey = Input.GetAxisRaw("Vertical");
         if (Input.GetButton("Avoid"))
@@ -114,7 +120,6 @@ float avoidJudge;
 
     void FixedUpdate()
     {
-    
       
         if (isGroundEnter || isGroundStay)
         {
@@ -131,14 +136,19 @@ float avoidJudge;
 
        
 
-        if (!isDown && !isAvoid)
+        if (!isDown && !isAvoid && !at.isAttack)
         {
            
+
+           
             if (isGround && !isJump) {
+                ySpeed = 0.0f;
+
+
                 fallTime = 0.0f;
                 if (horizontalkey > 0)
                 {
-                    anim.SetBool("run", true);
+          
                     transform.localScale = new Vector3(1, 1, 1);
                     Debug.Log("右入力");
                     isRight = true;
@@ -164,7 +174,7 @@ float avoidJudge;
                 }
                 else if (horizontalkey < 0)
                 {
-                    anim.SetBool("run", true);
+
                     transform.localScale = new Vector3(-1, 1, 1);
 
                     isRight = false;
@@ -218,6 +228,7 @@ float avoidJudge;
                 else
                 {
                     isSquat = false;
+                    isJump = false;
                     SetLayer(0);
                 }
 
@@ -239,13 +250,14 @@ float avoidJudge;
             {
                 jumpTime += Time.fixedDeltaTime;
                 SetLayer(0);
-                if (jumpTime <= jumpRes)
+                if (jumpTime <= jumpRes && verticalkey > 0)
                 {
                     ySpeed = jumpSpeed;
                     xSpeed *= jumpMCurve.Evaluate(jumpTime);
                     ySpeed *= jumpCurve.Evaluate(jumpTime);
                     sAni.Play("Jump");
-                        
+                    Debug.Log("Getback");
+
 
                 }
                 else
@@ -262,7 +274,7 @@ float avoidJudge;
                 ySpeed = -gravity;
                 ySpeed *= fallCurve.Evaluate(fallTime);
                 xSpeed *= fallMCurve.Evaluate(fallTime);
-                Debug.Log("Getback");
+
 
             }
             //移動速度を設定
@@ -279,6 +291,8 @@ float avoidJudge;
 
         if (isGround && isAvoid)
         {
+           
+
             avoidTime += Time.fixedDeltaTime;
 
             if (isRight)
@@ -416,6 +430,7 @@ private void OnTriggerExit2D(Collider2D collision)
         moveObj = null;
     }
 }
+
 
 public void SetLayer(int layerNumber)
 {
