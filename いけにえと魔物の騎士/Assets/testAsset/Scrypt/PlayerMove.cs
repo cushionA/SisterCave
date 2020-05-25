@@ -62,7 +62,10 @@ public class PlayerMove : MonoBehaviour
     float xSpeed;
     float ySpeed;
     float avoidTime;
+    float rushSt;
     bool AKey;
+    bool isOnece;
+
     SimpleAnimation sAni;
     PlayMakerFSM pm;
     AttackM at;
@@ -93,17 +96,18 @@ public class PlayerMove : MonoBehaviour
 
         horizontalkey = Input.GetAxisRaw("Horizontal");
         verticalkey = Input.GetAxisRaw("Vertical");
-        if (Input.GetButton("Avoid"))
+        if (Input.GetButton("Avoid") )
         {
             avoidTime = 0.0f;
             avoidJudge += Time.deltaTime;
             isDash = true;
 
         }
-        if (Input.GetButtonUp("Avoid"))
+        if (Input.GetButtonUp("Avoid") && GManager.instance.enabled)
         {
             if (avoidJudge > 0.0f && avoidJudge < 1.5f)
             {
+                GManager.instance.currentSt -= 18.0f;
                 isAvoid = true;
                 isDash = false;
                 avoidJudge = 0.0f;
@@ -154,11 +158,12 @@ public class PlayerMove : MonoBehaviour
                     transform.localScale = new Vector3(1, 1, 1);
                     Debug.Log("右入力");
                     isRight = true;
-                    if (isDash)
+                    if (isDash && GManager.instance.isEnable)
                     {
                         sAni.Play("Dash");
                         xSpeed = dashSpeed;
                         rushTime += Time.fixedDeltaTime;
+
 
                     }
                     else if (isSquat)
@@ -181,11 +186,12 @@ public class PlayerMove : MonoBehaviour
 
                     isRight = false;
 
-                    if (isDash)
+                    if (isDash && GManager.instance.isEnable)
                     {
                         sAni.Play("Dash");
                         xSpeed = -dashSpeed;
                         rushTime += Time.fixedDeltaTime;
+                   
 
                     }
                     else if (isSquat)
@@ -212,8 +218,9 @@ public class PlayerMove : MonoBehaviour
 
 
 
-                if (verticalkey > 0)
+                if (verticalkey > 0 && GManager.instance.isEnable)
                 {
+                    GManager.instance.currentSt -= 15.0f;
                     isJump = true;
                     Debug.Log("↑");
 
@@ -238,6 +245,16 @@ public class PlayerMove : MonoBehaviour
                 if (isDash)
                 {
                     xSpeed *= rushCurve.Evaluate(rushTime);
+
+                    rushSt += Time.fixedDeltaTime;
+
+                    if (rushSt >= 0.1f)
+                    {
+
+                        GManager.instance.currentSt -= 2.0f;
+                        rushSt = 0.0f;
+                    }
+
                 }
                 else if (!isSquat)
                 {
@@ -270,6 +287,7 @@ public class PlayerMove : MonoBehaviour
             }
             else if (!isJump && !isGround)
             {
+                
                 fallTime += Time.fixedDeltaTime;
                 sAni.Play("Fall");
                 jumpTime = 0.0f;
@@ -310,6 +328,7 @@ public class PlayerMove : MonoBehaviour
                 }
                 else
                 {
+                    
 
                     rb.velocity = new Vector2(0, 0);
 
@@ -333,7 +352,7 @@ public class PlayerMove : MonoBehaviour
                 }
                 else
                 {
-
+                    
                     rb.velocity = new Vector2(0, 0);
 
                     SetLayer(0);
@@ -353,6 +372,8 @@ public class PlayerMove : MonoBehaviour
 
     void AChange()
     {
+       
+
         Debug.Log("avoid");
         isAvoid = false;
 

@@ -41,8 +41,11 @@ public class AttackM : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (pm.isEnAt && fire1Key && !isAttack && pm.isEnAt)
+
+
+        if (pm.isEnAt && fire1Key && !isAttack && pm.isEnAt && GManager.instance.isEnable)
         {
+            GManager.instance.currentSt -= 15.0f;
             delayTime = 0.0f;
             isAttack = true;
             sAni.Play("Attack");
@@ -53,13 +56,14 @@ public class AttackM : MonoBehaviour
         {
            delayTime += Time.fixedDeltaTime;
             
-            if(delayTime < 1.5f && fire1Key)
+            if(delayTime < 1.5f && fire1Key && pm.isEnAt && GManager.instance.isEnable)
             {
 
+                GManager.instance.currentSt -= 15.0f;
                 sAni.Play("Attack2");
                 isAEnd = false;
             }
-            else if( delayTime >= 1.5)
+            else if( delayTime >= 0.3 || pm.isAvoid)
             {
 
                 isAttack = false;
