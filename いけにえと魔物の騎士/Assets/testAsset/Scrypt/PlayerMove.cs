@@ -238,7 +238,7 @@ public class PlayerMove : MonoBehaviour
                 {
                     isSquat = false;
                     isJump = false;
-                    SetLayer(0);
+                    SetLayer(11);
                 }
 
 
@@ -268,7 +268,7 @@ public class PlayerMove : MonoBehaviour
 
             {
                 jumpTime += Time.fixedDeltaTime;
-                SetLayer(0);
+                SetLayer(11);
                 if (jumpTime <= jumpRes && verticalkey > 0)
                 {
                     ySpeed = jumpSpeed;
@@ -332,7 +332,7 @@ public class PlayerMove : MonoBehaviour
 
                     rb.velocity = new Vector2(0, 0);
 
-                    SetLayer(0);
+                    SetLayer(11);
 
                     Invoke("AChange", 0.1f);
                 }
@@ -355,7 +355,7 @@ public class PlayerMove : MonoBehaviour
                     
                     rb.velocity = new Vector2(0, 0);
 
-                    SetLayer(0);
+                    SetLayer(11);
 
                     Invoke("AChange", 0.1f);
                 }
