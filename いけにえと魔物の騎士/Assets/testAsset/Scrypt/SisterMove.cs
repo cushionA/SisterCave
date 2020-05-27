@@ -11,7 +11,7 @@ public class SisterMove : MonoBehaviour
 
     public float NeutralPos;
     public float BattlePos;
-
+    public float BattlePos2;
     public bool isNeutral;
     public bool isBattle;
     bool isRightF;
@@ -86,7 +86,14 @@ public class SisterMove : MonoBehaviour
                 xSpeed = -escapeSpeed;
                 // sAni.Play("Move");
             }
+            else if (isRight && btDistance > BattlePos2)
+            {
+                isRightF = false;
+                isLeftF = false;
 
+                xSpeed = escapeSpeed;
+                // sAni.Play("Move");
+            }
             else if (!isRight && btDistance > -BattlePos)
             {
 
@@ -97,8 +104,21 @@ public class SisterMove : MonoBehaviour
                 xSpeed = escapeSpeed;
                 // sAni.Play("Move");
             }
+            else if (!isRight && btDistance < -BattlePos2)
+            {
+
+                isRightF = false;
+                isLeftF = false;
+
+
+                xSpeed = -escapeSpeed;
+                // sAni.Play("Move");
+            }
+
             else 
             {
+                //二秒間振り向きモーション
+
                 xSpeed = 0.0f;
                 if (isRight)
                 {
@@ -119,11 +139,11 @@ public class SisterMove : MonoBehaviour
         }
 
 
-        if (xSpeed > 0 || isRightF)
+        if (xSpeed > 0 || (xSpeed <= 0 && isRightF))
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
-       else if(xSpeed < 0 || isLeftF)
+       else if(xSpeed < 0 || (xSpeed >= 0 && isLeftF))
         {
             transform.localScale = new Vector3(-1, 1, 1);
 

@@ -93,34 +93,36 @@ public class PlayerMove : MonoBehaviour
 
     public void Update()
     {
-
-        horizontalkey = Input.GetAxisRaw("Horizontal");
-        verticalkey = Input.GetAxisRaw("Vertical");
-        if (Input.GetButton("Avoid") )
+        if (Time.timeScale != 0)
         {
-            avoidTime = 0.0f;
-            avoidJudge += Time.deltaTime;
-            isDash = true;
 
-        }
-        if (Input.GetButtonUp("Avoid") && GManager.instance.enabled)
-        {
-            if (avoidJudge > 0.0f && avoidJudge < 1.5f)
+            horizontalkey = Input.GetAxisRaw("Horizontal");
+            verticalkey = Input.GetAxisRaw("Vertical");
+            if (Input.GetButton("Avoid"))
             {
-                GManager.instance.currentSt -= 18.0f;
-                isAvoid = true;
-                isDash = false;
-                avoidJudge = 0.0f;
+                avoidTime = 0.0f;
+                avoidJudge += Time.deltaTime;
+                isDash = true;
 
             }
-            else if (avoidJudge >= 1.5)
+            if (Input.GetButtonUp("Avoid") && GManager.instance.enabled)
             {
-                avoidJudge = 0.0f;
-                isDash = false;
+                if (avoidJudge > 0.0f && avoidJudge < 1.5f)
+                {
+                    GManager.instance.currentSt -= 18.0f;
+                    isAvoid = true;
+                    isDash = false;
+                    avoidJudge = 0.0f;
+
+                }
+                else if (avoidJudge >= 1.5)
+                {
+                    avoidJudge = 0.0f;
+                    isDash = false;
+                }
+
             }
-
         }
-
     }
 
     void FixedUpdate()
