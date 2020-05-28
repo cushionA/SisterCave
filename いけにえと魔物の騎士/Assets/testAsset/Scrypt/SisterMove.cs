@@ -157,4 +157,11 @@ public class SisterMove : MonoBehaviour
         rb.velocity = new Vector2(xSpeed, ySpeed);
 
     }
+
+
+    public void Dede()
+    {
+        Debug.Log("edrfbhynj");
+
+    }
 }
