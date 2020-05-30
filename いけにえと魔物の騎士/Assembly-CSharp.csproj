@@ -1198,10 +1198,17 @@
     <Compile Include="Assets\SU3DJPFont\Demo\SampleScene.cs" />
     <Compile Include="Assets\testAsset\Scrypt\AttackM.cs" />
     <Compile Include="Assets\testAsset\Scrypt\GManager.cs" />
+    <Compile Include="Assets\testAsset\Scrypt\ItemManager\Item.cs" />
+    <Compile Include="Assets\testAsset\Scrypt\ItemManager\ItemDataBase.cs" />
     <Compile Include="Assets\testAsset\Scrypt\MoveObject.cs" />
     <Compile Include="Assets\testAsset\Scrypt\PlayerMove.cs" />
+    <Compile Include="Assets\testAsset\Scrypt\SisData.cs" />
+    <Compile Include="Assets\testAsset\Scrypt\SisDataBase.cs" />
+    <Compile Include="Assets\testAsset\Scrypt\SisMagi.cs" />
     <Compile Include="Assets\testAsset\Scrypt\SisUI.cs" />
+    <Compile Include="Assets\testAsset\Scrypt\SisUIsub.cs" />
     <Compile Include="Assets\testAsset\Scrypt\SisterMove.cs" />
+    <Compile Include="Assets\testAsset\Scrypt\Tes.cs" />
     <Compile Include="Assets\testAsset\anime\NeutralCon.cs" />
     <Compile Include="Assets\testAsset\anime\SideCon.cs" />
     <None Include="Assets\PlayMaker\Readme.txt" />

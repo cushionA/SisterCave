@@ -17,9 +17,11 @@ public class GManager : MonoBehaviour
     [HideInInspector] public bool isEnable;
 
     float stTime;
-
+    float disEnaTime;
     AttackM at;
     PlayerMove pm;
+    bool stBreake;
+
 
     private void Awake()
     {
@@ -51,28 +53,48 @@ void Start()
         stTime += Time.deltaTime;
 
 
-      
-        if(stTime >= 0.1f  && !at.isAttack && !pm.isDash && !pm.isJump)
+
+        if (stTime >= 0.1f && !pm.isStUse && isEnable)
         {
+            disEnaTime = 0.0f;
+
             currentSt += stRecover;
             stTime = 0.0f;
+            stBreake = false;
+
         }
 
-     
-        
-        if(currentSt <= 0) {
 
-            isEnable = false;
-            currentSt = 0.0f;
-        }
-        else if(currentSt >= stamina)
+
+
+        else if (currentSt >= stamina)
         {
 
             currentSt = stamina;
             isEnable = true;
         }
 
-        else {
+        else if (currentSt <= 0 && !stBreake)
+        {
+
+            disEnaTime += Time.deltaTime;
+
+            isEnable = false;
+
+            if (disEnaTime < 1.5f || pm.isStUse)
+            {
+               
+                currentSt = 0.0f;
+            }
+            else
+            {
+                stBreake = true;
+
+            }
+
+        }
+        else
+        {
 
 
             isEnable = true;

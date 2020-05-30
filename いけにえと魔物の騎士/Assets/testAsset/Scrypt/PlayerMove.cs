@@ -37,6 +37,8 @@ public class PlayerMove : MonoBehaviour
     [HideInInspector] public bool isSquat;
     [HideInInspector] public bool isUp;
     [HideInInspector] public bool isEnAt;
+    [HideInInspector] public bool isStUse;
+
 
     public PlayMakerFSM fsm;
 
@@ -72,6 +74,7 @@ public class PlayerMove : MonoBehaviour
 
     MoveObject moveObj;
 
+    
 
 
     private void Awake()
@@ -107,7 +110,7 @@ public class PlayerMove : MonoBehaviour
             }
             if (Input.GetButtonUp("Avoid") && GManager.instance.enabled)
             {
-                if (avoidJudge > 0.0f && avoidJudge < 1.5f)
+                if (avoidJudge > 0.0f && avoidJudge < 1.5f && GManager.instance.isEnable)
                 {
                     GManager.instance.currentSt -= 18.0f;
                     isAvoid = true;
@@ -127,6 +130,21 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(isAvoid || isJump || isDash || at.isAttack)
+        {
+
+            isStUse = true;
+
+
+        }
+        else
+        {
+
+            isStUse = false;
+
+        }
+
+
 
         if (isGroundEnter || isGroundStay)
         {
@@ -165,7 +183,14 @@ public class PlayerMove : MonoBehaviour
                         sAni.Play("Dash");
                         xSpeed = dashSpeed;
                         rushTime += Time.fixedDeltaTime;
+                        rushSt += Time.fixedDeltaTime;
 
+                        if (rushSt >= 0.1f)
+                        {
+
+                            GManager.instance.currentSt -= 2.0f;
+                            rushSt = 0.0f;
+                        }
 
                     }
                     else if (isSquat)
@@ -193,7 +218,14 @@ public class PlayerMove : MonoBehaviour
                         sAni.Play("Dash");
                         xSpeed = -dashSpeed;
                         rushTime += Time.fixedDeltaTime;
-                   
+                        rushSt += Time.fixedDeltaTime;
+
+                        if (rushSt >= 0.1f)
+                        {
+
+                            GManager.instance.currentSt -= 2.0f;
+                            rushSt = 0.0f;
+                        }
 
                     }
                     else if (isSquat)
@@ -248,14 +280,7 @@ public class PlayerMove : MonoBehaviour
                 {
                     xSpeed *= rushCurve.Evaluate(rushTime);
 
-                    rushSt += Time.fixedDeltaTime;
-
-                    if (rushSt >= 0.1f)
-                    {
-
-                        GManager.instance.currentSt -= 2.0f;
-                        rushSt = 0.0f;
-                    }
+                   
 
                 }
                 else if (!isSquat)

@@ -11,7 +11,6 @@ public class SisUI : MonoBehaviour
 
     public GameObject sisr;
     public GameObject sisl;
-    [SerializeField] EventSystem eventSystem;
 
     Button bt1;
     Button bt2;
@@ -24,10 +23,10 @@ public class SisUI : MonoBehaviour
         bt1 = sisr.GetComponent<Button>();
         bt2 = sisl.GetComponent<Button>();
         //ボタンが選択された状態になる
-        bt1.Select();
-    
+        //bt1.Select();
 
-}
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -62,21 +61,13 @@ public class SisUI : MonoBehaviour
             Time.timeScale = 0;
             sisPanel.SetActive(true);
 
-            selectedObj = eventSystem.currentSelectedGameObject.gameObject;
-
-            if (sisr == selectedObj)
-            {
-                //右のボタンが選択中に右キーを押したら
-
                 if (Input.GetButtonDown("ChoiceR"))
                 {
                     bt1.onClick.Invoke();
 
                 }
-            }
-            else if (sisl == selectedObj)
-            {
-                //左のボタンが選択中に左キーを押したら
+            
+        
 
                 if (Input.GetButtonDown("ChoiceL"))
                 {
@@ -85,15 +76,15 @@ public class SisUI : MonoBehaviour
                 }
 
 
-            }
-
-
-            }
-
+          
 
 
         }
-    
+
+
+
+    }
+
     public void MenuBreake()
     {
         sisMenu = false;
