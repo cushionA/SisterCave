@@ -223,6 +223,8 @@
     <Compile Include="Assets\ProCamera2D\Code\Triggers\Editor\ProCamera2DTriggerInfluenceEditor.cs" />
     <Compile Include="Assets\ProCamera2D\Code\Triggers\Editor\ProCamera2DTriggerRailsEditor.cs" />
     <Compile Include="Assets\ProCamera2D\Code\Triggers\Editor\ProCamera2DTriggerZoomEditor.cs" />
+    <Compile Include="Assets\SerializableDictionary\Editor\SerializableDictionaryPropertyDrawer.cs" />
+    <Compile Include="Assets\SerializableDictionary\Example\Editor\UserSerializableDictionaryPropertyDrawers.cs" />
     <Compile Include="Assets\StaTech\AnimationValidator\Editor\AnimationValidator.cs" />
     <Compile Include="Assets\StaTech\AnimationValidator\Editor\AnimationValidatorView.cs" />
     <Compile Include="Assets\net.fabrejean\Editor\Common\Utils.cs" />
@@ -244,6 +246,7 @@
     <Compile Include="Assets\net.fabrejean\Editor\Plugins\HttpWrapper.cs" />
     <Compile Include="Assets\net.fabrejean\Editor\Plugins\JSON.cs" />
     <Compile Include="Assets\testAsset\Editor\ReplaceMissingAnimationCurve.cs" />
+    <Compile Include="Assets\testAsset\Editor\SerializableDictionary.cs" />
     <None Include="Assets\PlayMaker\Editor\Resources\CustomVariableTypes.txt" />
     <None Include="Assets\PlayMaker\Editor\UnityEngine.UI.xml" />
     <None Include="Assets\PlayMaker\Editor\Resources\VersionInfo.txt" />

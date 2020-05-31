@@ -316,6 +316,7 @@ GameObject:
   - component: {fileID: 360332883}
   - component: {fileID: 360332882}
   - component: {fileID: 360332881}
+  - component: {fileID: 360332884}
   m_Layer: 12
   m_Name: SisterSan
   m_TagString: Untagged
@@ -439,6 +440,19 @@ MonoBehaviour:
   BattlePos2: 15
   isNeutral: 0
   isBattle: 0
+--- !u!114 &360332884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360332877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 415dbe51fe7dfd04c981da49f54d0803, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sst: {fileID: 11400000, guid: bb1cedd8f5c715144a00f591e9a096bf, type: 2}
 --- !u!1001 &484559198
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1947,6 +1961,7 @@ MonoBehaviour:
   isSquat: 0
   isUp: 0
   isEnAt: 0
+  isStUse: 0
   fsm: {fileID: 0}
   isJump: 0
 --- !u!70 &962871510
