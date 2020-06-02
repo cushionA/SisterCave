@@ -1199,6 +1199,8 @@
     <Compile Include="Assets\SerializableDictionary\Example\SerializableDictionaryExample.cs" />
     <Compile Include="Assets\SerializableDictionary\Example\UserSerializableDictionaries.cs" />
     <Compile Include="Assets\SerializableDictionary\SerializableDictionary.cs" />
+    <Compile Include="Assets\SwingController\Scripts\CameraFollow2D.cs" />
+    <Compile Include="Assets\SwingController\Scripts\SwingController.cs" />
     <Compile Include="Assets\testAsset\ItemManager\Item.cs" />
     <Compile Include="Assets\testAsset\ItemManager\ItemDataBase.cs" />
     <Compile Include="Assets\testAsset\ItemManager\ItemDictionary.cs" />
@@ -1324,6 +1326,24 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.CacheServer">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/UnityEditor.CacheServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ScriptableBuildPipeline.Editor">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.ResourceManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Addressables.Editor">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.Addressables.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.Addressables.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ScriptableBuildPipeline">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.7f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
