@@ -124,8 +124,14 @@ public class PlayerMove : MonoBehaviour
                 {
                     isDash = true;
 
-                    //isDashをfalseにできてなかった
+                    //isDashをfalseにできてなかった。
                 }
+                else
+                {
+                    isDash = false;
+
+                }
+
                 }
             if (avoidKey == 0)
             {
