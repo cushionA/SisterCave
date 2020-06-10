@@ -268,8 +268,14 @@
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.CacheServer">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/UnityEditor.CacheServer.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.2D.Animation.Runtime">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.2D.Animation.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ScriptableBuildPipeline.Editor">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.PixelPerfect.Editor">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.2D.PixelPerfect.Editor.dll</HintPath>
@@ -286,11 +292,17 @@
     <Reference Include="Unity.2D.Path.Editor">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.2D.Path.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.ResourceManager.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Addressables.Editor">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.Addressables.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Triangle.Runtime">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.2D.Animation.Triangle.Runtime.dll</HintPath>
@@ -331,6 +343,12 @@
     <Reference Include="Unity.2D.Animation.Editor">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.2D.Animation.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Addressables">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.Addressables.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ScriptableBuildPipeline">
+      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Mathematics.Editor">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
@@ -345,24 +363,6 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.CacheServer">
-      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/UnityEditor.CacheServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ScriptableBuildPipeline.Editor">
-      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ResourceManager">
-      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.ResourceManager.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Addressables.Editor">
-      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.Addressables.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Addressables">
-      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.Addressables.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ScriptableBuildPipeline">
-      <HintPath>C:/Users/user/OneDrive/ドキュメント/SisterCave/いけにえと魔物の騎士/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.7f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

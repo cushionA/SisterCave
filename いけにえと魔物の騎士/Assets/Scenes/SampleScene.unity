@@ -375,7 +375,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360332877}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.87, y: -1.94, z: -56.135582}
+  m_LocalPosition: {x: -12.87, y: -1.94, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1608071522}
@@ -453,6 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 415dbe51fe7dfd04c981da49f54d0803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ef: {fileID: 0}
   sst: {fileID: 11400000, guid: bb1cedd8f5c715144a00f591e9a096bf, type: 2}
 --- !u!1001 &484559198
 PrefabInstance:
@@ -1712,7 +1713,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 962871506}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.49, y: -1.29, z: -8.72431}
+  m_LocalPosition: {x: -4.49, y: -1.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1872034269}
@@ -1740,7 +1741,7 @@ MonoBehaviour:
   jumpSpeed: 22
   jumpRes: 0.3
   avoidRes: 0.4
-  avoidWait: 0
+  avoidWait: 1
   dashCurve:
     serializedVersion: 2
     m_Curve:
@@ -1948,7 +1949,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  avoidSpeed: 18
+  avoidSpeed: 20
   Player: {fileID: 962871506}
   attack: {fileID: 0}
   isGround: 0
@@ -2568,7 +2569,7 @@ PrefabInstance:
     - target: {fileID: 2976059230425616530, guid: 840339a851aa36d4b8b57620c158d539,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 56.135582
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2976059230425616530, guid: 840339a851aa36d4b8b57620c158d539,
         type: 3}
@@ -3595,7 +3596,7 @@ PrefabInstance:
     - target: {fileID: -7130129659756290903, guid: 6c9258bf677a7da48b4265a5f1ce8230,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 56.135582
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7130129659756290903, guid: 6c9258bf677a7da48b4265a5f1ce8230,
         type: 3}

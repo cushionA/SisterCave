@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 public class SisterAttack : MonoBehaviour
 {
 
+    public GameObject ef;
     public SisterStatus sst;
     float sisterFireKey;
     Item eqMagi;
@@ -24,11 +26,14 @@ public class SisterAttack : MonoBehaviour
 
         sisterFireKey = Input.GetAxisRaw("SFire");
 
-        if (sisterFireKey > 0.0f)
+        if (Input.GetButtonDown("SFire"))
         {
             if(eqMagi.GetItemName() == "聖火")
             {
-                Debug.Log("大成功");
+
+                Debug.Log("魔法");
+                Addressables.LoadAssetAsync<GameObject>("Fire");
+                Addressables.InstantiateAsync("Fire");
 
             }
 

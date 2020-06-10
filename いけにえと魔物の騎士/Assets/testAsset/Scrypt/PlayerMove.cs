@@ -31,13 +31,15 @@ public class PlayerMove : MonoBehaviour
     [HideInInspector] public bool isRMove;
     [HideInInspector] public bool isLMove;
     [HideInInspector] public bool isDown;
-    [HideInInspector] public bool isRight;
+    [HideInInspector] public bool isRight = true;
     [HideInInspector] public bool isAvoid;
     [HideInInspector] public bool isDash;
     [HideInInspector] public bool isSquat;
     [HideInInspector] public bool isUp;
     [HideInInspector] public bool isEnAt;
     [HideInInspector] public bool isStUse;
+
+    
 
 
     public PlayMakerFSM fsm;
@@ -61,12 +63,15 @@ public class PlayerMove : MonoBehaviour
     float avoidJudge;
     float horizontalkey;
     float verticalkey;
+    float avoidKey;
     float xSpeed;
     float ySpeed;
     float avoidTime;
     float rushSt;
     bool AKey;
-    bool isOnece;
+    bool isOnce;
+ 
+
 
     SimpleAnimation sAni;
     PlayMakerFSM pm;
@@ -88,7 +93,7 @@ public class PlayerMove : MonoBehaviour
         sAni = GetComponent<SimpleAnimation>();
         pm = GetComponent<PlayMakerFSM>();
         at = Player.GetComponent<AttackM>();
-
+        
 
     }
 
@@ -101,27 +106,49 @@ public class PlayerMove : MonoBehaviour
 
             horizontalkey = Input.GetAxisRaw("Horizontal");
             verticalkey = Input.GetAxisRaw("Vertical");
-            if (Input.GetButton("Avoid"))
+            if (!isAvoid)
             {
-                avoidTime = 0.0f;
-                avoidJudge += Time.deltaTime;
-                isDash = true;
+                avoidKey = Input.GetAxisRaw("Avoid");
+            }
+            else if (isAvoid)
+            {
+
+                avoidKey = 0.0f;
 
             }
-            if (Input.GetButtonUp("Avoid") && GManager.instance.enabled)
+            if (avoidKey == 1 && GManager.instance.isEnable)
             {
-                if (avoidJudge > 0.0f && avoidJudge < 1.5f && GManager.instance.isEnable)
-                {
-                    GManager.instance.currentSt -= 18.0f;
-                    isAvoid = true;
-                    isDash = false;
-                    avoidJudge = 0.0f;
 
+                avoidJudge += Time.deltaTime;
+                if (horizontalkey != 0)
+                {
+                    isDash = true;
+
+                    //isDashをfalseにできてなかった
                 }
-                else if (avoidJudge >= 1.5)
+                }
+            if (avoidKey == 0)
+            {
+                
+
+                if (avoidJudge > 0.0f && avoidJudge < 1.0f && GManager.instance.isEnable)
+                {
+                  
+
+                    //回避の最初のところは七回呼ばれてる。ここも七回呼ばれてる。なぜか動かない
+                    GManager.instance.currentSt -= 18.0f;
+                   
+                    
+                    isDash = false;
+                    avoidJudge = 0.0f;
+                    isAvoid = true;
+  
+                }
+                else
                 {
                     avoidJudge = 0.0f;
                     isDash = false;
+
                 }
 
             }
@@ -130,16 +157,19 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
+
+
+
         if(isAvoid || isJump || isDash || at.isAttack)
         {
 
             isStUse = true;
-
+            Debug.Log("uSE");
 
         }
         else
         {
-
+            Debug.Log("NOUSE");
             isStUse = false;
 
         }
@@ -176,7 +206,7 @@ public class PlayerMove : MonoBehaviour
                 {
 
                     transform.localScale = new Vector3(1, 1, 1);
-                    Debug.Log("右入力");
+               
                     isRight = true;
                     if (isDash && GManager.instance.isEnable)
                     {
@@ -256,7 +286,7 @@ public class PlayerMove : MonoBehaviour
                 {
                     GManager.instance.currentSt -= 15.0f;
                     isJump = true;
-                    Debug.Log("↑");
+           
 
                 }
                 else if (verticalkey < 0)
@@ -302,7 +332,6 @@ public class PlayerMove : MonoBehaviour
                     xSpeed *= jumpMCurve.Evaluate(jumpTime);
                     ySpeed *= jumpCurve.Evaluate(jumpTime);
                     sAni.Play("Jump");
-                    Debug.Log("Getback");
 
 
                 }
@@ -339,13 +368,15 @@ public class PlayerMove : MonoBehaviour
         if (isGround && isAvoid)
         {
             isEnAt = false;
-
             avoidTime += Time.fixedDeltaTime;
+
+
 
             if (isRight)
             {
+   
                 //プレイヤーが右側、かつクールタイム消化。
-                if (avoidTime < avoidRes)
+                if (avoidTime <= avoidRes)
                 {
                     sAni.Play("Roll");
 
@@ -355,13 +386,13 @@ public class PlayerMove : MonoBehaviour
                 }
                 else
                 {
-                    
-
-                    rb.velocity = new Vector2(0, 0);
+                   
+                    rb.velocity = new Vector2(0, ySpeed);
 
                     SetLayer(11);
 
-                    Invoke("AChange", 0.1f);
+                    Invoke("AChange", 0.3f);
+    
                 }
 
 
@@ -369,7 +400,9 @@ public class PlayerMove : MonoBehaviour
 
             else if (!isRight)
             { //プレイヤーが左側、かつクールタイム消化。
-                if (avoidTime < avoidRes)
+
+
+                if (avoidTime <= avoidRes)
                 {
                     sAni.Play("Roll");
                     SetLayer(10);
@@ -379,12 +412,12 @@ public class PlayerMove : MonoBehaviour
                 }
                 else
                 {
-                    
-                    rb.velocity = new Vector2(0, 0);
+      
+                    rb.velocity = new Vector2(0, ySpeed);
 
                     SetLayer(11);
 
-                    Invoke("AChange", 0.1f);
+                    Invoke("AChange", 0.3f);
                 }
 
             }
@@ -399,11 +432,9 @@ public class PlayerMove : MonoBehaviour
 
     void AChange()
     {
-       
-
-        Debug.Log("avoid");
+        
         isAvoid = false;
-
+        avoidTime = 0.0f;
     }
 
 

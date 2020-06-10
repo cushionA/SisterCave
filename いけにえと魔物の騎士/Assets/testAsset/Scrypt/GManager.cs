@@ -85,6 +85,7 @@ void Start()
             {
                
                 currentSt = 0.0f;
+                //ここ
             }
             else
             {
