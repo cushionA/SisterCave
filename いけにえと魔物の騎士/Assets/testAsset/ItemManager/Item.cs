@@ -34,6 +34,9 @@ public class Item : ScriptableObject
 	//　アイテムの情報
 	[SerializeField]
 	private string information;
+	//ソート用のナンバー
+	[SerializeField]
+	private int number;
 
 	public KindOfItem GetKindOfItem()
 	{
@@ -58,4 +61,10 @@ public class Item : ScriptableObject
 	{
 		return information;
 	}
+	public int GetNumber()
+	{
+		return number;
+	}
+
+
 }

@@ -16,9 +16,13 @@ public class SisUI : MonoBehaviour
     Button bt2;
     GameObject selectedObj;
 
+    MainUI main;
+
     // Start is called before the first frame update
     void Start()
     {
+        main = GetComponent<MainUI>();
+
         // 自分を選択状態にする
         bt1 = sisr.GetComponent<Button>();
         bt2 = sisl.GetComponent<Button>();
@@ -33,41 +37,44 @@ public class SisUI : MonoBehaviour
     {
         float choice = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("SMenu"))
+        if (!main.isMenu)
         {
-            //メニュー展開ボタンを押すとメニューの表示非表示を切り替え
-            if (sisMenu)
-            {
 
-                sisMenu = false;
+            if (Input.GetButtonDown("SMenu"))
+            {
+                //メニュー展開ボタンを押すとメニューの表示非表示を切り替え
+                if (sisMenu)
+                {
+
+                    sisMenu = false;
+                }
+
+                else if (!sisMenu)
+                {
+                    sisMenu = true;
+                }
             }
 
-            else if (!sisMenu)
+            //メニュー非展開
+            if (!sisMenu)
             {
-                sisMenu = true;
+                Time.timeScale = 1.0f;
+                sisPanel.SetActive(false);
+
             }
-        }
-
-        //メニュー非展開
-        if (!sisMenu)
-        {
-            Time.timeScale = 1.0f;
-            sisPanel.SetActive(false);
-
-        }
-        //メニュー展開中
-        else if (sisMenu)
-        {
-            Time.timeScale = 0;
-            sisPanel.SetActive(true);
+            //メニュー展開中
+            else if (sisMenu)
+            {
+                Time.timeScale = 0;
+                sisPanel.SetActive(true);
 
                 if (Input.GetButtonDown("ChoiceR"))
                 {
                     bt1.onClick.Invoke();
 
                 }
-            
-        
+
+
 
                 if (Input.GetButtonDown("ChoiceL"))
                 {
@@ -76,13 +83,14 @@ public class SisUI : MonoBehaviour
                 }
 
 
-          
+
+
+
+            }
+
 
 
         }
-
-
-
     }
 
     public void MenuBreake()
@@ -93,16 +101,13 @@ public class SisUI : MonoBehaviour
 
     public void MenuCheck()
     {
-        //右ボタンに反応するイベント
-        Debug.Log("Left");
+
 
     }
     public void Check()
     {
 
-        //左ボタンに反応するイベント
-        Debug.Log("Right");
-
+   
     }
 
 }

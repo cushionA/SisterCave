@@ -101,7 +101,7 @@ public class PlayerMove : MonoBehaviour
 
     public void Update()
     {
-        if (Time.timeScale != 0)
+        if (Time.timeScale != 0.0f)
         {
 
             horizontalkey = Input.GetAxisRaw("Horizontal");
