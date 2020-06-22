@@ -127,6 +127,7 @@ namespace EnhancedScrollerDemos.GridSelection
         public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
         {
             return 100f;
+            //スクローラーのサイズ
         }
 
         /// <summary>
