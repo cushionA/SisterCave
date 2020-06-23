@@ -113,7 +113,9 @@ namespace EnhancedScrollerDemos.GridSelection
         /// <returns>The number of cells</returns>
         public int GetNumberOfCells(EnhancedScroller scroller)
         {
-            return Mathf.CeilToInt((float)_data.Count / (float)numberOfCellsPerRow);
+            //セルの数
+            return 4;
+                //Mathf.CeilToInt((float)_data.Count / (float)numberOfCellsPerRow);
         }
 
         /// <summary>
@@ -127,7 +129,7 @@ namespace EnhancedScrollerDemos.GridSelection
         public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
         {
             return 100f;
-            //スクローラーのサイズ
+       
         }
 
         /// <summary>
