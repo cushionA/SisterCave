@@ -26,7 +26,14 @@ public class MainUI : MonoBehaviour
     public GameObject libraryWindow;
     public GameObject systemWindow;
 
+
+
+    float verticalKey;
+
+
+
     [SerializeField] EventSystem eventSystem;
+    [SerializeField] StandaloneInputModule stIn;
 
     Button eq;
     SisUI sis;
@@ -54,7 +61,7 @@ public class MainUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //float choice = Input.GetAxisRaw("Horizontal");
+         verticalKey = Input.GetAxisRaw("Vertical");
 
         if (!sis.sisMenu)
         {
@@ -91,13 +98,15 @@ public class MainUI : MonoBehaviour
 
                 if (isFirst)
                 {
+                
+
                     eq.Select();
                     eq.onClick.Invoke();
                     isFirst = false;
                 }
 
                 if(selectButtom == eqButton)
-                {
+                {//セレクトしているボタンが左端のボタンの時
 
                     eqWindow.SetActive(true);
                     useWindow.SetActive(false);
@@ -105,10 +114,12 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
-
+                    //表示するUIの選択
                 }
                 else if(selectButtom == useButton)
                 {
+
+                  
 
                     eqWindow.SetActive(false);
                     useWindow.SetActive(true);
@@ -120,7 +131,7 @@ public class MainUI : MonoBehaviour
                 }
                 else if (selectButtom == keyButton)
                 {
-
+                   
                     eqWindow.SetActive(false);
                     useWindow.SetActive(false);
                     keyWindow.SetActive(true);
@@ -131,7 +142,7 @@ public class MainUI : MonoBehaviour
                 }
                 else if (selectButtom == magicButton)
                 {
-
+                  
                     eqWindow.SetActive(false);
                     useWindow.SetActive(false);
                     keyWindow.SetActive(false);
@@ -153,7 +164,7 @@ public class MainUI : MonoBehaviour
                 }
                 else if (selectButtom == systemButton)
                 {
-
+                   
                     eqWindow.SetActive(false);
                     useWindow.SetActive(false);
                     keyWindow.SetActive(false);

@@ -63,7 +63,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\AnimalCellView.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenAdditionalMethodsClear.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenAdditionalMethodsClearCachedTweens.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenAdditionalMethodsValidate.cs" />
@@ -209,6 +208,8 @@
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformShakePosition.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformShakeRotation.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformShakeScale.cs" />
+    <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTweenPro\DOTweenRigidbodySpiral.cs" />
+    <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTweenPro\DOTweenTransformSpiral.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Scripts\DOTweenActionsEnums.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Scripts\DOTweenActionsUtils.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Scripts\DOTweenExtensions.cs" />
@@ -1270,8 +1271,6 @@
     <Compile Include="Assets\ProCamera2D\Examples\TopDownShooter\Scripts\SwitchCameraProjection.cs" />
     <Compile Include="Assets\ProCamera2D\ProCamera2D.cs" />
     <Compile Include="Assets\SU3DJPFont\Demo\SampleScene.cs" />
-    <Compile Include="Assets\ScrollerController.cs" />
-    <Compile Include="Assets\ScrollerData.cs" />
     <Compile Include="Assets\SerializableDictionary\Example\SerializableDictionaryExample.cs" />
     <Compile Include="Assets\SerializableDictionary\Example\UserSerializableDictionaries.cs" />
     <Compile Include="Assets\SerializableDictionary\SerializableDictionary.cs" />
@@ -1297,12 +1296,22 @@
     <Compile Include="Assets\testAsset\Status\NewPlayableAsset.cs" />
     <Compile Include="Assets\testAsset\Status\PlayerStatus.cs" />
     <Compile Include="Assets\testAsset\Status\SisterStatus.cs" />
+    <Compile Include="Assets\testAsset\UI\ButtonAutoScroll.cs" />
     <Compile Include="Assets\testAsset\UI\CellView.cs" />
     <Compile Include="Assets\testAsset\UI\Controller.cs" />
     <Compile Include="Assets\testAsset\UI\Data.cs" />
+    <Compile Include="Assets\testAsset\UI\FooCellView.cs" />
+    <Compile Include="Assets\testAsset\UI\HorizontalExplicitNavigationButton.cs" />
     <Compile Include="Assets\testAsset\UI\MainUI.cs" />
     <Compile Include="Assets\testAsset\UI\RowCellView.cs" />
+    <Compile Include="Assets\testAsset\UI\ScrollController.cs" />
+    <Compile Include="Assets\testAsset\UI\ScrollerData.cs" />
+    <Compile Include="Assets\testAsset\UI\ScroollButtonController.cs" />
     <Compile Include="Assets\testAsset\UI\SisUI.cs" />
+    <Compile Include="Assets\testAsset\UI\UseCellData.cs" />
+    <Compile Include="Assets\testAsset\UI\UseCellView.cs" />
+    <Compile Include="Assets\testAsset\UI\UseController.cs" />
+    <Compile Include="Assets\testAsset\UI\UseRowCellView.cs" />
     <Compile Include="Assets\testAsset\anime\NeutralCon.cs" />
     <Compile Include="Assets\testAsset\anime\SideCon.cs" />
     <None Include="Assets\EnhancedScroller v2\upgrading from 1.x to 2.x.txt" />

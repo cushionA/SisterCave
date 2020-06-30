@@ -13,12 +13,14 @@ namespace EnhancedUI.EnhancedScroller
         /// The cellIdentifier is a unique string that allows the scroller
         /// to handle different types of cells in a single list. Each type
         /// of cell should have its own identifier
+        /// 名前を付けろということだ
         /// </summary>
         public string cellIdentifier;
 
         /// <summary>
         /// The cell index of the cell view
         /// This will differ from the dataIndex if the list is looping
+        /// リストがループしているときはデータインデックスとは違うくなる
         /// </summary>
         [NonSerialized]
         public int cellIndex;
@@ -31,6 +33,7 @@ namespace EnhancedUI.EnhancedScroller
 
         /// <summary>
         /// Whether the cell is active or recycled
+        /// セルがアクティブか、リサイクルなのか
         /// </summary>
         [NonSerialized]
         public bool active;

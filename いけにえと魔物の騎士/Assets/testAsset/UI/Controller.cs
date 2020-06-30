@@ -114,7 +114,7 @@ namespace EnhancedScrollerDemos.GridSelection
         public int GetNumberOfCells(EnhancedScroller scroller)
         {
             //セルの数
-            return 4;
+            return 7;
                 //Mathf.CeilToInt((float)_data.Count / (float)numberOfCellsPerRow);
         }
 
