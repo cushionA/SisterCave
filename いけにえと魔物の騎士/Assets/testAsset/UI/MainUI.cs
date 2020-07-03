@@ -26,7 +26,7 @@ public class MainUI : MonoBehaviour
     public GameObject libraryWindow;
     public GameObject systemWindow;
 
-
+    public ScrollController sc;
 
     float verticalKey;
 
@@ -127,6 +127,9 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
+
+
+                        sc.isIniti = false;
 
                 }
                 else if (selectButtom == keyButton)

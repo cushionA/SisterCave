@@ -15,6 +15,35 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
     private RectTransform content;
 
 
+    [SerializeField] Scrollbar useBar;
+    [SerializeField] ScrollRect useRect;
+
+
+    float verticalKey;
+
+
+    int lLimit;
+    int uLimit;
+
+    float limit;
+    float pos;
+
+    bool isTop;
+    bool isLast;
+
+    bool isFirstU;
+    bool isSecondU;
+    bool isThirdU;
+
+    bool isFirstD;
+    bool isSecondD;
+    bool isThirdD;
+
+    bool isReverse;
+
+    int jumpDataIndex;
+
+    [HideInInspector]public bool isIniti;
 
     public int GetNumberOfCells(EnhancedScroller scroller)
     {
@@ -42,7 +71,7 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void Start()
     {
-
+        
 
         this.data = new List<ScrollerData>
         {
@@ -54,8 +83,16 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
             new ScrollerData("Papa", "Quebec", "Romeo"),
             new ScrollerData("Sierra", "Tango", "Uniform"),
             new ScrollerData("Victor", "Whiskey", "X-ray"),
-            new ScrollerData("Yankee", "Zulu", "☺")
-            
+            new ScrollerData("Yankee", "Zulu", "☺"),
+
+
+             new ScrollerData("Gof", "Hotl", "Inda"),
+            new ScrollerData("Julitt", "Klo", "Lia"),
+            new ScrollerData("Mie", "Novmber", "Osar"),
+            new ScrollerData("Paa", "Quebc", "Rmeo"),
+            new ScrollerData("Siera", "Tago", "Unform"),
+            new ScrollerData("Vicor", "Whikey", "Xray"),
+            new ScrollerData("Yanee", "Zuu", "☺kk")
         };
         this.content = this.fooScroller.GetComponent<ScrollRect>().content;
         //スクロール可能なコンテンツ。ScrollRect コンポーネントの
@@ -71,6 +108,108 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
         this.fooScroller.ReloadData();
         this.UpdateNavigationConnections();
     }
+
+    private void Update()
+    {
+        JButton();
+    }
+
+
+    public void JButton()
+    {
+
+         pos = 1f / ((float)data.Count - 4.0f);
+        //MyItem.rowLengthが20にあたります、intで宣言しているので、floatに置換しています。
+        //公式は　ScrollBarのValueの上限、セルの数、表示可能なセルの数。
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            if(isReverse == true)
+            {
+             
+                isReverse = false;
+            }
+
+            if (!isFirstU)
+            {
+                isFirstU = true;
+                isThirdD = false;
+            }
+            else if (isFirstU && !isSecondU && !isThirdU)
+            {
+                isSecondU = true;
+                isSecondD = false;
+
+            }
+            else if (isFirstD && isSecondU)
+            {//足りない助走を補う
+
+                    isThirdU = true;
+                    isFirstD = false;
+                    useBar.value += pos;
+            }
+            else if (isSecondU && !isThirdU)
+            {
+                isThirdU = true;
+                isFirstD = false;
+            }
+            else if (isThirdU)
+            {
+                useBar.value += pos;
+            }
+        }
+      if(Input.GetKeyDown(KeyCode.S) && isIniti)
+        {
+            if (!isFirstD)
+            {
+                isFirstD = true;
+                isThirdU = false;
+            }
+            else if (isFirstD && !isSecondD && !isThirdD)
+            {
+                isSecondD = true;
+                isSecondU = false;
+
+            }
+
+            else if (isSecondD && !isThirdD)
+            {
+                isThirdD = true;
+                isFirstU = false;
+               
+            }
+ 
+            else if (isThirdD)
+            {
+                isReverse = true;
+                useBar.value -= pos;
+            }
+        }
+      else if(Input.GetKeyDown(KeyCode.S) && !isIniti)
+        {
+
+            isIniti = true;
+
+        }
+
+       limit = useBar.value;
+
+      if(limit >= 1)
+        {
+            limit = 1;
+
+        }
+
+
+
+      else if(limit <= 0)
+        {
+            limit = 0.01f;
+        }
+        useBar.value = limit;
+
+    }
+
 
     private void UpdateNavigationConnections()
     {
@@ -90,6 +229,34 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
             var previousCell = i == 0 ? null : cells[i - 1];
             var nextCell = i == (cells.Length - 1) ? null : cells[i + 1];
             var buttonCount = cell.ContentButtons.Length;
+
+            uLimit = 0;
+        lLimit = this.data.Count;
+
+ /* if (i == (cells.Length - 1) )
+            {
+                isLast = true;
+                Debug.Log("yasai");
+            }
+            else
+            {
+                isLast = false;
+                Debug.Log("niku");
+            }
+            if(i != 0)
+            {
+
+                isTop = true;
+
+            }
+            else
+            {
+
+                isTop = false;
+
+            }
+            */
+       
             for (var j = 0; j < buttonCount; j++)
             {
                 // 上下は上下のセルの中の同じ列にあるボタンを、左右は自分のセルの中の左右のボタンを繋げる

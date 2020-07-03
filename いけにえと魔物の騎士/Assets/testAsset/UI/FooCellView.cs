@@ -14,6 +14,7 @@ public class FooCellView : EnhancedScrollerCellView
         for (var i = 0; i < this.contentTexts.Length; i++)
         {
             this.contentTexts[i].text = data.Contents[i];
+            //For文でデータの数だけテキストにデータをぶち込む。そしてテキストの数＝ボタンの数になってる。
         }
     }
 
