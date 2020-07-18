@@ -175,7 +175,6 @@ public class PlayerMove : MonoBehaviour
         }
         else
         {
-            Debug.Log("NOUSE");
             isStUse = false;
 
         }
@@ -502,7 +501,7 @@ public class PlayerMove : MonoBehaviour
         if (collision.tag == groundTag || collision.tag == moveFloorTag)
         {
             isGroundStay = true;
-
+            
         }
 
     }

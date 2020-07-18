@@ -11,15 +11,24 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
 
     [SerializeField] private EnhancedScroller fooScroller;
     [SerializeField] private FooCellView fooCellViewPrefab;
-    private List<ScrollerData> data;
+    private List<UseItemData> data;
     private RectTransform content;
-
+    [SerializeField]
+    private ToolDataBase toolDataBase;
 
     [SerializeField] Scrollbar useBar;
     [SerializeField] ScrollRect useRect;
 
+    public ToolManager dic;
+    public MainUI mi;
+    public ToolItem space1;
+    public ToolItem space2;
+
+    List<ToolItem> enableTool;
 
     float verticalKey;
+
+     List<ToolItem> setList;
 
 
     int lLimit;
@@ -43,12 +52,20 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
 
     int jumpDataIndex;
 
+    bool isEver;
+    int N = 3;
+    //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
+
+    ToolItem testtes;
+
     [HideInInspector]public bool isIniti;
 
     public int GetNumberOfCells(EnhancedScroller scroller)
     {
+
         return this.data.Count;
         //List<ScrollerData> dataに格納された要素の数を数える。
+        
     }
 
     public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
@@ -71,29 +88,78 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void Start()
     {
-        
-
-        this.data = new List<ScrollerData>
+        #region
+        /*
+        foreach(KeyValuePair<ToolItem,int>ti in dic.GetItemDictionary())
         {
-            new ScrollerData("Alfa", "Bravo", "Charlie"),
-            new ScrollerData("Delta", "Echo", "Foxtrot"),
-            new ScrollerData("Golf", "Hotel", "India"),
-            new ScrollerData("Juliett", "Kilo", "Lima"),
-            new ScrollerData("Mike", "November", "Oscar"),
-            new ScrollerData("Papa", "Quebec", "Romeo"),
-            new ScrollerData("Sierra", "Tango", "Uniform"),
-            new ScrollerData("Victor", "Whiskey", "X-ray"),
-            new ScrollerData("Yankee", "Zulu", "☺"),
+            ToolItem item = ti.Key;
+            int num = ti.Value;
 
+            if (num > 0)
+            {
+                enableTool.Add(ti.Key);
+                Debug.Log("EEEE");
+            }
 
-             new ScrollerData("Gof", "Hotl", "Inda"),
-            new ScrollerData("Julitt", "Klo", "Lia"),
-            new ScrollerData("Mie", "Novmber", "Osar"),
-            new ScrollerData("Paa", "Quebc", "Rmeo"),
-            new ScrollerData("Siera", "Tago", "Unform"),
-            new ScrollerData("Vicor", "Whikey", "Xray"),
-            new ScrollerData("Yanee", "Zuu", "☺kk")
+        }
+        Debug.Log(enableTool.Count);
+
+        for (int i = 0; i < enableTool.Count; i += 3)
+        {
+            Debug.Log("WWW");
+            this.data = new List<UseItemData>{
+
+            new UseItemData(enableTool[i],enableTool[i+1],enableTool[i+2])
         };
+        }*/
+        #endregion
+
+
+
+        #region
+
+         for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
+        {
+            //　アイテム数を適当に設定
+            toolDataBase.GetItemLists()[i].inventoryNum = 0;
+
+        }
+
+        setList = (from item in toolDataBase.GetItemLists()
+                   where item.inventoryNum > 0
+                   select item).ToList();
+        //最終的に作りたいリストの初期化
+        data = new List<UseItemData>();
+        //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
+            List<ToolItem> miniList = null;
+        if(setList.Count % N == N - 1)
+        {
+            setList.Add(space1);
+        }
+        else if(setList.Count % N == N - 2)
+        {
+            setList.Add(space1);
+            setList.Add(space2);
+        }
+        //ぴったりになるよう穴埋め
+
+
+            for(int i = 0; i < setList.Count(); i++){
+                 //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
+        if(i % N == 0){
+                       miniList = new List<ToolItem>();
+                      }
+                 //miniListに格納
+        miniList.Add(setList[i]);
+                 //Nの倍数-1ならminiListを元にUseItemDataを作成して格納
+
+                 if(i % N == N - 1){
+                        ToolItem[] box = miniList.ToArray();
+                        UseItemData mini = new UseItemData(box);
+                        data.Add(mini);
+                      }
+            }
+#endregion
         this.content = this.fooScroller.GetComponent<ScrollRect>().content;
         //スクロール可能なコンテンツ。ScrollRect コンポーネントの
         //アタッチされているGameObject の子でなければなりません
@@ -111,7 +177,104 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void Update()
     {
-        JButton();
+        
+      if (mi.isReBuild && !mi.isEver)
+        {
+            #region
+
+            //  for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
+            // {
+            //　アイテム数を適当に設定
+            // setList.Add(toolDataBase.GetItemLists()[i]);
+            setList = toolDataBase.GetItemLists();
+            // }
+
+            setList = (from item in toolDataBase.GetItemLists()
+                      where item.inventoryNum > 0
+                      select item).ToList();
+                                       
+            //最終的に作りたいリストの初期化
+            data = new List<UseItemData>();
+            //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
+            List<ToolItem> miniList = null;
+
+            if (setList.Count % N == N - 1)
+            {
+                setList.Add(space1);
+            }
+            else if (setList.Count % N == N - 2)
+            {
+                setList.Add(space1);
+                setList.Add(space2);
+            }
+            //ぴったりになるよう穴埋めした
+
+
+            for (int i = 0; i < setList.Count(); i++)
+            {
+                //if (setList.Count - i >= N){
+                    //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
+                    if (i % N == 0)
+                    {
+                        miniList = new List<ToolItem>();
+                    }
+                    //miniListに格納
+                    miniList.Add(setList[i]);
+                    //Nの倍数-1ならminiListを元にUseItemDataを作成して格納
+
+                    if (i % N == N - 1)
+                    {
+                        ToolItem[] box = miniList.ToArray();
+                        UseItemData mini = new UseItemData(box);
+                        data.Add(mini);
+                    }
+                //}
+                /*else if(setList.Count - i < N)
+                {
+                    Debug.Log("そこに愛はある？");
+                    //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
+                    if (i % N == 0) {
+                        miniList = new List<ToolItem>();
+                    }
+                    //miniListに格納
+                    miniList.Add(setList[i]);
+                    //Nの倍数-1ならminiListを元にUseItemDataを作成して格納
+
+                    if (setList.Count - i == 0)
+                    {
+                        ToolItem[] box = miniList.ToArray();
+                        UseItemData mini = new UseItemData(box);
+                        data.Add(mini);
+                        Debug.Log("愛して");
+                    }
+
+                }*/
+
+                
+            }
+            #endregion
+            this.content = this.fooScroller.GetComponent<ScrollRect>().content;
+            //スクロール可能なコンテンツ。ScrollRect コンポーネントの
+            //アタッチされているGameObject の子でなければなりません
+            this.fooScroller.Delegate = this;
+            //EnhansedScrollerのデリゲートの集合体のインターフェイスのインスタンス
+            this.fooScroller.cellViewVisibilityChanged = this.OnCellViewVisibilityChanged;
+            //Cellの表示と非表示が切り替わった際に動くデリゲート
+            //そしてそのデリゲートにthis.OnCellViewVisibilityChangedを格納してる
+            //すなわち表示非表示切り替わるとthis.OnCellViewVisibilityChanged
+            //というかUpdateNavigationConnections()する
+
+            Debug.Log("愛してる");
+            this.fooScroller.ReloadData();
+            this.UpdateNavigationConnections();
+            mi.isEver = true;
+        }
+        /*else if(!mi.isReBuild && mi.isEver)
+        {
+            Debug.Log("愛してない");
+            //isEver = false;
+        }*/
+            JButton();
     }
 
 
@@ -143,6 +306,7 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
             }
             else if (isFirstD && isSecondU)
             {//足りない助走を補う
+                //切れちゃうもんね。動かさないと
 
                     isThirdU = true;
                     isFirstD = false;

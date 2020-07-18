@@ -9,26 +9,26 @@ public class SisterAttack : MonoBehaviour
     public GameObject ef;
     public SisterStatus sst;
     float sisterFireKey;
-    Item eqMagi;
+    public Item[] eqMagi;
+    Item useMagi;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
-
+        sst.SetUseMagic(eqMagi[0]);
     }
 
     // Update is called once per frame
     void Update()
     {
-        eqMagi = sst.GetEquipMagic();
+        useMagi = sst.GetUseMagic();
 
         sisterFireKey = Input.GetAxisRaw("SFire");
 
         if (Input.GetButtonDown("SFire"))
         {
-            if(eqMagi.GetItemName() == "聖火")
+            if(useMagi.GetItemName() == "聖火")
             {
 
                 Debug.Log("魔法");

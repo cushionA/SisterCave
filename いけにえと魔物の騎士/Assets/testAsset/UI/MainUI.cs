@@ -30,7 +30,8 @@ public class MainUI : MonoBehaviour
 
     float verticalKey;
 
-
+    public bool isReBuild;
+    public GameObject Scon;
 
     [SerializeField] EventSystem eventSystem;
     [SerializeField] StandaloneInputModule stIn;
@@ -41,7 +42,7 @@ public class MainUI : MonoBehaviour
     GameObject selectButtom;
 
     bool isFirst;
-
+    public bool isEver;
 
 
     // Start is called before the first frame update
@@ -71,12 +72,19 @@ public class MainUI : MonoBehaviour
                 if (isMenu)
                 {
                     isMenu = false;
+                    isReBuild = false;
+                    Scon.SetActive(false);
+                    isEver = false;
+
                 }
 
                 else if (!isMenu)
                 {
                     isFirst = true;
                     isMenu = true;
+                    isReBuild = true;
+                    Scon.SetActive(true);
+                    
                 }
             }
 

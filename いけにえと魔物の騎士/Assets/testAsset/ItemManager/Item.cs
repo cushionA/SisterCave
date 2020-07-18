@@ -13,10 +13,11 @@ public class Item : ScriptableObject
 		Weapon,
 		RecoverItem,
 		CureItem,
+		ToolItem,
 		AttackMagic,
 		RecoverMagic,
 		CureMagic,
-		Key
+		KeyItem
 	}
 
 	//　アイテムの種類

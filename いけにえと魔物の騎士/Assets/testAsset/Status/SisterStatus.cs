@@ -15,7 +15,9 @@ public class SisterStatus : CharacterStatus
     private int earnedExperience = 0;
     //　装備している魔法
     [SerializeField]
-    private Item equipMagic = null;
+    private Item[] equipMagic = null;
+
+    private Item useMagic;
 
     public void SetEarnedExperience(int earnedExperience)
     {
@@ -27,15 +29,23 @@ public class SisterStatus : CharacterStatus
         return earnedExperience;
     }
 
-    public void SetEquipMagic(Item magicItem)
+    public void SetEquipMagic(Item[] magicItem)
     {
         this.equipMagic = magicItem;
     }
 
-    public Item GetEquipMagic()
+    public Item[] GetEquipMagic()
     {
         return equipMagic;
     }
+    public void SetUseMagic(Item selectMagi)
+    {
+        this.useMagic = selectMagi;
+    }
 
+    public Item GetUseMagic()
+    {
+        return useMagic;
+    }
 
 }
