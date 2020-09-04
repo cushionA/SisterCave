@@ -42,8 +42,8 @@ public class ToolManager : MonoBehaviour
 
     private void Update()
     {
-		Debug.Log(GetItem("test4").inventoryNum);
-		Debug.Log(GetItem("テスト3").inventoryNum);
+		//Debug.Log(GetItem("test4").inventoryNum);
+		//Debug.Log(GetItem("テスト3").inventoryNum);
 
 
 

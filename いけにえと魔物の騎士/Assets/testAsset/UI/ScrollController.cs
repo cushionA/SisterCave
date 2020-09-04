@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EnhancedUI.EnhancedScroller;
 using UnityEngine;
@@ -24,7 +25,7 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
     public ToolItem space1;
     public ToolItem space2;
 
-    List<ToolItem> enableTool;
+    //List<ToolItem> enableTool;
 
     float verticalKey;
 
@@ -125,40 +126,49 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
 
         }
 
-        setList = (from item in toolDataBase.GetItemLists()
-                   where item.inventoryNum > 0
-                   select item).ToList();
+        setList = ToolList().ToList();
+
+        /*(from item in toolDataBase.GetItemLists()
+               where item.inventoryNum > 0
+               select item).ToList();*/
         //最終的に作りたいリストの初期化
         data = new List<UseItemData>();
         //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
-            List<ToolItem> miniList = null;
-        if(setList.Count % N == N - 1)
+        List<ToolItem> miniList = new List<ToolItem>();
+
+        //ToolItem[] miniList = new ToolItem[3];
+
+        if (setList.Count % N == N - 1)
         {
             setList.Add(space1);
         }
-        else if(setList.Count % N == N - 2)
+        else if (setList.Count % N == N - 2)
         {
             setList.Add(space1);
             setList.Add(space2);
         }
-        //ぴったりになるよう穴埋め
+        //ぴったりになるよう穴埋めした
 
 
-            for(int i = 0; i < setList.Count(); i++){
-                 //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
-        if(i % N == 0){
-                       miniList = new List<ToolItem>();
-                      }
-                 //miniListに格納
-        miniList.Add(setList[i]);
-                 //Nの倍数-1ならminiListを元にUseItemDataを作成して格納
-
-                 if(i % N == N - 1){
-                        ToolItem[] box = miniList.ToArray();
-                        UseItemData mini = new UseItemData(box);
-                        data.Add(mini);
-                      }
+        for (int i = 0; i < setList.Count(); i++)
+        {
+            //if (setList.Count - i >= N){
+            //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
+            if (i % N == 0)
+            {
+                miniList.Clear();
             }
+            //miniListに格納
+            miniList.Add(setList[i]);
+            //Nの倍数-1ならminiListを元にUseItemDataを作成して格納
+
+            if (i % N == N - 1)
+            {
+
+                UseItemData mini = new UseItemData(miniList.ToArray());
+                data.Add(mini);
+            }
+        }
 #endregion
         this.content = this.fooScroller.GetComponent<ScrollRect>().content;
         //スクロール可能なコンテンツ。ScrollRect コンポーネントの
@@ -186,17 +196,20 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
             // {
             //　アイテム数を適当に設定
             // setList.Add(toolDataBase.GetItemLists()[i]);
-            setList = toolDataBase.GetItemLists();
+            //setList = toolDataBase.GetItemLists();
             // }
 
-            setList = (from item in toolDataBase.GetItemLists()
-                      where item.inventoryNum > 0
-                      select item).ToList();
-                                       
+            setList = ToolList().ToList();
+            //setList = (from item in toolDataBase.GetItemLists()
+            //        where item.inventoryNum > 0
+            //      select item).ToList();
+
             //最終的に作りたいリストの初期化
-            data = new List<UseItemData>();
+
             //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
-            List<ToolItem> miniList = null;
+            List<ToolItem> miniList = new List<ToolItem>();
+
+            //ToolItem[] miniList = new ToolItem[3];
 
             if (setList.Count % N == N - 1)
             {
@@ -216,7 +229,7 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
                     //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
                     if (i % N == 0)
                     {
-                        miniList = new List<ToolItem>();
+                    miniList.Clear();
                     }
                     //miniListに格納
                     miniList.Add(setList[i]);
@@ -224,8 +237,8 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
 
                     if (i % N == N - 1)
                     {
-                        ToolItem[] box = miniList.ToArray();
-                        UseItemData mini = new UseItemData(box);
+                        
+                        UseItemData mini = new UseItemData(miniList.ToArray());
                         data.Add(mini);
                     }
                 //}
@@ -264,7 +277,7 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
             //すなわち表示非表示切り替わるとthis.OnCellViewVisibilityChanged
             //というかUpdateNavigationConnections()する
 
-            Debug.Log("愛してる");
+            //Debug.Log("愛してる");
             this.fooScroller.ReloadData();
             this.UpdateNavigationConnections();
             mi.isEver = true;
@@ -438,6 +451,18 @@ public class ScrollController : MonoBehaviour, IEnhancedScrollerDelegate
                 navigation.selectOnRight = cell.ContentButtons[(j + 1) % buttonCount];
                 button.navigation = navigation;
             }
+        }
+    }
+
+    IEnumerable<ToolItem> ToolList()
+    {
+        foreach (var item in toolDataBase.GetItemLists())
+        {
+            if(item.inventoryNum > 0)
+            {
+                yield return item;
+            }
+
         }
     }
 
