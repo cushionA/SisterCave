@@ -41,7 +41,7 @@ public class PlayerMove : MonoBehaviour
 
     bool isStartRoll;
     bool isStop;
-    
+
 
 
     public PlayMakerFSM fsm;
@@ -52,12 +52,11 @@ public class PlayerMove : MonoBehaviour
 
     Animator anim;
     Rigidbody2D rb;
-    GimmickAct ga;
 
     string groundTag = "Ground";
     bool isGroundEnter, isGroundStay, isGroundExit;
     string moveFloorTag = "MoveFloor";
-    [HideInInspector]public bool isJump = false;
+    [HideInInspector] public bool isJump = false;
     float dashTime, jumpTime, rushTime, fallTime;
     string enemyTag = "Enemy";
     float avoidJudge;
@@ -69,7 +68,7 @@ public class PlayerMove : MonoBehaviour
     float avoidTime;
     float rushSt;
 
- 
+
 
 
     SimpleAnimation sAni;
@@ -78,7 +77,7 @@ public class PlayerMove : MonoBehaviour
 
     MoveObject moveObj;
 
-    
+
 
 
     private void Awake()
@@ -92,7 +91,7 @@ public class PlayerMove : MonoBehaviour
         sAni = GetComponent<SimpleAnimation>();
         pm = GetComponent<PlayMakerFSM>();
         at = this.gameObject.GetComponent<AttackM>();
-        ga = Serch.GetComponent<GimmickAct>();
+
 
     }
 
@@ -100,8 +99,10 @@ public class PlayerMove : MonoBehaviour
 
     public void Update()
     {
+
+
         #region//入力系
-        if (Time.timeScale != 0.0f && !ga.isGimmickOn)
+        if (Time.timeScale != 0.0f)
         {
 
             horizontalkey = Input.GetAxisRaw("Horizontal");
@@ -132,23 +133,23 @@ public class PlayerMove : MonoBehaviour
 
                 }
 
-                }
+            }
             if (avoidKey == 0)
             {
-                
+
 
                 if (avoidJudge > 0.0f && avoidJudge < 1.0f && GManager.instance.isEnable)
                 {
-                  
+
 
                     //回避の最初のところは七回呼ばれてる。ここも七回呼ばれてる。なぜか動かない
                     GManager.instance.currentSt -= 18.0f;
-                   
-                    
+
+
                     isDash = false;
                     avoidJudge = 0.0f;
                     isAvoid = true;
-  
+
                 }
                 else
                 {
@@ -182,16 +183,6 @@ public class PlayerMove : MonoBehaviour
 
         }
 
-        if (ga.isGimmickOn)
-        {
-            isStop = true;
-        }
-        else
-        {
-            isStop = false;
-        }
-
-
         if (isGroundEnter || isGroundStay)
         {
             isGround = true;
@@ -207,27 +198,27 @@ public class PlayerMove : MonoBehaviour
 
         #endregion
 
-        if (isStop)
-        {
-            rb.velocity = new Vector2(0, 0);
+        /*     if (isStop)
+              {
+                  rb.velocity = new Vector2(0, 0);
 
-            isJump = false;
-            isDash = false;
-            isSquat = false;
-            isAvoid = false;
-            isStartRoll = false;
-            at.isAttack = false;
-            dashTime = 0.0f;
-            jumpTime = 0.0f;
-            rushTime = 0.0f;
-            fallTime = 0.0f;
+                  isJump = false;
+                  isDash = false;
+                  isSquat = false;
+                  isAvoid = false;
+                  isStartRoll = false;
+                  at.isAttack = false;
+                  dashTime = 0.0f;
+                  jumpTime = 0.0f;
+                  rushTime = 0.0f;
+                  fallTime = 0.0f;
 
-            SetLayer(11);
+                  SetLayer(11);
 
-            return;
-        }
+                  return;
+              }
 
-
+              */
         if (!isDown && !isAvoid && !at.isAttack && !isStop)
         {
             isEnAt = true;
@@ -362,9 +353,6 @@ public class PlayerMove : MonoBehaviour
             else if (isJump)
 
             {
-
-                Debug.Log("ごめん");
-
                 jumpTime += Time.fixedDeltaTime;
                 SetLayer(11);
                 if (jumpTime <= jumpRes && verticalkey > 0)
@@ -416,14 +404,22 @@ public class PlayerMove : MonoBehaviour
             isStartRoll = true;
 
         }
-        else if(!isGround && isAvoid)
+        else if (!isGround && isAvoid)
         {
+            fallTime += Time.fixedDeltaTime;
+            sAni.Play("Fall");
+            ySpeed = -gravity;
+
+            ySpeed *= fallCurve.Evaluate(fallTime);
+            xSpeed *= fallMCurve.Evaluate(fallTime);
             rb.velocity = new Vector2(xSpeed, ySpeed);
         }
 
         #region//回避
         if (isStartRoll)
         {
+            fallTime = 0.0f;
+
             isEnAt = false;
             avoidTime += Time.fixedDeltaTime;
 
@@ -488,7 +484,7 @@ public class PlayerMove : MonoBehaviour
 
     void AChange()
     {
-        
+
         isAvoid = false;
         avoidTime = 0.0f;
         isStartRoll = false;
@@ -542,7 +538,7 @@ public class PlayerMove : MonoBehaviour
         if (collision.tag == groundTag || collision.tag == moveFloorTag)
         {
             isGroundStay = true;
-            
+
         }
 
     }
@@ -572,8 +568,69 @@ public class PlayerMove : MonoBehaviour
     //   if(!isAvoid && isGround)
 
     // }
+    public void Flip()
+    {
+        // Switch the way the player is labelled as facing.
+        isRight = !isRight;
 
-}
+        // Multiply the player's x local scale by -1.
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
+
+    public void RopeJump(Vector2 jumpForce)
+    {
+        jumpTime = 0.0f;
+        this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+        xSpeed = 0;
+        ySpeed = 0;
+
+/*        if (isRight)
+        {
+            //プレイヤーが右側、かつクールタイム消化。
+            if (jumpTime <= jumpRes)
+            {
+                jumpForce.y *= fallCurve.Evaluate(fallTime);
+                jumpForce.x *= fallMCurve.Evaluate(fallTime);
+                rb.velocity = new Vector2(jumpForce.x, jumpForce.y);
+            }
+            else
+            {
+                jumpTime = 0.0f;
+            }
+
+        }
+        else if (!isRight)
+        { //プレイヤーが左側、かつクールタイム消化。
+
+            if (jumpTime <= jumpRes)
+            {
+                jumpForce.y *= fallCurve.Evaluate(fallTime);
+                jumpForce.x *= fallMCurve.Evaluate(fallTime);
+                rb.velocity = new Vector2(-jumpForce.x, jumpForce.y);
+            }
+            else
+            {
+
+                jumpTime = 0.0f;
+            }*/
+            if (isRight)
+        {
+            rb.AddForce(jumpForce,ForceMode2D.Impulse);
+            Debug.Log("シスターさん");
+        }
+        else
+        {
+            jumpForce.x *= -1;
+            rb.AddForce(jumpForce,ForceMode2D.Impulse);
+
+        }
+        }
+
+
+    }
+
 
 
 

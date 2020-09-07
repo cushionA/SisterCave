@@ -10,7 +10,7 @@ public class RopeControl : MonoBehaviour {
 	public float delayBeforeSecondHang = 0.4f;	//delay after jump before player will be able to hang on another rope
 
 	private static Transform collidedChain;		//saves transform on which player is connected
-	private static List<Transform> chains;		//saves connected rope's chain objects
+	private static List<Transform> chains;		//
 	
 	private Transform playerTransform;			//saves player's transform
 	private int chainIndex = 0;					//saves chains index on which player is connected
@@ -27,7 +27,7 @@ public class RopeControl : MonoBehaviour {
 	{
 		//get player's components
 		playerTransform = transform;
-		colliders = GetComponentsInChildren<Collider2D>();
+		colliders = GetComponentsInChildren<Collider2D>();//自身のみならず子のコンポネントまでコライダーを獲得
 		pControl = GetComponent<PlayerControl>();
 		anim = GetComponent<Animator>();
 	}
@@ -37,11 +37,11 @@ public class RopeControl : MonoBehaviour {
 	void LateUpdate ()
 	{
 		if(onRope)
-		{
+		{//OnColisionで接触したらOnRopeになるよ
 			//make player's position and rotation same as connected chain's
-			playerTransform.position = collidedChain.position;
-			playerTransform.localRotation = Quaternion.AngleAxis(direction * 90, Vector3.forward);
-
+			playerTransform.position = collidedChain.position;//接触したチェインのトランスフォーム
+			playerTransform.localRotation = Quaternion.AngleAxis(direction * 90, Vector3.forward);//接触したチェインの角度にあわせるよう
+			　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　//ローカルポジションを調整
 			//if up button is pressed and "chainIndex > 1" (there is another chain above player), climb up
 			if(Input.GetAxisRaw ("Vertical") > 0 && chainIndex > 1)
 			{
@@ -84,12 +84,14 @@ public class RopeControl : MonoBehaviour {
 			if(H > 0 && !pControl.facingRight)
 				// ... flip the player.
 				pControl.Flip();
+			//プレーヤーオブジェクトが向いてる向きの反対の入力で向き変わる
 			// Otherwise if the input is moving the player left and the player is facing right...
 			else if(H < 0 && pControl.facingRight)
 				// ... flip the player.
 				pControl.Flip();
 
 			//add swing force to connected chain
+			//チェインに力加える
 			collidedChain.GetComponent<Rigidbody2D>().AddForce (Vector2.right * H * swingForce);
 		}
 	}
@@ -99,6 +101,7 @@ public class RopeControl : MonoBehaviour {
 	{
 		//get all HingeJoint2D components from chain below the player
 		var joint = chains[chainIndex + 1].GetComponent<HingeJoint2D>();
+		//今のチェインの一つ先に移動
 
 		//if chain has HingeJoint2D but isn't enabled jump from rope
 		if(joint && !joint.enabled)
@@ -108,6 +111,8 @@ public class RopeControl : MonoBehaviour {
 		}
 
 		//connect player to below chain
+		//今のチェインの一つ先の子オブジェクトに
+		//動くたびに更新
 		collidedChain = chains[chainIndex + 1];
 		playerTransform.parent = collidedChain;
 		chainIndex ++;
@@ -118,67 +123,77 @@ public class RopeControl : MonoBehaviour {
 	{
 		//get all HingeJoint2D components from chain above the player
 		var joint = chains[chainIndex - 1].GetComponent<HingeJoint2D>();
+		//今のチェインの一つ上のチェインのHingeJointを獲得
 
 		//if chain has HingeJoint2D but isn't enabled don't do anything
+		//HingeJointが機能してないなら戻れ
 		if(joint && !joint.enabled)
 			return;
 
 		//connect player to above chain
+		//今のチェインの一つ上の子オブジェクトに
+		//動くたびに更新
 		collidedChain = chains[chainIndex - 1];
 		playerTransform.parent = collidedChain;
 		chainIndex --;
 	}
 
 
-	IEnumerator JumpOff()
+	IEnumerator JumpOff()//ジャンプやめるメソッド
 	{
 		GetComponent<Rigidbody2D>().velocity = Vector2.zero;	//reset velocity
-		playerTransform.parent = null;			//detach player from chain
+		playerTransform.parent = null;			//改めて親を決めるためにいったん切る
 		onRope = false;
 		pControl.enabled = true;				//activate PlayerControl script
 
 		yield return new WaitForSeconds(delayBeforeSecondHang);	//wait 0.5 second
-
+		//待つ秒数を返し続きから
 		//activate all colliders on player
 		foreach(var col in colliders )
 		{
+			//プレイヤーコライダーをすべて再起動
 			col.enabled = true;
 		}
 	}
 
 
-	//called when player collides with another object
+	//チェインと接触した時に起動
 	IEnumerator OnCollisionEnter2D(Collision2D coll)
 	{
-		//if collided object's tag is "rope2D" and it has HingeJoint2D component, connect player to that object
+		//接地していなくてかつロープタグと衝突したら
 		if (!pControl.grounded && coll.gameObject.tag == "rope2D")
 		{
+			//collのゲームオブジェクトはロープ2Dタグが付いてるやつ
 			var joint = coll.gameObject.GetComponent<HingeJoint2D>(); //get HingeJoint2D component from collided object
 
 			if(joint && joint.enabled)
 			{
-				pControl.enabled = false; 	//disable PlayerControl script
+				pControl.enabled = false; 	//プレーヤーコントローラーを停止
 				anim.SetFloat ("Speed", 0);	//stop animation
 
 				//disable all player colliders
 				foreach(var col in colliders )
 					col.enabled = false;
+				//プレイヤーコライダーをすべて停止
 
 				var chainsParent = coll.transform.parent;	//get collided object's parent
-				chains = new List<Transform>();
+				　　　　　　　　　　　　　　　　　　　　　　//衝突したオブジェクトの親を獲得
+				chains = new List<Transform>();//チェインを格納するメモリ確保
 
-				//fill chains list 
-				foreach (Transform child in chainsParent)
+				//チェインリストに格納
+				foreach (Transform child in chainsParent)//さっき獲得した親のすべての子オブジェクトをリストに
+					　　　　　　　　　　　　　　　　　　//子供から親を見つけ親からすべての兄弟を見つけるような流れ
 					chains.Add(child);
 
 				//connect player to collided object
-				collidedChain = coll.transform;
-				chainIndex = chains.IndexOf (collidedChain);
-				playerTransform.parent = collidedChain;
+				collidedChain = coll.transform;//プレイヤーオブジェクトに接触したチェインのトランスフォームを獲得
+				chainIndex = chains.IndexOf (collidedChain);//全ての鎖の数、兄弟の数の中で衝突した鎖が何番目なのかを記録
+				playerTransform.parent = collidedChain;//プレイヤーオブジェクトの親に接触したチェインを設定
 				onRope = true;
+				//ロープにぶら下がっています
 
-				direction = Mathf.Sign(Vector3.Dot (-collidedChain.right, Vector3.up));
-			}
+				direction = Mathf.Sign(Vector3.Dot (-collidedChain.right, Vector3.up));//チェインオブジェクトがどちらを向いているかどうか。
+			}　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　//符号でわかる
 		}
 		return null;
 	}

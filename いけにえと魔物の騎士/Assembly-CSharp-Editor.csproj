@@ -61,6 +61,7 @@
     <Compile Include="Assets\PlayMaker\Editor\PlayMakerBuildCallbacks.cs" />
     <Compile Include="Assets\ProCamera2D\Code\Extensions\Editor\ProCamera2DLimitSpeedEditor.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Editor\GetDistanceEditor.cs" />
+    <Compile Include="Assets\2D Rope System\Editor\RopeSystem2D.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Animator\Editor\GetAnimatorCurrentStateInfoActionEditor.cs" />
     <Compile Include="Assets\PlayMaker\Editor\PlayMakerMainMenu.cs" />
     <Compile Include="Assets\PlayMaker\Actions\SceneManager\Editor\UnLoadSceneCustomEditor.cs" />
@@ -241,7 +242,6 @@
     <Compile Include="Assets\PlayMaker\Actions\Animator\Editor\GetAnimatorIsMatchingTargetActionEditor.cs" />
     <Compile Include="Assets\PlayMaker Utils\Wizards\PlayMakerEventProxy\Editor\EventProxyFileFinder.cs" />
     <Compile Include="Assets\ProCamera2D\Code\Extensions\Editor\ProCamera2DRoomsEditor.cs" />
-    <Compile Include="Assets\2D Rope System\Editor\RopeSystem2D.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Demigiant\DemiLib\Core\Editor\DemiEditor.dll" />
@@ -459,6 +459,9 @@
     </Reference>
     <Reference Include="UnityEditor.Graphs">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.1.4f1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WebGL.Extensions">
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2020.1.4f1\Editor\Data\PlaybackEngines\WebGLSupport\UnityEditor.WebGL.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Android.Extensions">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.1.4f1\Editor\Data\PlaybackEngines\AndroidPlayer\UnityEditor.Android.Extensions.dll</HintPath>
