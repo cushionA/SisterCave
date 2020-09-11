@@ -29,7 +29,8 @@ public class RopeJump : MonoBehaviour
 	public float jumpY;
 
 	bool disenable;
-	float delayTime = 0.5f;
+	float delayTime = 1.0f;
+
 
 	// Use this for initialization
 	void Start()
@@ -88,7 +89,7 @@ public class RopeJump : MonoBehaviour
 			if (Input.GetButtonDown("Submit"))
 			{
 				JumpOff();
-				pControl.RopeJump(jumpForce);
+				pControl.RopeJump();
 				//this.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 			}
 
@@ -183,9 +184,9 @@ public class RopeJump : MonoBehaviour
 
 	//チェインと接触した時に起動
 	IEnumerator OnCollisionEnter2D(Collision2D coll)
-	{
+	{//返り値はイテレータのコレクション
 		//接地していなくてかつロープタグと衝突したら
-		if (!pControl.isGround && coll.gameObject.tag == "rope2D" && delayTime >= delayBeforeSecondHang)
+		if (!pControl.isGround && coll.gameObject.tag == "Rope" && delayTime >= delayBeforeSecondHang)
 		{
 			delayTime = 0.0f;
 			disenable = false;

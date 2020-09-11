@@ -8,20 +8,28 @@ public class GManager : MonoBehaviour
     public static GManager instance = null;
 
     public GameObject Player;
-
-
-    public float stamina;
-    public float stRecover;
-    [HideInInspector] public float currentSt;
+    //プレイヤーオブジェクト
+    public PlayerStatus pStatus;
+    //プレイヤーのステータスを取得
+    public int stRecover = 3;
+    //スタミナ回復量
     public Slider stSlider;
+    //スタミナスライダー
+    public Slider HpSlider;
+    //HPスライダー
     [HideInInspector] public bool isEnable;
-
+    //スタミナが回復するかどうか
     float stTime;
+    //スタミナが回復する間隔の時間が経過したかどうか
     float disEnaTime;
+    //スタミナ回復不能時間
     AttackM at;
     PlayerMove pm;
     bool stBreake;
+    //スタミナ回復不能状態終わりフラグ
 
+    //プレイヤーがレベルアップしたらHPとスタミナのスライダーの長さをチェックして伸ばす。
+    //あとステータス画面に格納する値のチェックも
 
     private void Awake()
     {
@@ -43,8 +51,10 @@ void Start()
 
         //スライダーを満タンに
         stSlider.value = 1;
-        //現在のスタミナを最大と同じに
-        currentSt = stamina;
+        HpSlider.value = 1;
+        //HPなどを最大と同じに
+        pStatus.hp = pStatus.maxHp;
+        pStatus.stamina = pStatus.maxStamina;
     }
 
     // Update is called once per frame
@@ -56,9 +66,10 @@ void Start()
 
         if (stTime >= 0.1f && !pm.isStUse && isEnable)
         {
+            //前回のスタミナ回復から0.1秒経っててスタミナ使ってなくてスタミナ回復できるフラグあるなら
             disEnaTime = 0.0f;
 
-            currentSt += stRecover;
+            pStatus.stamina += stRecover;
             stTime = 0.0f;
             stBreake = false;
 
@@ -67,14 +78,14 @@ void Start()
 
 
 
-        else if (currentSt >= stamina)
+        else if (pStatus.stamina >= pStatus.maxStamina)
         {
 
-            currentSt = stamina;
+            pStatus.stamina = pStatus.maxStamina;
             isEnable = true;
         }
 
-        else if (currentSt <= 0 && !stBreake)
+        else if (pStatus.stamina <= 0 && !stBreake)
         {
 
             disEnaTime += Time.deltaTime;
@@ -84,7 +95,7 @@ void Start()
             if (disEnaTime < 1.5f || pm.isStUse)
             {
                
-                currentSt = 0.0f;
+                pStatus.stamina = 0;
                 //ここ
             }
             else
@@ -101,7 +112,22 @@ void Start()
             isEnable = true;
         }
 
-        stSlider.value = currentSt / stamina;
-
+        stSlider.value = pStatus.stamina / pStatus.maxStamina;
+        HpSlider.value = pStatus.hp / pStatus.maxHp;
     }
+
+    public void StaminaUse(int useStamina)
+    {
+        pStatus.stamina -= useStamina;
+    }
+
+    public void HpReduce(float damage)
+    {
+        pStatus.hp -= damage;
+    }
+    public void HpRecover(float Recovery)
+    {
+        pStatus.hp += Recovery;
+    }
+
 }

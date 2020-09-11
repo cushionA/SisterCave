@@ -11,83 +11,49 @@ public abstract class CharacterStatus : ScriptableObject
 
 
     //　毒状態かどうか
-    [SerializeField]
-    private bool isPoisonState = false;
+    public bool isPoisonState = false;
+
     //　痺れ状態かどうか
-    [SerializeField]
-    private bool isNumbnessState = false;
+    public bool isNumbnessState = false;
+
     //　キャラクターのレベル
-    [SerializeField]
-    private int level = 1;
+    public int level = 1;
+
     //　最大HP
-    [SerializeField]
-    private int maxHp = 100;
+    public float maxHp = 100;
+
     //　HP
-    [SerializeField]
-    private int hp = 100;
+    public float hp = 100;
+
     //　最大MP
-    [SerializeField]
-    private int maxMp = 30;
+    public float maxMp = 30;
+
     //　MP
-    [SerializeField]
-    private int mp = 30;
+    public float mp = 30;
+
     //　最大スタミナ
-    [SerializeField]
-    private int maxStamina = 60;
+    public float maxStamina = 60;
+
     //　スタミナ
-    [SerializeField]
-    private int stamina = 60;
+    public float stamina = 60;
+
     //　力
-    [SerializeField]
-    private int power = 10;
-    //　打たれ強さ
-    [SerializeField]
-    private int strikingStrength = 10;
+    public float power = 10;
+
+    //　防御力
+    public float DEF = 10;
+
     //　魔法力
-    [SerializeField]
-    private int magicPower = 10;
+    public float magicPower = 10;
 
-  
-    public void SetPoisonState(bool poisonFlag)
-    {
-        isPoisonState = poisonFlag;
-    }
+    //小怯み。普段は基本ゼロ。攻撃時だけ
+    public float Armor;
 
-    public bool IsPoisonState()
-    {
-        return isPoisonState;
-    }
+    [SerializeField] float BlowBase;
 
-    public void SetNumbness(bool numbnessFlag)
-    {
-        isNumbnessState = numbnessFlag;
-    }
+    //大怯み、吹っ飛び。基本均一でアーマー値を足す
 
-    public bool IsNumbnessState()
-    {
-        return isNumbnessState;
-    }
-
-    public void SetLevel(int level)
-    {
-        this.level = level;
-    }
-
-    public int GetLevel()
-    {
-        return level;
-    }
-
-    public void SetMaxHp(int hp)
-    {
-        this.maxHp = hp;
-    }
-
-    public int GetMaxHp()
-    {
-        return maxHp;
-    }
-
+  /*
     public void SetHp(int hp)
     {
         //ゼロと最大HPと現在のHPで大きい方を比較して、大きい方を入れるようにしてる。すなわちゼロ以上かつ最大値以下
@@ -168,4 +134,5 @@ public abstract class CharacterStatus : ScriptableObject
     {
         return magicPower;
     }
+  */
 }

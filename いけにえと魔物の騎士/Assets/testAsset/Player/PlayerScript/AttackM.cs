@@ -45,7 +45,7 @@ public class AttackM : MonoBehaviour
 
         if (pm.isEnAt && fire1Key && !isAttack && pm.isEnAt && GManager.instance.isEnable)
         {
-            GManager.instance.currentSt -= 15.0f;
+            GManager.instance.StaminaUse(15);
             delayTime = 0.0f;
             isAttack = true;
             sAni.Play("Attack");
@@ -59,7 +59,7 @@ public class AttackM : MonoBehaviour
             if(delayTime < 1.5f && fire1Key && pm.isEnAt && GManager.instance.isEnable)
             {
 
-                GManager.instance.currentSt -= 15.0f;
+                GManager.instance.StaminaUse(15);
                 sAni.Play("Attack2");
                 isAEnd = false;
             }
