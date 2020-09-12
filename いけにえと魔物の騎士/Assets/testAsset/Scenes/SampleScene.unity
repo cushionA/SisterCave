@@ -1969,6 +1969,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.85600007
       objectReference: {fileID: 0}
+    - target: {fileID: 7866132825443460542, guid: ef0d3e187c6e02747aab18bd5db13e0c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0000001823368
+      objectReference: {fileID: 0}
     - target: {fileID: 7890624301580085229, guid: ef0d3e187c6e02747aab18bd5db13e0c,
         type: 3}
       propertyPath: m_Layer
@@ -2044,6 +2049,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9071193953058817627, guid: ef0d3e187c6e02747aab18bd5db13e0c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.8435705
+      objectReference: {fileID: 0}
+    - target: {fileID: 9071193953058817627, guid: ef0d3e187c6e02747aab18bd5db13e0c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.1850774
       objectReference: {fileID: 0}
     - target: {fileID: 9104153613814672555, guid: ef0d3e187c6e02747aab18bd5db13e0c,
         type: 3}
@@ -4485,8 +4500,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 962871506}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 29.6, y: -1, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 29.6, y: -1.1934426, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1418918805}
@@ -4846,6 +4861,9 @@ MonoBehaviour:
   - clip: {fileID: 7400000, guid: 876d7fb04c4a9ff49bcb41b8d0317413, type: 2}
     name: Attack2
     defaultState: 0
+  - clip: {fileID: 7400000, guid: 91bf89af625c8ae48a786084a174792e, type: 2}
+    name: Attack3
+    defaultState: 0
 --- !u!114 &962871514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4859,9 +4877,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 962871506}
-  isAttack: 0
-  SecAttack: 0
-  ThiAttack: 0
+  chargeRes: 1
+  smallName:
+  - Attack
+  - Attack2
+  bigName:
+  - Attack3
+  - Attack
+  airName:
+  - Attack
+  - Attack3
 --- !u!114 &962871515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6746,6 +6771,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8899156797376052946, guid: 956c8f4d9f4a7b346bffacecfca9435a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -8843673053958415331, guid: 956c8f4d9f4a7b346bffacecfca9435a,
         type: 3}
       propertyPath: m_Name
@@ -7174,6 +7204,7 @@ MonoBehaviour:
   stSlider: {fileID: 1137566751}
   HpSlider: {fileID: 1720835676}
   isEnable: 0
+  isAttack: 0
 --- !u!4 &1285881592
 Transform:
   m_ObjectHideFlags: 0

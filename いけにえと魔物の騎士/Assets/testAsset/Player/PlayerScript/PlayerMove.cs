@@ -10,7 +10,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float dashSpeed;
     [SerializeField] float squatSpeed;
-    [SerializeField] float gravity;
+    public float gravity;//重力変わるギミックとか攻撃とか
     [SerializeField] float jumpSpeed;
     [SerializeField] float jumpRes;
     [SerializeField] float avoidRes;
@@ -120,7 +120,7 @@ public class PlayerMove : MonoBehaviour
             {
 
                 avoidKey = 0.0f;
-
+                //入力不可に
             }
             if (avoidKey == 1 && GManager.instance.isEnable)
             {
@@ -175,7 +175,7 @@ public class PlayerMove : MonoBehaviour
 
         #region//フラグ管理
 
-        if (isAvoid || isJump || isDash || at.isAttack)
+        if (isAvoid || isJump || isDash || GManager.instance.isAttack)
         {
 
             isStUse = true;
@@ -191,7 +191,7 @@ public class PlayerMove : MonoBehaviour
         if (isGroundEnter || isGroundStay)
         {
             isGround = true;
-            Debug.Log("接地");
+           // Debug.Log("接地");
         }
         else// if (isGroundExit)
         {
@@ -207,7 +207,7 @@ public class PlayerMove : MonoBehaviour
 
 
               
-        if (!isDown && !isAvoid && !at.isAttack && !isStop)
+        if (!isDown && !isAvoid && !GManager.instance.isAttack && !isStop)
         {
             isEnAt = true;
             //攻撃できる
@@ -635,7 +635,7 @@ public class PlayerMove : MonoBehaviour
             isDash = false;
             isSquat = false;
             isAvoid = false;
-            at.isAttack = false;
+            GManager.instance.isAttack = false;
             dashTime = 0.0f;
             jumpTime = 0.0f;
             rushTime = 0.0f;

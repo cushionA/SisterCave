@@ -19,6 +19,9 @@ public class GManager : MonoBehaviour
     //HPスライダー
     [HideInInspector] public bool isEnable;
     //スタミナが回復するかどうか
+    [HideInInspector] public bool isAttack;
+    //攻撃中か否か
+
     float stTime;
     //スタミナが回復する間隔の時間が経過したかどうか
     float disEnaTime;
