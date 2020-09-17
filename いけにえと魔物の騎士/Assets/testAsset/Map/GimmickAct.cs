@@ -24,12 +24,13 @@ public class GimmickAct : MonoBehaviour
 
     void FixedUpdate()
     {
+        Debug.Log($"{isGimmick}");
         if (isGimmickEnter || isGimmickStay)
         {
             isGimmick = true;
             //ギミック利用可能
         }
-        else if (isGimmickExit)
+        else// if (isGimmickExit)
         {
             isGimmick = false;
             //ギミック利用不可能

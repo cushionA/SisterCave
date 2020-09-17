@@ -32,19 +32,49 @@ public abstract class CharacterStatus : ScriptableObject
     public float mp = 30;
 
     //　最大スタミナ
-    public float maxStamina = 60;
-
+    [HideInInspector]public float maxStamina = 60;
     //　スタミナ
-    public float stamina = 60;
+    [HideInInspector]public float stamina = 60;
 
+    //生命力
+    public float Vitality = 1;
+    //持久力
+    public float Endurance = 1;
+    //MPと魔法もてる数
+    public float capacity = 1;
     //　力
-    public float power = 10;
+    public float power = 1;
+    //技量
+    public float skill = 1;
+    //　魔法力。賢さ
+    public float _int = 1;
 
-    //　防御力
-    public float DEF = 10;
+    public float Atk;
+    //　無属性
+    public float phyAtk;
+    //神聖
+    public float holyAtk;
+    //闇
+    public float darkAtk;
+    //炎
+    public float fireAtk;
+    //雷
+    public float thunderAtk;
 
-    //　魔法力
-    public float magicPower = 10;
+    //　無属性防御力。体力で上がる
+    public float Def = 70;
+    //刺突防御。筋力で上がる
+    public float pierDef = 70;
+    //打撃防御、技量で上がる
+    public float strDef = 70;
+    //神聖防御、筋と賢さで上がる。
+    public float holyDef = 70;
+    //闇防御。賢さで上がる
+    public float darkDef = 70;
+    //炎防御。賢さと生命で上がる
+    public float fireDef = 70;
+    //雷防御。賢さと持久で上がる。
+    public float thunderDef = 70;
 
     //小怯み。普段は基本ゼロ。攻撃時だけ
     public float Armor;
@@ -53,86 +83,4 @@ public abstract class CharacterStatus : ScriptableObject
 
     //大怯み、吹っ飛び。基本均一でアーマー値を足す
 
-  /*
-    public void SetHp(int hp)
-    {
-        //ゼロと最大HPと現在のHPで大きい方を比較して、大きい方を入れるようにしてる。すなわちゼロ以上かつ最大値以下
-        this.hp = Mathf.Max(0, Mathf.Min(GetMaxHp(), hp));
-    }
-
-    public int GetHp()
-    {
-        return hp;
-    }
-
-    public void SetMaxMp(int mp)
-    {
-        this.maxMp = mp;
-    }
-
-    public int GetMaxMp()
-    {
-        return maxMp;
-    }
-
-    public void SetMp(int mp)
-    {
-        this.mp = Mathf.Max(0, Mathf.Min(GetMaxMp(), mp));
-    }
-
-    public int GetMp()
-    {
-        return mp;
-    }
-
-    public void SetMaxStamina(int maxStamina)
-    {
-        this.maxStamina = stamina;
-    }
-
-    public int GetMaxStamina()
-    {
-        return maxStamina;
-    }
-
-    public void SetStamina(int stamina)
-    {
-        this.hp = Mathf.Max(0, Mathf.Min(GetMaxStamina(), stamina));
-    }
-
-    public int GetStamina()
-    {
-        return stamina;
-    }
-
-    public void SetPower(int power)
-    {
-        this.power = power;
-    }
-
-    public int GetPower()
-    {
-        return power;
-    }
-
-    public void SetStrikingStrength(int strikingStrength)
-    {
-        this.strikingStrength = strikingStrength;
-    }
-
-    public int GetStrikingStrength()
-    {
-        return strikingStrength;
-    }
-
-    public void SetMagicPower(int magicPower)
-    {
-        this.magicPower = magicPower;
-    }
-
-    public int GetMagicPower()
-    {
-        return magicPower;
-    }
-  */
 }

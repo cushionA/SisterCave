@@ -32,7 +32,7 @@ public class SisterAttack : MonoBehaviour
 
         if (Input.GetButtonDown("SFire"))
         {
-            if(useMagi.GetItemName() == "聖火")
+            if(useMagi.itemName == "聖火")
             {
 
                 Addressables.InstantiateAsync(fi_ref);

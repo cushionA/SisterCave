@@ -64,7 +64,7 @@ public class AttackM : MonoBehaviour
         anyKey = AnyKey();
         if (isCharging && !bigAttack && !chargeAttack)
         {
-            chargeKey = Input.GetAxisRaw("Fire2");Debug.Log("入力");
+            chargeKey = Input.GetAxisRaw("Fire2");//Debug.Log("入力");
         }
         else
         {
@@ -152,7 +152,6 @@ public class AttackM : MonoBehaviour
             {
                 if (attackNumber >= 1)
                 {
-
                     if (CheckEnd(smallName[attackNumber - 1]) == false)
                     {
                         // Debug.Log("機能してます");
@@ -183,21 +182,26 @@ public class AttackM : MonoBehaviour
                 if (attackNumber >= 1)
                 {
 
-                    if (CheckEnd(smallName[attackNumber - 1]) == false)
+                    if (CheckEnd(airName[attackNumber - 1]) == false)
                     {
-                        // Debug.Log("機能してます");
-                        attackNumber = 0;
+                         //Debug.Log("機能してます");
                         GManager.instance.isAttack = false;
                     smallTrigger = false;
                     }
+                if (isDisEnable)
+                {
+
+                    attackNumber = pm.isGround ? 0 : attackNumber;
+                    //isGroundの時attackNumberを0、違うならそのまま
+                }
                 }
             }
             #endregion
 
 
 
-             Debug.Log($"判定{alterNumber}");
-            Debug.Log($"ため攻撃は{chargeAttack}");
+            // Debug.Log($"判定{GManager.instance.isAttack}");
+           // Debug.Log($"空中攻撃は{attackNumber}");
 
             if (fallAttack)
             {
@@ -215,7 +219,7 @@ public class AttackM : MonoBehaviour
     void Continue()
     {
         isAttackable = true;
-
+        GManager.instance.isArmor = false;
     }
 
 
@@ -331,7 +335,7 @@ public class AttackM : MonoBehaviour
             attackNumber++;
             smallTrigger = false;
         }
-        else if (attackNumber == 1 && smallTrigger && !isDisEnable && !bigTrigger)
+        else if (attackNumber == 1 && (fire1Key || smallTrigger) && !isDisEnable && !bigTrigger)
         {
             GManager.instance.isAttack = true;
             smallTrigger = false;
@@ -339,8 +343,8 @@ public class AttackM : MonoBehaviour
             GManager.instance.StaminaUse(15);
             isAttackable = false;
             isDisEnable = true;
-            Debug.Log("erial");
             attackNumber = 0;
+            Debug.Log("Elial");
         }
         #endregion
         //空中強攻撃
@@ -397,4 +401,20 @@ public class AttackM : MonoBehaviour
             bigTrigger = true;
         }
     }
+
+    //攻撃するときに呼ぶ
+     public void PlayerAttackPrepre(int i, Wepon.AttackType type = Wepon.AttackType.Slash)//デフォが斬撃
+     {
+          Mathf.Clamp(i, 0, GManager.instance.pStatus.equipWeapon.motionValue.Count - 1);
+         GManager.instance.pStatus.equipWeapon.atType = type;
+        GManager.instance.pStatus.equipWeapon.mValue = GManager.instance.pStatus.equipWeapon.motionValue[i];
+        GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.attackAromor[i];
+    }
+
+    public void PlayerArmor()
+    {
+        GManager.instance.isArmor = true;
+
+    }//判定出す直前にアニメイベントで呼び出す。
+
 }

@@ -20,16 +20,16 @@ public class ItemManager : MonoBehaviour
 			//　アイテム数を適当に設定
 			numOfItem.Add(itemDataBase.GetItemLists()[i], i);
 			//　確認の為データ出力
-			Debug.Log(itemDataBase.GetItemLists()[i].GetItemName() + ": " + itemDataBase.GetItemLists()[i].GetInformation());
+			Debug.Log(itemDataBase.GetItemLists()[i].itemName + ": " + itemDataBase.GetItemLists()[i].information);
 		}
 
-		Debug.Log(GetItem("Fire").GetInformation());
+		Debug.Log(GetItem("Fire").information);
 		Debug.Log(numOfItem[GetItem("Fire")]);
 	}
 
 	//　名前でアイテムを取得
 	public Item GetItem(string searchName)
 	{
-		return itemDataBase.GetItemLists().Find(itemName => itemName.GetItemName() == searchName);
+		return itemDataBase.GetItemLists().Find(itemName => itemName.itemName == searchName);
 	}
 }

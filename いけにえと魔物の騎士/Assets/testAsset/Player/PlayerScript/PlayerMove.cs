@@ -82,7 +82,10 @@ public class PlayerMove : MonoBehaviour
     AttackM at;
     MoveObject moveObj;
 
-
+    ///<summary>
+    ///マスクしてやれば地面しか検出しない。
+    ///</summary>
+    [SerializeField] ContactFilter2D filter;
 
 
     private void Awake()
@@ -188,23 +191,23 @@ public class PlayerMove : MonoBehaviour
 
         }
 
-        if (isGroundEnter || isGroundStay)
-        {
-            isGround = true;
-           // Debug.Log("接地");
-        }
-        else// if (isGroundExit)
-        {
-            isGround = false;
-        }
+        /*        if (isGroundEnter || isGroundStay)
+                {
+                    isGround = true;
+                   // Debug.Log("接地");
+                }
+                else// if (isGroundExit)
+                {
+                    isGround = false;
+                }
 
-        isGroundEnter = false;
-        isGroundStay = false;
-        isGroundExit = false;
-
+                isGroundEnter = false;
+                isGroundStay = false;
+                isGroundExit = false;
+                */
         #endregion
 
-
+        isGround = rb.IsTouching(filter);
 
               
         if (!isDown && !isAvoid && !GManager.instance.isAttack && !isStop)
@@ -548,7 +551,7 @@ public class PlayerMove : MonoBehaviour
 
 
     #region//接地判定と動く床
-    private void OnTriggerEnter2D(Collider2D collision)
+ /*   private void OnTriggerEnter2D(Collider2D collision)
     {
 
         if (collision.tag == groundTag)
@@ -588,7 +591,7 @@ public class PlayerMove : MonoBehaviour
             moveObj = null;
         }
     }
-
+ */
     #endregion
     public void SetLayer(int layerNumber)
     {

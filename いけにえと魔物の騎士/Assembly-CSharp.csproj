@@ -127,6 +127,7 @@
     <Compile Include="Assets\2D Rope System\Scripts\RopeCutter.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenLightBlendableColor.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Color\GetColorRGBA.cs" />
+    <Compile Include="Assets\testAsset\Enemy\EnemyScript\TestEnemy.cs" />
     <Compile Include="Assets\PlayMaker\Actions\RectTransform\RectTransformFlipLayoutAxes.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Physics\GetCollisionInfo.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformLocalMoveY.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Assets\testAsset\UI\Controller.cs" />
     <Compile Include="Assets\ProCamera2D\Examples\TopDownShooter\Scripts\Door.cs" />
     <Compile Include="Assets\testAsset\Player\PlayerScript\AttackM.cs" />
+    <Compile Include="Assets\testAsset\Status\EnemyStatus.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Logic\GameObjectIsNull.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Device\GetLocationInfo.cs" />
     <Compile Include="Assets\ProCamera2D\Code\Core\IPreMover.cs" />
@@ -374,6 +376,7 @@
     <Compile Include="Assets\PlayMaker\Actions\UnityObject\SetProperty.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformScale.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenRigidbody2DMoveY.cs" />
+    <Compile Include="Assets\testAsset\Player\Wepon\Wepon.cs" />
     <Compile Include="Assets\PlayMaker\Actions\RectTransform\RectTransformWorldToScreenPoint.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Logic\FsmStateTest.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Animation\SetAnimationSpeed.cs" />
@@ -390,6 +393,7 @@
     <Compile Include="Assets\testAsset\Scrypt\SisUIsub.cs" />
     <Compile Include="Assets\PlayMaker\Actions\GUI\GUILabel.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Animator\GetAnimatorLeftFootBottomHeight.cs" />
+    <Compile Include="Assets\testAsset\Enemy\EnemyScript\EnemyBase.cs" />
     <Compile Include="Assets\PlayMaker\Actions\String\GetStringLeft.cs" />
     <Compile Include="Assets\2D Rope System\Scripts\RuntimeRope.cs" />
     <Compile Include="Assets\PlayMaker\Actions\GUILayout\GUILayoutToolbar.cs" />
@@ -753,6 +757,7 @@
     <Compile Include="Assets\PlayMaker\Actions\StateMachine\SetEventTarget.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenRigidbody2DJump.cs" />
     <Compile Include="Assets\PlayMaker\Actions\StateMachine\GetFsmState.cs" />
+    <Compile Include="Assets\testAsset\Scrypt\FireBullet.cs" />
     <Compile Include="Assets\EnhancedScroller v2\Plugins\SmallList.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Physics2D\SetVelocity2d.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\Canvas\UiCanvasScalerSetScaleFactor.cs" />
@@ -995,6 +1000,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Audio\SetAudioVolume.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Array\ArrayDeleteAt.cs" />
     <Compile Include="Assets\ProCamera2D\Code\Helpers\TransitionFX\BasicBlit.cs" />
+    <Compile Include="Assets\testAsset\Player\PlayerScript\PlayerSerch2.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Transform\GetPosition.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Device\DeviceVibrate.cs" />
     <Compile Include="Assets\PlayMaker\Actions\StateMachine\GetFsmBool.cs" />
@@ -1215,6 +1221,7 @@
     <Compile Include="Assets\2D Rope System\Scripts\Rope2D.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Physics2D\WakeAllRigidBodies2d.cs" />
     <Compile Include="Assets\PlayMaker\Actions\String\StringSplit.cs" />
+    <Compile Include="Assets\testAsset\Enemy\EnemyScript\PlayerSerch.cs" />
     <Compile Include="Assets\PlayMaker\Actions\AnimateVariables\CurveVector3.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\UiInputFieldGetHideMobileInput.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Camera\CutToCamera.cs" />
@@ -1362,6 +1369,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Array\ArrayGetRandom.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Transform\SmoothFollowAction.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformLocalRotate.cs" />
+    <Compile Include="Assets\testAsset\Enemy\EnemyScript\EnemyGCheck.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\EnhancedScroller v2\upgrading from 1.x to 2.x.txt" />

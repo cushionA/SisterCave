@@ -1,0 +1,74 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TestEnemy : EnemyBase
+{
+    //ジャンプしてるとき回避させるな
+    //フラグの重複に気を付けて
+    //当たり判定はある程度太くないといけない
+
+    float direX;//モーションのX方向を決める
+    float direY;//モーションのｙ方向を決める
+
+    // Start is called before the first frame update
+    protected override void Start()
+    {
+        base.Start();
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    // Update is called once per frame
+    protected override void Update()
+    {
+        
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        if (isAggressive)
+        {
+
+            AgrFly();
+            if(RandomValue(0,5000) <= 4 && !nowJump && !isAvoid)
+            {
+                isJump = true;
+                RandomDirection(100, 50);
+            }
+            if (GManager.instance.isAttack && !isAvoid && !nowJump)
+            {
+                isAvoid = true;
+                RandomDirection(100, 50);
+            }
+            Debug.Log($"レイヤー{this.gameObject.layer}");
+
+        }
+        else if (!isAggressive)
+        {
+            PatrolFly();
+            PatrolMove();
+        }
+
+        AirJump(direX * combatSpeed.x / 2);
+        //GroundJump(direction * combatSpeed.x / 2);
+       // JumpCancel();
+        Avoid(direX);
+    }
+
+    void RandomDirection(int upperRes,int separate)
+    {
+        if(separate >= upperRes)
+        {
+            separate = upperRes;
+        }
+        if (RandomValue(0, upperRes) <= separate)
+        {
+            direX = 1;
+        }
+        else
+        {
+            direX = -1;
+        }
+    }
+}

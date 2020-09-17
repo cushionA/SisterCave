@@ -30,6 +30,7 @@ public class GManager : MonoBehaviour
     PlayerMove pm;
     bool stBreake;
     //スタミナ回復不能状態終わりフラグ
+    public bool isArmor;//強靭ついてるかどうか
 
     //プレイヤーがレベルアップしたらHPとスタミナのスライダーの長さをチェックして伸ばす。
     //あとステータス画面に格納する値のチェックも
@@ -132,5 +133,43 @@ void Start()
     {
         pStatus.hp += Recovery;
     }
+    public void SetAtk()
+    {
+        int n = pStatus.equipWeapon.wLevel;
+
+        if (pStatus.equipWeapon.phyBase[n] >= 1)
+        {
+            pStatus.phyAtk = pStatus.equipWeapon.phyBase[n] + (pStatus.equipWeapon.powerCurve[n].Evaluate(pStatus.power)) +
+                               pStatus.equipWeapon.skillCurve[n].Evaluate(pStatus.skill);
+            pStatus.Atk += pStatus.phyAtk;
+        }
+        if (pStatus.equipWeapon.holyBase[n] >= 1)
+        {
+            pStatus.holyAtk = pStatus.equipWeapon.holyBase[n] + (pStatus.equipWeapon.powerCurve[n].Evaluate(pStatus.power)) +
+                               pStatus.equipWeapon.intCurve[n].Evaluate(pStatus._int);
+            pStatus.Atk += pStatus.holyAtk;
+        }
+        if (pStatus.equipWeapon.darkBase[n] >= 1)
+        {
+            pStatus.darkAtk = pStatus.equipWeapon.darkBase[n] + (pStatus.equipWeapon.intCurve[n].Evaluate(pStatus._int)) +
+                               pStatus.equipWeapon.skillCurve[n].Evaluate(pStatus.skill);
+            pStatus.Atk += pStatus.darkAtk;
+        }
+        if (pStatus.equipWeapon.fireBase[n] >= 1)
+        {
+            pStatus.fireAtk = pStatus.equipWeapon.fireBase[n] + pStatus.equipWeapon.intCurve[n].Evaluate(pStatus._int);
+            pStatus.Atk += pStatus.fireAtk;
+        }
+        if (pStatus.equipWeapon.thunderBase[n] >= 1)
+        {
+            pStatus.thunderAtk = pStatus.equipWeapon.thunderBase[n] + pStatus.equipWeapon.intCurve[n].Evaluate(pStatus._int);
+            pStatus.Atk += pStatus.thunderAtk;
+        }
+        
+
+    }//攻撃力設定
+
+    //攻撃力や防御力に倍率かけるメソッドがあっていい。
+    //上の設定メソッドは装備が変更された時とレベル上がった時だけでいい。
 
 }
