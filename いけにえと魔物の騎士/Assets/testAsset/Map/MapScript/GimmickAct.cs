@@ -24,7 +24,6 @@ public class GimmickAct : MonoBehaviour
 
     void FixedUpdate()
     {
-        Debug.Log($"{isGimmick}");
         if (isGimmickEnter || isGimmickStay)
         {
             isGimmick = true;

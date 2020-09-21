@@ -7,13 +7,13 @@ public class PlayerMove : MonoBehaviour
 {
 
     //インスペクタで設定
-    [SerializeField] float speed;
-    [SerializeField] float dashSpeed;
+    [HideInInspector]public float speed;
+    [HideInInspector]public float dashSpeed;
     [SerializeField] float squatSpeed;
     public float gravity;//重力変わるギミックとか攻撃とか
     [SerializeField] float jumpSpeed;
     [SerializeField] float jumpRes;
-    [SerializeField] float avoidRes;
+    [HideInInspector]public float avoidRes;
     [SerializeField] float avoidWait;
     [SerializeField] float rJumpRes;
     public AnimationCurve dashCurve;

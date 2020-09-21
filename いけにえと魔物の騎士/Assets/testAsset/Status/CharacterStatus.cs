@@ -49,6 +49,7 @@ public abstract class CharacterStatus : ScriptableObject
     //　魔法力。賢さ
     public float _int = 1;
 
+
     public float Atk;
     //　無属性
     public float phyAtk;
@@ -76,11 +77,25 @@ public abstract class CharacterStatus : ScriptableObject
     //雷防御。賢さと持久で上がる。
     public float thunderDef = 70;
 
-    //小怯み。普段は基本ゼロ。攻撃時だけ
-    public float Armor;
+    public float phyCut;//カット率
+    public float holyCut;//光。
+    public float darkCut;//闇。
+    public float fireCut;//魔力
+    public float thunderCut;//魔力
 
-    [SerializeField] float BlowBase;
+    public float guardPower;//受け値
+
+    //isGuardの時使う
+
+    //小怯み。普段は基本ゼロ。攻撃時だけ
+    public float Armor = 1;
+    [HideInInspector]public float nowArmor;
+
+    public float nockBackPower;
 
     //大怯み、吹っ飛び。基本均一でアーマー値を足す
 
+    public float attackBuff = 1.0f;
+    //攻撃バフ値
+    //[HideInInspector] public float defBuff;防御力は直接加算
 }

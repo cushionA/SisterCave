@@ -17,10 +17,29 @@ public class GManager : MonoBehaviour
     //スタミナスライダー
     public Slider HpSlider;
     //HPスライダー
+    public Slider MpSlider;
+    //MPスライダー
+
+    public Vector2 initialHpSl;
+    public Vector2 initialMpSl;
+    public Vector2 initialStaminaSl;
+
+    RectTransform hpSl;
+    RectTransform mpSl;
+    RectTransform staminaSl;
+
     [HideInInspector] public bool isEnable;
     //スタミナが回復するかどうか
     [HideInInspector] public bool isAttack;
     //攻撃中か否か
+    [HideInInspector] public bool isDown;
+    //ダウン中
+    [HideInInspector] public bool isBlow;
+    //if(isBlow && nowArmor<=0)とelseでisBlowFalseに
+
+    
+
+    public Vector2 blowVector;
 
     float stTime;
     //スタミナが回復する間隔の時間が経過したかどうか
@@ -48,9 +67,9 @@ public class GManager : MonoBehaviour
         }
     }
 
-void Start()
+    void Start()
     {
-      at = Player.GetComponent<AttackM>();
+        at = Player.GetComponent<AttackM>();
         pm = Player.GetComponent<PlayerMove>();
 
         //スライダーを満タンに
@@ -59,6 +78,14 @@ void Start()
         //HPなどを最大と同じに
         pStatus.hp = pStatus.maxHp;
         pStatus.stamina = pStatus.maxStamina;
+        SetAtk();
+        SetMagicAssist();
+        SetMagicAtk();
+        SetParameter();
+        SetSlider();
+        hpSl = HpSlider.GetComponent<RectTransform>();
+        mpSl = MpSlider.GetComponent<RectTransform>();
+        staminaSl = stSlider.GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
@@ -98,7 +125,7 @@ void Start()
 
             if (disEnaTime < 1.5f || pm.isStUse)
             {
-               
+
                 pStatus.stamina = 0;
                 //ここ
             }
@@ -165,11 +192,142 @@ void Start()
             pStatus.thunderAtk = pStatus.equipWeapon.thunderBase[n] + pStatus.equipWeapon.intCurve[n].Evaluate(pStatus._int);
             pStatus.Atk += pStatus.thunderAtk;
         }
-        
+
 
     }//攻撃力設定
 
     //攻撃力や防御力に倍率かけるメソッドがあっていい。
     //上の設定メソッドは装備が変更された時とレベル上がった時だけでいい。
+
+    public void SetShield()
+    {
+        if(!pStatus.equipWeapon.twinHand && pStatus.equipShield != null)
+        {
+            pStatus.phyCut = pStatus.equipShield.phyCut[pStatus.equipShield.sLevel];//カット率
+            pStatus.holyCut = pStatus.equipShield.holyCut[pStatus.equipShield.sLevel];//光。
+            pStatus.darkCut = pStatus.equipShield.darkCut[pStatus.equipShield.sLevel];//闇。
+            pStatus.fireCut = pStatus.equipShield.fireCut[pStatus.equipShield.sLevel];//魔力
+            pStatus.thunderCut = pStatus.equipShield.thunderCut[pStatus.equipShield.sLevel];//魔力
+            pStatus.guardPower = pStatus.equipShield.guardPower[pStatus.equipShield.sLevel];//受け値
+        }
+        else if (pStatus.equipWeapon.twinHand)
+        {
+            pStatus.phyCut = pStatus.equipWeapon.phyCut[pStatus.equipWeapon.wLevel];//カット率
+            pStatus.holyCut = pStatus.equipWeapon.holyCut[pStatus.equipWeapon.wLevel];//光。
+            pStatus.darkCut = pStatus.equipWeapon.darkCut[pStatus.equipWeapon.wLevel];//闇。
+            pStatus.fireCut = pStatus.equipWeapon.fireCut[pStatus.equipWeapon.wLevel];//魔力
+            pStatus.thunderCut = pStatus.equipWeapon.thunderCut[pStatus.equipWeapon.wLevel];//魔力
+            pStatus.guardPower = pStatus.equipWeapon.guardPower[pStatus.equipWeapon.wLevel];//受け値
+        }
+    }
+
+    public void SetParameter()
+    {
+        pStatus.maxHp = pStatus.initialHp + pStatus.HpCurve.Evaluate(pStatus.Vitality);
+        pStatus.maxMp = pStatus.initialMp + pStatus.MpCurve.Evaluate(pStatus.capacity);
+        pStatus.maxStamina = pStatus.initialStamina + pStatus.StaminaCurve.Evaluate(pStatus.Endurance);
+        pStatus.capacityWeight = pStatus.initialWeight + pStatus.weightCurve.Evaluate(pStatus.Endurance+pStatus.power);
+
+        if(pStatus.capacity >= 0 && pStatus.capacity < 7)
+        {
+            pStatus.magicNumber = 1;
+        }
+        else if (pStatus.capacity >= 7)
+        {
+            pStatus.magicNumber = 2;
+        }
+        else if (pStatus.capacity >= 15)
+        {
+            pStatus.magicNumber = 3;
+        }
+        else if (pStatus.capacity >= 20)
+        {
+            pStatus.magicNumber = 4;
+        }
+        else if (pStatus.capacity >= 30)
+        {
+            pStatus.magicNumber = 5;
+        }
+        else if (pStatus.capacity >= 38)
+        {
+            pStatus.magicNumber = 6;
+        }
+        else if (pStatus.capacity >= 45)
+        {
+            pStatus.magicNumber = 7;
+        }
+        pStatus.equipMagic = new List<PlayerMagic>(pStatus.magicNumber);
+
+    }
+
+    public void ActionSet()
+    {
+        float weightState = pStatus.equipWeight / pStatus.capacityWeight;
+        if (weightState <= 0.3 && weightState >= 0)
+        {
+            pm.speed = pStatus.lightSpeed;
+            pm.dashSpeed = pStatus.lightDash;
+            pm.avoidRes = pStatus.lightAvoid;
+        }
+        else if (weightState > 0.3 && weightState <= 0.7)
+        {
+            pm.speed = pStatus.middleSpeed;
+            pm.dashSpeed = pStatus.middleDash;
+            pm.avoidRes = pStatus.middleAvoid;
+        }
+        else if (weightState > 0.7 && weightState <= 1)
+        {
+            pm.speed = pStatus.heavySpeed;
+            pm.dashSpeed = pStatus.heavyDash;
+            pm.avoidRes = pStatus.heavyAvoid;
+        }
+        else if(weightState > 1)
+        {
+            pm.speed = pStatus.overSpeed;
+            pm.dashSpeed = pStatus.overDash;
+            pm.avoidRes = pStatus.overAvoid;
+        }
+    }
+    public void SetMagicAssist()
+    {
+        int n = pStatus.equipWeapon.wLevel;
+        pStatus.equipWeapon.MagicAssist = pStatus.equipWeapon.MagicAssistBase + pStatus.equipWeapon.MAssistCurve[n].Evaluate(pStatus._int);
+
+        pStatus.equipWeapon.castSkill = 1;
+        pStatus.equipWeapon.castSkill -= pStatus.equipWeapon.CastCurve.Evaluate(pStatus.skill) / 100;
+    }
+    public void SetMagicAtk()
+    {
+        if (pStatus.useMagic.phyBase >= 1)
+        {
+            pStatus.useMagic.phyAtk = pStatus.useMagic.phyBase + (pStatus.useMagic.powerCurve.Evaluate(pStatus.power)) +
+                               pStatus.useMagic.skillCurve.Evaluate(pStatus.skill);
+        }
+        if (pStatus.useMagic.holyBase >= 1)
+        {
+            pStatus.useMagic.holyAtk = pStatus.useMagic.holyBase + (pStatus.useMagic.powerCurve.Evaluate(pStatus.power)) +
+                               pStatus.useMagic.intCurve.Evaluate(pStatus._int);
+        }
+        if (pStatus.useMagic.darkBase >= 1)
+        {
+            pStatus.useMagic.darkAtk = pStatus.useMagic.darkBase + (pStatus.useMagic.intCurve.Evaluate(pStatus._int)) +
+                               pStatus.useMagic.skillCurve.Evaluate(pStatus.skill);
+        }
+        if (pStatus.useMagic.fireBase >= 1)
+        {
+            pStatus.useMagic.fireAtk = pStatus.useMagic.fireBase + pStatus.useMagic.intCurve.Evaluate(pStatus._int);
+        }
+        if (pStatus.useMagic.thunderBase >= 1)
+        {
+            pStatus.useMagic.thunderAtk = pStatus.useMagic.thunderBase + pStatus.useMagic.intCurve.Evaluate(pStatus._int);
+
+        }
+    }
+    public void SetSlider()
+    {
+        hpSl.offsetMax = new Vector2(initialHpSl.x - (pStatus.maxHp - pStatus.initialHp), initialHpSl.y);
+        staminaSl.offsetMax = new Vector2(initialStaminaSl.x - (pStatus.maxStamina - pStatus.initialStamina), initialStaminaSl.y);
+        mpSl.offsetMax = new Vector2(initialMpSl.x - (pStatus.maxMp - pStatus.initialMp), initialMpSl.y);
+    }
 
 }

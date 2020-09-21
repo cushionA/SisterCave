@@ -18,8 +18,9 @@ MonoBehaviour:
   information: 
   number: 0
   wLevel: 0
+  atType: 0
   phyBase:
-  - 0
+  - 100
   - 0
   - 0
   - 0
@@ -28,9 +29,223 @@ MonoBehaviour:
   darkBase: []
   fireBase: []
   thunderBase: []
-  needPower: []
-  needSkill: []
-  needInt: []
-  powerCurve: []
-  skillCurve: []
+  needPower: 0
+  needSkill: 0
+  needInt: 0
+  phyCut: []
+  holyCut: []
+  darkCut: []
+  fireCut: []
+  thunderCut: []
+  guardPower: []
+  MagicAssistBase: 100
+  MagicAssist: 0
+  castSkill: 1
+  powerCurve:
+  - serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.4953517
+      outSlope: 0.4953517
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 100.938385
+      value: 50
+      inSlope: 0.4953517
+      outSlope: 0.4953517
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  skillCurve:
+  - serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0000007627532
+      value: 0.0047171973
+      inSlope: 0.9952821
+      outSlope: 0.9952821
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.9952821
+      outSlope: 0.9952821
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
   intCurve: []
+  MAssistCurve: []
+  CastCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  mValue: 0.7
+  atAromor: 1
+  chargeRes: 1
+  normalStamina: 15
+  bigStamina: 30
+  chargeStamina: 45
+  smallName:
+  - Attack
+  - Attack2
+  bigName:
+  - Attack2
+  - Attack3
+  airName:
+  - Attack
+  - Attack3
+  - Attack
+  chargeName:
+  - Squat
+  - Squat
+  sValue:
+  - x: 0.8
+    y: 5
+    z: 10
+    hitLimmit: 1
+    isBlow: 0
+    isLight: 0
+    type: 0
+  - x: 0.8
+    y: 5
+    z: 10
+    hitLimmit: 1
+    isBlow: 0
+    isLight: 0
+    type: 0
+  bValue:
+  - x: 1.1
+    y: 20
+    z: 20
+    hitLimmit: 1
+    isBlow: 0
+    isLight: 0
+    type: 0
+  - x: 1.1
+    y: 20
+    z: 20
+    hitLimmit: 1
+    isBlow: 0
+    isLight: 0
+    type: 0
+  chargeValue:
+  - x: 1.2
+    y: 20
+    z: 30
+    hitLimmit: 1
+    isBlow: 1
+    isLight: 0
+    type: 0
+  - x: 1.2
+    y: 20
+    z: 30
+    hitLimmit: 1
+    isBlow: 1
+    isLight: 0
+    type: 0
+  airValue:
+  - x: 0.7
+    y: 1
+    z: 5
+    hitLimmit: 1
+    isBlow: 0
+    isLight: 0
+    type: 0
+  - x: 0.7
+    y: 1
+    z: 5
+    hitLimmit: 1
+    isBlow: 0
+    isLight: 0
+    type: 0
+  strikeValue:
+    x: 1.1
+    y: 30
+    z: 20
+    hitLimmit: 1
+    isBlow: 0
+    isLight: 0
+    type: 0
+  isLight: 0
+  twinHand: 0
+  shock: 5
+  isBlow: 0
+  hitLimmit: 0
+  blowPower: {x: 40, y: 60}
+  guardSpeed: 0

@@ -6,13 +6,18 @@ TagManager:
   tags:
   - Ground
   - ScrollContent
-  - SisAttack
   - Wall
   - Ladder
   - Rope
-  - rope2D
   - Enemy
   - PlayerSerch
+  - JumpTrigger
+  - rope2D
+  - Attack
+  - SisterMagic
+  - PlayerMagic
+  - SisAttack
+  - ActiveZone
   layers:
   - Default
   - TransparentFX
@@ -35,8 +40,8 @@ TagManager:
   - PatrolSerch
   - EnemyVision
   - SisandPlayerSerch
-  - AlterEnemy
-  - 
+  - ActiveZone
+  - FlyEnemy
   - 
   - 
   - 

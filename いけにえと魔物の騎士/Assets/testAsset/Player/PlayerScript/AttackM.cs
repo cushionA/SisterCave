@@ -5,20 +5,24 @@ using UnityEngine;
 public class AttackM : MonoBehaviour
 {
     public GameObject Player;
-    public float chargeRes;
-    //チャージ時間長くしたり減らしたりできる状態があるとおもろいからパブリック
 
-    [SerializeField] List<string> smallName;
-    [SerializeField] List<string> bigName;
-    [SerializeField] List<string> airName;
-    //チェックのためにairにも強を含む三つ格納
+    //------------------------------------------内部パラメータ
 
     PlayerMove pm;
     //attackNumberと連動してステート名を獲得
+    /// <summary>
+    /// 弱攻撃ボタンが押されてるかどうか
+    /// </summary>
     bool fire1Key;
+
+    /// <summary>
+    /// 強攻撃ボタンが押されてるかどうか
+    /// </summary>
     bool fire2Key;
-    bool fire2Exit;
-    //ため押し
+
+    /// <summary>
+    /// ため押し時間測る入れ物
+    /// </summary>
     float chargeTime;
     float gravity;//重力を入れる
 
@@ -52,7 +56,7 @@ public class AttackM : MonoBehaviour
         pm = Player.GetComponent<PlayerMove>();
         sAni = GetComponent<SimpleAnimation>();
         rb = GetComponent<Rigidbody2D>();
-
+        GManager.instance.SetAtk();
     }
 
     // Update is called once per frame
@@ -75,14 +79,14 @@ public class AttackM : MonoBehaviour
         {
             chargeTime += Time.deltaTime;
             //チャージ中
-            if (chargeTime >= chargeRes)
+            if (chargeTime >= GManager.instance.pStatus.equipWeapon.chargeRes)
             {
                // isCharging = false;
                 //chargeTime = 0.0f;
                 chargeAttack = true;
             }
         }
-            else if(chargeTime < chargeRes && chargeKey == 0 && isCharging && !bigAttack && !chargeAttack)
+            else if(chargeTime < GManager.instance.pStatus.equipWeapon.chargeRes && chargeKey == 0 && isCharging && !bigAttack && !chargeAttack)
             {
                // chargeTime = 0.0f;
               //isCharging = false;
@@ -96,11 +100,11 @@ public class AttackM : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (attackNumber >= smallName.Count)
+        if (attackNumber >= GManager.instance.pStatus.equipWeapon.smallName.Count)
         {
             attackNumber = 0;//モーション番号のリセット
         }
-        if (alterNumber >= bigName.Count)
+        if (alterNumber >= GManager.instance.pStatus.equipWeapon.bigName.Count)
         {
             alterNumber = 0;//モーション番号のリセット
         }
@@ -152,7 +156,7 @@ public class AttackM : MonoBehaviour
             {
                 if (attackNumber >= 1)
                 {
-                    if (CheckEnd(smallName[attackNumber - 1]) == false)
+                    if (CheckEnd(GManager.instance.pStatus.equipWeapon.smallName[attackNumber - 1]) == false)
                     {
                         // Debug.Log("機能してます");
                         attackNumber = 0;
@@ -163,7 +167,7 @@ public class AttackM : MonoBehaviour
                 else if (alterNumber >= 1 && !isCharging)
                 {
 
-                    if (CheckEnd(bigName[alterNumber - 1]) == false)
+                    if (CheckEnd(GManager.instance.pStatus.equipWeapon.bigName[alterNumber - 1]) == false)
                     {
                         Debug.Log("機能してます");
                         alterNumber = 0;
@@ -182,7 +186,7 @@ public class AttackM : MonoBehaviour
                 if (attackNumber >= 1)
                 {
 
-                    if (CheckEnd(airName[attackNumber - 1]) == false)
+                    if (CheckEnd( GManager.instance.pStatus.equipWeapon.airName[attackNumber - 1]) == false)
                     {
                          //Debug.Log("機能してます");
                         GManager.instance.isAttack = false;
@@ -246,6 +250,7 @@ public class AttackM : MonoBehaviour
         #region//通常攻撃
         if (attackNumber == 0 && (fire1Key || smallTrigger))
         {
+            sAttackPrepare();
             GManager.instance.isAttack = true;
             sAni.Play("Attack");
             GManager.instance.StaminaUse(15);
@@ -253,14 +258,16 @@ public class AttackM : MonoBehaviour
             attackNumber++;
             smallTrigger = false;
         }
-        else if (attackNumber == 1 && smallTrigger)
+        else if (attackNumber != 0 && smallTrigger)
         {
+            sAttackPrepare();
             GManager.instance.isAttack = true;
             smallTrigger = false;
-            sAni.Play("Attack2");
+            sAni.Play(GManager.instance.pStatus.equipWeapon.smallName[attackNumber]);
             GManager.instance.StaminaUse(15);
             isAttackable = false;
             attackNumber++;
+            
         }
         #endregion
     }
@@ -270,37 +277,39 @@ public class AttackM : MonoBehaviour
         {
             if (chargeAttack)
             {
-                sAni.Play("Attack3");//チャージ攻撃のアニメ
-                GManager.instance.StaminaUse(40);
+                chargeAttackPrepare();
+                sAni.Play(GManager.instance.pStatus.equipWeapon.bigName[alterNumber]);//チャージ攻撃のアニメ
+                GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.chargeStamina);
                 alterNumber++;
-                Debug.Log("あああああいあいあい");
+                //Debug.Log("あああああいあいあい");
                 chargeAttack = false;
                 isCharging = false;
                 chargeTime = 0.0f;
             }
             else if (bigAttack)
             {
-                sAni.Play("Attack3");
-                GManager.instance.StaminaUse(25);
+                bAttackPrepare();
+                sAni.Play(GManager.instance.pStatus.equipWeapon.bigName[alterNumber]);
+                GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.bigStamina);
                 alterNumber++;
-                // Debug.Log("どういうこと");
+                // 違う効果音や画面揺らしたり、エフェクトも
                 bigAttack = false;
                 isCharging = false;
                 chargeTime = 0.0f;
             }
             else
             {
-                sAni.Play("Squat");//チャージアニメ     
+                sAni.Play(GManager.instance.pStatus.equipWeapon.chargeName[alterNumber]);//チャージアニメ     
             }
         }
-        else if (alterNumber == 1)
+        else if (alterNumber != 0)
         {
             if (chargeAttack)
             {
-                sAni.Play("Attack");//チャージ攻撃のアニメ
-                GManager.instance.StaminaUse(40);
+                chargeAttackPrepare();
+                sAni.Play(GManager.instance.pStatus.equipWeapon.bigName[alterNumber]);//チャージ攻撃のアニメ
+                GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.chargeStamina);
                 alterNumber++;
-                Debug.Log("あああああいあいあい");
                 chargeAttack = false;
                 isCharging = false;
                 chargeTime = 0.0f;
@@ -308,10 +317,10 @@ public class AttackM : MonoBehaviour
             //もし途中で手を離したら普通に外に出る、2Stayが否定されるから
             else if (bigAttack)
             {
-                sAni.Play("Attack");
-                GManager.instance.StaminaUse(25);
+                bAttackPrepare();
+                sAni.Play(GManager.instance.pStatus.equipWeapon.bigName[alterNumber]);
+                GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.bigStamina);
                 alterNumber++;
-                Debug.Log("どういうこと");
                 bigAttack = false;
                 isCharging = false;
                 chargeTime = 0.0f;
@@ -327,33 +336,40 @@ public class AttackM : MonoBehaviour
         #region//空中弱攻撃
         if (attackNumber == 0 && (fire1Key || smallTrigger) && !isDisEnable && !bigTrigger)
         {
+            airAttackPrepare();
+            rb.velocity = Vector2.zero;
             GManager.instance.isAttack = true;
-            sAni.Play("Attack");//空中弱攻撃
+            sAni.Play( GManager.instance.pStatus.equipWeapon.airName[0]);//空中弱攻撃
             GManager.instance.StaminaUse(10);
             //コンボにする仕様上軽めの攻撃に
             isAttackable = false;
             attackNumber++;
             smallTrigger = false;
         }
-        else if (attackNumber == 1 && (fire1Key || smallTrigger) && !isDisEnable && !bigTrigger)
+        else if (attackNumber != 0 && (fire1Key || smallTrigger) && !isDisEnable && !bigTrigger)
         {
+            if(attackNumber ==  GManager.instance.pStatus.equipWeapon.airName.Count - 2)
+            {
+                isDisEnable = true;
+            }
+            airAttackPrepare();
             GManager.instance.isAttack = true;
             smallTrigger = false;
-            sAni.Play("Attack3");
-            GManager.instance.StaminaUse(15);
+            sAni.Play( GManager.instance.pStatus.equipWeapon.airName[attackNumber]);
+            GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.normalStamina);
             isAttackable = false;
-            isDisEnable = true;
             attackNumber = 0;
-            Debug.Log("Elial");
+         //   Debug.Log("Elial");
         }
         #endregion
         //空中強攻撃
         else if (bigTrigger || fire2Key)
         {
+            strikeAttackPrepare();
             GManager.instance.isAttack = true;
             bigTrigger = false;
-            sAni.Play("Attack");//空中強攻撃
-            GManager.instance.StaminaUse(30);
+            sAni.Play( GManager.instance.pStatus.equipWeapon.airName[ GManager.instance.pStatus.equipWeapon.airName.Count - 1]);//空中強攻撃
+            GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.bigStamina);
             isAttackable = false;
             isDisEnable = true;
             attackNumber = 0;
@@ -403,12 +419,59 @@ public class AttackM : MonoBehaviour
     }
 
     //攻撃するときに呼ぶ
-     public void PlayerAttackPrepre(int i, Wepon.AttackType type = Wepon.AttackType.Slash)//デフォが斬撃
+     public void sAttackPrepare()//デフォが斬撃
      {
-          Mathf.Clamp(i, 0, GManager.instance.pStatus.equipWeapon.motionValue.Count - 1);
-         GManager.instance.pStatus.equipWeapon.atType = type;
-        GManager.instance.pStatus.equipWeapon.mValue = GManager.instance.pStatus.equipWeapon.motionValue[i];
-        GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.attackAromor[i];
+        GManager.instance.pStatus.equipWeapon.atType =  GManager.instance.pStatus.equipWeapon.sValue[attackNumber].type;
+        GManager.instance.pStatus.equipWeapon.mValue =  GManager.instance.pStatus.equipWeapon.sValue[attackNumber].x;
+        GManager.instance.pStatus.equipWeapon.atAromor =  GManager.instance.pStatus.equipWeapon.sValue[attackNumber].y;
+        GManager.instance.pStatus.equipWeapon.shock =  GManager.instance.pStatus.equipWeapon.sValue[attackNumber].z;
+        GManager.instance.pStatus.equipWeapon.isBlow =  GManager.instance.pStatus.equipWeapon.sValue[attackNumber].isBlow;
+        GManager.instance.pStatus.equipWeapon.hitLimmit =  GManager.instance.pStatus.equipWeapon.sValue[attackNumber].hitLimmit;
+
+    }
+
+    public void bAttackPrepare()//デフォが斬撃
+    {
+
+        GManager.instance.pStatus.equipWeapon.atType =  GManager.instance.pStatus.equipWeapon.bValue[alterNumber].type;
+        GManager.instance.pStatus.equipWeapon.mValue =  GManager.instance.pStatus.equipWeapon.bValue[alterNumber].x;
+        GManager.instance.pStatus.equipWeapon.atAromor =  GManager.instance.pStatus.equipWeapon.bValue[alterNumber].y;
+        GManager.instance.pStatus.equipWeapon.shock =  GManager.instance.pStatus.equipWeapon.bValue[alterNumber].z;
+        GManager.instance.pStatus.equipWeapon.isBlow =  GManager.instance.pStatus.equipWeapon.bValue[alterNumber].isBlow;
+        GManager.instance.pStatus.equipWeapon.hitLimmit =  GManager.instance.pStatus.equipWeapon.bValue[alterNumber].hitLimmit;
+    }
+
+    public void chargeAttackPrepare()//デフォが斬撃
+    {
+
+        GManager.instance.pStatus.equipWeapon.atType = GManager.instance.pStatus.equipWeapon.chargeValue[alterNumber].type;
+        GManager.instance.pStatus.equipWeapon.mValue = GManager.instance.pStatus.equipWeapon.chargeValue[alterNumber].x;
+        GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.chargeValue[alterNumber].y;
+        GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.chargeValue[alterNumber].z;
+        GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.chargeValue[alterNumber].isBlow;
+        GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.chargeValue[alterNumber].hitLimmit;
+    }
+
+    public void airAttackPrepare()//デフォが斬撃
+    {
+
+        GManager.instance.pStatus.equipWeapon.atType = GManager.instance.pStatus.equipWeapon.airValue[attackNumber].type;
+        GManager.instance.pStatus.equipWeapon.mValue = GManager.instance.pStatus.equipWeapon.airValue[attackNumber].x;
+        GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.airValue[attackNumber].y;
+        GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.airValue[attackNumber].z;
+        GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.airValue[attackNumber].isBlow;
+        GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.airValue[attackNumber].hitLimmit;
+    }
+
+    public void strikeAttackPrepare()//デフォが斬撃
+    {
+
+        GManager.instance.pStatus.equipWeapon.atType =  GManager.instance.pStatus.equipWeapon.strikeValue.type;
+        GManager.instance.pStatus.equipWeapon.mValue =  GManager.instance.pStatus.equipWeapon.strikeValue.x;
+        GManager.instance.pStatus.equipWeapon.atAromor =  GManager.instance.pStatus.equipWeapon.strikeValue.y;
+        GManager.instance.pStatus.equipWeapon.shock =  GManager.instance.pStatus.equipWeapon.strikeValue.z;
+        GManager.instance.pStatus.equipWeapon.isBlow =  GManager.instance.pStatus.equipWeapon.strikeValue.isBlow;
+        GManager.instance.pStatus.equipWeapon.hitLimmit =  GManager.instance.pStatus.equipWeapon.strikeValue.hitLimmit;
     }
 
     public void PlayerArmor()

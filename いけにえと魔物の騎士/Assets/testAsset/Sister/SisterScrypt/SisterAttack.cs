@@ -9,7 +9,7 @@ public class SisterAttack : MonoBehaviour
     public AssetReference fi_ref;
     public SisterStatus sst;
     float sisterFireKey;
-    public Item[] eqMagi;
+    public SisMagic[] eqMagi;
     Item useMagi;
 
     [SerializeField]
@@ -20,13 +20,13 @@ public class SisterAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sst.SetUseMagic(eqMagi[0]);
+        sst.useMagic =eqMagi[0];
     }
 
     // Update is called once per frame
     void Update()
     {
-        useMagi = sst.GetUseMagic();
+        useMagi = sst.useMagic;
 
         sisterFireKey = Input.GetAxisRaw("SFire");
 

@@ -15,8 +15,8 @@ MonoBehaviour:
   isPoisonState: 0
   isNumbnessState: 0
   level: 1
-  maxHp: 100
-  hp: 100
+  maxHp: 5000000
+  hp: 5000000
   maxMp: 30
   mp: 30
   maxStamina: 60
@@ -31,17 +31,72 @@ MonoBehaviour:
   phyAtk: 0
   holyAtk: 0
   darkAtk: 0
-  fireAtk: 0
+  fireAtk: 100
   thunderAtk: 0
-  Def: 70
+  Def: 800
   pierDef: 70
   strDef: 70
   holyDef: 70
   darkDef: 70
   fireDef: 70
   thunderDef: 70
-  Armor: 0
-  BlowBase: 0
+  Armor: 40
+  nowArmor: 40
+  nockBackPower: 0
+  attackBuff: 0
+  addSpeed: {x: 0, y: 0}
+  patrolSpeed: {x: 10, y: 0}
+  waitDistance: {x: 15, y: 0}
+  waitRes: 1
+  combatSpeed: {x: 0, y: 0}
+  agrDistance: {x: 3, y: 0}
+  walkDistance: {x: 0, y: 0}
+  walkSpeed: {x: 0, y: 0}
+  escapeDistance: {x: 15, y: 15}
+  chaseRes: 7
+  jumpSpeed: 180
+  jumpRes: 0.4
+  jumpCool: 12
+  avoidSpeed: {x: 300, y: 0}
+  avoidRes: 0.4
+  avoidCool: 12
+  firstGravity: 25
+  downRes: 0
+  velocityMin: {x: -100, y: -100}
+  velocityMax: {x: 100, y: 50}
+  enemyFire:
+  - {fileID: 11400000, guid: 931b7a03fcabaf9489c54ec0349f2d01, type: 2}
+  filter:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 1
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 65792
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 60
+    maxNormalAngle: 120
+  dogPile: {fileID: 0}
   money: 0
   dropItem: []
   kind: 0
+  atType: 0
+  PMagicTag: PlayerMagic
+  SMagicTag: SisterMagic
+  AttackTag: Attack
+  JumpTag: JumpTrigger
+  attackName: []
+  coolTime: 0
+  atValue: []
+  aditionalArmor: 0
+  isBlow: 0
+  blowVector: {x: 0, y: 0}
+  Shock: 0
+  mValue: 0
+  isCombo: 0
+  hitLimmit: 1
+  isLight: 0

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TestEnemy : EnemyBase
 {
@@ -26,34 +24,47 @@ public class TestEnemy : EnemyBase
 
     protected override void FixedUpdate()
     {
+        Die();
+
         base.FixedUpdate();
         if (isAggressive)
         {
 
-            AgrFly();
-            if(RandomValue(0,5000) <= 4 && !nowJump && !isAvoid)
+           // AgrFly();
+            if(RandomValue(0,50000) <= 4 && !nowJump && !isAvoid)
             {
                 isJump = true;
                 RandomDirection(100, 50);
             }
-            if (GManager.instance.isAttack && !isAvoid && !nowJump)
+    /*        if (GManager.instance.isAttack && !isAvoid && !nowJump)
             {
                 isAvoid = true;
                 RandomDirection(100, 50);
-            }
-            Debug.Log($"レイヤー{this.gameObject.layer}");
+            }*/
+           // Debug.Log($"レイヤー{this.gameObject.layer}");
 
         }
         else if (!isAggressive)
         {
-            PatrolFly();
+          //  PatrolFly();
             PatrolMove();
         }
 
-        AirJump(direX * combatSpeed.x / 2);
-        //GroundJump(direction * combatSpeed.x / 2);
-       // JumpCancel();
+      //  AirJump(direX * status.combatSpeed.x / 2);
+        GroundJump(direction * status.combatSpeed.x / 2);
+        JumpCancel();
         Avoid(direX);
+
+        if (RandomValue(0, 100) <= 1 && !nowJump && !isAvoid)
+        {
+           // ActionFire(0);
+        }
+
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        base.OnTriggerEnter2D(collision);
     }
 
     void RandomDirection(int upperRes,int separate)

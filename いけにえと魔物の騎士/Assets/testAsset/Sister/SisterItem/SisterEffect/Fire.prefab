@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 287797915803676578}
   - component: {fileID: 2028515116318103976}
   - component: {fileID: -7586124336813195987}
-  m_Layer: 15
+  - component: {fileID: 5724383274904554656}
+  m_Layer: 14
   m_Name: Fire
   m_TagString: SisAttack
   m_Icon: {fileID: 0}
@@ -4860,7 +4861,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488063025727291781}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc0b1a20f23f45647bd3c656a75b6db5, type: 3}
   m_Name: 
@@ -4869,3 +4870,17 @@ MonoBehaviour:
     m_AssetGUID: 760ccea329ee2334fa226779e7667d5a
     m_SubObjectName: 
   obj: {fileID: 488063025727291781}
+--- !u!114 &5724383274904554656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488063025727291781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff9fc6899d1bbe4a89cd4b023ebea51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  em: {fileID: 11400000, guid: 931b7a03fcabaf9489c54ec0349f2d01, type: 2}
+  targetObject: {fileID: 0}

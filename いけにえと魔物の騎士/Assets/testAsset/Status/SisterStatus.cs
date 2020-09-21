@@ -11,41 +11,14 @@ public class SisterStatus : CharacterStatus
 {
 
     //　獲得経験値
-    [SerializeField]
-    private int earnedExperience = 0;
+    public int earnedExperience = 0;
     //　装備している魔法
-    [SerializeField]
-    private Item[] equipMagic = null;
+    public List<SisMagic> equipMagic = null;
+    [HideInInspector]public SisMagic useMagic;
 
-    private Item useMagic;
+    public float castSkill;//詠唱短縮
+    public float magicAssist;
+    //private Item useMagic;
 
-    public void SetEarnedExperience(int earnedExperience)
-    {
-        this.earnedExperience = earnedExperience;
-    }
-
-    public int GetEarnedExperience()
-    {
-        return earnedExperience;
-    }
-
-    public void SetEquipMagic(Item[] magicItem)
-    {
-        this.equipMagic = magicItem;
-    }
-
-    public Item[] GetEquipMagic()
-    {
-        return equipMagic;
-    }
-    public void SetUseMagic(Item selectMagi)
-    {
-        this.useMagic = selectMagi;
-    }
-
-    public Item GetUseMagic()
-    {
-        return useMagic;
-    }
 
 }
