@@ -29,19 +29,20 @@ public class TestEnemy : EnemyBase
         base.FixedUpdate();
         if (isAggressive)
         {
-
-           // AgrFly();
-            if(RandomValue(0,50000) <= 4 && !nowJump && !isAvoid)
-            {
-                isJump = true;
-                RandomDirection(100, 50);
-            }
-    /*        if (GManager.instance.isAttack && !isAvoid && !nowJump)
-            {
-                isAvoid = true;
-                RandomDirection(100, 50);
-            }*/
-           // Debug.Log($"レイヤー{this.gameObject.layer}");
+            AgrMove();
+            //isGuard = true;
+            // AgrFly();
+            /*    if(RandomValue(0,50000) <= 4 && !nowJump && !isAvoid)
+           {
+               isJump = true;
+               RandomDirection(100, 50);
+           }
+      if (GManager.instance.isAttack && !isAvoid && !nowJump)
+           {
+               isAvoid = true;
+               RandomDirection(100, 50);
+           }*/
+            // Debug.Log($"レイヤー{this.gameObject.layer}");
 
         }
         else if (!isAggressive)

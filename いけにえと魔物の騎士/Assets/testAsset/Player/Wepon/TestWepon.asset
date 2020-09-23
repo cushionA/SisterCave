@@ -25,22 +25,27 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  holyBase: []
-  darkBase: []
-  fireBase: []
-  thunderBase: []
+  holyBase:
+  - 0
+  darkBase:
+  - 0
+  fireBase:
+  - 0
+  thunderBase:
+  - 0
   needPower: 0
   needSkill: 0
   needInt: 0
-  phyCut: []
+  phyCut:
+  - 0
   holyCut: []
   darkCut: []
   fireCut: []
   thunderCut: []
   guardPower: []
   MagicAssistBase: 100
-  MagicAssist: 0
-  castSkill: 1
+  MagicAssist: 101
+  castSkill: 0.99
   powerCurve:
   - serializedVersion: 2
     m_Curve:
@@ -64,26 +69,6 @@ MonoBehaviour:
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
-  - serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 0
-    m_PostInfinity: 0
-    m_RotationOrder: 0
-  - serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 0
-    m_PostInfinity: 0
-    m_RotationOrder: 0
-  - serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 0
-    m_PostInfinity: 0
-    m_RotationOrder: 0
-  - serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 0
-    m_PostInfinity: 0
     m_RotationOrder: 0
   skillCurve:
   - serializedVersion: 2
@@ -109,28 +94,54 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+  intCurve:
   - serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 0
-    m_PostInfinity: 0
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
     m_RotationOrder: 0
+  MAssistCurve:
   - serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 0
-    m_PostInfinity: 0
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
     m_RotationOrder: 0
-  - serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 0
-    m_PostInfinity: 0
-    m_RotationOrder: 0
-  - serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 0
-    m_PostInfinity: 0
-    m_RotationOrder: 0
-  intCurve: []
-  MAssistCurve: []
   CastCurve:
     serializedVersion: 2
     m_Curve:
@@ -155,8 +166,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  mValue: 0.7
-  atAromor: 1
+  mValue: 0.8
+  atAromor: 5
   chargeRes: 1
   normalStamina: 15
   bigStamina: 30
@@ -244,7 +255,7 @@ MonoBehaviour:
     type: 0
   isLight: 0
   twinHand: 0
-  shock: 5
+  shock: 10
   isBlow: 0
   hitLimmit: 0
   blowPower: {x: 40, y: 60}

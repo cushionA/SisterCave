@@ -40,18 +40,24 @@ MonoBehaviour:
   darkDef: 70
   fireDef: 70
   thunderDef: 70
+  phyCut: 0.7
+  holyCut: 0
+  darkCut: 0
+  fireCut: 0
+  thunderCut: 0
+  guardPower: 100
   Armor: 40
   nowArmor: 40
   nockBackPower: 0
   attackBuff: 0
-  addSpeed: {x: 0, y: 0}
+  addSpeed: {x: 10, y: 0}
   patrolSpeed: {x: 10, y: 0}
   waitDistance: {x: 15, y: 0}
   waitRes: 1
-  combatSpeed: {x: 0, y: 0}
-  agrDistance: {x: 3, y: 0}
-  walkDistance: {x: 0, y: 0}
-  walkSpeed: {x: 0, y: 0}
+  combatSpeed: {x: 15, y: 0}
+  agrDistance: {x: 13, y: 0}
+  walkDistance: {x: 5, y: 0}
+  walkSpeed: {x: 6, y: 0}
   escapeDistance: {x: 15, y: 15}
   chaseRes: 7
   jumpSpeed: 180
@@ -90,6 +96,7 @@ MonoBehaviour:
   AttackTag: Attack
   JumpTag: JumpTrigger
   attackName: []
+  serectableNumber: 
   coolTime: 0
   atValue: []
   aditionalArmor: 0

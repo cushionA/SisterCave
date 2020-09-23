@@ -15,19 +15,19 @@ MonoBehaviour:
   isPoisonState: 0
   isNumbnessState: 0
   level: 1
-  maxHp: 670
-  hp: 670
-  maxMp: 30
+  maxHp: 671
+  hp: 671
+  maxMp: 31
   mp: 30
-  maxStamina: 100
-  stamina: 103
+  maxStamina: 117.32027
+  stamina: 120.32027
   Vitality: 1
-  Endurance: 1
+  Endurance: 15
   capacity: 1
   power: 10
   skill: 1
   _int: 1
-  Atk: 4723.9565
+  Atk: 13200.223
   phyAtk: 105.953514
   holyAtk: 0
   darkAtk: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   nockBackPower: 0
   attackBuff: 1
   PlayerLevel: 1
-  initialHp: 100
+  initialHp: 670
   initialMp: 30
   initialStamina: 60
   magicNumber: 1
@@ -61,36 +61,108 @@ MonoBehaviour:
   equipShield: {fileID: 0}
   HpCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   StaminaCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.8213513
+      outSlope: 3.8213513
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 107.4729
+      value: 410.6917
+      inSlope: 3.8213513
+      outSlope: 3.8213513
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   weightCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   MpCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   equipWeight: 0
-  capacityWeight: 0
+  capacityWeight: 1
   equipArmor: {fileID: 0}
   itemDictionary:
     m_keys: []
     m_values: 
   equipMagic: []
-  useMagic: {fileID: 0}
+  useMagic: {fileID: 11400000, guid: 19df789bf45c7294eb7ac6536ee377c4, type: 2}
   guardSpeed: 0
   lightSpeed: 12
   middleSpeed: 10

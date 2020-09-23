@@ -886,6 +886,7 @@
     <Compile Include="Assets\PlayMaker\Actions\GUIElement\SetGUIText.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\UiButtonOnClickEvent.cs" />
     <Compile Include="Assets\PlayMaker\Actions\GUILayout\GUILayoutSpace.cs" />
+    <Compile Include="Assets\testAsset\Player\Wepon\Shield.cs" />
     <Compile Include="Assets\PlayMaker\Actions\RectTransform\RectTransformSetAnchorRectPosition.cs" />
     <Compile Include="Assets\ProCamera2D\3rd Party Plugins Support\PlayMakerActions\PC2DRoomsEnter.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Physics\Explosion.cs" />
@@ -942,6 +943,7 @@
     <Compile Include="Assets\PlayMaker\Actions\UI\EventSystem\UiOnInitializePotentialDragEvent.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\EventSystem\UiOnBeginDragEvent.cs" />
     <Compile Include="Assets\PlayMaker\Actions\PlayerPrefs\PlayerPrefsSetFloat.cs" />
+    <Compile Include="Assets\testAsset\Enemy\EnemyScript\EnemyValue.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Physics2D\ScreenPick2d.cs" />
     <Compile Include="Assets\testAsset\ItemManager\ToolItem\ToolItem.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\UiSliderGetWholeNumbers.cs" />
@@ -1384,8 +1386,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Array\ArrayGetRandom.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Transform\SmoothFollowAction.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformLocalRotate.cs" />
-    <Compile Include="Assets\testAsset\Enemy\EnemyScript\EnemyValue.cs" />
-    <Compile Include="Assets\testAsset\Player\Wepon\Shield.cs" />
+    <Compile Include="Assets\testAsset\Enemy\EnemyScript\EnemyGuard.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\EnhancedScroller v2\upgrading from 1.x to 2.x.txt" />

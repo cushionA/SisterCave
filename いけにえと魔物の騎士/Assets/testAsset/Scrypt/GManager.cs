@@ -20,9 +20,9 @@ public class GManager : MonoBehaviour
     public Slider MpSlider;
     //MPスライダー
 
-    public Vector2 initialHpSl;
-    public Vector2 initialMpSl;
-    public Vector2 initialStaminaSl;
+    public float initialHpSl;
+    public float initialMpSl;
+    public float initialStaminaSl;
 
     RectTransform hpSl;
     RectTransform mpSl;
@@ -36,8 +36,9 @@ public class GManager : MonoBehaviour
     //ダウン中
     [HideInInspector] public bool isBlow;
     //if(isBlow && nowArmor<=0)とelseでisBlowFalseに
-
-    
+    public bool isGBreak;//ガードブレイク
+    public bool isGuard;
+    public bool isBounce;//攻撃を跳ね返されたフラグ
 
     public Vector2 blowVector;
 
@@ -71,7 +72,6 @@ public class GManager : MonoBehaviour
     {
         at = Player.GetComponent<AttackM>();
         pm = Player.GetComponent<PlayerMove>();
-
         //スライダーを満タンに
         stSlider.value = 1;
         HpSlider.value = 1;
@@ -86,11 +86,13 @@ public class GManager : MonoBehaviour
         hpSl = HpSlider.GetComponent<RectTransform>();
         mpSl = MpSlider.GetComponent<RectTransform>();
         staminaSl = stSlider.GetComponent<RectTransform>();
+        SetSlider();
     }
 
     // Update is called once per frame
     void Update()
     {
+       SetSlider();
         stTime += Time.deltaTime;
 
 
@@ -162,6 +164,8 @@ public class GManager : MonoBehaviour
     }
     public void SetAtk()
     {
+
+
         int n = pStatus.equipWeapon.wLevel;
 
         if (pStatus.equipWeapon.phyBase[n] >= 1)
@@ -210,7 +214,7 @@ public class GManager : MonoBehaviour
             pStatus.thunderCut = pStatus.equipShield.thunderCut[pStatus.equipShield.sLevel];//魔力
             pStatus.guardPower = pStatus.equipShield.guardPower[pStatus.equipShield.sLevel];//受け値
         }
-        else if (pStatus.equipWeapon.twinHand)
+        else if (pStatus.equipWeapon.twinHand || pStatus.equipShield == null)
         {
             pStatus.phyCut = pStatus.equipWeapon.phyCut[pStatus.equipWeapon.wLevel];//カット率
             pStatus.holyCut = pStatus.equipWeapon.holyCut[pStatus.equipWeapon.wLevel];//光。
@@ -223,9 +227,12 @@ public class GManager : MonoBehaviour
 
     public void SetParameter()
     {
+
+        Debug.Log("はいく");
         pStatus.maxHp = pStatus.initialHp + pStatus.HpCurve.Evaluate(pStatus.Vitality);
         pStatus.maxMp = pStatus.initialMp + pStatus.MpCurve.Evaluate(pStatus.capacity);
         pStatus.maxStamina = pStatus.initialStamina + pStatus.StaminaCurve.Evaluate(pStatus.Endurance);
+        Debug.Log($"テスト数値{pStatus.StaminaCurve.Evaluate(pStatus.Endurance)}");
         pStatus.capacityWeight = pStatus.initialWeight + pStatus.weightCurve.Evaluate(pStatus.Endurance+pStatus.power);
 
         if(pStatus.capacity >= 0 && pStatus.capacity < 7)
@@ -298,6 +305,10 @@ public class GManager : MonoBehaviour
     }
     public void SetMagicAtk()
     {
+        if(pStatus.useMagic == null)
+        {
+            return;
+        }
         if (pStatus.useMagic.phyBase >= 1)
         {
             pStatus.useMagic.phyAtk = pStatus.useMagic.phyBase + (pStatus.useMagic.powerCurve.Evaluate(pStatus.power)) +
@@ -325,9 +336,14 @@ public class GManager : MonoBehaviour
     }
     public void SetSlider()
     {
-        hpSl.offsetMax = new Vector2(initialHpSl.x - (pStatus.maxHp - pStatus.initialHp), initialHpSl.y);
-        staminaSl.offsetMax = new Vector2(initialStaminaSl.x - (pStatus.maxStamina - pStatus.initialStamina), initialStaminaSl.y);
-        mpSl.offsetMax = new Vector2(initialMpSl.x - (pStatus.maxMp - pStatus.initialMp), initialMpSl.y);
+        if (staminaSl == null)
+        {
+            return;
+        }
+
+        hpSl.offsetMax = new Vector2(-initialHpSl + (pStatus.maxHp - pStatus.initialHp), hpSl.offsetMax.y);
+        staminaSl.offsetMax = new Vector2((-initialStaminaSl + (pStatus.maxStamina - pStatus.initialStamina)), staminaSl.offsetMax.y);
+        mpSl.offsetMax = new Vector2(-initialMpSl + (pStatus.maxMp - pStatus.initialMp), mpSl.offsetMax.y);
     }
 
 }

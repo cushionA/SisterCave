@@ -182,7 +182,7 @@ public class EnemyStatus : CharacterStatus
 	///ダウン、落下、ノックバック、吹っ飛び、ガード、回避、ガード、ガード歩き、ガード後ずさり
 	///walkSpeedでif(isGuard)みたいなんで
 	///後ずさり、歩き、走り、ジャンプ（飛行キャラは全部同じValue入れる？）
-	///待機、起動、構え
+	///待機、起動、構え、はじかれ、ガードブレイク
 	///</summary>
 	public Dictionary<string, string> motionIndex;
 

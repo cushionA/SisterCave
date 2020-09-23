@@ -32,7 +32,7 @@ public abstract class CharacterStatus : ScriptableObject
     public float mp = 30;
 
     //　最大スタミナ
-    [HideInInspector]public float maxStamina = 60;
+    public float maxStamina = 60;
     //　スタミナ
     [HideInInspector]public float stamina = 60;
 

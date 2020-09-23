@@ -23,6 +23,7 @@ public class Shield : ScriptableObject
     public float needSkill;//必要技量
     public float needInt;//必要な賢さ
 
+    public float shock;
 
     // Start is called before the first frame update
     public List<float> phyCut;//カット率
