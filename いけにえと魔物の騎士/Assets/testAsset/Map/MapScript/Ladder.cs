@@ -39,6 +39,7 @@ public class Ladder : MonoBehaviour
         ga = this.gameObject.GetComponent<GimmickAct>();
         pm = player.GetComponent<PlayerMove>();
         rb = player.GetComponent<Rigidbody2D>();
+        pos = new Vector3(ladderTransform.position.x - space, player.transform.position.y, 0);
     }
 
     private void Update()
@@ -64,7 +65,7 @@ public class Ladder : MonoBehaviour
     {
         if (ga.isGimmick && isPush && !isGimmickOn)
         {
-
+            GManager.instance.isLadder = true;
             isGJudge = GrounndJudge();
             pm.Stop();
             pm.enabled = false;
@@ -75,7 +76,6 @@ public class Ladder : MonoBehaviour
             isPush = false;
             //ボタンを押されてないことにすることで下で誤反応を起こすのを防いだ
 
-            pos = new Vector3(ladderTransform.position.x - space, player.transform.position.y, 0);
             trigger.enabled = false;
             player.transform.position = pos;
             //Xの座標だけはしごに合わせる

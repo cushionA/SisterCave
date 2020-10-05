@@ -27,12 +27,12 @@ public class EnemyStart : MonoBehaviour
     // Update is called once per frame
     void OnWillRenderObject()
     {
-        if (Camera.current.tag == "MainCamera")
-        {
+      //  if (Camera.current.tag == "MainCamera")レンダリングしてるカメラがメインカメラならってやつ。しかしおそらくURPのせいで動かない
+       // {
             rb.WakeUp();
             eb.cameraRendered = true;
             cameraEnabled = true;
-        }
+      //  }
     }
 
     private void FixedUpdate()

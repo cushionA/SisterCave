@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 [Serializable]
 [CreateAssetMenu(fileName = "Wepon", menuName = "CreateWepon")]
 
-public class Wepon : Item
+public class Wepon : Equip
 {
     public int wLevel = 0;
 
@@ -22,24 +19,25 @@ public class Wepon : Item
     /// 剣で刺突するときとかはアニメイベントで変える
     /// </summary>
     public AttackType atType;
-    
 
-    public List<float> phyBase;//物理攻撃。これが1以上ならモーションにアニメイベントとかで斬撃打撃の属性つける
-    public List<float> holyBase;//光。筋力と賢さが関係。生命力だから
-    public List<float> darkBase;//闇。魔力と技量が関係
-    public List<float> fireBase;//魔力
-    public List<float> thunderBase;//魔力
-    public float needPower;//必要筋力
-    public float needSkill;//必要技量
-    public float needInt;//必要な賢さ
 
-    public List<float> phyCut;//カット率
-    public List<float> holyCut;//光。
-    public List<float> darkCut;//闇。
-    public List<float> fireCut;//魔力
-    public List<float> thunderCut;//魔力
+    // public List<float> phyBase;//物理攻撃。これが1以上ならモーションにアニメイベントとかで斬撃打撃の属性つける
+    // public List<float> holyBase;//光。筋力と賢さが関係。生命力だから
+    // public List<float> darkBase;//闇。魔力と技量が関係
+    //  public List<float> fireBase;//魔力
+    //  public List<float> thunderBase;//魔力
+    // public float needPower;//必要筋力
+    //   public float needSkill;//必要技量
+    // public float needInt;//必要な賢さ
 
-    public List<float> guardPower;//受け値
+    // Start is called before the first frame update
+    // public List<float> phyCut;//カット率
+    // public List<float> holyCut;//光。
+    //public List<float> darkCut;//闇。
+    // public List<float> fireCut;//魔力
+    //public List<float> thunderCut;//魔力
+
+    //public List<float> guardPower;//受け値
 
     [HideInInspector]public float MagicAssistBase = 100;
     public float MagicAssist;//魔法威力修正
@@ -63,35 +61,73 @@ public class Wepon : Item
     public int normalStamina;
     public int bigStamina;
     public int chargeStamina;
-
+    public int airStamina;
+    public int normalStaminaT;
+    public int bigStaminaT;
+    public int chargeStaminaT;
+    public int airStaminaT;
+    public int artsStamina;
 
     //-----------------------------------------------モーション名の管理
+    #region//モーション名
     [Header("弱攻撃のモーション名リスト")]
     /// <summary>
-    /// 弱攻撃のモーション名リスト
+    /// 片手弱攻撃のモーション名リスト
     /// </summary>
      public List<string> smallName;
 
     [Header("強攻撃のモーション名リスト")]
     /// <summary>
-    /// 強攻撃のモーション名リスト
+    /// 片手強攻撃のモーション名リスト
     /// </summary>
      public List<string> bigName;
 
     [Header("空中弱+強の名前リスト")]
     /// <summary>
-    /// 空中弱の名前リスト
+    /// 片手空中弱の名前リスト
     /// </summary>
      public List<string> airName;
 
     [Header("チャージモーションの名前リスト")]
     /// <summary>
-    /// チャージモーションリスト
+    /// 片手チャージモーションリスト
     /// </summary>
      public List<string> chargeName;
 
-    //--------------------------------------------モーション値、追加アーマー、強靭削りの管理
+    [Header("両手弱攻撃のモーション名リスト")]
+    /// <summary>
+    /// 両手弱攻撃のモーション名リスト
+    /// </summary>
+    public List<string> twinSmallName;
 
+    [Header("両手強攻撃のモーション名リスト")]
+    /// <summary>
+    /// 両手強攻撃のモーション名リスト
+    /// </summary>
+    public List<string> twinBigName;
+
+    [Header("両手空中弱+強の名前リスト")]
+    /// <summary>
+    /// 両手空中弱の名前リスト
+    /// </summary>
+    public List<string> twinAirName;
+
+    [Header("両手モーションの名前リスト")]
+    /// <summary>
+    /// 両手チャージモーションリスト
+    /// </summary>
+    public List<string> twinChargeName;
+
+    [Header("武器固有モーションの名前リスト")]
+    /// <summary>
+    /// 武器固有モーションリスト
+    /// </summary>
+    public List<string> artsName;
+
+    #endregion
+
+    //--------------------------------------------モーション値、追加アーマー、強靭削りの管理
+    #region//両手
     [Header("弱攻撃の値")]
     /// <summary>
     /// 弱攻撃のXモーション値、Y追加アーマー、Z強靭削り
@@ -122,16 +158,52 @@ public class Wepon : Item
     /// </summary>
     public AttackValue strikeValue;
 
+    [Header("両手弱攻撃の値")]
+    /// <summary>
+    /// 両手弱攻撃のXモーション値、Y追加アーマー、Z強靭削り
+    /// </summary>
+    public List<AttackValue> twinSValue;
+
+    [Header("強攻撃の値")]
+    /// <summary>
+    /// 両手強攻撃のXモーション値、Y追加アーマー、Z強靭削り
+    /// </summary>
+    public List<AttackValue> twinBValue;
+
+    [Header("ため攻撃の値")]
+    /// <summary>
+    /// 両手ため攻撃のXモーション値、Y追加アーマー、Z強靭削り
+    /// </summary>
+    public List<AttackValue> twinChargeValue;
+
+    [Header("両手空中弱攻撃の値")]
+    /// <summary>
+    /// 両手空中弱攻撃のXモーション値、Y追加アーマー、Z強靭削り
+    /// </summary>
+    public List<AttackValue> twinAirValue;
+
+    [Header("空中強攻撃の値")]
+    /// <summary>
+    /// 両手空中強攻撃のXモーション値、Y追加アーマー、Z強靭削り
+    /// </summary>
+    public AttackValue twinStrikeValue;
+
+    [Header("武器固有技の値")]
+    /// <summary>
+    /// 武器固有攻撃のXモーション値、Y追加アーマー、Z強靭削り
+    /// </summary>
+    public AttackValue artsValue;
+    #endregion
     //------------------------------------------内部パラメータ
 
     [HideInInspector]
     public bool isLight;
     //軽い攻撃。盾にはじかれる
 
+    public bool shieldAct;
+
     [HideInInspector]public bool twinHand;//後々拡張する
 
-    [HideInInspector]
-    public float shock;
 
     [HideInInspector]
     /// <summary>

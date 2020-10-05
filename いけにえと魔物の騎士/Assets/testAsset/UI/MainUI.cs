@@ -13,20 +13,32 @@ public class MainUI : MonoBehaviour
 
     public GameObject eqButton;
     public GameObject useButton;
-    public GameObject keyButton;
+    public GameObject weponButton;
     public GameObject magicButton;
+    public GameObject coreButton;
+    public GameObject keyButton;
+    public GameObject materialButton;
     public GameObject libraryButton;
     public GameObject systemButton;
 
 
     public GameObject eqWindow;
     public GameObject useWindow;
-    public GameObject keyWindow;
+    public GameObject weponWindow;
     public GameObject magicWindow;
+    public GameObject coreWindow;
+    public GameObject keyWindow;
+    public GameObject materialWindow;
     public GameObject libraryWindow;
     public GameObject systemWindow;
 
-    public ScrollController sc;
+    public UseController usec;
+    public EquipController wec;
+    public MagicController mac;
+    public CoreController coc;
+    public KeyController kec;
+    public EnemyDataController lic;
+    public MaterialController mtc;
 
     float verticalKey;
 
@@ -122,23 +134,55 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
+                    weponWindow.SetActive(false);
+                    coreWindow.SetActive(false);
+                    materialWindow.SetActive(false);
                     //表示するUIの選択
                 }
                 else if(selectButtom == useButton)
                 {
-
-                  
-
                     eqWindow.SetActive(false);
                     useWindow.SetActive(true);
                     keyWindow.SetActive(false);
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
+                    weponWindow.SetActive(false);
+                    coreWindow.SetActive(false);
+                    materialWindow.SetActive(false);
 
+                    usec.isIniti = false;
 
-                        sc.isIniti = false;
+                }
+                else if (selectButtom == weponButton)
+                {
 
+                    eqWindow.SetActive(false);
+                    useWindow.SetActive(false);
+                    keyWindow.SetActive(false);
+                    magicWindow.SetActive(false);
+                    libraryWindow.SetActive(false);
+                    systemWindow.SetActive(false);
+                    weponWindow.SetActive(true);
+                    coreWindow.SetActive(false);
+                    materialWindow.SetActive(false);
+
+                    wec.isIniti = false;
+                }
+                else if (selectButtom == coreButton)
+                {
+
+                    eqWindow.SetActive(false);
+                    useWindow.SetActive(false);
+                    keyWindow.SetActive(false);
+                    magicWindow.SetActive(false);
+                    libraryWindow.SetActive(false);
+                    systemWindow.SetActive(false);
+                    weponWindow.SetActive(false);
+                    coreWindow.SetActive(true);
+                    materialWindow.SetActive(false);
+
+                    coc.isIniti = false;
                 }
                 else if (selectButtom == keyButton)
                 {
@@ -149,7 +193,11 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
+                    weponWindow.SetActive(false);
+                    coreWindow.SetActive(false);
+                    materialWindow.SetActive(false);
 
+                    kec.isIniti = false;
                 }
                 else if (selectButtom == magicButton)
                 {
@@ -160,7 +208,26 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(true);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
+                    weponWindow.SetActive(false);
+                    coreWindow.SetActive(false);
+                    materialWindow.SetActive(false);
 
+                    mac.isIniti = false;
+                }
+                else if (selectButtom == materialButton)
+                {
+
+                    eqWindow.SetActive(false);
+                    useWindow.SetActive(false);
+                    keyWindow.SetActive(false);
+                    magicWindow.SetActive(false);
+                    libraryWindow.SetActive(false);
+                    systemWindow.SetActive(false);
+                    weponWindow.SetActive(false);
+                    coreWindow.SetActive(false);
+                    materialWindow.SetActive(true);
+
+                    mtc.isIniti = false;
                 }
                 else if (selectButtom == libraryButton)
                 {
@@ -171,7 +238,11 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(true);
                     systemWindow.SetActive(false);
+                    weponWindow.SetActive(false);
+                    coreWindow.SetActive(false);
+                    materialWindow.SetActive(false);
 
+                    lic.isIniti = false;
                 }
                 else if (selectButtom == systemButton)
                 {
@@ -182,7 +253,9 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(true);
-
+                    weponWindow.SetActive(false);
+                    coreWindow.SetActive(false);
+                    materialWindow.SetActive(false);
                 }
 
             }

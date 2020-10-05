@@ -10,6 +10,12 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "EnemyStatus", menuName = "CreateEnemyStatus")]
 public class EnemyStatus : CharacterStatus
 {
+	[Header("移動設定判断")]
+	///<summary>
+	///移動ステート切り替え
+	///</summary>
+	public float judgePace = 3.0f;
+
 
 
 
@@ -37,6 +43,12 @@ public class EnemyStatus : CharacterStatus
 	///</summary>
 	public float waitRes;
 
+	/*[Header("待機状態で振り向くか否か")]
+	///<summary>
+	///	真なら振り向く	
+	///</summary>
+	public bool waitDirectionChange;
+	*/
 	[Header("戦闘中の移動速度")]
 	public Vector2 combatSpeed;
 
@@ -52,9 +64,15 @@ public class EnemyStatus : CharacterStatus
 	///</summary>
 	public Vector2 walkDistance;
 
-	[Header("歩く速さ")]
+	[Header("停止範囲")]
 	///<summary>
 	///目的距離にゆとり持たせる。
+	///</summary>
+	public float adjust;
+
+	[Header("歩く速さ")]
+	///<summary>
+	///歩き速度
 	///</summary>
 	public Vector2 walkSpeed;
 
@@ -151,7 +169,24 @@ public class EnemyStatus : CharacterStatus
         Knight,//盾持ち
         Trap//待ち構えてるやつ
     }
-    public KindofEnemy kind;
+
+	public bool strong;//強敵か否か
+	public bool boss;
+
+	[HideInInspector]public enum MoveState
+	{
+		accessWalk,//接近
+		accessDash,
+		leaveDash,//離れる
+		leaveWalk,
+		stay,//止まる
+		escape,//逃げる
+		wakeup//デフォルト
+	}
+	[HideInInspector]public MoveState ground = MoveState.wakeup;
+	[HideInInspector]public MoveState air = MoveState.wakeup;
+
+	public KindofEnemy kind;
 
     public enum AttackType
     {
@@ -161,7 +196,21 @@ public class EnemyStatus : CharacterStatus
     }
     public AttackType atType;
 
-    public Item GetDrop(int n)
+	[HideInInspector]
+	public enum WeakPoint
+	{
+		Slash,
+		Pier,
+		Strike,
+		Holy,
+		Dark,
+		Fire,
+		Thunder
+	}
+	public List<WeakPoint> wp;
+
+
+	public Item GetDrop(int n)
     {
         if (n <= dropItem.Count - 1 && n >= 0)
         {
@@ -208,7 +257,14 @@ public class EnemyStatus : CharacterStatus
 	/// </summary>
 	[HideInInspector]public bool isBlow;
 
+	/// <summary>
+	/// //パリィ可能攻撃
+	/// </summary>
+	[HideInInspector]
+	public bool parriable;
 
+	[Header("カメラ範囲に行動を拘束されない")]
+	public bool unBaind;
 	[Header("吹っ飛ばす力")]
 	public Vector2 blowVector;
 	[HideInInspector]

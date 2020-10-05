@@ -29,6 +29,7 @@ public class TestEnemy : EnemyBase
         base.FixedUpdate();
         if (isAggressive)
         {
+            Debug.Log($"{status.ground}");
             AgrMove();
             //isGuard = true;
             // AgrFly();
@@ -67,7 +68,10 @@ public class TestEnemy : EnemyBase
     {
         base.OnTriggerEnter2D(collision);
     }
-
+    protected override void OnTriggerStay2D(Collider2D collision)
+    {
+        base.OnTriggerStay2D(collision);
+    }
     void RandomDirection(int upperRes,int separate)
     {
         if(separate >= upperRes)

@@ -46,12 +46,12 @@ public class PlayerMove : MonoBehaviour
     [HideInInspector] public bool isStUse;
     [HideInInspector] public bool isRJump;
 
-    bool isStop;
+    [HideInInspector]public bool isStop;
 
 
 
     public PlayMakerFSM fsm;
-
+    public GameObject Guard;
 
 
     //変数を宣言
@@ -115,21 +115,35 @@ public class PlayerMove : MonoBehaviour
 
             horizontalkey = Input.GetAxisRaw("Horizontal");
             verticalkey = Input.GetAxisRaw("Vertical");
+            if (GManager.instance.pStatus.stamina >= 1 && !GManager.instance.isGBreak && !GManager.instance.isAttack && GManager.instance.onGimmick && !isStop)
+            {
+                if (GManager.instance.guardEnable && Input.GetButton("Guard"))
+                {
+                    GManager.instance.isGuard = true;
+                }
+                else if (GManager.instance.guardEnable && GManager.instance.guardHit)
+                {
+                    GManager.instance.isGuard = true;
+                }
+            }
+            else if(!Input.GetButton("Guard"))
+            {
+                GManager.instance.isGuard = false;
+            }
+
             if (!isAvoid && isGround)
             {
                 avoidKey = Input.GetAxisRaw("Avoid");
             }
             else if (isAvoid)
             {
-
                 avoidKey = 0.0f;
                 //入力不可に
             }
             if (avoidKey == 1 && GManager.instance.isEnable)
             {
-
                 avoidJudge += Time.deltaTime;
-                if (horizontalkey != 0)
+                if (horizontalkey != 0 && !GManager.instance.isGuard && !isSquat)
                 {
                     isDash = true;
 
@@ -138,22 +152,14 @@ public class PlayerMove : MonoBehaviour
                 else
                 {
                     isDash = false;
-
                 }
-
             }
             if (avoidKey == 0)
             {
-
-
                 if (avoidJudge > 0.0f && avoidJudge < 1.0f && GManager.instance.isEnable)
                 {
-
-
                     //回避の最初のところは七回呼ばれてる。ここも七回呼ばれてる。なぜか動かない
                     GManager.instance.StaminaUse(18);
-
-
                     isDash = false;
                     avoidJudge = 0.0f;
                     isAvoid = true;
@@ -178,7 +184,7 @@ public class PlayerMove : MonoBehaviour
 
         #region//フラグ管理
 
-        if (isAvoid || isJump || isDash || GManager.instance.isAttack)
+        if (isAvoid || isJump || isDash || GManager.instance.isAttack || GManager.instance.isGuard || GManager.instance.isGBreak)
         {
 
             isStUse = true;
@@ -208,9 +214,14 @@ public class PlayerMove : MonoBehaviour
         #endregion
 
         isGround = rb.IsTouching(filter);
+        if (GManager.instance.isGuard && GManager.instance.pStatus.stamina <= 0)
+        {
+            GManager.instance.isGBreak = true;
+            GManager.instance.isGuard = false;
+        }
+        Guard.SetActive(GManager.instance.isGuard == true ? true:false);
 
-              
-        if (!isDown && !isAvoid && !GManager.instance.isAttack && !isStop)
+        if (!isDown && !isAvoid && !GManager.instance.isAttack && !isStop && !GManager.instance.onGimmick && !GManager.instance.guardHit)
         {
             isEnAt = true;
             //攻撃できる
@@ -302,7 +313,7 @@ public class PlayerMove : MonoBehaviour
 
                 #region//空中動作としゃがみ
 
-                if (verticalkey > 0 && GManager.instance.isEnable && !isJump)
+                if (verticalkey > 0 && GManager.instance.isEnable && !isJump && !isSquat)
                 {
                     GManager.instance.StaminaUse(15);
                     isJump = true;
@@ -624,14 +635,10 @@ public class PlayerMove : MonoBehaviour
         xSpeed = 0;
         ySpeed = 0;
         isRJump = true;
-
-
-
     }
 
    public void Stop()
     {
-
             rb.velocity = new Vector2(0, 0);
 
             isJump = false;
@@ -648,8 +655,11 @@ public class PlayerMove : MonoBehaviour
             SetLayer(11);
 
             return;
+    }
 
-
+    void GuardBreake()
+    {
+        GManager.instance.isGBreak = false;
     }
 
 }

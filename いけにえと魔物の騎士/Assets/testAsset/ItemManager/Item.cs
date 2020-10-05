@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[Serializable]
-[CreateAssetMenu(fileName = "Item", menuName = "CreateItem")]
 public class Item : ScriptableObject
 {
 
@@ -20,6 +18,10 @@ public class Item : ScriptableObject
 	public string information;
 	//ソート用のナンバー
 	public int number;
+
+	//所持数
+	[HideInInspector] public int inventoryNum = 0;
+
 
 
 }

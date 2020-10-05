@@ -36,9 +36,19 @@ public class GManager : MonoBehaviour
     //ダウン中
     [HideInInspector] public bool isBlow;
     //if(isBlow && nowArmor<=0)とelseでisBlowFalseに
-    public bool isGBreak;//ガードブレイク
-    public bool isGuard;
-    public bool isBounce;//攻撃を跳ね返されたフラグ
+    [HideInInspector] public bool isGBreak;//ガードブレイク
+    [HideInInspector] public bool isGuard;
+    [HideInInspector] public bool guardEnable;
+    [HideInInspector]public bool isParry;
+    [HideInInspector] public bool isBounce;//攻撃を跳ね返されたフラグ
+    [HideInInspector] public bool onGimmick;//ギミック利用中かどうか
+    [HideInInspector]public bool guardHit;//ガードにヒットした
+    [HideInInspector] public bool badCondition;//状態異常
+
+    #region//シスターさんのためのフラグ
+    [HideInInspector] public bool isLadder;
+    [HideInInspector] public bool isRopeJump;
+    #endregion
 
     public Vector2 blowVector;
 
@@ -46,6 +56,7 @@ public class GManager : MonoBehaviour
     //スタミナが回復する間隔の時間が経過したかどうか
     float disEnaTime;
     //スタミナ回復不能時間
+    float parryTime;
     AttackM at;
     PlayerMove pm;
     bool stBreake;
@@ -95,7 +106,14 @@ public class GManager : MonoBehaviour
        SetSlider();
         stTime += Time.deltaTime;
 
-
+        if(pStatus.isParalyze || pStatus.isPoison)
+        {
+            badCondition = true;
+        }
+        else
+        {
+            badCondition = false;
+        }
 
         if (stTime >= 0.1f && !pm.isStUse && isEnable)
         {
@@ -205,6 +223,7 @@ public class GManager : MonoBehaviour
 
     public void SetShield()
     {
+        //nullの時は素手を装備させる
         if(!pStatus.equipWeapon.twinHand && pStatus.equipShield != null)
         {
             pStatus.phyCut = pStatus.equipShield.phyCut[pStatus.equipShield.sLevel];//カット率
@@ -213,8 +232,9 @@ public class GManager : MonoBehaviour
             pStatus.fireCut = pStatus.equipShield.fireCut[pStatus.equipShield.sLevel];//魔力
             pStatus.thunderCut = pStatus.equipShield.thunderCut[pStatus.equipShield.sLevel];//魔力
             pStatus.guardPower = pStatus.equipShield.guardPower[pStatus.equipShield.sLevel];//受け値
+            guardEnable = true;
         }
-        else if (pStatus.equipWeapon.twinHand || pStatus.equipShield == null)
+        else if ((pStatus.equipWeapon.twinHand && pStatus.equipWeapon.shieldAct) || pStatus.equipShield == null)
         {
             pStatus.phyCut = pStatus.equipWeapon.phyCut[pStatus.equipWeapon.wLevel];//カット率
             pStatus.holyCut = pStatus.equipWeapon.holyCut[pStatus.equipWeapon.wLevel];//光。
@@ -222,7 +242,13 @@ public class GManager : MonoBehaviour
             pStatus.fireCut = pStatus.equipWeapon.fireCut[pStatus.equipWeapon.wLevel];//魔力
             pStatus.thunderCut = pStatus.equipWeapon.thunderCut[pStatus.equipWeapon.wLevel];//魔力
             pStatus.guardPower = pStatus.equipWeapon.guardPower[pStatus.equipWeapon.wLevel];//受け値
+            guardEnable = true;
         }
+        else if(pStatus.equipWeapon.twinHand && !pStatus.equipWeapon.shieldAct)
+        {
+            guardEnable = false;
+        }
+
     }
 
     public void SetParameter()
@@ -345,5 +371,7 @@ public class GManager : MonoBehaviour
         staminaSl.offsetMax = new Vector2((-initialStaminaSl + (pStatus.maxStamina - pStatus.initialStamina)), staminaSl.offsetMax.y);
         mpSl.offsetMax = new Vector2(-initialMpSl + (pStatus.maxMp - pStatus.initialMp), mpSl.offsetMax.y);
     }
+
+
 
 }

@@ -28,6 +28,8 @@ public class PlayerSerch : MonoBehaviour
             if (CheckFoundObject(player))
             {
                 enemy.isAggressive = true;
+                enemy.Serch.SetActive(false);
+                enemy.Serch2.SetActive(false);
             }
         }
     }
@@ -39,6 +41,8 @@ public class PlayerSerch : MonoBehaviour
             if (CheckFoundObject(player))
             {
                 enemy.isAggressive = true;
+                enemy.Serch.SetActive(false);
+                enemy.Serch2.SetActive(false);
             }
         }
     }

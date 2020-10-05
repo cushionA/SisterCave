@@ -16,9 +16,14 @@ TagManager:
   - Attack
   - SisterMagic
   - PlayerMagic
-  - SisAttack
   - ActiveZone
   - Guard
+  - EnemyAttack
+  - SisAttack
+  - Hanging
+  - Dialog
+  - Danger
+  - Parry
   layers:
   - Default
   - TransparentFX
@@ -40,14 +45,14 @@ TagManager:
   - Enemy
   - PatrolSerch
   - EnemyVision
-  - SisandPlayerSerch
+  - SisterSerch
   - ActiveZone
   - FlyEnemy
   - PlayerGuard
   - EnemyGuard
   - GurdedFire
-  - 
-  - 
+  - Hanging
+  - JumpTrigger
   - 
   - 
   - 

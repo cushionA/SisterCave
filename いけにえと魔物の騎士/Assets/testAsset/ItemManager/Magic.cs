@@ -29,6 +29,7 @@ public class Magic : Item
     public float darkBase;//闇。魔力と技量が関係
     public float fireBase;//魔力
     public float thunderBase;//魔力
+	public float recoverBase;//回復
 
 	public float phyAtk;//物理攻撃。これが1以上なら斬撃打撃の属性つける
 	public float holyAtk;//光。筋力と賢さが関係。生命力だから
@@ -36,22 +37,27 @@ public class Magic : Item
 	public float fireAtk;//魔力
 	public float thunderAtk;//魔力
 
+	public float recoverAmount;//回復
+
 	/// <summary>
 	/// 詠唱時間。スキルや秘伝書（早口言葉）、技量で少なくなる？
 	/// </summary>
 	public float castTime;
 
-    public float useMP;//消費MP
+	public float useMP;//消費MP
 
     public float effectTime;//効果時間
+	[HideInInspector] public bool effectNow;//効果中かどうか
 
     [Header("射撃オブジェクトリスト")]
     ///<summary>
-    ///生成する弾丸や魔法陣オブジェクト
+    ///生成する弾丸オブジェクト
     ///</summary>
-    public List<AssetReference> effects;
+    public AssetReference effects;
 
-    public Transform firePosition;//発射位置
+
+
+	public Transform firePosition;//発射位置
     //各能力補正
     public AnimationCurve powerCurve;
     public AnimationCurve skillCurve;

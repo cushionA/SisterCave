@@ -17,6 +17,7 @@ public class EnemyFireBullet : MonoBehaviour
 	/// </summary>
 	public GameObject targetObject;
 
+
 	// === 外部パラメータ ======================================
 	[System.NonSerialized] public Transform ownwer;
 	[System.NonSerialized] public bool attackEnabled;
@@ -76,9 +77,13 @@ public class EnemyFireBullet : MonoBehaviour
 			Attack();
 
 		}
+		if (other.tag == "Guard")
+		{
+			Guard();
 
+		}
 
-		// 壁アタリをチェック
+		// アタリをチェック
 		if (!em.penetration)
 		{
 			GameObject next = Addressables.InstantiateAsync(em.hitEffect, this.gameObject.transform.position, Quaternion.identity).Result;//次のエフェクトを
@@ -222,4 +227,72 @@ public class EnemyFireBullet : MonoBehaviour
 			}
 		}
 	}
+	void Guard()
+    {
+			if (em.hitLimmit > 0 && GManager.instance.isGuard)
+			{
+				em.hitLimmit--;
+				//mValueはモーション値
+				float damage = 0;//バフデバフ処理用にdamageとして保持する
+				if (em.phyAtk > 0)
+				{
+					//斬撃刺突打撃を管理
+					if (em.atType == EnemyMagic.AttackType.Slash)
+					{ damage += (Mathf.Pow(em.phyAtk, 2) * em.mValue) / (em.phyAtk + GManager.instance.pStatus.Def); }
+					else if (em.atType == EnemyMagic.AttackType.Stab)
+					{ damage += (Mathf.Pow(em.phyAtk, 2) * em.mValue) / (em.phyAtk + GManager.instance.pStatus.pierDef); }
+					else if (em.atType == EnemyMagic.AttackType.Strike)
+					{ damage += (Mathf.Pow(em.phyAtk, 2) * em.mValue) / (em.phyAtk + GManager.instance.pStatus.strDef); }
+
+					damage *= (100 - GManager.instance.pStatus.phyCut) / 100;
+				}
+				//神聖
+				if (em.holyAtk > 0)
+				{
+					damage += ((Mathf.Pow(em.holyAtk, 2) * em.mValue) / (em.holyAtk + GManager.instance.pStatus.holyDef)) * (100 - GManager.instance.pStatus.holyCut) / 100;
+				}
+				//闇
+				if (em.darkAtk > 0)
+				{
+					damage += ((Mathf.Pow(em.darkAtk, 2) * em.mValue) / (em.darkAtk + GManager.instance.pStatus.darkDef)) * (100 - GManager.instance.pStatus.darkCut) / 100;
+				}
+				//炎
+				if (em.fireAtk > 0)
+				{
+					damage += ((Mathf.Pow(em.fireAtk, 2) * em.mValue) / (em.fireAtk + GManager.instance.pStatus.fireDef)) * (100 - GManager.instance.pStatus.fireCut) / 100;
+				}
+				//雷
+				if (em.thunderAtk > 0)
+				{
+					damage += ((Mathf.Pow(em.thunderAtk, 2) * em.mValue) / (em.thunderAtk + GManager.instance.pStatus.thunderDef)) * (100 - GManager.instance.pStatus.thunderCut) / 100;
+				}
+
+				GManager.instance.pStatus.stamina -= (em.Shock * 2) * ((100 - GManager.instance.pStatus.guardPower) / 100);
+			
+				if (GManager.instance.pStatus.stamina <= 0)
+				{
+					GManager.instance.isGBreak = true;
+					GManager.instance.isGuard = false;
+				}
+
+				GManager.instance.pStatus.hp -= damage * em.attackBuff;
+			}
+			if (em.isBlow == true && GManager.instance.pStatus.nowArmor <= 0)
+			{
+				GManager.instance.isBlow = true;
+
+				if (transform.localScale.x > 0)
+				{
+					GManager.instance.blowVector = em.blowVector;
+
+				}
+				if (transform.localScale.x < 0)
+				{
+					GManager.instance.blowVector = new Vector2(-em.blowVector.x, em.blowVector.y);
+
+				}
+			}
+
+		}
+
 }

@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2942df316d830840abe5726a48337a5, type: 3}
+  m_Name: Test1Wepon
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300014, guid: e7d3a1e0e2fac4bd48b6734c2daf4fe1, type: 3}
+  itemName: TestWepon
+  hiraganaName: "\u30C6\u30B9\u30C8\u6B66\u5668"
+  information: 
+  number: 2
+  inventoryNum: 0
+  phyBase: []
+  holyBase: []
+  darkBase: []
+  fireBase: []
+  thunderBase: []
+  needPower: 0
+  needSkill: 0
+  needInt: 0
+  phyCut: []
+  holyCut: []
+  darkCut: []
+  fireCut: []
+  thunderCut: []
+  guardPower: []
+  shock: 0
+  wLevel: 0
+  atType: 0
+  MagicAssistBase: 100
+  MagicAssist: 0
+  castSkill: 1
+  powerCurve: []
+  skillCurve: []
+  intCurve: []
+  MAssistCurve: []
+  CastCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  mValue: 0
+  atAromor: 0
+  chargeRes: 0
+  normalStamina: 0
+  bigStamina: 0
+  chargeStamina: 0
+  airStamina: 0
+  normalStaminaT: 0
+  bigStaminaT: 0
+  chargeStaminaT: 0
+  airStaminaT: 0
+  artsStamina: 0
+  smallName: []
+  bigName: []
+  airName: []
+  chargeName: []
+  twinSmallName: []
+  twinBigName: []
+  twinAirName: []
+  twinChargeName: []
+  artsName: []
+  sValue: []
+  bValue: []
+  chargeValue: []
+  airValue: []
+  strikeValue:
+    x: 0
+    y: 0
+    z: 0
+    hitLimmit: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+  twinSValue: []
+  twinBValue: []
+  twinChargeValue: []
+  twinAirValue: []
+  twinStrikeValue:
+    x: 0
+    y: 0
+    z: 0
+    hitLimmit: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+  artsValue:
+    x: 0
+    y: 0
+    z: 0
+    hitLimmit: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+  isLight: 0
+  shieldAct: 0
+  twinHand: 0
+  isBlow: 0
+  hitLimmit: 1
+  blowPower: {x: 0, y: 0}
+  guardSpeed: 0

@@ -11,10 +11,10 @@ public abstract class CharacterStatus : ScriptableObject
 
 
     //　毒状態かどうか
-    public bool isPoisonState = false;
+    public bool isPoison = false;
 
     //　痺れ状態かどうか
-    public bool isNumbnessState = false;
+    public bool isParalyze = false;
 
     //　キャラクターのレベル
     public int level = 1;

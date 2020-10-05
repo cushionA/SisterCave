@@ -166,8 +166,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  mValue: 0.8
-  atAromor: 5
+  mValue: 1.2
+  atAromor: 20
   chargeRes: 1
   normalStamina: 15
   bigStamina: 30
@@ -255,8 +255,8 @@ MonoBehaviour:
     type: 0
   isLight: 0
   twinHand: 0
-  shock: 10
-  isBlow: 0
+  shock: 30
+  isBlow: 1
   hitLimmit: 0
-  blowPower: {x: 40, y: 60}
+  blowPower: {x: 600, y: 900}
   guardSpeed: 0

@@ -13,8 +13,7 @@ public class SisterFireBullet : MonoBehaviour
 	/// <summary>
 	/// 標的。狙うもの
 	/// </summary>
-	public GameObject targetObject;//これはシスターさんのGマネージャーから取得させる
-	                               //targetObje=gmanager.kみたいなそれか最初からGManager.kみたいなのでもいい
+
 
 	// === 外部パラメータ ======================================
 	[System.NonSerialized] public Transform ownwer;
@@ -32,13 +31,13 @@ public class SisterFireBullet : MonoBehaviour
 	void Start()
 	{
 		// オーナーチェック
-		if (!ownwer)
-		{
-			return;
-		}
+//		if (!ownwer)
+	//	{
+			//return;
+		//}
 
 		// 初期化
-		posTarget = targetObject.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+		posTarget = SManager.instance.targetObj.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
 
 		switch (em.fireType)
 		{
@@ -93,7 +92,7 @@ void FixedUpdate()
 		bool homing = ((Time.fixedTime - fireTime) < em.homingTime);
 		if (homing)
 		{
-			posTarget = targetObject.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+			posTarget = SManager.instance.targetObj.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
 		}
 		if (fireTime >= em.lifeTime)
 		{

@@ -196,6 +196,7 @@ public class RopeJump : MonoBehaviour
 
 			if (joint && joint.enabled)
 			{
+				pControl.Stop();
 				pControl.enabled = false;   //プレーヤーコントローラーを停止
 				anim.SetFloat("Speed", 0);  //stop animation
 

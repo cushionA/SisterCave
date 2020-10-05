@@ -148,7 +148,7 @@ void FixedUpdate()
 			Addressables.ReleaseInstance(this.gameObject);
 		}
 	}
-	public void SetAtk()
+/*	public void SetAtk()
 	{
 
 		if (em.phyBase >= 1)
@@ -178,5 +178,5 @@ void FixedUpdate()
 		}
 
 
-	}//攻撃力設定
+	}//攻撃力設定*/
 }

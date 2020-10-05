@@ -89,6 +89,14 @@ public class EnemyBase : MonoBehaviour
 	protected float randomTime = 2.5f;//ランダム移動測定のため
 	protected bool isGuard;
 	[HideInInspector]public bool guardHit;
+	protected float stateJudge;//ステート判断間隔
+	protected Rigidbody2D dRb;//ドッグパイルのリジッドボディ
+							  //	protected float nowDirection;//今の敵の方向
+
+	[HideInInspector]public float damageDelay;
+	[HideInInspector]public bool isHit;//ヒット中
+	[HideInInspector]public bool isHitable;
+	[HideInInspector] public GameObject lastHit;
 
 	// === コード（Monobehaviour基本機能の実装） ================
 	protected virtual void Start()
@@ -105,6 +113,7 @@ public class EnemyBase : MonoBehaviour
         {
 			basePosition = status.dogPile.transform.position;
 			baseDirection = status.dogPile.transform.localScale;
+			dRb = status.dogPile.GetComponent<Rigidbody2D>();
         }
         else
         {
@@ -130,7 +139,7 @@ public class EnemyBase : MonoBehaviour
 	{
         if (!cameraRendered)
         {
-			if (status.kind != EnemyStatus.KindofEnemy.Fly)
+			if (!status.unBaind)
 			{
 				return;
 			}
@@ -165,13 +174,16 @@ public class EnemyBase : MonoBehaviour
 
 			EscapeCheck();
 
-
+            if (jumpTrigger)
+            {
+				GroundJump(status.addSpeed.x * direction);
+				jumpTrigger = false;
+            }
 		}
 
 		else if (!isAggressive)
         {
-			Serch.SetActive(true);
-			Serch2.SetActive(true);
+
 
 			PositionReset();
 
@@ -195,6 +207,7 @@ public class EnemyBase : MonoBehaviour
 			}
 		}*/
 		SetVelocity();
+		HitCheck();
 	}
 	public void ActionFire(int i,float random = 0.0f)
 	{//ランダムに入れてもいいけど普通に入れてもいい
@@ -211,16 +224,13 @@ public class EnemyBase : MonoBehaviour
 					(firePosition.position.x + random, firePosition.position.y + random, firePosition.position.z);//銃口から
 			}
 			Transform goFire = firePosition;
-			foreach (AssetReference effect in status.enemyFire[i].effects)
-			{
-				//sAni.Play(status.attackName[attackNumber]);
-				/*:GameObject go = */
-				for (int x = status.enemyFire[i].bulletNumber; x > 0; --x)
+
+				for (int x = 0; x >= status.enemyFire[i].bulletNumber; x++)
 				{
-					Addressables.InstantiateAsync(effect, goFire.position, Quaternion.identity);//.Result;//発生位置をPlayer
+					Addressables.InstantiateAsync(status.enemyFire[i].effects, goFire.position, Quaternion.identity);//.Result;//発生位置をPlayer
 				}　　　　　　　　　　　　
 				//go.GetComponent<EnemyFireBullet>().ownwer = transform;
-			}
+			
 		}
 	}
 
@@ -244,6 +254,7 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void WeponDamage()
 	{
+		Debug.Log($"ガード中か否か{guardHit}");
 		if (!guardHit && GManager.instance.pStatus.equipWeapon.hitLimmit > 0)
 		{
 			GManager.instance.pStatus.equipWeapon.hitLimmit--;
@@ -723,7 +734,7 @@ public class EnemyBase : MonoBehaviour
 			{//受け値50以上の盾は軽い攻撃をはじく
 				//sAni.Play(status.motionIndex["弾かれ"]);
 			}
-			    GManager.instance.pStatus.stamina -= (status.Shock * 2) * (GManager.instance.pStatus.guardPower / 100);
+			    GManager.instance.pStatus.stamina -= (status.Shock * 2) * (1 - (GManager.instance.pStatus.guardPower / 100));
 
 			if(GManager.instance.pStatus.stamina <= 0)
             {
@@ -771,153 +782,86 @@ public class EnemyBase : MonoBehaviour
 	{
 		if (posiReset && !isDown && !isStop)
 		{
-			if (transform.position.x <= startPosition.x)
+			if (transform.position.x <= basePosition.x)
 			{
-				if (transform.position.y <= startPosition.y)
+				if (transform.position.y <= basePosition.y)
 				{
 					Flip(1);
-					if (Mathf.Abs(rb.velocity.x) <= (status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x))
-					{
-						//sAni.Play(status.motionIndex[status.dogPile == null ? "歩き":"走り"]);
-						rb.AddForce(new Vector2(status.addSpeed.x, 0));
-					}
-					else if (Mathf.Abs(rb.velocity.x) >= (status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x))
-					{
-						//sAni.Play(status.motionIndex[status.dogPile == null ? "歩き":"走り"]);
-						rb.AddForce(new Vector2(-status.addSpeed.x, 0));
-					}
-					if (Mathf.Abs(rb.velocity.y) <= (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y))
-					{
+					//sAni.Play(status.motionIndex[status.dogPile == null ? "歩き":"走り"]);
+					rb.AddForce(new Vector2(status.addSpeed.x * ((status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x) - rb.velocity.x), 0));
+					rb.AddForce(new Vector2(0, (status.addSpeed.y * (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y)) - rb.velocity.y));
 
-						rb.AddForce(new Vector2(0, status.addSpeed.y));
-					}
-					else if (Mathf.Abs(rb.velocity.y) >= (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y))
-					{
-
-						rb.AddForce(new Vector2(0, -status.addSpeed.y));
-					}
-					if (((transform.position.x >= startPosition.x - 5 && transform.position.x <= startPosition.x + 5)
-						&& (transform.position.y >= startPosition.y - 5 && transform.position.y <= startPosition.y + 5) &&
+					if (((transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)
+						&& (transform.position.y >= basePosition.y - 5 && transform.position.y <= basePosition.y + 5) &&
 						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
-							(transform.position.x >= startPosition.x - 5 && transform.position.x <= startPosition.x + 5)))
-
+							(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
 					{
 						//sAni.Play(status.motionIndex["待機"]);
 						//スタートが地面だから大丈夫。落ちてくる系のやつにはDogpileを与えてやれ
 						rb.velocity = Vector2.zero;
 						posiReset = false;
 						isRight = true;
-						transform.localScale = firstDirection;
+						transform.localScale = baseDirection;
 					}
 				}
-				else if (transform.position.y >= startPosition.y)
+				else if (transform.position.y >= basePosition.y)
 				{
 					Flip(1);
-					if (Mathf.Abs(rb.velocity.x) <= (status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x))
-					{
-						//sAni.Play(status.motionIndex[status.dogPile == null ? "歩き" : "走り"]);
-						rb.AddForce(new Vector2(status.addSpeed.x,0));
-					}
-					else if (Mathf.Abs(rb.velocity.x) >= (status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x))
-					{
-						//sAni.Play(status.motionIndex[status.dogPile == null ? "歩き" : "走り"]);
-						rb.AddForce(new Vector2(-status.addSpeed.x, 0));
-					}
-					if (Mathf.Abs(rb.velocity.y) <= (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y)) 
-					{
-						rb.AddForce(new Vector2(0, -status.addSpeed.y));
-					}
-					else if (Mathf.Abs(rb.velocity.y) >= (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y))
-					{
-						rb.AddForce(new Vector2(0, status.addSpeed.y));
-					}
-					if (((transform.position.x >= startPosition.x - 5 && transform.position.x <= startPosition.x + 5)
-						&& (transform.position.y >= startPosition.y - 5 && transform.position.y <= startPosition.y + 5)&&
+					rb.AddForce(new Vector2(status.addSpeed.x * ((status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x) - rb.velocity.x), 0));
+					rb.AddForce(new Vector2(0, (status.addSpeed.y * (status.dogPile == null ? -status.patrolSpeed.y : -status.combatSpeed.y)) - rb.velocity.y));
+					if (((transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)
+						&& (transform.position.y >= basePosition.y - 5 && transform.position.y <= basePosition.y + 5) &&
 						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
-							(transform.position.x >= startPosition.x - 5 && transform.position.x <= startPosition.x + 5)))
+							(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
 					{
 						//sAni.Play(status.motionIndex["待機"]);
 						rb.velocity = Vector2.zero;
 						posiReset = false;
 						isRight = true;
-						transform.localScale = firstDirection;
+						transform.localScale = baseDirection;
 					}
 				}
 			}
-			else if (transform.position.x >= startPosition.x)
+			else if (transform.position.x >= basePosition.x)
 			{
-				if (transform.position.y <= startPosition.y)
+				if (transform.position.y <= basePosition.y)
 				{
 					Flip(-1);
-					if (Mathf.Abs(rb.velocity.x) <= (status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x))
-					{
-						//sAni.Play(status.motionIndex[status.dogPile == null ? "歩き" : "走り"]);
-						rb.AddForce(new Vector2(-status.addSpeed.x, 0));
-					}
-					else if (Mathf.Abs(rb.velocity.x) >= (status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x))
-					{
-						//sAni.Play(status.motionIndex[status.dogPile == null ? "歩き" : "走り"]);
-						rb.AddForce(new Vector2(status.addSpeed.x, 0));
-					}
-
-					if (Mathf.Abs(rb.velocity.y) <= (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y))
-					{
-						rb.AddForce(new Vector2(0, status.addSpeed.y));
-					}
-					if (Mathf.Abs(rb.velocity.y) >= (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y))
-					{
-						rb.AddForce(new Vector2(0, -status.addSpeed.y));
-					}
-					if (((transform.position.x >= startPosition.x - 5 && transform.position.x <= startPosition.x + 5)
-						&& (transform.position.y >= startPosition.y - 5 && transform.position.y <= startPosition.y + 5) &&
+					rb.AddForce(new Vector2(status.addSpeed.x * ((status.dogPile == null ? -status.patrolSpeed.x : -status.combatSpeed.x) - rb.velocity.x), 0));
+					rb.AddForce(new Vector2(0, (status.addSpeed.y * (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y)) - rb.velocity.y));
+					if (((transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)
+						&& (transform.position.y >= basePosition.y - 5 && transform.position.y <= basePosition.y + 5) &&
 						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
-						(transform.position.x >= startPosition.x - 5 && transform.position.x <= startPosition.x + 5)))
+						(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
 					{
 						//sAni.Play(status.motionIndex["待機"]);
 						rb.velocity = Vector2.zero;
 						posiReset = false;
 						isRight = true;
-						transform.localScale = firstDirection;
+						transform.localScale = baseDirection;
 					}
 				}
-				else if (transform.position.y >= startPosition.y)
+				else if (transform.position.y >= basePosition.y)
 				{
 					Flip(-1);
-					if (Mathf.Abs(rb.velocity.x) <= (status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x))
-					{
-						//sAni.Play(status.motionIndex[status.dogPile == null ? "歩き" : "走り"]);
-						rb.AddForce(new Vector2(-status.addSpeed.x, 0));
-					}
-					else if (Mathf.Abs(rb.velocity.x) >= (status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x))
-					{
-						//sAni.Play(status.motionIndex[status.dogPile == null ? "歩き" : "走り"]);
-						rb.AddForce(new Vector2(status.addSpeed.x, 0));
-					}
-					if (Mathf.Abs(rb.velocity.y) <= (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y))
-					{
-						rb.AddForce(new Vector2(0, -status.addSpeed.y));
-					}
-					if (Mathf.Abs(rb.velocity.y) >= (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y))
-					{
-						rb.AddForce(new Vector2(0, status.addSpeed.y));
-					}
-					if (((transform.position.x >= startPosition.x - 5 && transform.position.x <= startPosition.x + 5)
-						&& (transform.position.y >= startPosition.y - 5 && transform.position.y <= startPosition.y + 5) &&
+					rb.AddForce(new Vector2(status.addSpeed.x * ((status.dogPile == null ? -status.patrolSpeed.x : -status.combatSpeed.x) - rb.velocity.x), 0));
+					rb.AddForce(new Vector2(0, (status.addSpeed.y * (status.dogPile == null ? -status.patrolSpeed.y : -status.combatSpeed.y)) - rb.velocity.y));
+					if (((transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)
+						&& (transform.position.y >= basePosition.y - 5 && transform.position.y <= basePosition.y + 5) &&
 						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
-						(transform.position.x >= startPosition.x - 5 && transform.position.x <= startPosition.x + 5)))
+						(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
 					{
 						//sAni.Play(status.motionIndex["待機"]);
 						rb.velocity = Vector2.zero;
 						posiReset = false;
 						isRight = true;
-						transform.localScale = firstDirection;
+						transform.localScale = baseDirection;
 					}
 				}
 			}
 
 		}
 	}
-
 	/// <summary>
 	/// 待機中の哨戒行動
 	/// </summary>
@@ -929,14 +873,7 @@ public class EnemyBase : MonoBehaviour
 			{
 				//sAni.Play(status.motionIndex["歩き"]);
 				Flip(1);
-				if (Mathf.Abs(rb.velocity.x) >= status.patrolSpeed.x)
-				{
-					rb.AddForce(new Vector2(-status.addSpeed.x, 0));
-				}
-				else if (rb.velocity.x <= status.patrolSpeed.x)
-				{
-					rb.AddForce(new Vector2(status.addSpeed.x, 0));
-				}
+				rb.AddForce(new Vector2(status.addSpeed.x * (status.patrolSpeed.x - rb.velocity.x), 0));
 
 			}
 			else if (transform.position.x >= startPosition.x - status.waitDistance.x && !isRight)
@@ -944,14 +881,7 @@ public class EnemyBase : MonoBehaviour
 				//sAni.Play(status.motionIndex["歩き"]);
 				Flip(-1);
 
-				if (Mathf.Abs(rb.velocity.x) >= status.patrolSpeed.x)
-				{
-					rb.AddForce(new Vector2(status.addSpeed.x, 0));
-				}
-				else if (Mathf.Abs(rb.velocity.x) <= status.patrolSpeed.x)
-				{
-					rb.AddForce(new Vector2(-status.addSpeed.x, 0));
-				}
+				rb.AddForce(new Vector2(status.addSpeed.x * (-status.patrolSpeed.x - rb.velocity.x), 0));
 
 			}
 			else
@@ -979,25 +909,12 @@ public class EnemyBase : MonoBehaviour
 		{
 			if (transform.position.y <= startPosition.y + status.waitDistance.y && isUp)
 			{
-				if (Mathf.Abs(rb.velocity.y) >= direction * status.patrolSpeed.y)
-				{
-					rb.AddForce(new Vector2(0,-status.addSpeed.x));
-				}
-				else if (Mathf.Abs(rb.velocity.y) <= status.patrolSpeed.y)
-				{
-					rb.AddForce(new Vector2(0, status.addSpeed.y));
-				}
+
+				rb.AddForce(new Vector2(0, status.addSpeed.y * (status.patrolSpeed.y - rb.velocity.y)));
 			}
 			else if(transform.position.y >= startPosition.y - status.waitDistance.y && !isUp)
 			{
-				if (Mathf.Abs(rb.velocity.y) >= direction * status.patrolSpeed.y)
-				{
-					rb.AddForce(new Vector2(0, status.addSpeed.x));
-				}
-				else if (Mathf.Abs(rb.velocity.y) <= status.patrolSpeed.y)
-				{
-					rb.AddForce(new Vector2(0, -status.addSpeed.y));
-				}
+				rb.AddForce(new Vector2(0, status.addSpeed.y * (-status.patrolSpeed.y - rb.velocity.y)));
 			}
             else
             {
@@ -1016,14 +933,25 @@ public class EnemyBase : MonoBehaviour
     {
 		if (!posiReset)
 		{
-			//sAni.Play(status.motionIndex["待機"]);
-			waitTime += Time.fixedDeltaTime;
-			rb.velocity = rb.velocity = new Vector2(0, rb.velocity.y);
-			if (waitTime >= status.waitRes)
+			if (dRb == null)
 			{
-				Flip(-transform.localScale.x);//反転させまーす
-				waitTime = 0.0f;						  
+				//sAni.Play(status.motionIndex["待機"]);
+				waitTime += Time.fixedDeltaTime;
+				rb.velocity = rb.velocity = new Vector2(0, rb.velocity.y);
+				if (waitTime >= status.waitRes)
+				{
+					Flip(-transform.localScale.x);//反転させまーす
+					waitTime = 0.0f;
+				}
 			}
+			if(dRb != null)
+            {
+				//sAni.Play(status.motionIndex["歩き"]);
+				rb.velocity = dRb.velocity;
+				transform.localScale = status.dogPile.transform.localScale;
+            }
+
+
 		}
 	}
 
@@ -1039,7 +967,11 @@ public class EnemyBase : MonoBehaviour
 			escapeTime += Time.fixedDeltaTime;
 			if (escapeTime >= status.chaseRes)
             {
+				Serch.SetActive(true);
+				Serch2.SetActive(true);
 				isAggressive = false;
+				status.ground = EnemyStatus.MoveState.wakeup;
+				status.air = EnemyStatus.MoveState.wakeup;
             }
 		}
         else
@@ -1061,79 +993,89 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void AgrMove()
     {
+		stateJudge += Time.fixedDeltaTime;
+		#region//判断
+		if ((status.ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && status.ground != EnemyStatus.MoveState.escape)
+		//escapeだけはスクリプトから動かす
+		{
+			if (Mathf.Abs(distance.x) <= status.agrDistance.x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance.x - status.adjust)
+			{
+				status.ground = EnemyStatus.MoveState.stay;
+			}
+			else if (Mathf.Abs(distance.x) > status.agrDistance.x)//近づく方じゃね？
+			{
+				if (Mathf.Abs(distance.x) <= status.walkDistance.x || isGuard)
+				{
+					status.ground = EnemyStatus.MoveState.accessWalk;
+				}
+				else
+				{
+					status.ground = EnemyStatus.MoveState.accessDash;
+				}
+			}
+			else if (Mathf.Abs(distance.x) < status.agrDistance.x)//遠ざかる
+			{
+				//歩き距離なら敵を見たまま撃つ
+				//動かない弓兵とかは移動速度ゼロに
+				if (Mathf.Abs((Mathf.Abs(distance.x) - status.agrDistance.x)) <= -status.walkDistance.x || isGuard)
+				{
+					status.ground = EnemyStatus.MoveState.leaveWalk;
+				}
+				else
+				{
+					status.ground = EnemyStatus.MoveState.leaveDash;
+				}
+			}
+			stateJudge = 0;
+		}
+		#endregion
+
 		if (!isStop && !nowJump && !isAvoid && !isDown)
 		{
-			if (Mathf.Abs(distance.x) == status.agrDistance.x)
+			if (status.ground == EnemyStatus.MoveState.stay)
 			{
 				//sAni.Play(status.motionIndex["構え"]);
 				Flip(direction);
 				rb.velocity = new Vector2(0, rb.velocity.y);
 				isReach = true;
 			}
-			else if (Mathf.Abs(distance.x) > status.agrDistance.x)//近づく方じゃね？
+			else if (status.ground == EnemyStatus.MoveState.accessWalk)
 			{
 				Flip(direction);
-				if (Mathf.Abs((Mathf.Abs(distance.x) - status.agrDistance.x)) <= status.walkDistance.x || isGuard)
-                {
-					isReach = (Mathf.Abs(distance.x) - status.agrDistance.x) <= status.walkDistance.x ? true: false;
-					if (Mathf.Abs(rb.velocity.x) >= status.walkSpeed.x)
-					{
-						rb.AddForce(new Vector2(-direction * status.addSpeed.x, 0));
-					}
-					else if (rb.velocity.x <= status.walkSpeed.x)
-					{ 
-						rb.AddForce(new Vector2(direction * status.addSpeed.x, 0));
-					}
-					//sAni.Play(status.motionIndex["歩き"]);
-				}
-				else 
-			   {
-					isReach = false;
-					if (Mathf.Abs(rb.velocity.x) >= status.combatSpeed.x)
-					{
-						rb.AddForce(new Vector2(-direction * status.addSpeed.x, 0));
-					}
-					else if (rb.velocity.x <= status.combatSpeed.x)
-				    {
-						//sAni.Play(status.motionIndex["走り"]);
-						rb.AddForce(new Vector2(direction * status.addSpeed.x, 0));
-			        }
-		       }
-	       }
-			else if (Mathf.Abs(distance.x) < status.agrDistance.x)//遠ざかる
+				isReach = (Mathf.Abs(distance.x) - status.agrDistance.x) <= status.walkDistance.x ? true : false;
+				rb.AddForce(new Vector2(status.addSpeed.x * (direction * status.walkSpeed.x - rb.velocity.x), 0));
+				//sAni.Play(status.motionIndex["歩き"]);
+			}
+			else if (status.ground == EnemyStatus.MoveState.accessDash) 
 			{
+				Flip(direction);
+				isReach = false;
+				//sAni.Play(status.motionIndex["走り"]);
+				rb.AddForce(new Vector2(status.addSpeed.x * (direction * status.combatSpeed.x - rb.velocity.x),0));
+                if (Mathf.Abs(distance.x) <= status.agrDistance.x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance.x - status.adjust)
+                {
+					status.ground = EnemyStatus.MoveState.accessWalk;
+					stateJudge = 0.0f;
+				}
+			}
+			else if (status.ground == EnemyStatus.MoveState.leaveWalk)//遠ざかる
+			{
+				//近距離の場合歩き範囲をダッシュで離れるのより大きく
 				//歩き距離なら敵を見たまま撃つ
 				//動かない弓兵とかは移動速度ゼロに
-				if (Mathf.Abs((Mathf.Abs(distance.x) - status.agrDistance.x)) >= -status.walkDistance.x || isGuard)
-				{
 					Flip(direction);
 					isReach = true;
-					if (Mathf.Abs(rb.velocity.x) >= status.walkSpeed.x)
-					{
-						rb.AddForce(new Vector2(direction * status.addSpeed.x, 0));
-					}
-					else if (Mathf.Abs(rb.velocity.x) <= status.walkSpeed.x)
-					{
-						//sAni.Play(status.motionIndex["後ずさり"]);
-						rb.AddForce(new Vector2(-direction * status.addSpeed.x, 0));//反対向きに行くから-direction
-					}
-				}
-				else
+				//sAni.Play(status.motionIndex["後ずさり"]);
+				rb.AddForce(new Vector2(status.addSpeed.x * (-direction * status.walkSpeed.x - rb.velocity.x), 0));
+			}
+				else if(status.ground == EnemyStatus.MoveState.leaveDash)
 				{
 					//sAni.Play(status.motionIndex["走り"]);
 					Flip(-direction);
 					isReach = false;
-					if (Mathf.Abs(rb.velocity.x) >=  status.combatSpeed.x)
-					{
-						rb.AddForce(new Vector2(direction * status.addSpeed.x, 0));
-					}
-					else if (Mathf.Abs(rb.velocity.x) <= status.combatSpeed.x)
-					{
-						rb.AddForce(new Vector2(-direction * status.addSpeed.x, 0));//反対向きに行くから-direction
-					}
+				rb.AddForce(new Vector2(status.addSpeed.x * (-direction * status.combatSpeed.x - rb.velocity.x),0));
 				}
 			}
-		}
 	}
 	
 	/// <summary>
@@ -1433,22 +1375,40 @@ public class EnemyBase : MonoBehaviour
     {
 		Debug.Log($"{collision.tag}タグ");
 		//Debug.Log("開始");
-		if(collision.tag == status.AttackTag)
+		if(collision.tag == status.AttackTag && (isHitable || lastHit != collision.gameObject))
         {
-			isAggressive = true;
-			//Debug.Log("継続");
 			WeponDamage();
+			if (!isAggressive)
+			{
+				Serch.SetActive(false);
+				Serch2.SetActive(false);
+				isAggressive = true;
+			}
+			lastHit = collision.gameObject;
+		}
+		else if (collision.tag == status.PMagicTag && (isHitable || lastHit != collision.gameObject))
+		{
 
-		}
-		else if (collision.tag == status.PMagicTag)
-		{
-			isAggressive = true;
 			PlayerMagicDamage();
+			if (!isAggressive)
+			{
+				Serch.SetActive(false);
+				Serch2.SetActive(false);
+				isAggressive = true;
+			}
+			lastHit = collision.gameObject;
 		}
-		else if (collision.tag == status.SMagicTag) 
+		else if (collision.tag == status.SMagicTag && (isHitable || lastHit != collision.gameObject)) 
 		{
-			isAggressive = true;
+
 			SisterMagicDamage();
+			if (!isAggressive)
+			{
+				Serch.SetActive(false);
+				Serch2.SetActive(false);
+				isAggressive = true;
+			}
+			lastHit = collision.gameObject;
 		}
 
 		if(isAggressive && collision.tag == status.JumpTag)
@@ -1457,17 +1417,86 @@ public class EnemyBase : MonoBehaviour
         }
 
 	}
-
-
-
-/*	/// <summary>
-	/// プレイヤーの魔法による攻撃
-	/// </summary>
-	public void MagicBlow(Collider2D c)
+	protected virtual void OnTriggerStay2D(Collider2D collision)
 	{
+		if (collision.tag == status.AttackTag && (isHitable || lastHit != collision.gameObject))
+		{
 
-		rb.AddForce(new Vector2(GManager.instance.pStatus.equipWeapon.blowPower.x * -direction, GManager.instance.pStatus.equipWeapon.blowPower.y));
-	}*/
+			WeponDamage();
+			isHit = true;
+			isHitable = false;
+			lastHit = collision.gameObject;
+		}
+		else if (collision.tag == status.PMagicTag && (isHitable || lastHit != collision.gameObject))
+		{
+
+			PlayerMagicDamage();
+			isHit = true;
+			isHitable = false;
+			lastHit = collision.gameObject;
+		}
+		else if (collision.tag == status.SMagicTag && (isHitable || lastHit != collision.gameObject))
+		{
+
+			SisterMagicDamage();
+			isHit = true;
+			isHitable = false;
+			lastHit = collision.gameObject;
+		}
+
+
+		if (status.kind != EnemyStatus.KindofEnemy.Fly && collision.tag == status.JumpTag && isAggressive)
+		{
+			jumpTrigger = true;
+		}
+
+	}
+
+    protected virtual void OnTriggerExit2D(Collider2D collision)
+    {
+
+		if (collision.tag == status.PMagicTag)
+		{
+			//ここで最終弾だけ吹き飛ばすようにする？
+			PlayerMagicDamage();
+			isHit = false;
+		}
+		else if (collision.tag == status.SMagicTag)
+		{
+
+			SisterMagicDamage();
+			isHit = false;
+		}
+
+	}
+
+	public void HitCheck()
+    {
+        if (isHit && !isHitable)
+        {
+			damageDelay += Time.fixedDeltaTime;
+			if(damageDelay >= 0.3)
+            {
+				isHitable = true;
+            }
+
+        }
+        else
+        {
+			damageDelay = 0.0f;
+			isHitable = true;
+        }
+
+	}
+
+	/*	/// <summary>
+		/// プレイヤーの魔法による攻撃
+		/// </summary>
+		public void MagicBlow(Collider2D c)
+		{
+
+			rb.AddForce(new Vector2(GManager.instance.pStatus.equipWeapon.blowPower.x * -direction, GManager.instance.pStatus.equipWeapon.blowPower.y));
+		}*/
 
 	public void HPReset()
     {
