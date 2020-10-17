@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class MainUI : MonoBehaviour
 {
+    public static MainUI instance = null;
+
+    [HideInInspector]public bool selectWindow;
+
     public bool isMenu;
     public GameObject masterUI;
     public GameObject equip;
@@ -45,6 +49,7 @@ public class MainUI : MonoBehaviour
     public bool isReBuild;
     public GameObject Scon;
 
+
     [SerializeField] EventSystem eventSystem;
     [SerializeField] StandaloneInputModule stIn;
 
@@ -54,8 +59,19 @@ public class MainUI : MonoBehaviour
     GameObject selectButtom;
 
     bool isFirst;
-    public bool isEver;
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -64,9 +80,6 @@ public class MainUI : MonoBehaviour
 
         // 自分を選択状態にする
         eq = equip.GetComponent<Button>();
-        
-        //ボタンが選択された状態になる
-        //bt1.Select();
 
 
     }
@@ -81,18 +94,25 @@ public class MainUI : MonoBehaviour
             if (Input.GetButtonDown("Menu"))
             {
                 //メニュー展開ボタンを押すとメニューの表示非表示を切り替え
-                if (isMenu)
+                if (isMenu && !selectWindow)
                 {
+                    isFirst = false;
                     isMenu = false;
                     isReBuild = false;
                     Scon.SetActive(false);
-                    isEver = false;
-
+                    usec.isEver = false;
+                    wec.isEver = false;
+                    mac.isEver = false;
+                    kec.isEver = false;
+                    lic.isEver = false;
+                    mtc.isEver = false;
+                    coc.isEver = false;
+                    //Debug.Log($"qawsedfrgjui,lo{usec.isEver}");
                 }
 
                 else if (!isMenu)
                 {
-                    isFirst = true;
+                   // isFirst = true;
                     isMenu = true;
                     isReBuild = true;
                     Scon.SetActive(true);
@@ -116,13 +136,11 @@ public class MainUI : MonoBehaviour
                 Time.timeScale = 0;
                 masterUI.SetActive(true);
 
-                if (isFirst)
+              if (!isFirst)
                 {
-                
-
                     eq.Select();
                     eq.onClick.Invoke();
-                    isFirst = false;
+                    isFirst = true;
                 }
 
                 if(selectButtom == eqButton)
@@ -261,25 +279,32 @@ public class MainUI : MonoBehaviour
             }
         }
     }
-    public void MenuBreake()
+
+
+    public void MenuCancel()
     {
+        selectWindow = false;
+        isFirst = false;
         isMenu = false;
+        isReBuild = false;
+        Scon.SetActive(false);
+        usec.isEver = false;
+        wec.isEver = false;
+        mac.isEver = false;
+        kec.isEver = false;
+        lic.isEver = false;
+        mtc.isEver = false;
+        coc.isEver = false;
+        ToolManager.instance.selectButton = null;
+        ToolManager.instance.selectItem = null;
 
     }
 
-    public void MenuCheck()
-    {
-        //右ボタンに反応するイベント
-        Debug.Log("Left");
-
-    }
-    public void Check()
-    {
-
-        //左ボタンに反応するイベント
-        Debug.Log("Right");
-
-    }
+ //   public void UseReBuild()
+//    {
+  //      isReBuild = true;
+  //      usec.isEver = false;
+ //   }
 
 }
 

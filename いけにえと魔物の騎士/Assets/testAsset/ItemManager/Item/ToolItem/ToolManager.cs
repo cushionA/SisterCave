@@ -5,12 +5,30 @@ using UnityEngine;
 
 public class ToolManager : MonoBehaviour
 {
+	public static ToolManager instance = null;
+	[HideInInspector] public GameObject selectButton;
+	[HideInInspector]public ToolItem selectItem;
+	public GameObject selectWindow;
+	public bool isUseMenu;
+
+	private void Awake()
+	{
+		if (instance == null)
+		{
+			instance = this;
+			DontDestroyOnLoad(this.gameObject);
+		}
+		else
+		{
+			Destroy(this.gameObject);
+		}
+	}
 
 	//　アイテムデータベース
 	[SerializeField]
 	private ToolDataBase toolDataBase;
 	//　アイテム数管理
-	private Dictionary<ToolItem, int> numOfItem = new Dictionary<ToolItem, int>();
+	//private Dictionary<ToolItem, int> numOfItem = new Dictionary<ToolItem, int>();
 
 	string playerTag = "Player";
 	[HideInInspector]
@@ -22,38 +40,9 @@ public class ToolManager : MonoBehaviour
 	//[HideInInspector]public ToolItem use;
 
 	// Use this for initialization
-	void Start()
-	{
-
-		for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
-		{
-			//　アイテム数を適当に設定
-			numOfItem.Add(toolDataBase.GetItemLists()[i], 0);
-
-			//　確認の為データ出力
-			//Debug.Log(toolDataBase.GetItemLists()[i].GetItemName() + ": " + toolDataBase.GetItemLists()[i].GetInformation());
-		}
-
-		//Debug.Log(GetItem("ナイフ").GetInformation());
-		//Debug.Log(numOfItem[GetItem("ハーブ")]);
-	
-		}
-
-
-    private void Update()
-    {
-		//Debug.Log(GetItem("test4").inventoryNum);
-		//Debug.Log(GetItem("テスト3").inventoryNum);
 
 
 
-	}
-
-	public void NumberAdd()
-    {
-
-
-    }
 
 
 
@@ -61,7 +50,7 @@ public class ToolManager : MonoBehaviour
     //　名前でアイテムを取得
     public ToolItem GetItem(string searchName)
 	{
-		return toolDataBase.GetItemLists().Find(itemName => itemName.GetItemName() == searchName);
+		return toolDataBase.GetItemLists().Find(itemName => itemName.itemName == searchName);
 	}
 
 	private void OnTriggerStay2D(Collider2D collision)
@@ -81,7 +70,6 @@ public class ToolManager : MonoBehaviour
 		numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
 		isUp = true;*/
 
-
 	}
 	public void ReduceItem()
 	{
@@ -92,15 +80,25 @@ public class ToolManager : MonoBehaviour
 		int pas = GetItem($"{takeItem}").inventoryNum;
 		GetItem($"{takeItem}").inventoryNum = pas - changeNum;
 		isUp = true;
-
-
-
 	}
-	public Dictionary<ToolItem,int> GetItemDictionary()
+	//public Dictionary<ToolItem,int> GetItemDictionary()
+	//{
+	//return numOfItem;
+	//}
+	public void Use()
 	{
-		return numOfItem;
+		if (selectItem.kindOfItem == ToolItem.KindOfItem.UseItem)
+		{
+
+		}
+		selectItem.inventoryNum -= changeNum;
+		changeNum = 1;
+
 	}
-
-
+	public void DumpTool()
+    {
+		selectItem.inventoryNum -= changeNum;
+		changeNum = 1;
+	}
 
 }

@@ -21,7 +21,6 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
     [SerializeField] ScrollRect useRect;
 
     public ToolManager dic;
-    public MainUI mi;
     public ToolItem space1;
     public ToolItem space2;
 
@@ -53,7 +52,8 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
 
     int jumpDataIndex;
 
-    bool isEver;
+    [HideInInspector] public bool isEver;
+
     int N = 3;
     //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
 
@@ -167,6 +167,7 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
 
                 UseItemData mini = new UseItemData(miniList.ToArray());
                 data.Add(mini);
+               // Debug.Log($"試してる{mini.Contents}");
             }
         }
 #endregion
@@ -187,9 +188,13 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void Update()
     {
-        
-      if (mi.isReBuild && !mi.isEver)
+
+
+        if (MainUI.instance.isReBuild && !isEver)
         {
+
+            data.Clear();//インベントリを一回からにして入れなおす
+            //Debug.Log("試させろ");
             #region
 
             //  for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
@@ -240,7 +245,7 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
                         
                         UseItemData mini = new UseItemData(miniList.ToArray());
                         data.Add(mini);
-                    }
+                }
                 //}
                 /*else if(setList.Count - i < N)
                 {
@@ -280,9 +285,10 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
             //Debug.Log("愛してる");
             this.fooScroller.ReloadData();
             this.UpdateNavigationConnections();
-            mi.isEver = true;
+            isEver = true;
+
         }
-        /*else if(!mi.isReBuild && mi.isEver)
+        /*else if(!mi.isReBuild && isEver)
         {
             Debug.Log("愛してない");
             //isEver = false;

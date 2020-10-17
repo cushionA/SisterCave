@@ -20,7 +20,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
     [SerializeField] Scrollbar useBar;
     [SerializeField] ScrollRect useRect;
 
-    public ToolManager dic;
+    public MagicManager dic;
     public MainUI mi;
     public Magic space1;
     public Magic space2;
@@ -30,7 +30,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
     float verticalKey;
 
     List<Magic> setList;
-
+    [HideInInspector] public bool isEver;
 
     int lLimit;
     int uLimit;
@@ -53,7 +53,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
 
     int jumpDataIndex;
 
-    bool isEver;
+
     int N = 3;
     //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
 
@@ -188,8 +188,9 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
     private void Update()
     {
 
-        if (mi.isReBuild && !mi.isEver)
+        if (mi.isReBuild && !isEver)
         {
+            data.Clear();//インベントリを一回からにして入れなおす
             #region
 
             //  for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
@@ -280,9 +281,9 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
             //Debug.Log("愛してる");
             this.fooScroller.ReloadData();
             this.UpdateNavigationConnections();
-            mi.isEver = true;
+            isEver = true;
         }
-        /*else if(!mi.isReBuild && mi.isEver)
+        /*else if(!mi.isReBuild && isEver)
         {
             Debug.Log("愛してない");
             //isEver = false;

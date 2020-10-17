@@ -509,7 +509,6 @@ GameObject:
   - component: {fileID: 2115751722248483910}
   - component: {fileID: 2115751722248483905}
   - component: {fileID: 2115751722248483904}
-  - component: {fileID: 2115751722248483909}
   m_Layer: 5
   m_Name: Scroller
   m_TagString: ScrollContent
@@ -651,27 +650,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
---- !u!114 &2115751722248483909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2115751722248483906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b8ba625aa881734d92e5ab50eb447c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellIdentifier: 
-  contentTexts:
-  - {fileID: 6791104365598889534}
-  - {fileID: 2812375925384945842}
-  - {fileID: 8003428063661801944}
-  contentIcon:
-  - {fileID: 6652065474783438693}
-  - {fileID: 2609608329135711588}
-  - {fileID: 7235453975292907674}
 --- !u!1 &2115751722445987591
 GameObject:
   m_ObjectHideFlags: 0
