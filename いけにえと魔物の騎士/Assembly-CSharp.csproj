@@ -148,6 +148,7 @@
     <Compile Include="Assets\EnhancedScroller v2\Plugins\IEnhancedScrollerDelegate.cs" />
     <Compile Include="Assets\ProCamera2D\Examples\TopDownShooter\Scripts\Bullet.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenRectTransformPivotX.cs" />
+    <Compile Include="Assets\testAsset\UI\Material\ChangeMNumber.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Device\GetTouchInfo.cs" />
     <Compile Include="Assets\PlayMaker\Actions\StateMachine\GetEventIntData.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenLayoutElementFlexibleSize.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Audio\AudioStop.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\UiImageSetFillAmount.cs" />
     <Compile Include="Assets\PlayMaker\Actions\GUILayout\GUILayoutConfirmPasswordField.cs" />
+    <Compile Include="Assets\testAsset\UI\Core\CoreNumberChange.cs" />
     <Compile Include="Assets\ProCamera2D\Code\Extensions\ProCamera2DRails.cs" />
     <Compile Include="Assets\PlayMaker\Actions\String\GetStringLength.cs" />
     <Compile Include="Assets\PlayMaker\Actions\StateMachine\GotoPreviousState.cs" />
@@ -227,6 +229,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Vector2\SetVector2Value.cs" />
     <Compile Include="Assets\PlayMaker\Actions\RenderSettings\SetHaloStrength.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Camera\CameraFadeOut.cs" />
+    <Compile Include="Assets\testAsset\UI\wepon\WeponEquipButton.cs" />
     <Compile Include="Assets\ProCamera2D\Examples\TopDownShooter\Scripts\SwitchCameraProjection.cs" />
     <Compile Include="Assets\PlayMaker\Actions\GUILayout\GUILayoutPasswordField.cs" />
     <Compile Include="Assets\PlayMaker\Actions\StateMachine\KillDelayedEvents.cs" />
@@ -286,6 +289,7 @@
     <Compile Include="Assets\EnhancedScroller v2\Demos\05 Remote Resources\Controller.cs" />
     <Compile Include="Assets\PlayMaker\Actions\GUI\SetGUIContentColor.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenControlMethodsSmoothRewindById.cs" />
+    <Compile Include="Assets\testAsset\UI\Material\MaterialNumberChange.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Math\FloatSubtract.cs" />
     <Compile Include="Assets\testAsset\ItemManager\Item\Material\GetMaterial.cs" />
     <Compile Include="Assets\testAsset\UI\dustBox\HorizontalExplicitNavigationButton.cs" />
@@ -295,6 +299,7 @@
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenLayoutElementPreferredSize.cs" />
     <Compile Include="Assets\PlayMaker\Actions\ActionHelpers.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\EventSystem\UiGetLastPointerDataInfo.cs" />
+    <Compile Include="Assets\testAsset\UI\Magic\MagicButton.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTextText.cs" />
     <Compile Include="Assets\PlayMaker\Actions\ProceduralMaterial\SetProceduralFloat.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Animator\GetAnimatorLayersAffectMassCenter.cs" />
@@ -393,6 +398,7 @@
     <Compile Include="Assets\PlayMaker\Actions\UI\UiInputFieldOnEndEditEvent.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\UiSliderSetValue.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UnityObject\SetProperty.cs" />
+    <Compile Include="Assets\testAsset\UI\wepon\EquipButton.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformScale.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenRigidbody2DMoveY.cs" />
     <Compile Include="Assets\testAsset\Player\Wepon\Wepon.cs" />
@@ -420,6 +426,7 @@
     <Compile Include="Assets\testAsset\ItemManager\Item\Key\KeyItem.cs" />
     <Compile Include="Assets\testAsset\UI\dustBox\ScroollButtonController.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenCameraFarClipPlane.cs" />
+    <Compile Include="Assets\testAsset\UI\wepon\ChangeENumber.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Array\ArrayResize.cs" />
     <Compile Include="Assets\EnhancedScroller v2\Demos\01 Simple Demo\Data.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Math\FloatOperator.cs" />
@@ -462,6 +469,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Vector3\GetVector3XYZ.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\EventSystem\UiOnUpdateSelectedEvent.cs" />
     <Compile Include="Assets\PlayMaker\Actions\StateMachine\GetEventBoolData.cs" />
+    <Compile Include="Assets\testAsset\UI\toolS\EquipToolButton.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenRigidbodyMoveZ.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenMaterialOffsetProperty.cs" />
     <Compile Include="Assets\PlayMaker\Actions\StateMachine\GetFsmVariable.cs" />
@@ -500,6 +508,7 @@
     <Compile Include="Assets\ProCamera2D\Examples\TopDownShooter\Scripts\Player\PlayerFire.cs" />
     <Compile Include="Assets\PlayMaker\Actions\GUIElement\SetGUITextureAlpha.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Physics2D\SetGravity2d.cs" />
+    <Compile Include="Assets\testAsset\UI\toolS\ToolEquip.cs" />
     <Compile Include="Assets\testAsset\UI\toolS\ToolCellView.cs" />
     <Compile Include="Assets\2D_Destruction\clipper_library\clipper.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Array\ArrayClear.cs" />
@@ -553,6 +562,7 @@
     <Compile Include="Assets\PlayMaker\Actions\RectTransform\RectTransformGetAnchoredPosition.cs" />
     <Compile Include="Assets\ProCamera2D\3rd Party Plugins Support\PlayMakerActions\PC2DMoveCameraInstantlyToPosition.cs" />
     <Compile Include="Assets\EnhancedScroller v2\Demos\15 Expanding Cells\Controller.cs" />
+    <Compile Include="Assets\testAsset\UI\EnemyLibrary\LibraryButton.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Vector2\Vector2Invert.cs" />
     <Compile Include="Assets\PlayMaker\Actions\SceneManager\SendSceneLoadedEvent.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Time\PerSecond.cs" />
@@ -751,6 +761,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Physics\Raycast.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenControlMethodsFlipAll.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Animation\RewindAnimation.cs" />
+    <Compile Include="Assets\testAsset\UI\wepon\WSEquip.cs" />
     <Compile Include="Assets\testAsset\ItemManager\Item\Magic\MagicData.cs" />
     <Compile Include="Assets\EnhancedScroller v2\Demos\14 Key Control\Data.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformScaleX.cs" />
@@ -798,6 +809,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Physics2D\SetVelocity2d.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\Canvas\UiCanvasScalerSetScaleFactor.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Physics2D\IsFixedAngle2d.cs" />
+    <Compile Include="Assets\testAsset\UI\EquipmentManager.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Transform\SmoothLookAtDirection.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Trigonometry\GetASine.cs" />
     <Compile Include="Assets\PlayMaker\Actions\AnimateVariables\CurveFsmAction.cs" />
@@ -813,6 +825,7 @@
     <Compile Include="Assets\PlayMaker\Actions\GUILayout\GUILayoutIntField.cs" />
     <Compile Include="Assets\testAsset\Player\PlayerScript\PlayerMove.cs" />
     <Compile Include="Assets\testAsset\Sister\SisterScrypt\FieldSerch.cs" />
+    <Compile Include="Assets\testAsset\UI\Core\ChangeCNumber.cs" />
     <Compile Include="Assets\testAsset\Status\SisterStatus.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenMaterialFloatProperty.cs" />
     <Compile Include="Assets\2D_Destruction\Scripts\ExplodableFragments.cs" />
@@ -831,6 +844,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Animator\SetAnimatorApplyRootMotion.cs" />
     <Compile Include="Assets\EnhancedScroller v2\Demos\14b Key Control Grid\Data.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\UiScrollbarGetDirection.cs" />
+    <Compile Include="Assets\testAsset\UI\Material\MaterialWindow.cs" />
     <Compile Include="Assets\PlayMaker\Actions\GUI\SetGUIBackgroundColor.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\UiInputFieldOnValueChangeEvent.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\UiScrollbarSetValue.cs" />
@@ -1096,6 +1110,7 @@
     <Compile Include="Assets\testAsset\ItemManager\Item\Equip\EquipDataBase.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Application\TakeScreenshot.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Convert\ConvertStringToInt.cs" />
+    <Compile Include="Assets\testAsset\UI\Key\KeyItemButton.cs" />
     <Compile Include="Assets\PlayMaker\Actions\StateMachine\GetFsmVector2.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Animation\SetAnimationTime.cs" />
     <Compile Include="Assets\ProCamera2D\Code\Triggers\ProCamera2DTriggerRails.cs" />
@@ -1212,6 +1227,7 @@
     <Compile Include="Assets\PlayMaker\Actions\UI\Layout\UiLayoutElementGetValues.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Physics\SetGravity.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Level\DontDestroyOnLoad.cs" />
+    <Compile Include="Assets\testAsset\UI\wepon\EquipWindow.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Material\SetMaterialMovieTexture.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\UiImageSetSprite.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\UiScrollRectSetNormalizedPosition.cs" />
@@ -1283,6 +1299,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Animator\GetAnimatorBody.cs" />
     <Compile Include="Assets\EnhancedScroller v2\Demos\14b Key Control Grid\CellView.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\UiScrollRectSetHorizontal.cs" />
+    <Compile Include="Assets\testAsset\UI\Material\MaterialButton.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Effects\Blink.cs" />
     <Compile Include="Assets\2D Rope System\Scripts\Rope2D.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Physics2D\WakeAllRigidBodies2d.cs" />
@@ -1349,6 +1366,7 @@
     <Compile Include="Assets\PlayMaker\Actions\GameObject\CreateObject.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Input\MouseLook2.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Animator\GetAnimatorBoneGameObject.cs" />
+    <Compile Include="Assets\testAsset\UI\wepon\ChangeEquipNum.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenCameraShakePosition.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Lights\SetLightCookie.cs" />
     <Compile Include="Assets\DynamicBone\Demo\DynamicBoneDemo1.cs" />
@@ -1365,12 +1383,14 @@
     <Compile Include="Assets\PlayMaker\Actions\Rect\GetRectFields.cs" />
     <Compile Include="Assets\PlayMaker\Actions\GameObject\GetOwner.cs" />
     <Compile Include="Assets\testAsset\UI\Key\KeyController.cs" />
+    <Compile Include="Assets\testAsset\UI\wepon\ShieldEquipButton.cs" />
     <Compile Include="Assets\PlayMaker\Actions\String\StringReplace.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenSpriteRendererColor.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Debug\DebugFsmVariable.cs" />
     <Compile Include="Assets\PlayMaker Utils\PropertyDrawers\GenericAttributes\FsmVariableTargetVariableAttribute.cs" />
     <Compile Include="Assets\PlayMaker\UpdateHelper.cs" />
     <Compile Include="Assets\ProCamera2D\Examples\TopDownShooter\Scripts\RotateTowardsMouse.cs" />
+    <Compile Include="Assets\testAsset\UI\Core\CoreButton.cs" />
     <Compile Include="Assets\PlayMaker\Actions\UI\EventSystem\UiOnScrollEvent.cs" />
     <Compile Include="Assets\PlayMaker\Actions\GUI\GUIButton.cs" />
     <Compile Include="Assets\testAsset\Scrypt\GManager.cs" />
@@ -1379,6 +1399,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Time\GetTimeInfo.cs" />
     <Compile Include="Assets\PlayMaker\Actions\EasingFunction.cs" />
     <Compile Include="Assets\PlayMaker\Actions\String\FormatString.cs" />
+    <Compile Include="Assets\testAsset\UI\Core\CoreWindow.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Animation\EnableAnimation.cs" />
     <Compile Include="Assets\testAsset\Map\MapScript\FallTrap.cs" />
     <Compile Include="Assets\PlayMaker\Actions\GUI\GUIContentAction.cs" />
@@ -1444,18 +1465,11 @@
     <Compile Include="Assets\PlayMaker\Actions\Array\ArrayGetRandom.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Transform\SmoothFollowAction.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformLocalRotate.cs" />
-    <Compile Include="Assets\testAsset\UI\wepon\EquipWindow.cs" />
-    <Compile Include="Assets\testAsset\UI\wepon\ChangeEquipNum.cs" />
-    <Compile Include="Assets\testAsset\UI\wepon\ChangeENumber.cs" />
-    <Compile Include="Assets\testAsset\UI\Core\EquipButton.cs" />
-    <Compile Include="Assets\testAsset\UI\Core\CoreNumberChange.cs" />
-    <Compile Include="Assets\testAsset\UI\Core\ChangeCNumber.cs" />
-    <Compile Include="Assets\testAsset\UI\Core\CoreButton.cs" />
-    <Compile Include="Assets\testAsset\UI\Core\CoreWindow.cs" />
-    <Compile Include="Assets\testAsset\UI\Material\MaterialWindow.cs" />
-    <Compile Include="Assets\testAsset\UI\Material\MaterialNumberChange.cs" />
-    <Compile Include="Assets\testAsset\UI\Material\ChangeMNumber.cs" />
-    <Compile Include="Assets\testAsset\UI\Material\MaterialButton.cs" />
+    <Compile Include="Assets\testAsset\UI\Core\CoreEquipButton.cs" />
+    <Compile Include="Assets\testAsset\UI\Core\CoreEquipWindow.cs" />
+    <Compile Include="Assets\testAsset\UI\Magic\SKMagicEquip.cs" />
+    <Compile Include="Assets\testAsset\UI\Magic\KnightMagicSelect.cs" />
+    <Compile Include="Assets\testAsset\UI\Magic\SisterMagicSelect.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\EnhancedScroller v2\upgrading from 1.x to 2.x.txt" />

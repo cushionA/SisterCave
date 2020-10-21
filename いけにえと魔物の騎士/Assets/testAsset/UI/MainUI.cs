@@ -9,6 +9,8 @@ public class MainUI : MonoBehaviour
     public static MainUI instance = null;
 
     [HideInInspector]public bool selectWindow;
+    [HideInInspector] public bool openWindow;
+    [HideInInspector] public bool menuButtonOff;
 
     public bool isMenu;
     public GameObject masterUI;
@@ -24,6 +26,16 @@ public class MainUI : MonoBehaviour
     public GameObject materialButton;
     public GameObject libraryButton;
     public GameObject systemButton;
+
+    public Button eqB;
+    public Button useB;
+    public Button weponB;
+    public Button magicB;
+    public Button coreB;
+    public Button keyB;
+    public Button materialB;
+    public Button libraryB;
+    public Button systemB;
 
 
     public GameObject eqWindow;
@@ -59,6 +71,7 @@ public class MainUI : MonoBehaviour
     GameObject selectButtom;
 
     bool isFirst;
+    bool isInitial;
 
     private void Awake()
     {
@@ -87,14 +100,28 @@ public class MainUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(MaterialManager.instance.isUseMenu || ToolManager.instance.isUseMenu || EquipManager.instance.isUseMenu
+            || EnemyDataManager.instance.isUseMenu || CoreManager.instance.isUseMenu || ToolManager.instance.isUseMenu || KeyManager.instance.isUseMenu)
+        {
+            openWindow = true;
+
+        }
+        else
+        {
+            openWindow = false;
+        }
+        Debug.Log($"さぁて真になれ{openWindow}");
+
          verticalKey = Input.GetAxisRaw("Vertical");
+
+       // Debug.Log($"装備窓確認trueになれ{isInitial}");
 
         if (!sis.sisMenu)
         {
             if (Input.GetButtonDown("Menu"))
             {
                 //メニュー展開ボタンを押すとメニューの表示非表示を切り替え
-                if (isMenu && !selectWindow)
+                if (isMenu && !selectWindow && !openWindow)
                 {
                     isFirst = false;
                     isMenu = false;
@@ -108,6 +135,8 @@ public class MainUI : MonoBehaviour
                     mtc.isEver = false;
                     coc.isEver = false;
                     //Debug.Log($"qawsedfrgjui,lo{usec.isEver}");
+                    isInitial = false;
+                    ButtonOn();
                 }
 
                 else if (!isMenu)
@@ -143,7 +172,7 @@ public class MainUI : MonoBehaviour
                     isFirst = true;
                 }
 
-                if(selectButtom == eqButton)
+                if(selectButtom == eqButton && !isInitial)
                 {//セレクトしているボタンが左端のボタンの時
 
                     eqWindow.SetActive(true);
@@ -155,7 +184,12 @@ public class MainUI : MonoBehaviour
                     weponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
+
+                    wec.isIniti = false;
+                    coc.isIniti = false;
+                    usec.isIniti = false;
                     //表示するUIの選択
+                    isInitial = true;
                 }
                 else if(selectButtom == useButton)
                 {
@@ -169,8 +203,9 @@ public class MainUI : MonoBehaviour
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
 
+                    EquipMenuReset();
                     usec.isIniti = false;
-
+                    isInitial = false;
                 }
                 else if (selectButtom == weponButton)
                 {
@@ -184,8 +219,9 @@ public class MainUI : MonoBehaviour
                     weponWindow.SetActive(true);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
-
+                    isInitial = false;
                     wec.isIniti = false;
+                    EquipMenuReset();
                 }
                 else if (selectButtom == coreButton)
                 {
@@ -199,8 +235,9 @@ public class MainUI : MonoBehaviour
                     weponWindow.SetActive(false);
                     coreWindow.SetActive(true);
                     materialWindow.SetActive(false);
-
+                    isInitial = false;
                     coc.isIniti = false;
+                    EquipMenuReset();
                 }
                 else if (selectButtom == keyButton)
                 {
@@ -214,8 +251,9 @@ public class MainUI : MonoBehaviour
                     weponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
-
+                    isInitial = false;
                     kec.isIniti = false;
+                    EquipMenuReset();
                 }
                 else if (selectButtom == magicButton)
                 {
@@ -229,8 +267,9 @@ public class MainUI : MonoBehaviour
                     weponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
-
+                    isInitial = false;
                     mac.isIniti = false;
+                    EquipMenuReset();
                 }
                 else if (selectButtom == materialButton)
                 {
@@ -244,8 +283,9 @@ public class MainUI : MonoBehaviour
                     weponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(true);
-
+                    isInitial = false;
                     mtc.isIniti = false;
+                    EquipMenuReset();
                 }
                 else if (selectButtom == libraryButton)
                 {
@@ -259,8 +299,9 @@ public class MainUI : MonoBehaviour
                     weponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
-
+                    isInitial = false;
                     lic.isIniti = false;
+                    EquipMenuReset();
                 }
                 else if (selectButtom == systemButton)
                 {
@@ -274,6 +315,8 @@ public class MainUI : MonoBehaviour
                     weponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
+                    isInitial = false;
+                    EquipMenuReset();
                 }
 
             }
@@ -295,9 +338,15 @@ public class MainUI : MonoBehaviour
         lic.isEver = false;
         mtc.isEver = false;
         coc.isEver = false;
-        ToolManager.instance.selectButton = null;
-        ToolManager.instance.selectItem = null;
+        ButtonOn();
+      // ToolManager.instance.selectButton = null;
+       // ToolManager.instance.selectItem = null;
+        isInitial = false;
+    }
 
+    void EquipMenuReset()
+    {
+        ToolManager.instance.isEquipMenu = false;
     }
 
  //   public void UseReBuild()
@@ -306,5 +355,29 @@ public class MainUI : MonoBehaviour
   //      usec.isEver = false;
  //   }
 
+    public void ButtonOff()
+    {
+        weponB.enabled = false;
+        useB.enabled = false;
+        coreB.enabled = false;
+        magicB.enabled = false;
+        keyB.enabled = false;
+        useB.enabled = false;
+        systemB.enabled = false;
+        libraryB.enabled = false;
+        menuButtonOff = true;
+    }
+    public void ButtonOn()
+    {
+        weponB.enabled = true;
+        useB.enabled = true;
+        coreB.enabled = true;
+        magicB.enabled = true;
+        keyB.enabled = true;
+        useB.enabled = true;
+        systemB.enabled = true;
+        libraryB.enabled = true;
+        menuButtonOff = false;
+    }
 }
 

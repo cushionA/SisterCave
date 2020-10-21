@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EnhancedUI.EnhancedScroller;
 using UnityEngine;
@@ -24,6 +23,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
     public MainUI mi;
     public Magic space1;
     public Magic space2;
+    public Magic space3;
 
     //List<ToolItem> enableTool;
 
@@ -212,7 +212,13 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
 
             //ToolItem[] miniList = new ToolItem[3];
 
-            if (setList.Count % N == N - 1)
+            if (setList.Count == 0)
+            {
+                setList.Add(space1);
+                setList.Add(space2);
+                setList.Add(space3);
+            }
+            else if (setList.Count % N == N - 1)
             {
                 setList.Add(space1);
             }
@@ -459,11 +465,25 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
     {
         foreach (var item in toolDataBase.GetItemLists())
         {
-            if (item.inventoryNum > 0)
+            // yield return item;
+
+            if (!MagicManager.instance.isSisterM && !MagicManager.instance.isKnightM || item == space2 || item == space1 || item == space3)
             {
+                //   Debug.Log("お月様キラキラ");
                 yield return item;
             }
+            else if (!MagicManager.instance.isSisterM && MagicManager.instance.isKnightM && item.GetType() == typeof(PlayerMagic))
+            {
+                //  Debug.Log("お日様キラキラ");
+                yield return item;
 
+            }
+            else if (MagicManager.instance.isSisterM && !MagicManager.instance.isKnightM && item.GetType() == typeof(SisMagic))
+            {
+                // Debug.Log("お星様キラキラ");
+                yield return item;
+            }
+            // Debug.Log("おまんこキラキラ");
         }
     }
 

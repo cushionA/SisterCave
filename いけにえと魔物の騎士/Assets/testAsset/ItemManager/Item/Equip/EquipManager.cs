@@ -6,8 +6,15 @@ public class EquipManager : MonoBehaviour
 	public static EquipManager instance = null;
 	[HideInInspector] public GameObject selectButton;
 	[HideInInspector] public Equip selectItem;
+	[Header("出現させるウインドウ。装備窓とかあってもいいかも")]
 	public GameObject selectWindow;
+	public GameObject equipWindow;//装備画面で使う窓
+	[HideInInspector] public int setNumber;
 	[HideInInspector] public bool isUseMenu;
+	[HideInInspector] public bool isWeponM;
+	[HideInInspector] public bool isShieldM;
+
+
 	//　アイテムデータベース
 	[SerializeField]
 	private EquipDataBase toolDataBase;
@@ -57,7 +64,8 @@ public class EquipManager : MonoBehaviour
 
 	private void Update()
 	{
-		//Debug.Log(GetItem("test4").inventoryNum);
+		Debug.Log($"盾窓選択{isShieldM}");
+		Debug.Log($"武器窓選択{isWeponM}");
 		//Debug.Log(GetItem("テスト3").inventoryNum);
 
 

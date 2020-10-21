@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: SpaceShield 1
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 525e01ce6375a9943a85bd0314fced06, type: 3}
-  itemName: 
+  itemName: space1
   hiraganaName: 
   information: 
   number: 0
+  holdLimmit: 0
+  isDrop: 0
   inventoryNum: 0
   phyBase: []
   holyBase: []

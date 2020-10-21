@@ -67,6 +67,7 @@ public class MaterialButton : MonoBehaviour
             MaterialManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
 
             MaterialManager.instance.isUseMenu = true;
+           // MainUI.instance.openWindow = true;
         }
         else
         {

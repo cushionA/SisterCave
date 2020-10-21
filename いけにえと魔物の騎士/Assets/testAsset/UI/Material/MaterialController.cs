@@ -24,10 +24,10 @@ public class MaterialController : MonoBehaviour, IEnhancedScrollerDelegate
     public MainUI mi;
     public MaterialItem space1;
     public MaterialItem space2;
-
+    public MaterialItem space3;
     //List<ToolItem> enableTool;
 
-    float verticalKey;
+
 
     List<MaterialItem> setList;
     [HideInInspector] public bool isEver;
@@ -206,7 +206,13 @@ public class MaterialController : MonoBehaviour, IEnhancedScrollerDelegate
 
             //ToolItem[] miniList = new ToolItem[3];
 
-            if (setList.Count % N == N - 1)
+            if (setList.Count == 0)
+            {
+                setList.Add(space1);
+                setList.Add(space2);
+                setList.Add(space3);
+            }
+            else if (setList.Count % N == N - 1)
             {
                 setList.Add(space1);
             }

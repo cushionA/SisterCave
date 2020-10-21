@@ -24,10 +24,9 @@ public class EnemyDataController : MonoBehaviour, IEnhancedScrollerDelegate
     public MainUI mi;
     public EnemyLibrary space1;
     public EnemyLibrary space2;
-
+    public EnemyLibrary space3;
     //List<ToolItem> enableTool;
 
-    float verticalKey;
 
     List<EnemyLibrary> setList;
 
@@ -212,7 +211,15 @@ public class EnemyDataController : MonoBehaviour, IEnhancedScrollerDelegate
 
             //ToolItem[] miniList = new ToolItem[3];
 
-            if (setList.Count % N == N - 1)
+            
+
+            if (setList.Count == 0)
+            {
+                setList.Add(space1);
+                setList.Add(space2);
+                setList.Add(space3);
+            }
+            else if (setList.Count % N == N - 1)
             {
                 setList.Add(space1);
             }

@@ -48,6 +48,23 @@ public class CoreButton : MonoBehaviour
             {
                 isFirst = false;
             }
+            if (CoreManager.instance.isEquipMenu)
+            {
+                if (Input.GetButtonDown("Cancel"))
+                {
+                    Debug.Log("サイパン");
+                    MainUI.instance.useWindow.SetActive(false);
+                    MainUI.instance.eqWindow.SetActive(true);
+                    EquipmentManager.instance.EqCore.Select();
+                    MainUI.instance.ButtonOn();
+                    //MainUI.instance.eqButton.SetActive(true);
+                }
+                else if(!MainUI.instance.menuButtonOff)
+                {
+                    MainUI.instance.ButtonOff();
+                    // MainUI.instance.eqButton.SetActive(false);
+                }
+            }
         }
 
 
@@ -56,11 +73,23 @@ public class CoreButton : MonoBehaviour
     public void CallWindow()
     {
         //  Debug.Log($"お名前教えて{CoreManager.instance.selectButton.name}");
-        if (CoreManager.instance.selectItem.inventoryNum > 0 && item != null && CoreManager.instance.selectButton == this.gameObject)
+        if (CoreManager.instance.selectItem.inventoryNum > 0 && item != null && CoreManager.instance.selectButton == this.gameObject && item != null && !ToolManager.instance.isEquipMenu)
         {
             CoreManager.instance.selectItem = item;
             // position = this.GetComponent<RectTransform>().anchoredPosition;
             CoreManager.instance.selectWindow.SetActive(true);
+            //CoreManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
+            //CoreManager.instance.selectWindow.GetComponent<RectTransform>().parent = CoreManager.instance.selectButton.GetComponent<RectTransform>();
+            CoreManager.instance.selectWindow.transform.parent = CoreManager.instance.selectButton.transform;
+            CoreManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
+
+            CoreManager.instance.isUseMenu = true;
+        }
+        else if (CoreManager.instance.selectItem.inventoryNum > 0 && item != null && CoreManager.instance.selectButton == this.gameObject && CoreManager.instance.isEquipMenu)
+        {
+            CoreManager.instance.selectItem = item;
+            // position = this.GetComponent<RectTransform>().anchoredPosition;
+            CoreManager.instance.equipWindow.SetActive(true);
             //CoreManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
             //CoreManager.instance.selectWindow.GetComponent<RectTransform>().parent = CoreManager.instance.selectButton.GetComponent<RectTransform>();
             CoreManager.instance.selectWindow.transform.parent = CoreManager.instance.selectButton.transform;
@@ -77,7 +106,14 @@ public class CoreButton : MonoBehaviour
 
     public void CancelWindow()
     {
-        CoreManager.instance.selectWindow.SetActive(false);
+        if (!CoreManager.instance.isEquipMenu)
+        {
+            CoreManager.instance.selectWindow.SetActive(false);
+        }
+        else
+        {
+            CoreManager.instance.equipWindow.SetActive(false);
+        }
         isFirst = false;
         CoreManager.instance.selectButton.GetComponent<Button>().Select();
         CoreManager.instance.isUseMenu = false;

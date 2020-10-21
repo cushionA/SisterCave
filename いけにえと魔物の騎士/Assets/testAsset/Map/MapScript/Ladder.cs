@@ -39,7 +39,6 @@ public class Ladder : MonoBehaviour
         ga = this.gameObject.GetComponent<GimmickAct>();
         pm = player.GetComponent<PlayerMove>();
         rb = player.GetComponent<Rigidbody2D>();
-        pos = new Vector3(ladderTransform.position.x - space, player.transform.position.y, 0);
     }
 
     private void Update()
@@ -63,6 +62,8 @@ public class Ladder : MonoBehaviour
 
     private void FixedUpdate()
     {
+        pos = new Vector3(ladderTransform.position.x - (space * ClimbDirection), player.transform.position.y, 0);
+
         if (ga.isGimmick && isPush && !isGimmickOn)
         {
             GManager.instance.isLadder = true;

@@ -21,9 +21,9 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
     [SerializeField] ScrollRect useRect;
 
     public EquipManager dic;
-    public MainUI mi;
     public Equip space1;
     public Equip space2;
+    public Equip space3;
 
     //List<ToolItem> enableTool;
 
@@ -187,10 +187,11 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
     private void Update()
     {
 
-        if (mi.isReBuild && !isEver)
+        if (MainUI.instance.isReBuild && !isEver)
         {
             #region
             data.Clear();//インベントリを一回からにして入れなおす
+            //Debug.Log("おちんちん");
             //  for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
             // {
             //　アイテム数を適当に設定
@@ -210,7 +211,13 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
 
             //ToolItem[] miniList = new ToolItem[3];
 
-            if (setList.Count % N == N - 1)
+            if (setList.Count == 0)
+            {
+                setList.Add(space1);
+                setList.Add(space2);
+                setList.Add(space3);
+            }
+            else if (setList.Count % N == N - 1)
             {
                 setList.Add(space1);
             }
@@ -240,6 +247,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
                     EquipData mini = new EquipData(miniList.ToArray());
                     data.Add(mini);
                 }
+
                 //}
                 /*else if(setList.Count - i < N)
                 {
@@ -281,7 +289,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             this.UpdateNavigationConnections();
             isEver = true;
         }
-        /*else if(!mi.isReBuild && isEver)
+        /*else if(!MainUI.instance.isReBuild && isEver)
         {
             Debug.Log("愛してない");
             //isEver = false;
@@ -459,7 +467,25 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
         {
             if (item.inventoryNum > 0)
             {
-                yield return item;
+               // yield return item;
+
+              if (!EquipManager.instance.isShieldM && !EquipManager.instance.isWeponM || item == space2 || item == space1 || item == space3)
+                {
+                 //   Debug.Log("お月様キラキラ");
+                    yield return item;
+                }
+                else if(!EquipManager.instance.isShieldM && EquipManager.instance.isWeponM && item.GetType() == typeof(Wepon))
+                {
+                  //  Debug.Log("お日様キラキラ");
+                        yield return item;
+
+                }
+                else if (EquipManager.instance.isShieldM && !EquipManager.instance.isWeponM && item.GetType() == typeof(Shield))
+                {
+                   // Debug.Log("お星様キラキラ");
+                    yield return item;
+                }
+               // Debug.Log("おまんこキラキラ");
             }
 
         }

@@ -23,12 +23,10 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
     public ToolManager dic;
     public ToolItem space1;
     public ToolItem space2;
-
+    public ToolItem space3;
     //List<ToolItem> enableTool;
 
-    float verticalKey;
-
-     List<ToolItem> setList;
+    List<ToolItem> setList;
 
 
     int lLimit;
@@ -37,8 +35,7 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
     float limit;
     float pos;
 
-    bool isTop;
-    bool isLast;
+
 
     bool isFirstU;
     bool isSecondU;
@@ -50,14 +47,14 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
 
     bool isReverse;
 
-    int jumpDataIndex;
+
 
     [HideInInspector] public bool isEver;
 
     int N = 3;
     //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
 
-    ToolItem testtes;
+
 
     [HideInInspector]public bool isIniti;
 
@@ -216,7 +213,13 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
 
             //ToolItem[] miniList = new ToolItem[3];
 
-            if (setList.Count % N == N - 1)
+            if (setList.Count == 0)
+            {
+                setList.Add(space1);
+                setList.Add(space2);
+                setList.Add(space3);
+            }
+            else if (setList.Count % N == N - 1)
             {
                 setList.Add(space1);
             }

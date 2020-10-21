@@ -6,8 +6,15 @@ public class MagicManager : MonoBehaviour
 {
 
 	public static MagicManager instance = null;
-	[HideInInspector]
-	public Magic selectItem;
+	[HideInInspector] public GameObject selectButton;
+	[HideInInspector] public Magic selectItem;
+	public GameObject selectWindow;
+	public GameObject equipWindow;
+	[HideInInspector] public bool isUseMenu;//後で装備窓とかで多分使う
+	[HideInInspector] public int setNumber;//セットする魔法の番号
+	[HideInInspector] public bool isSisterM;
+	[HideInInspector] public bool isKnightM;
+
 	private void Awake()
 	{
 		if (instance == null)

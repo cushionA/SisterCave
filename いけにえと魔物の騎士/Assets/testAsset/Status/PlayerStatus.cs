@@ -30,6 +30,7 @@ public class PlayerStatus : CharacterStatus
     [SerializeField]
     public Wepon equipWeapon = null;
     public Shield equipShield;
+    public CoreItem equipCore;
 
     public AnimationCurve HpCurve;
     public AnimationCurve StaminaCurve;

@@ -168,6 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2703505291231644202}
   - component: {fileID: 8519703021397091674}
+  - component: {fileID: 6492472359848394049}
   - component: {fileID: 4729224529116190189}
   - component: {fileID: 8902857420495973687}
   m_Layer: 5
@@ -206,6 +207,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1715909336042370902}
   m_CullTransparentMesh: 0
+--- !u!114 &6492472359848394049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715909336042370902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda550c20133845408be2dfc37234779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
 --- !u!114 &4729224529116190189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,7 +292,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4729224529116190189}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1715909336042370902}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2149861951872704994
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,6 +317,7 @@ GameObject:
   - component: {fileID: 5254672885024926886}
   - component: {fileID: 144074900712562707}
   - component: {fileID: 10087149477999685}
+  - component: {fileID: 5060607165646841163}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -399,7 +426,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 144074900712562707}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2149861951872704994}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5060607165646841163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2149861951872704994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda550c20133845408be2dfc37234779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
 --- !u!1 &2557574548682708375
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,6 +822,7 @@ MonoBehaviour:
   - {fileID: 394938900754073066}
   - {fileID: 4402383190483980805}
   - {fileID: 7506052710847469678}
+  ub: []
 --- !u!114 &7144461333328816987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -807,6 +860,7 @@ GameObject:
   - component: {fileID: 5502855720412554162}
   - component: {fileID: 2595195825434742132}
   - component: {fileID: 4163091991407319020}
+  - component: {fileID: 4163696006412851457}
   - component: {fileID: 4390061653269409690}
   m_Layer: 5
   m_Name: Button (1)
@@ -874,6 +928,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4163696006412851457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9128794079944916156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda550c20133845408be2dfc37234779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
 --- !u!114 &4390061653269409690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -916,4 +983,16 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4163091991407319020}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9128794079944916156}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

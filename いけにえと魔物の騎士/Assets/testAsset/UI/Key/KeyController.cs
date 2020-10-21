@@ -24,7 +24,7 @@ public class KeyController : MonoBehaviour, IEnhancedScrollerDelegate
     public MainUI mi;
     public KeyItem space1;
     public KeyItem space2;
-
+    public KeyItem space3;
     [HideInInspector] public bool isEver;
     //List<ToolItem> enableTool;
 
@@ -213,7 +213,13 @@ public class KeyController : MonoBehaviour, IEnhancedScrollerDelegate
 
             //ToolItem[] miniList = new ToolItem[3];
 
-            if (setList.Count % N == N - 1)
+            if (setList.Count == 0)
+            {
+                setList.Add(space1);
+                setList.Add(space2);
+                setList.Add(space3);
+            }
+            else if (setList.Count % N == N - 1)
             {
                 setList.Add(space1);
             }

@@ -20,9 +20,15 @@ public class GManager : MonoBehaviour
     public Slider MpSlider;
     //MPスライダー
 
+    public ToolItem[] useList = new ToolItem[7];
+    public Wepon[] setWepon = new Wepon[2];
+    public Shield[] setShield = new Shield[2];
+
     public float initialHpSl;
     public float initialMpSl;
     public float initialStaminaSl;
+
+
 
     RectTransform hpSl;
     RectTransform mpSl;
@@ -158,8 +164,6 @@ public class GManager : MonoBehaviour
         }
         else
         {
-
-
             isEnable = true;
         }
 
@@ -254,11 +258,11 @@ public class GManager : MonoBehaviour
     public void SetParameter()
     {
 
-        Debug.Log("はいく");
+        //Debug.Log("はいく");
         pStatus.maxHp = pStatus.initialHp + pStatus.HpCurve.Evaluate(pStatus.Vitality);
         pStatus.maxMp = pStatus.initialMp + pStatus.MpCurve.Evaluate(pStatus.capacity);
         pStatus.maxStamina = pStatus.initialStamina + pStatus.StaminaCurve.Evaluate(pStatus.Endurance);
-        Debug.Log($"テスト数値{pStatus.StaminaCurve.Evaluate(pStatus.Endurance)}");
+      //  Debug.Log($"テスト数値{pStatus.StaminaCurve.Evaluate(pStatus.Endurance)}");
         pStatus.capacityWeight = pStatus.initialWeight + pStatus.weightCurve.Evaluate(pStatus.Endurance+pStatus.power);
 
         if(pStatus.capacity >= 0 && pStatus.capacity < 7)

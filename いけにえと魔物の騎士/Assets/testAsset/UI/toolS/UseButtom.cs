@@ -55,6 +55,23 @@ public class UseButtom : MonoBehaviour
             {
                 isFirst = false;
             }
+            if (ToolManager.instance.isEquipMenu)
+            {
+                if (Input.GetButtonDown("Cancel"))
+                {
+                    Debug.Log("サイパン");
+                    MainUI.instance.useWindow.SetActive(false);
+                    MainUI.instance.eqWindow.SetActive(true);
+                    EquipmentManager.instance.EqItem[ToolManager.instance.setNumber].Select();
+                    MainUI.instance.ButtonOn();
+                    //MainUI.instance.eqButton.SetActive(true);
+                }
+                else if (!MainUI.instance.menuButtonOff)
+                {
+                    MainUI.instance.ButtonOff();
+                    // MainUI.instance.eqButton.SetActive(false);
+                }
+            }
         }
 
 
@@ -62,7 +79,7 @@ public class UseButtom : MonoBehaviour
 
     public void CallWindow()
     {
-        if (ToolManager.instance.selectItem.inventoryNum > 0 && item != null && ToolManager.instance.selectButton == this.gameObject)
+        if (ToolManager.instance.selectItem.inventoryNum > 0 && item != null && ToolManager.instance.selectButton == this.gameObject && !ToolManager.instance.isEquipMenu)
         {
 
                 ToolManager.instance.selectItem = item;
@@ -75,16 +92,34 @@ public class UseButtom : MonoBehaviour
 
             ToolManager.instance.isUseMenu = true;
         }
+        else if(ToolManager.instance.selectItem.inventoryNum > 0 && item != null && ToolManager.instance.selectButton == this.gameObject && ToolManager.instance.isEquipMenu)
+        {
+            ToolManager.instance.selectItem = item;
+            // position = this.GetComponent<RectTransform>().anchoredPosition;
+            ToolManager.instance.equipWindow.SetActive(true);
+            //ToolManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
+            //ToolManager.instance.selectWindow.GetComponent<RectTransform>().parent = ToolManager.instance.selectButton.GetComponent<RectTransform>();
+            ToolManager.instance.equipWindow.transform.parent = ToolManager.instance.selectButton.transform;
+            ToolManager.instance.equipWindow.GetComponent<RectTransform>().anchoredPosition = position;
+
+            ToolManager.instance.isUseMenu = true;
+        }
         else
         {
-            
             //スカの音
         }
     }
 
     public void CancelWindow()
     {
-        ToolManager.instance.selectWindow.SetActive(false);
+        if (!ToolManager.instance.isEquipMenu)
+        {
+            ToolManager.instance.selectWindow.SetActive(false);
+        }
+        else if(ToolManager.instance.isEquipMenu)
+        {
+            ToolManager.instance.equipWindow.SetActive(false);
+        }
         isFirst = false;
         ToolManager.instance.selectButton.GetComponent<Button>().Select();
         ToolManager.instance.isUseMenu = false;

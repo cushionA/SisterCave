@@ -24,6 +24,7 @@ public class CoreController : MonoBehaviour, IEnhancedScrollerDelegate
     public MainUI mi;
     public CoreItem space1;
     public CoreItem space2;
+    public CoreItem space3;
 
     //List<ToolItem> enableTool;
 
@@ -138,7 +139,13 @@ public class CoreController : MonoBehaviour, IEnhancedScrollerDelegate
 
         //ToolItem[] miniList = new ToolItem[3];
 
-        if (setList.Count % N == N - 1)
+        if (setList.Count == 0)
+        {
+            setList.Add(space1);
+            setList.Add(space2);
+            setList.Add(space3);
+        }
+        else if (setList.Count % N == N - 1)
         {
             setList.Add(space1);
         }
@@ -212,7 +219,13 @@ public class CoreController : MonoBehaviour, IEnhancedScrollerDelegate
 
             //ToolItem[] miniList = new ToolItem[3];
 
-            if (setList.Count % N == N - 1)
+            if (setList.Count == 0)
+            {
+                setList.Add(space1);
+                setList.Add(space2);
+                setList.Add(space3);
+            }
+            else if (setList.Count % N == N - 1)
             {
                 setList.Add(space1);
             }

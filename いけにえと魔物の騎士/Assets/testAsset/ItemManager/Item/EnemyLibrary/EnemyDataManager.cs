@@ -4,7 +4,12 @@ using UnityEngine;
 public class EnemyDataManager : MonoBehaviour
 {
 	public static EnemyDataManager instance = null;
-	public EnemyLibrary selectEnemy;
+	[HideInInspector] public GameObject selectButton;
+	[HideInInspector] public EnemyLibrary selectItem;
+	[Header("出現させるウインドウ。装備窓とかあってもいいかも")]
+	public GameObject selectWindow;
+	[HideInInspector] public bool isUseMenu;
+
 	private void Awake()
 	{
 		if (instance == null)

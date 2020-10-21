@@ -4,7 +4,11 @@ using UnityEngine;
 public class KeyManager : MonoBehaviour
 {
 	public static KeyManager instance = null;
-	public KeyItem selectItem;
+	[HideInInspector] public GameObject selectButton;
+	[HideInInspector] public KeyItem selectItem;
+	[Header("出現させるウインドウ。装備窓とかあってもいいかも")]
+	public GameObject selectWindow;
+	[HideInInspector] public bool isUseMenu;
 	private void Awake()
 	{
 		if (instance == null)

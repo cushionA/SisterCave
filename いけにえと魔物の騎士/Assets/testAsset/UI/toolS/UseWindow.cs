@@ -20,8 +20,7 @@ public class UseWindow : MonoBehaviour
     //bool isUse;
     [HideInInspector]public bool isSUse;
     [HideInInspector]public bool isDump;
-    bool isChange;
-    private object eventSystem;
+
 
 
     // Start is called before the first frame update
@@ -135,6 +134,7 @@ public class UseWindow : MonoBehaviour
 
     public void ResetWindow()
     {
+        Debug.Log("きめつ");
         isNum = false;
         isSUse = false;
         isDump = false;

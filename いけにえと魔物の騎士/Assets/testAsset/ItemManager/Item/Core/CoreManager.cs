@@ -9,7 +9,9 @@ public class CoreManager : MonoBehaviour
 	[HideInInspector] public GameObject selectButton;
 	[HideInInspector] public CoreItem selectItem;
 	public GameObject selectWindow;
+	public GameObject equipWindow;//装備する、のボタン
 	[HideInInspector] public bool isUseMenu;
+	[HideInInspector] public bool isEquipMenu;
 
 	private void Awake()
 	{

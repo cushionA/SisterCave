@@ -9,7 +9,10 @@ public class ToolManager : MonoBehaviour
 	[HideInInspector] public GameObject selectButton;
 	[HideInInspector]public ToolItem selectItem;
 	public GameObject selectWindow;
-	public bool isUseMenu;
+	public GameObject equipWindow;
+	[HideInInspector]public bool isUseMenu;
+	[HideInInspector]public bool isEquipMenu;
+	[HideInInspector] public int setNumber;//何番目のボタンに入れるかどうか
 
 	private void Awake()
 	{
