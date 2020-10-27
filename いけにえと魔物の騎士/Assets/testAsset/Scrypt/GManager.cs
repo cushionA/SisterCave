@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using Rewired;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,7 +27,7 @@ public class GManager : MonoBehaviour
     public float initialHpSl;
     public float initialMpSl;
     public float initialStaminaSl;
-
+    [HideInInspector]public Player InputR;
 
 
     RectTransform hpSl;
@@ -74,6 +74,7 @@ public class GManager : MonoBehaviour
 
     private void Awake()
     {
+        InputR = ReInput.players.GetPlayer(1);
         if (instance == null)
         {
             instance = this;

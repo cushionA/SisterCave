@@ -38,7 +38,7 @@ public class UseWindow : MonoBehaviour
             isFirst = true;
         }
 
-        if(!isDump && !isSUse && Input.GetButtonDown("Cancel"))
+        if(!isDump && !isSUse && GManager.instance.InputR.GetButtonDown("Cancel"))
         {
             isNum = false;
             isSUse = false;
@@ -50,7 +50,7 @@ public class UseWindow : MonoBehaviour
  /*       else if (isDump)
         {
             thirdButton.Select();
-            if (Input.GetButtonDown("Submit"))
+            if (GManager.instance.InputR.GetButtonDown("Submit"))
             {
                 isDump = false;
                 numChange.SetActive(false);
@@ -58,7 +58,7 @@ public class UseWindow : MonoBehaviour
                 ToolManager.instance.changeNum = 1;
                 ToolManager.instance.selectButton.GetComponent<Button>().Select();
             }
-            else if (Input.GetButtonDown("Cancel"))
+            else if (GManager.instance.InputR.GetButtonDown("Cancel"))
             {
                 isDump = false;
                 numChange.SetActive(false);
@@ -68,14 +68,14 @@ public class UseWindow : MonoBehaviour
         else if (isSUse)
         {
             secondButton.Select();
-            if (Input.GetButtonDown("Submit"))
+            if (GManager.instance.InputR.GetButtonDown("Submit"))
             {
                 isSUse = false;
                 numChange.SetActive(false);
                 ToolManager.instance.Use();
                 mu.MenuCancel();
             }
-            else if (Input.GetButtonDown("Cancel"))
+            else if (GManager.instance.InputR.GetButtonDown("Cancel"))
             {
                 isSUse = false;
                 numChange.SetActive(false);
@@ -83,7 +83,7 @@ public class UseWindow : MonoBehaviour
             }
         }*/
 
-        if (Input.GetButtonDown("Menu") && !isNum)
+        if (GManager.instance.InputR.GetButtonDown("Menu") && !isNum)
         {
             ResetWindow();
         }
@@ -134,7 +134,7 @@ public class UseWindow : MonoBehaviour
 
     public void ResetWindow()
     {
-        Debug.Log("きめつ");
+      //  Debug.Log("きめつ");
         isNum = false;
         isSUse = false;
         isDump = false;

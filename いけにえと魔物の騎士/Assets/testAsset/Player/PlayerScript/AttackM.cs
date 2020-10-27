@@ -78,15 +78,15 @@ public class AttackM : MonoBehaviour
     {
 
         DownKeyCheck();
-        ControllerCheck();
+   //     ControllerCheck();
 
-        horizontalKey = Input.GetAxisRaw("Horizontal");
-        fire1Key = Input.GetButtonDown("Fire1");
+        horizontalKey = GManager.instance.InputR.GetAxisRaw("Horizontal");
+        fire1Key = GManager.instance.InputR.GetButtonDown("Fire1");
         if (!padConnect)
         {
-            fire2Key = Input.GetButtonDown("Fire2");
+            fire2Key = GManager.instance.InputR.GetButtonDown("Fire2");
         }
-        fire2Axis = Input.GetAxisRaw("Fire2Axis");
+        fire2Axis = GManager.instance.InputR.GetAxisRaw("Fire2Axis");
         if (padConnect)
         {
             if (fire2Axis < 0 && !fire2Assist)
@@ -110,16 +110,16 @@ public class AttackM : MonoBehaviour
         }
         if (!padConnect)
         {
-            artsKey = Input.GetButtonDown("Arts");
+            artsKey = GManager.instance.InputR.GetButtonDown("Arts");
         }
         anyKey = AnyKey();
         if (isCharging && !bigAttack && !chargeAttack && !padConnect)
         {
-            chargeKey = Input.GetAxisRaw("Fire2");//Debug.Log("入力");
+            chargeKey = GManager.instance.InputR.GetAxisRaw("Fire2");//Debug.Log("入力");
         }
         else if(isCharging && !bigAttack && !chargeAttack && padConnect)
         {
-            chargeKey = Input.GetAxisRaw("Fire2Axis");//Debug.Log("入力");
+            chargeKey = GManager.instance.InputR.GetAxisRaw("Fire2Axis");//Debug.Log("入力");
         }
         else
         {
@@ -302,8 +302,8 @@ public class AttackM : MonoBehaviour
 
     bool AnyKey()
     {
-        if (Input.GetButtonDown("Avoid") || Input.GetButtonDown("Guard")
-            || Input.GetAxisRaw("Vertical") != 0 /*|| Input.GetAxisRaw("Horizontal") != 0*/)
+        if (GManager.instance.InputR.GetButtonDown("Avoid") || GManager.instance.InputR.GetButtonDown("Guard")
+            || GManager.instance.InputR.GetAxisRaw("Vertical") != 0 /*|| GManager.instance.InputR.GetAxisRaw("Horizontal") != 0*/)
         {
             return true;
         }
@@ -805,11 +805,11 @@ public class AttackM : MonoBehaviour
     }//判定出す直前にアニメイベントで呼び出す。
     void DownKeyCheck()
     {
-        if (Input.anyKeyDown)
+        if (GManager.instance.InputR.anyKeyDown)
         {
             foreach (KeyCode code in Enum.GetValues(typeof(KeyCode)))
             {
-                if (Input.GetKeyDown(code))
+                if (GManager.instance.InputR.GetKeyDown(code))
                 {
                     //処理を書く
                     Debug.Log($"入力されたのは{code}");
@@ -819,13 +819,16 @@ public class AttackM : MonoBehaviour
         }
     }
 
-    void ControllerCheck()
+ /*   void ControllerCheck()
     {
         //ゲームパッドが繋がれてるか確認
-        var controllerNames = Input.GetJoystickNames();
+        var controllerNames = GManager.instance.InputR.GetJoystickNames();
 
         Debug.Log($"ゲームパッドが接続されてる{padConnect}");
-        Debug.Log($"ゲームパッドName{controllerNames[0]}");
+        if (controllerNames != null)
+        {
+      //      Debug.Log($"ゲームパッドName{controllerNames[0]}");
+        }
         // 一台もコントローラが接続されていなければエラー
         if (controllerNames[0] == "")
         {
@@ -835,6 +838,6 @@ public class AttackM : MonoBehaviour
         {
             padConnect = true;
         }
-    }
+    }*/
 }
     

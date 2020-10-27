@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Rewired;
 using UnityEngine;
 using HutongGames.PlayMaker;
 
@@ -113,11 +112,11 @@ public class PlayerMove : MonoBehaviour
         if (Time.timeScale != 0.0f)
         {
 
-            horizontalkey = Input.GetAxisRaw("Horizontal");
-            verticalkey = Input.GetAxisRaw("Vertical");
+            horizontalkey = GManager.instance.InputR.GetAxisRaw("Horizontal");
+            verticalkey = GManager.instance.InputR.GetAxisRaw("Vertical");
             if (GManager.instance.pStatus.stamina >= 1 && !GManager.instance.isGBreak && !GManager.instance.isAttack && GManager.instance.onGimmick && !isStop)
             {
-                if (GManager.instance.guardEnable && Input.GetButton("Guard"))
+                if (GManager.instance.guardEnable && GManager.instance.InputR.GetButton("Guard"))
                 {
                     GManager.instance.isGuard = true;
                 }
@@ -126,14 +125,14 @@ public class PlayerMove : MonoBehaviour
                     GManager.instance.isGuard = true;
                 }
             }
-            else if(!Input.GetButton("Guard"))
+            else if(!GManager.instance.InputR.GetButton("Guard"))
             {
                 GManager.instance.isGuard = false;
             }
 
             if (!isAvoid && isGround)
             {
-                avoidKey = Input.GetAxisRaw("Avoid");
+                avoidKey = GManager.instance.InputR.GetAxisRaw("Avoid");
             }
             else if (isAvoid)
             {

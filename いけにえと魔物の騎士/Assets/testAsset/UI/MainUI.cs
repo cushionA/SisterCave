@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Rewired;
+using Rewired.Integration.UnityUI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -62,8 +62,9 @@ public class MainUI : MonoBehaviour
     public GameObject Scon;
 
 
-    [SerializeField] EventSystem eventSystem;
-    [SerializeField] StandaloneInputModule stIn;
+    [SerializeField] RewiredEventSystem eventSystem;
+    [SerializeField] RewiredStandaloneInputModule stIn;
+
 
     Button eq;
     SisUI sis;
@@ -112,13 +113,13 @@ public class MainUI : MonoBehaviour
         }
         Debug.Log($"さぁて真になれ{openWindow}");
 
-         verticalKey = Input.GetAxisRaw("Vertical");
+         verticalKey = InputR.GetAxisRaw("Vertical");
 
        // Debug.Log($"装備窓確認trueになれ{isInitial}");
 
         if (!sis.sisMenu)
         {
-            if (Input.GetButtonDown("Menu"))
+            if (InputR.GetButtonDown("Menu"))
             {
                 //メニュー展開ボタンを押すとメニューの表示非表示を切り替え
                 if (isMenu && !selectWindow && !openWindow)
