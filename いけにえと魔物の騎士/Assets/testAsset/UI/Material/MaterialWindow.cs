@@ -31,7 +31,7 @@ public class MaterialWindow : MonoBehaviour
             isFirst = true;
         }
 
-        if (!isDump && Input.GetButtonDown("Cancel"))
+        if (!isDump && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
         {
             isNum = false;
             isDump = false;
@@ -40,7 +40,7 @@ public class MaterialWindow : MonoBehaviour
             ub.CancelWindow();//選択ウィンドウを消す
         }
 
-        if (Input.GetButtonDown("Menu") && !isNum)
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14) && !isNum)
         {
             ResetWindow();
         }

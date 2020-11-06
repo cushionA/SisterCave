@@ -240,6 +240,7 @@ public class EnemyStatus : CharacterStatus
 	[Header("選択可能な番号")]
 	///<Summary>
 	///コンボの起点と非コンボの単発攻撃のみ
+	///ここからランダムにアタックナンバーに入れたりする
 	///</Summary>
 	public List<int> serectableNumber; 
 
@@ -271,11 +272,13 @@ public class EnemyStatus : CharacterStatus
 	public float Shock;//強靭削り
 	[HideInInspector]
 	public float mValue;//強靭削り
+	[HideInInspector]
 	public bool isCombo;//コンボするかどうか。最終段ではfalseに
 	/// <summary>
 	/// 衝突できる回数。毎回設定しなおす
 	/// </summary>
-	public int hitLimmit = 1;
+//	[HideInInspector]
+//	public int hitLimmit = 1;
 
 	[HideInInspector]public bool isLight;//軽い攻撃かどうか。trueなら盾ではじかれる
 }

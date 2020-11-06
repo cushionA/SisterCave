@@ -25,6 +25,8 @@ public struct EnemyValue
     public Vector2 blowPower;
     [Header("コンボするかどうか")]
     public bool isCombo;
-    [Header("遠距離攻撃かどうかかどうか")]
+    [Header("遠距離攻撃かどうか")]
     public bool isShoot;
+    [Header("パリィできるかどうか")]
+    public bool parriable;
 }

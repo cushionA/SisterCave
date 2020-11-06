@@ -27,7 +27,7 @@ public class SKMagicEquip : MonoBehaviour
             isFirst = true;
         }
 
-        if (GManager.instance.InputR.GetButtonDown("Cancel"))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
         {
 
             MagicManager.instance.isUseMenu = false;
@@ -35,7 +35,7 @@ public class SKMagicEquip : MonoBehaviour
         }
 
 
-        if (GManager.instance.InputR.GetButtonDown("Menu"))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
         {
             ResetWindow();
         }

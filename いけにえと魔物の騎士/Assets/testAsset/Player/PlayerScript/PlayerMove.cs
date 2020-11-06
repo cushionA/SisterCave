@@ -112,11 +112,11 @@ public class PlayerMove : MonoBehaviour
         if (Time.timeScale != 0.0f)
         {
 
-            horizontalkey = GManager.instance.InputR.GetAxisRaw("Horizontal");
-            verticalkey = GManager.instance.InputR.GetAxisRaw("Vertical");
+            horizontalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
+            verticalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction2);
             if (GManager.instance.pStatus.stamina >= 1 && !GManager.instance.isGBreak && !GManager.instance.isAttack && GManager.instance.onGimmick && !isStop)
             {
-                if (GManager.instance.guardEnable && GManager.instance.InputR.GetButton("Guard"))
+                if (GManager.instance.guardEnable && GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction11))
                 {
                     GManager.instance.isGuard = true;
                 }
@@ -125,14 +125,14 @@ public class PlayerMove : MonoBehaviour
                     GManager.instance.isGuard = true;
                 }
             }
-            else if(!GManager.instance.InputR.GetButton("Guard"))
+            else if(!GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction11))
             {
                 GManager.instance.isGuard = false;
             }
 
             if (!isAvoid && isGround)
             {
-                avoidKey = GManager.instance.InputR.GetAxisRaw("Avoid");
+                avoidKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction4);
             }
             else if (isAvoid)
             {
@@ -439,7 +439,7 @@ public class PlayerMove : MonoBehaviour
             }
         
 
-         if (!isGround) {
+         if (!isGround && !GManager.instance.isAttack) {
 
             Vector2 move;
            

@@ -62,9 +62,11 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\LuaConditionsWizardDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Setup Wizards\PlayerSetupWizard.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\StartConversationOnDialogueEventEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\AutoBackend\ReflectionUtil.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\QuestEntryPopupDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\DialogueSystemTriggerEventDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowMain.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AudioUndoHelper.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Aurora\AuroraConverterWindowDisabled.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\Nodes\DialogueEditorWindowConversationNodeEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\LuaScriptWizardDrawer.cs" />
@@ -72,31 +74,44 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\DialogueEntryPicker.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Aurora\AuroraConverterWindow.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Text\StringFieldTextAreaAttributeDrawer.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioHierIcon.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterCustomEventPropertyDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\VariablePicker.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowDialogueTreeSearchBar.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\Export\CSVExporter.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Save System\PlayerPrefsSavedGameDataStorerEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\QuestTriggerEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\RelationsInspectorLink.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Text\CSVUtility.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Fields\Examples\CustomFieldType_SceneType.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\PersistChanges\MAObjectContext.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ToolsWindow.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Manager\DialogueSystemControllerEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\SocialNetworkExample\SocialNetworkBackend.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\SequenceTriggerEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\UnityEvents\TagMaskDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\DialogueSystemTriggerEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\DynamicSoundGroupCreatorInspector.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Fields\Base\CustomFieldType_Item.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\DialogueEditorStyles.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Options\Timeline\BarkDrawer.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AudioTransformTrackerInspector.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Misc\MoreEditorUtility.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Articy\ArticySchemaEditorTools.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Articy\ArticyConverterWindowDisabled.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\DynamicGroupVariationInspector.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\ScriptableObjectBackendToolbar.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\UI\Standard UI\Dialogue UI\StandardUIMenuPanelEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\DTGUIHelper.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\DrawUtil.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\ScriptingSymbolNames.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Text\TextTableEditorWindow.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Fields\CustomFieldType.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\SetQuestStateOnDialogueEventEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\PersistChanges\MAComponentPatch.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowLocalization.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueDatabaseEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\ColorLegendWidget.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Wrappers\Editor\Text\StringAssetMenu.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Setup Wizards\NPCSetupWizard.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\EditorZoomArea.cs" />
@@ -104,6 +119,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Twine\TwineStory.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\DialogueSystemMenuItems.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowAssetLists.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\SoundGroupPropertyDrawer.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ES3GlobalReferencesEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\SetAnimationOnDialogueEventEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Fields\Base\CustomFieldType_Location.cs" />
@@ -117,11 +133,13 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowFieldsSection.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\QuestPicker.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Articy\Schemas\Articy 2.2\Articy_2_2_EditorTools.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\SocialNetworkExample\Person.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Unique ID Tool\UniqueIDWindowPrefs.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowLocationSection.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\LocalizedText\LocalizedTextTableEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Camera Angle Editor\CameraAngleEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\SequenceEditorTools.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\DTDefineHelper.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Articy\ArticyEditorTools.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Manager\DialogueSystemControllerHierarchyIcon.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\TemplateTools.cs" />
@@ -130,6 +148,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\SetComponentEnabledOnDialogueEventEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\BarkOnIdleEditor.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ES3InspectorInfoEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\AutoBackend\RIAutoBackend.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Misc\EditorGUIZoomArea.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ES3Postprocessor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Chat Mapper\ChatMapperConverter.cs" />
@@ -137,16 +156,19 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\LuaConditionWizard.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Fields\Base\CustomFieldType_Actor.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ES3ReferenceMgrEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\MasterAudioEventBackend.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Barks\BarkGroupManagerEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\Export\ChatMapperExporter.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Setup Wizards\DialogueManagerWizard.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowUpdateTemplateSection.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowLanguageList.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioWelcomeWindow.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\BitMaskDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowActorSection.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Misc\MoreEditorGuiUtility.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Save System\PersistentActiveDataEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Misc\TypeUtility.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\ButtonClickerInspector.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowDialogueTreeSection.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ReferencesWindow.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\Nodes\DialogueEditorWindowConversationNodeEditorBase.cs" />
@@ -160,9 +182,12 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\ItemPicker.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\HomeWindow.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\AddES3Prefab.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\TypeGraphExample\TypeUtility.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\RandomColor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Twine\TwineImportWindow.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Templates\Scripts\Editor\CustomFieldType_Conversation.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Quests\StandardUIQuestTrackerEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioInspectorResources.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\ConditionEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\Nodes\DialogueEditorWindowConversationNodeEditorTopControls.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\Export\LanguageTextExporter.cs" />
@@ -173,54 +198,72 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowDatabaseSection.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\EditorWindowTools.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\SetAnimatorStateOnDialogueEventEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\PlaylistPropertyDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\UI\UILocalizationManagerEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Unique ID Tool\UniqueIDWindow.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ES3Window.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowGUIStyles.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\PersistChanges\MAGOSetting.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowVariableSection.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\VariablePopupDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Fields\Base\CustomFieldType_Localization.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\SettingsWindow.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Save System\SaveSystemEditorUtility.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Fields\Base\CustomFieldType_QuestState.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\FootstepsSoundsInspector.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AmbientSoundInspector.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Twine\TwineImportWindowDisabled.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Wrappers\Editor\Text\TextTableAssetMenu.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Options\Timeline\PlaySequenceBehaviourDrawer.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\SoundGroupVariationInspector.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\StartSequenceOnDialogueEventEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Aurora\AuroraConverterPrefs.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\MinimalBackend.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\ActorPopupDrawer.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ES3SettingsEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowFieldMultinodeSection.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioSoundUpgrader.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Options\Timeline\StartConversationBehaviourDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\LuaScriptWizard.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Fields\CustomFieldTypeService.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowItemSection.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioManager.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\ScriptableObjectBackend.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\Toolbar.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Articy\Schemas\Articy 3.1\Articy_3_1_EditorTools.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\ConversationPicker.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\AlertTriggerEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\PlaylistControllerInspector.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioGroupInspector.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\DialogueTriggerEventDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\RelationsInspector\RelationsInspectorLink.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowWatchSection.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Options\Timeline\SetQuestStateBehaviourDrawer.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ES3PrefabEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\BackendUtil.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\SetActiveOnDialogueEventEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Articy\ArticyConverterWindow.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Misc\HelpBoxAttributeDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\UI\CheckInputManagerSettings.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\SendMessageOnDialogueEventEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\DynamicSoundGroupInspector.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AudioScriptOrderManager.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Text\TextTableEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\ReferenceDatabaseDialogueEventEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Updater\DialogueSystem1xTo2xUpdater.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\LuaOnDialogueEventEditor.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ES3EditorStyle.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AddressableEditorHelper.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Utility\EditorTools.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindowTemplateSection.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\CSV\CSVConverterWindow.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\DialogueEditorWindow.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\HierarchyExample\SceneHierarchyBackend.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\QuestStateDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Message System\MessageEventsEditor.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\TypesWindow.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\TypeGraphExample\TypeInheritanceBackend.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\HierarchyExample\TagBackend.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Save System\DiskSavedGameDataStorerEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\Aurora\Dlg.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Misc\EnablePhysics2DMenuItem.cs" />
@@ -228,6 +271,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\MVC\DialogueActorEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\Export\VoiceoverScriptExporter.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\ConversationTriggerEditor.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\SoundGroupOrganizerInspector.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\LuaTriggerEditor.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ES3AutoSaveEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\SetEnabledOnDialogueEventEditor.cs" />
@@ -235,65 +279,21 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Templates\Scripts\Editor\CustomFieldType_TemplateType.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\UI\InputDeviceManagerEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Fields\Base\CustomFieldType_Number.cs" />
+    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\SocialNetworkExample\StudyNetworkBackend.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioInspector.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Editor\ES3AutoSaveMgrEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Fields\Base\CustomFieldType_Text.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Setup Wizards\WelcomeWindow.cs" />
+    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AudioEventInspector.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Dialogue Editor\AssetFoldouts.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\UI\Standard UI\Selector UI\SelectorUseStandardUIElementsEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Text\StringFieldDrawer.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Tools\Importers\AbstractConverterWindow.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\Legacy\BarkTriggerEditor.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Editor\Inspectors\Triggers\ActorPicker.cs" />
-    <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Misc\AssetUtility.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\AutoBackend\ReflectionUtil.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AudioUndoHelper.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioHierIcon.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterCustomEventPropertyDrawer.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\RelationsInspectorLink.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\PersistChanges\MAObjectContext.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\SocialNetworkExample\SocialNetworkBackend.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\DynamicSoundGroupCreatorInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AudioTransformTrackerInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\DynamicGroupVariationInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\ScriptableObjectBackendToolbar.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\DTGUIHelper.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\DrawUtil.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\PersistChanges\MAComponentPatch.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\ColorLegendWidget.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\SoundGroupPropertyDrawer.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\SocialNetworkExample\Person.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\DTDefineHelper.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\AutoBackend\RIAutoBackend.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\MasterAudioEventBackend.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioWelcomeWindow.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\ButtonClickerInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\TypeGraphExample\TypeUtility.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\RandomColor.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioInspectorResources.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\PlaylistPropertyDrawer.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\PersistChanges\MAGOSetting.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\FootstepsSoundsInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AmbientSoundInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\SoundGroupVariationInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\MinimalBackend.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioSoundUpgrader.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioManager.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\ScriptableObjectBackend.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\PlaylistControllerInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioGroupInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\BackendUtils\BackendUtil.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\DynamicSoundGroupInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AudioScriptOrderManager.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AddressableEditorHelper.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\HierarchyExample\SceneHierarchyBackend.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\TypeGraphExample\TypeInheritanceBackend.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\HierarchyExample\TagBackend.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\SoundGroupOrganizerInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\RelationsInspector\Backends\SocialNetworkExample\StudyNetworkBackend.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\MasterAudioInspector.cs" />
-    <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\AudioEventInspector.cs" />
     <Compile Include="Assets\Plugins\Editor\RelationsInspector\RelationsInspectorMenuItem.cs" />
     <Compile Include="Assets\Plugins\Editor\DarkTonic\MasterAudio\BulkAudioImporter.cs" />
+    <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Editor\Misc\AssetUtility.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Plugins\Easy Save 3\Editor\ES3ValueTypeTemplate.txt" />
@@ -543,14 +543,14 @@
     <Reference Include="PlayMakerEditorResources">
       <HintPath>Assets\PlayMaker\Editor\PlayMakerEditorResources.dll</HintPath>
     </Reference>
+    <Reference Include="RelationsInspector">
+      <HintPath>Assets\Plugins\Editor\RelationsInspector\RelationsInspector.dll</HintPath>
+    </Reference>
     <Reference Include="PlayMaker">
       <HintPath>Assets\Plugins\PlayMaker\PlayMaker.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>Library\PackageCache\com.unity.burst@1.3.5\Unity.Burst.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.NRefactory">
-      <HintPath>Library\PackageCache\com.unity.render-pipelines.core@8.2.0\Editor\ShaderGenerator\ICSharpCode.NRefactory.dll</HintPath>
+    <Reference Include="Rewired_Editor">
+      <HintPath>Assets\Rewired\Internal\Libraries\Editor\Rewired_Editor.dll</HintPath>
     </Reference>
     <Reference Include="Rewired_Core">
       <HintPath>Assets\Rewired\Internal\Libraries\Runtime\Rewired_Core.dll</HintPath>
@@ -558,11 +558,11 @@
     <Reference Include="Rewired_Windows">
       <HintPath>Assets\Rewired\Internal\Libraries\Runtime\Rewired_Windows.dll</HintPath>
     </Reference>
-    <Reference Include="Rewired_Editor">
-      <HintPath>Assets\Rewired\Internal\Libraries\Editor\Rewired_Editor.dll</HintPath>
+    <Reference Include="Unity.Burst.Unsafe">
+      <HintPath>Library\PackageCache\com.unity.burst@1.3.5\Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
-    <Reference Include="RelationsInspector">
-      <HintPath>Assets\Plugins\Editor\RelationsInspector\RelationsInspector.dll</HintPath>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>Library\PackageCache\com.unity.render-pipelines.core@8.2.0\Editor\ShaderGenerator\ICSharpCode.NRefactory.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.0\net35\unity-custom\nunit.framework.dll</HintPath>

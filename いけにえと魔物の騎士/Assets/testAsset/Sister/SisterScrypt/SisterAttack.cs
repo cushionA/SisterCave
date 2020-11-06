@@ -30,7 +30,7 @@ public class SisterAttack : MonoBehaviour
 
         sisterFireKey = Input.GetAxisRaw("SFire");
 
-        if (Input.GetButtonDown("SFire"))
+        if (GManager.instance.InputR.GetButtonDown("SFire"))
         {
             if(useMagi.itemName == "聖火")
             {

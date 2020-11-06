@@ -22,7 +22,7 @@ public class ChangeToolNum : MonoBehaviour
         if (isDump)
         {
 
-            if (Input.GetButtonDown("Cancel"))
+            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
             {
                 isDump = false;
                 uw.isDump = false;
@@ -32,7 +32,7 @@ public class ChangeToolNum : MonoBehaviour
         }
         else if (isSUse)
         {
-            if (Input.GetButtonDown("Cancel"))
+            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
             {
                 isSUse = false;
                 uw.isSUse = false;
@@ -41,7 +41,7 @@ public class ChangeToolNum : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Menu"))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
         {
             ResetFlag();
             uw.ResetWindow();

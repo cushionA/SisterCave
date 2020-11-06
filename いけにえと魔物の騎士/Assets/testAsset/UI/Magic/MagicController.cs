@@ -305,7 +305,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
         //MyItem.rowLengthが20にあたります、intで宣言しているので、floatに置換しています。
         //公式は　ScrollBarのValueの上限、セルの数、表示可能なセルの数。
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) < 0)
         {
             if (isReverse == true)
             {
@@ -342,7 +342,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
                 useBar.value += pos;
             }
         }
-        if (Input.GetKeyDown(KeyCode.S) && isIniti)
+        if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) > 0 && isIniti)
         {
             if (!isFirstD)
             {
@@ -369,7 +369,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
                 useBar.value -= pos;
             }
         }
-        else if (Input.GetKeyDown(KeyCode.S) && !isIniti)
+        else if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) > 0 && !isIniti)
         {
 
             isIniti = true;

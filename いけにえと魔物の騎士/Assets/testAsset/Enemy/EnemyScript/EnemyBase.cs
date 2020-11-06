@@ -61,7 +61,8 @@ public class EnemyBase : MonoBehaviour
 	protected bool isWait;
 	protected float stayTime;//攻撃後の待機時間
 	protected int attackNumber;//何番の攻撃をしているのか
-	protected bool isAtEnd;
+	protected bool isAtEnable = true;
+	protected bool isDamage;
 
 	// === キャッシュ ==========================================
 	public Animator animator;
@@ -162,8 +163,8 @@ public class EnemyBase : MonoBehaviour
 		direction = distance.x >= 0 ? 1 : -1;//距離が正、または0の時1。そうでないとき-1。方向
 		directionY = distance.y >= 0 ? 1 : -1;//弓構えるときのアニメの判定	にも使えそう
 
-		//Debug.Log($"ジャンプ中{nowJump}");
-		//Debug.Log($"回避中{isAvoid}");
+		////Debug.Log($"ジャンプ中{nowJump}");
+		////Debug.Log($"回避中{isAvoid}");
 		if (isAggressive)
         {
 			posiReset = true;
@@ -208,6 +209,8 @@ public class EnemyBase : MonoBehaviour
 		}*/
 		SetVelocity();
 		HitCheck();
+		WaitAttack();
+		DamageAvoid();
 	}
 	public void ActionFire(int i,float random = 0.0f)
 	{//ランダムに入れてもいいけど普通に入れてもいい
@@ -254,12 +257,15 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void WeponDamage()
 	{
-		Debug.Log($"ガード中か否か{guardHit}");
-		if (!guardHit && GManager.instance.pStatus.equipWeapon.hitLimmit > 0)
+		//isDamage = true;
+		//SetLayer(10);
+		//Debug.Log($"ガード中か否か{guardHit}");
+		if (!guardHit /*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */&& !isDamage)
 		{
-			GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			isDamage = true;
+		//	GManager.instance.pStatus.equipWeapon.hitLimmit--;
 
-			Debug.Log("終了");
+			//Debug.Log("終了");
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			float mValue = GManager.instance.pStatus.equipWeapon.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
@@ -296,7 +302,7 @@ public class EnemyBase : MonoBehaviour
 			}
 
 			Debug.Log($"{ damage * GManager.instance.pStatus.attackBuff}ダメージ");
-			Debug.Log($"{status.nowArmor}a-mor");
+			//Debug.Log($"{status.nowArmor}a-mor");
 			status.hp -= damage * GManager.instance.pStatus.attackBuff;//HP減らす
 
 			if (!isAttack)
@@ -327,11 +333,12 @@ public class EnemyBase : MonoBehaviour
 
 	public void WeponGuard()
 	{
-		if (GManager.instance.pStatus.equipWeapon.hitLimmit > 0)
+		if (/*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */!isDamage)
 		{
-			GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			isDamage = true;
+			//GManager.instance.pStatus.equipWeapon.hitLimmit--;
 
-			Debug.Log("終了");
+			//Debug.Log("終了");
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			float mValue = GManager.instance.pStatus.equipWeapon.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
@@ -368,8 +375,8 @@ public class EnemyBase : MonoBehaviour
 				damage += (Mathf.Pow(GManager.instance.pStatus.thunderAtk, 2) * mValue) / (GManager.instance.pStatus.thunderAtk + status.thunderDef) * (100 - status.thunderCut)/100;
 			}
 
-			Debug.Log($"{ damage * GManager.instance.pStatus.attackBuff}ダメージ");
-			Debug.Log($"{status.nowArmor}a-mor");
+			//Debug.Log($"{ damage * GManager.instance.pStatus.attackBuff}ダメージ");
+			//Debug.Log($"{status.nowArmor}a-mor");
 			status.hp -= damage * GManager.instance.pStatus.attackBuff;//HP減らす
 
 			status.nowArmor -= (GManager.instance.pStatus.equipWeapon.shock * 2) * ((100 - status.guardPower) / 100);
@@ -391,9 +398,10 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void PlayerMagicDamage()
     {
-		if (!guardHit && GManager.instance.pStatus.useMagic.hitLimmit > 0)
+		if (!guardHit /*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */&& !isDamage)
 		{
-			GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			isDamage = true;
+			//GManager.instance.pStatus.equipWeapon.hitLimmit--;
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			float mValue = GManager.instance.pStatus.useMagic.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
@@ -454,9 +462,11 @@ public class EnemyBase : MonoBehaviour
 	}
 	public void PlayerMagicGuard()
 	{
-		if (GManager.instance.pStatus.useMagic.hitLimmit > 0)
+		if (/*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */!isDamage)
 		{
-			GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			isDamage = true;
+
+			//GManager.instance.pStatus.equipWeapon.hitLimmit--;
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			float mValue = GManager.instance.pStatus.useMagic.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
@@ -509,9 +519,10 @@ public class EnemyBase : MonoBehaviour
 	}
 	public void SisterMagicDamage()
 	{
-		if (!guardHit && SManager.instance.sisStatus.useMagic.hitLimmit > 0)
+		if (!guardHit /*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */&& !isDamage)
 		{
-			GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			isDamage = true;
+			//GManager.instance.pStatus.equipWeapon.hitLimmit--;
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			float mValue = SManager.instance.sisStatus.useMagic.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
@@ -572,9 +583,10 @@ public class EnemyBase : MonoBehaviour
 	}
 	public void SisterMagicGuard()
 	{
-		if (SManager.instance.sisStatus.useMagic.hitLimmit > 0)
+		if (/*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */!isDamage)
 		{
-			GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			isDamage = true;
+			//GManager.instance.pStatus.equipWeapon.hitLimmit--;
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			float mValue = SManager.instance.sisStatus.useMagic.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
@@ -629,9 +641,10 @@ public class EnemyBase : MonoBehaviour
 	}
 	public void AttackDamage()
     {
-		if (status.hitLimmit > 0)
+		if (!GManager.instance.isDamage)
 		{
-			status.hitLimmit--;
+			GManager.instance.isDamage = true;
+			//status.hitLimmit--;
 								 //mValueはモーション値
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			if (status.phyAtk > 0)
@@ -693,9 +706,9 @@ public class EnemyBase : MonoBehaviour
 
 	public void PlayerGuard()
     {
-		if (status.hitLimmit > 0 && GManager.instance.isGuard)
+		if (!GManager.instance.isDamage && GManager.instance.isGuard)
 		{
-			status.hitLimmit--;
+			//status.hitLimmit--;
 			//mValueはモーション値
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			if (status.phyAtk > 0)
@@ -886,14 +899,14 @@ public class EnemyBase : MonoBehaviour
 			}
 			else
 			{
-					//Debug.Log("ああああ");
+					////Debug.Log("ああああ");
 					waitTime += Time.fixedDeltaTime;
 					rb.velocity = new Vector2(0, rb.velocity.y);
 					if (waitTime >= status.waitRes)
 					{
 						isRight = !isRight;
 						waitTime = 0.0f;
-					//	Debug.Log("ああああ");
+					//	//Debug.Log("ああああ");
 					
 				}
 			}
@@ -1164,13 +1177,33 @@ public class EnemyBase : MonoBehaviour
 					avoidTime = 0;
 					rb.velocity = new Vector2(0, rb.velocity.y);
 					SetLayer(initialLayer);
-					//Debug.Log("初期化");
+					////Debug.Log("初期化");
 					AllStop(0.3f);
 				}
 			}
         }
 	
 	}
+
+	/// <summary>
+	/// 何度も当たり判定が検出されるのを防ぐためのもの
+	/// </summary>
+	public void DamageAvoid()
+	{
+		if (isDamage) {
+			avoidTime += Time.fixedDeltaTime;
+			SetLayer(10);
+			if (avoidTime >= 0.1)
+			{
+				isDamage = false;
+				avoidTime = 0;
+				SetLayer(initialLayer);
+			}
+		} 
+	}
+
+
+
 
 	/// <summary>
 	///	地上キャラ用のジャンプ。ジャンプ状態は自動解除。ジャンプキャンセルとセット
@@ -1308,6 +1341,7 @@ public class EnemyBase : MonoBehaviour
 		if(status.nowArmor <= 0) 
 		{
 			isDown = true;
+			isAttack = false;
 		}
 		else
 		{
@@ -1351,7 +1385,7 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void Down()
 	{
-		Debug.Log("吹き飛ぶ");
+		//Debug.Log("吹き飛ぶ");
 
 			if (isDown && rb.IsTouching(status.filter))
 			{
@@ -1373,8 +1407,8 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-		Debug.Log($"{collision.tag}タグ");
-		//Debug.Log("開始");
+		//Debug.Log($"{collision.tag}タグ");
+		////Debug.Log("開始");
 		if(collision.tag == status.AttackTag && (isHitable || lastHit != collision.gameObject))
         {
 			WeponDamage();
@@ -1521,11 +1555,26 @@ public class EnemyBase : MonoBehaviour
 		status.mValue = status.atValue[attackNumber].mvalue;
 		status.aditionalArmor = status.atValue[attackNumber].addArmor;
 		status.isLight = status.atValue[attackNumber].isLight;
-		status.hitLimmit = status.atValue[attackNumber].hitLimmit;
+		//status.hitLimmit = status.atValue[attackNumber].hitLimmit;
 		status.blowVector = status.atValue[attackNumber].blowPower;
 		status.Shock = status.atValue[attackNumber].shock;
 		status.atType = status.atValue[attackNumber].type;
 		status.isCombo = status.atValue[attackNumber].isCombo;
+	}
+
+
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	public void Attack()
+	{
+		if (isAtEnable)
+		{
+			AttackPrepare();
+			//sAni.Play(status.attackName[attackNumber]);
+			//isAttack = true;
+			isAtEnable = false;
+		}
 	}
 
 	/// <summary>
@@ -1573,7 +1622,7 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void GuardBreak()
     {
-		Debug.Log("敗れた");
+		//Debug.Log("敗れた");
 		isGuard = false;
 	}
 
@@ -1582,22 +1631,36 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void WaitAttack()
     {
-        if (isAtEnd && !status.isCombo)
-        {
-			stayTime += Time.fixedDeltaTime;
-			if(stayTime >= status.coolTime)
-            {
-				isAtEnd = false;
-				stayTime = 0.0f;
-            }
-        }
-		if(isAtEnd && status.isCombo)
-        {
-			isAtEnd = false;
-			attackNumber++;
-			AttackPrepare();
-        }
+		if (isAttack)
+		{
+			if (!CheckEnd(status.attackName[attackNumber]))
+			{
+				isAtEnable = true;
+				isAttack = false;
+			}
+		}
+
+		else if (!isAttack)
+		{
+			if (!isAtEnable && !status.isCombo)
+			{
+				stayTime += Time.fixedDeltaTime;
+				if (stayTime >= status.coolTime)
+				{
+					isAtEnable = false;
+					stayTime = 0.0f;
+				}
+			}
+			if (isAtEnable && status.isCombo)
+			{
+				isAtEnable = false;
+				attackNumber++;
+				//AttackPrepare();
+				Attack();
+			}
+		}
     }
+
 	bool CheckEnd(string _currentStateName)
 	{
 		return sAni.IsPlaying(_currentStateName);

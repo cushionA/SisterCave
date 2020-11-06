@@ -10,8 +10,8 @@ public class MagicButton : MonoBehaviour
     bool isFirst;
 
 
-    EventSystem eventSystem;
-    StandaloneInputModule stIn;
+   // EventSystem eventSystem;
+    //StandaloneInputModule stIn;
 
 
     // Start is called before the first frame update
@@ -19,8 +19,8 @@ public class MagicButton : MonoBehaviour
     private void Start()
     {
         GameObject ev = GameObject.Find("EventSystem");
-        eventSystem = ev.GetComponent<EventSystem>();
-        stIn = ev.GetComponent<StandaloneInputModule>();
+      //  eventSystem = ev.GetComponent<EventSystem>();
+       // stIn = ev.GetComponent<StandaloneInputModule>();
     }
 
     // Update is called once per frame
@@ -33,7 +33,7 @@ public class MagicButton : MonoBehaviour
 
         if (!MagicManager.instance.isUseMenu)//選択ウィンドウ出てないなら
         {
-            MagicManager.instance.selectButton = eventSystem.currentSelectedGameObject;
+            MagicManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
             //  Debug.Log($"青い稲妻{MagicManager.instance.selectButton == this.gameObject}");
             if (MagicManager.instance.selectButton == this.gameObject && !isFirst)
@@ -50,7 +50,7 @@ public class MagicButton : MonoBehaviour
             if (MagicManager.instance.isSisterM || MagicManager.instance.isSisterM)
             {
                 //  Debug.Log("サイパン");
-                if (Input.GetButtonDown("Cancel"))
+                if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
                     MainUI.instance.magicWindow.SetActive(false);
                     MainUI.instance.eqWindow.SetActive(true);

@@ -11,8 +11,8 @@ public struct AttackValue
     public float y;
     [Header("強靭削り")]
     public float z;
-    [Header("ヒット数")]
-    public int hitLimmit;
+    [Header("コンボ攻撃かどうか")]
+    public bool isCombo;
     [Header("吹き飛ばせるかどうか")]
     public bool isBlow;
     [Header("弾かれるかどうか")]

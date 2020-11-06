@@ -11,8 +11,8 @@ public class MaterialButton : MonoBehaviour
     bool isFirst;
 
 
-    EventSystem eventSystem;
-    StandaloneInputModule stIn;
+ //   EventSystem eventSystem;
+  //  StandaloneInputModule stIn;
 
 
     // Start is called before the first frame update
@@ -20,8 +20,8 @@ public class MaterialButton : MonoBehaviour
     private void Start()
     {
         GameObject ev = GameObject.Find("EventSystem");
-        eventSystem = ev.GetComponent<EventSystem>();
-        stIn = ev.GetComponent<StandaloneInputModule>();
+      //  eventSystem = ev.GetComponent<EventSystem>();
+     //   stIn = ev.GetComponent<StandaloneInputModule>();
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class MaterialButton : MonoBehaviour
 
         if (!MaterialManager.instance.isUseMenu)//選択ウィンドウ出てないなら
         {
-            MaterialManager.instance.selectButton = eventSystem.currentSelectedGameObject;
+            MaterialManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
             //  Debug.Log($"青い稲妻{MaterialManager.instance.selectButton == this.gameObject}");
             if (MaterialManager.instance.selectButton == this.gameObject && !isFirst)

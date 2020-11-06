@@ -11,8 +11,8 @@ public class LibraryButton : MonoBehaviour
     bool isFirst;
     
 
-    EventSystem eventSystem;
-    StandaloneInputModule stIn;
+  //  EventSystem eventSystem;
+  //  StandaloneInputModule stIn;
 
 
     // Start is called before the first frame update
@@ -20,8 +20,8 @@ public class LibraryButton : MonoBehaviour
     private void Start()
     {
         GameObject ev = GameObject.Find("EventSystem");
-        eventSystem = ev.GetComponent<EventSystem>();
-        stIn = ev.GetComponent<StandaloneInputModule>();
+      //  eventSystem = ev.GetComponent<EventSystem>();
+    //    stIn = ev.GetComponent<StandaloneInputModule>();
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class LibraryButton : MonoBehaviour
 
         if (!EnemyDataManager.instance.isUseMenu)//選択ウィンドウ出てないなら
         {
-            EnemyDataManager.instance.selectButton = eventSystem.currentSelectedGameObject;
+            EnemyDataManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
             //  Debug.Log($"青い稲妻{EnemyDataManager.instance.selectButton == this.gameObject}");
             if (EnemyDataManager.instance.selectButton == this.gameObject && !isFirst)

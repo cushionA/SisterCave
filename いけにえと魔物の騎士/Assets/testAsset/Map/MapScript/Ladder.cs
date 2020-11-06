@@ -45,7 +45,7 @@ public class Ladder : MonoBehaviour
     {
         //ボタンが押されているかどうかの確認
 
-        if (Input.GetButtonDown("Submit"))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5))
         {
 
             isPush = true;
@@ -55,7 +55,7 @@ public class Ladder : MonoBehaviour
             isPush = false;
 
         }
-        VerticalKey = Input.GetAxisRaw("Vertical");
+        VerticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction1);
 
 
     }

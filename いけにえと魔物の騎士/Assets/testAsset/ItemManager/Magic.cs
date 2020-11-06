@@ -170,7 +170,7 @@ public class Magic : Item
 	/// <summary>
 	/// 衝突できる回数。毎回設定しなおす
 	/// </summary>
-	public int hitLimmit = 1;
+	//public int hitLimmit = 1;
 
 	[Header("弾丸の数")]
 	/// <summary>

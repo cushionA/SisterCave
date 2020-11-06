@@ -156,7 +156,7 @@ namespace Rewired.Demos {
             if(dialog.enabled) return; // don't allow closing the menu while dialog is open so there won't be issues remapping the Menu button
 
             if(Event.current.type == EventType.Layout) {
-                if(ReInput.players.GetSystemPlayer().GetButtonDown("Menu")) {
+                if(ReInput.players.GetSystemPlayer().GetButtonDown(MainUI.instance.rewiredAction14)) {
                     if(showMenu) { // menu is open and will be closed
                         ReInput.userDataStore.Save(); // save all maps when menu is closed
                         Close();
@@ -1554,7 +1554,7 @@ namespace Rewired.Demos {
             }
 
             public void DrawCancelButton() {
-                DrawCancelButton("Cancel");
+           //     DrawCancelButton(MainUI.instance.rewiredAction17);
             }
             public void DrawCancelButton(string title) {
                 bool origGUIEnabled = GUI.enabled; // store original gui state

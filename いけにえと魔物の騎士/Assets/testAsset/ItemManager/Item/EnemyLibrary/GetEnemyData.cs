@@ -23,7 +23,7 @@ public class GetEnemyData : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (Input.GetButtonDown("Submit") && !isFirst)
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18) && !isFirst)
         {
             EnemyDataManager.instance.takeItem = addTool;
             EnemyDataManager.instance.changeNum = addNum;

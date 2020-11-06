@@ -40,7 +40,7 @@ public class SisUI : MonoBehaviour
         if (!main.isMenu)
         {
 
-            if (Input.GetButtonDown("SMenu"))
+            if (GManager.instance.InputR.GetButtonDown("SMenu"))
             {
                 //メニュー展開ボタンを押すとメニューの表示非表示を切り替え
                 if (sisMenu)
@@ -68,7 +68,7 @@ public class SisUI : MonoBehaviour
                 Time.timeScale = 0;
                 sisPanel.SetActive(true);
 
-                if (Input.GetButtonDown("ChoiceR"))
+                if (GManager.instance.InputR.GetButtonDown("ChoiceR"))
                 {
                     bt1.onClick.Invoke();
 
@@ -76,7 +76,7 @@ public class SisUI : MonoBehaviour
 
 
 
-                if (Input.GetButtonDown("ChoiceL"))
+                if (GManager.instance.InputR.GetButtonDown("ChoiceL"))
                 {
                     bt2.onClick.Invoke();
 

@@ -20,7 +20,7 @@ public class ChangeEquipNum : MonoBehaviour
         if (isDump)
         {
 
-            if (Input.GetButtonDown("Cancel"))
+            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
             {
                 isDump = false;
                 uw.isDump = false;
@@ -30,7 +30,7 @@ public class ChangeEquipNum : MonoBehaviour
         }
 
 
-        if (Input.GetButtonDown("Menu"))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
         {
             ResetFlag();
             uw.ResetWindow();

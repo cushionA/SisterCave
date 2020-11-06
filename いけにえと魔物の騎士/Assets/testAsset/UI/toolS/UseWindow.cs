@@ -38,7 +38,7 @@ public class UseWindow : MonoBehaviour
             isFirst = true;
         }
 
-        if(!isDump && !isSUse && GManager.instance.InputR.GetButtonDown("Cancel"))
+        if(!isDump && !isSUse && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
         {
             isNum = false;
             isSUse = false;
@@ -50,7 +50,7 @@ public class UseWindow : MonoBehaviour
  /*       else if (isDump)
         {
             thirdButton.Select();
-            if (GManager.instance.InputR.GetButtonDown("Submit"))
+            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18))
             {
                 isDump = false;
                 numChange.SetActive(false);
@@ -58,7 +58,7 @@ public class UseWindow : MonoBehaviour
                 ToolManager.instance.changeNum = 1;
                 ToolManager.instance.selectButton.GetComponent<Button>().Select();
             }
-            else if (GManager.instance.InputR.GetButtonDown("Cancel"))
+            else if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
             {
                 isDump = false;
                 numChange.SetActive(false);
@@ -68,14 +68,14 @@ public class UseWindow : MonoBehaviour
         else if (isSUse)
         {
             secondButton.Select();
-            if (GManager.instance.InputR.GetButtonDown("Submit"))
+            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18))
             {
                 isSUse = false;
                 numChange.SetActive(false);
                 ToolManager.instance.Use();
                 mu.MenuCancel();
             }
-            else if (GManager.instance.InputR.GetButtonDown("Cancel"))
+            else if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
             {
                 isSUse = false;
                 numChange.SetActive(false);
@@ -83,7 +83,7 @@ public class UseWindow : MonoBehaviour
             }
         }*/
 
-        if (GManager.instance.InputR.GetButtonDown("Menu") && !isNum)
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14) && !isNum)
         {
             ResetWindow();
         }

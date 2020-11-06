@@ -23,7 +23,7 @@ public class WSEquip : MonoBehaviour
             isFirst = true;
         }
 
-        if (Input.GetButtonDown("Cancel"))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
         {
 
             EquipManager.instance.isUseMenu = false;
@@ -31,7 +31,7 @@ public class WSEquip : MonoBehaviour
         }
 
 
-        if (Input.GetButtonDown("Menu"))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
         {
             ResetWindow();
         }

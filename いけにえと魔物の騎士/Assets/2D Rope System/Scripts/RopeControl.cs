@@ -72,7 +72,7 @@ public class RopeControl : MonoBehaviour {
 			}
 
 			//if jump button is pressed, jump from rope
-			if(Input.GetButtonDown ("Jump"))
+			if(GManager.instance.InputR.GetButtonDown ("Jump"))
 			{
 				StartCoroutine(JumpOff());
 				pControl.jump = true;

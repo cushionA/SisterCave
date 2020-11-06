@@ -14,7 +14,6 @@ public class MainUI : MonoBehaviour
 
     public bool isMenu;
     public GameObject masterUI;
-    public GameObject equip;
 
 
     public GameObject eqButton;
@@ -62,11 +61,72 @@ public class MainUI : MonoBehaviour
     public GameObject Scon;
 
 
-    [SerializeField] RewiredEventSystem eventSystem;
-    [SerializeField] RewiredStandaloneInputModule stIn;
+    public RewiredEventSystem eventSystem;
+    public RewiredStandaloneInputModule stIn;
 
+    /// <summary>
+    /// 入力一覧
+    /// </summary>
+    #region
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction0;
 
-    Button eq;
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction1;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction2;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction3;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction4;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction5;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction6;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction7;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction8;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction9;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction10;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction11;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction12;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction13;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction14;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction15;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction16;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction17;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction18;
+
+    #endregion
+    //  Button eq;
     SisUI sis;
 
     GameObject selectButtom;
@@ -85,6 +145,7 @@ public class MainUI : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
     }
 
     // Start is called before the first frame update
@@ -93,7 +154,7 @@ public class MainUI : MonoBehaviour
         sis = GetComponent<SisUI>();
 
         // 自分を選択状態にする
-        eq = equip.GetComponent<Button>();
+       // eq = equip.GetComponent<Button>();
 
 
     }
@@ -101,7 +162,13 @@ public class MainUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(MaterialManager.instance.isUseMenu || ToolManager.instance.isUseMenu || EquipManager.instance.isUseMenu
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5))
+        {
+            Debug.Log("unnchi");
+        }
+
+
+         if (MaterialManager.instance.isUseMenu || ToolManager.instance.isUseMenu || EquipManager.instance.isUseMenu
             || EnemyDataManager.instance.isUseMenu || CoreManager.instance.isUseMenu || ToolManager.instance.isUseMenu || KeyManager.instance.isUseMenu)
         {
             openWindow = true;
@@ -111,15 +178,15 @@ public class MainUI : MonoBehaviour
         {
             openWindow = false;
         }
-        Debug.Log($"さぁて真になれ{openWindow}");
+       // Debug.Log($"さぁて真になれ{openWindow}");
 
-         verticalKey = InputR.GetAxisRaw("Vertical");
+         verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
 
        // Debug.Log($"装備窓確認trueになれ{isInitial}");
 
         if (!sis.sisMenu)
         {
-            if (InputR.GetButtonDown("Menu"))
+            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
             {
                 //メニュー展開ボタンを押すとメニューの表示非表示を切り替え
                 if (isMenu && !selectWindow && !openWindow)
@@ -138,15 +205,19 @@ public class MainUI : MonoBehaviour
                     //Debug.Log($"qawsedfrgjui,lo{usec.isEver}");
                     isInitial = false;
                     ButtonOn();
+                    GManager.instance.InputR.controllers.maps.SetMapsEnabled(true, "Default");
+                    GManager.instance.InputR.controllers.maps.SetMapsEnabled(false, "UI");
                 }
 
                 else if (!isMenu)
                 {
-                   // isFirst = true;
+                    isFirst = false;
+                    GManager.instance.InputR.controllers.maps.SetMapsEnabled(false, "Default");
+                   GManager.instance.InputR.controllers.maps.SetMapsEnabled(true, "UI");
+                    // isFirst = true;
                     isMenu = true;
                     isReBuild = true;
                     Scon.SetActive(true);
-                    
                 }
             }
 
@@ -154,8 +225,11 @@ public class MainUI : MonoBehaviour
             if (!isMenu)
             {
                 Time.timeScale = 1.0f;
-                masterUI.SetActive(false);
-
+                if (!isFirst)
+                {
+                    masterUI.SetActive(false);
+                    isFirst = true;
+                }
             }
             //メニュー展開中
             else if (isMenu)
@@ -164,13 +238,13 @@ public class MainUI : MonoBehaviour
                 selectButtom = eventSystem.currentSelectedGameObject;
 
                 Time.timeScale = 0;
-                masterUI.SetActive(true);
 
               if (!isFirst)
                 {
-                    eq.Select();
-                    eq.onClick.Invoke();
+                    eqB.Select();
+                    eqB.onClick.Invoke();
                     isFirst = true;
+                    masterUI.SetActive(true);
                 }
 
                 if(selectButtom == eqButton && !isInitial)
@@ -327,6 +401,8 @@ public class MainUI : MonoBehaviour
 
     public void MenuCancel()
     {
+        GManager.instance.InputR.controllers.maps.SetMapsEnabled(true, "Default");
+        GManager.instance.InputR.controllers.maps.SetMapsEnabled(false, "UI");
         selectWindow = false;
         isFirst = false;
         isMenu = false;

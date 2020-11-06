@@ -23,7 +23,7 @@ public class GetTool : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (Input.GetButtonDown("Submit") && !isFirst)
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5) && !isFirst)
         {
             ToolManager.instance.takeItem = addTool;
             ToolManager.instance.changeNum = addNum;

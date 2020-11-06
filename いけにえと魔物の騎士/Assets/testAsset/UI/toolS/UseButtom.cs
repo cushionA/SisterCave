@@ -17,8 +17,8 @@ public class UseButtom : MonoBehaviour
     bool isFirst;
 
 
-    EventSystem eventSystem;
-    StandaloneInputModule stIn;
+   // EventSystem eventSystem;
+   // StandaloneInputModule stIn;
 
 
     // Start is called before the first frame update
@@ -26,8 +26,8 @@ public class UseButtom : MonoBehaviour
     private void Start()
     {
         GameObject ev = GameObject.Find("EventSystem");
-        eventSystem = ev.GetComponent<EventSystem>();
-        stIn = ev.GetComponent<StandaloneInputModule>();
+    //    eventSystem = ev.GetComponent<EventSystem>();
+    //    stIn = ev.GetComponent<StandaloneInputModule>();
     }
 
     // Update is called once per frame
@@ -41,7 +41,7 @@ public class UseButtom : MonoBehaviour
 
         if (!ToolManager.instance.isUseMenu)
         {
-            ToolManager.instance.selectButton = eventSystem.currentSelectedGameObject;
+            ToolManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
             //Debug.Log($"青い稲妻{ToolManager.instance.selectButton == this.gameObject}");
             if (ToolManager.instance.selectButton == this.gameObject && !isFirst)
@@ -57,7 +57,7 @@ public class UseButtom : MonoBehaviour
             }
             if (ToolManager.instance.isEquipMenu)
             {
-                if (Input.GetButtonDown("Cancel"))
+                if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
                     Debug.Log("サイパン");
                     MainUI.instance.useWindow.SetActive(false);

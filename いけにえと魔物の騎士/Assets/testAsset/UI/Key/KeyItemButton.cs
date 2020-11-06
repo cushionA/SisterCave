@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class KeyItemButton : MonoBehaviour
@@ -11,8 +10,8 @@ public class KeyItemButton : MonoBehaviour
     bool isFirst;
 
 
-    EventSystem eventSystem;
-    StandaloneInputModule stIn;
+  //  EventSystem eventSystem;
+ //   StandaloneInputModule stIn;
 
 
     // Start is called before the first frame update
@@ -20,8 +19,8 @@ public class KeyItemButton : MonoBehaviour
     private void Start()
     {
         GameObject ev = GameObject.Find("EventSystem");
-        eventSystem = ev.GetComponent<EventSystem>();
-        stIn = ev.GetComponent<StandaloneInputModule>();
+      //  eventSystem = ev.GetComponent<EventSystem>();
+     //   stIn = ev.GetComponent<StandaloneInputModule>();
     }
 
     // Update is called once per frame
@@ -34,7 +33,7 @@ public class KeyItemButton : MonoBehaviour
 
         if (!KeyManager.instance.isUseMenu)//選択ウィンドウ出てないなら
         {
-            KeyManager.instance.selectButton = eventSystem.currentSelectedGameObject;
+            KeyManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
             //  Debug.Log($"青い稲妻{KeyManager.instance.selectButton == this.gameObject}");
             if (KeyManager.instance.selectButton == this.gameObject && !isFirst)

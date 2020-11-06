@@ -207,15 +207,21 @@ public class Wepon : Equip
 
     [HideInInspector]
     /// <summary>
-    /// //吹っ飛ばし攻撃
+    /// 吹っ飛ばし攻撃
     /// </summary>
     public bool isBlow;
 
     [HideInInspector]
     /// <summary>
+    /// コンボかどうか
+    /// </summary>
+    public bool isCombo;
+
+    // [HideInInspector]
+    /// <summary>
     /// 衝突できる回数。毎回設定しなおす
     /// </summary>
-    public int hitLimmit = 1;
+    // public int hitLimmit = 1;
 
     [Header("吹っ飛ばす力")]
     public Vector2 blowPower;

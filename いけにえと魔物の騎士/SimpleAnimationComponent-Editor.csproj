@@ -297,14 +297,14 @@
     <Reference Include="PlayMakerEditorResources">
       <HintPath>Assets\PlayMaker\Editor\PlayMakerEditorResources.dll</HintPath>
     </Reference>
+    <Reference Include="RelationsInspector">
+      <HintPath>Assets\Plugins\Editor\RelationsInspector\RelationsInspector.dll</HintPath>
+    </Reference>
     <Reference Include="PlayMaker">
       <HintPath>Assets\Plugins\PlayMaker\PlayMaker.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>Library\PackageCache\com.unity.burst@1.3.5\Unity.Burst.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.NRefactory">
-      <HintPath>Library\PackageCache\com.unity.render-pipelines.core@8.2.0\Editor\ShaderGenerator\ICSharpCode.NRefactory.dll</HintPath>
+    <Reference Include="Rewired_Editor">
+      <HintPath>Assets\Rewired\Internal\Libraries\Editor\Rewired_Editor.dll</HintPath>
     </Reference>
     <Reference Include="Rewired_Core">
       <HintPath>Assets\Rewired\Internal\Libraries\Runtime\Rewired_Core.dll</HintPath>
@@ -312,11 +312,11 @@
     <Reference Include="Rewired_Windows">
       <HintPath>Assets\Rewired\Internal\Libraries\Runtime\Rewired_Windows.dll</HintPath>
     </Reference>
-    <Reference Include="Rewired_Editor">
-      <HintPath>Assets\Rewired\Internal\Libraries\Editor\Rewired_Editor.dll</HintPath>
+    <Reference Include="Unity.Burst.Unsafe">
+      <HintPath>Library\PackageCache\com.unity.burst@1.3.5\Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
-    <Reference Include="RelationsInspector">
-      <HintPath>Assets\Plugins\Editor\RelationsInspector\RelationsInspector.dll</HintPath>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>Library\PackageCache\com.unity.render-pipelines.core@8.2.0\Editor\ShaderGenerator\ICSharpCode.NRefactory.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.0\net35\unity-custom\nunit.framework.dll</HintPath>

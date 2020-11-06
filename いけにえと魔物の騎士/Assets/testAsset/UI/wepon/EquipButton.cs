@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
+
 using UnityEngine.UI;
 
 public class EquipButton : MonoBehaviour
@@ -11,8 +11,7 @@ public class EquipButton : MonoBehaviour
     bool isFirst;
 
 
-    EventSystem eventSystem;
-    StandaloneInputModule stIn;
+
 
 
     // Start is called before the first frame update
@@ -20,8 +19,6 @@ public class EquipButton : MonoBehaviour
     private void Start()
     {
         GameObject ev = GameObject.Find("EventSystem");
-        eventSystem = ev.GetComponent<EventSystem>();
-        stIn = ev.GetComponent<StandaloneInputModule>();
     }
 
     // Update is called once per frame
@@ -34,7 +31,7 @@ public class EquipButton : MonoBehaviour
 
         if (!EquipManager.instance.isUseMenu)//選択ウィンドウ出てないなら
         {
-            EquipManager.instance.selectButton = eventSystem.currentSelectedGameObject;
+            EquipManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
           //  Debug.Log($"青い稲妻{EquipManager.instance.selectButton == this.gameObject}");
             if (EquipManager.instance.selectButton == this.gameObject && !isFirst)
@@ -53,7 +50,7 @@ public class EquipButton : MonoBehaviour
             if (EquipManager.instance.isWeponM || EquipManager.instance.isShieldM)
             {
               //  Debug.Log("サイパン");
-                if (Input.GetButtonDown("Cancel"))
+                if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
                     MainUI.instance.weponWindow.SetActive(false);
                     MainUI.instance.eqWindow.SetActive(true);

@@ -57,7 +57,7 @@ public class RopeJump : MonoBehaviour
 																								  //ローカルポジションを調整
 							//forwardは奥へと進む一本の線。つまりAngleAxisでこれを中心に回転させるので平面的な回転
 																								  //if up button is pressed and "chainIndex > 1" (there is another chain above player), climb up
-			if (Input.GetAxisRaw("Vertical") > 0 && chainIndex > 1)
+			if (GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction1) > 0 && chainIndex > 1)
 			{
 				timer += Time.deltaTime;
 
@@ -69,7 +69,7 @@ public class RopeJump : MonoBehaviour
 			}
 
 			//if down button is pressed and "chainIndex < 1" (there is another chain below player), climb down
-			if (Input.GetAxisRaw("Vertical") < 0)
+			if (GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction1) < 0)
 			{
 				if (chainIndex < chains.Count - 1)
 				{
@@ -86,7 +86,7 @@ public class RopeJump : MonoBehaviour
 			}
 
 			//if jump button is pressed, jump from rope
-			if (Input.GetButtonDown("Submit"))
+			if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5))
 			{
 				JumpOff();
 				pControl.RopeJump();

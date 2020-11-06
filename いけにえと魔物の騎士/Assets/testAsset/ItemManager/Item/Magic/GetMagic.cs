@@ -23,7 +23,7 @@ public class GetMagic : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (Input.GetButtonDown("Submit") && !isFirst)
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18) && !isFirst)
         {
             MagicManager.instance.takeItem = addTool;
             MagicManager.instance.changeNum = addNum;

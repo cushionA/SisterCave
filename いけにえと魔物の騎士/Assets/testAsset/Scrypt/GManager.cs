@@ -50,6 +50,7 @@ public class GManager : MonoBehaviour
     [HideInInspector] public bool onGimmick;//ギミック利用中かどうか
     [HideInInspector]public bool guardHit;//ガードにヒットした
     [HideInInspector] public bool badCondition;//状態異常
+    [HideInInspector]public bool isDamage;//ダメージ受けたかどうか
 
     #region//シスターさんのためのフラグ
     [HideInInspector] public bool isLadder;
@@ -68,13 +69,14 @@ public class GManager : MonoBehaviour
     bool stBreake;
     //スタミナ回復不能状態終わりフラグ
     public bool isArmor;//強靭ついてるかどうか
+    float avoidTime;
 
     //プレイヤーがレベルアップしたらHPとスタミナのスライダーの長さをチェックして伸ばす。
     //あとステータス画面に格納する値のチェックも
 
     private void Awake()
     {
-        InputR = ReInput.players.GetPlayer(1);
+        InputR = ReInput.players.GetPlayer(0);
         if (instance == null)
         {
             instance = this;
@@ -110,6 +112,7 @@ public class GManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DamageAvoid();
        SetSlider();
         stTime += Time.deltaTime;
 
@@ -377,6 +380,22 @@ public class GManager : MonoBehaviour
         mpSl.offsetMax = new Vector2(-initialMpSl + (pStatus.maxMp - pStatus.initialMp), mpSl.offsetMax.y);
     }
 
-
+    /// <summary>
+    /// 何度も当たり判定が検出されるのを防ぐためのもの
+    /// </summary>
+    public void DamageAvoid()
+    {
+        if (isDamage)
+        {
+            avoidTime += Time.fixedDeltaTime;
+            pm.SetLayer(10);
+            if (avoidTime >= 0.1)
+            {
+                isDamage = false;
+                avoidTime = 0;
+                pm.SetLayer(11);
+            }
+        }
+    }
 
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
+//using UnityEngine.EventSystems;
 
 public class CoreButton : MonoBehaviour
 {
@@ -11,8 +11,8 @@ public class CoreButton : MonoBehaviour
     bool isFirst;
 
 
-    EventSystem eventSystem;
-    StandaloneInputModule stIn;
+ //   EventSystem eventSystem;
+    //StandaloneInputModule stIn;
 
 
     // Start is called before the first frame update
@@ -20,8 +20,8 @@ public class CoreButton : MonoBehaviour
     private void Start()
     {
         GameObject ev = GameObject.Find("EventSystem");
-        eventSystem = ev.GetComponent<EventSystem>();
-        stIn = ev.GetComponent<StandaloneInputModule>();
+       // eventSystem = ev.GetComponent<EventSystem>();
+      //  stIn = ev.GetComponent<StandaloneInputModule>();
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class CoreButton : MonoBehaviour
 
         if (!CoreManager.instance.isUseMenu)//選択ウィンドウ出てないなら
         {
-            CoreManager.instance.selectButton = eventSystem.currentSelectedGameObject;
+            CoreManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
             //  Debug.Log($"青い稲妻{CoreManager.instance.selectButton == this.gameObject}");
             if (CoreManager.instance.selectButton == this.gameObject && !isFirst)
@@ -50,7 +50,7 @@ public class CoreButton : MonoBehaviour
             }
             if (CoreManager.instance.isEquipMenu)
             {
-                if (Input.GetButtonDown("Cancel"))
+                if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
                     Debug.Log("サイパン");
                     MainUI.instance.useWindow.SetActive(false);

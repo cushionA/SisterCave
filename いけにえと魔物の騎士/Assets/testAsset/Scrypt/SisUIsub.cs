@@ -34,7 +34,7 @@ public class SisUIsub : MonoBehaviour
     {
         float choice = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("SMenu"))
+        if (GManager.instance.InputR.GetButtonDown("SMenu"))
         {
             //メニュー展開ボタンを押すとメニューの表示非表示を切り替え
             if (sisMenu)
@@ -68,7 +68,7 @@ public class SisUIsub : MonoBehaviour
             {
                 //右のボタンが選択中に右キーを押したら
 
-                if (Input.GetButtonDown("ChoiceR"))
+                if (GManager.instance.InputR.GetButtonDown("ChoiceR"))
                 {
                     bt1.onClick.Invoke();
 
@@ -78,7 +78,7 @@ public class SisUIsub : MonoBehaviour
             {
                 //左のボタンが選択中に左キーを押したら
 
-                if (Input.GetButtonDown("ChoiceL"))
+                if (GManager.instance.InputR.GetButtonDown("ChoiceL"))
                 {
                     bt2.onClick.Invoke();
 

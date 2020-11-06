@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using UnityEngine;
+
 
 public class AttackM : MonoBehaviour
 {
@@ -10,7 +8,6 @@ public class AttackM : MonoBehaviour
     //------------------------------------------内部パラメータ
 
     PlayerMove pm;
-    bool padConnect;
     //attackNumberと連動してステート名を獲得
     /// <summary>
     /// 弱攻撃ボタンが押されてるかどうか
@@ -21,7 +18,6 @@ public class AttackM : MonoBehaviour
     /// 強攻撃ボタンが押されてるかどうか
     /// </summary>
     bool fire2Key;
-    float fire2Axis;
     bool fire2Assist;
 
     /// <summary>
@@ -76,50 +72,26 @@ public class AttackM : MonoBehaviour
 
     private void Update()
     {
+    //    Debug.Log($"攻撃可能？{isAttackable}");
+     //   Debug.Log($"攻撃中？{GManager.instance.isAttack}");
 
-        DownKeyCheck();
-   //     ControllerCheck();
+        //  DownKeyCheck();
+        //     ControllerCheck();
 
-        horizontalKey = GManager.instance.InputR.GetAxisRaw("Horizontal");
-        fire1Key = GManager.instance.InputR.GetButtonDown("Fire1");
-        if (!padConnect)
-        {
-            fire2Key = GManager.instance.InputR.GetButtonDown("Fire2");
-        }
-        fire2Axis = GManager.instance.InputR.GetAxisRaw("Fire2Axis");
-        if (padConnect)
-        {
-            if (fire2Axis < 0 && !fire2Assist)
-            {
-                fire2Key = false;
-                artsKey = true;
-                fire2Assist = true;
-            }
-            else if (fire2Axis > 0 && !fire2Assist)
-            {
-                fire2Key = true;
-                artsKey = false;
-                fire2Assist = true;
-            }
-            else if(fire2Axis == 0)
-            {
-                fire2Key = false;
-                artsKey = false;
-                fire2Assist = false;
-            }
-        }
-        if (!padConnect)
-        {
-            artsKey = GManager.instance.InputR.GetButtonDown("Arts");
-        }
+        horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
+        fire1Key = GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction9);
+
+            fire2Key = GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction10);
+
+        //fire2Axis = GManager.instance.InputR.GetAxisRaw("Fire2Axis");
+
+        
+            artsKey = GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction12);
+        
         anyKey = AnyKey();
-        if (isCharging && !bigAttack && !chargeAttack && !padConnect)
+        if (isCharging && !bigAttack && !chargeAttack)
         {
-            chargeKey = GManager.instance.InputR.GetAxisRaw("Fire2");//Debug.Log("入力");
-        }
-        else if(isCharging && !bigAttack && !chargeAttack && padConnect)
-        {
-            chargeKey = GManager.instance.InputR.GetAxisRaw("Fire2Axis");//Debug.Log("入力");
+            chargeKey = GManager.instance.InputR.GetAxisRaw(10);//Debug.Log("入力");
         }
         else
         {
@@ -286,7 +258,9 @@ public class AttackM : MonoBehaviour
             }
         }
     }
-
+    ///<Summally>
+    ///アニメイベントで呼ぶやつ？
+    ///</Summally>
     void Continue()
     {
         isAttackable = true;
@@ -302,8 +276,8 @@ public class AttackM : MonoBehaviour
 
     bool AnyKey()
     {
-        if (GManager.instance.InputR.GetButtonDown("Avoid") || GManager.instance.InputR.GetButtonDown("Guard")
-            || GManager.instance.InputR.GetAxisRaw("Vertical") != 0 /*|| GManager.instance.InputR.GetAxisRaw("Horizontal") != 0*/)
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction4) || GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction11)
+            || GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction1) != 0 /*|| GManager.instance.InputR.GetAxisRaw("Horizontal") != 0*/)
         {
             return true;
         }
@@ -333,7 +307,7 @@ public class AttackM : MonoBehaviour
             attackNumber++;
             smallTrigger = false;
         }
-        else if (attackNumber != 0 && smallTrigger)
+        else if (attackNumber != 0 && (GManager.instance.pStatus.equipWeapon.isCombo || smallTrigger))
         {
             sAttackPrepare();
             GManager.instance.isAttack = true;
@@ -365,12 +339,12 @@ public class AttackM : MonoBehaviour
                 chargeAttackPrepare();
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.bigName[alterNumber]);//チャージ攻撃のアニメ
+                    sAni.Play(GManager.instance.pStatus.equipWeapon.chargeName[alterNumber]);//チャージ攻撃のアニメ
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.chargeStamina);
                 }
                 else
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.twinBigName[alterNumber]);//チャージ攻撃のアニメ
+                    sAni.Play(GManager.instance.pStatus.equipWeapon.twinChargeName[alterNumber]);//チャージ攻撃のアニメ
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.chargeStaminaT);
                 }
                 alterNumber++;
@@ -410,7 +384,7 @@ public class AttackM : MonoBehaviour
                 }
             }
         }
-        else if (alterNumber != 0)
+        else if (alterNumber != 0 || GManager.instance.pStatus.equipWeapon.isCombo)
         {
             if (chargeAttack)
             {
@@ -485,7 +459,7 @@ public class AttackM : MonoBehaviour
             attackNumber++;
             smallTrigger = false;
         }
-        else if (attackNumber != 0 && (fire1Key || smallTrigger) && !isDisEnable && !bigTrigger)
+        else if (attackNumber != 0 && (fire1Key || smallTrigger || GManager.instance.pStatus.equipWeapon.isCombo) && !isDisEnable && !bigTrigger )
         {
             airAttackPrepare();
             GManager.instance.isAttack = true;
@@ -514,7 +488,7 @@ public class AttackM : MonoBehaviour
         }
         #endregion
         //空中強攻撃
-        else if (bigTrigger || fire2Key)
+        else if (bigTrigger || fire2Key || GManager.instance.pStatus.equipWeapon.isCombo)
         {
             strikeAttackPrepare();
             GManager.instance.isAttack = true;
@@ -559,7 +533,7 @@ public class AttackM : MonoBehaviour
             artsNumber++;
             artsTrigger = false;
         }
-        else if (artsNumber != 0 && artsTrigger)
+        else if (artsNumber != 0 && artsTrigger || GManager.instance.pStatus.equipWeapon.isCombo)
         {
             ArtsPrepare();
             GManager.instance.isAttack = true;
@@ -647,7 +621,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.sValue[attackNumber].y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.sValue[attackNumber].z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.sValue[attackNumber].isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.sValue[attackNumber].hitLimmit;
+          GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.sValue[attackNumber].isCombo;
         }
         else
         {
@@ -657,7 +631,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.twinSValue[attackNumber].y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.twinSValue[attackNumber].z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.twinSValue[attackNumber].isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.twinSValue[attackNumber].hitLimmit;
+            GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.twinSValue[attackNumber].isCombo;
         }
     }
 
@@ -675,7 +649,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.bValue[alterNumber].y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.bValue[alterNumber].z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.bValue[alterNumber].isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.bValue[alterNumber].hitLimmit;
+            GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.bValue[alterNumber].isCombo;
         }
         else
         {
@@ -685,7 +659,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.twinBValue[alterNumber].y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.twinBValue[alterNumber].z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.twinBValue[alterNumber].isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.twinBValue[alterNumber].hitLimmit;
+            GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.twinBValue[alterNumber].isCombo;
         }
     }
 
@@ -703,7 +677,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.chargeValue[alterNumber].y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.chargeValue[alterNumber].z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.chargeValue[alterNumber].isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.chargeValue[alterNumber].hitLimmit;
+            GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.chargeValue[alterNumber].isCombo;
         }
         else
         {
@@ -713,7 +687,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.twinChargeValue[alterNumber].y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.twinChargeValue[alterNumber].z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.twinChargeValue[alterNumber].isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.twinChargeValue[alterNumber].hitLimmit;
+           GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.twinChargeValue[alterNumber].isCombo;
         }
     }
     public void airAttackPrepare()//デフォが斬撃
@@ -730,7 +704,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.airValue[attackNumber].y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.airValue[attackNumber].z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.airValue[attackNumber].isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.airValue[attackNumber].hitLimmit;
+            GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.airValue[attackNumber].isCombo;
         }
         else
         {
@@ -740,7 +714,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.twinAirValue[attackNumber].y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.twinAirValue[attackNumber].z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.twinAirValue[attackNumber].isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.twinAirValue[attackNumber].hitLimmit;
+            GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.twinAirValue[attackNumber].isCombo;
         }
     }
     public void strikeAttackPrepare()//デフォが斬撃
@@ -757,7 +731,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.strikeValue.y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.strikeValue.z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.strikeValue.isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.strikeValue.hitLimmit;
+            GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.strikeValue.isCombo;
         }
         else
         {
@@ -767,7 +741,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.twinStrikeValue.y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.twinStrikeValue.z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.twinStrikeValue.isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.twinStrikeValue.hitLimmit;
+            GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.twinStrikeValue.isCombo;
         }
     }
 
@@ -785,7 +759,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.artsValue.y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.artsValue.z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.artsValue.isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.artsValue.hitLimmit;
+            GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.artsValue.isCombo;
         }
         else
         {
@@ -795,7 +769,7 @@ public class AttackM : MonoBehaviour
             GManager.instance.pStatus.equipWeapon.atAromor = GManager.instance.pStatus.equipWeapon.artsValue.y;
             GManager.instance.pStatus.equipWeapon.shock = GManager.instance.pStatus.equipWeapon.artsValue.z;
             GManager.instance.pStatus.equipWeapon.isBlow = GManager.instance.pStatus.equipWeapon.artsValue.isBlow;
-            GManager.instance.pStatus.equipWeapon.hitLimmit = GManager.instance.pStatus.equipWeapon.artsValue.hitLimmit;
+            GManager.instance.pStatus.equipWeapon.isCombo = GManager.instance.pStatus.equipWeapon.artsValue.isCombo;
         }
     }
     public void PlayerArmor()
@@ -803,41 +777,42 @@ public class AttackM : MonoBehaviour
         GManager.instance.isArmor = true;
 
     }//判定出す直前にアニメイベントで呼び出す。
-    void DownKeyCheck()
-    {
-        if (GManager.instance.InputR.anyKeyDown)
-        {
-            foreach (KeyCode code in Enum.GetValues(typeof(KeyCode)))
-            {
-                if (GManager.instance.InputR.GetKeyDown(code))
-                {
-                    //処理を書く
-                    Debug.Log($"入力されたのは{code}");
-                    break;
-                }
-            }
-        }
-    }
+    /*  void DownKeyCheck()
+ {
+      if (GManager.instance.InputR.anyKeyDown)
+           {
+               foreach (KeyCode code in Enum.GetValues(typeof(KeyCode)))
+               {
+                   if (GManager.instance.InputR.GetKeyDown(code))
+                   {
+                       //処理を書く
+                       Debug.Log($"入力されたのは{code}");
+                       break;
+                   }
+               }
+           }
+       }*/
 
- /*   void ControllerCheck()
-    {
-        //ゲームパッドが繋がれてるか確認
-        var controllerNames = GManager.instance.InputR.GetJoystickNames();
+    /*   void ControllerCheck()
+       {
+           //ゲームパッドが繋がれてるか確認
+           var controllerNames = GManager.instance.InputR.GetJoystickNames();
 
-        Debug.Log($"ゲームパッドが接続されてる{padConnect}");
-        if (controllerNames != null)
-        {
-      //      Debug.Log($"ゲームパッドName{controllerNames[0]}");
-        }
-        // 一台もコントローラが接続されていなければエラー
-        if (controllerNames[0] == "")
-        {
-            padConnect = false;
-        }
-        else
-        {
-            padConnect = true;
-        }
-    }*/
+           Debug.Log($"ゲームパッドが接続されてる{padConnect}");
+           if (controllerNames != null)
+           {
+         //      Debug.Log($"ゲームパッドName{controllerNames[0]}");
+           }
+           // 一台もコントローラが接続されていなければエラー
+           if (controllerNames[0] == "")
+           {
+               padConnect = false;
+           }
+           else
+           {
+               padConnect = true;
+           }
+       }*/
 }
-    
+
+
