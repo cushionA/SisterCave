@@ -193,7 +193,7 @@ public class AttackM : MonoBehaviour
 
                 if (CheckEnd(GManager.instance.pStatus.equipWeapon.bigName[alterNumber - 1]) == false)
                 {
-                    Debug.Log("機能してます");
+                    //Debug.Log("機能してます");
                     alterNumber = 0;
                     bigAttack = false;
                     chargeAttack = false;
@@ -213,11 +213,12 @@ public class AttackM : MonoBehaviour
                 {
                     //Debug.Log("機能してます");
                     GManager.instance.isAttack = false;
+                    GManager.instance.airAttack = false;
                     smallTrigger = false;
                 }
                 if (isDisEnable)
                 {
-
+                    GManager.instance.airAttack = false;
                     attackNumber = pm.isGround ? 0 : attackNumber;
                     //isGroundの時attackNumberを0、違うならそのまま
                 }
@@ -438,9 +439,12 @@ public class AttackM : MonoBehaviour
     }
     void AirAttack()
     {
+
+
         #region//空中弱攻撃
         if (attackNumber == 0 && (fire1Key || smallTrigger) && !isDisEnable && !bigTrigger)
         {
+
             airAttackPrepare();
             rb.velocity = Vector2.zero;
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
@@ -692,6 +696,8 @@ public class AttackM : MonoBehaviour
     }
     public void airAttackPrepare()//デフォが斬撃
     {
+        GManager.instance.airAttack = true;
+
         if (attackNumber != 0)
         {
             transform.localScale = new Vector3(attackDirection, transform.localScale.y, transform.localScale.z);
@@ -719,6 +725,8 @@ public class AttackM : MonoBehaviour
     }
     public void strikeAttackPrepare()//デフォが斬撃
     {
+        GManager.instance.airAttack = true;
+
         if (alterNumber != 0)
         {
             transform.localScale = new Vector3(attackDirection, transform.localScale.y, transform.localScale.z);

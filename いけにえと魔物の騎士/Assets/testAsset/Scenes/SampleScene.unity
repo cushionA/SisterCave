@@ -2890,7 +2890,7 @@ GameObject:
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &360332878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16637,7 +16637,6 @@ GameObject:
   - component: {fileID: 962871508}
   - component: {fileID: 962871517}
   - component: {fileID: 962871509}
-  - component: {fileID: 962871515}
   - component: {fileID: 962871512}
   - component: {fileID: 962871511}
   - component: {fileID: 962871510}
@@ -17084,20 +17083,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 962871506}
---- !u!114 &962871515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 962871506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fc60a40bb73a5242915cc7f3bebc74c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpForce: {x: 5, y: 0}
-  Test: 0
 --- !u!114 &962871516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21347,6 +21332,7 @@ MonoBehaviour:
   initialStaminaSl: 855
   isEnable: 0
   isAttack: 0
+  airAttack: 0
   isDown: 0
   isBlow: 0
   isGBreak: 0

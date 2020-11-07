@@ -440,6 +440,7 @@ public class PlayerMove : MonoBehaviour
         
 
          if (!isGround && !GManager.instance.isAttack) {
+            //空中で地味に動くためのやつ
 
             Vector2 move;
            
@@ -522,6 +523,16 @@ public class PlayerMove : MonoBehaviour
             }
 
         }
+
+        Debug.Log($"攻撃中{GManager.instance.isAttack}");
+        Debug.Log($"空中攻撃{GManager.instance.airAttack}");
+        if (GManager.instance.isAttack && !GManager.instance.airAttack)
+        {
+            Debug.Log("こたつ");
+            //空中攻撃以外では重力を適用
+            rb.velocity = new Vector2(rb.velocity.x, -gravity);
+        }
+
 
         #endregion
 

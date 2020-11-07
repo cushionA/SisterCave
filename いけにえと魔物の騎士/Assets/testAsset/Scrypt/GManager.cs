@@ -37,6 +37,7 @@ public class GManager : MonoBehaviour
     [HideInInspector] public bool isEnable;
     //スタミナが回復するかどうか
     [HideInInspector] public bool isAttack;
+    [HideInInspector] public bool airAttack;
     //攻撃中か否か
     [HideInInspector] public bool isDown;
     //ダウン中

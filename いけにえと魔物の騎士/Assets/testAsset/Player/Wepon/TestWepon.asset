@@ -17,8 +17,9 @@ MonoBehaviour:
   hiraganaName: 
   information: 
   number: 0
-  wLevel: 0
-  atType: 0
+  holdLimmit: 0
+  isDrop: 0
+  inventoryNum: 0
   phyBase:
   - 100
   - 0
@@ -43,6 +44,9 @@ MonoBehaviour:
   fireCut: []
   thunderCut: []
   guardPower: []
+  shock: 20
+  wLevel: 0
+  atType: 0
   MagicAssistBase: 100
   MagicAssist: 101
   castSkill: 0.99
@@ -166,12 +170,18 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  mValue: 1.2
+  mValue: 1.1
   atAromor: 20
-  chargeRes: 1
+  chargeRes: 2
   normalStamina: 15
   bigStamina: 30
   chargeStamina: 45
+  airStamina: 0
+  normalStaminaT: 0
+  bigStaminaT: 0
+  chargeStaminaT: 0
+  airStaminaT: 0
+  artsStamina: 0
   smallName:
   - Attack
   - Attack2
@@ -185,18 +195,23 @@ MonoBehaviour:
   chargeName:
   - Squat
   - Squat
+  twinSmallName: []
+  twinBigName: []
+  twinAirName: []
+  twinChargeName: []
+  artsName: []
   sValue:
   - x: 0.8
     y: 5
     z: 10
-    hitLimmit: 1
+    isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
   - x: 0.8
     y: 5
     z: 10
-    hitLimmit: 1
+    isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
@@ -204,14 +219,14 @@ MonoBehaviour:
   - x: 1.1
     y: 20
     z: 20
-    hitLimmit: 1
+    isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
   - x: 1.1
     y: 20
     z: 20
-    hitLimmit: 1
+    isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
@@ -219,14 +234,14 @@ MonoBehaviour:
   - x: 1.2
     y: 20
     z: 30
-    hitLimmit: 1
+    isCombo: 0
     isBlow: 1
     isLight: 0
     type: 0
   - x: 1.2
     y: 20
     z: 30
-    hitLimmit: 1
+    isCombo: 0
     isBlow: 1
     isLight: 0
     type: 0
@@ -234,14 +249,14 @@ MonoBehaviour:
   - x: 0.7
     y: 1
     z: 5
-    hitLimmit: 1
+    isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
   - x: 0.7
     y: 1
     z: 5
-    hitLimmit: 1
+    isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
@@ -249,14 +264,34 @@ MonoBehaviour:
     x: 1.1
     y: 30
     z: 20
-    hitLimmit: 1
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+  twinSValue: []
+  twinBValue: []
+  twinChargeValue: []
+  twinAirValue: []
+  twinStrikeValue:
+    x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+  artsValue:
+    x: 0
+    y: 0
+    z: 0
+    isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
   isLight: 0
+  shieldAct: 0
   twinHand: 0
-  shock: 30
-  isBlow: 1
-  hitLimmit: 0
+  isBlow: 0
+  isCombo: 0
   blowPower: {x: 600, y: 900}
   guardSpeed: 0

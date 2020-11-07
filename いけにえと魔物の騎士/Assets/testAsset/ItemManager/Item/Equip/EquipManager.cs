@@ -64,8 +64,8 @@ public class EquipManager : MonoBehaviour
 
 	private void Update()
 	{
-		Debug.Log($"盾窓選択{isShieldM}");
-		Debug.Log($"武器窓選択{isWeponM}");
+		//Debug.Log($"盾窓選択{isShieldM}");
+		//Debug.Log($"武器窓選択{isWeponM}");
 		//Debug.Log(GetItem("テスト3").inventoryNum);
 
 
