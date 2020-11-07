@@ -44,7 +44,7 @@ MonoBehaviour:
   fireCut: []
   thunderCut: []
   guardPower: []
-  shock: 20
+  shock: 30
   wLevel: 0
   atType: 0
   MagicAssistBase: 100
@@ -170,7 +170,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  mValue: 1.1
+  mValue: 1.2
   atAromor: 20
   chargeRes: 2
   normalStamina: 15
@@ -188,6 +188,9 @@ MonoBehaviour:
   bigName:
   - Attack2
   - Attack3
+  maxName:
+  - Attack2
+  - Attack3
   airName:
   - Attack
   - Attack3
@@ -197,6 +200,7 @@ MonoBehaviour:
   - Squat
   twinSmallName: []
   twinBigName: []
+  twinMaxName: []
   twinAirName: []
   twinChargeName: []
   artsName: []
@@ -291,7 +295,7 @@ MonoBehaviour:
   isLight: 0
   shieldAct: 0
   twinHand: 0
-  isBlow: 0
+  isBlow: 1
   isCombo: 0
   blowPower: {x: 600, y: 900}
   guardSpeed: 0

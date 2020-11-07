@@ -51,7 +51,7 @@ public class AttackM : MonoBehaviour
     bool chargeAttack;
     bool isCharging;
     //チャージ中
-    float chargeKey;
+    bool chargeKey;
     float horizontalKey;
     bool anyKey;
     float attackDirection;
@@ -89,29 +89,34 @@ public class AttackM : MonoBehaviour
             artsKey = GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction12);
         
         anyKey = AnyKey();
+
+
+
+
         if (isCharging && !bigAttack && !chargeAttack)
         {
-            chargeKey = GManager.instance.InputR.GetAxisRaw(10);//Debug.Log("入力");
+            chargeKey = GManager.instance.InputR.GetButton((MainUI.instance.rewiredAction10));//Debug.Log("入力");
         }
         else
         {
-            chargeKey = 0.0f;
+            chargeKey = false;
             //攻撃中は溜められない
+
         }
-        if (chargeKey > 0 && !chargeAttack && !bigAttack)
+        if (chargeKey && !chargeAttack && !bigAttack)
         {
             chargeTime += Time.deltaTime;
             //チャージ中
             if (chargeTime >= GManager.instance.pStatus.equipWeapon.chargeRes)
             {
                 // isCharging = false;
-                //chargeTime = 0.0f;
+                chargeTime = 0.0f;
                 chargeAttack = true;
             }
         }
-        else if (chargeTime < GManager.instance.pStatus.equipWeapon.chargeRes && chargeKey == 0 && isCharging && !bigAttack && !chargeAttack)
+        else if (chargeTime < GManager.instance.pStatus.equipWeapon.chargeRes && !chargeKey && isCharging && !bigAttack && !chargeAttack)
         {
-            // chargeTime = 0.0f;
+             chargeTime = 0.0f;
             //isCharging = false;
             bigAttack = true;
             //Debug.Log("現況");
@@ -340,12 +345,12 @@ public class AttackM : MonoBehaviour
                 chargeAttackPrepare();
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.chargeName[alterNumber]);//チャージ攻撃のアニメ
+                    sAni.Play(GManager.instance.pStatus.equipWeapon.maxName[alterNumber]);//チャージ攻撃のアニメ
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.chargeStamina);
                 }
                 else
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.twinChargeName[alterNumber]);//チャージ攻撃のアニメ
+                    sAni.Play(GManager.instance.pStatus.equipWeapon.twinMaxName[alterNumber]);//チャージ攻撃のアニメ
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.chargeStaminaT);
                 }
                 alterNumber++;
@@ -377,10 +382,12 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.chargeName[alterNumber]);//チャージアニメ     
+                    sAni.Play(GManager.instance.pStatus.equipWeapon.chargeName[alterNumber]);//チャージアニメ    
+                    rb.velocity = Vector2.zero;
                 }
                 else
                 {
+                    rb.velocity = Vector2.zero;
                     sAni.Play(GManager.instance.pStatus.equipWeapon.twinChargeName[alterNumber]);//チャージアニメ 
                 }
             }

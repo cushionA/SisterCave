@@ -82,6 +82,12 @@ public class Wepon : Equip
     /// </summary>
      public List<string> bigName;
 
+    [Header("ため攻撃のモーション名リスト")]
+    /// <summary>
+    /// 片手ため攻撃のモーション名リスト
+    /// </summary>
+    public List<string> maxName;
+
     [Header("空中弱+強の名前リスト")]
     /// <summary>
     /// 片手空中弱の名前リスト
@@ -105,6 +111,12 @@ public class Wepon : Equip
     /// 両手強攻撃のモーション名リスト
     /// </summary>
     public List<string> twinBigName;
+
+    [Header("両手ため攻撃のモーション名リスト")]
+    /// <summary>
+    /// 両手ため攻撃のモーション名リスト
+    /// </summary>
+    public List<string> twinMaxName;
 
     [Header("両手空中弱+強の名前リスト")]
     /// <summary>

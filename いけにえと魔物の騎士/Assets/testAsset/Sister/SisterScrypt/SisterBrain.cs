@@ -39,6 +39,8 @@ public class SisterBrain : MonoBehaviour
 	public Transform firePosition;
 
 
+
+
 	public enum SisterState
     {
 		のんびり,
@@ -51,15 +53,19 @@ public class SisterBrain : MonoBehaviour
 
 	[Header("シスターさんのステータス")]
 	public SisterStatus status;
+
+
+
 	// === 外部パラメータ ======================================
 	/*[HideInInspector]*/
-	 Vector2 distance;//プレイヤーとの距離
+	Vector2 distance;//プレイヤーとの距離
 	 bool isJump;//ジャンプしてるかどうか
 	 float stopTime;//停止時間を数える
 	 bool isStop;//停止フラグ
 	 float waitTime;//パトロール時の待ち時間数える
 	 bool posiReset;//戦闘とかで場を離れたとき戻るためのフラグ
 	 bool nowJump;
+	bool isGround;
 
 	 Vector2 targetPosition;//敵の場所
 	 int initialLayer;
@@ -114,7 +120,7 @@ public class SisterBrain : MonoBehaviour
 		//rb = GetComponent<Rigidbody2D>();
 		pRb = player.gameObject.GetComponent<Rigidbody2D>();
 		pm = player.gameObject.GetComponent<PlayerMove>();
-
+		GravitySet(SManager.instance.sisStatus.firstGravity);
 		/*		if (SManager.instance.sisStatus.equipMagic != null)
 				{
 					enableFire = true;
@@ -132,6 +138,8 @@ public class SisterBrain : MonoBehaviour
 
 	 void FixedUpdate()
 	{
+		isGround = rb.IsTouching(SManager.instance.sisStatus.filter);
+
 		basePosition = player.transform.position;
 		baseDirection = player.transform.localScale;
 
@@ -418,26 +426,27 @@ public class SisterBrain : MonoBehaviour
 
     public void TriggerJump()
     {
+		Debug.Log($"ジャンプトリガー{jumpTrigger}");
 		if (jumpTrigger)
 		{
+			Debug.Log("空飛ぶシスター");
 			if (!reJump)
             {
-				nowPos = transform.position;
-				GroundJump(status.jumpSpeed,status.jumpPower);//status.addSpeed * transform.localScale.x/3);
+				GroundJump(status.jumpSpeed * transform.localScale.x ,status.jumpPower);//status.addSpeed * transform.localScale.x/3);
 			}
             else
             {
-				GroundJump(status.jumpSpeed,status.jumpPower * 1.2f); //status.addSpeed * transform.localScale.x/3);
+				GroundJump(status.jumpSpeed * transform.localScale.x, status.jumpPower * 1.2f); //status.addSpeed * transform.localScale.x/3);
 			}
 			if (doJump)
-			{
-				if(nowPos != transform.position)
+			{//一度ジャンプしてるなら
+				if(nowPos.y != transform.position.y)
                 {
 					reJump = false;
 					doJump = false;
 					jumpTrigger = false;
                 }
-				else if(nowPos== transform.position)
+				else if(nowPos.y　== transform.position.y)
                 {
 					reJump = true;
 					doJump = false;
@@ -459,22 +468,18 @@ public class SisterBrain : MonoBehaviour
 	{
 		if (!isStop&& !isDown)
 		{
-			if (isJump)
-			{
+
+				Debug.Log("空シスター");
 				//sAni.Play(SManager.instance.sisStatus.motionIndex["ジャンプ"]);
 				jumpTime += Time.fixedDeltaTime;
-				rb.AddForce(new Vector2(jumpMove, jumpPower));
-				GravitySet(0);
-				nowJump = true;
-			}
-			if (jumpTime >= status.jumpRes)
-			{
-				//sAni.Play(SManager.instance.sisStatus.motionIndex["落下"]);
-				isJump = false;
-				jumpTime = 0.0f;
-				GravitySet(SManager.instance.sisStatus.firstGravity);
-			}
+				rb.AddForce(new Vector2(jumpMove, jumpPower), ForceMode2D.Impulse);
+			//GravitySet(0);
+			//sAni.Play(SManager.instance.sisStatus.motionIndex["落下"]);
+			//	jumpTime = 0.0f;
+			//GravitySet(SManager.instance.sisStatus.firstGravity);
+			jumpTrigger = false;
 		}
+		JumpCancel();
 	}
 
 	/// <summary>
@@ -482,12 +487,13 @@ public class SisterBrain : MonoBehaviour
 	/// </summary>
 	public void JumpCancel()
 	{
-		if (nowJump && !isJump && rb.IsTouching(SManager.instance.sisStatus.filter))
+		if (isGround)
 		{
-			nowJump = false;
+		//	nowJump = false;
             if (jumpTrigger)
             {
 				doJump = true;
+
             }
 		}
 	}
@@ -574,30 +580,32 @@ public class SisterBrain : MonoBehaviour
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		//トンネルの中をしゃがみトリガーで満たす
-		if (collision.tag == squatTag && pm.isSquat)
+		if (collision.tag == squatTag && pm.isSquat && isGround)
 		{
 			isSquat = true;
 		}
-		if (collision.tag == jumpTag)
+		if (collision.tag == jumpTag && isGround)
 		{
 			jumpTrigger = true;
+			Debug.Log("すし");
 		}
 	}
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-		if (collision.tag == squatTag && pm.isSquat)
+		if (collision.tag == squatTag && pm.isSquat && isGround)
 		{
 			isSquat = true;
 		}
-		if (collision.tag == jumpTag)
+		if (collision.tag == jumpTag && isGround)
 		{
 			jumpTrigger = true;
+			Debug.Log("まきすし");
 		}
 	}
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-		if (collision.tag == squatTag && pm.isSquat)
+		if (collision.tag == squatTag && !pm.isSquat && isGround)
 		{
 			isSquat = false;
 		}

@@ -28,7 +28,7 @@ MonoBehaviour:
   magicAssist: 0
   judgePace: 3
   pegionDis: 6
-  addSpeed: 17
+  addSpeed: 130
   patrolSpeed: 10
   patrolDistance: 3
   walkDistance: 5
@@ -38,11 +38,11 @@ MonoBehaviour:
   waitRes: 2
   dashSpeed: 15
   adjust: 2
-  jumpSpeed: 6
-  jumpPower: 10
+  jumpSpeed: 65
+  jumpPower: 80
   jumpRes: 0.2
   jumpCool: 2
-  firstGravity: 0
+  firstGravity: 100
   downRes: 0
   velocityMin: {x: -100, y: -100}
   velocityMax: {x: 100, y: 50}
@@ -51,12 +51,12 @@ MonoBehaviour:
     useLayerMask: 0
     useDepth: 0
     useOutsideDepth: 0
-    useNormalAngle: 0
+    useNormalAngle: 1
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 65792
     minDepth: 0
     maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
+    minNormalAngle: 70
+    maxNormalAngle: 110

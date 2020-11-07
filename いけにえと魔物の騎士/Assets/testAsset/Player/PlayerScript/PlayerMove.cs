@@ -524,8 +524,8 @@ public class PlayerMove : MonoBehaviour
 
         }
 
-        Debug.Log($"攻撃中{GManager.instance.isAttack}");
-        Debug.Log($"空中攻撃{GManager.instance.airAttack}");
+       // Debug.Log($"攻撃中{GManager.instance.isAttack}");
+       // Debug.Log($"空中攻撃{GManager.instance.airAttack}");
         if (GManager.instance.isAttack && !GManager.instance.airAttack)
         {
             Debug.Log("こたつ");
