@@ -78,7 +78,7 @@ using UnityEngine.UI;
 
 	[Header("歩く速さ")]
 	///<summary>
-	///歩き速度
+	///歩き速度。歩いてる
 	///</summary>
 	public float walkSpeed;
 
@@ -88,9 +88,9 @@ using UnityEngine.UI;
 	///</summary>
 	public float playDistance;
 
-	[Header("のんびりのスピード")]
+	[Header("のんびりのスピード。小走り")]
 	///<summary>
-	///のんびりでこの速度
+	///のんびりでこの速度。
 	///</summary>
 	public float playSpeed;
 

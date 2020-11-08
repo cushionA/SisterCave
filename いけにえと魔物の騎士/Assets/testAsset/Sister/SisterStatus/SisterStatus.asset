@@ -28,24 +28,24 @@ MonoBehaviour:
   magicAssist: 0
   judgePace: 3
   pegionDis: 6
-  addSpeed: 130
-  patrolSpeed: 10
+  addSpeed: 60
+  patrolSpeed: 8
   patrolDistance: 3
   walkDistance: 5
-  walkSpeed: 7
-  playDistance: 4
-  playSpeed: 8
+  walkSpeed: 4
+  playDistance: 15
+  playSpeed: 6
   waitRes: 2
-  dashSpeed: 15
+  dashSpeed: 12
   adjust: 2
-  jumpSpeed: 65
-  jumpPower: 80
-  jumpRes: 0.2
+  jumpSpeed: 600
+  jumpPower: 1600
+  jumpRes: 0.4
   jumpCool: 2
-  firstGravity: 100
+  firstGravity: 80
   downRes: 0
   velocityMin: {x: -100, y: -100}
-  velocityMax: {x: 100, y: 50}
+  velocityMax: {x: 100, y: 100}
   filter:
     useTriggers: 0
     useLayerMask: 0

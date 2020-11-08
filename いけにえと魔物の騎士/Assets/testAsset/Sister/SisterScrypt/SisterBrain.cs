@@ -54,7 +54,8 @@ public class SisterBrain : MonoBehaviour
 	[Header("シスターさんのステータス")]
 	public SisterStatus status;
 
-
+	public AnimationCurve jMove;
+	public AnimationCurve jPower;
 
 	// === 外部パラメータ ======================================
 	/*[HideInInspector]*/
@@ -70,7 +71,10 @@ public class SisterBrain : MonoBehaviour
 	 Vector2 targetPosition;//敵の場所
 	 int initialLayer;
 	 bool jumpTrigger;
-	 bool isWait;
+
+	 bool isWait;//このフラグが真なら待機モーションする。マントいじったり遊んだり。
+	　　　　　　//モーションは好感度とか進行度でモーション名リストが切り替わって決まる。
+
 	[HideInInspector]public bool isPegion;//おんぶフラグ
 	[HideInInspector] public bool nowPegion;//おんぶフラグ
 	Vector2 myPosition;
@@ -106,13 +110,16 @@ public class SisterBrain : MonoBehaviour
 	float pegionJudge;
 	bool isClose;//一度近くまで行く
 	[HideInInspector]public bool isPlay;
-	[HideInInspector] public float playPosition;
+	[HideInInspector] public float playPosition;//環境物の場所
 	[HideInInspector] public float playDirection;//遊ぶ時の方向
 	string jumpTag = "JumpTrigger";
 	bool reJump;//もう一回飛ぶ
 	bool doJump;//ジャンプ終了
 	Vector3 nowPos;//ジャンプ前の地点記録
 	float patrolJudge;//警戒時間を数える
+	float jumpWait;//ジャンプ可能になるまでの待機時間
+	float verticalWait;//垂直ジャンプ可能になるまでの待機時間
+	bool isVertical;//垂直飛びするフラグ
 
 	// === コード（Monobehaviour基本機能の実装） ================
 	 void Start()
@@ -120,7 +127,7 @@ public class SisterBrain : MonoBehaviour
 		//rb = GetComponent<Rigidbody2D>();
 		pRb = player.gameObject.GetComponent<Rigidbody2D>();
 		pm = player.gameObject.GetComponent<PlayerMove>();
-		GravitySet(SManager.instance.sisStatus.firstGravity);
+		GravitySet(0.0f);
 		/*		if (SManager.instance.sisStatus.equipMagic != null)
 				{
 					enableFire = true;
@@ -142,6 +149,7 @@ public class SisterBrain : MonoBehaviour
 
 		basePosition = player.transform.position;
 		baseDirection = player.transform.localScale;
+		//↑プレイヤーが向いてる方向とプレイヤーの位置
 
 		 myPosition = this.transform.position;
 		distance = basePosition - myPosition;
@@ -161,6 +169,7 @@ public class SisterBrain : MonoBehaviour
 			if (!nowPegion)
 			{
 				TriggerJump();
+				Verticaljump();
 			}
 		}
 
@@ -181,6 +190,7 @@ public class SisterBrain : MonoBehaviour
 					Pegion();
 				}
 				TriggerJump();
+				Verticaljump();
 			}
 			else if (nowPegion)
             {
@@ -207,6 +217,7 @@ public class SisterBrain : MonoBehaviour
 					Pegion();
 				}
 				TriggerJump();
+				Verticaljump();
 			}
 			else if (nowPegion)
 			{
@@ -217,8 +228,18 @@ public class SisterBrain : MonoBehaviour
 			PegionChange();
 		}
 
-
+		SisterFall();
 		//SetVelocity();
+        if (isVertical)
+        {
+			//Debug.Log("プーチン");
+			GroundJump(0, status.jumpPower * 1.4f); //status.addSpeed * transform.localScale.x/3);
+		}
+        else
+        {
+		//	Debug.Log("オバマ");
+			GroundJump(status.jumpSpeed * transform.localScale.x, status.jumpPower * 1.2f); //status.addSpeed * transform.localScale.x/3);
+		}
 	}
 
 	public void Pegion()
@@ -227,7 +248,7 @@ public class SisterBrain : MonoBehaviour
 		{
 			Serch3.SetActive(false);
 		}
-		if (isPegion)
+		if (isPegion && !nowPegion && isGround)
 		{
 			if (baseDirection.x > 0)
 			{
@@ -341,68 +362,123 @@ public class SisterBrain : MonoBehaviour
 	/// </summary>
 	public void PatrolMove()
 	{
-		if(Mathf.Abs(distance.x) > status.walkDistance)
-        {
-			Flip(direction);
-			rb.AddForce(new Vector2(status.addSpeed * (status.patrolSpeed * direction - rb.velocity.x), 0));
-			isWait = false;
+		if (isGround)
+		{
+			if (Mathf.Abs(distance.x) > status.walkDistance)
+			{
+				Flip(direction);
+				rb.AddForce(new Vector2(status.addSpeed * (status.patrolSpeed * direction - rb.velocity.x), 0));
+				isWait = false;
+			}
+			else if ((Mathf.Abs(distance.x) <= status.walkDistance && Mathf.Abs(transform.position.x) > status.patrolDistance) || pRb.velocity.x != 0)
+			{
+				Flip(direction);
+				rb.AddForce(new Vector2(status.addSpeed * (status.walkSpeed * direction - rb.velocity.x), 0));
+				isWait = false;
+			}
+			else if (pRb.velocity.x == 0 && Mathf.Abs(transform.position.x) > status.patrolDistance)
+			{
+				rb.velocity = Vector2.zero;
+				isWait = true;
+			}
 		}
-	else if((Mathf.Abs(distance.x) <= status.walkDistance && Mathf.Abs(transform.position.x) > status.patrolDistance) || pRb.velocity.x != 0)
-        {
-			Flip(direction);
-			rb.AddForce(new Vector2(status.addSpeed * (status.walkSpeed * direction - rb.velocity.x), 0));
-			isWait = false;
-		}
-        else if(pRb.velocity.x == 0 && Mathf.Abs(transform.position.x) > status.patrolDistance)
-        {
-			rb.velocity = Vector2.zero;
-			isWait = true;
-        }
 	}
 	public void PlayMove()
 	{//のんびり
-		if (Mathf.Abs(distance.x) >= status.playDistance || isClose)
+		if (isGround)
 		{
-			Flip(direction);
-			rb.AddForce(new Vector2(status.addSpeed * (status.dashSpeed * direction - rb.velocity.x), 0));
-			isWait = false;//立ち止まってる。
-			isClose = true;
-			if (Mathf.Abs(distance.x) <= status.patrolDistance)
+			if (Mathf.Abs(distance.x) > status.playDistance || isClose)
 			{
-				//くっついたら接近フラグ解除
-				isClose = false;
+				//遊びでうろついていい範囲から離れてるならくっつくまで走る。
+				Flip(direction);
+				rb.AddForce(new Vector2(status.addSpeed * (status.dashSpeed * direction - rb.velocity.x), 0));
+				isWait = false;//立ち止まってる。
+				isClose = true;//接近しようっていうフラグ
+				if (Mathf.Abs(distance.x) <= status.patrolDistance)
+				{
+					//くっついたら接近指示フラグ解除
+					isClose = false;
+				}
 			}
-		}
-		else if (Mathf.Abs(distance.x) < status.playDistance)
-		{
-            if (isPlay)
-            {
-                if (myPosition.x >= playPosition - 2 && myPosition.x <= playPosition + 2)
-                {
-					rb.velocity = new Vector2(0, rb.velocity.y);
-                }
-				else if(myPosition.x < playPosition)
-                {
-					rb.AddForce(new Vector2(status.addSpeed * (status.walkSpeed - rb.velocity.x), 0));
-				}
-				else if(myPosition.x > playPosition)
-                {
-					rb.AddForce(new Vector2(status.addSpeed * (-status.walkSpeed - rb.velocity.x), 0));
-				}
-            }
-            else
-            {
-				isWait = true;
-            }
+			else if (Mathf.Abs(distance.x) <= status.playDistance && Mathf.Abs(distance.x) > status.patrolDistance)
+			{
+				//遊んでいい範囲にいて、くっついてないとき
 
-			//Flip(direction);
-			//rb.AddForce(new Vector2(status.addSpeed * (status.playSpeed * direction - rb.velocity.x), 0));
+				if (isPlay)
+				{
+					//環境物に接触
 
-		}
-		else if (pRb.velocity.x == 0 && Mathf.Abs(transform.position.x) > status.patrolDistance)
-		{
-			rb.velocity = Vector2.zero;
-			isWait = true;
+					if (myPosition.x >= playPosition - 2 && myPosition.x <= playPosition + 2)
+					{
+
+						//環境物のすぐそばにいるとき
+						rb.velocity = new Vector2(0, rb.velocity.y);
+					}
+					else if (myPosition.x < playPosition)
+					{
+						Flip(1);
+						//環境物より後ろにいるとき
+						rb.AddForce(new Vector2(status.addSpeed * (status.playSpeed - rb.velocity.x), 0));
+					}
+					else if (myPosition.x > playPosition)
+					{
+						Flip(-1);
+						//環境物より前にいるとき
+						rb.AddForce(new Vector2(status.addSpeed * (-status.playSpeed - rb.velocity.x), 0));
+					}
+				}
+				else
+				{
+					//遊んでいい範囲にいて、くっついてなくて環境物がないとき。早歩きで近づく
+					//isWait = true;
+					Flip(direction);
+					rb.AddForce(new Vector2(status.addSpeed * (status.playSpeed * direction - rb.velocity.x), 0));
+					isWait = false;//立ち止まってる。
+				}
+
+				//Flip(direction);
+				//rb.AddForce(new Vector2(status.addSpeed * (status.playSpeed * direction - rb.velocity.x), 0));
+
+			}
+			else if (Mathf.Abs(distance.x) <= status.patrolDistance)
+			{
+				//くっついてるとき
+				if (isPlay)
+				{
+					//環境物に接触
+
+					if (myPosition.x >= playPosition - 2 && myPosition.x <= playPosition + 2)
+					{
+						//環境物のすぐそばにいるとき
+						rb.velocity = new Vector2(0, rb.velocity.y);
+					}
+					else if (myPosition.x < playPosition)
+					{
+						Flip(1);
+						//環境物より後ろにいるとき
+						rb.AddForce(new Vector2(status.addSpeed * (status.playSpeed - rb.velocity.x), 0));
+					}
+					else if (myPosition.x > playPosition)
+					{
+						Flip(-1);
+						//環境物より前にいるとき
+						rb.AddForce(new Vector2(status.addSpeed * (-status.playSpeed - rb.velocity.x), 0));
+					}
+				}
+				else if (pRb.velocity.x == 0 && !isPlay)
+				{
+					Flip(direction);
+					//プレイヤーが立ち止まってて環境物がないとき
+					rb.velocity = Vector2.zero;
+					isWait = true;
+				}
+				else
+				{
+					Flip(direction);
+					rb.AddForce(new Vector2(status.addSpeed * (direction * status.walkSpeed - rb.velocity.x), 0));
+				}
+
+			}
 		}
 	}
 
@@ -412,7 +488,6 @@ public class SisterBrain : MonoBehaviour
 	/// </summary>
 	public void Wait()
 	{
-
 				//sAni.Play(SManager.instance.sisStatus.motionIndex["待機"]);
 				waitTime += Time.fixedDeltaTime;
 				rb.velocity = rb.velocity = new Vector2(0, rb.velocity.y);
@@ -426,19 +501,21 @@ public class SisterBrain : MonoBehaviour
 
     public void TriggerJump()
     {
-		Debug.Log($"ジャンプトリガー{jumpTrigger}");
-		if (jumpTrigger)
+
+		if (jumpWait<= 3.0f)
 		{
-			Debug.Log("空飛ぶシスター");
-			if (!reJump)
-            {
-				GroundJump(status.jumpSpeed * transform.localScale.x ,status.jumpPower);//status.addSpeed * transform.localScale.x/3);
-			}
-            else
-            {
-				GroundJump(status.jumpSpeed * transform.localScale.x, status.jumpPower * 1.2f); //status.addSpeed * transform.localScale.x/3);
-			}
-			if (doJump)
+			jumpWait += Time.fixedDeltaTime;
+		}
+		Debug.Log($"ジャンプトリガー{jumpTrigger}");
+		if (jumpTrigger && jumpWait >= 2.0f && isGround)
+		{
+				    isJump = true;
+				    jumpWait = 0;
+				jumpTrigger = false;
+				//Debug.Log("空飛ぶシスター");
+			
+			
+		/*if (doJump)
 			{//一度ジャンプしてるなら
 				if(nowPos.y != transform.position.y)
                 {
@@ -452,7 +529,7 @@ public class SisterBrain : MonoBehaviour
 					doJump = false;
 
                 }
-			}
+			}*/
 		}
     }
 
@@ -468,33 +545,66 @@ public class SisterBrain : MonoBehaviour
 	{
 		if (!isStop&& !isDown)
 		{
-
-				Debug.Log("空シスター");
-				//sAni.Play(SManager.instance.sisStatus.motionIndex["ジャンプ"]);
-				jumpTime += Time.fixedDeltaTime;
-				rb.AddForce(new Vector2(jumpMove, jumpPower), ForceMode2D.Impulse);
+			/*	if (isJump)
+				{
+					//sAni.Play(status.motionIndex["ジャンプ"]);
+					jumpTime += Time.fixedDeltaTime;
+					rb.AddForce(new Vector2(jumpMove,jumpPower));
+					//GravitySet(0);
+					//nowJump = true;
+				}
+				if (jumpTime >= status.jumpRes)
+				{
+					//sAni.Play(status.motionIndex["落下"]);
+					isJump = false;
+					jumpTime = 0.0f;
+					//jumpTrigger = false;
+				}*/
+			//Debug.Log("空シスター");
+			//sAni.Play(SManager.instance.sisStatus.motionIndex["ジャンプ"]);
+			//jumpTime += Time.fixedDeltaTime;
+			//rb.AddForce(new Vector2(jumpMove, jumpPower), ForceMode2D.Impulse);
 			//GravitySet(0);
 			//sAni.Play(SManager.instance.sisStatus.motionIndex["落下"]);
 			//	jumpTime = 0.0f;
 			//GravitySet(SManager.instance.sisStatus.firstGravity);
-			jumpTrigger = false;
-		}
-		JumpCancel();
+
+			if (isJump)
+            {
+				jumpTime += Time.fixedDeltaTime;
+				rb.AddForce(new Vector2(jumpMove * jMove.Evaluate(jumpTime), jumpPower * jPower.Evaluate(jumpTime)));
+				if (isGround && jumpTime > 0.1)
+                {//
+					isJump = false;
+					jumpTime = 0.0f;
+					jumpTrigger = false;
+					isVertical = false;
+                }
+
+			}
+
+
+			}
 	}
 
 	/// <summary>
 	/// ジャンプ終了着地判定。地上キャラのみ
 	/// </summary>
-	public void JumpCancel()
+	public void Verticaljump()
 	{
-		if (isGround)
-		{
-		//	nowJump = false;
-            if (jumpTrigger)
-            {
-				doJump = true;
-
-            }
+		if (isGround && (Mathf.Abs(distance.x) <= status.patrolDistance) && distance.y > 5 && isGround)
+        {
+			if (verticalWait <= 3.0f)
+			{
+				verticalWait += Time.fixedDeltaTime;
+			}
+			if (verticalWait >= 2.0f)
+			{
+				isVertical = true;
+				isJump = true;
+				verticalWait = 0.0f;
+				//Debug.Log("あべ");
+			}
 		}
 	}
 
@@ -579,39 +689,79 @@ public class SisterBrain : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		//トンネルの中をしゃがみトリガーで満たす
-		if (collision.tag == squatTag && pm.isSquat && isGround)
+		if (isGround)
 		{
-			isSquat = true;
-		}
-		if (collision.tag == jumpTag && isGround)
-		{
-			jumpTrigger = true;
-			Debug.Log("すし");
+
+			//トンネルの中をしゃがみトリガーで満たす
+			if (collision.tag == squatTag && pm.isSquat)
+			{
+				isSquat = true;
+			}
+			if (collision.tag == jumpTag && collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+			{
+				jumpTrigger = true;
+			//	Debug.Log("すし");
+			}
+
 		}
 	}
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
-		if (collision.tag == squatTag && pm.isSquat && isGround)
+		if (isGround)
 		{
-			isSquat = true;
-		}
-		if (collision.tag == jumpTag && isGround)
-		{
-			jumpTrigger = true;
-			Debug.Log("まきすし");
+			//トンネルの中をしゃがみトリガーで満たす
+			if (collision.tag == squatTag && pm.isSquat)
+			{
+				isSquat = true;
+			}
+			if (collision.tag == jumpTag && collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+			{
+				jumpTrigger = true;
+				Debug.Log("まきすし");
+			}
+			/*else if (collision.tag == jumpTag && reJump)
+			{
+				jumpTrigger = true;
+				jumpTime = 0.0f;
+			}*/
 		}
 	}
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-		if (collision.tag == squatTag && !pm.isSquat && isGround)
+		if (isGround)
 		{
-			isSquat = false;
+			if (collision.tag == squatTag && !pm.isSquat)
+			{
+				isSquat = false;
+			}
+			if (collision.tag == jumpTag)
+			{
+				jumpTrigger = false;
+				//Debug.Log("まきすし");
+			}
 		}
 	}
 
-
+	public void SisterFall()
+    {
+		/*if (!isGround && !isPegion && !isJump)
+        {
+			GravitySet(SManager.instance.sisStatus.firstGravity);
+		}
+        else
+        {
+			GravitySet(0);
+		}*/
+		if (!isGround && !isPegion)
+		{
+			GravitySet(SManager.instance.sisStatus.firstGravity);
+		}
+		else
+		{
+			GravitySet(0);
+		}
+	}
 
 
 

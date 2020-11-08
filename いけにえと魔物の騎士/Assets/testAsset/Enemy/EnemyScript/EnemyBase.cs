@@ -1445,8 +1445,9 @@ public class EnemyBase : MonoBehaviour
 			lastHit = collision.gameObject;
 		}
 
-		if(isAggressive && collision.tag == status.JumpTag)
+		if(isAggressive && collision.tag == status.JumpTag && collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
         {
+			//ステータスでジャンプタグ設定しなければジャンプできない敵が作れる
 			jumpTrigger = true;
         }
 
@@ -1479,7 +1480,7 @@ public class EnemyBase : MonoBehaviour
 		}
 
 
-		if (status.kind != EnemyStatus.KindofEnemy.Fly && collision.tag == status.JumpTag && isAggressive)
+		if (status.kind != EnemyStatus.KindofEnemy.Fly && collision.tag == status.JumpTag && isAggressive && collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
 		{
 			jumpTrigger = true;
 		}
