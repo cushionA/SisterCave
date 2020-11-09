@@ -98,6 +98,7 @@ public class EnemyBase : MonoBehaviour
 	[HideInInspector]public bool isHit;//ヒット中
 	[HideInInspector]public bool isHitable;
 	[HideInInspector] public GameObject lastHit;
+	protected float jumpWait;
 
 	// === コード（Monobehaviour基本機能の実装） ================
 	protected virtual void Start()
@@ -138,7 +139,9 @@ public class EnemyBase : MonoBehaviour
 
 	protected virtual void FixedUpdate()
 	{
-        if (!cameraRendered)
+		isGround = rb.IsTouching(EnemyManager.instance.filter);
+
+		if (!cameraRendered)
         {
 			if (!status.unBaind)
 			{
@@ -175,11 +178,7 @@ public class EnemyBase : MonoBehaviour
 
 			EscapeCheck();
 
-            if (jumpTrigger)
-            {
-				GroundJump(status.addSpeed.x * direction);
-				jumpTrigger = false;
-            }
+			//TriggerJump();
 		}
 
 		else if (!isAggressive)
@@ -211,6 +210,7 @@ public class EnemyBase : MonoBehaviour
 		HitCheck();
 		WaitAttack();
 		DamageAvoid();
+		EnemyFall();
 	}
 	public void ActionFire(int i,float random = 0.0f)
 	{//ランダムに入れてもいいけど普通に入れてもいい
@@ -1043,7 +1043,7 @@ public class EnemyBase : MonoBehaviour
 		}
 		#endregion
 
-		if (!isStop && !nowJump && !isAvoid && !isDown)
+		if (!isStop && !nowJump && !isAvoid && !isDown && isGround)
 		{
 			if (status.ground == EnemyStatus.MoveState.stay)
 			{
@@ -1201,36 +1201,74 @@ public class EnemyBase : MonoBehaviour
 			}
 		} 
 	}
+	//status.kind == EnemyStatus.KindofEnemy.Fly
 
-
-
+	public void EnemyFall()
+	{
+		if (status.kind != EnemyStatus.KindofEnemy.Fly)
+		{
+			if (!isGround)
+			{
+				GravitySet(status.firstGravity);
+			}
+			else
+			{
+				GravitySet(0);
+			}
+		}
+        else
+        {
+            if (!isDown)
+            {
+				GravitySet(0);
+            }
+        }
+	}
 
 	/// <summary>
 	///	地上キャラ用のジャンプ。ジャンプ状態は自動解除。ジャンプキャンセルとセット
 	/// </summary>	
-	public void GroundJump(float jumpMove)
+	public void GroundJump(float jumpMove, float jumpSpeed)
        {
+
 		if (!isStop && !isAvoid && !isDown)
 		{
 			if (isJump)
 			{
-				//sAni.Play(status.motionIndex["ジャンプ"]);
 				jumpTime += Time.fixedDeltaTime;
-				rb.AddForce(new Vector2(jumpMove, status.jumpSpeed));
-				GravitySet(0);
-				nowJump = true;
-			}
-			if (jumpTime >= status.jumpRes)
-			{
-				//sAni.Play(status.motionIndex["落下"]);
-				isJump = false;
-				jumpTime = 0.0f;
-				GravitySet(status.firstGravity);
+				rb.AddForce(new Vector2(jumpMove * EnemyManager.instance.jMove.Evaluate(jumpTime), jumpSpeed * EnemyManager.instance.jPower.Evaluate(jumpTime)));
+				if (isGround && jumpTime > 0.1)
+				{//
+					rb.velocity = Vector2.zero;
+					isJump = false;
+					jumpTime = 0.0f;
+					jumpTrigger = false;
+					//isVertical = false;
+				}
+
 			}
 		}
         }
 
-	/// <summary>
+	public void TriggerJump()
+    {
+		if (jumpWait <= 3.0f)
+		{
+			jumpWait += Time.fixedDeltaTime;
+		}
+		//Debug.Log($"ジャンプトリガー{jumpTrigger}");
+		if (jumpTrigger && jumpWait >= 2.0f && isGround)
+		{
+			Debug.Log("飛翔");
+			isJump = true;
+			jumpWait = 0;
+			jumpTrigger = false;
+		}
+	}
+
+
+
+/*	/// <summary>
 	/// ジャンプ終了着地判定。地上キャラのみ
 	/// </summary>
 	public void JumpCancel()
@@ -1239,24 +1277,27 @@ public class EnemyBase : MonoBehaviour
 		{
 			nowJump = false;
 		}
-	}
+	}*/
     
 	/// <summary>
 	///	飛行キャラ用のジャンプ。ジャンプ状態は自動解除
 	/// </summary>	
-	public void AirJump(float jumpMove)
+	public void AirJump(float jumpMove,float jumpSpeed)
 	{
 		if (!isStop && !isAvoid && !isDown)
 		{
 			if (isJump)
 			{
 				jumpTime += Time.fixedDeltaTime;
-				rb.AddForce(new Vector2(jumpMove, status.jumpSpeed));
-			}
-			if (jumpTime >= status.jumpRes)
-			{
-				isJump = false;
-				jumpTime = 0.0f;
+				rb.AddForce(new Vector2(jumpMove * EnemyManager.instance.jMove.Evaluate(jumpTime), jumpSpeed * EnemyManager.instance.jPower.Evaluate(jumpTime)));
+				if (jumpTime > 1)
+				{//
+					isJump = false;
+					jumpTime = 0.0f;
+					jumpTrigger = false;
+					//isVertical = false;
+				}
+
 			}
 		}
 	}
@@ -1387,16 +1428,16 @@ public class EnemyBase : MonoBehaviour
 	{
 		//Debug.Log("吹き飛ぶ");
 
-			if (isDown && rb.IsTouching(status.filter))
+			if (isDown)
 			{
 			//sAni.Play(status.motionIndex["ダウン"]);
-			GravitySet(status.firstGravity);
+			//GravitySet(status.firstGravity);
 				AllStop(1f);
 				ArmorReset();
 				isDown = false;
 				//ダウンアニメ
 			}
-			else if (isDown && !rb.IsTouching(status.filter) && status.kind == EnemyStatus.KindofEnemy.Fly)
+			if (isDown && !isGround && status.kind == EnemyStatus.KindofEnemy.Fly)
 			{
 			//sAni.Play(status.motionIndex["落下"]);
 			SetLayer(17);
@@ -1445,10 +1486,14 @@ public class EnemyBase : MonoBehaviour
 			lastHit = collision.gameObject;
 		}
 
-		if(isAggressive && collision.tag == status.JumpTag && collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+		if(isAggressive && collision.tag == status.JumpTag && isGround)
         {
-			//ステータスでジャンプタグ設定しなければジャンプできない敵が作れる
-			jumpTrigger = true;
+			if (collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+			{
+
+				//ステータスでジャンプタグ設定しなければジャンプできない敵が作れる
+				jumpTrigger = true;
+			}
         }
 
 	}
@@ -1480,9 +1525,15 @@ public class EnemyBase : MonoBehaviour
 		}
 
 
-		if (status.kind != EnemyStatus.KindofEnemy.Fly && collision.tag == status.JumpTag && isAggressive && collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+
+		if (isAggressive && collision.tag == status.JumpTag && isGround)
 		{
-			jumpTrigger = true;
+			if (collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+			{
+
+				//ステータスでジャンプタグ設定しなければジャンプできない敵が作れる
+				jumpTrigger = true;
+			}
 		}
 
 	}

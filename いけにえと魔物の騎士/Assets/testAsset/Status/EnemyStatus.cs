@@ -89,14 +89,20 @@ public class EnemyStatus : CharacterStatus
 	///</summary>
 	public float chaseRes;//逃げたプレイヤーを追いかける時間
 
-	[Header("ジャンプ力")]
+	[Header("横のジャンプ力")]
 	///<summary>
 	///AddForceでやる。空飛ぶキャラはきもちジャンプ力低め？
 	///</summary>
-	public float jumpSpeed;
+	public float jumpMove;
+
+	[Header("縦のジャンプ力")]
+	///<summary>
+	///AddForceでやる。空飛ぶキャラはきもちジャンプ力低め？
+	///</summary>
+	public float jumpPower;
 
 	[Header("ジャンプの継続時間")]
-	public float jumpRes;
+	public float jumpRes = 0.4f;
 
 	[Header("ジャンプのクールタイム")]
 	///<summary>
@@ -143,12 +149,6 @@ public class EnemyStatus : CharacterStatus
 	///射撃で打ち出すオブジェクト
 	///</summary>
 	public List<EnemyMagic> enemyFire;//エネミーの魔法
-
-	[Header("接地判定用のフィルター")]
-	///<summary>
-	///マスクしてやれば地面しか検出しない。
-	///</summary>
-	public ContactFilter2D filter;
 
 	[Header("ドッグパイル")]
 	///<summary>

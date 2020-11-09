@@ -29,6 +29,8 @@ public class TestEnemy : EnemyBase
         base.FixedUpdate();
         if (isAggressive)
         {
+
+
             Debug.Log($"{status.ground}");
             AgrMove();
             //isGuard = true;
@@ -44,7 +46,7 @@ public class TestEnemy : EnemyBase
                RandomDirection(100, 50);
            }*/
             // Debug.Log($"レイヤー{this.gameObject.layer}");
-
+            TriggerJump();
         }
         else if (!isAggressive)
         {
@@ -53,8 +55,8 @@ public class TestEnemy : EnemyBase
         }
 
       //  AirJump(direX * status.combatSpeed.x / 2);
-        GroundJump(direction * status.combatSpeed.x / 2);
-        JumpCancel();
+        GroundJump(transform.localScale.x * status.jumpMove,status.jumpPower * 1.2f);
+       // JumpCancel();
         Avoid(direX);
 
         if (RandomValue(0, 100) <= 1 && !nowJump && !isAvoid)

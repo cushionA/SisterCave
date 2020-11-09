@@ -2890,7 +2890,7 @@ GameObject:
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &360332878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21790,7 +21790,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &1191069468
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -22943,6 +22943,7 @@ GameObject:
   - component: {fileID: 1285881600}
   - component: {fileID: 1285881599}
   - component: {fileID: 1285881598}
+  - component: {fileID: 1285881605}
   m_Layer: 0
   m_Name: GManager
   m_TagString: Untagged
@@ -23325,6 +23326,80 @@ MonoBehaviour:
   - {fileID: 598510423}
   - {fileID: 1872621358}
   EqCore: {fileID: 1669025203}
+--- !u!114 &1285881605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285881590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c90aa2ba4b1b4c409380790921f21de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jMove:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.15
+      inSlope: 0.029995501
+      outSlope: 0.029995501
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.21666667
+    - serializedVersion: 3
+      time: 2.25
+      value: 0.2
+      inSlope: -1.1024531
+      outSlope: -1.1024531
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.3460778
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jPower:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.12
+      inSlope: -0.3571165
+      outSlope: -0.3571165
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.14915365
+    - serializedVersion: 3
+      time: 0.6
+      value: -0.2
+      inSlope: -0.032271925
+      outSlope: -0.032271925
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.51097655
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  filter:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 1
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 65792
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 70
+    maxNormalAngle: 110
 --- !u!1 &1293494392 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6354547732531484545, guid: 64d2de806c1592242ac4f5283e1ce0ff,

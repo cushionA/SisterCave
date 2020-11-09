@@ -120,6 +120,7 @@ public class SisterBrain : MonoBehaviour
 	float jumpWait;//ジャンプ可能になるまでの待機時間
 	float verticalWait;//垂直ジャンプ可能になるまでの待機時間
 	bool isVertical;//垂直飛びするフラグ
+	Vector2 waitPosition;
 
 	// === コード（Monobehaviour基本機能の実装） ================
 	 void Start()
@@ -218,6 +219,7 @@ public class SisterBrain : MonoBehaviour
 				}
 				TriggerJump();
 				Verticaljump();
+				WaitJudge();
 			}
 			else if (nowPegion)
 			{
@@ -392,7 +394,7 @@ public class SisterBrain : MonoBehaviour
 				//遊びでうろついていい範囲から離れてるならくっつくまで走る。
 				Flip(direction);
 				rb.AddForce(new Vector2(status.addSpeed * (status.dashSpeed * direction - rb.velocity.x), 0));
-				isWait = false;//立ち止まってる。
+			//	isWait = false;//立ち止まってる。
 				isClose = true;//接近しようっていうフラグ
 				if (Mathf.Abs(distance.x) <= status.patrolDistance)
 				{
@@ -433,7 +435,7 @@ public class SisterBrain : MonoBehaviour
 					//isWait = true;
 					Flip(direction);
 					rb.AddForce(new Vector2(status.addSpeed * (status.playSpeed * direction - rb.velocity.x), 0));
-					isWait = false;//立ち止まってる。
+					//isWait = false;//立ち止まってる。
 				}
 
 				//Flip(direction);
@@ -446,7 +448,7 @@ public class SisterBrain : MonoBehaviour
 				if (isPlay)
 				{
 					//環境物に接触
-
+					waitTime = 0.0f;
 					if (myPosition.x >= playPosition - 2 && myPosition.x <= playPosition + 2)
 					{
 						//環境物のすぐそばにいるとき
@@ -467,13 +469,20 @@ public class SisterBrain : MonoBehaviour
 				}
 				else if (pRb.velocity.x == 0 && !isPlay)
 				{
+					waitTime += Time.fixedDeltaTime;
 					Flip(direction);
 					//プレイヤーが立ち止まってて環境物がないとき
-					rb.velocity = Vector2.zero;
-					isWait = true;
+					rb.velocity = rb.velocity = new Vector2(0, rb.velocity.y);
+					if (waitTime >= SManager.instance.sisStatus.waitRes && !isWait)
+					{
+						waitPosition = basePosition;
+						isWait = true;
+						waitTime = 0.0f;
+					}
 				}
 				else
 				{
+					waitTime = 0.0f;
 					Flip(direction);
 					rb.AddForce(new Vector2(status.addSpeed * (direction * status.walkSpeed - rb.velocity.x), 0));
 				}
@@ -506,7 +515,7 @@ public class SisterBrain : MonoBehaviour
 		{
 			jumpWait += Time.fixedDeltaTime;
 		}
-		Debug.Log($"ジャンプトリガー{jumpTrigger}");
+		//Debug.Log($"ジャンプトリガー{jumpTrigger}");
 		if (jumpTrigger && jumpWait >= 2.0f && isGround)
 		{
 				    isJump = true;
@@ -575,6 +584,7 @@ public class SisterBrain : MonoBehaviour
 				rb.AddForce(new Vector2(jumpMove * jMove.Evaluate(jumpTime), jumpPower * jPower.Evaluate(jumpTime)));
 				if (isGround && jumpTime > 0.1)
                 {//
+					rb.velocity = Vector2.zero;
 					isJump = false;
 					jumpTime = 0.0f;
 					jumpTrigger = false;
@@ -697,10 +707,14 @@ public class SisterBrain : MonoBehaviour
 			{
 				isSquat = true;
 			}
-			if (collision.tag == jumpTag && collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+			if (collision.tag == jumpTag && isGround)
 			{
-				jumpTrigger = true;
-			//	Debug.Log("すし");
+				//GetComponentはなるべくせぬように
+				if (collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+				{
+					jumpTrigger = true;
+					//	Debug.Log("すし");
+				}
 			}
 
 		}
@@ -715,10 +729,13 @@ public class SisterBrain : MonoBehaviour
 			{
 				isSquat = true;
 			}
-			if (collision.tag == jumpTag && collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+			if (collision.tag == jumpTag && isGround)
 			{
-				jumpTrigger = true;
-				Debug.Log("まきすし");
+				if (collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x) 
+				{
+					jumpTrigger = true;
+				//	Debug.Log("まきすし");
+				}
 			}
 			/*else if (collision.tag == jumpTag && reJump)
 			{
@@ -742,6 +759,20 @@ public class SisterBrain : MonoBehaviour
 			}
 		}
 	}
+
+	/// <summary>
+	/// 待機状態解除判断のためのメソッド
+	/// </summary>
+	public void WaitJudge()
+    {
+        if (isWait)
+        {
+			if(Mathf.Abs(basePosition.x) - Mathf.Abs(waitPosition.x) > Mathf.Abs(status.patrolDistance)/2 || basePosition.y != waitPosition.y)
+            {
+				isWait = false;
+            }
+        }
+    }
 
 	public void SisterFall()
     {

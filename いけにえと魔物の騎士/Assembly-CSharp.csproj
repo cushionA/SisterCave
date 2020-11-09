@@ -497,6 +497,7 @@
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenMaterialOffsetProperty.cs" />
     <Compile Include="Assets\PlayMaker\Actions\StateMachine\GetFsmVariable.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Logic\IntCompare.cs" />
+    <Compile Include="Assets\testAsset\Map\MapScript\JumpTrigger.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenControlMethodsPlayForwardById.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformLookAtPosition.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Logic\FloatChanged.cs" />
@@ -1538,7 +1539,7 @@
     <Compile Include="Assets\PlayMaker\Actions\Array\ArrayGetRandom.cs" />
     <Compile Include="Assets\PlayMaker\Actions\Transform\SmoothFollowAction.cs" />
     <Compile Include="Assets\DOTweenPlaymakerActions\Actions\DOTween\DOTweenTransformLocalRotate.cs" />
-    <Compile Include="Assets\testAsset\Map\MapScript\JumpTrigger.cs" />
+    <Compile Include="Assets\testAsset\Enemy\EnemyStatus\EnemyManager.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\EnhancedScroller v2\upgrading from 1.x to 2.x.txt" />

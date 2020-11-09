@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 832aa2b1771573b45a71909acaa2b710, type: 3}
   m_Name: TestEnemy
   m_EditorClassIdentifier: 
-  isPoisonState: 0
-  isNumbnessState: 0
+  isPoison: 0
+  isParalyze: 0
   level: 1
   maxHp: 5000000
   hp: 5000000
@@ -51,7 +51,7 @@ MonoBehaviour:
   nockBackPower: 0
   attackBuff: 0
   judgePace: 2
-  addSpeed: {x: 400, y: 0}
+  addSpeed: {x: 100, y: 0}
   patrolSpeed: {x: 10, y: 0}
   waitDistance: {x: 15, y: 0}
   waitRes: 1
@@ -62,39 +62,29 @@ MonoBehaviour:
   walkSpeed: {x: 2, y: 0}
   escapeDistance: {x: 15, y: 15}
   chaseRes: 7
-  jumpSpeed: 180
+  jumpMove: 400
+  jumpPower: 1500
   jumpRes: 0.4
   jumpCool: 12
   avoidSpeed: {x: 300, y: 0}
   avoidRes: 0.4
   avoidCool: 12
-  firstGravity: 25
+  firstGravity: 6
   downRes: 0
   velocityMin: {x: -100, y: -100}
   velocityMax: {x: 100, y: 50}
   enemyFire:
   - {fileID: 11400000, guid: 931b7a03fcabaf9489c54ec0349f2d01, type: 2}
-  filter:
-    useTriggers: 0
-    useLayerMask: 0
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 1
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 65792
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 60
-    maxNormalAngle: 120
   dogPile: {fileID: 0}
   money: 0
   dropItem: []
+  strong: 0
+  boss: 0
   ground: 1
   air: 6
   kind: 0
   atType: 0
+  wp: 
   PMagicTag: PlayerMagic
   SMagicTag: SisterMagic
   AttackTag: Attack
@@ -105,9 +95,10 @@ MonoBehaviour:
   atValue: []
   aditionalArmor: 0
   isBlow: 0
+  parriable: 0
+  unBaind: 0
   blowVector: {x: 0, y: 0}
   Shock: 0
   mValue: 0
   isCombo: 0
-  hitLimmit: 1
   isLight: 0
