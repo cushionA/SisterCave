@@ -36,6 +36,16 @@ namespace PixelCrushers.DialogueSystem
         /// <value><c>true</c> if has instance; otherwise, <c>false</c>.</value>
         public static bool hasInstance { get { return instance != null; } }
 
+#if UNITY_2019_3_OR_NEWER
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            m_instance = null;
+        }
+#endif
+
+
+
         /// <summary>
         /// Gets the database manager.
         /// </summary>
@@ -916,6 +926,7 @@ namespace PixelCrushers.DialogueSystem
 
         /// <summary>
         /// Loads a named asset from the registered asset bundles or from Resources.
+        /// Note: This version of LoadAsset does not load from Addressables.
         /// </summary>
         /// <returns>The asset, or <c>null</c> if not found.</returns>
         /// <param name="name">Name of the asset.</param>
@@ -926,6 +937,7 @@ namespace PixelCrushers.DialogueSystem
 
         /// <summary>
         /// Loads a named asset from the registered asset bundles or from Resources.
+        /// Note: This version of LoadAsset does not load from Addressables.
         /// </summary>
         /// <returns>The asset, or <c>null</c> if not found.</returns>
         /// <param name="name">Name of the asset.</param>
@@ -933,6 +945,40 @@ namespace PixelCrushers.DialogueSystem
         public static UnityEngine.Object LoadAsset(string name, System.Type type)
         {
             return hasInstance ? instance.LoadAsset(name, type) : null;
+        }
+
+        /// <summary>
+        /// Loads a named asset from the registered asset bundles, Resources, or
+        /// Addressables. Returns the asset in a callback delegate. Addressables
+        /// will be unloaded when the scene is unloaded. To unload them earlier,
+        /// use DialogueManager.UnloadAsset(). 
+        /// 
+        /// By default, scene changes unload all addressables loaded via 
+        /// DialogueManager.LoadAsset(). To prevent the unload, set
+        /// DialogueManager.instance.unloadAddressablesOnSceneChange to false.
+        /// </summary>
+        /// <param name="name">Name of the asset.</param>
+        /// <param name="type">Type of the asset</param>
+        /// <param name="assetLoaded">Delegate method to call when returning loaded asset, or <c>null</c> if not found.</param>
+        public static void LoadAsset(string name, System.Type type, AssetLoadedDelegate assetLoaded)
+        {
+            if (hasInstance)
+            {
+                instance.LoadAsset(name, type, assetLoaded);
+            }
+            else if (assetLoaded != null)
+            {
+                assetLoaded(null);
+            }
+        }
+
+        /// <summary>
+        /// Unloads an object previously loaded by LoadAsset. Only unloads
+        /// if using addressables.
+        /// </summary>
+        public static void UnloadAsset(object obj)
+        {
+            if (hasInstance) instance.UnloadAsset(obj);
         }
 
         /// <summary>

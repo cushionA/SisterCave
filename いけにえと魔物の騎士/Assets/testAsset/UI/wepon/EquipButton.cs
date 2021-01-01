@@ -33,10 +33,10 @@ public class EquipButton : MonoBehaviour
         {
             EquipManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
-          //  Debug.Log($"青い稲妻{EquipManager.instance.selectButton == this.gameObject}");
+          //  //Debug.log($"青い稲妻{EquipManager.instance.selectButton == this.gameObject}");
             if (EquipManager.instance.selectButton == this.gameObject && !isFirst)
             {
-                //Debug.Log("冥王星");
+                ////Debug.log("冥王星");
                 EquipManager.instance.selectItem = item;
                 //position = this.GetComponent<RectTransform>().anchoredPosition;
                 isFirst = true;
@@ -49,7 +49,7 @@ public class EquipButton : MonoBehaviour
 
             if (EquipManager.instance.isWeponM || EquipManager.instance.isShieldM)
             {
-              //  Debug.Log("サイパン");
+              //  //Debug.log("サイパン");
                 if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
                     MainUI.instance.weponWindow.SetActive(false);
@@ -83,7 +83,7 @@ public class EquipButton : MonoBehaviour
 
     public void CallWindow()
     {
-      //  Debug.Log($"お名前教えて{EquipManager.instance.selectButton.name}");
+      //  //Debug.log($"お名前教えて{EquipManager.instance.selectButton.name}");
         if (EquipManager.instance.selectItem.inventoryNum > 0 && item != null && EquipManager.instance.selectButton == this.gameObject)
         {
             EquipManager.instance.selectItem = item;

@@ -162,10 +162,10 @@ public class MainUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5))
-        {
-            Debug.Log("unnchi");
-        }
+     //   if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5))
+    //    {
+      //      //Debug.log("unnchi");
+    //    }
 
 
          if (MaterialManager.instance.isUseMenu || ToolManager.instance.isUseMenu || EquipManager.instance.isUseMenu
@@ -178,11 +178,11 @@ public class MainUI : MonoBehaviour
         {
             openWindow = false;
         }
-       // Debug.Log($"さぁて真になれ{openWindow}");
+       // //Debug.log($"さぁて真になれ{openWindow}");
 
          verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
 
-       // Debug.Log($"装備窓確認trueになれ{isInitial}");
+       // //Debug.log($"装備窓確認trueになれ{isInitial}");
 
         if (!sis.sisMenu)
         {
@@ -202,7 +202,7 @@ public class MainUI : MonoBehaviour
                     lic.isEver = false;
                     mtc.isEver = false;
                     coc.isEver = false;
-                    //Debug.Log($"qawsedfrgjui,lo{usec.isEver}");
+                    ////Debug.log($"qawsedfrgjui,lo{usec.isEver}");
                     isInitial = false;
                     ButtonOn();
                     GManager.instance.InputR.controllers.maps.SetMapsEnabled(true, "Default");

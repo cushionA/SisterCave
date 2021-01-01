@@ -46,53 +46,6 @@ namespace ES3Types
 		public override object Read<T>(ES3Reader reader)
 		{
             return Read(reader);
-			/*if(reader.StartReadCollection())
-				return null;
-
-			// Create a List to store the items as a 1D array, which we can work out the positions of by calculating the lengths of the two dimensions.
-			var items = new List<T>();
-			int length1 = 0;
-			int length2 = 0;
-
-			// Iterate through each sub-array
-			while(true)
-			{
-				if(!reader.StartReadCollectionItem())
-					break;
-				reader.StartReadCollection();
-
-				length1++;
-
-				while(true)
-				{
-					if(!reader.StartReadCollectionItem())
-						break;
-
-					ReadICollection<T>(reader, items, elementType);
-					length2++;
-
-					if(reader.EndReadCollectionItem())
-						break;
-				}
-
-				reader.EndReadCollection();
-				if(reader.EndReadCollectionItem())
-					break;
-			}
-
-			reader.EndReadCollection();
-
-			length2 = length2/length1;
-			int length3 = items.Count / length2 / length1;
-
-			var array = new T[length1,length2,length3];
-
-			for(int i=0; i<length1; i++)
-				for(int j=0; j<length2; j++)
-					for(int k=0; k<length3; k++)
-						array[i,j,k] = items[i * (length2*length3) + (j * length3) + k];
-
-			return array;*/
 		}
 
 		public override object Read(ES3Reader reader)
@@ -146,7 +99,12 @@ namespace ES3Types
 			return array;
 		}
 
-		public override void ReadInto<T>(ES3Reader reader, object obj)
+        public override void ReadInto<T>(ES3Reader reader, object obj)
+        {
+            ReadInto(reader, obj);
+        }
+
+        public override void ReadInto(ES3Reader reader, object obj)
 		{
 			var array = (Array)obj;
 

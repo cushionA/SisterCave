@@ -15,13 +15,13 @@ public class Tes : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log("s");
+        //Debug.log("s");
 
         SSS += Time.fixedDeltaTime;
 
             if(SSS > 3.0)
         {
-            Debug.Log("sss");
+            //Debug.log("sss");
             SSS = 0.0f;
 
         }

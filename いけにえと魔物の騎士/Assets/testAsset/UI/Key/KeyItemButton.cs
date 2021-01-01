@@ -35,10 +35,10 @@ public class KeyItemButton : MonoBehaviour
         {
             KeyManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
-            //  Debug.Log($"青い稲妻{KeyManager.instance.selectButton == this.gameObject}");
+            //  //Debug.log($"青い稲妻{KeyManager.instance.selectButton == this.gameObject}");
             if (KeyManager.instance.selectButton == this.gameObject && !isFirst)
             {
-                //Debug.Log("冥王星");
+                ////Debug.log("冥王星");
                 KeyManager.instance.selectItem = item;
                 //position = this.GetComponent<RectTransform>().anchoredPosition;
                 isFirst = true;
@@ -54,7 +54,7 @@ public class KeyItemButton : MonoBehaviour
 
     public void CallWindow()
     {
-        //  Debug.Log($"お名前教えて{KeyManager.instance.selectButton.name}");
+        //  //Debug.log($"お名前教えて{KeyManager.instance.selectButton.name}");
         if (KeyManager.instance.selectItem.inventoryNum > 0 && item != null && KeyManager.instance.selectButton == this.gameObject)
         {
             KeyManager.instance.selectItem = item;

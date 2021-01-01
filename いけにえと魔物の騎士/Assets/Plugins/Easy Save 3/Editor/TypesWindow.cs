@@ -156,15 +156,15 @@ namespace ES3Editor
 						SelectType(selectedType);
 					}
 					if(GUILayout.Button("Edit ES3Type Script"))
-						UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(path, 1);
+						AssetDatabase.OpenAsset(AssetDatabase.LoadMainAssetAtPath("Assets" + path.Remove(0, Application.dataPath.Length)));
 					EditorGUILayout.EndHorizontal();
 				}
 				else
 				{
 					EditorGUILayout.HelpBox("This type has no public parameterless constructors.\n\nTo support this type you will need to modify the ES3Type script to use a specific constructor instead of the parameterless constructor.", MessageType.Info);
 					if(GUILayout.Button("Click here to edit the ES3Type script"))
-						UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(path, 1);
-					if(GUILayout.Button("Reset to Default"))
+                        AssetDatabase.OpenAsset(AssetDatabase.LoadMainAssetAtPath("Assets" + path.Remove(0, Application.dataPath.Length)));
+                    if (GUILayout.Button("Reset to Default"))
 					{
 						SelectAll(true, true);
 						File.Delete(path);
@@ -425,7 +425,7 @@ namespace ES3Editor
 			string selectedTypeName = EditorPrefs.GetString(key, "");
 			if(selectedTypeName != "")
 			{
-				var type = Type.GetType(selectedTypeName);
+				var type = ES3Reflection.GetType(selectedTypeName);
 				if(type != null)
 				{
 					int typeIndex = GetTypeIndex(type);

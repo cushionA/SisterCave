@@ -84,12 +84,12 @@ public class PlayerSerch : MonoBehaviour
         {
             return false;
         }
-      //  Debug.Log($"{onHitRay.transform.gameObject}");
+      //  //Debug.log($"{onHitRay.transform.gameObject}");
         //Debug.DrawRay(i_fromPosition,i_toTargetDir * SerchRadius);
         if (onHitRay.transform.gameObject != i_target)
         {//onHitRayは当たった場所
          //当たった場所がPlayerの位置でなければ
-            //Debug.Log("あいに");
+            ////Debug.log("あいに");
             return false;
         }
         

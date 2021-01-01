@@ -36,10 +36,10 @@ public class CoreButton : MonoBehaviour
         {
             CoreManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
-            //  Debug.Log($"青い稲妻{CoreManager.instance.selectButton == this.gameObject}");
+            //  //Debug.log($"青い稲妻{CoreManager.instance.selectButton == this.gameObject}");
             if (CoreManager.instance.selectButton == this.gameObject && !isFirst)
             {
-                //Debug.Log("冥王星");
+                ////Debug.log("冥王星");
                 CoreManager.instance.selectItem = item;
                 //position = this.GetComponent<RectTransform>().anchoredPosition;
                 isFirst = true;
@@ -52,7 +52,7 @@ public class CoreButton : MonoBehaviour
             {
                 if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
-                    Debug.Log("サイパン");
+                    //Debug.log("サイパン");
                     MainUI.instance.useWindow.SetActive(false);
                     MainUI.instance.eqWindow.SetActive(true);
                     EquipmentManager.instance.EqCore.Select();
@@ -72,7 +72,7 @@ public class CoreButton : MonoBehaviour
 
     public void CallWindow()
     {
-        //  Debug.Log($"お名前教えて{CoreManager.instance.selectButton.name}");
+        //  //Debug.log($"お名前教えて{CoreManager.instance.selectButton.name}");
         if (CoreManager.instance.selectItem.inventoryNum > 0 && item != null && CoreManager.instance.selectButton == this.gameObject && item != null && !ToolManager.instance.isEquipMenu)
         {
             CoreManager.instance.selectItem = item;

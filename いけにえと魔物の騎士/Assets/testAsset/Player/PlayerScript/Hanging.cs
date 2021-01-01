@@ -97,7 +97,7 @@ public class Hanging : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        Debug.Log("愛してる");
+        //Debug.log("愛してる");
         if (!pm.isGround && coll.gameObject.tag == "Hanging")
         {
             col.enabled = false;

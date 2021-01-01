@@ -25,16 +25,16 @@ public class ChangeENumber : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      //  Debug.Log($"変更数{EquipManager.instance.changeNum}");
-      //  Debug.Log($"所持数{EquipManager.instance.selectItem.inventoryNum}");
-      //  Debug.Log($"偽なら変更可能{isChange}");
-        verticalKey = Input.GetAxisRaw("Vertical");
-        horizontalKey = Input.GetAxisRaw("Horizontal");
-    //    Debug.Log($"上キー{verticalKey}");
-      //  Debug.Log($"横キー{horizontalKey}");
+      //  //Debug.log($"変更数{EquipManager.instance.changeNum}");
+      //  //Debug.log($"所持数{EquipManager.instance.selectItem.inventoryNum}");
+      //  //Debug.log($"偽なら変更可能{isChange}");
+        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
+                horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction16);
+    //    //Debug.log($"上キー{verticalKey}");
+      //  //Debug.log($"横キー{horizontalKey}");
         if (!isChange)
         {
-            Debug.Log("あかつきの");
+            //Debug.log("あかつきの");
             if (verticalKey > 0 && horizontalKey == 0)
             {
                 isChange = true;
@@ -82,7 +82,7 @@ public class ChangeENumber : MonoBehaviour
         {
             if (horizontalKey != 0 || verticalKey != 0)
             {
-                //    Debug.Log("しののめの");
+                //    //Debug.log("しののめの");
                 //changeTime += Time.realtimeSinceStartup;
                 if (!charge)
                 {
@@ -93,7 +93,7 @@ public class ChangeENumber : MonoBehaviour
                     }
                     if (Time.realtimeSinceStartup - changeTime >= 0.5)
                     {
-                        //       Debug.Log("長押し清算");
+                        //       //Debug.log("長押し清算");
                         charge = true;
                         wait = false;
                         changeTime = 0.0f;
@@ -110,7 +110,7 @@ public class ChangeENumber : MonoBehaviour
                     //Time.realtimeSinceStartup - changeTime
                     if (Time.realtimeSinceStartup - changeTime >= 0.1)
                     {
-                        //       Debug.Log("長押し清算");
+                        //       //Debug.log("長押し清算");
                         isChange = false;
                         wait = false;
                         changeTime = 0.0f;
@@ -119,13 +119,13 @@ public class ChangeENumber : MonoBehaviour
             }
             else if (horizontalKey == 0 && verticalKey == 0)
             {
-        //        Debug.Log("ボタン離し清算");
+        //        //Debug.log("ボタン離し清算");
                 isChange = false;
                 changeTime = 0.0f;
             }
         }
-       // Debug.Log($"第一条件{isChange || horizontalKey != 0 || verticalKey != 0}");
-       // Debug.Log($"第二条件{isChange && horizontalKey == 0 && verticalKey == 0}");
+       // //Debug.log($"第一条件{isChange || horizontalKey != 0 || verticalKey != 0}");
+       // //Debug.log($"第二条件{isChange && horizontalKey == 0 && verticalKey == 0}");
         ChangeNum.text = $"{EquipManager.instance.changeNum}";
     }
 }

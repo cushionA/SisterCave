@@ -36,10 +36,10 @@ public class MaterialButton : MonoBehaviour
         {
             MaterialManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
-            //  Debug.Log($"青い稲妻{MaterialManager.instance.selectButton == this.gameObject}");
+            //  //Debug.log($"青い稲妻{MaterialManager.instance.selectButton == this.gameObject}");
             if (MaterialManager.instance.selectButton == this.gameObject && !isFirst)
             {
-                //Debug.Log("冥王星");
+                ////Debug.log("冥王星");
                 MaterialManager.instance.selectItem = item;
                 //position = this.GetComponent<RectTransform>().anchoredPosition;
                 isFirst = true;
@@ -55,7 +55,7 @@ public class MaterialButton : MonoBehaviour
 
     public void CallWindow()
     {
-        //  Debug.Log($"お名前教えて{MaterialManager.instance.selectButton.name}");
+        //  //Debug.log($"お名前教えて{MaterialManager.instance.selectButton.name}");
         if (MaterialManager.instance.selectItem.inventoryNum > 0 && item != null && MaterialManager.instance.selectButton == this.gameObject)
         {
             MaterialManager.instance.selectItem = item;

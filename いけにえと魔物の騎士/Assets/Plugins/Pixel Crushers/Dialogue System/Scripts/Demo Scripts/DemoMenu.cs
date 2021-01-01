@@ -17,6 +17,7 @@ namespace PixelCrushers.DialogueSystem.Demo
         public KeyCode menuKey = KeyCode.Escape;
         public GUISkin guiSkin;
         public bool closeWhenQuestLogOpen = true;
+        public bool lockCursorDuringPlay = false;
 
         public UnityEvent onOpen = new UnityEvent();
         public UnityEvent onClose = new UnityEvent();
@@ -38,12 +39,10 @@ namespace PixelCrushers.DialogueSystem.Demo
             {
                 SetMenuStatus(!isMenuOpen);
             }
-            // If you want to lock the cursor during gameplay, add ShowCursorOnConversation to the Player,
-            // and uncomment the code below:
-            //if (!DialogueManager.isConversationActive && !isMenuOpen && !IsQuestLogOpen ()) 
-            //{
-            //	Screen.lockCursor = true;
-            //}
+            if (lockCursorDuringPlay)
+            {
+                CursorControl.SetCursorActive(DialogueManager.isConversationActive || isMenuOpen || IsQuestLogOpen());
+            }
         }
 
         void OnGUI()

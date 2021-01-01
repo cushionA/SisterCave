@@ -427,7 +427,7 @@ MonoBehaviour:
       _buttonLongPressTime: 1.5
       _buttonLongPressExpiresIn: 0
       _buttonDeadZone: 0
-      _buttonDownBuffer: 0.08
+      _buttonDownBuffer: 0
       _buttonRepeatRate: 2
       _buttonRepeatDelay: 1
     - _id: 2
@@ -447,7 +447,7 @@ MonoBehaviour:
       _buttonDoublePressSpeed: 0.3
       _buttonShortPressTime: 0.01
       _buttonShortPressExpiresIn: 0
-      _buttonLongPressTime: 1.5
+      _buttonLongPressTime: 0.5
       _buttonLongPressExpiresIn: 0
       _buttonDeadZone: 0
       _buttonDownBuffer: 0

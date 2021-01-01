@@ -10,9 +10,8 @@ namespace ES3Editor
 
 		public SubWindow currentWindow;
 
-		// Add menu named "My Window" to the Window menu
-		[MenuItem("Window/Easy Save 3...", false, 1000)]
-		[MenuItem("Assets/Easy Save 3/Open Easy Save 3 Window...", false, 1000)]
+		[MenuItem("Window/Easy Save 3", false, 1000)]
+        [MenuItem("Assets/Easy Save 3/Open Easy Save 3 Window", false, 1000)]
 		public static void Init()
 		{
 			// Get existing open window or if none, make a new one:
@@ -28,7 +27,8 @@ namespace ES3Editor
 			window.SetCurrentWindow(typeof(HomeWindow));
 		}
 
-		public static void InitAndShowAutoSave()
+        [MenuItem("Tools/Easy Save 3/Auto Save", false, 100)]
+        public static void InitAndShowAutoSave()
 		{
 			// Get existing open window or if none, make a new one:
 			ES3Window window = (ES3Window)EditorWindow.GetWindow(typeof(ES3Window));
@@ -44,6 +44,7 @@ namespace ES3Editor
             window.SetCurrentWindow(typeof(ReferencesWindow));
         }
 
+        [MenuItem("Tools/Easy Save 3/Types", false, 100)]
         public static void InitAndShowTypes()
         {
             // Get existing open window or if none, make a new one:
@@ -59,6 +60,24 @@ namespace ES3Editor
             window.Show();
             var typesWindow = (TypesWindow)window.SetCurrentWindow(typeof(TypesWindow));
             typesWindow.SelectType(type);
+        }
+
+        [MenuItem("Tools/Easy Save 3/Settings", false, 100)]
+        public static void InitAndShowSettings()
+        {
+            // Get existing open window or if none, make a new one:
+            ES3Window window = (ES3Window)EditorWindow.GetWindow(typeof(ES3Window));
+            window.Show();
+            window.SetCurrentWindow(typeof(SettingsWindow));
+        }
+
+        [MenuItem("Tools/Easy Save 3/Tools", false, 100)]
+        public static void InitAndShowTools()
+        {
+            // Get existing open window or if none, make a new one:
+            ES3Window window = (ES3Window)EditorWindow.GetWindow(typeof(ES3Window));
+            window.Show();
+            window.SetCurrentWindow(typeof(ToolsWindow));
         }
 
         public void InitSubWindows()

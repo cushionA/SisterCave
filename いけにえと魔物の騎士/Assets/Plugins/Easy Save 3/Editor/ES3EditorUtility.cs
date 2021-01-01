@@ -45,4 +45,16 @@ public class ES3EditorUtility : Editor
         }
         return deepHierarchy;
     }
+
+    [MenuItem("Tools/Easy Save 3/Getting Started...", false, 0)]
+    public static void DisplayGettingStarted()
+    {
+        Application.OpenURL("https://docs.moodkie.com/easy-save-3/getting-started/");
+    }
+
+    [MenuItem("Tools/Easy Save 3/Manual...", false, 0)]
+    public static void DisplayManual()
+    {
+        Application.OpenURL("https://docs.moodkie.com/product/easy-save-3/");
+    }
 }

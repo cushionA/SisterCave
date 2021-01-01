@@ -11,7 +11,7 @@ public class ES3AutoSave : MonoBehaviour
 
     public void Awake()
     {
-        if (ES3AutoSaveMgr.Instance == null)
+        if (ES3AutoSaveMgr.Current == null)
             ES3Internal.ES3Debug.LogWarning("<b>No GameObjects in this scene will be autosaved</b> because there is no Easy Save 3 Manager. To add a manager to this scene, exit playmode and go to Assets > Easy Save 3 > Add Manager to Scene.", this);
         else
             ES3AutoSaveMgr.AddAutoSave(this);

@@ -69,18 +69,17 @@ public class ES3File
 			}
 		}
 	}
-		
-	/// <summary>Creates a new ES3File and loads the specified file into the ES3File if there is data to load.</summary>
-	/// <param name="bytes">The bytes representing our file.</param>
-	public ES3File(byte[] bytes) : this(bytes, new ES3Settings()){}
 
 	/// <summary>Creates a new ES3File and loads the bytes into the ES3File. Note the bytes must represent that of a file.</summary>
 	/// <param name="bytes">The bytes representing our file.</param>
 	/// <param name="settings">The settings we want to use to override the default settings.</param>
 	/// <param name="syncWithFile">Whether we should sync this ES3File with the one in storage immediately after creating it.</param>
-	public ES3File(byte[] bytes, ES3Settings settings)
+	public ES3File(byte[] bytes, ES3Settings settings=null)
 	{
-		this.settings = settings;
+        if (settings == null)
+            this.settings = new ES3Settings();
+        else
+		    this.settings = settings;
 		SaveRaw(bytes, settings);
 	}
 	
@@ -89,30 +88,29 @@ public class ES3File
 	{
 		Sync(this.settings);
 	}
-	
-	/// <summary>Synchronises this ES3File with a file in storage.</summary>
-	/// <param name="filepath">The relative or absolute path of the file in storage we want to synchronise with.</param>
-	public void Sync(string filePath)
-	{
-		Sync(new ES3Settings(filePath));
-	}
-	
+
 	/// <summary>Synchronises this ES3File with a file in storage.</summary>
 	/// <param name="filepath">The relative or absolute path of the file in storage we want to synchronise with.</param>
 	/// <param name="settings">The settings we want to use to override the default settings.</param>
-	public void Sync(string filePath, ES3Settings settings)
+	public void Sync(string filePath, ES3Settings settings=null)
 	{
 		Sync(new ES3Settings(filePath, settings));
 	}
 	
 	/// <summary>Synchronises this ES3File with a file in storage.</summary>
 	/// <param name="settings">The settings we want to use to override the default settings.</param>
-	public void Sync(ES3Settings settings)
+	public void Sync(ES3Settings settings=null)
 	{
-		if(cache.Count == 0)
-			return;
-		
-		using(var baseWriter = ES3Writer.Create(settings, true, !syncWithFile, false))
+        if (settings == null)
+            settings = new ES3Settings();
+
+        if (cache.Count == 0)
+        {
+            ES3.DeleteFile(settings);
+            return;
+        }
+
+        using (var baseWriter = ES3Writer.Create(settings, true, !syncWithFile, false))
 		{
 			foreach (var kvp in cache) 
 			{
@@ -151,32 +149,20 @@ public class ES3File
 	/// <param name="value">The value we want to save.</param>
 	public void Save<T>(string key, T value)
 	{
-		using(var stream = new MemoryStream(settings.bufferSize))
-		{
-			var unencryptedSettings = (ES3Settings)settings.Clone();
-			unencryptedSettings.encryptionType = ES3.EncryptionType.None;
-            unencryptedSettings.compressionType = ES3.CompressionType.None;
-            var es3Type = ES3TypeMgr.GetOrCreateES3Type(typeof(T));
-			
-			using (var baseWriter = ES3Writer.Create(stream, unencryptedSettings, false, false))
-				baseWriter.Write(value, es3Type, settings.referenceMode);
-			
-			cache[key] = new ES3Data(es3Type, stream.ToArray());
-		}
-	}
-
-	/// <summary>Merges the data specified by the bytes parameter into this ES3File.</summary>
-	/// <param name="bytes">The bytes we want to merge with this ES3File.</param>
-	public void SaveRaw(byte[] bytes)
-	{
-		SaveRaw(bytes, settings);
+        var unencryptedSettings = (ES3Settings)settings.Clone();
+        unencryptedSettings.encryptionType = ES3.EncryptionType.None;
+        unencryptedSettings.compressionType = ES3.CompressionType.None;
+        cache[key] = new ES3Data(ES3TypeMgr.GetOrCreateES3Type(typeof(T)), ES3.Serialize(value, unencryptedSettings));
 	}
 
 	/// <summary>Merges the data specified by the bytes parameter into this ES3File.</summary>
 	/// <param name="bytes">The bytes we want to merge with this ES3File.</param>
 	/// <param name="settings">The settings we want to use to override the default settings.</param>
-	public void SaveRaw(byte[] bytes, ES3Settings settings)
+	public void SaveRaw(byte[] bytes, ES3Settings settings=null)
 	{
+        if (settings == null)
+            settings = new ES3Settings();
+
 		// Type checking must be enabled when syncing.
 		var settingsWithTypeChecking = (ES3Settings)settings.Clone();
 		settingsWithTypeChecking.typeChecking = true;
@@ -191,18 +177,12 @@ public class ES3File
 	}
 
     /// <summary>Merges the data specified by the bytes parameter into this ES3File.</summary>
-	/// <param name="bytes">The bytes we want to merge with this ES3File.</param>
-	public void AppendRaw(byte[] bytes)
-    {
-        // AppendRaw just does the same thing as SaveRaw in ES3File.
-        SaveRaw(bytes, settings);
-    }
-
-    /// <summary>Merges the data specified by the bytes parameter into this ES3File.</summary>
     /// <param name="bytes">The bytes we want to merge with this ES3File.</param>
     /// <param name="settings">The settings we want to use to override the default settings.</param>
-    public void AppendRaw(byte[] bytes, ES3Settings settings)
+    public void AppendRaw(byte[] bytes, ES3Settings settings=null)
     {
+        if (settings == null)
+            settings = new ES3Settings();
         // AppendRaw just does the same thing as SaveRaw in ES3File.
         SaveRaw(bytes, settings);
     }
@@ -232,26 +212,19 @@ public class ES3File
     /// <param name="key">The key which identifies the value we want to load.</param>
     public T Load<T>(string key)
 	{
-		ES3Data es3Data;
+        ES3Data es3Data;
 		
 		if(!cache.TryGetValue(key, out es3Data))
 			throw new KeyNotFoundException("Key \"" + key + "\" was not found in this ES3File. Use Load<T>(key, defaultValue) if you want to return a default value if the key does not exist.");
 		
-		var settings = (ES3Settings)this.settings.Clone();
-		settings.encryptionType = ES3.EncryptionType.None;
-        settings.compressionType = ES3.CompressionType.None;
+		var unencryptedSettings = (ES3Settings)this.settings.Clone();
+		unencryptedSettings.encryptionType = ES3.EncryptionType.None;
+        unencryptedSettings.compressionType = ES3.CompressionType.None;
 
-        using (var ms = new System.IO.MemoryStream(es3Data.bytes, false))
-        {
-            using (var reader = ES3Reader.Create(ms, settings, false))
-            {
-                if(typeof(T) == typeof(object))
-                    return reader.Read<T>(es3Data.type);
-                else
-                    return reader.Read<T>(ES3TypeMgr.GetOrCreateES3Type(typeof(T)));
-            }
-        }
-	}
+        if(typeof(T) == typeof(object))
+            return (T)ES3.Deserialize(es3Data.type, es3Data.bytes, unencryptedSettings);
+        return ES3.Deserialize<T>(es3Data.bytes, unencryptedSettings);
+    }
 	
 	/// <summary>Loads the value from this ES3File with the given key.</summary>
 	/// <param name="key">The key which identifies the value we want to load.</param>
@@ -262,20 +235,13 @@ public class ES3File
 		
 		if(!cache.TryGetValue(key, out es3Data))
 			return defaultValue;
-		var settings = (ES3Settings)this.settings.Clone();
-		settings.encryptionType = ES3.EncryptionType.None;
-        settings.compressionType = ES3.CompressionType.None;
+		var unencryptedSettings = (ES3Settings)this.settings.Clone();
+        unencryptedSettings.encryptionType = ES3.EncryptionType.None;
+        unencryptedSettings.compressionType = ES3.CompressionType.None;
 
-        using (var ms = new System.IO.MemoryStream(es3Data.bytes, false))
-        {
-            using (var reader = ES3Reader.Create(ms, settings, false))
-            {
-                if (typeof(T) == typeof(object))
-                    return reader.Read<T>(es3Data.type);
-                else
-                    return reader.Read<T>(ES3TypeMgr.GetOrCreateES3Type(typeof(T)));
-            }
-        }
+        if (typeof(T) == typeof(object))
+            return (T)ES3.Deserialize(es3Data.type, es3Data.bytes, unencryptedSettings);
+        return ES3.Deserialize<T>(es3Data.bytes, unencryptedSettings);
     }
 	
 	/// <summary>Loads the value from this ES3File with the given key into an existing object.</summary>
@@ -288,20 +254,14 @@ public class ES3File
 		if(!cache.TryGetValue(key, out es3Data))
 			throw new KeyNotFoundException("Key \"" + key + "\" was not found in this ES3File. Use Load<T>(key, defaultValue) if you want to return a default value if the key does not exist.");
 		
-		var settings = (ES3Settings)this.settings.Clone();
-		settings.encryptionType = ES3.EncryptionType.None;
-        settings.compressionType = ES3.CompressionType.None;
+		var unencryptedSettings = (ES3Settings)this.settings.Clone();
+		unencryptedSettings.encryptionType = ES3.EncryptionType.None;
+        unencryptedSettings.compressionType = ES3.CompressionType.None;
 
-        using (var ms = new System.IO.MemoryStream(es3Data.bytes, false))
-        {
-            using (var reader = ES3Reader.Create(ms, settings, false))
-            {
-                if (typeof(T) == typeof(object))
-                    reader.ReadInto<T>(obj, es3Data.type);
-                else
-                    reader.ReadInto<T>(obj, ES3TypeMgr.GetOrCreateES3Type(typeof(T)));
-            }
-        }
+        if (typeof(T) == typeof(object))
+            ES3.DeserializeInto(es3Data.type, es3Data.bytes, obj, unencryptedSettings);
+        else
+            ES3.DeserializeInto(es3Data.bytes, obj, unencryptedSettings);
     }
 	
 	#endregion
@@ -393,29 +353,39 @@ public class ES3File
 
     internal static void CacheFile(ES3Settings settings)
     {
-        if (!ES3.FileExists(settings))
-            throw new FileNotFoundException("Could not cache file "+settings.path+" because it does not exist");
-        cachedFiles[settings.path] = new ES3File(ES3.LoadRawBytes(settings));
-    }
-
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    internal static void Store()
-    {
-        Store(new ES3Settings());
-    }
-
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    internal static void Store(ES3Settings settings)
-    {
-        ES3File cachedFile;
-        if (!cachedFiles.TryGetValue(settings.path, out cachedFile))
-            throw new FileNotFoundException("The file '"+ settings.path +"' could not be stored because it could not be found in the cache.");
+        // If we're still using cached settings, default to file.
         if (settings.location == ES3.Location.Cache)
         {
             settings = (ES3Settings)settings.Clone();
             settings.location = ES3.Location.File;
-            ES3Debug.LogWarning("Location is set to 'Cache' when trying to store a cached file, but this should be set to a location in persistent storage (e.g. File, PlayerPrefs). Easy Save will store this cached file to ES3.Location.File.");
         }
+
+        if (!ES3.FileExists(settings))
+            return;
+
+
+        // Disable compression when loading the raw bytes, and the ES3File constructor will expect compressed bytes.
+        var loadSettings = (ES3Settings)settings.Clone();
+        loadSettings.compressionType = ES3.CompressionType.None;
+
+        cachedFiles[settings.path] = new ES3File(ES3.LoadRawBytes(loadSettings), settings);
+    }
+
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    internal static void Store(ES3Settings settings=null)
+    {
+        if (settings == null)
+            settings = new ES3Settings();
+        // If we're still using cached settings, default to file.
+        else if (settings.location == ES3.Location.Cache)
+        {
+            settings = (ES3Settings)settings.Clone();
+            settings.location = ES3.Location.File;
+        }
+
+        ES3File cachedFile;
+        if (!cachedFiles.TryGetValue(settings.path, out cachedFile))
+            throw new FileNotFoundException("The file '"+ settings.path +"' could not be stored because it could not be found in the cache.");
         cachedFile.Sync(settings);
     }
 

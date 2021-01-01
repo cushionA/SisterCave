@@ -36,10 +36,10 @@ public class LibraryButton : MonoBehaviour
         {
             EnemyDataManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
-            //  Debug.Log($"青い稲妻{EnemyDataManager.instance.selectButton == this.gameObject}");
+            //  //Debug.log($"青い稲妻{EnemyDataManager.instance.selectButton == this.gameObject}");
             if (EnemyDataManager.instance.selectButton == this.gameObject && !isFirst)
             {
-                //Debug.Log("冥王星");
+                ////Debug.log("冥王星");
                 EnemyDataManager.instance.selectItem = item;
                 //position = this.GetComponent<RectTransform>().anchoredPosition;
                 isFirst = true;
@@ -55,7 +55,7 @@ public class LibraryButton : MonoBehaviour
 
     public void CallWindow()
     {
-        //  Debug.Log($"お名前教えて{EnemyDataManager.instance.selectButton.name}");
+        //  //Debug.log($"お名前教えて{EnemyDataManager.instance.selectButton.name}");
         if (EnemyDataManager.instance.selectItem.inventoryNum > 0 && item != null && EnemyDataManager.instance.selectButton == this.gameObject)
         {
             EnemyDataManager.instance.selectItem = item;

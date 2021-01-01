@@ -47,7 +47,7 @@
   <PropertyGroup>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Package</UnityProjectGenerator>
-    <UnityProjectGeneratorVersion>2.0.3</UnityProjectGeneratorVersion>
+    <UnityProjectGeneratorVersion>2.0.5</UnityProjectGeneratorVersion>
     <UnityProjectType>GamePlugins:3</UnityProjectType>
     <UnityBuildTarget>WSAPlayer:21</UnityBuildTarget>
     <UnityVersion>2020.1.4f1</UnityVersion>
@@ -173,6 +173,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\LuaValue\LuaNil.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Unity UI\Dialogue\UnityUIAlertControls.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Standard\Bark\StandardBarkUI.cs" />
+    <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Writers\ES3BinaryWriter.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Text\StringFieldTextAreaAttribute.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Misc\CursorControl.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\Save System\DialogueSystemSaver.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Utility\UIButtonKeyTrigger.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_MeshFilter.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Scripts\ES3Prefab.cs" />
+    <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Misc\EnableOnStart.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\Parser\Syntax\ForStmt.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Standard\Selector\SelectorUseStandardUIElements.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\ExampleScenes\Scripts\MA_PlayerControl.cs" />
@@ -233,6 +235,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Triggers\Interaction\ProximitySelector.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Importers\Articy\ConversionSetting.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\MVC\Model\Data\Variable.cs" />
+    <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Standard\Dialogue\SMS\SMSDialogueUI.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\Deprecated\Triggers\SequenceTrigger.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\Deprecated\Triggers\SendMessageOnDialogueEvent.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Triggers\Triggers\OnEvent\StopConversationIfTooFar.cs" />
@@ -293,6 +296,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\MVC\Sequencer\Commands\SequencerCommandQTE.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\Save System\PersistentActiveData.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\Deprecated\Legacy GUI\GUIProgressBar.cs" />
+    <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Types\Unity Types\ES3Type_RenderTexture.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Triggers\Triggers\OnEvent\LuaOnDialogueEvent.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\Scripts\Settings\OcclusionFreqChangeInfo.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\LuaValue\LuaString.cs" />
@@ -407,6 +411,7 @@
     <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Types\Unity Types\ES3Type_LightsModule.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Manager\ActiveConversationRecord.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\Parser\Syntax\KeyAccess.cs" />
+    <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\MVC\Model\DialogueSystemSceneEvents.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\Expr\TableConstructor.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\Scripts\Settings\SongMetadata\SongMetadataBoolValue.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\UI\Utility\PreloadActorPortraits.cs" />
@@ -451,6 +456,7 @@
     <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Types\Unity Types\ES3Type_MainModule.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Writers\ES3XMLWriter.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\Expr\FunctionCall.cs" />
+    <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Writers\ES3Binary.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\MVC\Sequencer\Commands\SequencerCommandFade.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\MVC\Model\DialogueDatabase.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\Scripts\Utility\UtilStrings.cs" />
@@ -580,6 +586,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\UI\Utility\UIButtonKeyTrigger.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_MeshRenderer.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector4.cs" />
+    <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\MVC\Model\Data\DialogueSystemSceneEvents.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\Save System\Spawning\SpawnedObjectManager.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Wrappers\Save System\Savers\EnabledSaver.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Options\Timeline\Playables\Conversation\StartConversationClip.cs" />
@@ -643,9 +650,11 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Abstract\Dialogue\AbstractUIResponseMenuControls.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\Expr\FunctionBody.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\UI\Standard\Quest\Common\StandardUIButtonTemplate.cs" />
+    <Compile Include="Assets\Plugins\Demigiant\DOTweenPro\DOTweenDeUnityExtended.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\MVC\Model\Data\Field.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\Demo\DieOnTakeDamage.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Wrappers\Save System\Transitions\StandardSceneTransitionManager.cs" />
+    <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\UI\DeselectPreviousOnPointerEnter.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Importers\Articy\Schemas\Articy 3.1\XmlContentExport_FullProject_3_1.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Abstract\Dialogue\AbstractUIControls.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\Scripts\Settings\SoundGroupVariation.cs" />
@@ -682,6 +691,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Wrapper\Lua Interpreter\LuaTableWrapper.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\UI\Standard\Dialogue\StandardUIMenuPanel.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Manager\DialogueSystemController.cs" />
+    <Compile Include="Assets\Plugins\PathologicalGames\PoolManager\PoolManager.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\UI\Standard\Selector\StandardUISelectorElements.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\MVC\View\Bark\BarkGroupManager.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Options\Timeline\Playables\PlaySequence\PlaySequenceTrack.cs" />
@@ -707,6 +717,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\Chunk\ReturnStmt.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Utility\LuaWatchList.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\Demo\DemoMenu.cs" />
+    <Compile Include="Assets\Plugins\Demigiant\DOTweenPro\DOTweenDeAudio.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_double.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\Scripts\Utility\TransformFollower.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\ExampleScenes\Scripts\MA_Bootstrapper.cs" />
@@ -769,6 +780,7 @@
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\ExampleScenes\Scripts\MA_PlayerSpawnerControl.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\Scripts\Utility\CoroutineHelper.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\ExampleScenes\Scripts\MA_EnemySpawner.cs" />
+    <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Rigidbody.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Triggers\Triggers\OnEvent\SetEnabledOnDialogueEvent.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\UI\Unity UI\Quest\UnityUIQuestTitle.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\MVC\Actor\OverrideActorName.cs" />
@@ -888,6 +900,7 @@
     <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_int.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\MVC\Actor\BarkGroupMember.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\Scripts\Settings\DynamicSoundGroup.cs" />
+    <Compile Include="Assets\Plugins\Easy Save 3\Scripts\Readers\ES3BinaryReader.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Unity UI\Selector\UsableUnityUI.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\Parser\Syntax\Args.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Unity UI\Quest\UnityUIQuestTracker.cs" />
@@ -897,6 +910,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Triggers\Triggers\OnEvent\SetAnimatorStateOnDialogueEvent.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\Scripts\Settings\CustomEventToFireInfo.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\ExampleScenes\Scripts\MA_EnemyOne.cs" />
+    <Compile Include="Assets\Plugins\Pixel Crushers\Common\Wrappers\Misc\EnableOnStart.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\Deprecated\Triggers\LuaOnDialogueEvent.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Common\Scripts\UnityEvents\TagMaskEvent.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\Scripts\Utility\VideoPlayerTracker.cs" />
@@ -963,6 +977,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Legacy\GUI Controls\GUIImage.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\Parser\TextParserCommon.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Standard\Dialogue\StandardUIResponseMenuControls.cs" />
+    <Compile Include="Assets\Plugins\PathologicalGames\PoolManager\SpawnPool.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\Options\Cinemachine\CinemachineCameraPriorityOnDialogueEvent.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Standard\Dialogue\StandardUISubtitlePanel.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\Parser\Syntax\Expr.cs" />
@@ -971,6 +986,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\UI\Standard\Quest\Common\StandardUIToggleTemplate.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Options\Timeline\Triggers\TimelineTrigger.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Scripts\ES3Reflection.cs" />
+    <Compile Include="Assets\Plugins\PathologicalGames\PoolManager\PreRuntimePoolItem.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Standard\Dialogue\StandardDialogueUI.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Standard\Quest\StandardUIQuestTracker.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\Scripts\ResultObjects\PlaySoundResult.cs" />
@@ -993,6 +1009,7 @@
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\Extra\LuaInterpreterExtensions.cs" />
     <Compile Include="Assets\Plugins\Easy Save 3\Scripts\ES3ReferenceMgr.cs" />
     <Compile Include="Assets\Plugins\DarkTonic\MasterAudio\Scripts\Settings\SongMetadata\SongMetadataIntValue.cs" />
+    <Compile Include="Assets\Plugins\Pixel Crushers\Common\Wrappers\UI\DeselectPreviousOnPointerEnter.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Legacy\GUI Controls\GUIScrollView.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Legacy\Dialogue\UnityDialogueUI.cs" />
     <Compile Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\Deprecated\Legacy GUI\GUITextField.cs" />
@@ -1031,37 +1048,29 @@
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Art\Fonts\Orbitron\SIL Open Font License.txt" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Legacy Unity GUI Prefabs\Necromancer\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Unity UI\_README.txt" />
+     <None Include="Assets\Plugins\PathologicalGames\readme.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Camera Angle Studio\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Art\Textures\Circle\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Art\Textures\UnityUI\_README.txt" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Unity UI Prefabs\Speech Bubble\_README.txt" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Legacy Unity GUI Prefabs\Circle\Textures\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Common\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Demo\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Templates\Link\link_asmdef.xml" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Legacy Unity GUI Prefabs\Necromancer\Necromancer GUI\Kingthings.txt" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Legacy Unity GUI Prefabs\Shared Textures\_README.txt" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Unity UI Prefabs\Mobile\_IMPORTANT_README.txt" />
+     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Art\Textures\Shared Textures\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Templates\Link\_README.txt" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Legacy Unity GUI Prefabs\Shared Audio\_README.txt" />
+     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Art\Shared Audio\_README.txt" />
      <None Include="Assets\Plugins\PlayMaker\WebGL\PlayMaker.dll" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Wrappers\Shaders\LinesColoredBlended.shader" />
      <None Include="Assets\Plugins\PlayMaker\PlayMaker.dll" />
      <None Include="Assets\Plugins\Easy Save 3\Change Log\Change Log.txt" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Unity UI Prefabs\_README.txt" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Legacy Unity GUI Prefabs\Computer\Bitwise Font\!license.txt" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Legacy Unity GUI Prefabs\Wheel\_README.txt" />
+     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Art\Fonts\Bitwise Font\!license.txt" />
      <None Include="Assets\Plugins\DarkTonic\MasterAudio\ReleaseNotes.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\UI\Legacy\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Templates\Link\link.xml" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Legacy Unity GUI Prefabs\Necromancer\Necromancer GUI\Readme.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Demo\Art\Sounds\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Third Party Support\_README.txt" />
-     <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Prefabs\Deprecated\Legacy Unity GUI Prefabs\_README.txt" />
      <None Include="Assets\Plugins\Pixel Crushers\Dialogue System\Scripts\Lua\Lua Interpreter\_README.txt" />
      <None Include="Assets\Plugins\PlayMaker\Metro\PlayMaker.dll" />
      <None Include="Assets\Plugins\PlayMaker\WP8\PlayMaker.dll" />
@@ -1269,7 +1278,7 @@
       <HintPath>Assets\Rewired\Internal\Libraries\Runtime\Rewired_Windows.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>Library\PackageCache\com.unity.burst@1.3.5\Unity.Burst.Unsafe.dll</HintPath>
+      <HintPath>Library\PackageCache\com.unity.burst@1.3.9\Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.1.4f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\mscorlib.dll</HintPath>
@@ -1688,6 +1697,9 @@
     <Reference Include="PsdPlugin">
       <HintPath>Library\ScriptAssemblies\PsdPlugin.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Postprocessing.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Postprocessing.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
     </Reference>
@@ -1708,6 +1720,9 @@
     </Reference>
     <Reference Include="Unity.2D.Common.Runtime">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Common.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Postprocessing.Runtime">
+      <HintPath>Library\ScriptAssemblies\Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Tilemap.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Tilemap.Editor.dll</HintPath>

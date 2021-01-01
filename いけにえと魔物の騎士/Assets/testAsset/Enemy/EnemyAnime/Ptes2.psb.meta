@@ -628,7 +628,7 @@ ScriptedImporter:
     - {x: 46, y: 13}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 54, y: -33}
+    uvTransform: {x: 53, y: -33}
   - name: headAl
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -1600,7 +1600,7 @@ ScriptedImporter:
     - {x: 0, y: 84}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -52, y: -232}
+    uvTransform: {x: -53, y: -232}
   - name: uRarm
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -3800,7 +3800,7 @@ ScriptedImporter:
     - {x: 206, y: 51}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 385, y: -128}
+    uvTransform: {x: 384, y: -128}
   - name: sRarm
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -5901,7 +5901,7 @@ ScriptedImporter:
     - {x: 197, y: 24}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 30, y: 17}
+    uvTransform: {x: 29, y: 17}
   - name: Rfist
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -6273,7 +6273,7 @@ ScriptedImporter:
     - {x: 0, y: 24}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 347, y: 208}
+    uvTransform: {x: 346, y: 208}
   - name: upRleg
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -8999,7 +8999,7 @@ ScriptedImporter:
     - {x: 257, y: 59}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 377, y: -174}
+    uvTransform: {x: 376, y: -174}
   - name: sRleg
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -11490,7 +11490,7 @@ ScriptedImporter:
     - {x: 232, y: 33}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 56, y: 275}
+    uvTransform: {x: 55, y: 275}
   - name: chest2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -12913,7 +12913,7 @@ ScriptedImporter:
     - {x: 0, y: 105}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 331, y: -61}
+    uvTransform: {x: 330, y: -61}
   - name: sLleg
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -14936,7 +14936,7 @@ ScriptedImporter:
     - {x: 186, y: 62}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 98, y: 275}
+    uvTransform: {x: 97, y: 275}
   - name: uLleg
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -17311,7 +17311,7 @@ ScriptedImporter:
     - {x: 221, y: 217}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 71, y: 127}
+    uvTransform: {x: 70, y: 127}
   - name: 'uLarm '
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -19704,7 +19704,7 @@ ScriptedImporter:
     - {x: 225, y: 204}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 83, y: -82}
+    uvTransform: {x: 82, y: -82}
   - name: "\uFF53Larm"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -21447,7 +21447,7 @@ ScriptedImporter:
     - {x: 161, y: 45}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 109, y: 25}
+    uvTransform: {x: 108, y: 25}
   - name: Lfist
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -21832,7 +21832,7 @@ ScriptedImporter:
     - {x: 0, y: 27}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 319, y: 221}
+    uvTransform: {x: 318, y: 221}
   - name: wepon
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -25204,7 +25204,7 @@ ScriptedImporter:
     - {x: 0, y: 174}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -60, y: -193}
+    uvTransform: {x: -61, y: -193}
   - name: shield2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -27881,7 +27881,7 @@ ScriptedImporter:
     - {x: 0, y: 199}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 151, y: -240}
+    uvTransform: {x: 150, y: -240}
   - name: shield
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -29393,7 +29393,7 @@ ScriptedImporter:
     - {x: 0, y: 124}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 221, y: 10}
+    uvTransform: {x: 220, y: 10}
   platformSettings:
   - name: Default
     overridden: 1
@@ -29403,7 +29403,7 @@ ScriptedImporter:
     textureCompression: 1
     compressionQuality: 50
     forceMaximumCompressionQuality_BC6H_BC7: 0
-    crunchedCompression: 0
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     androidETC2FallbackOverride: 0
   mosaicLayers: 1
@@ -29412,7 +29412,7 @@ ScriptedImporter:
   importHiddenLayers: 0
   importedTextureWidth: 256
   importedTextureHeight: 256
-  documentSize: {x: 410, y: 724}
+  documentSize: {x: 412, y: 724}
   paperDollMode: 0
   keepDupilcateSpriteName: 0
   spriteCategoryList:

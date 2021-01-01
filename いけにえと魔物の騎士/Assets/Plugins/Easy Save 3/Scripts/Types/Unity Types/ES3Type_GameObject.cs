@@ -26,13 +26,15 @@ namespace ES3Types
 			{
 				writer.WriteRef(instance);
 
-				var es3Prefab = instance.GetComponent<ES3Prefab>();
+                if (mode == ES3.ReferenceMode.ByRef)
+                    return;
+
+                var es3Prefab = instance.GetComponent<ES3Prefab>();
 				if(es3Prefab != null)
 					writer.WriteProperty(prefabPropertyName, es3Prefab, ES3Type_ES3PrefabInternal.Instance);
+
 				// Write the ID of this Transform so we can assign it's ID when we load.
 				writer.WriteProperty(transformPropertyName, ES3ReferenceMgrBase.Current.Add(instance.transform));
-				if (mode == ES3.ReferenceMode.ByRef)
-					return;
 			}
 
 			var es3AutoSave = instance.GetComponent<ES3AutoSave>();
@@ -57,7 +59,7 @@ namespace ES3Types
             {
                 components = new List<Component>();
                 foreach (var component in instance.GetComponents<Component>())
-                    if (ES3TypeMgr.GetES3Type(component.GetType()) != null)
+                    if (component != null && ES3TypeMgr.GetES3Type(component.GetType()) != null)
                         components.Add(component);
             }
 
@@ -155,7 +157,7 @@ namespace ES3Types
 						reader.Read<GameObject[]>();
 						break;
 					case "components":
-						reader.Read<Component[]>();
+                        ReadComponents(reader, instance);
 						break;
 					default:
 						reader.Skip();
@@ -163,6 +165,70 @@ namespace ES3Types
 				}
 			}
 		}
+
+        private void ReadComponents(ES3Reader reader, GameObject go)
+        {
+            if (reader.StartReadCollection())
+                return;
+
+            var components = new List<Component>(go.GetComponents<Component>());
+
+            // Read each Component in Components array
+            while (true)
+            {
+                if (!reader.StartReadCollectionItem())
+                    break;
+
+                if (reader.StartReadObject())
+                    return;
+
+                Type type = null;
+
+                string propertyName;
+                while (true)
+                {
+                    propertyName = ReadPropertyName(reader);
+
+                    if (propertyName == ES3Type.typeFieldName)
+                        type = reader.ReadType();
+                    else if (propertyName == ES3ReferenceMgrBase.referencePropertyName)
+                    {
+                        if (type == null)
+                            throw new InvalidOperationException("Cannot load Component because no type data has been stored with it, so it's not possible to determine it's type");
+
+                        reader.Read_ref(); // We don't load Components by reference when loading GameObjects, so read the ref and ignore it.
+
+                        // Rather than loading by reference, load using the Components list.
+                        var c = components.Find(x => x.GetType() == type);
+                        // If the Component exists in the Component list, load into it and remove it from the list.
+                        if (c != null)
+                        {
+                            ES3TypeMgr.GetOrCreateES3Type(type).ReadInto<Component>(reader, c);
+                            components.Remove(c);
+                        }
+                        // Else, create a new Component.
+                        else
+                            ES3TypeMgr.GetOrCreateES3Type(type).Read<Component>(reader);
+                        break;
+                    }
+                    else if (propertyName == null)
+                        break;
+                    else
+                    {
+                        reader.overridePropertiesName = propertyName;
+                        ReadObject<Component>(reader);
+                        break;
+                    }
+                }
+
+                reader.EndReadObject();
+
+                if (reader.EndReadCollectionItem())
+                    break;
+            }
+
+            reader.EndReadCollection();
+        }
 
 		private GameObject CreateNewGameObject(ES3ReferenceMgrBase refMgr, long id)
 		{

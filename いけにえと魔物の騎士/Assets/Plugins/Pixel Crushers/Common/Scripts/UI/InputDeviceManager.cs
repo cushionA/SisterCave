@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 #endif
-// NOTE: Support for the new Input System is not implemented yet.
 
 namespace PixelCrushers
 {
@@ -47,6 +46,11 @@ namespace PixelCrushers
 
         [Tooltip("If any of these keys are pressed, current device is keyboard (unless device is currently mouse).")]
         public KeyCode[] keyCodesToCheck = new KeyCode[] { KeyCode.Escape };
+
+        public enum KeyInputSwitchesModeTo { Keyboard, Mouse }
+
+        [Tooltip("Which mode to switch to if user presses Key Buttons/Codes To Check.")]
+        public KeyInputSwitchesModeTo keyInputSwitchesModeTo = KeyInputSwitchesModeTo.Mouse;
 
         [Tooltip("Always enable joystick/keyboard navigation even in Mouse mode.")]
         public bool alwaysAutoFocus = false;
@@ -92,6 +96,7 @@ namespace PixelCrushers
 
         private Vector3 m_lastMousePosition;
         private bool m_ignoreMouse = false;
+        private bool m_inputAllowed = true;
 
         private static InputDeviceManager m_instance = null;
         public static InputDeviceManager instance
@@ -113,6 +118,9 @@ namespace PixelCrushers
             get { return currentInputDevice == InputDevice.Mouse; }
         }
 
+        /// <summary>
+        /// Automatically select (and keep selected) a selectable on the current UIPanel.
+        /// </summary>
         public static bool autoFocus
         {
             get { return (instance != null && instance.alwaysAutoFocus) || currentInputDevice == InputDevice.Joystick || currentInputDevice == InputDevice.Keyboard; }
@@ -123,33 +131,48 @@ namespace PixelCrushers
             get { return (m_instance != null) ? m_instance.IsBackButtonDown() : false; }
         }
 
+        /// <summary>
+        /// Allow user input?
+        /// </summary>
+        public static bool isInputAllowed
+        {
+            get { return (m_instance != null) ? m_instance.m_inputAllowed : true; }
+            set { if (m_instance != null) m_instance.m_inputAllowed = value; }
+        }
+
         public static bool IsButtonDown(string buttonName)
         {
+            if (!isInputAllowed) return false;
             return (m_instance != null && m_instance.GetButtonDown != null) ? m_instance.GetButtonDown(buttonName) : DefaultGetButtonDown(buttonName);
         }
 
         public static bool IsButtonUp(string buttonName)
         {
+            if (!isInputAllowed) return false;
             return (m_instance != null && m_instance.GetButtonUp != null) ? m_instance.GetButtonUp(buttonName) : DefaultGetButtonUp(buttonName);
         }
 
         public static bool IsKeyDown(KeyCode keyCode)
         {
+            if (!isInputAllowed) return false;
             return DefaultGetKeyDown(keyCode);
         }
 
         public static bool IsAnyKeyDown()
         {
+            if (!isInputAllowed) return false;
             return DefaultGetAnyKeyDown();
         }
 
         public static float GetAxis(string axisName)
         {
+            if (!isInputAllowed) return 0;
             return (m_instance != null && m_instance.GetInputAxis != null) ? m_instance.GetInputAxis(axisName) : DefaultGetAxis(axisName);
         }
 
         public static Vector3 GetMousePosition()
         {
+            if (!isInputAllowed) return Vector3.zero;
             return DefaultGetMousePosition();
         }
 
@@ -198,6 +221,7 @@ namespace PixelCrushers
         public void SetInputDevice(InputDevice newDevice)
         {
             inputDevice = newDevice;
+            m_lastMousePosition = GetMousePosition();
             SetCursor(deviceUsesCursor);
             SetGraphicRaycasters(deviceUsesCursor);
             switch (inputDevice)
@@ -236,7 +260,7 @@ namespace PixelCrushers
             {
                 case InputDevice.Joystick:
                     if (IsUsingMouse()) SetInputDevice(InputDevice.Mouse);
-                    else if (IsUsingKeyboard()) SetInputDevice(InputDevice.Mouse);
+                    else if (IsUsingKeyboard()) SetInputDevice((keyInputSwitchesModeTo == KeyInputSwitchesModeTo.Keyboard) ? InputDevice.Keyboard : InputDevice.Mouse);
                     break;
                 case InputDevice.Keyboard:
                     if (IsUsingMouse()) SetInputDevice(InputDevice.Mouse);
@@ -244,6 +268,7 @@ namespace PixelCrushers
                     break;
                 case InputDevice.Mouse:
                     if (IsUsingJoystick()) SetInputDevice(InputDevice.Joystick);
+                    else if (keyInputSwitchesModeTo == KeyInputSwitchesModeTo.Keyboard && IsUsingKeyboard()) SetInputDevice(InputDevice.Keyboard);
                     break;
                 case InputDevice.Touch:
                     if (IsUsingMouse()) SetInputDevice(InputDevice.Mouse);
@@ -374,6 +399,7 @@ namespace PixelCrushers
         {
             Cursor.visible = visible;
             Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
+            m_lastMousePosition = GetMousePosition();
             StartCoroutine(ForceCursorAfterOneFrameCoroutine(visible));
         }
 
@@ -401,8 +427,10 @@ namespace PixelCrushers
         public static bool DefaultGetKeyDown(KeyCode keyCode)
         {
 #if USE_NEW_INPUT
-            if (keyCode == KeyCode.None) return false;
-            var keyControl = Keyboard.current[keyCode.ToString().ToLower()] as KeyControl;
+            if (Keyboard.current == null || keyCode == KeyCode.None) return false;
+            var s = keyCode.ToString().ToLower();
+            if (s.StartsWith("joystick")) return false;
+            var keyControl = Keyboard.current[s] as KeyControl;
             return (keyControl != null) ? keyControl.wasPressedThisFrame : false;
 #else
             return Input.GetKeyDown(keyCode);
@@ -412,7 +440,7 @@ namespace PixelCrushers
         public static bool DefaultGetAnyKeyDown()
         {
 #if USE_NEW_INPUT
-            return Keyboard.current.anyKey.isPressed;
+            return Keyboard.current != null && Keyboard.current.anyKey.isPressed;
 #else
             return Input.anyKeyDown;
 #endif
@@ -498,6 +526,7 @@ namespace PixelCrushers
         public static Vector3 DefaultGetMousePosition()
         {
 #if USE_NEW_INPUT
+            if (Mouse.current == null) return Vector3.zero;
             var pos = Mouse.current.position.ReadValue();
             return new Vector3(pos.x, pos.y, 0);
 #else
@@ -508,6 +537,7 @@ namespace PixelCrushers
         public static bool DefaultGetMouseButtonDown(int buttonNumber)
         {
 #if USE_NEW_INPUT
+            if (Mouse.current == null) return false;
             switch (buttonNumber)
             {
                 case 0: return Mouse.current.leftButton.isPressed;

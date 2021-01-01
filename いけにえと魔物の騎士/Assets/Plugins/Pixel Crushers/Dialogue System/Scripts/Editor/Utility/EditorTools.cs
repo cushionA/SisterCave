@@ -6,11 +6,15 @@ using UnityEngine;
 namespace PixelCrushers.DialogueSystem
 {
 
+    /// <summary>
+    /// Utility functions used by the Dialogue System's custom editors.
+    /// </summary>
     public static class EditorTools
     {
 
         public static DialogueDatabase selectedDatabase = null;
 
+        private static GUIStyle m_textAreaGuiStyle = null;
         public static GUIStyle textAreaGuiStyle
         {
             get
@@ -26,7 +30,65 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private static GUIStyle m_textAreaGuiStyle = null;
+        private static GUIStyle m_dropDownGuiStyle = null;
+        public static GUIStyle dropDownGuiStyle
+        {
+            get
+            {
+                if (m_dropDownGuiStyle == null)
+                {
+                    m_dropDownGuiStyle = GUI.skin.GetStyle("DropDown");
+                    if (m_dropDownGuiStyle == null) m_dropDownGuiStyle = GUI.skin.label;
+                }
+                return m_dropDownGuiStyle;
+            }
+        }
+        public static float GetPopupWidth(GUIContent guiContent)
+        {
+            var size = dropDownGuiStyle.CalcSize(guiContent);
+            return (dropDownGuiStyle == GUI.skin.label) ? (size.x + 16) : size.x;
+        }
+        public static float GetPopupWidth(string text)
+        {
+            return GetPopupWidth(new GUIContent(text));
+        }
+        public static GUILayoutOption GUILayoutPopupWidth(object obj)
+        {            
+            return GUILayout.Width(GetPopupWidth(new GUIContent(obj.ToString())));
+        }
+
+
+        public static GUILayoutOption GUILayoutStyleWidth(GUIStyle style, GUIContent guiContent)
+        {
+            if (style == null) return GUILayout.Width(60);
+            var size = style.CalcSize(guiContent);
+            return GUILayout.Width(size.x);
+        }
+        public static GUILayoutOption GUILayoutStyleWidth(GUIStyle style, string s)
+        {
+            return GUILayoutStyleWidth(style, new GUIContent(s));
+        }
+
+        public static GUILayoutOption GUILayoutLabelWidth(string s)
+        {
+            return GUILayoutStyleWidth(GUI.skin.label, s);
+        }
+        public static GUILayoutOption GUILayoutButtonWidth(GUIContent guiContent)
+        {
+            return GUILayoutStyleWidth(GUI.skin.button, guiContent);
+        }
+        public static GUILayoutOption GUILayoutButtonWidth(string s)
+        {
+            return GUILayoutButtonWidth(new GUIContent(s));
+        }
+        public static GUILayoutOption GUILayoutToggleWidth(GUIContent guiContent)
+        {
+            return GUILayoutStyleWidth(GUI.skin.toggle, guiContent);
+        }
+        public static GUILayoutOption GUILayoutToggleWidth(string s)
+        {
+            return GUILayoutStyleWidth(GUI.skin.toggle, new GUIContent(s));
+        }
 
         public static DialogueDatabase FindInitialDatabase()
         {
@@ -143,6 +205,20 @@ namespace PixelCrushers.DialogueSystem
             Debug.Log("Recompiled scripts with updated options. If options are not working, please right-click on the Dialogue System's Scripts and Wrappers folders and select Reimport.");
             AssetDatabase.ImportAsset("Assets/Plugins/Pixel Crushers/Dialogue System/Scripts");
             AssetDatabase.ImportAsset("Assets/Plugins/Pixel Crushers/Dialogue System/Wrappers");
+        }
+
+        public static string GetAssetName(Asset asset)
+        {
+            if (asset == null) return string.Empty;
+            return (asset is Conversation) ? (asset as Conversation).Title : asset.Name;
+        }
+
+        public static bool IsAssetInFilter(Asset asset, string filter)
+        {
+
+            if (asset == null || string.IsNullOrEmpty(filter)) return true;
+            var assetName = asset.Name;
+            return string.IsNullOrEmpty(assetName) ? false : (assetName.IndexOf(filter, System.StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
     }

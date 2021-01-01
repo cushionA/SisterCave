@@ -37,9 +37,9 @@ namespace ES3Types
             // Unity automatically sets the default material if it's set to null.
             // This prevents missing reference warnings.
             if (instance.material.name.Contains("Default"))
-                writer.WritePropertyByRef("material", null);
+                writer.WriteProperty("material", null);
             else
-                writer.WritePropertyByRef("material", instance.material);
+                writer.WriteProperty("material", instance.material);
             writer.WriteProperty("useGUILayout", instance.useGUILayout);
 			writer.WriteProperty("enabled", instance.enabled);
 			writer.WriteProperty("hideFlags", instance.hideFlags);

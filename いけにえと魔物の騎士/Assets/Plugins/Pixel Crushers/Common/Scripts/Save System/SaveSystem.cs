@@ -52,6 +52,8 @@ namespace PixelCrushers
 
         private static List<string> m_addedScenes = new List<string>();
 
+        private static bool m_autoUnloadAdditiveScenes = false;
+
         private static AsyncOperation m_currentAsyncOperation = null;
 
         private static bool m_isQuitting = false;
@@ -122,7 +124,11 @@ namespace PixelCrushers
             {
                 if (m_instance == null && !m_isQuitting)
                 {
-                    m_instance = new GameObject("Save System", typeof(SaveSystem)).GetComponent<SaveSystem>();
+                    m_instance = FindObjectOfType<SaveSystem>();
+                    if (m_instance == null)
+                    {
+                        m_instance = new GameObject("Save System", typeof(SaveSystem)).GetComponent<SaveSystem>();
+                    }
                 }
                 return m_instance;
             }
@@ -172,6 +178,20 @@ namespace PixelCrushers
                 }
                 return m_sceneTransitionManager;
             }
+        }
+
+        /// <summary>
+        /// Scenes that have been loaded additively.
+        /// </summary>
+        public static List<string> addedScenes { get { return m_addedScenes; } }
+
+        /// <summary>
+        /// When changing scenes, automatically unload all additively-loaded scenes.
+        /// </summary>
+        public static bool autoUnloadAdditiveScenes
+        {
+            get { return m_autoUnloadAdditiveScenes; }
+            set { m_autoUnloadAdditiveScenes = value; }
         }
 
         /// <summary>
@@ -242,6 +262,11 @@ namespace PixelCrushers
         /// Invoked when finished loading a game.
         /// </summary>
         public static event System.Action loadEnded = delegate { };
+
+        /// <summary>
+        /// Invoked after ApplyData() has been called on all savers.
+        /// </summary>
+        public static event System.Action saveDataApplied = delegate { };
 
         private void Awake()
         {
@@ -351,7 +376,11 @@ namespace PixelCrushers
             }
         }
 
-        private static void RecursivelyApplySavers(Transform t)
+        /// <summary>
+        /// Tells all saver components on the transform and its children to retrieve their states from the current saved game data.
+        /// </summary>
+        /// <param name="t"></param>
+        public static void RecursivelyApplySavers(Transform t)
         {
             if (t == null) return;
             var saver = t.GetComponent<Saver>();
@@ -467,6 +496,17 @@ namespace PixelCrushers
         }
 
         /// <summary>
+        /// Saves the current game to a slot synchronously and immediately.
+        /// </summary>
+        public static void SaveToSlotImmediate(int slotNumber)
+        {
+            saveStarted();
+            PlayerPrefs.SetInt(LastSavedGameSlotPlayerPrefsKey, slotNumber);
+            storer.StoreSavedGameData(slotNumber, RecordSavedGameData());
+            saveEnded();
+        }
+
+        /// <summary>
         /// Loads a game from a slot.
         /// </summary>
         public static void LoadFromSlot(int slotNumber)
@@ -491,10 +531,9 @@ namespace PixelCrushers
             loadStarted();
             yield return null;
             LoadFromSlotNow(slotNumber);
-            if (loadEnded.GetInvocationList().Length > 1)
-            {
-                sceneLoaded += NotifyLoadEndedWhenSceneLoaded;
-            }
+            //--- Always notify, in case loadEnded listeners are added via code:
+            //--- if (loadEnded.GetInvocationList().Length > 1)
+            sceneLoaded += NotifyLoadEndedWhenSceneLoaded;
         }
 
         private static void NotifyLoadEndedWhenSceneLoaded(string sceneName, int sceneIndex)
@@ -590,6 +629,7 @@ namespace PixelCrushers
                     Debug.LogException(e);
                 }
             }
+            saveDataApplied();
         }
 
         /// <summary>
@@ -681,6 +721,7 @@ namespace PixelCrushers
                 (string.IsNullOrEmpty(spawnpointName) ? string.Empty : " [spawn at " + spawnpointName + "]"));
             m_savedGameData = savedGameData;
             BeforeSceneChange();
+            if (autoUnloadAdditiveScenes) UnloadAllAdditiveScenes();
             yield return LoadSceneInternal(savedGameData.sceneName);
             ApplyDataImmediate();
             // Allow other scripts to spin up scene first:
@@ -745,16 +786,37 @@ namespace PixelCrushers
         }
 
         /// <summary>
+        /// Unloads all previously additively-loaded scenes.
+        /// </summary>
+        public static void UnloadAllAdditiveScenes()
+        {
+            for (int i = m_addedScenes.Count - 1; i >= 0; i--)
+            {
+                UnloadAdditiveScene(m_addedScenes[i]);
+            }
+        }
+
+        /// <summary>
         /// Clears the SaveSystem's saved game data cache and loads a
-        /// starting scene.
+        /// starting scene. Same as ResetGameState except loads a starting scene.
         /// </summary>
         /// <param name="startingSceneName"></param>
         public static void RestartGame(string startingSceneName)
         {
+            ResetGameState();
+            instance.StartCoroutine(LoadSceneInternal(startingSceneName));
+        }
+
+        /// <summary>
+        /// Clears the SaveSystem's saved game data cache. Same as
+        /// RestartGame except it doesn't load a scene after resetting.
+        /// </summary>
+        /// <param name="startingSceneName"></param>
+        public static void ResetGameState()
+        {
             ClearSavedGameData();
             BeforeSceneChange();
             SaversRestartGame();
-            instance.StartCoroutine(LoadSceneInternal(startingSceneName));
         }
 
         /// <summary>

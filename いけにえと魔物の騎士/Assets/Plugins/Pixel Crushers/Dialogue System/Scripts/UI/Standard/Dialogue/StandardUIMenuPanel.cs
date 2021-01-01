@@ -108,10 +108,12 @@ namespace PixelCrushers.DialogueSystem
 
         protected List<GameObject> instantiatedButtonPool { get { return m_instantiatedButtonPool; } }
         private List<GameObject> m_instantiatedButtonPool = new List<GameObject>();
+        private string m_processedAutonumberFormat = string.Empty;
 
         protected StandardUITimer m_timer = null;
         protected System.Action m_timeoutHandler = null;
         protected CanvasGroup m_mainCanvasGroup = null;
+        protected static bool s_isInputDisabled = false;
 
         #endregion
 
@@ -158,6 +160,10 @@ namespace PixelCrushers.DialogueSystem
             {
                 DisableInput();
                 Invoke("EnableInput", blockInputDuration);
+            }
+            else
+            {
+                if (s_isInputDisabled) EnableInput();
             }
         }
 
@@ -274,6 +280,13 @@ namespace PixelCrushers.DialogueSystem
         {
             firstSelected = null;
             DestroyInstantiatedButtons();
+            var hasDisabledButton = false;
+
+            // Prep autonumber format:
+            if (autonumber.enabled)
+            {
+                m_processedAutonumberFormat = autonumber.format.Replace("\\t", "\t").Replace("\\n", "\n");
+            }
 
             if ((buttons != null) && (responses != null))
             {
@@ -331,7 +344,11 @@ namespace PixelCrushers.DialogueSystem
                             buttonGameObject.SetActive(true);
                             StandardUIResponseButton responseButton = buttonGameObject.GetComponent<StandardUIResponseButton>();
                             SetResponseButton(responseButton, responses[i], target, buttonNumber++);
-                            if (responseButton != null) buttonGameObject.name = "Response: " + responseButton.text;
+                            if (responseButton != null)
+                            {
+                                buttonGameObject.name = "Response: " + responseButton.text;
+                                if (explicitNavigationForTemplateButtons && !responseButton.isClickable) hasDisabledButton = true;
+                            }
                             if (firstSelected == null) firstSelected = buttonGameObject;
 
                         }
@@ -369,7 +386,7 @@ namespace PixelCrushers.DialogueSystem
                 }
             }
 
-            if (explicitNavigationForTemplateButtons) SetupTemplateButtonNavigation();
+            if (explicitNavigationForTemplateButtons) SetupTemplateButtonNavigation(hasDisabledButton);
 
             NotifyContentChanged();
         }
@@ -388,7 +405,7 @@ namespace PixelCrushers.DialogueSystem
                 // Auto-number:
                 if (autonumber.enabled)
                 {
-                    button.text = string.Format(autonumber.format, buttonNumber + 1, button.text);
+                    button.text = string.Format(m_processedAutonumberFormat, buttonNumber + 1, button.text);
                     var keyTrigger = button.GetComponent<UIButtonKeyTrigger>();
                     if (autonumber.regularNumberHotkeys)
                     {
@@ -424,17 +441,29 @@ namespace PixelCrushers.DialogueSystem
             return 5;
         }
 
-        public virtual void SetupTemplateButtonNavigation()
+        public virtual void SetupTemplateButtonNavigation(bool hasDisabledButton)
         {
             // Assumes buttons are active (since uses GetComponent), so call after activating panel.
             if (instantiatedButtons == null || instantiatedButtons.Count == 0) return;
-            for (int i = 0; i < instantiatedButtons.Count; i++)
+            var buttons = new List<GameObject>();
+            if (hasDisabledButton)
             {
-                var button = instantiatedButtons[i].GetComponent<StandardUIResponseButton>().button;
-                var above = (i == 0) ? (loopExplicitNavigation ? instantiatedButtons[instantiatedButtons.Count - 1].GetComponent<StandardUIResponseButton>().button : null)
-                    : instantiatedButtons[i - 1].GetComponent<StandardUIResponseButton>().button;
-                var below = (i == instantiatedButtons.Count - 1) ? (loopExplicitNavigation ? instantiatedButtons[0].GetComponent<StandardUIResponseButton>().button : null)
-                    : instantiatedButtons[i + 1].GetComponent<StandardUIResponseButton>().button;
+                // If some buttons are disabled, make a list of only the clickable ones:
+                buttons.AddRange(instantiatedButtons.FindAll(x => x.GetComponent<StandardUIResponseButton>().isClickable));
+            }
+            else
+            {
+                buttons.AddRange(instantiatedButtons);
+            }
+
+            for (int i = 0; i < buttons.Count; i++)
+            {
+                var button = buttons[i].GetComponent<UnityEngine.UI.Button>();
+                if (button == null) continue;
+                var above = (i == 0) ? (loopExplicitNavigation ? buttons[buttons.Count - 1].GetComponent<UnityEngine.UI.Button>() : null)
+                    : buttons[i - 1].GetComponent<UnityEngine.UI.Button>();
+                var below = (i == buttons.Count - 1) ? (loopExplicitNavigation ? buttons[0].GetComponent<UnityEngine.UI.Button>() : null)
+                    : buttons[i + 1].GetComponent<UnityEngine.UI.Button>();
                 var navigation = new UnityEngine.UI.Navigation();
 
                 navigation.mode = UnityEngine.UI.Navigation.Mode.Explicit;
@@ -480,7 +509,7 @@ namespace PixelCrushers.DialogueSystem
         /// clicked to make sure the player can't click another one while the
         /// menu is playing its hide animation.
         /// </summary>
-        public void MakeButtonsNonclickable()
+        public virtual void MakeButtonsNonclickable()
         {
             for (int i = 0; i < instantiatedButtons.Count; i++)
             {
@@ -510,6 +539,7 @@ namespace PixelCrushers.DialogueSystem
 
         protected void SetInput(bool value)
         {
+            s_isInputDisabled = (value == false);
             if (m_mainCanvasGroup == null)
             {
                 var ui = GetComponentInParent<StandardDialogueUI>();
@@ -519,7 +549,11 @@ namespace PixelCrushers.DialogueSystem
                 m_mainCanvasGroup = mainPanel.GetComponent<CanvasGroup>() ?? mainPanel.gameObject.AddComponent<CanvasGroup>();
             }
             m_mainCanvasGroup.interactable = value;
-            EventSystem.current.GetComponent<StandaloneInputModule>().enabled = value;
+            if (EventSystem.current != null)
+            {
+                var inputModule = EventSystem.current.GetComponent<PointerInputModule>();
+                if (inputModule != null) inputModule.enabled = value;
+            }
             UIButtonKeyTrigger.monitorInput = value;
         }
         #endregion

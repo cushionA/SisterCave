@@ -1,4 +1,5 @@
-﻿using Rewired;
+﻿using DarkTonic.MasterAudio;
+using Rewired;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -74,6 +75,7 @@ public class GManager : MonoBehaviour
 
     //プレイヤーがレベルアップしたらHPとスタミナのスライダーの長さをチェックして伸ばす。
     //あとステータス画面に格納する値のチェックも
+    bool isSoundFirst;
 
     private void Awake()
     {
@@ -108,6 +110,14 @@ public class GManager : MonoBehaviour
         mpSl = MpSlider.GetComponent<RectTransform>();
         staminaSl = stSlider.GetComponent<RectTransform>();
         SetSlider();
+
+        if (!isSoundFirst)
+        {
+            MasterAudio.SetBusVolumeByName("BGM", 50);
+            MasterAudio.SetBusVolumeByName("SE", 50);
+            //こいつらはゲームの最初に入れるべきでは
+            isSoundFirst = true;
+        }
     }
 
     // Update is called once per frame
@@ -263,11 +273,11 @@ public class GManager : MonoBehaviour
     public void SetParameter()
     {
 
-        //Debug.Log("はいく");
+        ////Debug.log("はいく");
         pStatus.maxHp = pStatus.initialHp + pStatus.HpCurve.Evaluate(pStatus.Vitality);
         pStatus.maxMp = pStatus.initialMp + pStatus.MpCurve.Evaluate(pStatus.capacity);
         pStatus.maxStamina = pStatus.initialStamina + pStatus.StaminaCurve.Evaluate(pStatus.Endurance);
-      //  Debug.Log($"テスト数値{pStatus.StaminaCurve.Evaluate(pStatus.Endurance)}");
+      //  //Debug.log($"テスト数値{pStatus.StaminaCurve.Evaluate(pStatus.Endurance)}");
         pStatus.capacityWeight = pStatus.initialWeight + pStatus.weightCurve.Evaluate(pStatus.Endurance+pStatus.power);
 
         if(pStatus.capacity >= 0 && pStatus.capacity < 7)

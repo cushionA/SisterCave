@@ -99,9 +99,12 @@ namespace PixelCrushers.DialogueSystem
                 menuResult = MenuResult.Unselected;
             }
 
-            EditorWindowTools.StartIndentedSection();
+            //EditorWindowTools.StartIndentedSection(); // Removed indent; looks better without.
+
             SetSyntaxStateGUIColor(syntaxState);
+
             var newSequence = EditorGUILayout.TextArea(sequence);
+
             ClearSyntaxStateGUIColor();
             if (!string.Equals(newSequence, sequence))
             {
@@ -134,9 +137,14 @@ namespace PixelCrushers.DialogueSystem
                                         sequence = AddCommandToSequence(sequence, GetCurrentAudioCommand() + "(" + GetResourceName(path) + ")");
                                         GUI.changed = true;
                                     }
+                                    else if (GetCurrentAudioCommand() == "LipSync")
+                                    {
+                                        sequence = AddCommandToSequence(sequence, GetCurrentAudioCommand() + "(" + System.IO.Path.GetFileNameWithoutExtension(path) + ")");
+                                        GUI.changed = true;
+                                    }
                                     else
                                     {
-                                        EditorUtility.DisplayDialog("Not in Resources Folder", "Audio clips must be located in the hierarchy of a Resources folder or an AssetBundle.", "OK");
+                                        EditorUtility.DisplayDialog("Not in Resources Folder", "To use drag-n-drop, audio clips must be located in the hierarchy of a Resources folder.", "OK");
                                     }
                                 }
                                 else if (obj is GameObject)
@@ -183,7 +191,7 @@ namespace PixelCrushers.DialogueSystem
             // If content changed, reset syntax check state:
             if (EditorGUI.EndChangeCheck()) syntaxState = SequenceSyntaxState.Unchecked;
 
-            EditorWindowTools.EndIndentedSection();
+            //EditorWindowTools.EndIndentedSection();
 
             return sequence;
         }
@@ -234,7 +242,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static void ShowSequenceEditorAudioHelp(object data)
         {
-            EditorUtility.DisplayDialog("Audio Drag & Drop Help", "Select an item in this Audio submenu to specify which command to add when dragging an audio clip onto the Sequence field. Audio clips must be in a Resources folder. Audio commands can use AssetBundles, but not with this drag-n-drop feature.", "OK");
+            EditorUtility.DisplayDialog("Audio Drag & Drop Help", "Select an item in this Audio submenu to specify which command to add when dragging an audio clip onto the Sequence field. Audio clips must be in a Resources folder.\n\nAudio commands can use AssetBundles and Addressables, but not with this drag-n-drop feature.\n\nIf using LipSync(), to use drag-n-drop the LipSync data file and audio file must be named the same, and you must drag the audio file into the Sequence field, but the audio file doesn't have to be in Resources.", "OK");
         }
 
         private static void SetAudioDragDropCommand(object data)
@@ -362,7 +370,16 @@ namespace PixelCrushers.DialogueSystem
 
         private static string AddCommandToSequence(string sequence, string newCommand)
         {
-            return sequence + (string.IsNullOrEmpty(sequence) ? string.Empty : ";\n") + newCommand;
+            var s = sequence;
+            if (!string.IsNullOrEmpty(sequence) && !sequence.TrimEnd().EndsWith(";"))
+            {
+                s += ";\n";
+            }
+            else if (!string.IsNullOrEmpty(sequence) && !sequence.EndsWith("\n"))
+            {
+                s += "\n";
+            }
+            return s + newCommand;
         }
 
         private static string GetResourceName(string path)
@@ -469,6 +486,7 @@ namespace PixelCrushers.DialogueSystem
                 Replace("{{default}}", "None()").
                 Replace("{{end}}", "0");
             sequenceToCheck = Regex.Replace(sequenceToCheck, @"\{\{.+\}\}", string.Empty);
+            if (string.IsNullOrEmpty(sequenceToCheck)) return SequenceSyntaxState.Valid;
             var parser = new SequenceParser();
             var result = parser.Parse(sequenceToCheck);
             return (result == null || result.Count == 0) ? SequenceSyntaxState.Error : SequenceSyntaxState.Valid; 

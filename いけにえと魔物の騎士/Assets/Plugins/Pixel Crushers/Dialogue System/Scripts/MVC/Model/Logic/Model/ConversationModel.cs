@@ -86,7 +86,7 @@ namespace PixelCrushers.DialogueSystem
         /// The current conversation ID. When this changes (in GotoState), the Lua environment
         /// needs to set the Dialog[] table to the new conversation's table.
         /// </summary>
-        private int m_currentConversationID = -1;
+        private int m_currentDialogTableConversationID = -1;
 
         /// <summary>
         /// Initializes a new ConversationModel.
@@ -235,6 +235,12 @@ namespace PixelCrushers.DialogueSystem
                 }
                 CharacterInfo actorInfo = GetCharacterInfo(entry.ActorID);
                 CharacterInfo listenerInfo = GetCharacterInfo(entry.ConversantID);
+                if (!skipExecution)
+                {
+                    var sceneEvent = DialogueSystemSceneEvents.GetDialogueEntrySceneEvent(entry.sceneEventGuid);
+                    var eventGameObject = (actorInfo.transform != null) ? actorInfo.transform.gameObject : DialogueManager.instance.gameObject;
+                    if (sceneEvent != null) sceneEvent.onExecute.Invoke(eventGameObject);
+                }
                 FormattedText formattedText = FormattedText.Parse(entry.subtitleText, m_database.emphasisSettings);
                 CheckSequenceField(entry);
                 string entrytag = m_database.GetEntrytag(entry.conversationID, entry.id, m_entrytagFormat);
@@ -312,9 +318,9 @@ namespace PixelCrushers.DialogueSystem
 
         private void SetDialogTable(int newConversationID)
         {
-            if (m_currentConversationID != newConversationID)
+            if (m_currentDialogTableConversationID != newConversationID)
             {
-                m_currentConversationID = newConversationID;
+                m_currentDialogTableConversationID = newConversationID;
                 Lua.Run(string.Format("Dialog = Conversation[{0}].Dialog", new System.Object[] { newConversationID }));
             }
         }
@@ -532,7 +538,8 @@ namespace PixelCrushers.DialogueSystem
                     if (entryActor != null && entryActor.IsPlayer)
                     {
                         pcPortraitName = entryActor.Name;
-                        pcPortraitSprite = entryActor.GetPortraitSprite();
+                        //pcPortraitSprite = entryActor.GetPortraitSprite();
+                        entryActor.AssignPortraitSprite((sprite) => { pcPortraitSprite = sprite; });
                         break;
                     }
                 }
@@ -568,7 +575,13 @@ namespace PixelCrushers.DialogueSystem
                     character = CharacterInfo.GetRegisteredActorTransform(nameInDatabase);
                 }
                 var actorID = (actor != null) ? actor.id : id;
-                CharacterInfo characterInfo = new CharacterInfo(actorID, nameInDatabase, character, m_database.GetCharacterType(id), GetPortrait(character, actor));
+                var portrait = (dialogueActor != null) ? dialogueActor.GetPortraitSprite() : null;
+                if (portrait == null) portrait = GetPortrait(character, actor);
+                CharacterInfo characterInfo = new CharacterInfo(actorID, nameInDatabase, character, m_database.GetCharacterType(id), portrait);
+                if (characterInfo.portrait == null && actor != null)
+                {
+                    actor.AssignPortraitSprite((sprite) => { characterInfo.portrait = sprite; });
+                }
                 m_characterInfoCache.Add(id, characterInfo);
             }
             return m_characterInfoCache[id];
@@ -600,6 +613,7 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        // Handles the easy cases (without Addressables). May return null.
         private Sprite GetPortrait(Transform character, Actor actor)
         {
             Sprite portrait = null;
@@ -624,7 +638,7 @@ namespace PixelCrushers.DialogueSystem
             DialogueDebug.level = originalDebugLevel;
             if (string.IsNullOrEmpty(imageName))
             {
-                return (actor != null) ? actor.GetPortraitSprite(): null;
+                return (actor != null) ? actor.GetPortraitSprite() : null;
             }
             else if (imageName.StartsWith("pic="))
             {
@@ -639,7 +653,10 @@ namespace PixelCrushers.DialogueSystem
             }
             else
             {
-                return UITools.CreateSprite(DialogueManager.LoadAsset(imageName) as Texture2D);
+                // Check if named image is already assigned to actor. Otherwise load as asset.
+                var sprite = actor.GetPortraitSprite(imageName);
+                return (sprite != null) ? sprite 
+                    : UITools.CreateSprite(DialogueManager.LoadAsset(imageName) as Texture2D);
             }
         }
 

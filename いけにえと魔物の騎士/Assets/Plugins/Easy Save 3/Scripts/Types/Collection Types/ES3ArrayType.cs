@@ -95,12 +95,15 @@ namespace ES3Types
 
 		public override void ReadInto<T>(ES3Reader reader, object obj)
 		{
-			ReadICollectionInto(reader, (T[])obj, elementType);
+			ReadICollectionInto(reader, (ICollection)obj, elementType);
 		}
 
 		public override void ReadInto(ES3Reader reader, object obj)
 		{
             var collection = (IList)obj;
+
+            if (collection.Count == 0)
+                ES3Debug.LogWarning("LoadInto/ReadInto expects a collection containing instances to load data in to, but the collection is empty.");
 
 			if(reader.StartReadCollection())
 				throw new NullReferenceException("The Collection we are trying to load is stored as null, which is not allowed when using ReadInto methods.");

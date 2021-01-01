@@ -42,6 +42,8 @@ public abstract class ES3Writer : IDisposable
 
 	internal virtual void StartWriteProperty(string name)
     {
+        if (name == null)
+            throw new ArgumentNullException("Key or field name cannot be NULL when saving data.");
         ES3Debug.Log("<b>"+name +"</b> (writing property)", null, serializationDepth);
     }
 
@@ -105,20 +107,6 @@ public abstract class ES3Writer : IDisposable
 	/* User-facing methods used when writing randomly-accessible Key-Value pairs. */
 	#region Write(key, value) Methods
 
-	/// <summary>Writes a value to the writer with the given key.</summary>
-	/// <param name="key">The key which uniquely identifies this value.</param>
-	/// <param name="value">The value we want to write.</param>
-	public virtual void Write<T>(string key, object value)
-	{ 
-		StartWriteProperty(key);
-		StartWriteObject(key);
-		WriteType(typeof(T));
-		WriteProperty("value", value, ES3TypeMgr.GetOrCreateES3Type(typeof(T)), settings.referenceMode);
-		EndWriteObject(key);
-        EndWriteProperty(key);
-		MarkKeyForDeletion(key);
-	}
-
 	internal virtual void Write(string key, Type type, byte[] value)
 	{
 		StartWriteProperty(key);
@@ -130,11 +118,22 @@ public abstract class ES3Writer : IDisposable
 		MarkKeyForDeletion(key);
 	}
 
-	/// <summary>Writes a value to the writer with the given key, using the given type rather than the generic parameter.</summary>
-	/// <param name="type">The type we want to use for the header, and to retrieve an ES3Type.</param>
-	/// <param name="key">The key which uniquely identifies this value.</param>
-	/// <param name="value">The value we want to write.</param>
-	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    /// <summary>Writes a value to the writer with the given key.</summary>
+    /// <param name="key">The key which uniquely identifies this value.</param>
+    /// <param name="value">The value we want to write.</param>
+    public virtual void Write<T>(string key, object value)
+    {
+        if(typeof(T) == typeof(object))
+            Write(value.GetType(), key, value);
+        else
+            Write(typeof(T), key, value);
+    }
+
+    /// <summary>Writes a value to the writer with the given key, using the given type rather than the generic parameter.</summary>
+    /// <param name="key">The key which uniquely identifies this value.</param>
+    /// <param name="value">The value we want to write.</param>
+    /// <param name="type">The type we want to use for the header, and to retrieve an ES3Type.</param>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 	public virtual void Write(Type type, string key, object value)
 	{ 
 		StartWriteProperty(key);
@@ -165,6 +164,23 @@ public abstract class ES3Writer : IDisposable
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 	public virtual void Write(object value, ES3Type type, ES3.ReferenceMode memberReferenceMode = ES3.ReferenceMode.ByRef)
 	{
+        // Deal with System.Objects
+        if (type.type == typeof(object))
+        {
+            var valueType = value.GetType();
+            type = ES3TypeMgr.GetOrCreateES3Type(valueType);
+            if (!type.isCollection && !type.isDictionary)
+            {
+                StartWriteObject(null);
+                WriteType(valueType);
+
+                type.Write(value, this);
+
+                EndWriteObject(null);
+                return;
+            }
+        }
+
         // Note that we have to check UnityEngine.Object types for null by casting it first, otherwise
         // it will always return false.
         if (value == null || (type.isES3TypeUnityObject && ((UnityEngine.Object)value) == null))
@@ -266,25 +282,25 @@ public abstract class ES3Writer : IDisposable
         if (SerializationDepthLimitExceeded())
             return;
 
-        StartWriteProperty(name); Write(value, type, memberReferenceMode); EndWriteProperty(name);
+        StartWriteProperty(name); 
+        Write(value, type, memberReferenceMode); 
+        EndWriteProperty(name);
 	}
 
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-	public void WritePropertyByRef(string name, UnityEngine.Object value)
+	public virtual void WritePropertyByRef(string name, UnityEngine.Object value)
 	{
         if (SerializationDepthLimitExceeded())
             return;
 
         StartWriteProperty(name);
-
-		if(value == null){ WriteNull(); return; };
-
+		if(value == null)
+        { 
+            WriteNull(); 
+            return; };
 		StartWriteObject(name);
-
 		WriteRef(value);
-
 		EndWriteObject(name);
-
 		EndWriteProperty(name);
 	}
 
@@ -349,7 +365,7 @@ public abstract class ES3Writer : IDisposable
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 	public void WriteType(Type type)
 	{
-		WriteProperty(ES3Type.typeFieldName, ES3Reflection.GetShortAssemblyQualifiedName(type));
+		WriteProperty(ES3Type.typeFieldName, ES3Reflection.GetTypeString(type));
 	}
 
 	#endregion
@@ -393,7 +409,9 @@ public abstract class ES3Writer : IDisposable
 		// Get the baseWriter using the given Stream.
 		if(settings.format == ES3.Format.JSON)
 			return new ES3JSONWriter(stream, settings, writeHeaderAndFooter, overwriteKeys);
-		else
+        else if (settings.format == ES3.Format.Binary_Alpha)
+            return new ES3BinaryWriter(stream, settings, writeHeaderAndFooter, overwriteKeys);
+        else
 			return null;
 	}
 

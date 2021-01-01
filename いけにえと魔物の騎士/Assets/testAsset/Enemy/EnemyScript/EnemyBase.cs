@@ -166,8 +166,8 @@ public class EnemyBase : MonoBehaviour
 		direction = distance.x >= 0 ? 1 : -1;//距離が正、または0の時1。そうでないとき-1。方向
 		directionY = distance.y >= 0 ? 1 : -1;//弓構えるときのアニメの判定	にも使えそう
 
-		////Debug.Log($"ジャンプ中{nowJump}");
-		////Debug.Log($"回避中{isAvoid}");
+		//////Debug.log($"ジャンプ中{nowJump}");
+		//////Debug.log($"回避中{isAvoid}");
 		if (isAggressive)
         {
 			posiReset = true;
@@ -259,13 +259,13 @@ public class EnemyBase : MonoBehaviour
 	{
 		//isDamage = true;
 		//SetLayer(10);
-		//Debug.Log($"ガード中か否か{guardHit}");
+		////Debug.log($"ガード中か否か{guardHit}");
 		if (!guardHit /*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */&& !isDamage)
 		{
 			isDamage = true;
 		//	GManager.instance.pStatus.equipWeapon.hitLimmit--;
 
-			//Debug.Log("終了");
+			////Debug.log("終了");
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			float mValue = GManager.instance.pStatus.equipWeapon.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
@@ -301,8 +301,8 @@ public class EnemyBase : MonoBehaviour
 				damage += (Mathf.Pow(GManager.instance.pStatus.thunderAtk, 2) * mValue) / (GManager.instance.pStatus.thunderAtk + status.thunderDef);
 			}
 
-			Debug.Log($"{ damage * GManager.instance.pStatus.attackBuff}ダメージ");
-			//Debug.Log($"{status.nowArmor}a-mor");
+			//Debug.log($"{ damage * GManager.instance.pStatus.attackBuff}ダメージ");
+			////Debug.log($"{status.nowArmor}a-mor");
 			status.hp -= damage * GManager.instance.pStatus.attackBuff;//HP減らす
 
 			if (!isAttack)
@@ -338,7 +338,7 @@ public class EnemyBase : MonoBehaviour
 			isDamage = true;
 			//GManager.instance.pStatus.equipWeapon.hitLimmit--;
 
-			//Debug.Log("終了");
+			////Debug.log("終了");
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			float mValue = GManager.instance.pStatus.equipWeapon.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
@@ -375,8 +375,8 @@ public class EnemyBase : MonoBehaviour
 				damage += (Mathf.Pow(GManager.instance.pStatus.thunderAtk, 2) * mValue) / (GManager.instance.pStatus.thunderAtk + status.thunderDef) * (100 - status.thunderCut)/100;
 			}
 
-			//Debug.Log($"{ damage * GManager.instance.pStatus.attackBuff}ダメージ");
-			//Debug.Log($"{status.nowArmor}a-mor");
+			////Debug.log($"{ damage * GManager.instance.pStatus.attackBuff}ダメージ");
+			////Debug.log($"{status.nowArmor}a-mor");
 			status.hp -= damage * GManager.instance.pStatus.attackBuff;//HP減らす
 
 			status.nowArmor -= (GManager.instance.pStatus.equipWeapon.shock * 2) * ((100 - status.guardPower) / 100);
@@ -899,14 +899,14 @@ public class EnemyBase : MonoBehaviour
 			}
 			else
 			{
-					////Debug.Log("ああああ");
+					//////Debug.log("ああああ");
 					waitTime += Time.fixedDeltaTime;
 					rb.velocity = new Vector2(0, rb.velocity.y);
 					if (waitTime >= status.waitRes)
 					{
 						isRight = !isRight;
 						waitTime = 0.0f;
-					//	//Debug.Log("ああああ");
+					//	////Debug.log("ああああ");
 					
 				}
 			}
@@ -1177,7 +1177,7 @@ public class EnemyBase : MonoBehaviour
 					avoidTime = 0;
 					rb.velocity = new Vector2(0, rb.velocity.y);
 					SetLayer(initialLayer);
-					////Debug.Log("初期化");
+					//////Debug.log("初期化");
 					AllStop(0.3f);
 				}
 			}
@@ -1256,10 +1256,10 @@ public class EnemyBase : MonoBehaviour
 		{
 			jumpWait += Time.fixedDeltaTime;
 		}
-		//Debug.Log($"ジャンプトリガー{jumpTrigger}");
+		////Debug.log($"ジャンプトリガー{jumpTrigger}");
 		if (jumpTrigger && jumpWait >= 2.0f && isGround)
 		{
-			Debug.Log("飛翔");
+			//Debug.log("飛翔");
 			isJump = true;
 			jumpWait = 0;
 			jumpTrigger = false;
@@ -1426,7 +1426,7 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void Down()
 	{
-		//Debug.Log("吹き飛ぶ");
+		////Debug.log("吹き飛ぶ");
 
 			if (isDown)
 			{
@@ -1448,8 +1448,8 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-		//Debug.Log($"{collision.tag}タグ");
-		////Debug.Log("開始");
+		////Debug.log($"{collision.tag}タグ");
+		//////Debug.log("開始");
 		if(collision.tag == status.AttackTag && (isHitable || lastHit != collision.gameObject))
         {
 			WeponDamage();
@@ -1674,7 +1674,7 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void GuardBreak()
     {
-		//Debug.Log("敗れた");
+		////Debug.log("敗れた");
 		isGuard = false;
 	}
 

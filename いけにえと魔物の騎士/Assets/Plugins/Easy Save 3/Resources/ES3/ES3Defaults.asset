@@ -27,7 +27,7 @@ MonoBehaviour:
     safeReflection: 1
     memberReferenceMode: 0
     referenceMode: 2
-    serializationDepthLimit: 32
+    serializationDepthLimit: 64
     assemblyNames:
     - Assembly-CSharp-firstpass
     - Assembly-CSharp
@@ -40,7 +40,7 @@ MonoBehaviour:
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
-  useGlobalReferences: 1
+  addAllPrefabsToManager: 1
   logDebugInfo: 0
   logWarnings: 1
   logErrors: 1

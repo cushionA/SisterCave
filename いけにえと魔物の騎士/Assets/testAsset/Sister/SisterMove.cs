@@ -161,7 +161,7 @@ public class SisterMove : MonoBehaviour
 
     public void Dede()
     {
-        Debug.Log("edrfbhynj");
+        //Debug.log("edrfbhynj");
 
     }
 }

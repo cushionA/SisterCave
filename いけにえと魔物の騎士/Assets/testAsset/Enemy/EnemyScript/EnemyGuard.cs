@@ -49,7 +49,7 @@ public class EnemyGuard : MonoBehaviour
         if (collision.tag == eb.status.AttackTag && (eb.isHitable || eb.lastHit != collision.gameObject))
         {
 
-            Debug.Log("継続");
+            //Debug.log("継続");
             eb.WeponGuard();
             eb.lastHit = collision.gameObject;
         }

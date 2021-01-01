@@ -45,12 +45,27 @@ namespace ES3Types
 			WriteUnityObject(instance, writer);
 		}
 
-		protected override void ReadObject<T>(ES3Reader reader, object obj)
-		{
-			ReadUnityObject<T>(reader, obj);
-		}
+        protected override void ReadObject<T>(ES3Reader reader, object obj)
+        {
+            var refMgr = ES3ReferenceMgrBase.Current;
+            if (refMgr != null)
+            {
+                foreach (string propertyName in reader.Properties)
+                {
+                    if (propertyName == ES3ReferenceMgrBase.referencePropertyName)
+                        // If the object we're loading into isn't registered with the reference manager, register it.
+                        refMgr.Add((UnityEngine.Object)obj, reader.Read_ref());
+                    else
+                    {
+                        reader.overridePropertiesName = propertyName;
+                        break;
+                    }
+                }
+            }
+            ReadUnityObject<T>(reader, obj);
+        }
 
-		protected override object ReadObject<T>(ES3Reader reader)
+        protected override object ReadObject<T>(ES3Reader reader)
 		{
 			var refMgr = ES3ReferenceMgrBase.Current;
 			if(refMgr == null)

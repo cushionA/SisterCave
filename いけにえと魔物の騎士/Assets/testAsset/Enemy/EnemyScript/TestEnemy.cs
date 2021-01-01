@@ -31,7 +31,7 @@ public class TestEnemy : EnemyBase
         {
 
 
-            Debug.Log($"{status.ground}");
+            //Debug.log($"{status.ground}");
             AgrMove();
             //isGuard = true;
             // AgrFly();
@@ -45,7 +45,7 @@ public class TestEnemy : EnemyBase
                isAvoid = true;
                RandomDirection(100, 50);
            }*/
-            // Debug.Log($"レイヤー{this.gameObject.layer}");
+            // //Debug.log($"レイヤー{this.gameObject.layer}");
             TriggerJump();
         }
         else if (!isAggressive)

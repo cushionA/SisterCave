@@ -328,7 +328,7 @@ public class RopeEditor : Editor
         DestroyChildren(rope);
         if (rope.SegmentsPrefabs==null||rope.SegmentsPrefabs.Length == 0)
         {
-            Debug.LogWarning("Rope Segments Prefabs is Empty");
+            //Debug.logWarning("Rope Segments Prefabs is Empty");
             return;
         }
         float segmentHeight = rope.SegmentsPrefabs[0].bounds.size.y * (1 + rope.overlapFactor);

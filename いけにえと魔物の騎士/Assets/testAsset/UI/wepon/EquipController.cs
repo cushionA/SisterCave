@@ -98,15 +98,15 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             if (num > 0)
             {
                 enableTool.Add(ti.Key);
-                Debug.Log("EEEE");
+                //Debug.log("EEEE");
             }
 
         }
-        Debug.Log(enableTool.Count);
+        //Debug.log(enableTool.Count);
 
         for (int i = 0; i < enableTool.Count; i += 3)
         {
-            Debug.Log("WWW");
+            //Debug.log("WWW");
             this.data = new List<UseItemData>{
 
             new UseItemData(enableTool[i],enableTool[i+1],enableTool[i+2])
@@ -191,7 +191,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
         {
             #region
             data.Clear();//インベントリを一回からにして入れなおす
-            //Debug.Log("おちんちん");
+            ////Debug.log("おちんちん");
             //  for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
             // {
             //　アイテム数を適当に設定
@@ -251,7 +251,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
                 //}
                 /*else if(setList.Count - i < N)
                 {
-                    Debug.Log("そこに愛はある？");
+                    //Debug.log("そこに愛はある？");
                     //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
                     if (i % N == 0) {
                         miniList = new List<ToolItem>();
@@ -265,7 +265,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
                         ToolItem[] box = miniList.ToArray();
                         UseItemData mini = new UseItemData(box);
                         data.Add(mini);
-                        Debug.Log("愛して");
+                        //Debug.log("愛して");
                     }
 
                 }*/
@@ -284,14 +284,14 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             //すなわち表示非表示切り替わるとthis.OnCellViewVisibilityChanged
             //というかUpdateNavigationConnections()する
 
-            //Debug.Log("愛してる");
+            ////Debug.log("愛してる");
             this.fooScroller.ReloadData();
             this.UpdateNavigationConnections();
             isEver = true;
         }
         /*else if(!MainUI.instance.isReBuild && isEver)
         {
-            Debug.Log("愛してない");
+            //Debug.log("愛してない");
             //isEver = false;
         }*/
         JButton();
@@ -420,12 +420,12 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             /* if (i == (cells.Length - 1) )
                        {
                            isLast = true;
-                           Debug.Log("yasai");
+                           //Debug.log("yasai");
                        }
                        else
                        {
                            isLast = false;
-                           Debug.Log("niku");
+                           //Debug.log("niku");
                        }
                        if(i != 0)
                        {
@@ -471,21 +471,21 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
 
               if (!EquipManager.instance.isShieldM && !EquipManager.instance.isWeponM || item == space2 || item == space1 || item == space3)
                 {
-                 //   Debug.Log("お月様キラキラ");
+                 //   //Debug.log("お月様キラキラ");
                     yield return item;
                 }
                 else if(!EquipManager.instance.isShieldM && EquipManager.instance.isWeponM && item.GetType() == typeof(Wepon))
                 {
-                  //  Debug.Log("お日様キラキラ");
+                  //  //Debug.log("お日様キラキラ");
                         yield return item;
 
                 }
                 else if (EquipManager.instance.isShieldM && !EquipManager.instance.isWeponM && item.GetType() == typeof(Shield))
                 {
-                   // Debug.Log("お星様キラキラ");
+                   // //Debug.log("お星様キラキラ");
                     yield return item;
                 }
-               // Debug.Log("おまんこキラキラ");
+               // //Debug.log("おまんこキラキラ");
             }
 
         }

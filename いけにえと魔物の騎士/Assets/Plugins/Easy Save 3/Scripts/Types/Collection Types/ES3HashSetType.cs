@@ -39,18 +39,52 @@ namespace ES3Types
             //writer.EndWriteCollection();
         }
 
-		public override object Read<T>(ES3Reader reader)
-		{
-            var list = ES3Reflection.CreateInstance(type);
-            var method = typeof(ES3CollectionType).GetMethod("ReadICollection", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(elementType.type);
-            if(!(bool)method.Invoke(this, new object[] { reader, list, elementType }))
-                return null;
-            return list;
-		}
+        public override object Read<T>(ES3Reader reader)
+        {
+            var val = Read(reader);
+            if (val == null)
+                return default(T);
+            return (T)val;
+        }
 
-		public override void ReadInto<T>(ES3Reader reader, object obj)
+
+        public override object Read(ES3Reader reader)
 		{
-			ReadICollectionInto(reader, (HashSet<T>)obj, elementType);
+            /*var method = typeof(ES3CollectionType).GetMethod("ReadICollection", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(elementType.type);
+            if(!(bool)method.Invoke(this, new object[] { reader, list, elementType }))
+                return null;*/
+
+            var genericParam = ES3Reflection.GetGenericArguments(type)[0];
+            var listType = ES3Reflection.MakeGenericType(typeof(List<>), genericParam);
+            var list = (IList)ES3Reflection.CreateInstance(listType);
+
+            if (!reader.StartReadCollection())
+            {
+                // Iterate through each character until we reach the end of the array.
+                while (true)
+                {
+                    if (!reader.StartReadCollectionItem())
+                        break;
+                    list.Add(reader.Read<object>(elementType));
+
+                    if (reader.EndReadCollectionItem())
+                        break;
+                }
+
+                reader.EndReadCollection();
+            }
+
+            return ES3Reflection.CreateInstance(type, list);
+        }
+
+        public override void ReadInto<T>(ES3Reader reader, object obj)
+        {
+            ReadInto(reader, obj);
+        }
+
+        public override void ReadInto(ES3Reader reader, object obj)
+		{
+            throw new NotImplementedException("Cannot use LoadInto/ReadInto with HashSet because HashSets do not maintain the order of elements");
 		}
     }
 }

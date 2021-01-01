@@ -530,7 +530,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             if (conversationFieldsFoldout)
             {
                 GUILayout.FlexibleSpace();
-                if (GUILayout.Button(new GUIContent("Template", "Add any missing fields from the template."), EditorStyles.miniButton, GUILayout.Width(60)))
+                if (GUILayout.Button(new GUIContent("Template", "Add any missing fields from the template."), EditorStyles.miniButton, GUILayout.Width(68)))
                 {
                     ApplyTemplate(currentConversation.fields, GetTemplateFields(currentConversation));
                 }
@@ -614,6 +614,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 settings.alwaysForceResponseMenu = EditorGUILayout.Toggle("Always Force Response Menu", settings.alwaysForceResponseMenu);
                 settings.includeInvalidEntries = EditorGUILayout.Toggle("Include Invalid Entries", settings.includeInvalidEntries);
                 settings.responseTimeout = EditorGUILayout.FloatField("Response Timeout", settings.responseTimeout);
+                settings.cancelSubtitle.key = (KeyCode)EditorGUILayout.EnumPopup("Cancel Subtitle Key", settings.cancelSubtitle.key);
+                settings.cancelSubtitle.buttonName = EditorGUILayout.TextField("Cancel Subtitle Button", settings.cancelSubtitle.buttonName);
+                settings.cancelConversation.key = (KeyCode)EditorGUILayout.EnumPopup("Cancel Conversation Key", settings.cancelConversation.key);
+                settings.cancelConversation.buttonName = EditorGUILayout.TextField("Cancel Conversation Button", settings.cancelConversation.buttonName);
             }
 
             EditorWindowTools.EndIndentedSection();

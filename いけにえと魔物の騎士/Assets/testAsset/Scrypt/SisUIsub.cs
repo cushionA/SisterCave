@@ -103,14 +103,14 @@ public class SisUIsub : MonoBehaviour
     public void MenuCheck()
     {
         //右ボタンに反応するイベント
-        Debug.Log("Left");
+        //Debug.log("Left");
 
     }
     public void Check()
     {
 
         //左ボタンに反応するイベント
-        Debug.Log("Right");
+        //Debug.log("Right");
 
     }
 

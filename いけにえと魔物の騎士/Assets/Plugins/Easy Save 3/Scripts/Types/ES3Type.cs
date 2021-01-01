@@ -98,7 +98,7 @@ namespace ES3Types
 					}
 				}
 
-                // If this is a class which derives directly from Dictionary, we need to load it's dictionary first.
+                // If this is a class which derives directly from a Collection, we need to load it's dictionary first.
                 if(propertyName == "_Values")
                 {
                     var baseType = ES3TypeMgr.GetOrCreateES3Type(ES3Reflection.BaseType(obj.GetType()));
@@ -111,7 +111,7 @@ namespace ES3Types
                     }
                     else if(baseType.isCollection)
                     {
-                        var loaded = (IEnumerable)baseType.Read<ICollection>(reader);
+                        var loaded = (IEnumerable)baseType.Read<IEnumerable>(reader);
 
                         var type = baseType.GetType();
 

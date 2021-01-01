@@ -134,7 +134,7 @@ public class UseWindow : MonoBehaviour
 
     public void ResetWindow()
     {
-      //  Debug.Log("きめつ");
+      //  //Debug.log("きめつ");
         isNum = false;
         isSUse = false;
         isDump = false;

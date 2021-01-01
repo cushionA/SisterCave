@@ -20,11 +20,11 @@ public class ItemManager : MonoBehaviour
 			//　アイテム数を適当に設定
 			numOfItem.Add(itemDataBase.GetItemLists()[i], i);
 			//　確認の為データ出力
-			Debug.Log(itemDataBase.GetItemLists()[i].itemName + ": " + itemDataBase.GetItemLists()[i].information);
+			//Debug.log(itemDataBase.GetItemLists()[i].itemName + ": " + itemDataBase.GetItemLists()[i].information);
 		}
 
-		Debug.Log(GetItem("Fire").information);
-		Debug.Log(numOfItem[GetItem("Fire")]);
+		//Debug.log(GetItem("Fire").information);
+		//Debug.log(numOfItem[GetItem("Fire")]);
 	}
 
 	//　名前でアイテムを取得

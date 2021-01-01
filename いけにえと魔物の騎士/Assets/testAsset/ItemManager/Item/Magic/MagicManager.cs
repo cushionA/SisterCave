@@ -52,19 +52,19 @@ public class MagicManager : MonoBehaviour
 			numOfItem.Add(toolDataBase.GetItemLists()[i], 0);
 
 			//　確認の為データ出力
-			//Debug.Log(toolDataBase.GetItemLists()[i].GetItemName() + ": " + toolDataBase.GetItemLists()[i].GetInformation());
+			////Debug.log(toolDataBase.GetItemLists()[i].GetItemName() + ": " + toolDataBase.GetItemLists()[i].GetInformation());
 		}
 
-		//Debug.Log(GetItem("ナイフ").GetInformation());
-		//Debug.Log(numOfItem[GetItem("ハーブ")]);
+		////Debug.log(GetItem("ナイフ").GetInformation());
+		////Debug.log(numOfItem[GetItem("ハーブ")]);
 
 	}
 
 
 	private void Update()
 	{
-		//Debug.Log(GetItem("test4").inventoryNum);
-		//Debug.Log(GetItem("テスト3").inventoryNum);
+		////Debug.log(GetItem("test4").inventoryNum);
+		////Debug.log(GetItem("テスト3").inventoryNum);
 
 
 

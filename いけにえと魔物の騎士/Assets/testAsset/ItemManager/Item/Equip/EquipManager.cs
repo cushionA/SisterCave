@@ -53,20 +53,20 @@ public class EquipManager : MonoBehaviour
 			numOfItem.Add(toolDataBase.GetItemLists()[i], 0);
 
 			//　確認の為データ出力
-			//Debug.Log(toolDataBase.GetItemLists()[i].GetItemName() + ": " + toolDataBase.GetItemLists()[i].GetInformation());
+			////Debug.log(toolDataBase.GetItemLists()[i].GetItemName() + ": " + toolDataBase.GetItemLists()[i].GetInformation());
 		}
 
-		//Debug.Log(GetItem("ナイフ").GetInformation());
-		//Debug.Log(numOfItem[GetItem("ハーブ")]);
+		////Debug.log(GetItem("ナイフ").GetInformation());
+		////Debug.log(numOfItem[GetItem("ハーブ")]);
 
 	}
 
 
 	private void Update()
 	{
-		//Debug.Log($"盾窓選択{isShieldM}");
-		//Debug.Log($"武器窓選択{isWeponM}");
-		//Debug.Log(GetItem("テスト3").inventoryNum);
+		////Debug.log($"盾窓選択{isShieldM}");
+		////Debug.log($"武器窓選択{isWeponM}");
+		////Debug.log(GetItem("テスト3").inventoryNum);
 
 
 

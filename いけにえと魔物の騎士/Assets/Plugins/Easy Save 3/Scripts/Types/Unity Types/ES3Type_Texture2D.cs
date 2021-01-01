@@ -34,6 +34,12 @@ namespace ES3Types
 
 		protected override void ReadUnityObject<T>(ES3Reader reader, object obj)
 		{
+            if (obj.GetType() == typeof(RenderTexture))
+            {
+                ES3Type_RenderTexture.Instance.ReadInto<T>(reader, obj);
+                return;
+            }
+
 			var instance = (UnityEngine.Texture2D)obj;
 
             if (!IsReadable(instance))
@@ -104,7 +110,7 @@ namespace ES3Types
         protected bool IsReadable(Texture2D instance)
         {
             #if UNITY_2018_3_OR_NEWER
-            return instance.isReadable;
+            return instance != null && instance.isReadable;
             #else
             return true;
             #endif

@@ -64,7 +64,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             var nameControl = "LocationName" + index;
             var descriptionControl = "LocationDescription" + index;
             var location = database.locations[index];
-            EditorGUI.BeginDisabledGroup(!IsAssetInFilter(location, locationFilter));
+            EditorGUI.BeginDisabledGroup(!EditorTools.IsAssetInFilter(location, locationFilter));
             var fieldWidth = rect.width / 4;
             var locationName = location.Name;
             EditorGUI.BeginChangeCheck();
@@ -88,7 +88,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             if (!(0 <= index && index < database.locations.Count)) return;
             var location = database.locations[index];
-            if (IsAssetInFilter(location, locationFilter))
+            if (EditorTools.IsAssetInFilter(location, locationFilter))
             {
                 ReorderableList.defaultBehaviours.DrawElementBackground(rect, index, isActive, isFocused, true);
             }
@@ -108,10 +108,12 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             if (!(0 <= list.index && list.index < database.locations.Count)) return;
             var location = database.locations[list.index];
             if (location == null) return;
-            if (EditorUtility.DisplayDialog(string.Format("Delete '{0}'?", GetAssetName(location)), "Are you sure you want to delete this location?", "Delete", "Cancel"))
+            var deletedLastOne = list.count == 1;
+            if (EditorUtility.DisplayDialog(string.Format("Delete '{0}'?", EditorTools.GetAssetName(location)), "Are you sure you want to delete this location?", "Delete", "Cancel"))
             {
                 ReorderableList.defaultBehaviours.DoRemoveButton(list);
-                inspectorSelection = (list.index < list.count) ? database.locations[list.index] : (list.count > 0) ? database.locations[list.count - 1] : null;
+                if (deletedLastOne) inspectorSelection = null;
+                else inspectorSelection = (list.index < list.count) ? database.locations[list.index] : (list.count > 0) ? database.locations[list.count - 1] : null;
                 SetDatabaseDirty("Remove Location");
             }
         }

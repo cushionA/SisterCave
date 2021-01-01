@@ -35,10 +35,10 @@ public class MagicButton : MonoBehaviour
         {
             MagicManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
-            //  Debug.Log($"青い稲妻{MagicManager.instance.selectButton == this.gameObject}");
+            //  //Debug.log($"青い稲妻{MagicManager.instance.selectButton == this.gameObject}");
             if (MagicManager.instance.selectButton == this.gameObject && !isFirst)
             {
-                //Debug.Log("冥王星");
+                ////Debug.log("冥王星");
                 MagicManager.instance.selectItem = item;
                 //position = this.GetComponent<RectTransform>().anchoredPosition;
                 isFirst = true;
@@ -49,7 +49,7 @@ public class MagicButton : MonoBehaviour
             }
             if (MagicManager.instance.isSisterM || MagicManager.instance.isSisterM)
             {
-                //  Debug.Log("サイパン");
+                //  //Debug.log("サイパン");
                 if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
                     MainUI.instance.magicWindow.SetActive(false);
@@ -85,7 +85,7 @@ public class MagicButton : MonoBehaviour
 
     public void CallWindow()
     {
-        //  Debug.Log($"お名前教えて{MagicManager.instance.selectButton.name}");
+        //  //Debug.log($"お名前教えて{MagicManager.instance.selectButton.name}");
         if (MagicManager.instance.selectItem.inventoryNum > 0 && item != null && MagicManager.instance.selectButton == this.gameObject)
         {
 

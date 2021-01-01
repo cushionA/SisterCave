@@ -72,8 +72,8 @@ public class AttackM : MonoBehaviour
 
     private void Update()
     {
-    //    Debug.Log($"攻撃可能？{isAttackable}");
-     //   Debug.Log($"攻撃中？{GManager.instance.isAttack}");
+    //    //Debug.log($"攻撃可能？{isAttackable}");
+     //   //Debug.log($"攻撃中？{GManager.instance.isAttack}");
 
         //  DownKeyCheck();
         //     ControllerCheck();
@@ -95,7 +95,7 @@ public class AttackM : MonoBehaviour
 
         if (isCharging && !bigAttack && !chargeAttack)
         {
-            chargeKey = GManager.instance.InputR.GetButton((MainUI.instance.rewiredAction10));//Debug.Log("入力");
+            chargeKey = GManager.instance.InputR.GetButton((MainUI.instance.rewiredAction10));////Debug.log("入力");
         }
         else
         {
@@ -119,7 +119,7 @@ public class AttackM : MonoBehaviour
              chargeTime = 0.0f;
             //isCharging = false;
             bigAttack = true;
-            //Debug.Log("現況");
+            ////Debug.log("現況");
         }
     }
 
@@ -187,7 +187,7 @@ public class AttackM : MonoBehaviour
             {
                 if (CheckEnd(GManager.instance.pStatus.equipWeapon.smallName[attackNumber - 1]) == false)
                 {
-                    // Debug.Log("機能してます");
+                    // //Debug.log("機能してます");
                     attackNumber = 0;
                     GManager.instance.isAttack = false;
                     smallTrigger = false;
@@ -198,7 +198,7 @@ public class AttackM : MonoBehaviour
 
                 if (CheckEnd(GManager.instance.pStatus.equipWeapon.bigName[alterNumber - 1]) == false)
                 {
-                    //Debug.Log("機能してます");
+                    ////Debug.log("機能してます");
                     alterNumber = 0;
                     bigAttack = false;
                     chargeAttack = false;
@@ -216,7 +216,7 @@ public class AttackM : MonoBehaviour
 
                 if (CheckEnd(GManager.instance.pStatus.equipWeapon.airName[attackNumber - 1]) == false)
                 {
-                    //Debug.Log("機能してます");
+                    ////Debug.log("機能してます");
                     GManager.instance.isAttack = false;
                     GManager.instance.airAttack = false;
                     smallTrigger = false;
@@ -233,8 +233,8 @@ public class AttackM : MonoBehaviour
 
 
 
-        // Debug.Log($"判定{GManager.instance.isAttack}");
-        // Debug.Log($"空中攻撃は{attackNumber}");
+        // //Debug.log($"判定{GManager.instance.isAttack}");
+        // //Debug.log($"空中攻撃は{attackNumber}");
 
         if (fallAttack)
         {
@@ -354,7 +354,7 @@ public class AttackM : MonoBehaviour
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.chargeStaminaT);
                 }
                 alterNumber++;
-                //Debug.Log("あああああいあいあい");
+                ////Debug.log("あああああいあいあい");
                 chargeAttack = false;
                 isCharging = false;
                 chargeTime = 0.0f;
@@ -495,7 +495,7 @@ public class AttackM : MonoBehaviour
             }
             isAttackable = false;
             attackNumber = 0;
-            //   Debug.Log("Elial");
+            //   //Debug.log("Elial");
         }
         #endregion
         //空中強攻撃
@@ -801,7 +801,7 @@ public class AttackM : MonoBehaviour
                    if (GManager.instance.InputR.GetKeyDown(code))
                    {
                        //処理を書く
-                       Debug.Log($"入力されたのは{code}");
+                       //Debug.log($"入力されたのは{code}");
                        break;
                    }
                }
@@ -813,10 +813,10 @@ public class AttackM : MonoBehaviour
            //ゲームパッドが繋がれてるか確認
            var controllerNames = GManager.instance.InputR.GetJoystickNames();
 
-           Debug.Log($"ゲームパッドが接続されてる{padConnect}");
+           //Debug.log($"ゲームパッドが接続されてる{padConnect}");
            if (controllerNames != null)
            {
-         //      Debug.Log($"ゲームパッドName{controllerNames[0]}");
+         //      //Debug.log($"ゲームパッドName{controllerNames[0]}");
            }
            // 一台もコントローラが接続されていなければエラー
            if (controllerNames[0] == "")

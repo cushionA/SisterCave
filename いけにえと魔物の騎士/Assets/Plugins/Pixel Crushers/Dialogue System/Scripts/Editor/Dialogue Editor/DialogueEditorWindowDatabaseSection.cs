@@ -57,7 +57,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         [SerializeField]
         private bool mergeConversations = true;
 
-        private enum ExportFormat { ChatMapperXML, CSV, VoiceoverScript, LanguageText };
+        private enum ExportFormat { ChatMapperXML, CSV, VoiceoverScript, LanguageText, Screenplay };
         [SerializeField]
         private ExportFormat exportFormat = ExportFormat.ChatMapperXML;
         [SerializeField]
@@ -68,6 +68,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private string voiceoverExportPath = string.Empty;
         [SerializeField]
         private string languageTextExportPath = string.Empty;
+        [SerializeField]
+        private string screenplayExportPath = string.Empty;
         [SerializeField]
         private static bool exportActors = true;
         [SerializeField]
@@ -238,7 +240,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
             if (logMatches) LogGlobalSearchResults();
             if (searchAndReplace) RunGlobalSearchAndReplace(true);
-            if (replaceAll && EditorUtility.DisplayDialog("Replace All", "Replace all instances of '" + globalSearchText + 
+            if (replaceAll && EditorUtility.DisplayDialog("Replace All", "Replace all instances of '" + globalSearchText +
                 "' with '" + globalReplaceText + "' in " + (globalSearchSpecificConversation ? "selected conversation?" : "entire database?"), "Replace All", "Cancel")) RunGlobalSearchAndReplace(false);
         }
 
@@ -579,8 +581,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 case ExportFormat.VoiceoverScript:
                     EditorGUILayout.HelpBox("Use this feature to export your database to external text-based formats.\nThe voiceover script option will export a separate CSV file for each language that you can use as a guide to record voice actors. Each row specifies the entrytag filename for use with entrytags.", MessageType.None);
                     break;
+                case ExportFormat.Screenplay:
+                    EditorGUILayout.HelpBox("Use this feature to export your database to external text-based formats.\nThe screenplay script option will export a separate text file for each language.", MessageType.None);
+                    break;
             }
-            if (exportFormat != ExportFormat.LanguageText)
+            if (exportFormat != ExportFormat.LanguageText && exportFormat != ExportFormat.Screenplay)
             {
                 exportActors = EditorGUILayout.Toggle("Export Actors", exportActors);
                 exportItems = EditorGUILayout.Toggle("Export Items/Quests", exportItems);
@@ -610,6 +615,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                         break;
                     case ExportFormat.LanguageText:
                         TryExportToLanguageText();
+                        break;
+                    case ExportFormat.Screenplay:
+                        TryExportToScreenplay();
                         break;
                 }
             }
@@ -713,6 +721,21 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 }
                 VoiceoverScriptExporter.Export(database, voiceoverExportPath, exportActors, entrytagFormat, encodingType);
                 EditorUtility.DisplayDialog("Export Complete", "The voiceover scripts were exported to CSV (comma-separated values) files in " + voiceoverExportPath + ".", "OK");
+            }
+        }
+
+        private void TryExportToScreenplay()
+        {
+            string newScreenplayPath = EditorUtility.SaveFilePanel("Save Screenplays", EditorWindowTools.GetDirectoryName(screenplayExportPath), voiceoverExportPath, "txt");
+            if (!string.IsNullOrEmpty(newScreenplayPath))
+            {
+                screenplayExportPath = newScreenplayPath;
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    screenplayExportPath = screenplayExportPath.Replace("/", "\\");
+                }
+                ScreenplayExporter.Export(database, screenplayExportPath, encodingType);
+                EditorUtility.DisplayDialog("Export Complete", "The screenplay files were exported to " + screenplayExportPath + ".", "OK");
             }
         }
 

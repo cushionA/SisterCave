@@ -229,6 +229,9 @@ namespace ES3Editor
                 {
                     foreach (var component in components)
                     {
+                        if (component == null)
+                            continue;
+
                         using (var horizontalScope = new EditorGUILayout.HorizontalScope())
                         {
                             bool saveComponent = false;
@@ -263,7 +266,7 @@ namespace ES3Editor
             {
                 if (autoSave != null)
                     foreach (var component in components)
-                        if (autoSave.componentsToSave.Contains(component))
+                        if (component != null && autoSave.componentsToSave.Contains(component))
                             return true;
                 return false;
             }

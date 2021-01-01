@@ -105,7 +105,7 @@ namespace PixelCrushers.DialogueSystem
         private string m_accumulatedText = string.Empty;
         public string accumulatedText { get { return m_accumulatedText; } set { m_accumulatedText = value; } }
         private Animator m_animator = null;
-        private Animator animator { get { if (m_animator == null && portraitImage != null) m_animator = portraitImage.GetComponent<Animator>(); return m_animator; } }
+        protected Animator animator { get { if (m_animator == null && portraitImage != null) m_animator = portraitImage.GetComponent<Animator>(); return m_animator; } }
         private bool m_isDefaultNPCPanel = false;
         public bool isDefaultNPCPanel { get { return m_isDefaultNPCPanel; } set { m_isDefaultNPCPanel = value; } }
         private bool m_isDefaultPCPanel = false;
@@ -114,8 +114,21 @@ namespace PixelCrushers.DialogueSystem
         public int panelNumber { get { return m_panelNumber; } set { m_panelNumber = value; } }
         public Transform m_actorOverridingPanel = null;
         public Transform actorOverridingPanel { get { return m_actorOverridingPanel; } set { m_actorOverridingPanel = value; } }
+        protected int frameLastSetContent = -1; // Frame when we last set this panel's content.
 
         private Coroutine m_focusWhenOpenCoroutine = null;
+
+        #endregion
+
+        #region Initialization
+
+        protected virtual void Awake()
+        {
+            if (addSpeakerName)
+            {
+                addSpeakerNameFormat = addSpeakerNameFormat.Replace("\\n", "\n").Replace("\\t", "\t");
+            }
+        }
 
         #endregion
 
@@ -181,9 +194,12 @@ namespace PixelCrushers.DialogueSystem
             OpenOnStartConversation(UITools.CreateSprite(portraitTexture), portraitName, dialogueActor);
         }
 
-        public virtual void OnConversationEnd(Transform actor)
+        public virtual void OnConversationStart(Transform actor)
         {
-            ClearText();
+            if (frameLastSetContent < (Time.frameCount - 1)) // If we just set content, don't clear the text.
+            {
+                ClearText();
+            }
         }
 
         /// <summary>
@@ -311,15 +327,15 @@ namespace PixelCrushers.DialogueSystem
             onUnfocus.Invoke();
         }
 
-        protected void ActivateUIElements()
+        public virtual void ActivateUIElements()
         {
             SetUIElementsActive(true);
         }
 
-        protected void DeactivateUIElements()
+        public virtual void DeactivateUIElements()
         {
             SetUIElementsActive(false);
-            ClearText();
+            if (clearTextOnClose) ClearText();
         }
 
         protected virtual void SetUIElementsActive(bool value)
@@ -340,6 +356,7 @@ namespace PixelCrushers.DialogueSystem
         public virtual void ShowContinueButton()
         {
             Tools.SetGameObjectActive(continueButton, true);
+            if (InputDeviceManager.autoFocus) Select(); 
             if (continueButton != null && continueButton.onClick.GetPersistentEventCount() == 0)
             {
                 continueButton.onClick.RemoveAllListeners();
@@ -423,6 +440,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 TypewriterUtility.StartTyping(subtitleText, subtitleText.text, previousChars);
             }
+            frameLastSetContent = Time.frameCount;
         }
 
         protected virtual IEnumerator StartTypingWhenFocused(UITextField subtitleText, string text, int fromIndex)

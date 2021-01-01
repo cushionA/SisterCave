@@ -113,10 +113,12 @@ public class ES3ReferenceMgrEditor : Editor
             EditorGUI.indentLevel--;
         }
 
-        if(GUILayout.Button("Refresh"))
+        EditorGUILayout.LabelField("Reference count", mgr.refId.Count.ToString());
+        EditorGUILayout.LabelField("Prefab count", mgr.prefabs.Count.ToString());
+
+        if (GUILayout.Button("Refresh"))
         {
             mgr.RefreshDependencies();
-            mgr.GeneratePrefabReferences();
         }
 
         if (GUILayout.Button("Optimize"))
@@ -125,8 +127,8 @@ public class ES3ReferenceMgrEditor : Editor
         }
     }
 
-    [MenuItem("GameObject/Easy Save 3/Add Reference to Manager", false, 1002)]
-    [MenuItem("Assets/Easy Save 3/Add Reference to Manager", false, 1002)]
+    [MenuItem("GameObject/Easy Save 3/Add Reference(s) to Manager", false, 33)]
+    [MenuItem("Assets/Easy Save 3/Add Reference(s) to Manager", false, 33)]
     public static void AddReferenceToManager()
     {
         var mgr = ES3ReferenceMgr.Current;
@@ -136,43 +138,49 @@ public class ES3ReferenceMgrEditor : Editor
             return;
         }
 
-        if (Selection.activeObject == null)
+        if (Selection.objects == null || Selection.objects.Length == 0)
             return;
 
-        if (Selection.activeGameObject != null)
-            if (ES3EditorUtility.IsPrefabInAssets(Selection.activeGameObject) && Selection.activeGameObject.GetComponent<ES3Internal.ES3Prefab>() != null)
-                mgr.AddPrefab(Selection.activeGameObject.GetComponent<ES3Internal.ES3Prefab>());
+        Undo.RecordObject(mgr, "Update Easy Save 3 Reference Manager");
 
+        foreach (var obj in Selection.objects)
+        {
+            if (obj == null)
+                continue;
 
-        ((ES3ReferenceMgr)mgr).AddDependencies(Selection.activeObject);
+            if (obj.GetType() == typeof(GameObject))
+            {
+                var go = (GameObject)obj;
+                if (ES3EditorUtility.IsPrefabInAssets(go) && go.GetComponent<ES3Internal.ES3Prefab>() != null)
+                    mgr.AddPrefab(go.GetComponent<ES3Internal.ES3Prefab>());
+            }
+
+            ((ES3ReferenceMgr)mgr).AddDependencies(obj);
+        }
     }
 
-    [MenuItem("GameObject/Easy Save 3/Add Reference to Manager", true, 1002)]
-    [MenuItem("Assets/Easy Save 3/Add Reference to Manager", true, 1002)]
+    [MenuItem("GameObject/Easy Save 3/Add Reference(s) to Manager", true, 33)]
+    [MenuItem("Assets/Easy Save 3/Add Reference(s) to Manager", true, 33)]
     private static bool CanAddReferenceToManager()
     {
-        return Selection.activeObject != null && ES3ReferenceMgr.Current != null;
+        return Selection.objects != null && Selection.objects.Length > 0 && ES3ReferenceMgr.Current != null;
     }
 
-    [MenuItem("GameObject/Easy Save 3/Add Manager to Scene", false, 1002)]
-    [MenuItem("Assets/Easy Save 3/Add Manager to Scene", false, 1002)]
+    [MenuItem("GameObject/Easy Save 3/Add Manager to Scene", false, 33)]
+    [MenuItem("Assets/Easy Save 3/Add Manager to Scene", false, 33)]
+    [MenuItem("Tools/Easy Save 3/Add Manager to Scene", false, 150)]
     public static void EnableForScene()
     {
-        var scene = SceneManager.GetActiveScene();
-        if(!scene.isLoaded)
+        if(!SceneManager.GetActiveScene().isLoaded)
             EditorUtility.DisplayDialog("Could not add manager to scene", "Could not add Easy Save 3 Manager to scene because there is not currently a scene open.", "Ok");
         Selection.activeObject = ES3Postprocessor.AddManagerToScene();
     }
 
-    [MenuItem("GameObject/Easy Save 3/Add Manager to Scene", true, 1002)]
-    [MenuItem("Assets/Easy Save 3/Add Manager to Scene", true, 1002)]
+    [MenuItem("GameObject/Easy Save 3/Add Manager to Scene", true, 33)]
+    [MenuItem("Assets/Easy Save 3/Add Manager to Scene", true, 33)]
+    [MenuItem("Tools/Easy Save 3/Add Manager to Scene", true, 150)]
     private static bool CanEnableForScene()
     {
-        var scene = SceneManager.GetActiveScene();
-        if(!scene.isLoaded)
-            return false;
-        if(UnityEngine.Object.FindObjectOfType<ES3ReferenceMgr>() != null)
-            return false;
-        return true;
+        return ES3ReferenceMgr.Current == null;
     }
 }

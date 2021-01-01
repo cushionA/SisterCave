@@ -35,11 +35,11 @@ public class ToolCellView : EnhancedScrollerCellView
         {
             if (contentIcon[i].GetComponentInParent<UseButtom>() == null)
             {
-                Debug.Log("お星さま");
+                //Debug.log("お星さま");
             }
             else
             {
-                Debug.Log("お月様");
+                //Debug.log("お月様");
             }
             ub[i] = contentIcon[i].GetComponentInParent<UseButtom>();
         }*/

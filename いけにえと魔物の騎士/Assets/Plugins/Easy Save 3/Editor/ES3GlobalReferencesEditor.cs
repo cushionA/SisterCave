@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if !ES3GLOBAL_DISABLED
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
@@ -87,3 +88,4 @@ namespace ES3Internal
         }
     }
 }
+#endif

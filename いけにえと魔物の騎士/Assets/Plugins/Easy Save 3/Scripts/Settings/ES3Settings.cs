@@ -65,6 +65,17 @@ public class ES3Settings : System.ICloneable
         }
     }
 
+    private static ES3Settings _unencryptedUncompressedSettings = null; 
+    internal static ES3Settings unencryptedUncompressedSettings
+    {
+        get
+        {
+            if (_unencryptedUncompressedSettings == null)
+                _unencryptedUncompressedSettings = new ES3Settings(ES3.EncryptionType.None, ES3.CompressionType.None);
+            return _unencryptedUncompressedSettings;
+        }
+    }
+
     #endregion
 
     #region Fields
@@ -122,7 +133,7 @@ public class ES3Settings : System.ICloneable
 
     /// <summary>How many levels of hierarchy Easy Save will serialise. This is used to protect against cyclic references.</summary>
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public int serializationDepthLimit = 32;
+    public int serializationDepthLimit = 64;
 
     /// <summary>The names of the Assemblies we should try to load our ES3Types from.</summary>
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -192,7 +203,17 @@ public class ES3Settings : System.ICloneable
     /// <summary>Creates a new ES3Settings object with the given path.</summary>
     /// <param name="path">The path associated with this ES3Settings object.</param>
     /// <param name="enums">Accepts an ES3.EncryptionType, ES3.CompressionType, ES3.Location, ES3.Directory or ES3.ReferenceMode.</param>
-    public ES3Settings(string path = null, params System.Enum[] enums) : this(true)
+    public ES3Settings(string path, params System.Enum[] enums) : this(enums)
+    {
+        if (path != null)
+            this.path = path;
+    }
+
+
+    /// <summary>Creates a new ES3Settings object with the given path.</summary>
+    /// <param name="path">The path associated with this ES3Settings object.</param>
+    /// <param name="enums">Accepts an ES3.EncryptionType, ES3.CompressionType, ES3.Location, ES3.Directory or ES3.ReferenceMode.</param>
+    public ES3Settings(params System.Enum[] enums) : this(true)
     {
         foreach (var setting in enums)
         {
@@ -209,9 +230,6 @@ public class ES3Settings : System.ICloneable
             else if (setting is ES3.Directory)
                 this.directory = (ES3.Directory)setting;
         }
-
-        if (path != null)
-            this.path = path;
     }
 
     /// <summary>Creates a new ES3Settings object with the given encryption settings.</summary>
@@ -265,13 +283,15 @@ public class ES3Settings : System.ICloneable
         return pathToEasySaveFolder;
     }
 
-    public static string PathToDefaultSettings()
+    internal static string PathToDefaultSettings()
     {
         return PathToEasySaveFolder() + "Resources/"+defaultSettingsPath+".asset";
     }
 
-    private static void CreateDefaultSettingsFolder()
+    internal static void CreateDefaultSettingsFolder()
     {
+        if (AssetDatabase.IsValidFolder(PathToEasySaveFolder() + "Resources/ES3"))
+            return;
         // Remove leading slash from PathToEasySaveFolder.
         AssetDatabase.CreateFolder(PathToEasySaveFolder().Remove(PathToEasySaveFolder().Length - 1, 1), "Resources");
         AssetDatabase.CreateFolder(PathToEasySaveFolder() + "Resources", "ES3");
@@ -349,6 +369,7 @@ public class ES3SerializableSettings : ES3Settings
 	public ES3SerializableSettings() : base(false){}
 	public ES3SerializableSettings(bool applyDefaults) : base(applyDefaults){}
     public ES3SerializableSettings(string path) : base(false) { this.path = path; }
+    public ES3SerializableSettings(string path, ES3.Location location) : base(false) { this.location = location; }
 
 #if UNITY_EDITOR
     public bool showAdvancedSettings = false;

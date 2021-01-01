@@ -61,7 +61,7 @@ public class RopeMove : MonoBehaviour
 			}
 
 		}
-		Debug.Log($"{angle}");
+		//Debug.log($"{angle}");
 	}
 	//　進んでいる向きを返す（実際にはint値）
 	public int GetDirection()

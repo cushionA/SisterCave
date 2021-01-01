@@ -111,11 +111,11 @@ public class Ladder : MonoBehaviour
         }
         if (isLimit)
         {
-            //Debug.Log("侵入");
+            ////Debug.log("侵入");
             delayTime +=　Time.fixedDeltaTime;
             if(delayTime >= delayRes)
             {
-               //Debug.Log("成功");
+               ////Debug.log("成功");
                 pm.enabled = true;
                 isLimit = false;
                 delayTime = 0.0f;

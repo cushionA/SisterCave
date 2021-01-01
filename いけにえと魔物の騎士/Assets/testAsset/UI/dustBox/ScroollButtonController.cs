@@ -1,15 +1,12 @@
-﻿
-using EnhancedUI.EnhancedScroller;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ButtonAutoScroll : MonoBehaviour
 {
-
     GameObject nowActiveButton;
+
     [System.Serializable]
     private struct ScrollViewNumber
     {
@@ -27,8 +24,8 @@ public class ButtonAutoScroll : MonoBehaviour
 
     void Start()
     {
-
-
+        nowActiveButton = hoge;
+        //最初にアクティブにしたいボタンを指定する
     }
 
     void Update()

@@ -43,10 +43,10 @@ public class UseButtom : MonoBehaviour
         {
             ToolManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
-            //Debug.Log($"青い稲妻{ToolManager.instance.selectButton == this.gameObject}");
+            ////Debug.log($"青い稲妻{ToolManager.instance.selectButton == this.gameObject}");
             if (ToolManager.instance.selectButton == this.gameObject && !isFirst)
             {
-                //Debug.Log("冥王星");
+                ////Debug.log("冥王星");
                 ToolManager.instance.selectItem = item;
                 //position = this.GetComponent<RectTransform>().anchoredPosition;
                 isFirst = true;
@@ -59,7 +59,7 @@ public class UseButtom : MonoBehaviour
             {
                 if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
-                    Debug.Log("サイパン");
+                    //Debug.log("サイパン");
                     MainUI.instance.useWindow.SetActive(false);
                     MainUI.instance.eqWindow.SetActive(true);
                     EquipmentManager.instance.EqItem[ToolManager.instance.setNumber].Select();

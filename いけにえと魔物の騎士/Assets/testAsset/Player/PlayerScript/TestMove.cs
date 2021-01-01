@@ -21,7 +21,7 @@ public class TestMove : MonoBehaviour
         if (Test)
         {
             rb.AddForce(jumpForce, ForceMode2D.Impulse);
-            Debug.Log("危険");
+            //Debug.log("危険");
         }
 
     }

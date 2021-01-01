@@ -14,6 +14,7 @@ namespace ES3Internal
 		public const string memberFieldPrefix = "m_";
 		public const string componentTagFieldName = "tag";
 		public const string componentNameFieldName = "name";
+        public static readonly string[] excludedPropertyNames = new string[]{"runInEditMode", "useGUILayout", "hideFlags"};
 
 		public static readonly Type serializableAttributeType = typeof(System.SerializableAttribute);
 		public static readonly Type serializeFieldAttributeType = typeof(SerializeField);
@@ -66,6 +67,9 @@ namespace ES3Internal
 
 		public static List<FieldInfo> GetSerializableFields(Type type, List<FieldInfo> serializableFields=null, bool safe=true, string[] memberNames=null, BindingFlags bindings = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly)
 		{
+            if (type == null)
+                return new List<FieldInfo>();
+
 			var fields = type.GetFields(bindings);
 			
             if(serializableFields == null)
@@ -120,7 +124,8 @@ namespace ES3Internal
 				serializableFields.Add(field);
 			}
 
-            if (BaseType(type) != typeof(System.Object))
+            var baseType = BaseType(type);
+            if (baseType != null && baseType != typeof(System.Object) && baseType != typeof(UnityEngine.Object))
                 GetSerializableFields(BaseType(type), serializableFields, safe, memberNames);
 
 			return serializableFields;
@@ -151,6 +156,9 @@ namespace ES3Internal
                     continue;
 
                 var propertyName = p.Name;
+
+                if (excludedPropertyNames.Contains(propertyName))
+                    continue;
 
 				// If a members array was provided as a parameter, only include the property if it's in the array.
 				if(memberNames != null)
@@ -201,8 +209,9 @@ namespace ES3Internal
 				serializableProperties.Add(p);
 			}
 
-            if (BaseType(type) != typeof(System.Object))
-                GetSerializableProperties(BaseType(type), serializableProperties, safe, memberNames);
+            var baseType = BaseType(type);
+            if (baseType != null && baseType != typeof(System.Object))
+                GetSerializableProperties(baseType, serializableProperties, safe, memberNames);
 
             return serializableProperties;
 		}
@@ -275,6 +284,9 @@ namespace ES3Internal
 
 		public static ES3ReflectedMember[] GetSerializableMembers(Type type, bool safe=true, string[] memberNames=null)
 		{
+            if (type == null)
+                return new ES3ReflectedMember[0];
+
 			var fieldInfos = GetSerializableFields(type, new List<FieldInfo>(), safe, memberNames);
 			var propertyInfos = GetSerializableProperties(type, new List<PropertyInfo>(), safe, memberNames);
 			var reflectedFields = new ES3ReflectedMember[fieldInfos.Count + propertyInfos.Count];
@@ -543,6 +555,125 @@ namespace ES3Internal
         public static Type BaseType(Type type)
         {
             return type.BaseType;
+        }
+
+        public static Type GetType(string typeString)
+        {
+            switch(typeString)
+            {
+                case "bool":
+                    return typeof(bool);
+                case "byte":
+                    return typeof(byte);
+                case "sbyte":
+                    return typeof(sbyte);
+                case "char":
+                    return typeof(char);
+                case "decimal":
+                    return typeof(decimal);
+                case "double":
+                    return typeof(double);
+                case "float":
+                    return typeof(float);
+                case "int":
+                    return typeof(int);
+                case "uint":
+                    return typeof(uint);
+                case "long":
+                    return typeof(long);
+                case "ulong":
+                    return typeof(ulong);
+                case "short":
+                    return typeof(short);
+                case "ushort":
+                    return typeof(ushort);
+                case "string":
+                    return typeof(string);
+                case "Vector2":
+                    return typeof(Vector2);
+                case "Vector3":
+                    return typeof(Vector3);
+                case "Vector4":
+                    return typeof(Vector4);
+                case "Color":
+                    return typeof(Color);
+                case "Transform":
+                    return typeof(Transform);
+                case "Component":
+                    return typeof(UnityEngine.Component);
+                case "GameObject":
+                    return typeof(GameObject);
+                case "MeshFilter":
+                    return typeof(MeshFilter);
+                case "Material":
+                    return typeof(Material);
+                case "Texture2D":
+                    return typeof(Texture2D);
+                case "UnityEngine.Object":
+                    return typeof(UnityEngine.Object);
+                case "System.Object":
+                    return typeof(object);
+                default:
+                    return Type.GetType(typeString);
+            }
+        }
+
+        public static string GetTypeString(Type type)
+        {
+            if (type == typeof(bool))
+                return "bool";
+            else if (type == typeof(byte))
+                return "byte";
+            else if (type == typeof(sbyte))
+                return "sbyte";
+            else if (type == typeof(char))
+                return "char";
+            else if (type == typeof(decimal))
+                return "decimal";
+            else if (type == typeof(double))
+                return "double";
+            else if (type == typeof(float))
+                return "float";
+            else if (type == typeof(int))
+                return "int";
+            else if (type == typeof(uint))
+                return "uint";
+            else if (type == typeof(long))
+                return "long";
+            else if (type == typeof(ulong))
+                return "ulong";
+            else if (type == typeof(short))
+                return "short";
+            else if (type == typeof(ushort))
+                return "ushort";
+            else if (type == typeof(string))
+                return "string";
+            else if (type == typeof(Vector2))
+                return "Vector2";
+            else if (type == typeof(Vector3))
+                return "Vector3";
+            else if (type == typeof(Vector4))
+                return "Vector4";
+            else if (type == typeof(Color))
+                return "Color";
+            else if (type == typeof(Transform))
+                return "Transform";
+            else if (type == typeof(UnityEngine.Component))
+                return "Component";
+            else if (type == typeof(GameObject))
+                return "GameObject";
+            else if (type == typeof(MeshFilter))
+                return "MeshFilter";
+            else if (type == typeof(Material))
+                return "Material";
+            else if (type == typeof(Texture2D))
+                return "Texture2D";
+            else if (type == typeof(UnityEngine.Object))
+                return "UnityEngine.Object";
+            else if (type == typeof(object))
+                return "System.Object";
+            else
+                return GetShortAssemblyQualifiedName(type);
         }
 #endif
 
