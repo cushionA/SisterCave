@@ -31,8 +31,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - PlayerSerch
+  - Sloop
   - Ground
   - Squat
   - Avoid
@@ -58,9 +58,36 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BackGround
+    uniqueID: 900986293
+    locked: 0
+  - name: BackObject
+    uniqueID: 3708713883
+    locked: 0
+  - name: Ground
+    uniqueID: 3922050221
+    locked: 0
+  - name: CenterObject
+    uniqueID: 3204395143
+    locked: 0
+  - name: Player
+    uniqueID: 4202413775
+    locked: 0
+  - name: Sister
+    uniqueID: 1089981123
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: FrotObject
+    uniqueID: 3034338443
+    locked: 0
   - name: UI
     uniqueID: 3044753143
+    locked: 0
+  - name: MySprites
+    uniqueID: 290872189
+    locked: 0
+  - name: MyLighting
+    uniqueID: 1018758195
     locked: 0

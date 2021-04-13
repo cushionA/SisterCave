@@ -34,12 +34,12 @@ public class AttackM : MonoBehaviour
     bool isDisEnable;//空中弱攻撃を二回までに制限
     bool fallAttack;//空中強攻撃の落下終了までisAttackをキープするためのフラグ
 
-    SimpleAnimation sAni;
+
     float delayTime;
     int attackNumber;
     int alterNumber;
     int artsNumber;
-    Animation anim;
+    Animator anim;
     bool isAttackable;
     bool smallTrigger;
     bool bigTrigger;
@@ -63,7 +63,7 @@ public class AttackM : MonoBehaviour
     {
 
         pm = Player.GetComponent<PlayerMove>();
-        sAni = GetComponent<SimpleAnimation>();
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         GManager.instance.SetAtk();
     }
@@ -267,16 +267,20 @@ public class AttackM : MonoBehaviour
     ///<Summally>
     ///アニメイベントで呼ぶやつ？
     ///</Summally>
-    void Continue()
+    public void Continue()
     {
+        Debug.Log("やぁ");
         isAttackable = true;
         GManager.instance.isArmor = false;
     }
 
-
+    //アニメの終了探知
     bool CheckEnd(string _currentStateName)
     {
-        return sAni.IsPlaying(_currentStateName);
+
+        return anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1;
+
+          //  (_currentStateName);
 
     }
 
@@ -301,12 +305,12 @@ public class AttackM : MonoBehaviour
             GManager.instance.isAttack = true;
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
-                sAni.Play(GManager.instance.pStatus.equipWeapon.smallName[attackNumber]);
+                anim.Play(GManager.instance.pStatus.equipWeapon.smallName[attackNumber]);
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.normalStamina);
             }
             else
             {
-                sAni.Play(GManager.instance.pStatus.equipWeapon.twinSmallName[attackNumber]);
+                anim.Play(GManager.instance.pStatus.equipWeapon.twinSmallName[attackNumber]);
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.normalStaminaT);
             }
             isAttackable = false;
@@ -320,14 +324,14 @@ public class AttackM : MonoBehaviour
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
                 smallTrigger = false;
-                sAni.Play(GManager.instance.pStatus.equipWeapon.smallName[attackNumber]);
+                anim.Play(GManager.instance.pStatus.equipWeapon.smallName[attackNumber]);
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.normalStamina);
                 isAttackable = false;
                 attackNumber++;
             }
             else
             {
-                sAni.Play(GManager.instance.pStatus.equipWeapon.twinSmallName[attackNumber]);
+                anim.Play(GManager.instance.pStatus.equipWeapon.twinSmallName[attackNumber]);
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.normalStaminaT);
                 isAttackable = false;
                 attackNumber++;
@@ -345,12 +349,12 @@ public class AttackM : MonoBehaviour
                 chargeAttackPrepare();
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.maxName[alterNumber]);//チャージ攻撃のアニメ
+                    anim.Play(GManager.instance.pStatus.equipWeapon.maxName[alterNumber]);//チャージ攻撃のアニメ
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.chargeStamina);
                 }
                 else
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.twinMaxName[alterNumber]);//チャージ攻撃のアニメ
+                    anim.Play(GManager.instance.pStatus.equipWeapon.twinMaxName[alterNumber]);//チャージ攻撃のアニメ
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.chargeStaminaT);
                 }
                 alterNumber++;
@@ -364,12 +368,12 @@ public class AttackM : MonoBehaviour
                 bAttackPrepare();
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.bigName[alterNumber]);
+                    anim.Play(GManager.instance.pStatus.equipWeapon.bigName[alterNumber]);
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.bigStamina);
                 }
                 else
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.twinBigName[alterNumber]);
+                    anim.Play(GManager.instance.pStatus.equipWeapon.twinBigName[alterNumber]);
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.bigStaminaT);
                 }
                 alterNumber++;
@@ -382,13 +386,13 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.chargeName[alterNumber]);//チャージアニメ    
+                    anim.Play(GManager.instance.pStatus.equipWeapon.chargeName[alterNumber]);//チャージアニメ    
                     rb.velocity = Vector2.zero;
                 }
                 else
                 {
                     rb.velocity = Vector2.zero;
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.twinChargeName[alterNumber]);//チャージアニメ 
+                    anim.Play(GManager.instance.pStatus.equipWeapon.twinChargeName[alterNumber]);//チャージアニメ 
                 }
             }
         }
@@ -399,12 +403,12 @@ public class AttackM : MonoBehaviour
                 chargeAttackPrepare();
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.bigName[alterNumber]);//チャージ攻撃のアニメ
+                    anim.Play(GManager.instance.pStatus.equipWeapon.bigName[alterNumber]);//チャージ攻撃のアニメ
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.chargeStamina);
                 }
                 else
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.twinBigName[alterNumber]);//チャージ攻撃のアニメ
+                    anim.Play(GManager.instance.pStatus.equipWeapon.twinBigName[alterNumber]);//チャージ攻撃のアニメ
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.chargeStaminaT);
                 }
                 alterNumber++;
@@ -418,12 +422,12 @@ public class AttackM : MonoBehaviour
                 bAttackPrepare();
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.bigName[alterNumber]);
+                    anim.Play(GManager.instance.pStatus.equipWeapon.bigName[alterNumber]);
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.bigStamina);
                 }
                 else
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.twinBigName[alterNumber]);
+                    anim.Play(GManager.instance.pStatus.equipWeapon.twinBigName[alterNumber]);
                     GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.bigStaminaT);
                 }
                 alterNumber++;
@@ -435,11 +439,11 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.chargeName[alterNumber]);//チャージアニメ     
+                    anim.Play(GManager.instance.pStatus.equipWeapon.chargeName[alterNumber]);//チャージアニメ     
                 }
                 else
                 {
-                    sAni.Play(GManager.instance.pStatus.equipWeapon.twinChargeName[alterNumber]);//チャージアニメ 
+                    anim.Play(GManager.instance.pStatus.equipWeapon.twinChargeName[alterNumber]);//チャージアニメ 
                 }
             }
         }
@@ -456,12 +460,12 @@ public class AttackM : MonoBehaviour
             rb.velocity = Vector2.zero;
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
-                sAni.Play(GManager.instance.pStatus.equipWeapon.airName[0]);//空中弱攻撃
+                anim.Play(GManager.instance.pStatus.equipWeapon.airName[0]);//空中弱攻撃
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.airStamina);
             }
             else
             {
-                sAni.Play(GManager.instance.pStatus.equipWeapon.twinAirName[0]);//空中弱攻撃
+                anim.Play(GManager.instance.pStatus.equipWeapon.twinAirName[0]);//空中弱攻撃
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.airStaminaT);
             }
             GManager.instance.isAttack = true;
@@ -481,7 +485,7 @@ public class AttackM : MonoBehaviour
                 {
                     isDisEnable = true;
                 }
-                sAni.Play(GManager.instance.pStatus.equipWeapon.airName[attackNumber]);
+                anim.Play(GManager.instance.pStatus.equipWeapon.airName[attackNumber]);
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.airStamina);
             }
             else
@@ -490,7 +494,7 @@ public class AttackM : MonoBehaviour
                 {
                     isDisEnable = true;
                 }
-                sAni.Play(GManager.instance.pStatus.equipWeapon.twinAirName[attackNumber]);
+                anim.Play(GManager.instance.pStatus.equipWeapon.twinAirName[attackNumber]);
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.airStaminaT);
             }
             isAttackable = false;
@@ -506,12 +510,12 @@ public class AttackM : MonoBehaviour
             bigTrigger = false;
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
-                sAni.Play(GManager.instance.pStatus.equipWeapon.airName[GManager.instance.pStatus.equipWeapon.airName.Count - 1]);//空中強攻撃
+                anim.Play(GManager.instance.pStatus.equipWeapon.airName[GManager.instance.pStatus.equipWeapon.airName.Count - 1]);//空中強攻撃
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.bigStamina);
             }
             else
             {
-                sAni.Play(GManager.instance.pStatus.equipWeapon.airName[GManager.instance.pStatus.equipWeapon.twinAirName.Count - 1]);//空中強攻撃
+                anim.Play(GManager.instance.pStatus.equipWeapon.airName[GManager.instance.pStatus.equipWeapon.twinAirName.Count - 1]);//空中強攻撃
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.bigStaminaT);
             }
             isAttackable = false;
@@ -531,13 +535,13 @@ public class AttackM : MonoBehaviour
             GManager.instance.isAttack = true;
             if (!GManager.instance.pStatus.equipWeapon.twinHand && !GManager.instance.pStatus.equipShield.weponArts)
             {
-                sAni.Play(GManager.instance.pStatus.equipShield.artsName);
+                anim.Play(GManager.instance.pStatus.equipShield.artsName);
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipShield.artsStamina);//シールドのパリィにする
                 GManager.instance.isParry = true;
             }
             else
             {
-                sAni.Play(GManager.instance.pStatus.equipWeapon.artsName[artsNumber]);
+                anim.Play(GManager.instance.pStatus.equipWeapon.artsName[artsNumber]);
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.artsStamina);
             }
             isAttackable = false;
@@ -550,12 +554,12 @@ public class AttackM : MonoBehaviour
             GManager.instance.isAttack = true;
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
-                sAni.Play(GManager.instance.pStatus.equipWeapon.artsName[artsNumber]);
+                anim.Play(GManager.instance.pStatus.equipWeapon.artsName[artsNumber]);
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.artsStamina);//シールドのパリィにする
             }
             else
             {
-                sAni.Play(GManager.instance.pStatus.equipWeapon.artsName[artsNumber]);
+                anim.Play(GManager.instance.pStatus.equipWeapon.artsName[artsNumber]);
                 GManager.instance.StaminaUse(GManager.instance.pStatus.equipWeapon.artsStamina);
             }
             isAttackable = false;

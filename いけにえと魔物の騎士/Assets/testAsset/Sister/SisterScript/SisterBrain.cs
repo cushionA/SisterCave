@@ -155,7 +155,7 @@ public class SisterBrain : MonoBehaviour
 		 myPosition = this.transform.position;
 		distance = basePosition - myPosition;
 		direction = distance.x >= 0 ? 1 : -1;//距離が正、または0の時1。そうでないとき-1。方向
-		directionY = distance.y >= 0 ? 1 : -1;//弓構えるときのアニメの判定	にも使えそう
+		directionY = distance.y >= 0 ? 1 : -1;//ほかのAIで弓構えるときのアニメの判定	にも使えそう
 
 		//Debug.log($"現在の状態{nowState}");
 		////Debug.log($"回避中{isAvoid}");
@@ -234,12 +234,10 @@ public class SisterBrain : MonoBehaviour
 		//SetVelocity();
         if (isVertical)
         {
-			////Debug.log("プーチン");
 			GroundJump(0, status.jumpPower * 1.4f); //status.addSpeed * transform.localScale.x/3);
 		}
         else
         {
-		//	//Debug.log("オバマ");
 			GroundJump(status.jumpSpeed * transform.localScale.x, status.jumpPower * 1.2f); //status.addSpeed * transform.localScale.x/3);
 		}
 	}
@@ -797,7 +795,7 @@ public class SisterBrain : MonoBehaviour
 
 
 	/// <summary>
-	/// ランダムに移動
+	/// ランダムに移動するメソッド
 	/// </summary>
 	public void Feint()
 	{

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// 環境物を確認
+/// </summary>
 public class FieldSerch : MonoBehaviour
 {
 
@@ -38,7 +42,7 @@ public class FieldSerch : MonoBehaviour
             }
         }
         if (collision.tag == dangerTag)
-        {
+        {//危険物を発見した時
 
             if (CheckFoundObject(collision.gameObject))
             {
@@ -111,7 +115,7 @@ public class FieldSerch : MonoBehaviour
         if (onHitRay.transform.gameObject != i_target)
         {//onHitRayは当たった場所
          //当たった場所がPlayerの位置でなければ
-         ////Debug.log("あいに");
+
             return false;
         }
 

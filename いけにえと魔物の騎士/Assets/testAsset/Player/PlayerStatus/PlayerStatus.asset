@@ -20,15 +20,15 @@ MonoBehaviour:
   maxMp: 31
   mp: 30
   maxStamina: 63.82135
-  stamina: 60.82135
-  Vitality: 1
-  Endurance: 1
-  capacity: 1
+  stamina: 66.82135
+  Vitality: 77
+  Endurance: 66
+  capacity: 800
   power: 10
   skill: 1
   _int: 1
-  Atk: 20828.848
-  phyAtk: 105.953514
+  Atk: 39580.79
+  phyAtk: 132.05594
   holyAtk: 0
   darkAtk: 0
   fireAtk: 0
@@ -57,8 +57,8 @@ MonoBehaviour:
   magicNumber: 1
   initialWeight: 0
   earnedSoul: 0
-  equipWeapon: {fileID: 11400000, guid: be82ca9c3742c95418a3e3cf7a833800, type: 2}
-  equipShield: {fileID: 11400000, guid: cee8a302b81d46545b1afcbe71c8cb65, type: 2}
+  equipWeapon: {fileID: 11400000, guid: af72b4c4636be7b47a2e1957726ddcee, type: 2}
+  equipShield: {fileID: 11400000, guid: 9bf3a5a6d0464f546ad02ee6d2e364f3, type: 2}
   equipCore: {fileID: 0}
   HpCurve:
     serializedVersion: 2
@@ -165,13 +165,13 @@ MonoBehaviour:
   equipMagic: []
   useMagic: {fileID: 11400000, guid: 19df789bf45c7294eb7ac6536ee377c4, type: 2}
   guardSpeed: 0
-  lightSpeed: 12
-  middleSpeed: 10
-  heavySpeed: 8
-  overSpeed: 4
-  lightDash: 16
-  middleDash: 14
-  heavyDash: 12
+  lightSpeed: 70
+  middleSpeed: 50
+  heavySpeed: 40
+  overSpeed: 8
+  lightDash: 90
+  middleDash: 70
+  heavyDash: 60
   overDash: 6
   lightAvoid: 0.7
   middleAvoid: 0.5

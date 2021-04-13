@@ -114,8 +114,8 @@ public class SisterFire : MonoBehaviour
 
 			else if (sister.nowMove == SisterParameter.MoveType.支援)
 			{
-                //かかってない支援があるかどうかとかを調べなきゃあダメ。ifなのかな。
-                //もし一個目の条件が真なら発動、みたいな形式にしなきゃね
+                //かかってない支援があるかどうかとかを調べなきゃダメ。ifなのかな。
+                //もし一個目の条件が真なら発動、みたいな形式にすべき
                 //じゃあスイッチ文のそれぞれのcaseのとこではHPの残量とかを調べるのか
                 if (SupportJudge(sister.firstPlan))
                 {
@@ -217,7 +217,7 @@ public class SisterFire : MonoBehaviour
 		switch (condition)
 		{
 			case SisterParameter.TargetJudge.強敵:
-
+				//強敵を優先
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.非強敵:
@@ -273,7 +273,7 @@ public class SisterFire : MonoBehaviour
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.プレイヤーの体力がマックス:
-
+				//以下の場合攻撃すると標的は敵リストの先頭に。大技を撃ったり回復等の他のモードに移行したり
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.プレイヤーの体力が半分以下:

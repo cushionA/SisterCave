@@ -21,7 +21,7 @@ public class EnemyBase : MonoBehaviour
 
 	[Header("全方位の気配探知")]
 	///<summary>
-	///しゃがんで抜けられるほう
+	///しゃがんでたら抜けられる全方位感知網
 	///</summary>
 	public GameObject Serch2;
 
@@ -78,7 +78,7 @@ public class EnemyBase : MonoBehaviour
 	protected int directionY;
 	protected float moveDirectionX;
 	protected float moveDirectionY;
-	protected float jumpTime;//ジャンプのクールタイム。処理自体はインパルスで
+	protected float jumpTime;//ジャンプのクールタイム。
 	protected bool disenableJump;//ジャンプ不可能状態
 	protected AudioSource[] seAnimationList;
 	protected Vector3 startPosition;//開始位置と待機時テリトリーの起点

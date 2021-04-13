@@ -4,7 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/FunkyCode/Demos - SmartLighting2D/Main Demo/Main Demo.unity
+    guid: e4ca23f32d4d56345afbe514cde1960f
+  - enabled: 1
+    path: Assets/testAsset/Scenes/SampleScene.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: cece4fe479b47204391bf487ff4d6666,
       type: 2}

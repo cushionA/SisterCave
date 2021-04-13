@@ -37,7 +37,7 @@ public class PlayerStatus : CharacterStatus
     public AnimationCurve weightCurve;
     public AnimationCurve MpCurve;
 
-    public float equipWeight;//装備重量
+    public float equipWeight = 1;//装備重量
     public float capacityWeight;
 
     //　装備している鎧

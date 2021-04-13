@@ -66,8 +66,8 @@ public class GManager : MonoBehaviour
     float disEnaTime;
     //スタミナ回復不能時間
     float parryTime;
-    AttackM at;
-    PlayerMove pm;
+    [SerializeField]AttackM at;
+    public PlayerMove pm;
     bool stBreake;
     //スタミナ回復不能状態終わりフラグ
     public bool isArmor;//強靭ついてるかどうか
@@ -93,8 +93,10 @@ public class GManager : MonoBehaviour
 
     void Start()
     {
-        at = Player.GetComponent<AttackM>();
-        pm = Player.GetComponent<PlayerMove>();
+        ActionSet();
+        //        Debug.Log("酢");
+ //       at = Player.GetComponent<AttackM>();
+   //     pm = Player.GetComponent<PlayerMove>();
         //スライダーを満タンに
         stSlider.value = 1;
         HpSlider.value = 1;
@@ -202,7 +204,7 @@ public class GManager : MonoBehaviour
     public void SetAtk()
     {
 
-
+       // Debug.Log("酢");
         int n = pStatus.equipWeapon.wLevel;
 
         if (pStatus.equipWeapon.phyBase[n] >= 1)
@@ -314,27 +316,33 @@ public class GManager : MonoBehaviour
 
     public void ActionSet()
     {
+     //   Debug.Log("酢飯");
+
         float weightState = pStatus.equipWeight / pStatus.capacityWeight;
         if (weightState <= 0.3 && weightState >= 0)
         {
+      //      Debug.Log("おすし");
             pm.speed = pStatus.lightSpeed;
             pm.dashSpeed = pStatus.lightDash;
             pm.avoidRes = pStatus.lightAvoid;
         }
         else if (weightState > 0.3 && weightState <= 0.7)
         {
+       //     Debug.Log("やきすし");
             pm.speed = pStatus.middleSpeed;
             pm.dashSpeed = pStatus.middleDash;
             pm.avoidRes = pStatus.middleAvoid;
         }
         else if (weightState > 0.7 && weightState <= 1)
         {
+         //   Debug.Log("まきすし");
             pm.speed = pStatus.heavySpeed;
             pm.dashSpeed = pStatus.heavyDash;
             pm.avoidRes = pStatus.heavyAvoid;
         }
         else if(weightState > 1)
         {
+       //     Debug.Log("腐敗すし");
             pm.speed = pStatus.overSpeed;
             pm.dashSpeed = pStatus.overDash;
             pm.avoidRes = pStatus.overAvoid;

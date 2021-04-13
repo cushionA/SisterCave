@@ -67,15 +67,14 @@ public class PlayerMove : MonoBehaviour
     float horizontalkey;
     float verticalkey;
     float avoidKey;
-    float xSpeed;
-    float ySpeed;
+    [HideInInspector]public float xSpeed;
+    [HideInInspector]public float ySpeed;
     float avoidTime;
     float rushSt;
+    [HideInInspector] public bool isSloopDown;
 
 
 
-
-    SimpleAnimation sAni;
     PlayMakerFSM pm;
     AttackM at;
     MoveObject moveObj;
@@ -84,7 +83,9 @@ public class PlayerMove : MonoBehaviour
     ///マスクしてやれば地面しか検出しない。
     ///</summary>
     [SerializeField] ContactFilter2D filter;
-
+    [SerializeField] LayerMask rayFilter;
+    [SerializeField] float rayDis;
+    public float sloopForce;
 
     private void Awake()
     {
@@ -94,10 +95,8 @@ public class PlayerMove : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        sAni = GetComponent<SimpleAnimation>();
         pm = GetComponent<PlayMakerFSM>();
         at = this.gameObject.GetComponent<AttackM>();
-
 
     }
 
@@ -105,7 +104,7 @@ public class PlayerMove : MonoBehaviour
 
     public void Update()
     {
-
+        
 
         #region//入力系
         if (Time.timeScale != 0.0f)
@@ -178,7 +177,8 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
-
+        //  Debug.Log($"Yは{ySpeed}です");
+        Debug.Log($"状態は{isSloopDown}です");
 
         #region//フラグ管理
 
@@ -211,7 +211,39 @@ public class PlayerMove : MonoBehaviour
                 */
         #endregion
 
+        //isGround = rb.IsTouching(filter);
+        ///<summary>
+        ///坂道下るとき浮かないようにする処理
+        /// </summary>
+        #region
         isGround = rb.IsTouching(filter);
+        //Debug.DrawRay(transform.position, Vector3.down, Color.blue, rayDis, false);
+        /*      if ( )
+              {
+                  isGround = true;
+                //  ySpeed = 0.0f;
+              }
+
+              else{
+
+               RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down,rayDis,rayFilter);
+                  if(hit && isGround && isSloopDown)
+                  {
+
+                     Debug.Log("カレー");
+                      ySpeed = -sloopForce;
+                      // isGround = true;
+                      // rb.AddForce(new Vector2(0,-80),ForceMode2D.Force);
+
+                  }
+                  else
+                  {
+                    //  Debug.Log("ハヤシライス");
+                      isGround = false;
+                  //}
+              }
+        */
+        #endregion
         if (GManager.instance.isGuard && GManager.instance.pStatus.stamina <= 0)
         {
             GManager.instance.isGBreak = true;
@@ -224,9 +256,10 @@ public class PlayerMove : MonoBehaviour
             isEnAt = true;
             //攻撃できる
 
+            //Debug.Log($"{rb.velocity.y}だう");
             if (isGround && !isJump)
             {
-                ySpeed = 0.0f;
+              //  ySpeed = 0.0f;
 
 
                 fallTime = 0.0f;
@@ -238,7 +271,16 @@ public class PlayerMove : MonoBehaviour
                     isRight = true;
                     if (isDash && GManager.instance.isEnable)
                     {
-                        sAni.Play("Dash");
+                        if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                        {
+        
+                            anim.Play("ODash");
+                        }
+                        else
+                        {
+                            anim.Play("TDash");
+                        }
+
                         xSpeed = dashSpeed;
                         rushTime += Time.fixedDeltaTime;
                         rushSt += Time.fixedDeltaTime;
@@ -253,13 +295,29 @@ public class PlayerMove : MonoBehaviour
                     }
                     else if (isSquat)
                     {
-                        sAni.Play("SquatM");
+                        if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                        {
+
+                            anim.Play("OSquatMove");
+                        }
+                        else
+                        {
+                            anim.Play("TSquatMove");
+                        }
                         xSpeed = squatSpeed;
 
                     }
                     else
                     {
-                        sAni.Play("Move");
+                        if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                        {
+
+                            anim.Play("OMove");
+                        }
+                        else
+                        {
+                            anim.Play("TMove");
+                        }
                         xSpeed = speed;
                         dashTime += Time.fixedDeltaTime;
                     }
@@ -273,7 +331,15 @@ public class PlayerMove : MonoBehaviour
 
                     if (isDash && GManager.instance.isEnable)
                     {
-                        sAni.Play("Dash");
+                        if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                        {
+
+                            anim.Play("ODash");
+                        }
+                        else
+                        {
+                            anim.Play("TDash");
+                        }
                         xSpeed = -dashSpeed;
                         rushTime += Time.fixedDeltaTime;
                         rushSt += Time.fixedDeltaTime;
@@ -288,21 +354,48 @@ public class PlayerMove : MonoBehaviour
                     }
                     else if (isSquat)
                     {
-                        sAni.Play("SquatM");
+                        if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                        {
+
+                            anim.Play("OSquatMove");
+                        }
+                        else
+                        {
+                            anim.Play("TSquatMove");
+                        }
                         xSpeed = -squatSpeed;
 
                     }
                     else
                     {
-                        sAni.Play("Move");
+                        if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                        {
+
+                            anim.Play("OMove");
+                        }
+                        else
+                        {
+                            anim.Play("TMove");
+                        }
                         xSpeed = -speed;
                         dashTime += Time.fixedDeltaTime;
                     }
                 }
 
-                else
+                else if(!isSquat)
                 {
-                    sAni.Play("Default");
+                   
+                    if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                    {
+
+                        anim.Play("OStand");
+                       // Debug.Log("台無し");
+                    }
+                    else
+                    {
+                        anim.Play("TStand");
+                    }
+                    ySpeed = 0.0f;
                     xSpeed = 0.0f;
                     dashTime = 0.0f;
                     rushTime = 0.0f;
@@ -322,7 +415,19 @@ public class PlayerMove : MonoBehaviour
                 {
                     if (horizontalkey == 0)
                     {
-                        sAni.Play("Squat");
+                        if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                        {
+
+                            anim.Play("OSquat");
+                        }
+                        else
+                        {
+                            anim.Play("TSquat");
+                        }
+                        ySpeed = 0.0f;
+                        xSpeed = 0.0f;
+                        dashTime = 0.0f;
+                        rushTime = 0.0f;
                     }
                     isSquat = true;
                     SetLayer(9);
@@ -356,10 +461,19 @@ public class PlayerMove : MonoBehaviour
                 SetLayer(11);
                 if (jumpTime <= jumpRes && verticalkey > 0)
                 {
+                  //  Debug.Log("ちくわぶ");
                     ySpeed = jumpSpeed;
                     xSpeed *= jumpMCurve.Evaluate(jumpTime);
                     ySpeed *= jumpCurve.Evaluate(jumpTime);
-                    sAni.Play("Jump");
+                    if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                    {
+
+                        anim.Play("OJump");
+                    }
+                    else
+                    {
+                        anim.Play("TJump");
+                    }
 
 
                 }
@@ -375,7 +489,19 @@ public class PlayerMove : MonoBehaviour
             {
 
                 fallTime += Time.fixedDeltaTime;
-                sAni.Play("Fall");
+                if (fallTime >= 0.2)
+                {
+                    if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                    {
+
+                        anim.Play("OFall");
+                    }
+                    else
+                    {
+                        anim.Play("TFall");
+                    }
+                }
+            //    Debug.Log("ちくわさらだ");
                 ySpeed = -gravity;
                 ySpeed *= fallCurve.Evaluate(fallTime);
                 xSpeed *= fallMCurve.Evaluate(fallTime);
@@ -432,6 +558,8 @@ public class PlayerMove : MonoBehaviour
                 {
                     addVelocity = moveObj.GetVelocity();
                 }
+            
+            //Debug.Log($"Xは{xSpeed}だよ");
 
                 rb.velocity = new Vector2(xSpeed, ySpeed) + addVelocity;
 
@@ -477,7 +605,15 @@ public class PlayerMove : MonoBehaviour
                 //プレイヤーが右側、かつクールタイム消化。
                 if (avoidTime <= avoidRes)
                 {
-                    sAni.Play("Roll");
+                    if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                    {
+
+                        anim.Play("OAvoid");
+                    }
+                    else
+                    {
+                        anim.Play("TAvoid");
+                    }
 
                     SetLayer(10);
                     rb.velocity = new Vector2(avoidSpeed, -gravity);
@@ -503,7 +639,15 @@ public class PlayerMove : MonoBehaviour
 
                 if (avoidTime <= avoidRes)
                 {
-                    sAni.Play("Roll");
+                    if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                    {
+
+                        anim.Play("OAvoid");
+                    }
+                    else
+                    {
+                        anim.Play("TAvoid");
+                    }
                     SetLayer(10);
                     //突進の制限時間三秒である以内は方向転換を禁じて進み続ける。
                     rb.velocity = new Vector2(-avoidSpeed, -gravity);
