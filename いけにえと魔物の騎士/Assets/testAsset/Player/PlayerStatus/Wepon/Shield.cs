@@ -49,13 +49,13 @@ public class Shield : Equip
     /// <summary>
     /// 特殊攻撃のXモーション値、Y追加アーマー、Z強靭削り
     /// </summary>
-    public AttackValue artsValue;
+    public List<AttackValue> artsValue;
 
     [Header("武器固有モーションの名前リスト")]
     /// <summary>
     /// 武器固有モーションリスト
     /// </summary>
-    public string artsName;
+    public List<string> artsName;
 
     public float guardSpeed;//ガード中の移動速度
 }

@@ -178,7 +178,6 @@ public class PlayerMove : MonoBehaviour
     void FixedUpdate()
     {
         //  Debug.Log($"Yは{ySpeed}です");
-        Debug.Log($"状態は{isSloopDown}です");
 
         #region//フラグ管理
 
@@ -216,33 +215,34 @@ public class PlayerMove : MonoBehaviour
         ///坂道下るとき浮かないようにする処理
         /// </summary>
         #region
-        isGround = rb.IsTouching(filter);
+        //isGround = rb.IsTouching(filter);
         //Debug.DrawRay(transform.position, Vector3.down, Color.blue, rayDis, false);
-        /*      if ( )
-              {
-                  isGround = true;
-                //  ySpeed = 0.0f;
-              }
+        if (rb.IsTouching(filter))
+        {
+            isGround = true;
 
-              else{
+        }
 
-               RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down,rayDis,rayFilter);
-                  if(hit && isGround && isSloopDown)
-                  {
+        else
+        {
 
-                     Debug.Log("カレー");
-                      ySpeed = -sloopForce;
-                      // isGround = true;
-                      // rb.AddForce(new Vector2(0,-80),ForceMode2D.Force);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDis, rayFilter);
+            if (hit && isGround)
+            {
 
-                  }
-                  else
-                  {
-                    //  Debug.Log("ハヤシライス");
-                      isGround = false;
-                  //}
-              }
-        */
+                
+                 isGround = true;
+                // rb.AddForce(new Vector2(0,-80),ForceMode2D.Force);
+
+            }
+            else
+            {
+                //  Debug.Log("ハヤシライス");
+                isGround = false;
+                //}
+            }
+        }
+        
         #endregion
         if (GManager.instance.isGuard && GManager.instance.pStatus.stamina <= 0)
         {
@@ -589,6 +589,9 @@ public class PlayerMove : MonoBehaviour
                 rb.AddForce(move, ForceMode2D.Force);
             }
         }
+
+
+ 
 
         #region//回避
         if (isAvoid)

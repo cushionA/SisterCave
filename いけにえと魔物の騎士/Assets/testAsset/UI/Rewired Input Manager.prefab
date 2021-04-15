@@ -370,9 +370,9 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 14
-      _name: WeponChange
+      _name: WeponHandChange
       _type: 1
-      _descriptiveName: "\u6B66\u5668\u5909\u66F4"
+      _descriptiveName: "\u6B66\u5668\u6301\u3061\u624B\u5909\u66F4"
       _positiveDescriptiveName: 
       _negativeDescriptiveName: 
       _behaviorId: 0
@@ -2654,7 +2654,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 2
-    actionIdCounter: 20
+    actionIdCounter: 22
     actionCategoryIdCounter: 1
     inputBehaviorIdCounter: 3
     mapCategoryIdCounter: 2

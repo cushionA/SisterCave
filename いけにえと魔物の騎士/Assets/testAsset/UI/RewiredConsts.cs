@@ -36,8 +36,8 @@ namespace RewiredConsts {
         public const int Guard = 13;
         [Rewired.Dev.ActionIdFieldInfo(categoryName = "Default", friendlyName = "特殊行動")]
         public const int Arts = 12;
-        [Rewired.Dev.ActionIdFieldInfo(categoryName = "Default", friendlyName = "武器変更")]
-        public const int WeponChange = 14;
+        [Rewired.Dev.ActionIdFieldInfo(categoryName = "Default", friendlyName = "武器持ち手変更")]
+        public const int WeponHandChange = 14;
         [Rewired.Dev.ActionIdFieldInfo(categoryName = "Default", friendlyName = "メニュー")]
         public const int Menu = 4;
         [Rewired.Dev.ActionIdFieldInfo(categoryName = "Default", friendlyName = "UIVertical")]

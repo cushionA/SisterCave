@@ -21,6 +21,8 @@ public class Wepon : Equip
     [HideInInspector]public AttackType atType;
     [Header("双刀武器かどうか")]
     public bool isTwin;
+    [Header("魔術の触媒かどうか")]
+    public bool isMagic;
 
 
     // public List<float> phyBase;//物理攻撃。これが1以上ならモーションにアニメイベントとかで斬撃打撃の属性つける
@@ -72,31 +74,31 @@ public class Wepon : Equip
 
     //-----------------------------------------------モーション名の管理
     #region//モーション名
-    [Header("弱攻撃のモーション名リスト")]
+    [Header("片手弱攻撃のモーション名リスト")]
     /// <summary>
     /// 片手弱攻撃のモーション名リスト
     /// </summary>
      public List<string> smallName;
 
-    [Header("強攻撃のモーション名リスト")]
+    [Header("片手強攻撃のモーション名リスト")]
     /// <summary>
     /// 片手強攻撃のモーション名リスト
     /// </summary>
      public List<string> bigName;
 
-    [Header("ため攻撃のモーション名リスト")]
+    [Header("片手ため攻撃のモーション名リスト")]
     /// <summary>
     /// 片手ため攻撃のモーション名リスト
     /// </summary>
     public List<string> maxName;
 
-    [Header("空中弱+強の名前リスト")]
+    [Header("片手空中弱+強の名前リスト")]
     /// <summary>
     /// 片手空中弱の名前リスト
     /// </summary>
      public List<string> airName;
 
-    [Header("チャージモーションの名前リスト")]
+    [Header("片手チャージモーションの名前リスト")]
     /// <summary>
     /// 片手チャージモーションリスト
     /// </summary>
@@ -206,7 +208,7 @@ public class Wepon : Equip
     /// <summary>
     /// 武器固有攻撃のXモーション値、Y追加アーマー、Z強靭削り
     /// </summary>
-    public AttackValue artsValue;
+    public List<AttackValue> artsValue;
     #endregion
     //------------------------------------------内部パラメータ
 
@@ -238,7 +240,7 @@ public class Wepon : Equip
     // public int hitLimmit = 1;
 
     [Header("吹っ飛ばす力")]
-    public Vector2 blowPower;
+    [HideInInspector]public Vector2 blowPower;
 
     public float guardSpeed;//ガード中の移動速度
 

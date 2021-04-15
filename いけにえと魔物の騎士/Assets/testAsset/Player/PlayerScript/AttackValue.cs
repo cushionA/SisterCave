@@ -19,5 +19,7 @@ public struct AttackValue
     public bool isLight;
     [Header("攻撃タイプ")]
     public Wepon.AttackType type;
+    [Header("吹っ飛ばす力")]
+     public Vector2 blowPower;
 
 }
