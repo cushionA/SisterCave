@@ -31,14 +31,13 @@ public class FieldSerch : MonoBehaviour
         {
             if (CheckFoundObject(collision.gameObject))
             {
-                if (!sister.nowPegion)
-                {//環境物の種類にもよる？？？
+//環境物の種類にもよる？？？
                     //会話イベント起きるやつと起きないやつで分ける
-                    //sister.isPegion = false;
+                    //sister.isPosition = false;
                     sister.isPlay = true;
                     sister.playPosition = collision.gameObject.transform.position.x;
                     sister.playDirection = collision.gameObject.transform.localScale.x;
-                }
+                
             }
         }
         if (collision.tag == dangerTag)
@@ -46,7 +45,7 @@ public class FieldSerch : MonoBehaviour
 
             if (CheckFoundObject(collision.gameObject))
             {
-                sister.isPegion = true;
+                sister.isPosition = true;
 
             }
         }
@@ -57,20 +56,19 @@ public class FieldSerch : MonoBehaviour
         {
             if (CheckFoundObject(collision.gameObject))
             {
-                if (!sister.nowPegion)
-                {
-                   // sister.isPegion = false;
+
+                   // sister.isPosition = false;
                     sister.isPlay = true;
                     sister.playPosition = collision.gameObject.transform.position.x;
                     sister.playDirection = collision.gameObject.transform.localScale.x;
-                }
+                
             }
         }
         if (collision.tag == dangerTag)
         {
             if (CheckFoundObject(collision.gameObject))
             {
-                sister.isPegion = true;
+                sister.isPosition = true;
 
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 [Serializable]
@@ -7,6 +8,14 @@ using UnityEngine;
 
 public class Wepon : Equip
 {
+
+    [Header("アニメーターコントローラ。OArtsのみ盾側からアニメを代入")]
+    ///<summary>
+    ///アニメーターコントローラ
+    ///装備切り替えのたびにOArtsは初期化してね
+    /// </summary>
+    public AnimatorController WeaponMotion;
+
     [HideInInspector] public int wLevel = 0;
 
     public enum AttackType
@@ -62,18 +71,19 @@ public class Wepon : Equip
     public float chargeRes;
     //チャージ時間長くしたり減らしたりできる状態があるとおもろいからパブリック
 
-    public int normalStamina;
-    public int bigStamina;
-    public int chargeStamina;
-    public int airStamina;
-    public int normalStaminaT;
-    public int bigStaminaT;
-    public int chargeStaminaT;
-    public int airStaminaT;
-    public int artsStamina;
+  //  public int normalStamina;
+ //   public int bigStamina;
+  //  public int chargeStamina;
+ //   public int airStamina;
+   // public int normalStaminaT;
+ //   public int bigStaminaT;
+ //   public int chargeStaminaT;
+  //  public int airStaminaT;
+ //   public int artsStamina;
 
     //-----------------------------------------------モーション名の管理
     #region//モーション名
+    /*
     [Header("片手弱攻撃のモーション名リスト")]
     /// <summary>
     /// 片手弱攻撃のモーション名リスト
@@ -139,7 +149,7 @@ public class Wepon : Equip
     /// 武器固有モーションリスト
     /// </summary>
     public List<string> artsName;
-
+    */
     #endregion
 
     //--------------------------------------------モーション値、追加アーマー、強靭削りの管理
@@ -172,7 +182,7 @@ public class Wepon : Equip
     /// <summary>
     /// 空中強攻撃のXモーション値、Y追加アーマー、Z強靭削り
     /// </summary>
-    public AttackValue strikeValue;
+    public List<AttackValue> strikeValue;
 
     [Header("両手弱攻撃の値")]
     /// <summary>
@@ -202,7 +212,7 @@ public class Wepon : Equip
     /// <summary>
     /// 両手空中強攻撃のXモーション値、Y追加アーマー、Z強靭削り
     /// </summary>
-    public AttackValue twinStrikeValue;
+    public List<AttackValue> twinStrikeValue;
 
     [Header("武器固有技の値")]
     /// <summary>

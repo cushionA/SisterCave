@@ -32,10 +32,30 @@ MonoBehaviour:
   - 200
   - 240
   - 290
-  holyBase: []
-  darkBase: []
-  fireBase: []
-  thunderBase: []
+  holyBase:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  darkBase:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  fireBase:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  thunderBase:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   needPower: 1
   needSkill: 1
   needInt: 0
@@ -75,14 +95,19 @@ MonoBehaviour:
   - 25
   - 30
   - 35
+  parryStart: 0
   parryTime: 0.25
-  shock: 15
+  shock: 50
+  artsMP:
+  - 5
+  - 12
+  WeaponMotion: {fileID: 0}
   wLevel: 0
-  atType: 0
+  atType: 2
   isTwin: 0
   isMagic: 0
   MagicAssistBase: 100
-  MagicAssist: 0
+  MagicAssist: 100
   castSkill: 1
   powerCurve:
   - serializedVersion: 2
@@ -550,62 +575,67 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  intCurve: []
-  MAssistCurve: []
+  intCurve:
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  MAssistCurve:
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
   CastCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  mValue: 1.6
+  mValue: 0.3
   atAromor: 20
   chargeRes: 1.3
-  normalStamina: 10
-  bigStamina: 18
-  chargeStamina: 22
-  airStamina: 5
-  normalStaminaT: 12
-  bigStaminaT: 20
-  chargeStaminaT: 25
-  airStaminaT: 7
-  artsStamina: 6
-  smallName:
-  - OSAttack1
-  - OSAttack2
-  bigName:
-  - OBAttack1
-  - OBAttack2
-  maxName:
-  - OCAttack1
-  - OCAttack2
-  airName:
-  - OAAttack1
-  - OAAttack2
-  - OAAttack3
-  chargeName:
-  - OCharge1
-  - OCharge2
-  twinSmallName:
-  - TSAttack1
-  - TSAttack2
-  - TSAttack3
-  twinBigName:
-  - TBAttack1
-  - TBAttack2
-  twinMaxName:
-  - TCAttack1
-  - TCAttack2
-  twinAirName:
-  - TAAttack1
-  - TAAttack2
-  - TAAttack3
-  twinChargeName:
-  - TCharge1
-  - TCharge2
-  artsName:
-  - TArts1
-  - TArts2
   sValue:
   - x: 0.8
     y: 5
@@ -615,6 +645,7 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 12
   - x: 0.8
     y: 5
     z: 10
@@ -623,6 +654,7 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 12
   bValue:
   - x: 1.3
     y: 12
@@ -632,6 +664,7 @@ MonoBehaviour:
     isLight: 0
     type: 1
     blowPower: {x: 0, y: 0}
+    useStamina: 17
   - x: 1.3
     y: 12
     z: 18
@@ -640,6 +673,7 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 17
   chargeValue:
   - x: 1.5
     y: 20
@@ -649,6 +683,7 @@ MonoBehaviour:
     isLight: 0
     type: 1
     blowPower: {x: 0, y: 0}
+    useStamina: 0
   - x: 1.5
     y: 20
     z: 25
@@ -657,9 +692,10 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 0
   airValue: []
   strikeValue:
-    x: 0
+  - x: 0
     y: 0
     z: 0
     isCombo: 0
@@ -667,6 +703,70 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
   twinSValue:
   - x: 1
     y: 10
@@ -676,6 +776,7 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 15
   - x: 1
     y: 12
     z: 12
@@ -684,6 +785,7 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 15
   - x: 1.1
     y: 15
     z: 15
@@ -692,6 +794,7 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 17
   twinBValue:
   - x: 1.2
     y: 18
@@ -701,6 +804,7 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 30
   - x: 1.2
     y: 18
     z: 19
@@ -709,6 +813,7 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 30
   twinChargeValue:
   - x: 1.6
     y: 20
@@ -718,6 +823,7 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 10, y: 40}
+    useStamina: 0
   - x: 1.2
     y: 20
     z: 15
@@ -726,6 +832,7 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 0
   twinAirValue:
   - x: 0
     y: 0
@@ -735,6 +842,7 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 0
   - x: 0
     y: 0
     z: 0
@@ -743,8 +851,9 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 0
   twinStrikeValue:
-    x: 0
+  - x: 0
     y: 0
     z: 0
     isCombo: 0
@@ -752,6 +861,70 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
   artsValue:
   - x: 0.3
     y: 20
@@ -761,6 +934,7 @@ MonoBehaviour:
     isLight: 0
     type: 2
     blowPower: {x: 0, y: 0}
+    useStamina: 15
   - x: 1.6
     y: 20
     z: 15
@@ -769,10 +943,11 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 25, y: 12}
+    useStamina: 20
   isLight: 0
   shieldAct: 0
   twinHand: 1
-  isBlow: 1
+  isBlow: 0
   isCombo: 0
-  blowPower: {x: 25, y: 12}
+  blowPower: {x: 0, y: 0}
   guardSpeed: 0

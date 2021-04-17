@@ -30,7 +30,7 @@ public class SloopAssist : MonoBehaviour
             }
             else if(Mathf.Sign(GManager.instance.pm.xSpeed) == sloopDirection)
             {
-                Debug.Log("‚ ‚¢‚³");
+                //Debug.Log("‚ ‚¢‚³");
                 GManager.instance.pm.isSloopDown = false;
                 GManager.instance.pm.ySpeed = 30;
             }
@@ -53,7 +53,7 @@ public class SloopAssist : MonoBehaviour
             }
             else if (Mathf.Sign(GManager.instance.pm.xSpeed) == sloopDirection)
             {
-                Debug.Log("‚ ‚¢‚³");
+                //Debug.Log("‚ ‚¢‚³");
                 GManager.instance.pm.isSloopDown = false;
                 GManager.instance.pm.ySpeed = 30;
             }

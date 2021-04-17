@@ -27,14 +27,17 @@ MonoBehaviour:
   castSpeed: 0
   magicAssist: 0
   judgePace: 3
-  pegionDis: 6
-  addSpeed: 60
-  patrolSpeed: 8
-  patrolDistance: 3
-  walkDistance: 5
-  walkSpeed: 4
-  playDistance: 15
-  playSpeed: 6
+  battleDis: 6
+  escapeTime: 25
+  escapeZone: 10
+  warpDistance: 0
+  addSpeed: 80
+  patrolSpeed: 30
+  patrolDistance: 20
+  walkDistance: 40
+  walkSpeed: 10
+  playDistance: 200
+  playSpeed: 30
   waitRes: 2
   dashSpeed: 12
   adjust: 2
@@ -42,7 +45,7 @@ MonoBehaviour:
   jumpPower: 1600
   jumpRes: 0.4
   jumpCool: 2
-  firstGravity: 80
+  firstGravity: 180
   downRes: 0
   velocityMin: {x: -100, y: -100}
   velocityMax: {x: 100, y: 100}
@@ -55,7 +58,7 @@ MonoBehaviour:
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 65792
+      m_Bits: 65920
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 70

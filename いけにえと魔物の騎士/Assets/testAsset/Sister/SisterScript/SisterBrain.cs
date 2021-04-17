@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -64,7 +65,7 @@ public class SisterBrain : MonoBehaviour
 	 float stopTime;//停止時間を数える
 	 bool isStop;//停止フラグ
 	 float waitTime;//パトロール時の待ち時間数える
-	 bool posiReset;//戦闘とかで場を離れたとき戻るためのフラグ
+	 bool posiReset;//戦闘の持ち場再設定するフラグ
 	 bool nowJump;
 	bool isGround;
 
@@ -75,14 +76,13 @@ public class SisterBrain : MonoBehaviour
 	 bool isWait;//このフラグが真なら待機モーションする。マントいじったり遊んだり。
 	　　　　　　//モーションは好感度とか進行度でモーション名リストが切り替わって決まる。
 
-	[HideInInspector]public bool isPegion;//おんぶフラグ
-	[HideInInspector] public bool nowPegion;//おんぶフラグ
+	[HideInInspector]public bool isPosition;//持ち場フラグ
+	[HideInInspector] public bool nowPosition;//持ち場フラグ
 	Vector2 myPosition;
 
 
-	// === キャッシュ ==========================================
-	Animator animator;
-	 SimpleAnimation sAni;
+	// === キャッシュ ======================================
+	 public Animator sAni;
 
 
 	public Rigidbody2D rb;//継承先で使うものは
@@ -98,6 +98,9 @@ public class SisterBrain : MonoBehaviour
 	 bool disenableJump;//ジャンプ不可能状態
 	 AudioSource[] seAnimationList;
 	 Vector2 basePosition;
+	/// <summary>
+	/// プレイヤーが向いてる方向。基準
+	/// </summary>
 	 Vector2 baseDirection;
 	 bool isDown;
 	 float randomTime = 2.5f;//ランダム移動測定のため
@@ -107,7 +110,7 @@ public class SisterBrain : MonoBehaviour
 	PlayerMove pm;
 	bool isSquat;
 	string squatTag = "SquatWall";
-	float pegionJudge;
+	float PositionJudge;
 	bool isClose;//一度近くまで行く
 	[HideInInspector]public bool isPlay;
 	[HideInInspector] public float playPosition;//環境物の場所
@@ -121,6 +124,8 @@ public class SisterBrain : MonoBehaviour
 	float verticalWait;//垂直ジャンプ可能になるまでの待機時間
 	bool isVertical;//垂直飛びするフラグ
 	Vector2 waitPosition;
+	//持ち場再判断
+	float reJudgePositionTime;
 
 	// === コード（Monobehaviour基本機能の実装） ================
 	 void Start()
@@ -144,7 +149,7 @@ public class SisterBrain : MonoBehaviour
 
 	}
 
-	 void FixedUpdate()
+	void FixedUpdate()
 	{
 		isGround = rb.IsTouching(SManager.instance.sisStatus.filter);
 
@@ -152,22 +157,25 @@ public class SisterBrain : MonoBehaviour
 		baseDirection = player.transform.localScale;
 		//↑プレイヤーが向いてる方向とプレイヤーの位置
 
-		 myPosition = this.transform.position;
+		myPosition = this.transform.position;
 		distance = basePosition - myPosition;
 		direction = distance.x >= 0 ? 1 : -1;//距離が正、または0の時1。そうでないとき-1。方向
 		directionY = distance.y >= 0 ? 1 : -1;//ほかのAIで弓構えるときのアニメの判定	にも使えそう
 
-		//Debug.log($"現在の状態{nowState}");
+		Debug.Log($"現在の状態{nowState}");
 		////Debug.log($"回避中{isAvoid}");
 		if (nowState == SisterState.戦い)
 		{
-			if(Serch3.activeSelf == false)
-            {
+			if (Serch3.activeSelf == false)
+			{
 				Serch3.SetActive(true);
-            }
-			isPegion = true;
-			Pegion();
-			if (!nowPegion)
+			}
+			if (!isPosition)
+			{
+				isPosition = true;
+			}
+			PositionSetting();
+			if (!nowPosition)
 			{
 				TriggerJump();
 				Verticaljump();
@@ -180,152 +188,189 @@ public class SisterBrain : MonoBehaviour
 
 			//Serch.SetActive(true);ほかのステートに移動するときに
 			//Serch2.SetActive(true);
-			if (!nowPegion)
+			if (!nowPosition)
 			{
-				if (!isPegion)
-				{
-					PatrolMove();
-				}
-				else
-				{
-					Pegion();
-				}
+
+				PatrolMove();
+
+				PositionSetting();
 				TriggerJump();
 				Verticaljump();
-			}
-			else if (nowPegion)
-            {
-				StopPegion();
-			}
 
-			PegionChange();
-			if(patrolJudge >= patrolTime)
-            {
-				nowState = SisterState.のんびり;
-			}
 
-		}
-		else if(nowState == SisterState.のんびり)
-        {
-			if (!nowPegion)
-			{
-				if (!isPegion)
+				PositionChange();
+				if (patrolJudge >= patrolTime)
 				{
-					PlayMove();
+					nowState = SisterState.のんびり;
 				}
-				else
-				{
-					Pegion();
-				}
-				TriggerJump();
-				Verticaljump();
-				WaitJudge();
+
 			}
-			else if (nowPegion)
+		}
+		else if (nowState == SisterState.のんびり)
+		{
+
+			PlayMove();
+
+			TriggerJump();
+			Verticaljump();
+			WaitJudge();
+			//待機状態には色々する
+
+			PositionChange();
+
+
+			SisterFall();
+			//SetVelocity();
+			if (isVertical)
 			{
-				StopPegion();
+				GroundJump(0, status.jumpPower * 1.4f); //status.addSpeed * transform.localScale.x/3);
 			}
-
-
-			PegionChange();
-		}
-
-		SisterFall();
-		//SetVelocity();
-        if (isVertical)
-        {
-			GroundJump(0, status.jumpPower * 1.4f); //status.addSpeed * transform.localScale.x/3);
-		}
-        else
-        {
-			GroundJump(status.jumpSpeed * transform.localScale.x, status.jumpPower * 1.2f); //status.addSpeed * transform.localScale.x/3);
+			else
+			{
+				GroundJump(status.jumpSpeed * transform.localScale.x, status.jumpPower * 1.2f); //status.addSpeed * transform.localScale.x/3);
+			}
 		}
 	}
 
-	public void Pegion()
+	/// <summary>
+	/// 支援位置につかせるメソッド
+	/// </summary>
+	public void PositionSetting()
     {
 		if (Serch3.activeSelf == true)
 		{
 			Serch3.SetActive(false);
 		}
-		if (isPegion && !nowPegion && isGround)
+
+        if (!posiReset)
+        {
+			for(int i =0; i >= SManager.instance.targetList.Count; i++)
+            {
+				if (i == 0)
+				{
+					SManager.instance.closestEnemy = SManager.instance.targetList[0].transform.position.x;
+				}
+				else
+				{
+					if(Mathf.Abs(transform.position.x - SManager.instance.targetList[i].transform.position.x) < Mathf.Abs(transform.position.x - SManager.instance.closestEnemy))
+                    {
+						SManager.instance.closestEnemy = SManager.instance.closestEnemy = SManager.instance.targetList[i].transform.position.x;
+					}
+				}
+
+				if(i >= SManager.instance.targetList.Count - 1)
+                {
+					posiReset = true;
+                }
+			}
+
+        }
+		else if (posiReset)
 		{
-			if (baseDirection.x > 0)
+
+			//ポジションにつきに行く
+			if (isPosition && !nowPosition && isGround)
 			{
-				if (myPosition.x <= basePosition.x && myPosition.x >= basePosition.x - status.pegionDis)
+				if (SManager.instance.closestEnemy - myPosition.x >= 0)
 				{
-					rb.velocity = Vector2.zero;
-					Flip(direction);
-					//おんぶする
-					nowPegion = true;
+					//プレイヤーの左に行く
+					if (myPosition.x <= basePosition.x - status.battleDis && myPosition.x >= basePosition.x - status.battleDis * 2)
+					{
+						rb.velocity = Vector2.zero;
+						Flip(direction);
+						//おんぶする
+						nowPosition = true;
+					}
+					else if (myPosition.x > basePosition.x - status.battleDis)
+					{
+						Flip(-1);
+						rb.AddForce(new Vector2(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0));
+					}
+					else if (myPosition.x < basePosition.x - status.battleDis * 2)
+					{
+						Flip(1);
+						rb.AddForce(new Vector2(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0));
+					}
 				}
-				else if (myPosition.x > basePosition.x - 1)
+				else if (SManager.instance.closestEnemy - myPosition.x < 0)
 				{
-					Flip(-1);
-					rb.AddForce(new Vector2(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0));
-				}
-				else if (myPosition.x < basePosition.x - 1)
-				{
-					Flip(1);
-					rb.AddForce(new Vector2(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0));
+					if (myPosition.x >= basePosition.x + status.battleDis && myPosition.x <= basePosition.x + status.battleDis * 2)
+					{
+						rb.velocity = Vector2.zero;
+						Flip(direction);
+						nowPosition = true;
+					}
+					else if (myPosition.x < basePosition.x + status.battleDis)
+					{
+						Flip(1);
+						rb.AddForce(new Vector2(status.addSpeed * (status.dashSpeed + rb.velocity.x), 0));
+					}
+					else if (myPosition.x > basePosition.x + status.battleDis * 2)
+					{
+						Flip(-1);
+						rb.AddForce(new Vector2(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0));
+					}
 				}
 			}
-			else if (baseDirection.x < 0)
-			{
-				if (myPosition.x >= basePosition.x && myPosition.x <= basePosition.x + status.pegionDis)
-				{
-					rb.velocity = Vector2.zero;
-					Flip(direction);
-					//おんぶする
-				}
-				else if (myPosition.x < basePosition.x + 1)
-				{
-					Flip(1);
-					rb.AddForce(new Vector2(status.addSpeed * (status.dashSpeed + rb.velocity.x), 0));
-				}
-				else if (myPosition.x > basePosition.x + 1)
-				{
-					Flip(-1);
-					rb.AddForce(new Vector2(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0));
-				}
-			}
+			else if(isPosition && nowPosition && isGround)
+            {
+				//再判定するかどうか
+				//範囲内にて聞いたら再判定
+				reJudgePositionTime += Time.fixedDeltaTime;
+
+
+				if (reJudgePositionTime >= SManager.instance.sisStatus.escapeTime)
+                {
+					reJudgePositionTime = 0.0f;
+					SManager.instance.GetClosestEnemyX();
+					if (Mathf.Abs(distance.x) >= SManager.instance.sisStatus.warpDistance || Mathf.Abs(distance.y) >= SManager.instance.sisStatus.warpDistance)
+                    {
+						nowPosition = false;
+						isPosition = false;
+						SManager.instance.isEscape = true;
+						nowState = SisterState.警戒;
+						//escapeがtrueの時警戒から戦闘にならない
+
+					}
+					else if(Mathf.Abs(SManager.instance.closestEnemy) <= SManager.instance.sisStatus.escapeZone)
+                    {
+						nowPosition = false;
+					}
+                }
+
+            }
 		}
 	}
 
-	public void StopPegion()
-    {
 
-            if (!isPegion)
-            {
-
-            }
-    }
-
-	public void PegionChange()
+	/// <summary>
+	/// しゃがんでたらおんぶさせるみたいなやつか
+	/// </summary>
+	public void PositionChange()
     {
         if (pm.isSquat && !isSquat && pRb.velocity == Vector2.zero)
         {
-			pegionJudge += Time.fixedDeltaTime;
-            if (nowPegion)
+			PositionJudge += Time.fixedDeltaTime;
+            if (nowPosition)
             {
-				if(pegionJudge >= 2.0f)
+				if(PositionJudge >= 2.0f)
                 {
-					isPegion = false;
-					pegionJudge = 0.0f;
+					isPosition = false;
+					PositionJudge = 0.0f;
 				}
             }
-			else if (!nowPegion)
+			else if (!nowPosition)
             {
-				if (pegionJudge >= 5.0f)
+				if (PositionJudge >= 5.0f)
 				{
-					isPegion = true; ;
-					pegionJudge = 0.0f;
+					isPosition = true; ;
+					PositionJudge = 0.0f;
 				}
 			}
         }
         else
         {
-			pegionJudge = 0.0f;
+			PositionJudge = 0.0f;
         }
 
     }
@@ -369,17 +414,20 @@ public class SisterBrain : MonoBehaviour
 				Flip(direction);
 				rb.AddForce(new Vector2(status.addSpeed * (status.patrolSpeed * direction - rb.velocity.x), 0));
 				isWait = false;
+				sAni.Play("Move");
 			}
 			else if ((Mathf.Abs(distance.x) <= status.walkDistance && Mathf.Abs(transform.position.x) > status.patrolDistance) || pRb.velocity.x != 0)
 			{
 				Flip(direction);
 				rb.AddForce(new Vector2(status.addSpeed * (status.walkSpeed * direction - rb.velocity.x), 0));
 				isWait = false;
+				sAni.Play("Walk");
 			}
 			else if (pRb.velocity.x == 0 && Mathf.Abs(transform.position.x) > status.patrolDistance)
 			{
 				rb.velocity = Vector2.zero;
 				isWait = true;
+				sAni.Play("Stand");
 			}
 		}
 	}
@@ -403,6 +451,7 @@ public class SisterBrain : MonoBehaviour
 			else if (Mathf.Abs(distance.x) <= status.playDistance && Mathf.Abs(distance.x) > status.patrolDistance)
 			{
 				//遊んでいい範囲にいて、くっついてないとき
+				//遊んでいい距離だが、いるべき距離にはいない
 
 				if (isPlay)
 				{
@@ -413,27 +462,38 @@ public class SisterBrain : MonoBehaviour
 
 						//環境物のすぐそばにいるとき
 						rb.velocity = new Vector2(0, rb.velocity.y);
+						sAni.Play("Stand");
 					}
 					else if (myPosition.x < playPosition)
 					{
 						Flip(1);
 						//環境物より後ろにいるとき
 						rb.AddForce(new Vector2(status.addSpeed * (status.playSpeed - rb.velocity.x), 0));
+						sAni.Play("Move");
 					}
 					else if (myPosition.x > playPosition)
 					{
 						Flip(-1);
 						//環境物より前にいるとき
 						rb.AddForce(new Vector2(status.addSpeed * (-status.playSpeed - rb.velocity.x), 0));
+						sAni.Play("Move");
 					}
 				}
-				else
+				else if(Mathf.Abs(distance.x) > status.patrolDistance + status.walkDistance)
 				{
 					//遊んでいい範囲にいて、くっついてなくて環境物がないとき。早歩きで近づく
 					//isWait = true;
 					Flip(direction);
 					rb.AddForce(new Vector2(status.addSpeed * (status.playSpeed * direction - rb.velocity.x), 0));
 					//isWait = false;//立ち止まってる。
+					sAni.Play("Move");
+				}
+				else if(Mathf.Abs(distance.x) <= status.patrolDistance + status.walkDistance && Mathf.Abs(distance.x) > status.patrolDistance)
+                {
+					sAni.Play("Walk");
+					//waitTime = 0.0f;
+					Flip(direction);
+					rb.AddForce(new Vector2(status.addSpeed * (direction * status.walkSpeed - rb.velocity.x), 0));
 				}
 
 				//Flip(direction);
@@ -443,6 +503,7 @@ public class SisterBrain : MonoBehaviour
 			else if (Mathf.Abs(distance.x) <= status.patrolDistance)
 			{
 				//くっついてるとき
+				//近くにいる
 				if (isPlay)
 				{
 					//環境物に接触
@@ -451,18 +512,21 @@ public class SisterBrain : MonoBehaviour
 					{
 						//環境物のすぐそばにいるとき
 						rb.velocity = new Vector2(0, rb.velocity.y);
+						sAni.Play("Stand");
 					}
 					else if (myPosition.x < playPosition)
 					{
 						Flip(1);
 						//環境物より後ろにいるとき
 						rb.AddForce(new Vector2(status.addSpeed * (status.playSpeed - rb.velocity.x), 0));
+						sAni.Play("Move");
 					}
 					else if (myPosition.x > playPosition)
 					{
 						Flip(-1);
 						//環境物より前にいるとき
 						rb.AddForce(new Vector2(status.addSpeed * (-status.playSpeed - rb.velocity.x), 0));
+						sAni.Play("Move");
 					}
 				}
 				else if (pRb.velocity.x == 0 && !isPlay)
@@ -471,6 +535,7 @@ public class SisterBrain : MonoBehaviour
 					Flip(direction);
 					//プレイヤーが立ち止まってて環境物がないとき
 					rb.velocity = rb.velocity = new Vector2(0, rb.velocity.y);
+					sAni.Play("Stand");
 					if (waitTime >= SManager.instance.sisStatus.waitRes && !isWait)
 					{
 						waitPosition = basePosition;
@@ -480,6 +545,7 @@ public class SisterBrain : MonoBehaviour
 				}
 				else
 				{
+					sAni.Play("Walk");
 					waitTime = 0.0f;
 					Flip(direction);
 					rb.AddForce(new Vector2(status.addSpeed * (direction * status.walkSpeed - rb.velocity.x), 0));
@@ -495,7 +561,7 @@ public class SisterBrain : MonoBehaviour
 	/// </summary>
 	public void Wait()
 	{
-				//sAni.Play(SManager.instance.sisStatus.motionIndex["待機"]);
+				sAni.Play("Stand");
 				waitTime += Time.fixedDeltaTime;
 				rb.velocity = rb.velocity = new Vector2(0, rb.velocity.y);
 				if (waitTime >= SManager.instance.sisStatus.waitRes)
@@ -554,7 +620,7 @@ public class SisterBrain : MonoBehaviour
 		{
 			/*	if (isJump)
 				{
-					//sAni.Play(status.motionIndex["ジャンプ"]);
+					sAni.Play("Jump");
 					jumpTime += Time.fixedDeltaTime;
 					rb.AddForce(new Vector2(jumpMove,jumpPower));
 					//GravitySet(0);
@@ -774,7 +840,7 @@ public class SisterBrain : MonoBehaviour
 
 	public void SisterFall()
     {
-		/*if (!isGround && !isPegion && !isJump)
+		/*if (!isGround && !isPosition && !isJump)
         {
 			GravitySet(SManager.instance.sisStatus.firstGravity);
 		}
@@ -782,7 +848,7 @@ public class SisterBrain : MonoBehaviour
         {
 			GravitySet(0);
 		}*/
-		if (!isGround && !isPegion)
+		if (!isGround && !isPosition)
 		{
 			GravitySet(SManager.instance.sisStatus.firstGravity);
 		}
@@ -814,7 +880,7 @@ public class SisterBrain : MonoBehaviour
 
 	bool CheckEnd(string _currentStateName)
 	{
-		return sAni.IsPlaying(_currentStateName);
+		return !(sAni.GetCurrentAnimatorStateInfo(0).normalizedTime == 1);
 	}
 }
 

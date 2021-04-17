@@ -7,6 +7,8 @@ public class EnemySerch : MonoBehaviour
 
     string enemyTag = "Enemy";
     string dangerTag = "Danger";
+    //危険物はトラップエリアの入り口とかにおく？
+    //危険フラグ立ててその間は動かないとか新しく待機ステート作って待機させるとか
     [SerializeField] SisterBrain sister;
   //  public float SerchRadius;
     [SerializeField]
@@ -24,10 +26,10 @@ public class EnemySerch : MonoBehaviour
     {
         if (collision.tag == enemyTag)
         {
-            if (CheckFoundObject(collision.gameObject))
+            if (CheckFoundObject(collision.gameObject) && !SManager.instance.isEscape)
             {
                 sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
-                sister.isPegion = true;                        //いや、攻撃対象リストの方で調節すればいい
+
               //  sister.Serch.SetActive(false);
               //  sister.Serch2.SetActive(false);
                 if (!SManager.instance.targetList.Contains(collision.gameObject))
@@ -41,18 +43,18 @@ public class EnemySerch : MonoBehaviour
 
             if (CheckFoundObject(collision.gameObject))
             {
-                sister.isPegion = true;
-               // sister.Serch.SetActive(false);
-               // sister.Serch2.SetActive(false);
+                sister.nowState = SisterBrain.SisterState.警戒;
+                // sister.Serch.SetActive(false);
+                // sister.Serch2.SetActive(false);
             }
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == enemyTag)
+        if (collision.tag == enemyTag && !SManager.instance.isEscape)
         {
             sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
-            sister.isPegion = true;                        //いや、攻撃対象リストの方で調節すればいい
+
                                                            //  sister.Serch.SetActive(false);
                                                            //  sister.Serch2.SetActive(false);
             if (!SManager.instance.targetList.Contains(collision.gameObject))
@@ -64,14 +66,18 @@ public class EnemySerch : MonoBehaviour
         {
             if (CheckFoundObject(collision.gameObject))
             {
-                sister.isPegion = true;
+                sister.nowState = SisterBrain.SisterState.警戒;
             }
         }
     }
 
 
 
-
+    /// <summary>
+    /// レイを飛ばして壁越しではないか調べる
+    /// </summary>
+    /// <param name="i_target"></param>
+    /// <returns></returns>
     private bool CheckFoundObject(GameObject i_target)
     {
         Vector2 targetPosition = i_target.transform.position;//targetの位置を取得

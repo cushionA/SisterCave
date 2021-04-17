@@ -57,6 +57,14 @@ public class GManager : MonoBehaviour
     #region//シスターさんのためのフラグ
     [HideInInspector] public bool isLadder;
     [HideInInspector] public bool isRopeJump;
+    /// <summary>
+    /// トラップ地帯にいるときワープの挙動変わる
+    /// </summary>
+    [HideInInspector] public bool isTrap;
+    /// <summary>
+    /// ワープする場所。isTrapの時トラップがtrueになった場所のそばにワープする
+    /// </summary>
+    [HideInInspector] public float warpPosition;
     #endregion
 
     public Vector2 blowVector;
@@ -68,6 +76,9 @@ public class GManager : MonoBehaviour
     float parryTime;
     [SerializeField]AttackM at;
     public PlayerMove pm;
+/// <summary>
+/// stBreakはスタミナが一回切れたらしばらくゼロのままのコードから脱出するためのフラグ。
+/// </summary>
     bool stBreake;
     //スタミナ回復不能状態終わりフラグ
     public bool isArmor;//強靭ついてるかどうか
@@ -145,14 +156,16 @@ public class GManager : MonoBehaviour
 
             pStatus.stamina += stRecover;
             stTime = 0.0f;
-            stBreake = false;
-
+            if (stBreake)
+            {
+                stBreake = false;
+            }
         }
 
 
 
 
-        else if (pStatus.stamina >= pStatus.maxStamina)
+        if (pStatus.stamina >= pStatus.maxStamina)
         {
 
             pStatus.stamina = pStatus.maxStamina;
@@ -165,10 +178,11 @@ public class GManager : MonoBehaviour
             disEnaTime += Time.deltaTime;
 
             isEnable = false;
+            //スタミナ回復できなくなった。
 
             if (disEnaTime < 1.5f || pm.isStUse)
             {
-
+                //一定時間0のままかつスタミナ使用状態にしても0のまま。
                 pStatus.stamina = 0;
                 //ここ
             }
@@ -188,19 +202,52 @@ public class GManager : MonoBehaviour
         HpSlider.value = pStatus.hp / pStatus.maxHp;
     }
 
+    /// <summary>
+    /// スタミナ使用
+    /// </summary>
+    /// <param name="useStamina"></param>
     public void StaminaUse(int useStamina)
     {
         pStatus.stamina -= useStamina;
     }
 
+    /// <summary>
+    /// HP削り
+    /// </summary>
+    /// <param name="damage"></param>
     public void HpReduce(float damage)
     {
         pStatus.hp -= damage;
     }
+
+    /// <summary>
+    /// HP回復
+    /// </summary>
+    /// <param name="Recovery"></param>
     public void HpRecover(float Recovery)
     {
-        pStatus.hp += Recovery;
+        pStatus.mp += Recovery;
     }
+
+    /// <summary>
+    /// MP消費
+    /// </summary>
+    /// <param name="Use"></param>
+    public void MpReduce(float Use)
+    {
+        pStatus.mp -= Use;
+    }
+
+    /// <summary>
+    /// MP回復
+    /// </summary>
+    /// <param name="recover"></param>
+    public void MpRecover(float recover)
+    {
+        pStatus.hp += recover;
+    }
+
+
     public void SetAtk()
     {
 

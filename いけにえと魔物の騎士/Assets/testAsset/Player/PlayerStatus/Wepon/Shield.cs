@@ -7,11 +7,19 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Shield", menuName = "CreateShield")]
 public class Shield : Equip
 {
+
+    [Header("盾固有技のアニメーション")]
+    ///<summary>
+    ///盾固有技のアニメ
+    /// </summary>
+    public List<Animation> artsAnime;
+
+
     [Header("ゲーム画面で表示するスプライト")]
     public Sprite[] back = new Sprite[2];
 
     public string guardAnime;
-    public string artsAnime;//パリィとかシールドバッシュとか固有の技
+    //public string artsAnime;//パリィとかシールドバッシュとか固有の技
 
 
 
@@ -39,11 +47,11 @@ public class Shield : Equip
     public bool isParry;//パリィ可能かどうか
     public bool weponArts;//武器の特殊技を使えるかどうか
 
-    public float parryStartTime;
-    public float parringTime;//パリィ継続時間
-    public float stopTime;
+ //   public float parryStartTime;
+//    public float parringTime;//パリィ継続時間
+//    public float stopTime;
 
-    public int artsStamina;//パリィやバッシュに使うスタミナ
+ //   public int artsStamina;//パリィやバッシュに使うスタミナ
 
     [Header("特殊攻撃の値")]
     /// <summary>
@@ -51,11 +59,11 @@ public class Shield : Equip
     /// </summary>
     public List<AttackValue> artsValue;
 
-    [Header("武器固有モーションの名前リスト")]
+   // [Header("武器固有モーションの名前リスト")]
     /// <summary>
     /// 武器固有モーションリスト
     /// </summary>
-    public List<string> artsName;
+   // public List<string> artsName;
 
-    public float guardSpeed;//ガード中の移動速度
+   // public float guardSpeed;//ガード中の移動速度
 }

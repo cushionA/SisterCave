@@ -18,9 +18,10 @@ public class SManager : MonoBehaviour
     [HideInInspector]public List<GameObject> targetList;
     [HideInInspector] public List<GameObject> targetRecord;
     [HideInInspector]public List<EnemyBase> targetCondition;
+    [HideInInspector]public float closestEnemy;
+    [HideInInspector] public bool isEscape;
 
-
-    private void Awake()
+   private void Awake()
     {
         if (instance == null)
         {
@@ -114,4 +115,28 @@ public class SManager : MonoBehaviour
             }
         }
     }
+
+    public void GetClosestEnemyX()
+    {
+        //float nowPosition;
+        //位置は最初に固定する
+
+        for (int i = 0; i >= SManager.instance.targetList.Count; i++)
+        {
+            if (i == 0)
+            {
+                SManager.instance.closestEnemy = SManager.instance.targetList[0].transform.position.x;
+            }
+            else
+            {
+                if (Mathf.Abs(Sister.transform.position.x - SManager.instance.targetList[i].transform.position.x) < Mathf.Abs(Sister.transform.position.x - SManager.instance.closestEnemy))
+                {
+                    SManager.instance.closestEnemy = SManager.instance.closestEnemy = SManager.instance.targetList[i].transform.position.x;
+                }
+            }
+
+
+        }
+    }
+
 }

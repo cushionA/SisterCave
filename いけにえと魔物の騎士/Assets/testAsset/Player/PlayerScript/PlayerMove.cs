@@ -109,10 +109,13 @@ public class PlayerMove : MonoBehaviour
         #region//入力系
         if (Time.timeScale != 0.0f)
         {
+            if(!GManager.instance.isAttack && !isStop)
+            {
+                   horizontalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
+                   verticalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction2);
+            }
 
-            horizontalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
-            verticalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction2);
-            if (GManager.instance.pStatus.stamina >= 1 && !GManager.instance.isGBreak && !GManager.instance.isAttack && GManager.instance.onGimmick && !isStop)
+            if (GManager.instance.pStatus.stamina > 0 && !GManager.instance.isGBreak && !GManager.instance.isAttack && GManager.instance.onGimmick && !isStop && !isJump)
             {
                 if (GManager.instance.guardEnable && GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction11))
                 {
@@ -128,7 +131,7 @@ public class PlayerMove : MonoBehaviour
                 GManager.instance.isGuard = false;
             }
 
-            if (!isAvoid && isGround)
+            if (!isAvoid && isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop)
             {
                 avoidKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction4);
             }
@@ -137,7 +140,7 @@ public class PlayerMove : MonoBehaviour
                 avoidKey = 0.0f;
                 //入力不可に
             }
-            if (avoidKey == 1 && GManager.instance.isEnable)
+            if (avoidKey == 1 && GManager.instance.isEnable && isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop)
             {
                 avoidJudge += Time.deltaTime;
                 if (horizontalkey != 0 && !GManager.instance.isGuard && !isSquat)
@@ -151,7 +154,7 @@ public class PlayerMove : MonoBehaviour
                     isDash = false;
                 }
             }
-            if (avoidKey == 0)
+            else if (avoidKey == 0 && isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop)
             {
                 if (avoidJudge > 0.0f && avoidJudge < 1.0f && GManager.instance.isEnable)
                 {
@@ -169,6 +172,12 @@ public class PlayerMove : MonoBehaviour
 
                 }
 
+            }
+            else
+            {
+                isDash = false;
+                avoidJudge = 0.0f;
+                isAvoid = false;
             }
         }
         #endregion
@@ -251,8 +260,10 @@ public class PlayerMove : MonoBehaviour
         }
         Guard.SetActive(GManager.instance.isGuard == true ? true:false);
 
+      //  Debug.Log($"どうすか？{GManager.instance.isAttack}");
         if (!isDown && !isAvoid && !GManager.instance.isAttack && !isStop && !GManager.instance.onGimmick && !GManager.instance.guardHit)
         {
+
             isEnAt = true;
             //攻撃できる
 
@@ -269,7 +280,7 @@ public class PlayerMove : MonoBehaviour
                     transform.localScale = new Vector3(1, 1, 1);
 
                     isRight = true;
-                    if (isDash && GManager.instance.isEnable)
+                    if (isDash && GManager.instance.isEnable && !GManager.instance.isGuard)
                     {
                         if (!GManager.instance.pStatus.equipWeapon.twinHand)
                         {
@@ -293,6 +304,20 @@ public class PlayerMove : MonoBehaviour
                         }
 
                     }
+                    else if (GManager.instance.isGuard)
+                    {
+                        if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                        {
+
+                            anim.Play("OGuardMove");
+                        }
+                        else
+                        {
+                            anim.Play("TGuardMove");
+                        }
+                        xSpeed = speed;
+                        dashTime += Time.fixedDeltaTime;
+                    }
                     else if (isSquat)
                     {
                         if (!GManager.instance.pStatus.equipWeapon.twinHand)
@@ -307,6 +332,7 @@ public class PlayerMove : MonoBehaviour
                         xSpeed = squatSpeed;
 
                     }
+
                     else
                     {
                         if (!GManager.instance.pStatus.equipWeapon.twinHand)
@@ -329,7 +355,7 @@ public class PlayerMove : MonoBehaviour
 
                     isRight = false;
 
-                    if (isDash && GManager.instance.isEnable)
+                    if (isDash && GManager.instance.isEnable && !GManager.instance.isGuard)
                     {
                         if (!GManager.instance.pStatus.equipWeapon.twinHand)
                         {
@@ -351,6 +377,20 @@ public class PlayerMove : MonoBehaviour
                             rushSt = 0.0f;
                         }
 
+                    }
+                    else if (GManager.instance.isGuard)
+                    {
+                        if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                        {
+
+                            anim.Play("OGuardMove");
+                        }
+                        else
+                        {
+                            anim.Play("TGuardMove");
+                        }
+                        xSpeed = -speed;
+                        dashTime += Time.fixedDeltaTime;
                     }
                     else if (isSquat)
                     {
@@ -381,7 +421,23 @@ public class PlayerMove : MonoBehaviour
                         dashTime += Time.fixedDeltaTime;
                     }
                 }
+                else if (GManager.instance.isGuard)
+                {
+                    if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                    {
 
+                        anim.Play("OGuard");
+                        // Debug.Log("台無し");
+                    }
+                    else
+                    {
+                        anim.Play("TGuard");
+                    }
+                    ySpeed = 0.0f;
+                    xSpeed = 0.0f;
+                    dashTime = 0.0f;
+                    rushTime = 0.0f;
+                }
                 else if(!isSquat)
                 {
                    
@@ -411,7 +467,7 @@ public class PlayerMove : MonoBehaviour
 
 
                 }
-                else if (verticalkey < 0)
+                else if (verticalkey < 0 && !GManager.instance.isGuard)
                 {
                     if (horizontalkey == 0)
                     {
@@ -564,7 +620,12 @@ public class PlayerMove : MonoBehaviour
                 rb.velocity = new Vector2(xSpeed, ySpeed) + addVelocity;
 
             }
-        
+        else if(GManager.instance.isAttack)
+        {
+            isDash = false;
+            isJump = false;
+
+        }
 
          if (!isGround && !GManager.instance.isAttack) {
             //空中で地味に動くためのやつ

@@ -32,10 +32,20 @@ public class Equip : Item
     [Header("ガード力")]
     public List<float> guardPower;//受け値
 
+    [Header("ジャスガ開始時間")]
+    public float parryStart;
+
     [Header("ジャスガ受付時間")]
     public float parryTime;
 
-    [Header("アーマー削り")]
+    /// <summary>
+    /// アーマー削り
+    /// </summary>
     [HideInInspector]
     public float shock;
+
+    [Header("固有技の消費MP")]
+    public List<float> artsMP;
+
+
 }

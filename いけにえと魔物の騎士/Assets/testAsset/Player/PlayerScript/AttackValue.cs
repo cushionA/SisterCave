@@ -21,5 +21,7 @@ public struct AttackValue
     public Wepon.AttackType type;
     [Header("吹っ飛ばす力")]
      public Vector2 blowPower;
+    [Header("スタミナ消費")]
+    public int useStamina;
 
 }

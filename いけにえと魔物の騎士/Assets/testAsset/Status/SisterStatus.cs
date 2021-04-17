@@ -45,11 +45,29 @@ using UnityEngine.UI;
 	///</summary>
 	public float judgePace = 3.0f;
 
-	[Header("おんぶ可能距離")]
+	[Header("戦闘中の立ち位置の距離")]
 	///<summary>
-	///おんぶできる距離
+	///戦闘中の立ち位置
 	///</summary>
-	public float pegionDis = 6.0f;
+	public float battleDis = 6.0f;
+
+	[Header("戦闘中に立ち位置変えられるようになるまでのインターバル")]
+	///<summary>
+	///戦闘中に立ち位置を再設定するインターバル
+	///</summary>
+	public float escapeTime = 25.0f;
+
+	[Header("戦闘中に来られたら立ち位置変える範囲")]
+	///<summary>
+	///戦闘中に来られたら立ち位置変える範囲
+	///</summary>
+	public float escapeZone = 10;
+
+	[Header("プレイヤーがこれだけ離れてたらワープするという距離")]
+	///<summary>
+	///戦闘中にプレイヤーがこれだけ離れてたらワープするという距離
+	///</summary>
+	public float warpDistance;
 
 
 	[Header("加速速度")]

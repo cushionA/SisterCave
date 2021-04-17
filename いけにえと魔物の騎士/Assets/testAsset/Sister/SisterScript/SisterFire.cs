@@ -32,7 +32,7 @@ public class SisterFire : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		if (sb.nowState == SisterBrain.SisterState.戦い && sb.nowPegion)
+		if (sb.nowState == SisterBrain.SisterState.戦い && sb.nowPosition)
 		{
 			stateJudge += Time.fixedDeltaTime;
 			if (status.equipMagic == null)

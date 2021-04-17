@@ -8,7 +8,7 @@ public class PlayerParry : MonoBehaviour
     public GameObject Player;
     Rigidbody2D rb;
     BoxCollider2D parry;
-    float parryTime;
+    float defenceTime;
     PlayerMove pm;
 
     private void Start()
@@ -21,29 +21,56 @@ public class PlayerParry : MonoBehaviour
     {
         if (GManager.instance.isParry)
         {
-            parryTime = Time.fixedDeltaTime;
-            if (parryTime >= GManager.instance.pStatus.equipShield.parryStartTime)
+            defenceTime = Time.fixedDeltaTime;
+            if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
-                parry.enabled = true;
-                pm.isStop = true;
-                pm.Stop();
+                if (defenceTime >= GManager.instance.pStatus.equipShield.parryStart)
+                {
+                    parry.enabled = true;
+                    pm.isStop = true;
+                    pm.Stop();
+                }
+                else if (defenceTime - GManager.instance.pStatus.equipShield.parryStart <= GManager.instance.pStatus.equipShield.parryTime)
+                {
+                    pm.isStop = true;
+                    pm.Stop();
+                }
+                else if (defenceTime - GManager.instance.pStatus.equipShield.parryStart > GManager.instance.pStatus.equipShield.parryTime)
+                {
+                    parry.enabled = false;
+                    pm.isStop = false;
+                    GManager.instance.isParry = false;
+                    defenceTime = 0.0f;
+                }
             }
-            if (parryTime - GManager.instance.pStatus.equipShield.parryStartTime >= GManager.instance.pStatus.equipShield.parringTime)
+            else
             {
-                pm.isStop = true;
-                pm.Stop();
-            }
-            if (parryTime - (GManager.instance.pStatus.equipShield.parryStartTime + GManager.instance.pStatus.equipShield.parringTime) >= GManager.instance.pStatus.equipShield.stopTime)
-            {
-                parry.enabled = false;
-                pm.isStop = false;
-                GManager.instance.isParry = false;
-                parryTime = 0.0f;
+                if (defenceTime >= GManager.instance.pStatus.equipWeapon.parryStart)
+                {
+                    parry.enabled = true;
+                    pm.isStop = true;
+                    pm.Stop();
+                }
+               else if (defenceTime - GManager.instance.pStatus.equipWeapon.parryStart <= GManager.instance.pStatus.equipWeapon.parryTime)
+                {
+                    pm.isStop = true;
+                    pm.Stop();
+                }
+                else if (defenceTime - GManager.instance.pStatus.equipWeapon.parryStart > GManager.instance.pStatus.equipWeapon.parryTime)
+                {
+                    parry.enabled = false;
+                    pm.isStop = false;
+                    GManager.instance.isParry = false;
+                    defenceTime = 0.0f;
+                }
             }
         }
         else
         {
-            parry.enabled = false;
+            if (parry.enabled == true)
+            {
+                parry.enabled = false;
+            }
         }
     }
 
