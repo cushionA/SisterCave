@@ -74,6 +74,8 @@ public class AttackM : MonoBehaviour
     ///攻撃の発生保障
     /// </summary>
     bool lastAttack;
+    float testtime;
+
 
     /// <summary>
     /// 横攻撃後に方向転換か移動か判断する
@@ -110,6 +112,7 @@ public class AttackM : MonoBehaviour
         if (!GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction13) && GManager.instance.isEnable && !smallTrigger)
         {
             fire1Key = GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction9);
+            //lastAttack = true;
         }
         if(GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction9) && GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction13))
         {
@@ -178,6 +181,7 @@ public class AttackM : MonoBehaviour
             bigAttack = true;
             ////Debug.log("現況");
         }
+
     }
 
 
@@ -185,8 +189,9 @@ public class AttackM : MonoBehaviour
 
     private void FixedUpdate()
     {
+        NumberControll();
 
-        Debug.Log($"どうすか？{GManager.instance.isEnable}");
+     //     Debug.Log($"どうすか？{anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1}");
 
         if (!GManager.instance.isEnable)
         {
@@ -198,11 +203,6 @@ public class AttackM : MonoBehaviour
             artsTrigger = false;
             //lastAttack = true;
             GManager.instance.isAttack = false;
-        }
-        else if(lastAttack && GManager.instance.isEnable)
-        {
-            //
-     //       lastAttack = false;
         }
 
 
@@ -337,7 +337,7 @@ public class AttackM : MonoBehaviour
                 AirAttack();
             }
             // lastAttack = true;
-            NumberControll();
+
         }
         if (GManager.instance.isAttack && isCharging)
         {
@@ -371,7 +371,7 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd($"OSAttack{attackNumber}") == false)
+                    if (CheckEnd() == false)
                     {
                         // //Debug.log("機能してます");
                         attackNumber = 0;
@@ -383,7 +383,7 @@ public class AttackM : MonoBehaviour
                 }
                 else
                 {
-                    if (CheckEnd($"TSAttack{attackNumber}") == false)
+                    if (CheckEnd() == false)
                     {
                         // //Debug.log("機能してます");
                         attackNumber = 0;
@@ -398,7 +398,7 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd($"OBAttack{alterNumber}") == false)
+                    if (CheckEnd() == false)
                     {
                         ////Debug.log("機能してます");
                         alterNumber = 0;
@@ -412,7 +412,7 @@ public class AttackM : MonoBehaviour
                 }
                 else 
                 {
-                    if (CheckEnd($"TBAttack{alterNumber}") == false)
+                    if (CheckEnd() == false)
                     {
                         ////Debug.log("機能してます");
                         alterNumber = 0;
@@ -430,7 +430,7 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd($"OCAttack{alterNumber}") == false)
+                    if (CheckEnd() == false)
                     {
                         ////Debug.log("機能してます");
                         alterNumber = 0;
@@ -444,7 +444,7 @@ public class AttackM : MonoBehaviour
                 }
                 else
                 {
-                    if (CheckEnd($"TCAttack{alterNumber}") == false)
+                    if (CheckEnd() == false)
                     {
                         ////Debug.log("機能してます");
                         alterNumber = 0;
@@ -462,7 +462,7 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand && !GManager.instance.pStatus.equipShield.weponArts)
                 {
-                    if (CheckEnd($"OArts{artsNumber}") == false)
+                    if (CheckEnd() == false)
                     {
                         // //Debug.log("機能してます");
                         artsNumber = 0;
@@ -474,7 +474,7 @@ public class AttackM : MonoBehaviour
                 }
                 else
                 {
-                    if (CheckEnd($"TArts{artsNumber}") == false)
+                    if (CheckEnd() == false)
                     {
                         // //Debug.log("機能してます");
                         artsNumber = 0;
@@ -496,7 +496,7 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd($"OSAttack{GManager.instance.pStatus.equipWeapon.sValue.Count}") == false)
+                    if (CheckEnd() == false)
                     {
                         // //Debug.log("機能してます");
                        attackNumber = 0;
@@ -510,7 +510,7 @@ public class AttackM : MonoBehaviour
                 }
                 else
                 {
-                    if (CheckEnd($"TSAttack{GManager.instance.pStatus.equipWeapon.twinSValue.Count}") == false)
+                    if (CheckEnd() == false)
                     {
                         // //Debug.log("機能してます");
                         attackNumber = 0;
@@ -527,7 +527,7 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd($"OCAttack{GManager.instance.pStatus.equipWeapon.chargeValue.Count}") == false)
+                    if (CheckEnd() == false)
                     {
                         ////Debug.log("機能してます");
                         alterNumber = 0;
@@ -544,7 +544,7 @@ public class AttackM : MonoBehaviour
                 }
                 else
                 {
-                    if (CheckEnd($"TCAttack{GManager.instance.pStatus.equipWeapon.twinChargeValue.Count}") == false)
+                    if (CheckEnd() == false)
                     {
                         ////Debug.log("機能してます");
                         alterNumber = 0;
@@ -562,7 +562,7 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd($"OBAttack{GManager.instance.pStatus.equipWeapon.bValue.Count}") == false)
+                    if (CheckEnd() == false)
                     {
                         ////Debug.log("機能してます");
                         alterNumber = 0;
@@ -577,7 +577,7 @@ public class AttackM : MonoBehaviour
                 }
                 else
                 {
-                    if (CheckEnd($"TBAttack{GManager.instance.pStatus.equipWeapon.twinBValue.Count}") == false)
+                    if (CheckEnd() == false)
                     {
                         ////Debug.log("機能してます");
                         alterNumber = 0;
@@ -596,7 +596,7 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand && !GManager.instance.pStatus.equipShield.weponArts)
                 {
-                    if (CheckEnd($"OArts{GManager.instance.pStatus.equipShield.artsValue.Count}") == false)
+                    if (CheckEnd() == false)
                     {
                         // //Debug.log("機能してます");
                         artsNumber = 0;
@@ -607,7 +607,7 @@ public class AttackM : MonoBehaviour
                 }
                 else
                 {
-                    if (CheckEnd($"TArts{artsNumber}") == false)
+                    if (CheckEnd() == false)
                     {
                         // //Debug.log("機能してます");
                         artsNumber = 0;
@@ -630,7 +630,7 @@ public class AttackM : MonoBehaviour
                 if (attackNumber >= 1 && !isDisEnable)
                 {
 
-                    if (CheckEnd($"OAAttack{attackNumber}") == false)
+                    if (CheckEnd() == false)
                     {
                         ////Debug.log("機能してます");
                         GManager.instance.isAttack = false;
@@ -647,7 +647,7 @@ public class AttackM : MonoBehaviour
                 else if (alterNumber >= 1 && !fallAttack)
                 {
 
-                    if (CheckEnd($"OFAttack{alterNumber}") == false)
+                    if (CheckEnd() == false)
                     {
                         ////Debug.log("機能してます");
                         GManager.instance.isAttack = false;
@@ -663,7 +663,7 @@ public class AttackM : MonoBehaviour
                 }
                 else if (isDisEnable)
                 {
-                    if (CheckEnd($"OSAttack{GManager.instance.pStatus.equipWeapon.airValue.Count}") == false)
+                    if (CheckEnd() == false)
                     {
                         // //Debug.log("機能してます");
                         attackNumber = 0;
@@ -695,7 +695,7 @@ public class AttackM : MonoBehaviour
                     if (attackNumber >= 1 && !isDisEnable)
                     {
 
-                        if (CheckEnd($"TAAttack{attackNumber}") == false)
+                        if (CheckEnd() == false)
                         {
                             ////Debug.log("機能してます");
                             GManager.instance.isAttack = false;
@@ -712,7 +712,7 @@ public class AttackM : MonoBehaviour
                     else if (alterNumber >= 1 && !isBComboEnd)
                     {
 
-                        if (CheckEnd($"TFAttack{alterNumber}") == false)
+                        if (CheckEnd() == false)
                         {
                             ////Debug.log("機能してます");
                             GManager.instance.isAttack = false;
@@ -728,7 +728,7 @@ public class AttackM : MonoBehaviour
                 }
                 else if (isDisEnable)
                     {
-                        if (CheckEnd($"TSAttack{GManager.instance.pStatus.equipWeapon.twinAirValue.Count}") == false)
+                        if (CheckEnd() == false)
                         {
                             // //Debug.log("機能してます");
                             attackNumber = 0;
@@ -796,19 +796,25 @@ public class AttackM : MonoBehaviour
     public void Continue()
     {
 
-       Debug.Log("やぁ");
+       Debug.Log("攻撃可能に");
         isAttackable = true;
         GManager.instance.isArmor = false;
         GManager.instance.StaminaUse(useStamina);
     }
 
     //アニメの終了探知
-    bool CheckEnd(string _currentStateName)
+    bool CheckEnd()
     {
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        {
 
-            return !(anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
-          //  (_currentStateName);
 
+            Debug.Log($"アニメ終了{anim.GetCurrentAnimatorStateInfo(0).IsName($"TSAttack{attackNumber + 1}")}");
+            return false;
+        }
+        // return !(anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+        //  (_currentStateName);
+        return true;
     }
 
     bool AnyKey()
@@ -838,7 +844,7 @@ public class AttackM : MonoBehaviour
     void NormalAttack()
     {
         #region//通常攻撃
-        if (attackNumber == 0 && (fire1Key || smallTrigger))
+        if (attackNumber == 0 && (fire1Key || smallTrigger) && !GManager.instance.isAttack)
         {
             GManager.instance.isAttack = true;
             sAttackPrepare();
@@ -857,7 +863,7 @@ public class AttackM : MonoBehaviour
             attackNumber++;
             smallTrigger = false;
         }
-        else if (attackNumber != 0 && (GManager.instance.pStatus.equipWeapon.isCombo || smallTrigger))
+        else if (attackNumber != 0 && (GManager.instance.pStatus.equipWeapon.isCombo || smallTrigger) && !GManager.instance.isAttack)
         {
             sAttackPrepare();
             GManager.instance.isAttack = true;
@@ -1142,6 +1148,7 @@ public class AttackM : MonoBehaviour
         }
         else if (fire1Key)
         {
+            Debug.Log($"連撃");
             GManager.instance.isAttack = false;
             smallTrigger = true;
             alterNumber = 0;
@@ -1152,7 +1159,7 @@ public class AttackM : MonoBehaviour
         }
         else if (fire2Key)
         {
-            Debug.Log($"トリガー追加でalterは{alterNumber}");
+
             GManager.instance.isAttack = false;
             bigTrigger = true;
             attackNumber = 0;

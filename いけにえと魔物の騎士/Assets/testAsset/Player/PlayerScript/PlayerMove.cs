@@ -72,7 +72,7 @@ public class PlayerMove : MonoBehaviour
     float avoidTime;
     float rushSt;
     [HideInInspector] public bool isSloopDown;
-
+    bool guardButton;
 
 
     PlayMakerFSM pm;
@@ -115,21 +115,7 @@ public class PlayerMove : MonoBehaviour
                    verticalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction2);
             }
 
-            if (GManager.instance.pStatus.stamina > 0 && !GManager.instance.isGBreak && !GManager.instance.isAttack && GManager.instance.onGimmick && !isStop && !isJump)
-            {
-                if (GManager.instance.guardEnable && GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction11))
-                {
-                    GManager.instance.isGuard = true;
-                }
-                else if (GManager.instance.guardEnable && GManager.instance.guardHit)
-                {
-                    GManager.instance.isGuard = true;
-                }
-            }
-            else if(!GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction11))
-            {
-                GManager.instance.isGuard = false;
-            }
+            guardButton = GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction11);
 
             if (!isAvoid && isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop)
             {
@@ -263,6 +249,23 @@ public class PlayerMove : MonoBehaviour
       //  Debug.Log($"どうすか？{GManager.instance.isAttack}");
         if (!isDown && !isAvoid && !GManager.instance.isAttack && !isStop && !GManager.instance.onGimmick && !GManager.instance.guardHit)
         {
+            if (GManager.instance.pStatus.stamina > 0 && !GManager.instance.isGBreak && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop && !isJump)
+            {
+                Debug.Log("わが師");
+                if (/*GManager.instance.guardEnable &&*/ guardButton || GManager.instance.guardHit)
+                {
+                    Debug.Log($"{GManager.instance.guardHit}");
+                    GManager.instance.isGuard = true;
+                }
+                else if (!guardButton || !GManager.instance.guardEnable)
+                {
+                    GManager.instance.isGuard = false;
+                }
+            }
+            else
+            {
+                GManager.instance.isGuard = false;
+            }
 
             isEnAt = true;
             //攻撃できる
@@ -427,11 +430,12 @@ public class PlayerMove : MonoBehaviour
                     {
 
                         anim.Play("OGuard");
-                        // Debug.Log("台無し");
+                         Debug.Log("ガード");
                     }
                     else
                     {
                         anim.Play("TGuard");
+                        Debug.Log("ガード");
                     }
                     ySpeed = 0.0f;
                     xSpeed = 0.0f;
@@ -450,6 +454,7 @@ public class PlayerMove : MonoBehaviour
                     else
                     {
                         anim.Play("TStand");
+                        Debug.Log("台無し");
                     }
                     ySpeed = 0.0f;
                     xSpeed = 0.0f;

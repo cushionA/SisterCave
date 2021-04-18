@@ -7,7 +7,7 @@ public class PlayerGuard : MonoBehaviour
     //public bool guardHit;//ガードにヒット中にスタミナブレイクしたらってことか
     public GameObject Player;
     Rigidbody2D rb;
-    BoxCollider2D guard;
+    public BoxCollider2D guard;
 
     private void Start()
     {
@@ -24,6 +24,7 @@ public class PlayerGuard : MonoBehaviour
         {
             guard.enabled = false;
         }
+        GManager.instance.guardHit = false;
     }
 
     // Start is called before the first frame update

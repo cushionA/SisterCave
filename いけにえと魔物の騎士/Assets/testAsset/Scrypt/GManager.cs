@@ -114,6 +114,7 @@ public class GManager : MonoBehaviour
         //HPなどを最大と同じに
         pStatus.hp = pStatus.maxHp;
         pStatus.stamina = pStatus.maxStamina;
+        pStatus.mp = pStatus.maxMp;
         SetAtk();
         SetMagicAssist();
         SetMagicAtk();
@@ -200,6 +201,7 @@ public class GManager : MonoBehaviour
 
         stSlider.value = pStatus.stamina / pStatus.maxStamina;
         HpSlider.value = pStatus.hp / pStatus.maxHp;
+        MpSlider.value = pStatus.mp / pStatus.maxMp;
     }
 
     /// <summary>
@@ -208,7 +210,14 @@ public class GManager : MonoBehaviour
     /// <param name="useStamina"></param>
     public void StaminaUse(int useStamina)
     {
-        pStatus.stamina -= useStamina;
+        if (pStatus.stamina >= useStamina)
+        {
+            pStatus.stamina -= useStamina;
+        }
+        else
+        {
+            pStatus.stamina = 0;
+        }
     }
 
     /// <summary>
@@ -233,9 +242,16 @@ public class GManager : MonoBehaviour
     /// MP消費
     /// </summary>
     /// <param name="Use"></param>
-    public void MpReduce(float Use)
+    public void MpReduce(float UseMp)
     {
-        pStatus.mp -= Use;
+        if (pStatus.mp >= UseMp)
+        {
+            pStatus.mp -= UseMp;
+        }
+        else
+        {
+            pStatus.mp = 0;
+        }
     }
 
     /// <summary>
@@ -440,6 +456,8 @@ public class GManager : MonoBehaviour
         {
             return;
         }
+
+       // initialHpSl = 
 
         hpSl.offsetMax = new Vector2(-initialHpSl + (pStatus.maxHp - pStatus.initialHp), hpSl.offsetMax.y);
         staminaSl.offsetMax = new Vector2((-initialStaminaSl + (pStatus.maxStamina - pStatus.initialStamina)), staminaSl.offsetMax.y);

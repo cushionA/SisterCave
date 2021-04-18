@@ -34,7 +34,8 @@ public abstract class CharacterStatus : ScriptableObject
     //　最大スタミナ
     public float maxStamina = 60;
     //　スタミナ
-    [HideInInspector]public float stamina = 60;
+    //[HideInInspector]
+    public float stamina = 60;
 
     //生命力
     public float Vitality = 1;

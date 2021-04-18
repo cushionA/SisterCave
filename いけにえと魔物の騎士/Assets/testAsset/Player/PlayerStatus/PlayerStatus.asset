@@ -15,19 +15,19 @@ MonoBehaviour:
   isPoison: 0
   isParalyze: 0
   level: 1
-  maxHp: 671
-  hp: 671
+  maxHp: 481
+  hp: 481
   maxMp: 31
-  mp: 30
-  maxStamina: 63.82135
-  stamina: 66.82135
+  mp: 0
+  maxStamina: 312.2092
+  stamina: 312.2092
   Vitality: 77
   Endurance: 66
   capacity: 800
   power: 10
   skill: 1
   _int: 1
-  Atk: 39580.79
+  Atk: 43278.32
   phyAtk: 132.05594
   holyAtk: 0
   darkAtk: 0
@@ -51,10 +51,10 @@ MonoBehaviour:
   nockBackPower: 0
   attackBuff: 1
   PlayerLevel: 1
-  initialHp: 670
+  initialHp: 480
   initialMp: 30
   initialStamina: 60
-  magicNumber: 1
+  magicNumber: 2
   initialWeight: 0
   earnedSoul: 0
   equipWeapon: {fileID: 11400000, guid: af72b4c4636be7b47a2e1957726ddcee, type: 2}
