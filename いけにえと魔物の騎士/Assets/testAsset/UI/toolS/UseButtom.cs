@@ -25,7 +25,7 @@ public class UseButtom : MonoBehaviour
 
     private void Start()
     {
-        GameObject ev = GameObject.Find("EventSystem");
+        //GameObject ev = GameObject.Find("EventSystem");
     //    eventSystem = ev.GetComponent<EventSystem>();
     //    stIn = ev.GetComponent<StandaloneInputModule>();
     }
@@ -41,12 +41,12 @@ public class UseButtom : MonoBehaviour
 
         if (!ToolManager.instance.isUseMenu)
         {
-            ToolManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
+            MainUI.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
-            ////Debug.log($"青い稲妻{ToolManager.instance.selectButton == this.gameObject}");
-            if (ToolManager.instance.selectButton == this.gameObject && !isFirst)
+            //////Debug.log($"青い稲妻{MainUI.instance.selectButton == this.gameObject}");
+            if (MainUI.instance.selectButton == this.gameObject && !isFirst)
             {
-                ////Debug.log("冥王星");
+                //////Debug.log("冥王星");
                 ToolManager.instance.selectItem = item;
                 //position = this.GetComponent<RectTransform>().anchoredPosition;
                 isFirst = true;
@@ -59,7 +59,7 @@ public class UseButtom : MonoBehaviour
             {
                 if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
-                    //Debug.log("サイパン");
+                    ////Debug.log("サイパン");
                     MainUI.instance.useWindow.SetActive(false);
                     MainUI.instance.eqWindow.SetActive(true);
                     EquipmentManager.instance.EqItem[ToolManager.instance.setNumber].Select();
@@ -79,27 +79,27 @@ public class UseButtom : MonoBehaviour
 
     public void CallWindow()
     {
-        if (ToolManager.instance.selectItem.inventoryNum > 0 && item != null && ToolManager.instance.selectButton == this.gameObject && !ToolManager.instance.isEquipMenu)
+        if (ToolManager.instance.selectItem.inventoryNum > 0 && item != null && MainUI.instance.selectButton == this.gameObject && !ToolManager.instance.isEquipMenu)
         {
 
                 ToolManager.instance.selectItem = item;
                // position = this.GetComponent<RectTransform>().anchoredPosition;
                 ToolManager.instance.selectWindow.SetActive(true);
              //ToolManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
-            //ToolManager.instance.selectWindow.GetComponent<RectTransform>().parent = ToolManager.instance.selectButton.GetComponent<RectTransform>();
-            ToolManager.instance.selectWindow.transform.parent = ToolManager.instance.selectButton.transform;
+            //ToolManager.instance.selectWindow.GetComponent<RectTransform>().parent = MainUI.instance.selectButton.GetComponent<RectTransform>();
+            ToolManager.instance.selectWindow.transform.parent = MainUI.instance.selectButton.transform;
             ToolManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
 
             ToolManager.instance.isUseMenu = true;
         }
-        else if(ToolManager.instance.selectItem.inventoryNum > 0 && item != null && ToolManager.instance.selectButton == this.gameObject && ToolManager.instance.isEquipMenu)
+        else if(ToolManager.instance.selectItem.inventoryNum > 0 && item != null && MainUI.instance.selectButton == this.gameObject && ToolManager.instance.isEquipMenu)
         {
             ToolManager.instance.selectItem = item;
             // position = this.GetComponent<RectTransform>().anchoredPosition;
             ToolManager.instance.equipWindow.SetActive(true);
             //ToolManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
-            //ToolManager.instance.selectWindow.GetComponent<RectTransform>().parent = ToolManager.instance.selectButton.GetComponent<RectTransform>();
-            ToolManager.instance.equipWindow.transform.parent = ToolManager.instance.selectButton.transform;
+            //ToolManager.instance.selectWindow.GetComponent<RectTransform>().parent = MainUI.instance.selectButton.GetComponent<RectTransform>();
+            ToolManager.instance.equipWindow.transform.parent = MainUI.instance.selectButton.transform;
             ToolManager.instance.equipWindow.GetComponent<RectTransform>().anchoredPosition = position;
 
             ToolManager.instance.isUseMenu = true;
@@ -121,7 +121,7 @@ public class UseButtom : MonoBehaviour
             ToolManager.instance.equipWindow.SetActive(false);
         }
         isFirst = false;
-        ToolManager.instance.selectButton.GetComponent<Button>().Select();
+        MainUI.instance.selectButton.GetComponent<Button>().Select();
         ToolManager.instance.isUseMenu = false;
     }
 

@@ -19,7 +19,7 @@ public class MaterialWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = MaterialManager.instance.selectButton.GetComponent<MaterialButton>();
+        ub = MainUI.instance.selectButton.GetComponent<MaterialButton>();
     }
 
     // Update is called once per frame
@@ -73,7 +73,7 @@ public class MaterialWindow : MonoBehaviour
         MaterialManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
-        //  MaterialManager.instance.selectButton = null;
+        //  MainUI.instance.selectButton = null;
         //    MaterialManager.instance.selectItem = null;
     }
 

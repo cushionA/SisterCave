@@ -43,7 +43,7 @@ public class MaterialNumberChange : MonoBehaviour
         uw.isDump = false;
         MaterialManager.instance.DumpMaterial();
         MaterialManager.instance.changeNum = 1;
-        MaterialManager.instance.selectButton.GetComponent<Button>().Select();
+        MainUI.instance.selectButton.GetComponent<Button>().Select();
         uw.ResetWindow();
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
@@ -51,7 +51,7 @@ public class MaterialNumberChange : MonoBehaviour
 
     public void ResetFlag()
     {
-        //       MaterialManager.instance.selectButton = null;
+        //       MainUI.instance.selectButton = null;
         //     MaterialManager.instance.selectItem = null;
         isDump = false;
         this.gameObject.SetActive(false);

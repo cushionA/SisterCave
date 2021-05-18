@@ -24,16 +24,16 @@ public class ChangeNumber : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //  //Debug.log($"変更数{ToolManager.instance.changeNum}");
-        //  //Debug.log($"所持数{ToolManager.instance.selectItem.inventoryNum}");
-        //  //Debug.log($"偽なら変更可能{isChange}");
+        //  ////Debug.log($"変更数{ToolManager.instance.changeNum}");
+        //  ////Debug.log($"所持数{ToolManager.instance.selectItem.inventoryNum}");
+        //  ////Debug.log($"偽なら変更可能{isChange}");
         verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
         horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction16);
-     //   //Debug.log($"上キー{verticalKey}");
-      //  //Debug.log($"横キー{horizontalKey}");
+     //   ////Debug.log($"上キー{verticalKey}");
+      //  ////Debug.log($"横キー{horizontalKey}");
         if (!isChange)
         {
-        //    //Debug.log("あかつきの");
+        //    ////Debug.log("あかつきの");
             if (verticalKey > 0 && horizontalKey == 0)
             {
                 isChange = true;
@@ -81,7 +81,7 @@ public class ChangeNumber : MonoBehaviour
         {
             if (horizontalKey != 0 || verticalKey != 0)
             {
-                //    //Debug.log("しののめの");
+                //    ////Debug.log("しののめの");
                 //changeTime += Time.realtimeSinceStartup;
                 if (!charge)
                 {
@@ -92,7 +92,7 @@ public class ChangeNumber : MonoBehaviour
                     }
                     if (Time.realtimeSinceStartup - changeTime >= 0.5)
                     {
-                        //       //Debug.log("長押し清算");
+                        //       ////Debug.log("長押し清算");
                         charge = true;
                         wait = false;
                         changeTime = 0.0f;
@@ -109,7 +109,7 @@ public class ChangeNumber : MonoBehaviour
                     //Time.realtimeSinceStartup - changeTime
                     if (Time.realtimeSinceStartup - changeTime >= 0.1)
                     {
-                        //       //Debug.log("長押し清算");
+                        //       ////Debug.log("長押し清算");
                         isChange = false;
                         wait = false;
                         changeTime = 0.0f;
@@ -119,13 +119,13 @@ public class ChangeNumber : MonoBehaviour
             else if (horizontalKey == 0 && verticalKey == 0)
             {
                 charge = false;
-              //  //Debug.log("ボタン離し清算");
+              //  ////Debug.log("ボタン離し清算");
                 isChange = false;
                 changeTime = 0.0f;
             }
         }
-     //   //Debug.log($"第一条件{isChange || horizontalKey != 0 || verticalKey != 0}");
-      //  //Debug.log($"第二条件{isChange && horizontalKey == 0 && verticalKey == 0}");
+     //   ////Debug.log($"第一条件{isChange || horizontalKey != 0 || verticalKey != 0}");
+      //  ////Debug.log($"第二条件{isChange && horizontalKey == 0 && verticalKey == 0}");
         ChangeNum.text = $"{ToolManager.instance.changeNum}";
     }
 }

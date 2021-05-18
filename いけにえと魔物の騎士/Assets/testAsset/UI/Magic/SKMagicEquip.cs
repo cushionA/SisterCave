@@ -15,7 +15,7 @@ public class SKMagicEquip : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = MagicManager.instance.selectButton.GetComponent<MagicButton>();
+        ub = MainUI.instance.selectButton.GetComponent<MagicButton>();
     }
 
     // Update is called once per frame
@@ -72,7 +72,7 @@ public class SKMagicEquip : MonoBehaviour
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
         MainUI.instance.ButtonOn();
-        //  EquipManager.instance.selectButton = null;
+        //  MainUI.instance.selectButton = null;
         //    EquipManager.instance.selectItem = null;
     }
 }

@@ -43,7 +43,7 @@ public class CoreNumberChange : MonoBehaviour
         uw.isDump = false;
         CoreManager.instance.DumpCore();
         CoreManager.instance.changeNum = 1;
-        CoreManager.instance.selectButton.GetComponent<Button>().Select();
+        MainUI.instance.selectButton.GetComponent<Button>().Select();
         uw.ResetWindow();
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
@@ -51,7 +51,7 @@ public class CoreNumberChange : MonoBehaviour
 
     public void ResetFlag()
     {
-        //       CoreManager.instance.selectButton = null;
+        //       MainUI.instance.selectButton = null;
         //     CoreManager.instance.selectItem = null;
         isDump = false;
         this.gameObject.SetActive(false);

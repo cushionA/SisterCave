@@ -15,7 +15,7 @@ public class MainUI : MonoBehaviour
     public bool isMenu;
     public GameObject masterUI;
 
-
+    [HideInInspector] public GameObject selectButton;//各UIの選択用
     public GameObject eqButton;
     public GameObject useButton;
     public GameObject weponButton;
@@ -133,6 +133,7 @@ public class MainUI : MonoBehaviour
 
     bool isFirst;
     bool isInitial;
+    bool isConversation;
 
     private void Awake()
     {
@@ -162,13 +163,23 @@ public class MainUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-     //   if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5))
-    //    {
-      //      //Debug.log("unnchi");
-    //    }
+        //   if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5))
+        //    {
+        //      ////Debug.log("unnchi");
+        //    }
 
 
-         if (MaterialManager.instance.isUseMenu || ToolManager.instance.isUseMenu || EquipManager.instance.isUseMenu
+        if (isConversation)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+
+      //  //Debug.Log($"時間{Time.timeScale}");
+        if (MaterialManager.instance.isUseMenu || ToolManager.instance.isUseMenu || EquipManager.instance.isUseMenu
             || EnemyDataManager.instance.isUseMenu || CoreManager.instance.isUseMenu || ToolManager.instance.isUseMenu || KeyManager.instance.isUseMenu)
         {
             openWindow = true;
@@ -178,15 +189,15 @@ public class MainUI : MonoBehaviour
         {
             openWindow = false;
         }
-       // //Debug.log($"さぁて真になれ{openWindow}");
+       // ////Debug.log($"さぁて真になれ{openWindow}");
 
          verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
 
-       // //Debug.log($"装備窓確認trueになれ{isInitial}");
+       // ////Debug.log($"装備窓確認trueになれ{isInitial}");
 
         if (!sis.sisMenu)
         {
-            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
+            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14) && !isConversation)
             {
                 //メニュー展開ボタンを押すとメニューの表示非表示を切り替え
                 if (isMenu && !selectWindow && !openWindow)
@@ -202,7 +213,7 @@ public class MainUI : MonoBehaviour
                     lic.isEver = false;
                     mtc.isEver = false;
                     coc.isEver = false;
-                    ////Debug.log($"qawsedfrgjui,lo{usec.isEver}");
+                    //////Debug.log($"qawsedfrgjui,lo{usec.isEver}");
                     isInitial = false;
                     ButtonOn();
                     GManager.instance.InputR.controllers.maps.SetMapsEnabled(true, "Default");
@@ -222,8 +233,9 @@ public class MainUI : MonoBehaviour
             }
 
             //メニュー非展開
-            if (!isMenu)
+            if (!isMenu && !isConversation)
             {
+               // //Debug.Log("野菜くえ");
                 Time.timeScale = 1.0f;
                 if (!isFirst)
                 {
@@ -415,8 +427,9 @@ public class MainUI : MonoBehaviour
         lic.isEver = false;
         mtc.isEver = false;
         coc.isEver = false;
+        selectButtom = null;
         ButtonOn();
-      // ToolManager.instance.selectButton = null;
+      // MainUI.instance.selectButton = null;
        // ToolManager.instance.selectItem = null;
         isInitial = false;
     }
@@ -443,6 +456,7 @@ public class MainUI : MonoBehaviour
         systemB.enabled = false;
         libraryB.enabled = false;
         menuButtonOff = true;
+        selectButtom = null;
     }
     public void ButtonOn()
     {
@@ -456,5 +470,20 @@ public class MainUI : MonoBehaviour
         libraryB.enabled = true;
         menuButtonOff = false;
     }
+
+    public void ConversationStart()
+    {
+
+        isConversation = true;
+        ////Debug.Log("肉食べたい");
+    }
+
+    public void ConversationEnd()
+    {
+
+        isConversation = false;
+    }
+
+
 }
 

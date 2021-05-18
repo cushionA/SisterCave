@@ -43,7 +43,7 @@ public class ChangeEquipNum : MonoBehaviour
         uw.isDump = false;
         EquipManager.instance.DumpEquip();
         EquipManager.instance.changeNum = 1;
-        EquipManager.instance.selectButton.GetComponent<Button>().Select();
+        MainUI.instance.selectButton.GetComponent<Button>().Select();
         uw.ResetWindow();
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
@@ -51,7 +51,7 @@ public class ChangeEquipNum : MonoBehaviour
 
     public void ResetFlag()
     {
-        //       EquipManager.instance.selectButton = null;
+        //       MainUI.instance.selectButton = null;
         //     EquipManager.instance.selectItem = null;
         isDump = false;
         this.gameObject.SetActive(false);

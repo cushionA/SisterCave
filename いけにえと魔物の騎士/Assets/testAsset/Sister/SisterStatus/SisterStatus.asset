@@ -32,7 +32,7 @@ MonoBehaviour:
   escapeZone: 10
   warpDistance: 0
   addSpeed: 80
-  patrolSpeed: 30
+  patrolSpeed: 25
   patrolDistance: 20
   walkDistance: 40
   walkSpeed: 10
@@ -41,11 +41,11 @@ MonoBehaviour:
   waitRes: 2
   dashSpeed: 12
   adjust: 2
-  jumpSpeed: 600
+  jumpSpeed: 800
   jumpPower: 1600
   jumpRes: 0.4
   jumpCool: 2
-  firstGravity: 180
+  firstGravity: 460
   downRes: 0
   velocityMin: {x: -100, y: -100}
   velocityMax: {x: 100, y: 100}
@@ -58,7 +58,7 @@ MonoBehaviour:
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 65920
+      m_Bits: 2147549568
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 70

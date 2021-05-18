@@ -96,15 +96,15 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
             if (num > 0)
             {
                 enableTool.Add(ti.Key);
-                //Debug.log("EEEE");
+                ////Debug.log("EEEE");
             }
 
         }
-        //Debug.log(enableTool.Count);
+        ////Debug.log(enableTool.Count);
 
         for (int i = 0; i < enableTool.Count; i += 3)
         {
-            //Debug.log("WWW");
+            ////Debug.log("WWW");
             this.data = new List<UseItemData>{
 
             new UseItemData(enableTool[i],enableTool[i+1],enableTool[i+2])
@@ -122,8 +122,9 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
             toolDataBase.GetItemLists()[i].inventoryNum = 0;
 
         }
+        data = null;
 
-        setList = ToolList().ToList();
+        setList = new List<ToolItem>(ToolList());
 
         /*(from item in toolDataBase.GetItemLists()
                where item.inventoryNum > 0
@@ -131,7 +132,7 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
         //最終的に作りたいリストの初期化
         data = new List<UseItemData>();
         //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
-        List<ToolItem> miniList = new List<ToolItem>();
+        List<ToolItem> miniList = new List<ToolItem>(N);
 
         //ToolItem[] miniList = new ToolItem[3];
 
@@ -153,7 +154,8 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
             //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
             if (i % N == 0)
             {
-                miniList.Clear();
+                miniList = null;
+                miniList = new List<ToolItem>(N);
             }
             //miniListに格納
             miniList.Add(setList[i]);
@@ -164,7 +166,8 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
 
                 UseItemData mini = new UseItemData(miniList.ToArray());
                 data.Add(mini);
-               // //Debug.log($"試してる{mini.Contents}");
+                mini = null;
+                // ////Debug.log($"試してる{mini.Contents}");
             }
         }
 #endregion
@@ -180,6 +183,8 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
         //というかUpdateNavigationConnections()する
 
         this.fooScroller.ReloadData();
+        setList = null;
+        miniList = null;
         this.UpdateNavigationConnections();
     }
 
@@ -190,8 +195,8 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
         if (MainUI.instance.isReBuild && !isEver)
         {
 
-            data.Clear();//インベントリを一回からにして入れなおす
-            ////Debug.log("試させろ");
+            data = null;//インベントリを一回からにして入れなおす
+                        //////Debug.log("試させろ");
             #region
 
             //  for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
@@ -201,25 +206,19 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
             //setList = toolDataBase.GetItemLists();
             // }
 
-            setList = ToolList().ToList();
-            //setList = (from item in toolDataBase.GetItemLists()
-            //        where item.inventoryNum > 0
-            //      select item).ToList();
+            setList = new List<ToolItem>(ToolList());
 
+            /*(from item in toolDataBase.GetItemLists()
+                   where item.inventoryNum > 0
+                   select item).ToList();*/
             //最終的に作りたいリストの初期化
-
+            data = new List<UseItemData>();
             //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
-            List<ToolItem> miniList = new List<ToolItem>();
+            List<ToolItem> miniList = new List<ToolItem>(N);
 
             //ToolItem[] miniList = new ToolItem[3];
 
-            if (setList.Count == 0)
-            {
-                setList.Add(space1);
-                setList.Add(space2);
-                setList.Add(space3);
-            }
-            else if (setList.Count % N == N - 1)
+            if (setList.Count % N == N - 1)
             {
                 setList.Add(space1);
             }
@@ -234,44 +233,24 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
             for (int i = 0; i < setList.Count(); i++)
             {
                 //if (setList.Count - i >= N){
-                    //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
-                    if (i % N == 0)
-                    {
-                    miniList.Clear();
-                    }
-                    //miniListに格納
-                    miniList.Add(setList[i]);
-                    //Nの倍数-1ならminiListを元にUseItemDataを作成して格納
-
-                    if (i % N == N - 1)
-                    {
-                        
-                        UseItemData mini = new UseItemData(miniList.ToArray());
-                        data.Add(mini);
-                }
-                //}
-                /*else if(setList.Count - i < N)
+                //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
+                if (i % N == 0)
                 {
-                    //Debug.log("そこに愛はある？");
-                    //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
-                    if (i % N == 0) {
-                        miniList = new List<ToolItem>();
-                    }
-                    //miniListに格納
-                    miniList.Add(setList[i]);
-                    //Nの倍数-1ならminiListを元にUseItemDataを作成して格納
+                    miniList = null;
+                    miniList = new List<ToolItem>(N);
+                }
+                //miniListに格納
+                miniList.Add(setList[i]);
+                //Nの倍数-1ならminiListを元にUseItemDataを作成して格納
 
-                    if (setList.Count - i == 0)
-                    {
-                        ToolItem[] box = miniList.ToArray();
-                        UseItemData mini = new UseItemData(box);
-                        data.Add(mini);
-                        //Debug.log("愛して");
-                    }
+                if (i % N == N - 1)
+                {
 
-                }*/
-
-                
+                    UseItemData mini = new UseItemData(miniList.ToArray());
+                    data.Add(mini);
+                    mini = null;
+                    // ////Debug.log($"試してる{mini.Contents}");
+                }
             }
             #endregion
             this.content = this.fooScroller.GetComponent<ScrollRect>().content;
@@ -285,15 +264,16 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
             //すなわち表示非表示切り替わるとthis.OnCellViewVisibilityChanged
             //というかUpdateNavigationConnections()する
 
-            ////Debug.log("愛してる");
             this.fooScroller.ReloadData();
+            setList = null;
+            miniList = null;
             this.UpdateNavigationConnections();
             isEver = true;
 
         }
         /*else if(!mi.isReBuild && isEver)
         {
-            //Debug.log("愛してない");
+            ////Debug.log("愛してない");
             //isEver = false;
         }*/
             JButton();
@@ -422,12 +402,12 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
  /* if (i == (cells.Length - 1) )
             {
                 isLast = true;
-                //Debug.log("yasai");
+                ////Debug.log("yasai");
             }
             else
             {
                 isLast = false;
-                //Debug.log("niku");
+                ////Debug.log("niku");
             }
             if(i != 0)
             {

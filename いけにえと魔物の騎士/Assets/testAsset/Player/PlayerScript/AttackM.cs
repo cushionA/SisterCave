@@ -3,11 +3,11 @@
 
 public class AttackM : MonoBehaviour
 {
-    public GameObject Player;
+   // public GameObject Player;
 
     //------------------------------------------内部パラメータ
 
-    PlayerMove pm;
+    //PlayerMoveGManager.instance.pm;
     //attackNumberと連動してステート名を獲得
     /// <summary>
     /// 弱攻撃ボタンが押されてるかどうか
@@ -33,17 +33,17 @@ public class AttackM : MonoBehaviour
     /// ため押し時間測る入れ物
     /// </summary>
     float chargeTime;
-    float gravity;//重力を入れる
+ //   float gravity;//重力を入れる
 
     bool isDisEnable;//空中弱攻撃を二回までに制限
-    bool fallAttack;//空中強攻撃の落下終了までisAttackをキープするためのフラグ
+    
 
 
-    float delayTime;
+   // float delayTime;
     int attackNumber;
     int alterNumber;
     int artsNumber;
-    Animator anim;
+    //Animator anim;
     bool isAttackable;
     bool smallTrigger;
     bool bigTrigger;
@@ -70,29 +70,37 @@ public class AttackM : MonoBehaviour
     bool isBComboEnd;
     bool isAComboEnd;
 
-    ///<summary>
-    ///攻撃の発生保障
-    /// </summary>
-    bool lastAttack;
-    float testtime;
-
+  // ///<summary>
+ ///   ///攻撃の発生保障
+//    /// </summary>
+  //  bool lastAttack;
+  //  float testtime;
+    bool cAttack;
 
     /// <summary>
     /// 横攻撃後に方向転換か移動か判断する
     /// </summary>
     float afterTime;
 
+    float groundTime;
+
     public float afterJudge = 0.35f;
 
-    Rigidbody2D rb;
+ //   Rigidbody2D GManager.instance.pm.rb;
+
+    /// <summary>
+    /// ほんとに落ち始めるフラグ
+    /// </summary>
+    bool startFall;
+   // Vector3 theScale = new Vector3();
 
     // Start is called before the first frame update
     void Start()
     {
 
-        pm = Player.GetComponent<PlayerMove>();
-        anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+      // GManager.instance.pm = Player.GetComponent<PlayerMove>();
+      //  anim = GetComponent<Animator>();
+      //  GManager.instance.pm.rb = GetComponent<Rigidbody2D>();
        // GManager.instance.SetAtk();
     }
 
@@ -100,12 +108,12 @@ public class AttackM : MonoBehaviour
 
     private void Update()
     {
-        //    //Debug.log($"攻撃可能？{isAttackable}");
-        //   //Debug.log($"攻撃中？{GManager.instance.isAttack}");
+        //    //////Debug.log($"攻撃可能？{isAttackable}");
+        //   //////Debug.log($"攻撃中？{GManager.instance.isAttack}");
 
         //  DownKeyCheck();
         //     ControllerCheck();
-     //   Debug.Log($"状態は{GManager.instance.pStatus.equipWeapon.twinHand}です");
+     //   ////Debug.Log($"状態は{GManager.instance.pStatus.equipWeapon.twinHand}です");
         horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
 
         changeKey = GManager.instance.InputR.GetButtonUp(MainUI.instance.rewiredAction13);
@@ -114,7 +122,11 @@ public class AttackM : MonoBehaviour
             fire1Key = GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction9);
             //lastAttack = true;
         }
-        if(GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction9) && GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction13))
+        else
+        {
+            fire1Key = false;
+        }
+        if(GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction9) && GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction13) && !GManager.instance.isAttack)
         {
             //武器切り替え
 
@@ -125,7 +137,7 @@ public class AttackM : MonoBehaviour
         }
         else if (changeKey && !equipChange)
         {
-           // Debug.Log("借金");
+           // ////Debug.Log("借金");
             GManager.instance.pStatus.equipWeapon.twinHand = !GManager.instance.pStatus.equipWeapon.twinHand;
         }
         else if(equipChange && changeKey)
@@ -142,11 +154,26 @@ public class AttackM : MonoBehaviour
 
                 //fire2Axis = GManager.instance.InputR.GetAxisRaw("Fire2Axis");
             }
+            else
+            {
+                fire2Key = false;
+            }
 
             if (!artsTrigger)
             {
                 artsKey = GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction12);
+               // ////Debug.Log("入力");
             }
+            else
+            {
+                artsKey = false;
+
+            }
+        }
+        else
+        {
+            fire2Key = false;
+            artsKey = false;
         }
         anyKey = AnyKey();
 
@@ -155,7 +182,7 @@ public class AttackM : MonoBehaviour
 
         if (isCharging && !bigAttack && !chargeAttack)
         {
-            chargeKey = GManager.instance.InputR.GetButton((MainUI.instance.rewiredAction10));////Debug.log("入力");
+            chargeKey = GManager.instance.InputR.GetButton((MainUI.instance.rewiredAction10));////////Debug.log("入力");
         }
         else
         {
@@ -179,7 +206,7 @@ public class AttackM : MonoBehaviour
              chargeTime = 0.0f;
             //isCharging = false;
             bigAttack = true;
-            ////Debug.log("現況");
+            ////////Debug.log("現況");
         }
 
     }
@@ -189,9 +216,11 @@ public class AttackM : MonoBehaviour
 
     private void FixedUpdate()
     {
-        NumberControll();
+        //////Debug.Log($"あーつ{GManager.instance.isAttack}");
 
-     //     Debug.Log($"どうすか？{anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1}");
+
+
+         // Debug.Log($"どうすか？{GManager.instance.airAttack}");
 
         if (!GManager.instance.isEnable)
         {
@@ -210,11 +239,11 @@ public class AttackM : MonoBehaviour
         ///攻撃中停止
         /// </summary>
         #region
-        if (GManager.instance.pm.isGround && isAttackable && GManager.instance.isAttack)
+        /*if (GManager.instance.pm.isGround && isAttackable && GManager.instance.isAttack)
         {
-            // rb.velocity = new Vector2(0, GManager.instance.pm.ySpeed);
-            rb.velocity = Vector2.zero;
-        }
+            
+            GManager.instance.pm.rb.velocity = Vector2.zero;
+        }*/
         #endregion
         ///<summary>
         ///モーション番号のリセット
@@ -288,7 +317,7 @@ public class AttackM : MonoBehaviour
                 if (alterNumber >= GManager.instance.pStatus.equipWeapon.strikeValue.Count)
                 {
                     alterNumber = 0;//モーション番号のリセット
-                    fallAttack = true;
+                    GManager.instance.fallAttack = true;
                     isDisEnable = true;
                 }
 
@@ -303,7 +332,7 @@ public class AttackM : MonoBehaviour
                 if (alterNumber >= GManager.instance.pStatus.equipWeapon.twinStrikeValue.Count)
                 {
                     alterNumber = 0;//モーション番号のリセット
-                    fallAttack = true;
+                    GManager.instance.fallAttack = true;
                     isDisEnable = true;
                 }
 
@@ -311,11 +340,11 @@ public class AttackM : MonoBehaviour
 
         }*/
         #endregion
-        if (pm.isEnAt && !GManager.instance.isAttack && GManager.instance.isEnable)
+        if (GManager.instance.pm.isEnAt && !GManager.instance.isAttack && GManager.instance.isEnable)
         {
             //攻撃可能で弱攻撃ボタン押されてて攻撃してなくてスタミナが使えるなら以下の処理
             //delayTime = 0.0f;
-            if (pm.isGround)
+            if (GManager.instance.pm.isGround)
             {
                 isDisEnable = false;
                 NormalAttack();
@@ -327,18 +356,20 @@ public class AttackM : MonoBehaviour
                     isCharging = true;
                     isAttackable = false;
                     GManager.instance.isAttack = true;
+                  //  GManager.instance.pm.rb.velocity = Vector2.zero;
                     bigTrigger = false;
 
                     #endregion
                 }
             }
-            else if (!pm.isGround)
+            else //if (GManager.instance.pm.isEnAt && !GManager.instance.isAttack && GManager.instance.isEnable)
             {
                 AirAttack();
             }
             // lastAttack = true;
 
         }
+
         if (GManager.instance.isAttack && isCharging)
         {
             if (!GManager.instance.pStatus.equipWeapon.isMagic)
@@ -352,28 +383,33 @@ public class AttackM : MonoBehaviour
             }
         }
 
+        NumberControll();
+
         #region//連撃入力とキャンセル待ち
-        if (GManager.instance.isAttack && isAttackable && pm.isGround && !isCharging)
+        if (GManager.instance.isAttack && isAttackable && !GManager.instance.airAttack && !isCharging && !GManager.instance.fallAttack)
         {
             GroundCheck();
         }
         #endregion
         #region//空中連撃入力とキャンセル待ち
-        else if (GManager.instance.isAttack && isAttackable && !pm.isGround && !fallAttack)
+        else if (GManager.instance.isAttack && isAttackable && GManager.instance.airAttack && !GManager.instance.fallAttack)
         {
             AirCheck();
+            GManager.instance.pm.rb.velocity = Vector2.zero;
         }
+
+
         #endregion
         #region//地上モーション終了検査
-        if (pm.isGround)
+        if (!GManager.instance.airAttack)
         {
             if (attackNumber >= 1 && !isSComboEnd)
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"OSAttack{attackNumber}") == false)
                     {
-                        // //Debug.log("機能してます");
+                        // //////Debug.log("機能してます");
                         attackNumber = 0;
                         GManager.instance.isAttack = false;
                         smallTrigger = false;
@@ -383,9 +419,9 @@ public class AttackM : MonoBehaviour
                 }
                 else
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"TSAttack{attackNumber}") == false)
                     {
-                        // //Debug.log("機能してます");
+                        // //////Debug.log("機能してます");
                         attackNumber = 0;
                         GManager.instance.isAttack = false;
                         smallTrigger = false;
@@ -394,16 +430,16 @@ public class AttackM : MonoBehaviour
                     }
                 }
             }
-            else if (alterNumber >= 1 && !isCharging && !isBComboEnd)
+            else if (alterNumber >= 1 && !cAttack && !isBComboEnd)
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"OBAttack{alterNumber}") == false)
                     {
-                        ////Debug.log("機能してます");
+                        ////////Debug.log("機能してます");
                         alterNumber = 0;
                         bigAttack = false;
-                        chargeAttack = false;
+                      //  chargeAttack = false;
                         GManager.instance.isAttack = false;
                         bigTrigger = false;
                             //保障された攻撃をしました
@@ -412,12 +448,12 @@ public class AttackM : MonoBehaviour
                 }
                 else 
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"TBAttack{alterNumber}") == false)
                     {
-                        ////Debug.log("機能してます");
+                        ////////Debug.log("機能してます");
                         alterNumber = 0;
                         bigAttack = false;
-                        chargeAttack = false;
+                    //    chargeAttack = false;
                         GManager.instance.isAttack = false;
                         bigTrigger = false;
                             //保障された攻撃をしました
@@ -426,30 +462,31 @@ public class AttackM : MonoBehaviour
                 }
                 
             }
-            else if (alterNumber >= 1 && isCharging && !isBComboEnd)
+            else if (alterNumber >= 1 && cAttack && !isBComboEnd)
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"OCAttack{alterNumber}") == false)
                     {
-                        ////Debug.log("機能してます");
+                        Debug.Log("あああ確認");
+                        ////////Debug.log("機能してます");
                         alterNumber = 0;
                         bigAttack = false;
-                        chargeAttack = false;
+                     //   chargeAttack = false;
                         GManager.instance.isAttack = false;
                         bigTrigger = false;
-                            //保障された攻撃をしました
-                            
+                        //保障された攻撃をしました
+                        cAttack = false;
                     }
                 }
                 else
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"TCAttack{alterNumber}") == false)
                     {
-                        ////Debug.log("機能してます");
+                        ////////Debug.log("機能してます");
                         alterNumber = 0;
                         bigAttack = false;
-                        chargeAttack = false;
+                     //   chargeAttack = false;
                         GManager.instance.isAttack = false;
                         bigTrigger = false;
                             //保障された攻撃をしました
@@ -460,23 +497,23 @@ public class AttackM : MonoBehaviour
             }
             else if(artsNumber >= 1 && !isAComboEnd)
             {
-                if (!GManager.instance.pStatus.equipWeapon.twinHand && !GManager.instance.pStatus.equipShield.weponArts)
-                {
-                    if (CheckEnd() == false)
+               if (!GManager.instance.pStatus.equipWeapon.twinHand && !GManager.instance.pStatus.equipShield.weponArts)
+               {
+                    if (CheckEnd($"OArts{artsNumber}") == false)
                     {
-                        // //Debug.log("機能してます");
+                        // //////Debug.log("機能してます");
                         artsNumber = 0;
                         GManager.instance.isAttack = false;
                         artsTrigger = false;
                             //保障された攻撃をしました
                             
-                    }
+                   }
                 }
-                else
+               else
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"TArts{artsNumber}") == false)
                     {
-                        // //Debug.log("機能してます");
+                        // //////Debug.log("機能してます");
                         artsNumber = 0;
                         GManager.instance.isAttack = false;
                         artsTrigger = false;
@@ -487,6 +524,37 @@ public class AttackM : MonoBehaviour
 
                 }
             }
+            else if (startFall)
+            {
+                if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                {
+                    if (CheckEnd($"OLanding") == false)
+                    {
+                        // //////Debug.log("機能してます");
+                     //   artsNumber = 0;
+                        GManager.instance.isAttack = false;
+                        //   artsTrigger = false;
+                        //保障された攻撃をしました
+                        startFall = false;
+                        GManager.instance.fallAttack = false;
+                    }
+                }
+                else
+                {
+                    if (CheckEnd($"TLanding") == false)
+                    {
+                        // //////Debug.log("機能してます");
+                     //   artsNumber = 0;
+                        GManager.instance.isAttack = false;
+                        //  artsTrigger = false;
+                        GManager.instance.fallAttack = false;
+                        startFall = false;
+                    }
+                    //保障された攻撃をしました
+
+                }
+                //GManager.instance.pm.rb.velocity = Vector2.zero;
+            }
             
             ///<Summary>
             /// コンボ終了後のアニメ終了確認
@@ -496,9 +564,9 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"OSAttack{GManager.instance.pStatus.equipWeapon.sValue.Count}") == false)
                     {
-                        // //Debug.log("機能してます");
+                        // //////Debug.log("機能してます");
                        attackNumber = 0;
                         GManager.instance.isAttack = false;
                         smallTrigger = false;
@@ -510,9 +578,9 @@ public class AttackM : MonoBehaviour
                 }
                 else
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"TSAttack{GManager.instance.pStatus.equipWeapon.twinSValue.Count}") == false)
                     {
-                        // //Debug.log("機能してます");
+                        // //////Debug.log("機能してます");
                         attackNumber = 0;
                         GManager.instance.isAttack = false;
                         smallTrigger = false;
@@ -523,51 +591,51 @@ public class AttackM : MonoBehaviour
                     }
                 }
             }
-           else if(isBComboEnd && isCharging)
+           else if(isBComboEnd && cAttack)
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"OCAttack{GManager.instance.pStatus.equipWeapon.chargeValue.Count}") == false)
                     {
-                        ////Debug.log("機能してます");
+                        //Debug.Log("機能してます");
                         alterNumber = 0;
                         bigAttack = false;
-                        chargeAttack = false;
+                      //  chargeAttack = false;
                         GManager.instance.isAttack = false;
                         bigTrigger = false;
-                        isBComboEnd = false; 
-                            //保障された攻撃をしました
-                            
-                        
+                        isBComboEnd = false;
+                        //保障された攻撃をしました
+
+                        cAttack = false;
 
                     }
                 }
                 else
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"TCAttack{GManager.instance.pStatus.equipWeapon.twinChargeValue.Count}") == false)
                     {
-                        ////Debug.log("機能してます");
+                        ////////Debug.log("機能してます");
                         alterNumber = 0;
                         bigAttack = false;
-                        chargeAttack = false;
+                        //chargeAttack = false;
                         GManager.instance.isAttack = false;
                         bigTrigger = false;
                         isBComboEnd = false;
-                            //保障された攻撃をしました
-                            
+                        //保障された攻撃をしました
+                        cAttack = false;
                     }
                 }
             }
-            else if (isBComboEnd && !isCharging)
+            else if (isBComboEnd && !cAttack)
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand)
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"OBAttack{GManager.instance.pStatus.equipWeapon.bValue.Count}") == false)
                     {
-                        ////Debug.log("機能してます");
+                        ////////Debug.log("機能してます");
                         alterNumber = 0;
                         bigAttack = false;
-                        chargeAttack = false;
+                     //   chargeAttack = false;
                         GManager.instance.isAttack = false;
                         bigTrigger = false;
                         isBComboEnd = false;
@@ -577,9 +645,9 @@ public class AttackM : MonoBehaviour
                 }
                 else
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"TBAttack{GManager.instance.pStatus.equipWeapon.twinBValue.Count}") == false)
                     {
-                        ////Debug.log("機能してます");
+                        ////////Debug.log("機能してます");
                         alterNumber = 0;
                         bigAttack = false;
                         chargeAttack = false;
@@ -596,9 +664,10 @@ public class AttackM : MonoBehaviour
             {
                 if (!GManager.instance.pStatus.equipWeapon.twinHand && !GManager.instance.pStatus.equipShield.weponArts)
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"OArts{GManager.instance.pStatus.equipShield.artsValue.Count}") == false)
                     {
-                        // //Debug.log("機能してます");
+                        ////Debug.Log("終了リセット");
+                        // //////Debug.log("機能してます");
                         artsNumber = 0;
                         GManager.instance.isAttack = false;
                         artsTrigger = false;
@@ -607,65 +676,68 @@ public class AttackM : MonoBehaviour
                 }
                 else
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"TArts{GManager.instance.pStatus.equipWeapon.artsValue.Count}") == false)
                     {
-                        // //Debug.log("機能してます");
+                        // //////Debug.log("機能してます");
                         artsNumber = 0;
                         GManager.instance.isAttack = false;
-                        artsTrigger = false;
-                        isAComboEnd = false;
+                       artsTrigger = false;
+                       isAComboEnd = false;
                     }
 
                 }
             }
+
             #endregion
 
         }
         #endregion
         #region//空中モーション終了検査
-        else if (!pm.isGround)
+        else if (GManager.instance.airAttack)
         {
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
                 if (attackNumber >= 1 && !isDisEnable)
                 {
 
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"OAAttack{attackNumber}") == false)
                     {
-                        ////Debug.log("機能してます");
+                        ////////Debug.log("機能してます");
                         GManager.instance.isAttack = false;
                         GManager.instance.airAttack = false;
                         smallTrigger = false;
+                        attackNumber = 0;
                     }
                     /* if (isDisEnable)
                                             {
                                                 GManager.instance.airAttack = false;
-                                                attackNumber = pm.isGround ? 0 : attackNumber;
+                                                attackNumber =GManager.instance.pm.isGround ? 0 : attackNumber;
                                                 //isGroundの時attackNumberを0、違うならそのまま
                                             }*/
                 }
-                else if (alterNumber >= 1 && !fallAttack)
+                else if (alterNumber >= 1 && !GManager.instance.fallAttack)
                 {
 
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"OFAttack{alterNumber}") == false)
                     {
-                        ////Debug.log("機能してます");
+                        ////////Debug.log("機能してます");
                         GManager.instance.isAttack = false;
-                        GManager.instance.airAttack = false;
+                       GManager.instance.airAttack = false;
                         bigTrigger = false;
+                        alterNumber = 0;
                     }
-                    /*                   if (fallAttack)
+                    /*                   if (GManager.instance.fallAttack)
                                        {
                                            GManager.instance.airAttack = false;
-                                           attackNumber = pm.isGround ? 0 : attackNumber;
+                                           attackNumber =GManager.instance.pm.isGround ? 0 : attackNumber;
                                            //isGroundの時attackNumberを0、違うならそのまま
                                        }*/
                 }
                 else if (isDisEnable)
                 {
-                    if (CheckEnd() == false)
+                    if (CheckEnd($"OAAttack{GManager.instance.pStatus.equipWeapon.airValue.Count}") == false)
                     {
-                        // //Debug.log("機能してます");
+                        // //////Debug.log("機能してます");
                         attackNumber = 0;
                         GManager.instance.isAttack = false;
                         smallTrigger = false;
@@ -673,11 +745,11 @@ public class AttackM : MonoBehaviour
                         isSComboEnd = false;
                     }
                 }
-                else if (isBComboEnd)
-                {
+         //       else if (isBComboEnd)
+         //       {
                     /*     if (CheckEnd($"OFAttack{GManager.instance.pStatus.equipWeapon.strikeValue.Count}") == false)
                          {
-                             ////Debug.log("機能してます");
+                             ////////Debug.log("機能してます");
                              alterNumber = 0;
                              bigAttack = false;
                              // chargeAttack = false;
@@ -687,7 +759,7 @@ public class AttackM : MonoBehaviour
                              GManager.instance.airAttack = false;
                          }
                      }    */
-                }
+            //    }
             }
 
             else
@@ -695,42 +767,44 @@ public class AttackM : MonoBehaviour
                     if (attackNumber >= 1 && !isDisEnable)
                     {
 
-                        if (CheckEnd() == false)
+                        if (CheckEnd($"TAAttack{attackNumber}") == false)
                         {
-                            ////Debug.log("機能してます");
+                            ////////Debug.log("機能してます");
                             GManager.instance.isAttack = false;
                             GManager.instance.airAttack = false;
                             smallTrigger = false;
+                            attackNumber = 0;
                         }
 /*                        if (isDisEnable)
                         {
                             GManager.instance.airAttack = false;
-                            attackNumber = pm.isGround ? 0 : attackNumber;
+                            attackNumber =GManager.instance.pm.isGround ? 0 : attackNumber;
                             //isGroundの時attackNumberを0、違うならそのまま
                         }*/
                     }
                     else if (alterNumber >= 1 && !isBComboEnd)
                     {
 
-                        if (CheckEnd() == false)
+                        if (CheckEnd($"TFAttack{alterNumber}") == false)
                         {
-                            ////Debug.log("機能してます");
+                            ////////Debug.log("機能してます");
                             GManager.instance.isAttack = false;
                             GManager.instance.airAttack = false;
                             bigTrigger = false;
+                            alterNumber = 0;
                         }
-                    /*                   if (fallAttack)
+                    /*                   if (GManager.instance.fallAttack)
                                        {
                                            GManager.instance.airAttack = false;
-                                           attackNumber = pm.isGround ? 0 : attackNumber;
+                                           attackNumber =GManager.instance.pm.isGround ? 0 : attackNumber;
                                            //isGroundの時attackNumberを0、違うならそのまま
                                        }*/
                 }
                 else if (isDisEnable)
                     {
-                        if (CheckEnd() == false)
+                        if (CheckEnd($"TAAttack{GManager.instance.pStatus.equipWeapon.twinAirValue.Count}") == false)
                         {
-                            // //Debug.log("機能してます");
+                            // //////Debug.log("機能してます");
                             attackNumber = 0;
                             GManager.instance.isAttack = false;
                             smallTrigger = false;
@@ -738,11 +812,11 @@ public class AttackM : MonoBehaviour
                             GManager.instance.airAttack = false;
                         }
                     }
-                    else if (fallAttack)
-                    {
+                    //else if (GManager.instance.fallAttack)
+                  //  {
                   /*      if (CheckEnd($"TFAttack{GManager.instance.pStatus.equipWeapon.twinStrikeValue.Count}") == false)
                         {
-                            ////Debug.log("機能してます");
+                            ////////Debug.log("機能してます");
                             alterNumber = 0;
                             bigAttack = false;
                             //chargeAttack = false;
@@ -751,28 +825,89 @@ public class AttackM : MonoBehaviour
                             isBComboEnd = false;
                         GManager.instance.airAttack = false;
                     }*/
-                    }
+                    //}
             }
         }
         #endregion
 
 
 
-        // //Debug.log($"判定{GManager.instance.isAttack}");
-        // //Debug.log($"空中攻撃は{attackNumber}");
+        // //////Debug.log($"判定{GManager.instance.isAttack}");
+        // //////Debug.log($"空中攻撃は{attackNumber}");
 
-        if (fallAttack)
+        if (GManager.instance.fallAttack)
         {
-            gravity = pm.gravity * 1.3f;
-            rb.velocity = new Vector2(0, -gravity);
-            if (pm.isGround)
+            if (startFall)
             {
-                GManager.instance.isAttack = false;
-                fallAttack = false;
-                isBComboEnd = true;
+               // gravity =GManager.instance.pm.gravity * 3f;
+                GManager.instance.pm.move.Set(0, -GManager.instance.pm.gravity * 3);
+                GManager.instance.pm.rb.velocity = GManager.instance.pm.move;
+            }
+            else
+            {
+                GManager.instance.pm.rb.velocity = Vector2.zero;
+            }
+          //  ////Debug.Log($"着地後{groundTime}");
+            if (GManager.instance.pm.isGround)
+            { 
+
+                if (GManager.instance.pStatus.equipWeapon.twinHand)
+                {
+                    GManager.instance.pm.anim.Play("TLanding");
+                }
+                else
+                {
+                    GManager.instance.pm.anim.Play("OLanding");
+                }
+                groundTime += Time.fixedDeltaTime;
+                GManager.instance.pm.rb.velocity = Vector2.zero;
+                GManager.instance.isArmor = false;
+                GManager.instance.airAttack = false;
+                // GManager.instance.pm.jumpTime = 0.0f;
+                if (groundTime >= 0.1f)
+                {
+                    //GManager.instance.isAttack = false;
+                    //  GManager.instance.airAttack = false;
+                    // GManager.instance.isArmor = false;
+                    isBComboEnd = false;
+                    groundTime = 0;
+                    // //////Debug.log("機能してます");
+                    attackNumber = 0;
+                    alterNumber = 0;
+                    //GManager.instance.isAttack = false;
+                    smallTrigger = false;
+                    bigTrigger = false;
+
+                    // GManager.instance.pm.jumpTime = 0.0f;
+                    GManager.instance.fallAttack = false;
+                }
             }
         }
 
+        if (!GManager.instance.airAttack && !startFall)
+        {
+            if (GManager.instance.isAttack && !isAttackable && (!GManager.instance.pm.isGround || GManager.instance.pm.isSloopDown))
+            {
+                GManager.instance.pm.move.Set(0, -GManager.instance.pm.gravity);
+                GManager.instance.pm.rb.velocity = GManager.instance.pm.move;
+            }
+            else if (GManager.instance.isAttack && isAttackable && GManager.instance.pm.isGround)
+            {
+                Debug.Log("たけし");
+                GManager.instance.pm.rb.velocity = Vector2.zero;
+            }
+            else if(GManager.instance.isAttack && isAttackable && !GManager.instance.pm.isGround)
+            {
+                GManager.instance.pm.move.Set(0, -GManager.instance.pm.gravity);
+                GManager.instance.pm.rb.velocity = GManager.instance.pm.move;
+            }
+       /*     else if(GManager.instance.isAttack && !isAttackable && !GManager.instance.pm.isSloopDown)
+            {
+                GManager.instance.pm.move.Set(GManager.instance.pm.rb.velocity.x, 0);
+                GManager.instance.pm.rb.velocity = GManager.instance.pm.move;
+            }*/
+
+        }
 
         if (isAttackable)//攻撃後の方向転換
         {
@@ -795,32 +930,50 @@ public class AttackM : MonoBehaviour
     ///</Summally>
     public void Continue()
     {
+       // GManager.instance.pm.anim.Play("OArts1");
 
-       Debug.Log("攻撃可能に");
+        ////Debug.Log("攻撃可能に");
         isAttackable = true;
-        GManager.instance.isArmor = false;
+        
         GManager.instance.StaminaUse(useStamina);
+
+        if (GManager.instance.fallAttack)
+        {
+            startFall = true;
+        }
+        else
+        {
+            GManager.instance.isArmor = false;
+        }
     }
 
     //アニメの終了探知
-    bool CheckEnd()
+    bool CheckEnd(string Name)
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
-        {
 
-
-            Debug.Log($"アニメ終了{anim.GetCurrentAnimatorStateInfo(0).IsName($"TSAttack{attackNumber + 1}")}");
-            return false;
+        if (!GManager.instance.pm.anim.GetCurrentAnimatorStateInfo(0).IsName(Name))// || GManager.instance.pm.anim.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
+        {   // ここに到達直後はnormalizedTimeが"Default"の経過時間を拾ってしまうので、Resultに遷移完了するまではreturnする。
+           ////Debug.Log("おひひ");
+            return true;
         }
-        // return !(anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+        if (GManager.instance.pm.anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {   // 待機時間を作りたいならば、ここの値を大きくする。
+            return true;
+        }
+           AnimatorClipInfo[] clipInfo = GManager.instance.pm.anim.GetCurrentAnimatorClipInfo(0);
+        //        ////Debug.Log("おひひ");
+        ////Debug.Log($"アニメ終了");
+ 
+        return false;
+       
+        // return !(GManager.instance.pm.anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
         //  (_currentStateName);
-        return true;
     }
 
     bool AnyKey()
     {
         if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction4) || GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction11)
-            || GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction1) != 0 /*|| GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction2) != 0*/)
+            || GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction1) != 0 || GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction13))
         {
 
             return true;
@@ -844,39 +997,43 @@ public class AttackM : MonoBehaviour
     void NormalAttack()
     {
         #region//通常攻撃
-        if (attackNumber == 0 && (fire1Key || smallTrigger) && !GManager.instance.isAttack)
+        if (attackNumber == 0 && (fire1Key || smallTrigger))
         {
+
+            isSComboEnd = false;
             GManager.instance.isAttack = true;
+           // GManager.instance.pm.rb.velocity = Vector2.zero;
             sAttackPrepare();
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
-                anim.Play("OSAttack1");
+                GManager.instance.pm.anim.Play($"OSAttack{attackNumber + 1}");
 
         // // GManager.instance.StaminaUse(useStamina);
             }
             else
             {
-                anim.Play("TSAttack1");
+                GManager.instance.pm.anim.Play($"TSAttack{attackNumber + 1}");
                 //// GManager.instance.StaminaUse(useStamina);
             }
             isAttackable = false;
             attackNumber++;
             smallTrigger = false;
         }
-        else if (attackNumber != 0 && (GManager.instance.pStatus.equipWeapon.isCombo || smallTrigger) && !GManager.instance.isAttack)
+        else if (attackNumber != 0 && (GManager.instance.pStatus.equipWeapon.isCombo || (fire1Key || smallTrigger)))
         {
             sAttackPrepare();
             GManager.instance.isAttack = true;
+          //  GManager.instance.pm.rb.velocity = Vector2.zero;
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
 
-                anim.Play($"OSAttack{attackNumber + 1}");
+                GManager.instance.pm.anim.Play($"OSAttack{attackNumber + 1}");
         // // GManager.instance.StaminaUse(useStamina);
 
             }
             else
             {
-                anim.Play($"TSAttack{attackNumber + 1}");
+                GManager.instance.pm.anim.Play($"TSAttack{attackNumber + 1}");
                // // GManager.instance.StaminaUse(useStamina);
 
             }
@@ -892,37 +1049,41 @@ public class AttackM : MonoBehaviour
         {
             if (alterNumber == 0)
             {
-             //   Debug.Log("戦況");
+                
+                //   ////Debug.Log("戦況");
                 if (chargeAttack)
                 {
+                    isBComboEnd = false;
                     chargeAttackPrepare();
                     if (!GManager.instance.pStatus.equipWeapon.twinHand)
                     {
-                        anim.Play($"OCAttack{alterNumber + 1}");//チャージ攻撃のアニメ
+                        GManager.instance.pm.anim.Play($"OCAttack{alterNumber + 1}");//チャージ攻撃のアニメ
                 // // GManager.instance.StaminaUse(useStamina);
                     }
                     else
                     {
-                        anim.Play($"TCAttack{alterNumber + 1}");//チャージ攻撃のアニメ
+                        GManager.instance.pm.anim.Play($"TCAttack{alterNumber + 1}");//チャージ攻撃のアニメ
                 // // GManager.instance.StaminaUse(useStamina);
                     }
                     alterNumber++;
-                    ////Debug.log("あああああいあいあい");
+                    ////////Debug.log("あああああいあいあい");
                     chargeAttack = false;
                     isCharging = false;
                     chargeTime = 0.0f;
+                    cAttack = true;
                 }
                 else if (bigAttack)
                 {
+                    isBComboEnd = false;
                     bAttackPrepare();
                     if (!GManager.instance.pStatus.equipWeapon.twinHand)
                     {
-                        anim.Play($"OBAttack{alterNumber + 1}");
+                        GManager.instance.pm.anim.Play($"OBAttack{alterNumber + 1}");
                 // // GManager.instance.StaminaUse(useStamina);
                     }
                     else
                     {
-                        anim.Play($"TBAttack{alterNumber + 1}");
+                        GManager.instance.pm.anim.Play($"TBAttack{alterNumber + 1}");
                 // // GManager.instance.StaminaUse(useStamina);
                     }
                     alterNumber++;
@@ -935,36 +1096,41 @@ public class AttackM : MonoBehaviour
                 {
                     if (!GManager.instance.pStatus.equipWeapon.twinHand)
                     {
-                        anim.Play($"OCharge{alterNumber + 1}");//チャージアニメ    
-                        rb.velocity = Vector2.zero;
+                        GManager.instance.pm.anim.Play($"OCharge{alterNumber + 1}");//チャージアニメ    
+                         GManager.instance.pm.rb.velocity = Vector2.zero;
+                      //  GManager.instance.pm.move.Set(0,0);
+                       // GManager.instance.pm.rb.velocity = GManager.instance.pm.move;
                     }
                     else
                     {
-                        rb.velocity = Vector2.zero;
-                        anim.Play($"TCharge{alterNumber + 1}");//チャージアニメ 
+                        GManager.instance.pm.rb.velocity = Vector2.zero;
+                        GManager.instance.pm.anim.Play($"TCharge{alterNumber + 1}");//チャージアニメ 
+                        //GManager.instance.pm.move.Set(0,0);
+                       // GManager.instance.pm.rb.velocity = GManager.instance.pm.move;
                     }
                 }
             }
             else if (alterNumber != 0 || GManager.instance.pStatus.equipWeapon.isCombo)
             {
-            //    Debug.Log("現況");
+            //    ////Debug.Log("現況");
                 if (chargeAttack)
                 {
                     chargeAttackPrepare();
                     if (!GManager.instance.pStatus.equipWeapon.twinHand)
                     {
-                        anim.Play($"OCAttack{alterNumber + 1}");//チャージ攻撃のアニメ
+                        GManager.instance.pm.anim.Play($"OCAttack{alterNumber + 1}");//チャージ攻撃のアニメ
                 // // GManager.instance.StaminaUse(useStamina);
                     }
                     else
                     {
-                        anim.Play($"TCAttack{alterNumber + 1}");//チャージ攻撃のアニメ
+                        GManager.instance.pm.anim.Play($"TCAttack{alterNumber + 1}");//チャージ攻撃のアニメ
                 // // GManager.instance.StaminaUse(useStamina);
                     }
                     alterNumber++;
                     chargeAttack = false;
                     isCharging = false;
                     chargeTime = 0.0f;
+                    cAttack = true;
                 }
                 //もし途中で手を離したら普通に外に出る、2Stayが否定されるから
                 else if (bigAttack)
@@ -972,12 +1138,12 @@ public class AttackM : MonoBehaviour
                     bAttackPrepare();
                     if (!GManager.instance.pStatus.equipWeapon.twinHand)
                     {
-                        anim.Play($"OBAttack{alterNumber + 1}");
+                        GManager.instance.pm.anim.Play($"OBAttack{alterNumber + 1}");
                 // // GManager.instance.StaminaUse(useStamina);
                     }
                     else
                     {
-                        anim.Play($"TBAttack{alterNumber + 1}");
+                        GManager.instance.pm.anim.Play($"TBAttack{alterNumber + 1}");
                 // // GManager.instance.StaminaUse(useStamina);
                     }
                     alterNumber++;
@@ -989,18 +1155,18 @@ public class AttackM : MonoBehaviour
                 {
                     if (!GManager.instance.pStatus.equipWeapon.twinHand)
                     {
-                        anim.Play($"OCharge{alterNumber + 1}");//チャージアニメ     
+                        GManager.instance.pm.anim.Play($"OCharge{alterNumber + 1}");//チャージアニメ     
                     }
                     else
                     {
-                        anim.Play($"TCharge{alterNumber + 1}");//チャージアニメ 
+                        GManager.instance.pm.anim.Play($"TCharge{alterNumber + 1}");//チャージアニメ 
                     }
                 }
             }
         }
         else
         {
-         //   Debug.Log("つうじゅん況");
+         //   ////Debug.Log("つうじゅん況");
             //魔法の処理
             //チャージ時間が魔法発射保留できる時間
             //詠唱時間短めでコンボに混ぜれるようなの多めにする？
@@ -1013,20 +1179,20 @@ public class AttackM : MonoBehaviour
         #region//空中弱攻撃
         if (attackNumber == 0 && (fire1Key || smallTrigger) && !isDisEnable && !bigTrigger)
         {
-
+           // GManager.instance.airAttack = true;
             airAttackPrepare();
-            rb.velocity = Vector2.zero;
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
-                anim.Play("OAAttack1");//空中弱攻撃
+                GManager.instance.pm.anim.Play("OAAttack1");//空中弱攻撃
         // // GManager.instance.StaminaUse(useStamina);
             }
             else
             {
-                anim.Play("TAAttack1");//空中弱攻撃
+                GManager.instance.pm.anim.Play("TAAttack1");//空中弱攻撃
         // // GManager.instance.StaminaUse(useStamina);
             }
             GManager.instance.isAttack = true;
+            GManager.instance.pm.rb.velocity = Vector2.zero;
             //コンボにする仕様上軽めの攻撃に
             isAttackable = false;
             attackNumber++;
@@ -1034,50 +1200,55 @@ public class AttackM : MonoBehaviour
         }
         else if (attackNumber != 0 && (fire1Key || smallTrigger || GManager.instance.pStatus.equipWeapon.isCombo) && !isDisEnable && !bigTrigger )
         {
+           // GManager.instance.airAttack = true;
             airAttackPrepare();
             GManager.instance.isAttack = true;
+            Debug.Log("kkk");
             smallTrigger = false;
+            GManager.instance.pm.rb.velocity = Vector2.zero;
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
-                if (attackNumber == GManager.instance.pStatus.equipWeapon.airValue.Count)
+                if (attackNumber + 1 == GManager.instance.pStatus.equipWeapon.airValue.Count)
                 {
                     isDisEnable = true;
                 }
-                anim.Play($"OAAttack{attackNumber + 1}");
+                GManager.instance.pm.anim.Play($"OAAttack{attackNumber + 1}");
         // // GManager.instance.StaminaUse(useStamina);
             }
             else
             {
-                if (attackNumber == GManager.instance.pStatus.equipWeapon.twinAirValue.Count)
+              //  GManager.instance.airAttack = true;
+                if (attackNumber + 1 == GManager.instance.pStatus.equipWeapon.twinAirValue.Count)
                 {
                     isDisEnable = true;
                 }
-                anim.Play($"TAAttack{attackNumber + 1}");
+                GManager.instance.pm.anim.Play($"TAAttack{attackNumber + 1}");
         // // GManager.instance.StaminaUse(useStamina);
             }
             isAttackable = false;
             attackNumber++;
             smallTrigger = false;
-            //   //Debug.log("Elial");
+            //   //////Debug.log("Elial");
         }
         #endregion
         //空中強攻撃
-        else if ((bigTrigger || fire2Key || GManager.instance.pStatus.equipWeapon.isCombo) && !fallAttack)
+        else if ((bigTrigger || fire2Key || GManager.instance.pStatus.equipWeapon.isCombo) && !GManager.instance.fallAttack)
         {
+           // GManager.instance.airAttack = true;
             strikeAttackPrepare();
             GManager.instance.isAttack = true;
             bigTrigger = false;
+            GManager.instance.pm.rb.velocity = Vector2.zero;
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
-                anim.Play($"OFAttack{attackNumber + 1}");//空中強攻撃
+                GManager.instance.pm.anim.Play($"OFAttack{attackNumber + 1}");//空中強攻撃
         // // GManager.instance.StaminaUse(useStamina);
 
             }
             else
             {
-                anim.Play($"TFAttack{alterNumber}");//空中強攻撃
-        // // GManager.instance.StaminaUse(useStamina);
-
+                GManager.instance.pm.anim.Play($"TFAttack{alterNumber + 1}");//空中強攻撃
+                                                    // // GManager.instance.StaminaUse(useStamina);
             }
             isAttackable = false;
             alterNumber ++;
@@ -1086,44 +1257,54 @@ public class AttackM : MonoBehaviour
 
     void ArtsAttack()
     {
+       // ////Debug.Log($"あーつ{artsKey}");
         #region//特殊行動
         if (artsNumber == 0 && (artsKey || artsTrigger))
         {
-            GManager.instance.isAttack = true;
+
             ArtsPrepare();
+            GManager.instance.isAttack = true;
+            //GManager.instance.pm.rb.velocity = Vector2.zero;
+            ////Debug.Log("正常攻撃");
 
             if (!GManager.instance.pStatus.equipWeapon.twinHand && !GManager.instance.pStatus.equipShield.weponArts)
             {
-                anim.Play("OArts1");
-        // // GManager.instance.StaminaUse(useStamina);//シールドのパリィにする
-               // GManager.instance.isParry = true;
+                GManager.instance.pm.anim.Play("OArts1");
+                ////Debug.Log($"アニメ確認{isAttackable}");
                 GManager.instance.MpReduce(GManager.instance.pStatus.equipShield.artsMP[artsNumber]);
             }
             else
             {
-                anim.Play("TArts1");
-        // // GManager.instance.StaminaUse(useStamina);
+                GManager.instance.pm.anim.Play("TArts1");
+
                 GManager.instance.MpReduce(GManager.instance.pStatus.equipWeapon.artsMP[artsNumber]);
+
             }
+            AnimatorClipInfo[] clipInfo = GManager.instance.pm.anim.GetCurrentAnimatorClipInfo(0);
+          //  ////Debug.Log($"アニメ確認{isAComboEnd}{artsNumber}{GManager.instance.isAttack}");
+        //{clipInfo[0].clip.name}");
             isAttackable = false;
+
             artsNumber++;
             artsTrigger = false;
         }
-        else if (artsNumber != 0 && artsTrigger || GManager.instance.pStatus.equipWeapon.isCombo)
+        else if (artsNumber != 0 && (artsKey || artsTrigger) || GManager.instance.pStatus.equipWeapon.isCombo)
         {
+
             ArtsPrepare();
             GManager.instance.isAttack = true;
+          //  GManager.instance.pm.rb.velocity = Vector2.zero;
             if (!GManager.instance.pStatus.equipWeapon.twinHand && !GManager.instance.pStatus.equipShield.weponArts)
             {
                
-                anim.Play($"OArts{artsNumber + 1}");
+                GManager.instance.pm.anim.Play($"OArts{artsNumber + 1}");
         // // GManager.instance.StaminaUse(useStamina);//シールドのパリィにする
                 GManager.instance.MpReduce(GManager.instance.pStatus.equipShield.artsMP[artsNumber]);
 
             }
             else
             {
-                anim.Play($"TArts{artsNumber + 1}");
+                GManager.instance.pm.anim.Play($"TArts{artsNumber + 1}");
         // // GManager.instance.StaminaUse(useStamina);
                 GManager.instance.MpReduce(GManager.instance.pStatus.equipWeapon.artsMP[artsNumber]);
             }
@@ -1139,23 +1320,39 @@ public class AttackM : MonoBehaviour
         if (anyKey)
         {
             GManager.instance.isAttack = false;
+            GManager.instance.fallAttack = false;
             attackNumber = 0;
             alterNumber = 0;
             artsNumber = 0;
-
+            cAttack = false;
+            startFall = false;
             //保障された攻撃をしました
+            if (isBComboEnd || isSComboEnd || isAComboEnd)
+            {
+                isBComboEnd = false;
+                isSComboEnd = false;
+                isAComboEnd = false;
 
+            }
         }
         else if (fire1Key)
         {
-            Debug.Log($"連撃");
+          //  ////Debug.Log($"連撃");
             GManager.instance.isAttack = false;
             smallTrigger = true;
             alterNumber = 0;
             artsNumber = 0;
             //強攻撃コンボを白紙化
-                //保障された攻撃をしました
-                
+            //保障された攻撃をしました
+            startFall = false;
+            GManager.instance.fallAttack = false;
+            if (isSComboEnd)
+            {
+                isSComboEnd = false;
+                attackNumber = 0;
+
+            }
+            cAttack = false;
         }
         else if (fire2Key)
         {
@@ -1165,8 +1362,16 @@ public class AttackM : MonoBehaviour
             attackNumber = 0;
             artsNumber = 0;
             //弱攻撃コンボを白紙化
-                //保障された攻撃をしました
-                
+            //保障された攻撃をしました
+            startFall = false;
+            GManager.instance.fallAttack = false;
+            if (isBComboEnd)
+            {
+                isBComboEnd = false;
+                alterNumber = 0;
+
+            }
+            cAttack = false;
         }
         else if (artsKey)
         {
@@ -1174,45 +1379,50 @@ public class AttackM : MonoBehaviour
             artsTrigger = true;
             attackNumber = 0;
             alterNumber = 0;
-            
+            GManager.instance.fallAttack = false;
+            if (isAComboEnd)
+            {
+                isAComboEnd = false;
+                artsNumber = 0;
+                ////Debug.Log($"連撃判定");
+                //artsTrigger = false;
+            }
+
+            //        ////Debug.Log("おひひ");
+            // ////Debug.Log($"アニメ確認{clipInfo[0].clip.name}");
+            cAttack = false;
         }
     }
     void AirCheck()
     {
-        if (anyKey)
-        {
-            GManager.instance.isAttack = false;
-            attackNumber = 0;
-            alterNumber = 0;
+            if (anyKey || GManager.instance.pm.isGround)
+            {
+                GManager.instance.isAttack = false;
+
+                attackNumber = 0;
+                alterNumber = 0;
+                GManager.instance.airAttack = false;
+            }
+            else if (fire1Key)
+            {
+                GManager.instance.isAttack = false;
+                smallTrigger = true;
+            bigTrigger = false;
+                alterNumber = 0;
+                GManager.instance.airAttack = false;
+            }
+            else if (fire2Key)
+            {
+                GManager.instance.isAttack = false;
+                bigTrigger = true;
+            smallTrigger = false;
+                attackNumber = 0;
+                GManager.instance.airAttack = false;
+            }
             
-        }
-        else if (fire1Key)
-        {
-            GManager.instance.isAttack = false;
-            smallTrigger = true;
-            alterNumber = 0;
-            
-        }
-        else if (fire2Key)
-        {
-            GManager.instance.isAttack = false;
-            bigTrigger = true;
-            attackNumber = 0;
-            
-        }
     }
 
-    /// <summary>
-    /// 攻撃保障
-    /// </summary>
-    void AttackSecurity()
-    {
-        if(useStamina >= GManager.instance.pStatus.stamina && !lastAttack)
-        {
-            
-        }
 
-    }
 
 
     //攻撃するときに呼ぶ
@@ -1220,7 +1430,9 @@ public class AttackM : MonoBehaviour
     {
         if (attackNumber != 0)
         {
-            transform.localScale = new Vector3(attackDirection, transform.localScale.y, transform.localScale.z);
+            
+            GManager.instance.pm.theScale.Set(attackDirection, transform.localScale.y, transform.localScale.z);
+            transform.localScale = GManager.instance.pm.theScale;
         }
         if (!GManager.instance.pStatus.equipWeapon.twinHand)
         {
@@ -1252,7 +1464,8 @@ public class AttackM : MonoBehaviour
     {
         if (alterNumber != 0)
         {
-            transform.localScale = new Vector3(attackDirection, transform.localScale.y, transform.localScale.z);
+            GManager.instance.pm.theScale.Set(attackDirection, transform.localScale.y, transform.localScale.z);
+            transform.localScale = GManager.instance.pm.theScale;
         }
         if (!GManager.instance.pStatus.equipWeapon.twinHand)
         {
@@ -1284,7 +1497,8 @@ public class AttackM : MonoBehaviour
     {
         if (alterNumber != 0)
         {
-            transform.localScale = new Vector3(attackDirection, transform.localScale.y, transform.localScale.z);
+            GManager.instance.pm.theScale.Set(attackDirection, transform.localScale.y, transform.localScale.z);
+            transform.localScale = GManager.instance.pm.theScale;
         }
         if (!GManager.instance.pStatus.equipWeapon.twinHand)
         {
@@ -1317,7 +1531,8 @@ public class AttackM : MonoBehaviour
 
         if (attackNumber != 0)
         {
-            transform.localScale = new Vector3(attackDirection, transform.localScale.y, transform.localScale.z);
+            GManager.instance.pm.theScale.Set(attackDirection, transform.localScale.y, transform.localScale.z);
+            transform.localScale = GManager.instance.pm.theScale;
         }
         if (!GManager.instance.pStatus.equipWeapon.twinHand)
         {
@@ -1350,7 +1565,8 @@ public class AttackM : MonoBehaviour
 
         if (alterNumber != 0)
         {
-            transform.localScale = new Vector3(attackDirection, transform.localScale.y, transform.localScale.z);
+            GManager.instance.pm.theScale.Set(attackDirection, transform.localScale.y, transform.localScale.z);
+            transform.localScale = GManager.instance.pm.theScale;
         }
         if (!GManager.instance.pStatus.equipWeapon.twinHand)
         {
@@ -1380,9 +1596,11 @@ public class AttackM : MonoBehaviour
 
     public void ArtsPrepare()//デフォが斬撃
     {
+
         if (artsNumber != 0)
         {
-            transform.localScale = new Vector3(attackDirection, transform.localScale.y, transform.localScale.z);
+            GManager.instance.pm.theScale.Set(attackDirection, transform.localScale.y, transform.localScale.z);
+            transform.localScale = GManager.instance.pm.theScale;
         }
         if (!GManager.instance.pStatus.equipWeapon.twinHand && !GManager.instance.pStatus.equipShield.weponArts)
         {
@@ -1416,57 +1634,72 @@ public class AttackM : MonoBehaviour
     {
 
         #region
-        if (GManager.instance.pm.isGround)
+        if (!GManager.instance.airAttack)
         {
-            if (!GManager.instance.pStatus.equipWeapon.twinHand)
+            if (!isAComboEnd && !isBComboEnd && !isSComboEnd)
             {
+                if (!GManager.instance.pStatus.equipWeapon.twinHand)
+                {
 
-                if (attackNumber >= GManager.instance.pStatus.equipWeapon.sValue.Count)
-                {
-                    attackNumber = 0;//モーション番号のリセット
-                    isSComboEnd = true;
-                }
-                else if (alterNumber >= GManager.instance.pStatus.equipWeapon.bValue.Count)
-                {
-                    alterNumber = 0;//モーション番号のリセット
-                    isBComboEnd = true;
-                }
-                else if (GManager.instance.pStatus.equipShield.weponArts)
-                {
-                    if (artsNumber >= GManager.instance.pStatus.equipWeapon.artsValue.Count)
+                    if (attackNumber >= GManager.instance.pStatus.equipWeapon.sValue.Count)
                     {
-                        artsNumber = 0;//モーション番号のリセット
-                        isAComboEnd = true;
+                        attackNumber = 0;//モーション番号のリセット
+                        isSComboEnd = true;
+                    }
+                    else if (alterNumber >= GManager.instance.pStatus.equipWeapon.bValue.Count)
+                    {
+                        alterNumber = 0;//モーション番号のリセット
+                        isBComboEnd = true;
+                    }
+
+                    else if (GManager.instance.pStatus.equipShield.weponArts)
+                    {
+                        if (artsNumber >= GManager.instance.pStatus.equipWeapon.artsValue.Count)
+                        {
+                            artsNumber = 0;//モーション番号のリセット
+                                           //      if(GManager.instance.pStatus.equipWeapon.artsValue.Count > 1)
+                                           //         {
+                            isAComboEnd = true;
+                            // }
+                        }
+                    }
+                    else
+                    {
+                        if (artsNumber >= GManager.instance.pStatus.equipShield.artsValue.Count)
+                        {
+                            artsNumber = 0;//モーション番号のリセット
+                                           //  if (GManager.instance.pStatus.equipShield.artsValue.Count > 1)
+                                           //     {
+                            isAComboEnd = true;
+                            //     }
+                            ////Debug.Log($"コンボ終了");
+                        }
                     }
                 }
                 else
                 {
-                    if (artsNumber >= GManager.instance.pStatus.equipShield.artsValue.Count)
+                    if (attackNumber >= GManager.instance.pStatus.equipWeapon.twinSValue.Count)
+                    {
+                        attackNumber = 0;//モーション番号のリセット
+                        isSComboEnd = true;
+                    }
+                    else if (alterNumber >= GManager.instance.pStatus.equipWeapon.twinBValue.Count)
+                    {
+                        alterNumber = 0;//モーション番号のリセット
+                        isBComboEnd = true;
+                    }
+
+                    else if (artsNumber >= GManager.instance.pStatus.equipWeapon.artsValue.Count)
                     {
                         artsNumber = 0;//モーション番号のリセット
+                                       // if (GManager.instance.pStatus.equipWeapon.artsValue.Count > 1)
+                                       //   {
                         isAComboEnd = true;
+                        //  }
+                    //    ////Debug.Log($"コンボ悪");
                     }
-                }
-            }
-            else
-            {
-                if (attackNumber >= GManager.instance.pStatus.equipWeapon.twinSValue.Count)
-                {
-                    attackNumber = 0;//モーション番号のリセット
-                    isSComboEnd = true;
-                }
-                else if (alterNumber >= GManager.instance.pStatus.equipWeapon.twinBValue.Count)
-                {
-                    alterNumber = 0;//モーション番号のリセット
-                    isBComboEnd = true;
-                }
 
-                else if (artsNumber >= GManager.instance.pStatus.equipWeapon.artsValue.Count)
-                {
-                    artsNumber = 0;//モーション番号のリセット
-                    isAComboEnd = true;
                 }
-
             }
         }
         else
@@ -1483,8 +1716,8 @@ public class AttackM : MonoBehaviour
                 if (alterNumber >= GManager.instance.pStatus.equipWeapon.strikeValue.Count)
                 {
                     alterNumber = 0;//モーション番号のリセット
-                    fallAttack = true;
-                    isDisEnable = true;
+                   GManager.instance.fallAttack = true;
+                    //isDisEnable = true;
                 }
 
             }
@@ -1493,13 +1726,13 @@ public class AttackM : MonoBehaviour
                 if (attackNumber >= GManager.instance.pStatus.equipWeapon.twinAirValue.Count)
                 {
                     attackNumber = 0;//モーション番号のリセット
-                    isDisEnable = true;
+                //    isDisEnable = true;
                 }
                 if (alterNumber >= GManager.instance.pStatus.equipWeapon.twinStrikeValue.Count)
                 {
                     alterNumber = 0;//モーション番号のリセット
-                    fallAttack = true;
-                    isDisEnable = true;
+                    GManager.instance.fallAttack = true;
+                   // isDisEnable = true;
                 }
 
             }
@@ -1522,7 +1755,7 @@ public class AttackM : MonoBehaviour
                    if (GManager.instance.InputR.GetKeyDown(code))
                    {
                        //処理を書く
-                       //Debug.log($"入力されたのは{code}");
+                       //////Debug.log($"入力されたのは{code}");
                        break;
                    }
                }
@@ -1534,10 +1767,10 @@ public class AttackM : MonoBehaviour
            //ゲームパッドが繋がれてるか確認
            var controllerNames = GManager.instance.InputR.GetJoystickNames();
 
-           //Debug.log($"ゲームパッドが接続されてる{padConnect}");
+           //////Debug.log($"ゲームパッドが接続されてる{padConnect}");
            if (controllerNames != null)
            {
-         //      //Debug.log($"ゲームパッドName{controllerNames[0]}");
+         //      //////Debug.log($"ゲームパッドName{controllerNames[0]}");
            }
            // 一台もコントローラが接続されていなければエラー
            if (controllerNames[0] == "")

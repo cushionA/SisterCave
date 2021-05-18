@@ -70,11 +70,12 @@ public class EnemyStatus : CharacterStatus
 	///</summary>
 	public float adjust;
 
+	/*
 	[Header("歩く速さ")]
 	///<summary>
 	///歩き速度
 	///</summary>
-	public Vector2 walkSpeed;
+	public Vector2 walkSpeed;*/
 
 	[Header("戦闘時のテリトリー")]
 	///<summary>
@@ -194,19 +195,24 @@ public class EnemyStatus : CharacterStatus
         Stab,//刺突
         Strike//打撃
     }
-    public AttackType atType;
+	[HideInInspector]
+	public AttackType atType;
 
 	[HideInInspector]
 	public enum WeakPoint
 	{
 		Slash,
-		Pier,
+		Stab,
 		Strike,
 		Holy,
 		Dark,
 		Fire,
 		Thunder
 	}
+
+	/// <summary>
+	/// 弱点
+	/// </summary>
 	public List<WeakPoint> wp;
 
 
@@ -219,10 +225,7 @@ public class EnemyStatus : CharacterStatus
         }
         return null;//この範囲を超えたら当然ドロップはなし
     }
-	[HideInInspector] public string PMagicTag ="PlayerMagic";
-	[HideInInspector] public string SMagicTag = "SisterMagic";
-	[HideInInspector] public string AttackTag ="Attack";
-	[HideInInspector] public string JumpTag = "JumpTrigger";
+
 
 
 	[Header("汎用アクションリスト")]
@@ -266,6 +269,7 @@ public class EnemyStatus : CharacterStatus
 
 	[Header("カメラ範囲に行動を拘束されない")]
 	public bool unBaind;
+	[HideInInspector]
 	[Header("吹っ飛ばす力")]
 	public Vector2 blowVector;
 	[HideInInspector]

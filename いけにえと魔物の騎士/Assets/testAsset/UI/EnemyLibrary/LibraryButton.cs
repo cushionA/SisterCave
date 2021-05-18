@@ -19,7 +19,7 @@ public class LibraryButton : MonoBehaviour
 
     private void Start()
     {
-        GameObject ev = GameObject.Find("EventSystem");
+        //GameObject ev = GameObject.Find("EventSystem");
       //  eventSystem = ev.GetComponent<EventSystem>();
     //    stIn = ev.GetComponent<StandaloneInputModule>();
     }
@@ -34,12 +34,12 @@ public class LibraryButton : MonoBehaviour
 
         if (!EnemyDataManager.instance.isUseMenu)//選択ウィンドウ出てないなら
         {
-            EnemyDataManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
+            MainUI.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
-            //  //Debug.log($"青い稲妻{EnemyDataManager.instance.selectButton == this.gameObject}");
-            if (EnemyDataManager.instance.selectButton == this.gameObject && !isFirst)
+            //  ////Debug.log($"青い稲妻{MainUI.instance.selectButton == this.gameObject}");
+            if (MainUI.instance.selectButton == this.gameObject && !isFirst)
             {
-                ////Debug.log("冥王星");
+                //////Debug.log("冥王星");
                 EnemyDataManager.instance.selectItem = item;
                 //position = this.GetComponent<RectTransform>().anchoredPosition;
                 isFirst = true;
@@ -55,15 +55,15 @@ public class LibraryButton : MonoBehaviour
 
     public void CallWindow()
     {
-        //  //Debug.log($"お名前教えて{EnemyDataManager.instance.selectButton.name}");
-        if (EnemyDataManager.instance.selectItem.inventoryNum > 0 && item != null && EnemyDataManager.instance.selectButton == this.gameObject)
+        //  ////Debug.log($"お名前教えて{MainUI.instance.selectButton.name}");
+        if (EnemyDataManager.instance.selectItem.inventoryNum > 0 && item != null && MainUI.instance.selectButton == this.gameObject)
         {
             EnemyDataManager.instance.selectItem = item;
             // position = this.GetComponent<RectTransform>().anchoredPosition;
             EnemyDataManager.instance.selectWindow.SetActive(true);
             //EnemyDataManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
-            //EnemyDataManager.instance.selectWindow.GetComponent<RectTransform>().parent = EnemyDataManager.instance.selectButton.GetComponent<RectTransform>();
-            EnemyDataManager.instance.selectWindow.transform.parent = EnemyDataManager.instance.selectButton.transform;
+            //EnemyDataManager.instance.selectWindow.GetComponent<RectTransform>().parent = MainUI.instance.selectButton.GetComponent<RectTransform>();
+            EnemyDataManager.instance.selectWindow.transform.parent = MainUI.instance.selectButton.transform;
             EnemyDataManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
 
             EnemyDataManager.instance.isUseMenu = true;
@@ -79,7 +79,7 @@ public class LibraryButton : MonoBehaviour
     {
         EnemyDataManager.instance.selectWindow.SetActive(false);
         isFirst = false;
-        EnemyDataManager.instance.selectButton.GetComponent<Button>().Select();
+        MainUI.instance.selectButton.GetComponent<Button>().Select();
         EnemyDataManager.instance.isUseMenu = false;
     }
 

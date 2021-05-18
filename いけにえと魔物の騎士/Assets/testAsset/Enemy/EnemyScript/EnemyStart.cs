@@ -38,8 +38,8 @@ public class EnemyStart : MonoBehaviour
     private void FixedUpdate()
     {
 
-        //Debug.log($"カメラないでーす{eb.cameraRendered}");
-        //Debug.log($"カメラな{activeStay}");
+        ////Debug.log($"カメラないでーす{eb.cameraRendered}");
+        ////Debug.log($"カメラな{activeStay}");
         if (!cameraEnabled)
         {
             rb.Sleep();

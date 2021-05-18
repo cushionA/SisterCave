@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 832aa2b1771573b45a71909acaa2b710, type: 3}
+  m_Name: NIdiot
+  m_EditorClassIdentifier: 
+  isPoison: 0
+  isParalyze: 0
+  level: 1
+  maxHp: 5000000
+  hp: 4997662.5
+  maxMp: 30
+  mp: 30
+  maxStamina: 60
+  stamina: 60
+  Vitality: 1
+  Endurance: 1
+  capacity: 1
+  power: 10
+  skill: 1
+  _int: 1
+  Atk: 0
+  phyAtk: 0
+  holyAtk: 0
+  darkAtk: 0
+  fireAtk: 100
+  thunderAtk: 0
+  Def: 800
+  pierDef: 70
+  strDef: 70
+  holyDef: 70
+  darkDef: 70
+  fireDef: 70
+  thunderDef: 70
+  phyCut: 0.7
+  holyCut: 0
+  darkCut: 0
+  fireCut: 0
+  thunderCut: 0
+  guardPower: 100
+  Armor: 40
+  nowArmor: 25
+  nockBackPower: 0
+  attackBuff: 0
+  judgePace: 2
+  addSpeed: {x: 300, y: 0}
+  patrolSpeed: {x: 40, y: 0}
+  waitDistance: {x: 15, y: 0}
+  waitRes: 1
+  combatSpeed: {x: 40, y: 0}
+  agrDistance: {x: 4, y: 0}
+  walkDistance: {x: 70, y: 0}
+  adjust: 30
+  escapeDistance: {x: 200, y: 150}
+  chaseRes: 23
+  jumpMove: 400
+  jumpPower: 1500
+  jumpRes: 0.4
+  jumpCool: 12
+  avoidSpeed: {x: -300, y: 0}
+  avoidRes: 0.4
+  avoidCool: 12
+  firstGravity: 20
+  downRes: 2
+  velocityMin: {x: -1000, y: -1000}
+  velocityMax: {x: 1000, y: 1000}
+  enemyFire:
+  - {fileID: 11400000, guid: 931b7a03fcabaf9489c54ec0349f2d01, type: 2}
+  dogPile: {fileID: 0}
+  money: 0
+  dropItem: []
+  strong: 0
+  boss: 0
+  ground: 0
+  air: 6
+  kind: 0
+  atType: 2
+  wp: 01000000
+  PMagicTag: PlayerMagic
+  SMagicTag: SisterMagic
+  AttackTag: Attack
+  JumpTag: JumpTrigger
+  attackName:
+  - Attack1
+  serectableNumber: 01000000
+  coolTime: 2
+  atValue:
+  - mvalue: 1
+    addArmor: 18
+    shock: 20
+    isBlow: 0
+    isLight: 1
+    type: 2
+    coolList: 2
+    blowPower: {x: 0, y: 0}
+    isCombo: 0
+    isShoot: 0
+    parriable: 1
+  aditionalArmor: 18
+  isBlow: 0
+  parriable: 0
+  unBaind: 0
+  blowVector: {x: 0, y: 0}
+  Shock: 20
+  mValue: 1
+  isCombo: 0
+  isLight: 1

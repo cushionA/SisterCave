@@ -11,17 +11,22 @@ public class SManager : MonoBehaviour
     //プレイヤーオブジェクト
     public SisterStatus sisStatus;
     //プレイヤーのステータスを取得
-    [HideInInspector] public GameObject targetObj;//攻撃対象
+    //[HideInInspector] public GameObject targetObj;
     public　List<SisMagic> attackMagi;
     public List<SisMagic> supportMagi;
     public List<SisMagic> recoverMagi;
-    [HideInInspector]public List<GameObject> targetList;
-    [HideInInspector] public List<GameObject> targetRecord;
-    [HideInInspector]public List<EnemyBase> targetCondition;
+    [HideInInspector]public List<GameObject> targetList = new List<GameObject>();
+   // [HideInInspector] public List<GameObject> targetRecord;
+    [HideInInspector]public List<EnemyStatus> targetCondition;
     [HideInInspector]public float closestEnemy;
-    [HideInInspector] public bool isEscape;
+    [HideInInspector] public GameObject playObject;
+    [HideInInspector] public bool isEscape;//プレイヤー離れたフラグ。
+                                           // [HideInInspector] public bool enemyDead;//敵死んだフラグ。これが立つとパルス飛ばして敵検索
+    [HideInInspector] public bool isTChange;
 
-   private void Awake()
+    [HideInInspector] public GameObject target;//攻撃対象
+
+    private void Awake()
     {
         if (instance == null)
         {
@@ -33,6 +38,9 @@ public class SManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    
+
     public void SetMagicAtk()
     {
         if (sisStatus.useMagic.mType == SisMagic.MagicType.Attack)
@@ -78,9 +86,9 @@ public class SManager : MonoBehaviour
             /// </summary>
       public void MagicClassify()
     {
-        attackMagi.Clear();
-        supportMagi.Clear();
-        recoverMagi.Clear();
+        attackMagi = null;
+        supportMagi = null;
+        recoverMagi = null;
 
         foreach (SisMagic m in sisStatus.equipMagic)
         {
@@ -99,21 +107,44 @@ public class SManager : MonoBehaviour
         }
     }
 
+    /*   public void GetEnemyCondition()
+       {
+           if (targetList == targetRecord)
+           {
+               return;
+           }
+           else
+           {
+               //最初は絶対こっち
+               //ターゲットの状態を取得
+               targetRecord = targetList;
+               targetCondition.Clear();
+               foreach (GameObject e in targetRecord)
+               {
+                   targetCondition.Add(e.GetComponent<EnemyBase>());
+               }
+           }
+       }*/
+
     public void GetEnemyCondition()
     {
-        if (targetList == targetRecord)
+        if (isTChange)
         {
-            return;
-        }
-        else
-        {
-            targetRecord = targetList;
-            targetCondition.Clear();
-            foreach (GameObject e in targetRecord)
+
+            //最初は絶対こっち
+            //ターゲットの状態を取得
+            //        targetRecord = targetList;
+            
+            for (int i = 0; i < targetList.Count; i++)
             {
-                targetCondition.Add(e.GetComponent<EnemyBase>());
+                targetCondition.Add(targetList[i].GetComponent<EnemyBase>().status);
+                if(i == targetList.Count - 1)
+                {
+                    isTChange = false;
+                }
             }
         }
+        
     }
 
     public void GetClosestEnemyX()
@@ -121,7 +152,7 @@ public class SManager : MonoBehaviour
         //float nowPosition;
         //位置は最初に固定する
 
-        for (int i = 0; i >= SManager.instance.targetList.Count; i++)
+   /*     for (int i = 0; i >= SManager.instance.targetList.Count; i++)
         {
             if (i == 0)
             {
@@ -136,7 +167,10 @@ public class SManager : MonoBehaviour
             }
 
 
-        }
+        }*/
+
+        closestEnemy = targetList[0].transform.position.x;
+
     }
 
 }

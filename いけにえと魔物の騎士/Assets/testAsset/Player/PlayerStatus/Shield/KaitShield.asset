@@ -28,41 +28,107 @@ MonoBehaviour:
   Naname:
   - {fileID: -4539555768064283279, guid: 1860425645c00dc4dac5cef33565c3a1, type: 3}
   - {fileID: 819121023632663461, guid: 1860425645c00dc4dac5cef33565c3a1, type: 3}
-  phyBase: []
-  holyBase: []
-  darkBase: []
-  fireBase: []
-  thunderBase: []
-  needPower: 0
-  needSkill: 0
+  phyBase:
+  - 70
+  - 90
+  - 100
+  - 115
+  - 120
+  holyBase:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  darkBase:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  fireBase:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  thunderBase:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  needPower: 1
+  needSkill: 1
   needInt: 0
-  phyCut: []
-  holyCut: []
-  darkCut: []
-  fireCut: []
-  thunderCut: []
-  guardPower: []
-  parryTime: 0
+  phyCut:
+  - 100
+  - 100
+  - 100
+  - 100
+  - 100
+  holyCut:
+  - 50
+  - 50
+  - 55
+  - 55
+  - 60
+  darkCut:
+  - 50
+  - 60
+  - 70
+  - 75
+  - 80
+  fireCut:
+  - 60
+  - 65
+  - 65
+  - 70
+  - 70
+  thunderCut:
+  - 50
+  - 50
+  - 50
+  - 50
+  - 55
+  guardPower:
+  - 35
+  - 37
+  - 40
+  - 42
+  - 47
+  parryStart: 0.05
+  parryTime: 0.15
   shock: 0
+  artsMP:
+  - 7
+  - 7
+  artsAnime:
+  - {fileID: 0}
+  - {fileID: 0}
   back:
   - {fileID: -6357838179149488024, guid: 1860425645c00dc4dac5cef33565c3a1, type: 3}
   - {fileID: 5933913999138112031, guid: 1860425645c00dc4dac5cef33565c3a1, type: 3}
   guardAnime: OGuard
-  artsAnime: SArts
   sLevel: 0
   isParry: 0
   weponArts: 0
-  parryStartTime: 0
-  parringTime: 0
-  stopTime: 0
-  artsStamina: 0
   artsValue:
-    x: 0
-    y: 0
-    z: 0
+  - x: 1
+    y: 20
+    z: 35
     isCombo: 0
-    isBlow: 0
+    isBlow: 1
     isLight: 0
-    type: 0
-  artsName: 
-  guardSpeed: 0
+    type: 2
+    blowPower: {x: 35, y: 15}
+    useStamina: 18
+  - x: 1
+    y: 20
+    z: 35
+    isCombo: 0
+    isBlow: 1
+    isLight: 0
+    type: 2
+    blowPower: {x: 35, y: 15}
+    useStamina: 18

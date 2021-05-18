@@ -11,7 +11,7 @@ public class CoreEquipWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = CoreManager.instance.selectButton.GetComponent<UseButtom>();
+        ub = MainUI.instance.selectButton.GetComponent<UseButtom>();
     }
 
     // Update is called once per frame
@@ -58,7 +58,7 @@ public class CoreEquipWindow : MonoBehaviour
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
         MainUI.instance.ButtonOn();
-        //  CoreManager.instance.selectButton = null;
+        //  MainUI.instance.selectButton = null;
         //    CoreManager.instance.selectItem = null;
     }
 }

@@ -213,7 +213,7 @@ public class EnemyFireBullet : MonoBehaviour
 		}
 		if(em.isBlow == true && GManager.instance.pStatus.nowArmor <= 0)
         {
-			GManager.instance.isBlow = true;
+			GManager.instance.blowDown = true;
 
 			if(rb.velocity.x > 0)
             {
@@ -269,18 +269,16 @@ public class EnemyFireBullet : MonoBehaviour
 
 				GManager.instance.pStatus.stamina -= (em.Shock * 2) * ((100 - GManager.instance.pStatus.guardPower) / 100);
 			
-				if (GManager.instance.pStatus.stamina <= 0)
-				{
-					GManager.instance.isGBreak = true;
-					GManager.instance.isGuard = false;
-				}
 
 				GManager.instance.pStatus.hp -= damage * em.attackBuff;
 			}
-			if (em.isBlow == true && GManager.instance.pStatus.nowArmor <= 0)
+		if (GManager.instance.pStatus.stamina <= 0)
+		{
+			if (em.isBlow == true)
 			{
-				GManager.instance.isBlow = true;
-
+				GManager.instance.isDown = true;
+				GManager.instance.blowDown = true;
+				GManager.instance.isGuard = false;
 				if (transform.localScale.x > 0)
 				{
 					GManager.instance.blowVector = em.blowVector;
@@ -292,7 +290,13 @@ public class EnemyFireBullet : MonoBehaviour
 
 				}
 			}
-
+			else
+			{
+				GManager.instance.isGBreak = true;
+				GManager.instance.isGuard = false;
+			}
 		}
+
+	}
 
 }

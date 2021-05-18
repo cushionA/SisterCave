@@ -5,8 +5,8 @@ public class GetKeyItem : MonoBehaviour
 
     string playerTag = "Player";
     //public ToolManager tm;
-    [SerializeField] string addTool;
-    [SerializeField] int addNum;
+    [SerializeField] KeyItem[] addTool;
+    [SerializeField] int[] addNum;
     bool isFirst;
 
     // Start is called before the first frame update
@@ -25,10 +25,11 @@ public class GetKeyItem : MonoBehaviour
     {
         if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18) && !isFirst)
         {
-            KeyManager.instance.takeItem = addTool;
-            KeyManager.instance.changeNum = addNum;
-            KeyManager.instance.AddItem();
+            // MagicManager.instance.takeItem = addTool;
+            //  MagicManager.instance.changeNum = addNum;
+            KeyManager.instance.ChangeNum(addTool, addNum);
             isFirst = true;
+            addTool = null;
             Destroy(this.gameObject);
         }
 

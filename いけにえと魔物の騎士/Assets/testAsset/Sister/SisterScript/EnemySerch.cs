@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using SensorToolkit;
 public class EnemySerch : MonoBehaviour
 {
 
@@ -18,7 +18,7 @@ public class EnemySerch : MonoBehaviour
 
     void Start()
     {
-        //sister = GetComponentInParent<SisterBrain>();
+        sister = GetComponentInParent<SisterBrain>();
     }
 
 
@@ -26,47 +26,85 @@ public class EnemySerch : MonoBehaviour
     {
         if (collision.tag == enemyTag)
         {
-            if (CheckFoundObject(collision.gameObject) && !SManager.instance.isEscape)
+            if (CheckFoundObject(collision.gameObject) && !SManager.instance.isEscape && sister.nowState != SisterBrain.SisterState.戦い)
             {
-                sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
+                SManager.instance.playObject = null;
+                sister.isPlay = false;
 
-              //  sister.Serch.SetActive(false);
-              //  sister.Serch2.SetActive(false);
                 if (!SManager.instance.targetList.Contains(collision.gameObject))
-                  {
+                {
+           //         //Debug.Log("牧島");
                     SManager.instance.targetList.Add(collision.gameObject);
-                  }
+                    sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
+                    sister.Serch3.SetActive(true);
+                    sister.Serch.SetActive(false);
+                    sister.Serch2.SetActive(false);
+                    SManager.instance.playObject = null;
+                    SManager.instance.isTChange = true;
+                }
+                //検索はAgrSerchに任せる。いや入れていい。最初に検知されるのは近いやつだしどうせすぐ更新される
             }
         }
-        if (collision.tag == dangerTag)
+        else if (collision.tag == dangerTag)
         {
 
-            if (CheckFoundObject(collision.gameObject))
+            if (CheckFoundObject(collision.gameObject) && sister.nowState != SisterBrain.SisterState.警戒)
             {
-                sister.nowState = SisterBrain.SisterState.警戒;
-                // sister.Serch.SetActive(false);
-                // sister.Serch2.SetActive(false);
+            sister.nowState = SisterBrain.SisterState.警戒;
+            // sister.Serch.SetActive(false);
+            // sister.Serch2.SetActive(false);
+            sister.stateNumber = 3;
+            sister.beforeNumber = 0;
+            sister.reJudgeTime = 0;
+            sister.changeable = true;
+            SManager.instance.playObject = null;
+            sister.isPlay = false;
+            //    sister.Serch3.SetActive(true);
+            //    sister.Serch.SetActive(false);
+     //           sister.Serch2.SetActive(true);
             }
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == enemyTag && !SManager.instance.isEscape)
+        if (collision.tag == enemyTag)
         {
-            sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
-
-                                                           //  sister.Serch.SetActive(false);
-                                                           //  sister.Serch2.SetActive(false);
-            if (!SManager.instance.targetList.Contains(collision.gameObject))
+            if (CheckFoundObject(collision.gameObject) && !SManager.instance.isEscape && sister.nowState != SisterBrain.SisterState.戦い)
             {
-                SManager.instance.targetList.Add(collision.gameObject);
+                SManager.instance.playObject = null;
+                sister.isPlay = false;
+
+                if (!SManager.instance.targetList.Contains(collision.gameObject))
+                {
+               //     //Debug.Log("牧島");
+                    SManager.instance.targetList.Add(collision.gameObject);
+                    sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
+                    sister.Serch3.SetActive(true);
+                    sister.Serch.SetActive(false);
+                    sister.Serch2.SetActive(false);
+                    SManager.instance.playObject = null;
+                    SManager.instance.isTChange = true;
+                }
+                //検索はAgrSerchに任せる。いや入れていい。最初に検知されるのは近いやつだしどうせすぐ更新される
             }
         }
-        if (collision.tag == dangerTag)
+        else if (collision.tag == dangerTag)
         {
-            if (CheckFoundObject(collision.gameObject))
+
+            if (CheckFoundObject(collision.gameObject) && sister.nowState != SisterBrain.SisterState.警戒)
             {
                 sister.nowState = SisterBrain.SisterState.警戒;
+                // sister.Serch.SetActive(false);
+                // sister.Serch2.SetActive(false);
+                sister.stateNumber = 3;
+                sister.beforeNumber = 0;
+                sister.reJudgeTime = 0;
+                sister.changeable = true;
+                SManager.instance.playObject = null;
+                sister.isPlay = false;
+                //    sister.Serch3.SetActive(true);
+                //    sister.Serch.SetActive(false);
+                //           sister.Serch2.SetActive(true);
             }
         }
     }
@@ -112,12 +150,12 @@ public class EnemySerch : MonoBehaviour
         {
             return false;
         }
-        //  //Debug.log($"{onHitRay.transform.gameObject}");
-        //Debug.DrawRay(i_fromPosition,i_toTargetDir * SerchRadius);
+        //  ////Debug.log($"{onHitRay.transform.gameObject}");
+        ////Debug.DrawRay(i_fromPosition,i_toTargetDir * SerchRadius);
         if (onHitRay.transform.gameObject != i_target)
         {//onHitRayは当たった場所
          //当たった場所がPlayerの位置でなければ
-         ////Debug.log("あいに");
+         //////Debug.log("あいに");
             return false;
         }
 

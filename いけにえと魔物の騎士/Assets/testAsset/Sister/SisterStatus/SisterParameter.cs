@@ -42,15 +42,22 @@ public class SisterParameter : ScriptableObject
     [HideInInspector]
     public enum TargetJudge
     {
-        敵タイプ,
+        兵士,
+        飛行,
+        射撃,
+        騎士,
+        待ち伏せ,
         距離近いのから,
         距離遠いのから,
         敵のHP少ないのから,
         敵のHP多いのから,
+        移動速度早い,
+        移動速度遅い,
         プレイヤーの体力がマックス,
         プレイヤーの体力が半分以下,
         プレイヤーの体力が二割以下,//ここで回復させれば緊急回復になるし、MP多いとかにすれば切り札を運用できる
                                   //プレイヤーの体力関連は前のtargetをそのまま使う。前のが死滅したか初回なら一個次の条件で狙う
+
         状態異常にかかった時,
         強敵,
         非強敵,
@@ -69,17 +76,17 @@ public class SisterParameter : ScriptableObject
     public TargetJudge thirdTarget;//判断条件セット
     public TargetJudge forthTarget;//判断条件セット
 
-    public enum KindofEnemy
+  /*  public enum KindofEnemy
     {
         Soldier,//陸の雑兵
         Fly,//飛ぶやつ
         Shooter,//遠距離
         Knight,//盾持ち
-        Trap,//待ち構えてるやつ
-        Strong
-    }
-    [Header("狙う敵のタイプ")]
-    public KindofEnemy TargetKind;
+        Trap//待ち構えてるやつ
+      //  Strong
+    }*/
+  //  [Header("狙う敵のタイプ")]
+  //  public KindofEnemy TargetKind;
 
     [HideInInspector]
     public enum TargetPoint

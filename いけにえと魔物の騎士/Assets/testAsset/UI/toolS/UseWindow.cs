@@ -26,7 +26,7 @@ public class UseWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = ToolManager.instance.selectButton.GetComponent<UseButtom>();
+        ub = MainUI.instance.selectButton.GetComponent<UseButtom>();
     }
 
     // Update is called once per frame
@@ -56,13 +56,13 @@ public class UseWindow : MonoBehaviour
                 numChange.SetActive(false);
                 ToolManager.instance.ReduceItem();
                 ToolManager.instance.changeNum = 1;
-                ToolManager.instance.selectButton.GetComponent<Button>().Select();
+                MainUI.instance.selectButton.GetComponent<Button>().Select();
             }
             else if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
             {
                 isDump = false;
                 numChange.SetActive(false);
-                ToolManager.instance.selectButton.GetComponent<Button>().Select();
+                MainUI.instance.selectButton.GetComponent<Button>().Select();
             }
         }
         else if (isSUse)
@@ -79,7 +79,7 @@ public class UseWindow : MonoBehaviour
             {
                 isSUse = false;
                 numChange.SetActive(false);
-                ToolManager.instance.selectButton.GetComponent<Button>().Select();
+                MainUI.instance.selectButton.GetComponent<Button>().Select();
             }
         }*/
 
@@ -134,7 +134,6 @@ public class UseWindow : MonoBehaviour
 
     public void ResetWindow()
     {
-      //  //Debug.log("きめつ");
         isNum = false;
         isSUse = false;
         isDump = false;
@@ -142,7 +141,7 @@ public class UseWindow : MonoBehaviour
         ToolManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
-        //  ToolManager.instance.selectButton = null;
+        //  MainUI.instance.selectButton = null;
         //    ToolManager.instance.selectItem = null;
     }
 

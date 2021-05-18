@@ -99,15 +99,15 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
             if (num > 0)
             {
                 enableTool.Add(ti.Key);
-                //Debug.log("EEEE");
+                ////Debug.log("EEEE");
             }
 
         }
-        //Debug.log(enableTool.Count);
+        ////Debug.log(enableTool.Count);
 
         for (int i = 0; i < enableTool.Count; i += 3)
         {
-            //Debug.log("WWW");
+            ////Debug.log("WWW");
             this.data = new List<UseItemData>{
 
             new UseItemData(enableTool[i],enableTool[i+1],enableTool[i+2])
@@ -125,8 +125,8 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
             toolDataBase.GetItemLists()[i].inventoryNum = 0;
 
         }
-
-        setList = ToolList().ToList();
+        data = null;
+        setList = new List<Magic>(ToolList());
 
         /*(from item in toolDataBase.GetItemLists()
                where item.inventoryNum > 0
@@ -134,7 +134,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
         //最終的に作りたいリストの初期化
         data = new List<MagicData>();
         //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
-        List<Magic> miniList = new List<Magic>();
+        List<Magic> miniList = new List<Magic>(N);
 
         //ToolItem[] miniList = new ToolItem[3];
 
@@ -156,7 +156,8 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
             //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
             if (i % N == 0)
             {
-                miniList.Clear();
+                miniList = null;
+                miniList = new List<Magic>(N);
             }
             //miniListに格納
             miniList.Add(setList[i]);
@@ -167,6 +168,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
 
                 MagicData mini = new MagicData(miniList.ToArray());
                 data.Add(mini);
+                mini = null;
             }
         }
         #endregion
@@ -182,6 +184,9 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
         //というかUpdateNavigationConnections()する
 
         this.fooScroller.ReloadData();
+        miniList = null;
+        setList = null;
+       // data = null;
         this.UpdateNavigationConnections();
     }
 
@@ -190,7 +195,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
 
         if (mi.isReBuild && !isEver)
         {
-            data.Clear();//インベントリを一回からにして入れなおす
+            data = null;//インベントリを一回からにして入れなおす
             #region
 
             //  for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
@@ -200,25 +205,19 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
             //setList = toolDataBase.GetItemLists();
             // }
 
-            setList = ToolList().ToList();
-            //setList = (from item in toolDataBase.GetItemLists()
-            //        where item.inventoryNum > 0
-            //      select item).ToList();
+            setList = new List<Magic>(ToolList());
 
+            /*(from item in toolDataBase.GetItemLists()
+                   where item.inventoryNum > 0
+                   select item).ToList();*/
             //最終的に作りたいリストの初期化
-
+            data = new List<MagicData>();
             //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
-            List<Magic> miniList = new List<Magic>();
+            List<Magic> miniList = new List<Magic>(N);
 
             //ToolItem[] miniList = new ToolItem[3];
 
-            if (setList.Count == 0)
-            {
-                setList.Add(space1);
-                setList.Add(space2);
-                setList.Add(space3);
-            }
-            else if (setList.Count % N == N - 1)
+            if (setList.Count % N == N - 1)
             {
                 setList.Add(space1);
             }
@@ -236,7 +235,8 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
                 //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
                 if (i % N == 0)
                 {
-                    miniList.Clear();
+                    miniList = null;
+                    miniList = new List<Magic>(N);
                 }
                 //miniListに格納
                 miniList.Add(setList[i]);
@@ -247,30 +247,8 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
 
                     MagicData mini = new MagicData(miniList.ToArray());
                     data.Add(mini);
+                    mini = null;
                 }
-                //}
-                /*else if(setList.Count - i < N)
-                {
-                    //Debug.log("そこに愛はある？");
-                    //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
-                    if (i % N == 0) {
-                        miniList = new List<ToolItem>();
-                    }
-                    //miniListに格納
-                    miniList.Add(setList[i]);
-                    //Nの倍数-1ならminiListを元にUseItemDataを作成して格納
-
-                    if (setList.Count - i == 0)
-                    {
-                        ToolItem[] box = miniList.ToArray();
-                        UseItemData mini = new UseItemData(box);
-                        data.Add(mini);
-                        //Debug.log("愛して");
-                    }
-
-                }*/
-
-
             }
             #endregion
             this.content = this.fooScroller.GetComponent<ScrollRect>().content;
@@ -284,14 +262,16 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
             //すなわち表示非表示切り替わるとthis.OnCellViewVisibilityChanged
             //というかUpdateNavigationConnections()する
 
-            ////Debug.log("愛してる");
             this.fooScroller.ReloadData();
+            miniList = null;
+            setList = null;
+            // data = null;
             this.UpdateNavigationConnections();
             isEver = true;
         }
         /*else if(!mi.isReBuild && isEver)
         {
-            //Debug.log("愛してない");
+            ////Debug.log("愛してない");
             //isEver = false;
         }*/
         JButton();
@@ -420,12 +400,12 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
             /* if (i == (cells.Length - 1) )
                        {
                            isLast = true;
-                           //Debug.log("yasai");
+                           ////Debug.log("yasai");
                        }
                        else
                        {
                            isLast = false;
-                           //Debug.log("niku");
+                           ////Debug.log("niku");
                        }
                        if(i != 0)
                        {
@@ -469,21 +449,21 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
 
             if (!MagicManager.instance.isSisterM && !MagicManager.instance.isKnightM || item == space2 || item == space1 || item == space3)
             {
-                //   //Debug.log("お月様キラキラ");
+                //   ////Debug.log("お月様キラキラ");
                 yield return item;
             }
             else if (!MagicManager.instance.isSisterM && MagicManager.instance.isKnightM && item.GetType() == typeof(PlayerMagic))
             {
-                //  //Debug.log("お日様キラキラ");
+                //  ////Debug.log("お日様キラキラ");
                 yield return item;
 
             }
             else if (MagicManager.instance.isSisterM && !MagicManager.instance.isKnightM && item.GetType() == typeof(SisMagic))
             {
-                // //Debug.log("お星様キラキラ");
+                // ////Debug.log("お星様キラキラ");
                 yield return item;
             }
-            // //Debug.log("おまんこキラキラ");
+            // ////Debug.log("おまんこキラキラ");
         }
     }
 

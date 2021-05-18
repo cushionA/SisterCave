@@ -5,8 +5,8 @@ public class GetMagic : MonoBehaviour
 
     string playerTag = "Player";
     //public ToolManager tm;
-    [SerializeField] string addTool;
-    [SerializeField] int addNum;
+    [SerializeField] Magic[] addTool;
+    [SerializeField] int[] addNum;
     bool isFirst;
 
     // Start is called before the first frame update
@@ -25,10 +25,11 @@ public class GetMagic : MonoBehaviour
     {
         if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18) && !isFirst)
         {
-            MagicManager.instance.takeItem = addTool;
-            MagicManager.instance.changeNum = addNum;
-            MagicManager.instance.AddItem();
+           // MagicManager.instance.takeItem = addTool;
+          //  MagicManager.instance.changeNum = addNum;
+            MagicManager.instance.ChangeNum(addTool, addNum);
             isFirst = true;
+            addTool = null;
             Destroy(this.gameObject);
         }
 

@@ -28,8 +28,12 @@ public class GManager : MonoBehaviour
     public float initialHpSl;
     public float initialMpSl;
     public float initialStaminaSl;
-    [HideInInspector]public Player InputR;
 
+    public string playerTag = "Player";
+
+
+    [HideInInspector]public Player InputR;
+    [HideInInspector] public Rigidbody2D rb;
 
     RectTransform hpSl;
     RectTransform mpSl;
@@ -42,7 +46,7 @@ public class GManager : MonoBehaviour
     //攻撃中か否か
     [HideInInspector] public bool isDown;
     //ダウン中
-    [HideInInspector] public bool isBlow;
+   // [HideInInspector] public bool isBlow;
     //if(isBlow && nowArmor<=0)とelseでisBlowFalseに
     [HideInInspector] public bool isGBreak;//ガードブレイク
     [HideInInspector] public bool isGuard;
@@ -53,6 +57,12 @@ public class GManager : MonoBehaviour
     [HideInInspector]public bool guardHit;//ガードにヒットした
     [HideInInspector] public bool badCondition;//状態異常
     [HideInInspector]public bool isDamage;//ダメージ受けたかどうか
+    [HideInInspector] public bool blowDown;//吹き飛ばされたフラグ
+    [HideInInspector] public bool fallAttack;//空中強攻撃の落下終了までisAttackをキープするためのフラグ。敵判定回避にも使う
+
+
+    //isDown && blowDown の判定とisDownのみとisGBreakの使い分けで
+    //具体的処理は敵AIを参考に
 
     #region//シスターさんのためのフラグ
     [HideInInspector] public bool isLadder;
@@ -74,7 +84,7 @@ public class GManager : MonoBehaviour
     float disEnaTime;
     //スタミナ回復不能時間
     float parryTime;
-    [SerializeField]AttackM at;
+    public AttackM at;
     public PlayerMove pm;
 /// <summary>
 /// stBreakはスタミナが一回切れたらしばらくゼロのままのコードから脱出するためのフラグ。
@@ -105,7 +115,7 @@ public class GManager : MonoBehaviour
     void Start()
     {
         ActionSet();
-        //        Debug.Log("酢");
+        //        //Debug.Log("酢");
  //       at = Player.GetComponent<AttackM>();
    //     pm = Player.GetComponent<PlayerMove>();
         //スライダーを満タンに
@@ -123,6 +133,7 @@ public class GManager : MonoBehaviour
         hpSl = HpSlider.GetComponent<RectTransform>();
         mpSl = MpSlider.GetComponent<RectTransform>();
         staminaSl = stSlider.GetComponent<RectTransform>();
+  
         SetSlider();
 
         if (!isSoundFirst)
@@ -267,7 +278,7 @@ public class GManager : MonoBehaviour
     public void SetAtk()
     {
 
-       // Debug.Log("酢");
+       // //Debug.Log("酢");
         int n = pStatus.equipWeapon.wLevel;
 
         if (pStatus.equipWeapon.phyBase[n] >= 1)
@@ -338,11 +349,11 @@ public class GManager : MonoBehaviour
     public void SetParameter()
     {
 
-        ////Debug.log("はいく");
+        //////Debug.log("はいく");
         pStatus.maxHp = pStatus.initialHp + pStatus.HpCurve.Evaluate(pStatus.Vitality);
         pStatus.maxMp = pStatus.initialMp + pStatus.MpCurve.Evaluate(pStatus.capacity);
         pStatus.maxStamina = pStatus.initialStamina + pStatus.StaminaCurve.Evaluate(pStatus.Endurance);
-      //  //Debug.log($"テスト数値{pStatus.StaminaCurve.Evaluate(pStatus.Endurance)}");
+      //  ////Debug.log($"テスト数値{pStatus.StaminaCurve.Evaluate(pStatus.Endurance)}");
         pStatus.capacityWeight = pStatus.initialWeight + pStatus.weightCurve.Evaluate(pStatus.Endurance+pStatus.power);
 
         if(pStatus.capacity >= 0 && pStatus.capacity < 7)
@@ -373,39 +384,45 @@ public class GManager : MonoBehaviour
         {
             pStatus.magicNumber = 7;
         }
-        pStatus.equipMagic = new List<PlayerMagic>(pStatus.magicNumber);
+        if(pStatus.equipMagic.Count > pStatus.magicNumber)
+        {
+            pStatus.equipMagic.RemoveRange(pStatus.magicNumber, pStatus.equipMagic.Count - pStatus.magicNumber);
+
+        }
+        //要素数を再設定
+        pStatus.equipMagic.Capacity = (pStatus.magicNumber);
 
     }
 
     public void ActionSet()
     {
-     //   Debug.Log("酢飯");
+     //   //Debug.Log("酢飯");
 
         float weightState = pStatus.equipWeight / pStatus.capacityWeight;
         if (weightState <= 0.3 && weightState >= 0)
         {
-      //      Debug.Log("おすし");
+      //      //Debug.Log("おすし");
             pm.speed = pStatus.lightSpeed;
             pm.dashSpeed = pStatus.lightDash;
             pm.avoidRes = pStatus.lightAvoid;
         }
         else if (weightState > 0.3 && weightState <= 0.7)
         {
-       //     Debug.Log("やきすし");
+       //     //Debug.Log("やきすし");
             pm.speed = pStatus.middleSpeed;
             pm.dashSpeed = pStatus.middleDash;
             pm.avoidRes = pStatus.middleAvoid;
         }
         else if (weightState > 0.7 && weightState <= 1)
         {
-         //   Debug.Log("まきすし");
+         //   //Debug.Log("まきすし");
             pm.speed = pStatus.heavySpeed;
             pm.dashSpeed = pStatus.heavyDash;
             pm.avoidRes = pStatus.heavyAvoid;
         }
         else if(weightState > 1)
         {
-       //     Debug.Log("腐敗すし");
+       //     //Debug.Log("腐敗すし");
             pm.speed = pStatus.overSpeed;
             pm.dashSpeed = pStatus.overDash;
             pm.avoidRes = pStatus.overAvoid;
@@ -459,9 +476,9 @@ public class GManager : MonoBehaviour
 
        // initialHpSl = 
 
-        hpSl.offsetMax = new Vector2(-initialHpSl + (pStatus.maxHp - pStatus.initialHp), hpSl.offsetMax.y);
-        staminaSl.offsetMax = new Vector2((-initialStaminaSl + (pStatus.maxStamina - pStatus.initialStamina)), staminaSl.offsetMax.y);
-        mpSl.offsetMax = new Vector2(-initialMpSl + (pStatus.maxMp - pStatus.initialMp), mpSl.offsetMax.y);
+        hpSl.offsetMax.Set(-initialHpSl + (pStatus.maxHp - pStatus.initialHp), hpSl.offsetMax.y);
+        staminaSl.offsetMax.Set((-initialStaminaSl + (pStatus.maxStamina - pStatus.initialStamina)), staminaSl.offsetMax.y);
+        mpSl.offsetMax.Set(-initialMpSl + (pStatus.maxMp - pStatus.initialMp), mpSl.offsetMax.y);
     }
 
     /// <summary>

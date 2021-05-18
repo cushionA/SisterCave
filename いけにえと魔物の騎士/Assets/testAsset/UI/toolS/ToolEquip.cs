@@ -11,7 +11,7 @@ public class ToolEquip : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = ToolManager.instance.selectButton.GetComponent<UseButtom>();
+        ub = MainUI.instance.selectButton.GetComponent<UseButtom>();
     }
 
     // Update is called once per frame
@@ -58,7 +58,7 @@ public class ToolEquip : MonoBehaviour
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
         MainUI.instance.ButtonOn();
-        //  ToolManager.instance.selectButton = null;
+        //  MainUI.instance.selectButton = null;
         //    ToolManager.instance.selectItem = null;
     }
 }

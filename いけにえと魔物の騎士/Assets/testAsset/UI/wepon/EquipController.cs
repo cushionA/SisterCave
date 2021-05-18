@@ -98,15 +98,15 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             if (num > 0)
             {
                 enableTool.Add(ti.Key);
-                //Debug.log("EEEE");
+                ////Debug.log("EEEE");
             }
 
         }
-        //Debug.log(enableTool.Count);
+        ////Debug.log(enableTool.Count);
 
         for (int i = 0; i < enableTool.Count; i += 3)
         {
-            //Debug.log("WWW");
+            ////Debug.log("WWW");
             this.data = new List<UseItemData>{
 
             new UseItemData(enableTool[i],enableTool[i+1],enableTool[i+2])
@@ -124,20 +124,27 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             toolDataBase.GetItemLists()[i].inventoryNum = 0;
 
         }
-
-        setList = ToolList().ToList();
-
-        /*(from item in toolDataBase.GetItemLists()
-               where item.inventoryNum > 0
-               select item).ToList();*/
-        //最終的に作りたいリストの初期化
+        data = null;
         data = new List<EquipData>();
+        setList = new List<Equip>(ToolList());
+        //setList = (from item in toolDataBase.GetItemLists()
+        //        where item.inventoryNum > 0
+        //      select item).ToList();
+
+        //最終的に作りたいリストの初期化
+
         //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
-        List<Equip> miniList = new List<Equip>();
+        List<Equip> miniList = new List<Equip>(N);
 
         //ToolItem[] miniList = new ToolItem[3];
 
-        if (setList.Count % N == N - 1)
+        if (setList.Count == 0)
+        {
+            setList.Add(space1);
+            setList.Add(space2);
+            setList.Add(space3);
+        }
+        else if (setList.Count % N == N - 1)
         {
             setList.Add(space1);
         }
@@ -153,9 +160,10 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
         {
             //if (setList.Count - i >= N){
             //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
-            if (i % N == 0)
+            if (i % N == 0 && i != 0)
             {
-                miniList.Clear();
+                miniList = null;
+                miniList = new List<Equip>(N);
             }
             //miniListに格納
             miniList.Add(setList[i]);
@@ -166,7 +174,32 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
 
                 EquipData mini = new EquipData(miniList.ToArray());
                 data.Add(mini);
+                mini = null;
             }
+
+            //}
+            /*else if(setList.Count - i < N)
+            {
+                ////Debug.log("そこに愛はある？");
+                //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
+                if (i % N == 0) {
+                    miniList = new List<ToolItem>();
+                }
+                //miniListに格納
+                miniList.Add(setList[i]);
+                //Nの倍数-1ならminiListを元にUseItemDataを作成して格納
+
+                if (setList.Count - i == 0)
+                {
+                    ToolItem[] box = miniList.ToArray();
+                    UseItemData mini = new UseItemData(box);
+                    data.Add(mini);
+                    ////Debug.log("愛して");
+                }
+
+            }*/
+
+
         }
         #endregion
         this.content = this.fooScroller.GetComponent<ScrollRect>().content;
@@ -180,8 +213,10 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
         //すなわち表示非表示切り替わるとthis.OnCellViewVisibilityChanged
         //というかUpdateNavigationConnections()する
 
+        //////Debug.log("愛してる");
         this.fooScroller.ReloadData();
         this.UpdateNavigationConnections();
+
     }
 
     private void Update()
@@ -190,8 +225,8 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
         if (MainUI.instance.isReBuild && !isEver)
         {
             #region
-            data.Clear();//インベントリを一回からにして入れなおす
-            ////Debug.log("おちんちん");
+            data = null;//インベントリを一回からにして入れなおす
+            data = new List<EquipData>();
             //  for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
             // {
             //　アイテム数を適当に設定
@@ -199,7 +234,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             //setList = toolDataBase.GetItemLists();
             // }
 
-            setList = ToolList().ToList();
+            setList = new List<Equip>(ToolList());
             //setList = (from item in toolDataBase.GetItemLists()
             //        where item.inventoryNum > 0
             //      select item).ToList();
@@ -207,7 +242,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             //最終的に作りたいリストの初期化
 
             //Nと同じ数だけ格納するminiListを作成、miniList.size()の最大値 = N
-            List<Equip> miniList = new List<Equip>();
+            List<Equip> miniList = new List<Equip>(N);
 
             //ToolItem[] miniList = new ToolItem[3];
 
@@ -235,7 +270,8 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
                 //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
                 if (i % N == 0)
                 {
-                    miniList.Clear();
+                    miniList = null;
+                    miniList = new List<Equip>(N);
                 }
                 //miniListに格納
                 miniList.Add(setList[i]);
@@ -246,12 +282,13 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
 
                     EquipData mini = new EquipData(miniList.ToArray());
                     data.Add(mini);
+                    mini = null;
                 }
 
                 //}
                 /*else if(setList.Count - i < N)
                 {
-                    //Debug.log("そこに愛はある？");
+                    ////Debug.log("そこに愛はある？");
                     //Nの倍数ならminiListを初期化（例:0, 3, 6 ...)
                     if (i % N == 0) {
                         miniList = new List<ToolItem>();
@@ -265,7 +302,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
                         ToolItem[] box = miniList.ToArray();
                         UseItemData mini = new UseItemData(box);
                         data.Add(mini);
-                        //Debug.log("愛して");
+                        ////Debug.log("愛して");
                     }
 
                 }*/
@@ -284,14 +321,16 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             //すなわち表示非表示切り替わるとthis.OnCellViewVisibilityChanged
             //というかUpdateNavigationConnections()する
 
-            ////Debug.log("愛してる");
+            //////Debug.log("愛してる");
             this.fooScroller.ReloadData();
             this.UpdateNavigationConnections();
             isEver = true;
+            miniList = null;
+            setList = null;
         }
         /*else if(!MainUI.instance.isReBuild && isEver)
         {
-            //Debug.log("愛してない");
+            ////Debug.log("愛してない");
             //isEver = false;
         }*/
         JButton();
@@ -420,12 +459,12 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             /* if (i == (cells.Length - 1) )
                        {
                            isLast = true;
-                           //Debug.log("yasai");
+                           ////Debug.log("yasai");
                        }
                        else
                        {
                            isLast = false;
-                           //Debug.log("niku");
+                           ////Debug.log("niku");
                        }
                        if(i != 0)
                        {
@@ -471,21 +510,20 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
 
               if (!EquipManager.instance.isShieldM && !EquipManager.instance.isWeponM || item == space2 || item == space1 || item == space3)
                 {
-                 //   //Debug.log("お月様キラキラ");
+                 //   ////Debug.log("お月様キラキラ");
                     yield return item;
                 }
                 else if(!EquipManager.instance.isShieldM && EquipManager.instance.isWeponM && item.GetType() == typeof(Wepon))
                 {
-                  //  //Debug.log("お日様キラキラ");
+                  //  ////Debug.log("お日様キラキラ");
                         yield return item;
 
                 }
                 else if (EquipManager.instance.isShieldM && !EquipManager.instance.isWeponM && item.GetType() == typeof(Shield))
                 {
-                   // //Debug.log("お星様キラキラ");
+                   // ////Debug.log("お星様キラキラ");
                     yield return item;
                 }
-               // //Debug.log("おまんこキラキラ");
             }
 
         }

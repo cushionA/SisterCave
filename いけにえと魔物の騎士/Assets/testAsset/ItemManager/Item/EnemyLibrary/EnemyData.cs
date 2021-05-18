@@ -1,4 +1,4 @@
-﻿public class EnemyData
+﻿public class EnemyData:Item
 {
     public EnemyLibrary[] Contents;
 

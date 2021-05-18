@@ -11,8 +11,8 @@ public struct EnemyValue
     public float addArmor;
     [Header("強靭削り")]
     public float shock;
-    [Header("ヒット数")]
-    public int hitLimmit;
+ //   [Header("ヒット数")]
+ //   public int hitLimmit;
     [Header("吹き飛ばせるかどうか")]
     public bool isBlow;
     [Header("弾かれるかどうか")]

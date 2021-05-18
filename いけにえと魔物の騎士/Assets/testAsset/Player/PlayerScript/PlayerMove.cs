@@ -48,14 +48,14 @@ public class PlayerMove : MonoBehaviour
 
 
 
-    public PlayMakerFSM fsm;
+   // public PlayMakerFSM fsm;
     public GameObject Guard;
 
 
     //変数を宣言
 
-    Animator anim;
-    Rigidbody2D rb;
+    [HideInInspector] public Animator anim;
+    [HideInInspector] public Rigidbody2D rb;
 
     string groundTag = "Ground";
     bool isGroundEnter, isGroundStay, isGroundExit;
@@ -73,9 +73,11 @@ public class PlayerMove : MonoBehaviour
     float rushSt;
     [HideInInspector] public bool isSloopDown;
     bool guardButton;
+    Vector2 addVelocity;
+    Vector2 airMove;
+    [HideInInspector]public Vector2 move;
 
-
-    PlayMakerFSM pm;
+    // PlayMakerFSM pm;
     AttackM at;
     MoveObject moveObj;
 
@@ -86,6 +88,9 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] LayerMask rayFilter;
     [SerializeField] float rayDis;
     public float sloopForce;
+   [HideInInspector]public Vector3 theScale;//方向転換
+
+
 
     private void Awake()
     {
@@ -95,7 +100,7 @@ public class PlayerMove : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        pm = GetComponent<PlayMakerFSM>();
+ //       pm = GetComponent<PlayMakerFSM>();
         at = this.gameObject.GetComponent<AttackM>();
 
     }
@@ -114,6 +119,11 @@ public class PlayerMove : MonoBehaviour
                    horizontalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
                    verticalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction2);
             }
+            else
+            {
+                horizontalkey = 0;
+                verticalkey = 0;
+            }
 
             guardButton = GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction11);
 
@@ -121,7 +131,7 @@ public class PlayerMove : MonoBehaviour
             {
                 avoidKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction4);
             }
-            else if (isAvoid)
+            else// if (isAvoid)
             {
                 avoidKey = 0.0f;
                 //入力不可に
@@ -172,7 +182,8 @@ public class PlayerMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        //  Debug.Log($"Yは{ySpeed}です");
+         // //Debug.Log($"Yは{ySpeed}です");
+
 
         #region//フラグ管理
 
@@ -192,7 +203,7 @@ public class PlayerMove : MonoBehaviour
         /*        if (isGroundEnter || isGroundStay)
                 {
                     isGround = true;
-                   // //Debug.log("接地");
+                   // ////Debug.log("接地");
                 }
                 else// if (isGroundExit)
                 {
@@ -211,11 +222,11 @@ public class PlayerMove : MonoBehaviour
         /// </summary>
         #region
         //isGround = rb.IsTouching(filter);
-        //Debug.DrawRay(transform.position, Vector3.down, Color.blue, rayDis, false);
+        ////Debug.DrawRay(transform.position, Vector3.down, Color.blue, rayDis, false);
         if (rb.IsTouching(filter))
         {
             isGround = true;
-
+            //Debug.Log("カレー");
         }
 
         else
@@ -224,37 +235,40 @@ public class PlayerMove : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, rayDis, rayFilter);
             if (hit && isGround)
             {
+                //Debug.Log($"シチュー");
 
-                
-                 isGround = true;
-                // rb.AddForce(new Vector2(0,-80),ForceMode2D.Force);
+                isGround = true;
+
 
             }
             else
             {
-                //  Debug.Log("ハヤシライス");
+                  //Debug.Log("ハヤシライス");
                 isGround = false;
                 //}
             }
         }
-        
-        #endregion
-        if (GManager.instance.isGuard && GManager.instance.pStatus.stamina <= 0)
-        {
-            GManager.instance.isGBreak = true;
-            GManager.instance.isGuard = false;
-        }
-        Guard.SetActive(GManager.instance.isGuard == true ? true:false);
 
-      //  Debug.Log($"どうすか？{GManager.instance.isAttack}");
+        #endregion
+        /*        if (GManager.instance.isGuard && GManager.instance.pStatus.stamina <= 0)
+                {
+                    GManager.instance.isGBreak = true;
+                    GManager.instance.isGuard = false;
+                }*/
+
+        if (!GManager.instance.isAttack)//ガード判定のある攻撃を作る
+        {
+            Guard.SetActive(GManager.instance.isGuard == true ? true : false);
+        }
+      //  //Debug.Log($"どうすか？{GManager.instance.isAttack}");
         if (!isDown && !isAvoid && !GManager.instance.isAttack && !isStop && !GManager.instance.onGimmick && !GManager.instance.guardHit)
         {
             if (GManager.instance.pStatus.stamina > 0 && !GManager.instance.isGBreak && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop && !isJump)
             {
-                Debug.Log("わが師");
+              //  //Debug.Log("わが師");
                 if (/*GManager.instance.guardEnable &&*/ guardButton || GManager.instance.guardHit)
                 {
-                    Debug.Log($"{GManager.instance.guardHit}");
+                    //Debug.Log($"{GManager.instance.guardHit}");
                     GManager.instance.isGuard = true;
                 }
                 else if (!guardButton || !GManager.instance.guardEnable)
@@ -270,7 +284,7 @@ public class PlayerMove : MonoBehaviour
             isEnAt = true;
             //攻撃できる
 
-            //Debug.Log($"{rb.velocity.y}だう");
+            ////Debug.Log($"{rb.velocity.y}だう");
             if (isGround && !isJump)
             {
               //  ySpeed = 0.0f;
@@ -280,7 +294,8 @@ public class PlayerMove : MonoBehaviour
                 if (horizontalkey > 0)
                 {
                     #region //  横移動と向き変更詰め合わせ
-                    transform.localScale = new Vector3(1, 1, 1);
+                    theScale.Set(1, 1, 1);
+                    transform.localScale = theScale;
 
                     isRight = true;
                     if (isDash && GManager.instance.isEnable && !GManager.instance.isGuard)
@@ -353,8 +368,8 @@ public class PlayerMove : MonoBehaviour
                 }
                 else if (horizontalkey < 0)
                 {
-
-                    transform.localScale = new Vector3(-1, 1, 1);
+                    theScale.Set(-1, 1, 1);
+                    transform.localScale = theScale;
 
                     isRight = false;
 
@@ -407,7 +422,7 @@ public class PlayerMove : MonoBehaviour
                             anim.Play("TSquatMove");
                         }
                         xSpeed = -squatSpeed;
-
+                        ySpeed = 0;
                     }
                     else
                     {
@@ -430,12 +445,12 @@ public class PlayerMove : MonoBehaviour
                     {
 
                         anim.Play("OGuard");
-                         Debug.Log("ガード");
+                         //Debug.Log("ガード");
                     }
                     else
                     {
                         anim.Play("TGuard");
-                        Debug.Log("ガード");
+                        //Debug.Log("ガード");
                     }
                     ySpeed = 0.0f;
                     xSpeed = 0.0f;
@@ -449,12 +464,12 @@ public class PlayerMove : MonoBehaviour
                     {
 
                         anim.Play("OStand");
-                       // Debug.Log("台無し");
+                       // //Debug.Log("台無し");
                     }
                     else
                     {
                         anim.Play("TStand");
-                        Debug.Log("台無し");
+                      //  //Debug.Log("台無し");
                     }
                     ySpeed = 0.0f;
                     xSpeed = 0.0f;
@@ -522,7 +537,7 @@ public class PlayerMove : MonoBehaviour
                 SetLayer(11);
                 if (jumpTime <= jumpRes && verticalkey > 0)
                 {
-                  //  Debug.Log("ちくわぶ");
+                  //  //Debug.Log("ちくわぶ");
                     ySpeed = jumpSpeed;
                     xSpeed *= jumpMCurve.Evaluate(jumpTime);
                     ySpeed *= jumpCurve.Evaluate(jumpTime);
@@ -552,6 +567,7 @@ public class PlayerMove : MonoBehaviour
                 fallTime += Time.fixedDeltaTime;
                 if (fallTime >= 0.2)
                 {
+
                     if (!GManager.instance.pStatus.equipWeapon.twinHand)
                     {
 
@@ -562,9 +578,9 @@ public class PlayerMove : MonoBehaviour
                         anim.Play("TFall");
                     }
                 }
-            //    Debug.Log("ちくわさらだ");
-                ySpeed = -gravity;
-                ySpeed *= fallCurve.Evaluate(fallTime);
+            //    //Debug.Log("ちくわさらだ");
+                ySpeed = -gravity * fallCurve.Evaluate(fallTime);
+               // ySpeed *= fallCurve.Evaluate(fallTime);
                 xSpeed *= fallMCurve.Evaluate(fallTime);
             }
 
@@ -581,7 +597,7 @@ public class PlayerMove : MonoBehaviour
                         ySpeed = jumpForce.y;
                         xSpeed *= jumpMCurve.Evaluate(jumpTime);
                         ySpeed *= jumpCurve.Evaluate(jumpTime);
-                        rb.velocity = new Vector2(xSpeed,ySpeed);
+                        rb.velocity.Set(xSpeed,ySpeed);
                     }
                     else
                     {
@@ -599,7 +615,7 @@ public class PlayerMove : MonoBehaviour
                         ySpeed = jumpForce.y;
                         xSpeed *= jumpCurve.Evaluate(jumpTime);
                         ySpeed *= jumpMCurve.Evaluate(jumpTime);
-                        rb.velocity = new Vector2(xSpeed, ySpeed);
+                        rb.velocity.Set(xSpeed, ySpeed);
                     }
                     else
                     {
@@ -614,45 +630,68 @@ public class PlayerMove : MonoBehaviour
             #endregion
 
             //移動速度を設定
-            Vector2 addVelocity = Vector2.zero;
-                if (moveObj != null)
-                {
+
+            if (moveObj != null)
+            {
                     addVelocity = moveObj.GetVelocity();
-                }
-            
-            //Debug.Log($"Xは{xSpeed}だよ");
-
-                rb.velocity = new Vector2(xSpeed, ySpeed) + addVelocity;
-
             }
+            else
+            {
+                addVelocity = Vector2.zero;
+            }
+
+            ////Debug.Log($"Xは{xSpeed}だよ");
+
+
+            Debug.Log($"落下は{ySpeed}です");
+            move.Set(xSpeed + addVelocity.x, ySpeed + addVelocity.y);
+            rb.velocity = move;
+            
+           // test = rb.velocity.y;
+
+        }
         else if(GManager.instance.isAttack)
         {
+           // GManager.instance.isGuard = false;
             isDash = false;
             isJump = false;
-
+            jumpTime = 0.0f;
+            dashTime = 0.0f;
+            avoidJudge = 0;
+        }
+        else
+        {
+            GManager.instance.isGuard = false;
+            isDash = false;
+            isJump = false;
+            jumpTime = 0.0f;
+            dashTime = 0.0f;
+            avoidJudge = 0;
         }
 
          if (!isGround && !GManager.instance.isAttack) {
             //空中で地味に動くためのやつ
 
-            Vector2 move;
+
            
             if (horizontalkey > 0)
             {
-                transform.localScale = new Vector3(1, 1, 1);
+                theScale.Set(1, 1, 1);
+                transform.localScale = theScale;
                 isRight = true;
 
-                move = new Vector2(airMSpeed, 0.0f);
-                rb.AddForce(move, ForceMode2D.Force);
+                airMove.Set(airMSpeed, 0.0f);
+                rb.AddForce(airMove, ForceMode2D.Force);
 
             }
 
             else if (horizontalkey < 0)
             {
-                transform.localScale = new Vector3(-1, 1, 1);
+                theScale.Set(-1, 1, 1);
+                transform.localScale = theScale;
                 isRight = false;
-                move = new Vector2(-airMSpeed, 0.0f);
-                rb.AddForce(move, ForceMode2D.Force);
+                airMove.Set(-airMSpeed, 0.0f);
+                rb.AddForce(airMove, ForceMode2D.Force);
             }
         }
 
@@ -685,13 +724,15 @@ public class PlayerMove : MonoBehaviour
                     }
 
                     SetLayer(10);
-                    rb.velocity = new Vector2(avoidSpeed, -gravity);
+                    move.Set(avoidSpeed, -gravity);
+                    rb.velocity = move;
 
                 }
                 else
                 {
+                    move.Set(0, -gravity);
+                    rb.velocity = move;
 
-                    rb.velocity = new Vector2(0, -gravity);
 
                     SetLayer(11);
 
@@ -719,13 +760,14 @@ public class PlayerMove : MonoBehaviour
                     }
                     SetLayer(10);
                     //突進の制限時間三秒である以内は方向転換を禁じて進み続ける。
-                    rb.velocity = new Vector2(-avoidSpeed, -gravity);
 
+                    move.Set(-avoidSpeed, -gravity);
+                    rb.velocity = move;
                 }
                 else
                 {
-
-                    rb.velocity = new Vector2(0, -gravity);
+                    move.Set(0, -gravity);
+                    rb.velocity = move;
 
                     SetLayer(11);
 
@@ -736,14 +778,9 @@ public class PlayerMove : MonoBehaviour
 
         }
 
-       // //Debug.log($"攻撃中{GManager.instance.isAttack}");
-       // //Debug.log($"空中攻撃{GManager.instance.airAttack}");
-        if (GManager.instance.isAttack && !GManager.instance.airAttack)
-        {
-            //Debug.log("こたつ");
-            //空中攻撃以外では重力を適用
-            rb.velocity = new Vector2(rb.velocity.x, -gravity);
-        }
+       // ////Debug.log($"攻撃中{GManager.instance.isAttack}");
+       // ////Debug.log($"空中攻撃{GManager.instance.airAttack}");
+
 
 
         #endregion
@@ -844,7 +881,7 @@ public class PlayerMove : MonoBehaviour
         isRight = !isRight;
 
         // Multiply the player's x local scale by -1.
-        Vector3 theScale = transform.localScale;
+        theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
     }
@@ -861,7 +898,7 @@ public class PlayerMove : MonoBehaviour
 
    public void Stop()
     {
-            rb.velocity = new Vector2(0, 0);
+        rb.velocity = Vector2.zero;
 
             isJump = false;
             isDash = false;

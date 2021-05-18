@@ -5,8 +5,8 @@ public class GetTool : MonoBehaviour
 
     string playerTag = "Player";
     //public ToolManager tm;
-    [SerializeField] string addTool;
-    [SerializeField] int addNum;
+    [SerializeField] ToolItem[] addTool;
+    [SerializeField] int[] addNum;
     bool isFirst;
 
     // Start is called before the first frame update
@@ -23,12 +23,13 @@ public class GetTool : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5) && !isFirst)
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18) && !isFirst)
         {
-            ToolManager.instance.takeItem = addTool;
-            ToolManager.instance.changeNum = addNum;
-            ToolManager.instance.AddItem();
+            // MagicManager.instance.takeItem = addTool;
+            //  MagicManager.instance.changeNum = addNum;
+            ToolManager.instance.ChangeNum(addTool, addNum);
             isFirst = true;
+            addTool = null;
             Destroy(this.gameObject);
         }
 

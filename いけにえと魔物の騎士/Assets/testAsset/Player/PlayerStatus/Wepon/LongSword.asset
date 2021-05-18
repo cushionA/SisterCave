@@ -97,7 +97,7 @@ MonoBehaviour:
   - 35
   parryStart: 0.1
   parryTime: 0.25
-  shock: 12
+  shock: 15
   artsMP:
   - 5
   - 12
@@ -633,8 +633,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  mValue: 1
-  atAromor: 10
+  mValue: 1.6
+  atAromor: 20
   chargeRes: 1.3
   sValue:
   - x: 0.8
@@ -693,80 +693,35 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 0
-  airValue: []
+  airValue:
+  - x: 0.8
+    y: 5
+    z: 7
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 8
+  - x: 0.8
+    y: 7
+    z: 7
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 8
   strikeValue:
-  - x: 0
-    y: 0
-    z: 0
+  - x: 1.3
+    y: 15
+    z: 15
     isCombo: 0
-    isBlow: 0
+    isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
+    blowPower: {x: 30, y: 15}
+    useStamina: 18
   twinSValue:
   - x: 1
     y: 10
@@ -823,117 +778,54 @@ MonoBehaviour:
     isLight: 0
     type: 0
     blowPower: {x: 10, y: 40}
-    useStamina: 0
+    useStamina: 15
   - x: 1.2
     y: 20
-    z: 15
+    z: 32
     isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
-    useStamina: 0
+    useStamina: 32
   twinAirValue:
-  - x: 0
-    y: 0
-    z: 0
+  - x: 0.8
+    y: 5
+    z: 10
     isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
+    useStamina: 9
+  - x: 0.8
+    y: 5
+    z: 12
     isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
-    useStamina: 0
+    useStamina: 9
   twinStrikeValue:
-  - x: 0
-    y: 0
-    z: 0
+  - x: 1.3
+    y: 20
+    z: 18
     isCombo: 0
-    isBlow: 0
+    isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 0
-    y: 0
-    z: 0
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
+    blowPower: {x: 70, y: 30}
+    useStamina: 20
   artsValue:
   - x: 0.3
     y: 20
     z: 50
     isCombo: 0
-    isBlow: 0
+    isBlow: 1
     isLight: 0
     type: 2
-    blowPower: {x: 0, y: 0}
+    blowPower: {x: 2000, y: 2000}
     useStamina: 15
   - x: 1.6
     y: 20
@@ -942,12 +834,12 @@ MonoBehaviour:
     isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 25, y: 12}
+    blowPower: {x: 300, y: 500}
     useStamina: 20
   isLight: 0
   shieldAct: 0
   twinHand: 1
-  isBlow: 0
+  isBlow: 1
   isCombo: 0
-  blowPower: {x: 0, y: 0}
+  blowPower: {x: 300, y: 500}
   guardSpeed: 0

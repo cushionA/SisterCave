@@ -11,7 +11,7 @@ public class WSEquip : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = EquipManager.instance.selectButton.GetComponent<EquipButton>();
+        ub = MainUI.instance.selectButton.GetComponent<EquipButton>();
     }
 
     // Update is called once per frame
@@ -68,7 +68,7 @@ public class WSEquip : MonoBehaviour
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
         MainUI.instance.ButtonOn();
-        //  EquipManager.instance.selectButton = null;
+        //  MainUI.instance.selectButton = null;
         //    EquipManager.instance.selectItem = null;
     }
 }

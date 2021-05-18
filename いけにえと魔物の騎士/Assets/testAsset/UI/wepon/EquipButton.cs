@@ -18,7 +18,7 @@ public class EquipButton : MonoBehaviour
 
     private void Start()
     {
-        GameObject ev = GameObject.Find("EventSystem");
+        //GameObject ev = GameObject.Find("EventSystem");
     }
 
     // Update is called once per frame
@@ -31,12 +31,12 @@ public class EquipButton : MonoBehaviour
 
         if (!EquipManager.instance.isUseMenu)//選択ウィンドウ出てないなら
         {
-            EquipManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
+            MainUI.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
-          //  //Debug.log($"青い稲妻{EquipManager.instance.selectButton == this.gameObject}");
-            if (EquipManager.instance.selectButton == this.gameObject && !isFirst)
+          //  ////Debug.log($"青い稲妻{MainUI.instance.selectButton == this.gameObject}");
+            if (MainUI.instance.selectButton == this.gameObject && !isFirst)
             {
-                ////Debug.log("冥王星");
+                //////Debug.log("冥王星");
                 EquipManager.instance.selectItem = item;
                 //position = this.GetComponent<RectTransform>().anchoredPosition;
                 isFirst = true;
@@ -49,7 +49,7 @@ public class EquipButton : MonoBehaviour
 
             if (EquipManager.instance.isWeponM || EquipManager.instance.isShieldM)
             {
-              //  //Debug.log("サイパン");
+              //  ////Debug.log("サイパン");
                 if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
                     MainUI.instance.weponWindow.SetActive(false);
@@ -83,15 +83,15 @@ public class EquipButton : MonoBehaviour
 
     public void CallWindow()
     {
-      //  //Debug.log($"お名前教えて{EquipManager.instance.selectButton.name}");
-        if (EquipManager.instance.selectItem.inventoryNum > 0 && item != null && EquipManager.instance.selectButton == this.gameObject)
+      //  ////Debug.log($"お名前教えて{MainUI.instance.selectButton.name}");
+        if (EquipManager.instance.selectItem.inventoryNum > 0 && item != null && MainUI.instance.selectButton == this.gameObject)
         {
             EquipManager.instance.selectItem = item;
             // position = this.GetComponent<RectTransform>().anchoredPosition;
             if (!EquipManager.instance.isWeponM && !EquipManager.instance.isShieldM)
             {
                 EquipManager.instance.selectWindow.SetActive(true);
-                EquipManager.instance.selectWindow.transform.parent = EquipManager.instance.selectButton.transform;
+                EquipManager.instance.selectWindow.transform.parent = MainUI.instance.selectButton.transform;
                 EquipManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
 
             }
@@ -99,7 +99,7 @@ public class EquipButton : MonoBehaviour
             {
                 EquipManager.instance.equipWindow.SetActive(true);
                 //処理分けは装備窓の方で
-                EquipManager.instance.equipWindow.transform.parent = EquipManager.instance.selectButton.transform;
+                EquipManager.instance.equipWindow.transform.parent = MainUI.instance.selectButton.transform;
                 EquipManager.instance.equipWindow.GetComponent<RectTransform>().anchoredPosition = position;
             }
 
@@ -124,7 +124,8 @@ public class EquipButton : MonoBehaviour
         }
 
         isFirst = false;
-        EquipManager.instance.selectButton.GetComponent<Button>().Select();
+        
+        MainUI.instance.selectButton.GetComponent<Button>().Select();
         EquipManager.instance.isUseMenu = false;
     }
 

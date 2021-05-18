@@ -5,8 +5,8 @@ public class GetMaterial : MonoBehaviour
 
     string playerTag = "Player";
     //public ToolManager tm;
-    [SerializeField] string addTool;
-    [SerializeField] int addNum;
+    [SerializeField] MaterialItem[] addTool;
+    [SerializeField] int[] addNum;
     bool isFirst;
 
     // Start is called before the first frame update
@@ -25,10 +25,11 @@ public class GetMaterial : MonoBehaviour
     {
         if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18) && !isFirst)
         {
-            MaterialManager.instance.takeItem = addTool;
-            MaterialManager.instance.changeNum = addNum;
-            MaterialManager.instance.AddItem();
+            // MagicManager.instance.takeItem = addTool;
+            //  MagicManager.instance.changeNum = addNum;
+            MaterialManager.instance.ChangeNum(addTool, addNum);
             isFirst = true;
+            addTool = null;
             Destroy(this.gameObject);
         }
 

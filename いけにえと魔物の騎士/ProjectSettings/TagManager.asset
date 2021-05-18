@@ -28,7 +28,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - AttackBlock
   - Water
   - UI
   - PlayerSerch
@@ -53,10 +53,10 @@ TagManager:
   - GurdedFire
   - Hanging
   - JumpTrigger
-  - 
-  - 
-  - 
-  - 
+  - EnemyAvoid
+  - SquatWall
+  - SquatAttack
+  - Wall
   m_SortingLayers:
   - name: BackGround
     uniqueID: 900986293

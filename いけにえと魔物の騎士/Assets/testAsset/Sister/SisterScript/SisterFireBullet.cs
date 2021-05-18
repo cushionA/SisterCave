@@ -37,7 +37,7 @@ public class SisterFireBullet : MonoBehaviour
 		//}
 
 		// 初期化
-		posTarget = SManager.instance.targetObj.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+		posTarget = SManager.instance.target.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
 
 		switch (em.fireType)
 		{
@@ -92,7 +92,7 @@ void FixedUpdate()
 		bool homing = ((Time.fixedTime - fireTime) < em.homingTime);
 		if (homing)
 		{
-			posTarget = SManager.instance.targetObj.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+			posTarget = SManager.instance.target.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
 		}
 		if (fireTime >= em.lifeTime)
 		{

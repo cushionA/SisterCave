@@ -8,11 +8,11 @@ public class SisterFire : MonoBehaviour
 	public SisterParameter sister;
 	public SisterStatus status;
 	public Transform firePosition;
-	SisterFireBullet sisF;
+//	SisterFireBullet sisF;
 	SisterBrain sb;
 	bool enableFire;
-	List<GameObject> targetPlan;
-	GameObject target;
+	//List<GameObject> targetPlan;
+	//GameObject target;
 	List<SisMagic> useSupport;//未使用の支援
 	List<float> effectiveTime;//支援魔法、リジェネ、攻撃の時間をはかる
 
@@ -22,6 +22,7 @@ public class SisterFire : MonoBehaviour
 	float targetJudge = 30;
 
 	int judgeSequence;
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -52,38 +53,38 @@ public class SisterFire : MonoBehaviour
 			if (sister.nowMove == SisterParameter.MoveType.攻撃)
 			{
 				targetJudge += Time.fixedDeltaTime;
-				if (targetJudge >= sister.targetResetRes || SManager.instance.targetRecord.Count != SManager.instance.targetCondition.Count)
+				if (targetJudge >= sister.targetResetRes || SManager.instance.targetList.Count != SManager.instance.targetCondition.Count)
 				{
 
 					SManager.instance.GetEnemyCondition();
-					target = null;
+					SManager.instance.target = null;
 					judgeSequence = 1;
 					TargetSelect(sister.firstTarget);
-					if(target == null)
+					if(SManager.instance.target == null)
                     {
 						TargetSelect(sister.secondTarget);
 						judgeSequence = 2;
 					}
-					if (target == null)
+					if (SManager.instance.target == null)
 					{
 						TargetSelect(sister.thirdTarget);
 						judgeSequence = 3;
 					}
-					if (target == null)
+					if (SManager.instance.target == null)
 					{
 						TargetSelect(sister.forthTarget);
 						judgeSequence = 4;
 					}
-					if(target == null)
+					if(SManager.instance.target == null)
                     {
-						target = SManager.instance.targetRecord[RandomValue(0, SManager.instance.targetRecord.Count - 1)];
+						SManager.instance.target = SManager.instance.targetList[RandomValue(0, SManager.instance.targetList.Count - 1)];
 						judgeSequence = 5;
                     }
 					targetJudge = 0.0f;
 					//EnemyRecordとtargetConditionは一致してる。
 					//敵情報更新
 				}
-				if(target != null)
+				if(SManager.instance.target != null && enableFire)
                 {
 					if(judgeSequence == 1)
                     {
@@ -170,13 +171,13 @@ public class SisterFire : MonoBehaviour
 	public void ActionFire(float random = 0.0f)
 	{//ランダムに入れてもいいけど普通に入れてもいい
 
-		if (status.mp >= status.useMagic.useMP && SManager.instance.targetObj != null)
+		if (status.mp >= status.useMagic.useMP && SManager.instance.target != null)
 		{
 			waitCast += Time.fixedDeltaTime;
 			if (waitCast >= SManager.instance.sisStatus.useMagic.castTime)
 				if (random != 0)
 				{
-					firePosition.position = new Vector3
+					firePosition.position.Set
 						(firePosition.position.x + random, firePosition.position.y + random, firePosition.position.z);//銃口から
 				}
 			Transform goFire = firePosition;
@@ -214,82 +215,259 @@ public class SisterFire : MonoBehaviour
 	/// <param name="condition"></param>
 	public void TargetSelect(SisterParameter.TargetJudge condition)
 	{
+		float value = 0.0f;//HPなどの比較のための数字を
 		switch (condition)
 		{
 			case SisterParameter.TargetJudge.強敵:
 				//強敵を優先
+				for(int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+                    if (SManager.instance.targetCondition[i].strong)
+                    {
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+                    }
+                }
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.非強敵:
+
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (!SManager.instance.targetCondition[i].strong)
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
+
+				}
 
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.斬撃属性が弱点:
 
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].wp.Contains(EnemyStatus.WeakPoint.Slash))
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
+
+				}
+
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.刺突属性が弱点:
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].wp.Contains(EnemyStatus.WeakPoint.Stab))
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
 
+				}
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.打撃属性が弱点:
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].wp.Contains(EnemyStatus.WeakPoint.Strike))
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
 
+				}
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.聖属性が弱点:
 
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].wp.Contains(EnemyStatus.WeakPoint.Holy))
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
+
+				}
+
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.闇属性が弱点:
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].wp.Contains(EnemyStatus.WeakPoint.Dark))
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
 
+				}
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.炎属性が弱点:
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].wp.Contains(EnemyStatus.WeakPoint.Fire))
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
 
+				}
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.雷属性が弱点:
-
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].wp.Contains(EnemyStatus.WeakPoint.Slash))
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
+				}
 				break;
 			//-----------------------------------------------------------------------------------------------------
-			case SisterParameter.TargetJudge.敵タイプ:
+			case SisterParameter.TargetJudge.兵士:
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].kind == EnemyStatus.KindofEnemy.Soldier)
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
 
+				}
+				break;
+			//-----------------------------------------------------------------------------------------------------
+			case SisterParameter.TargetJudge.飛行:
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].kind == EnemyStatus.KindofEnemy.Fly)
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
+
+				}
+				break;
+			//-----------------------------------------------------------------------------------------------------
+			case SisterParameter.TargetJudge.射撃:
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].kind == EnemyStatus.KindofEnemy.Shooter)
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
+
+				}
+				break;
+			//-----------------------------------------------------------------------------------------------------
+			case SisterParameter.TargetJudge.騎士:
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].kind == EnemyStatus.KindofEnemy.Knight)
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
+
+				}
+				break;
+			//-----------------------------------------------------------------------------------------------------
+			case SisterParameter.TargetJudge.待ち伏せ:
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].kind == EnemyStatus.KindofEnemy.Trap)
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						break;
+					}
+
+				}
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.距離近いのから:
-
+				SManager.instance.target = SManager.instance.targetList[0];
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.距離遠いのから:
-
+				SManager.instance.target = SManager.instance.targetList[SManager.instance.targetList.Count - 1];
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.敵のHP多いのから:
+				//float HP = 0;
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
 
+					if (SManager.instance.targetCondition[i].hp > value)
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						value = SManager.instance.targetCondition[i].hp;
+					}
+				}
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.敵のHP少ないのから:
-
+				//float HP = 0;//HPなどの比較のための数字を
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].hp < value || value == 0)
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						value = SManager.instance.targetCondition[i].hp;
+					}
+				}
+				break;
+			//-----------------------------------------------------------------------------------------------------
+			case SisterParameter.TargetJudge.移動速度早い:
+				//float HP = 0;
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].combatSpeed.x > value)
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						value = SManager.instance.targetCondition[i].combatSpeed.x;
+					}
+				}
+				break;
+			//-----------------------------------------------------------------------------------------------------
+			case SisterParameter.TargetJudge.移動速度遅い:
+				//float HP = 0;//HPなどの比較のための数字を
+				for (int i = 0; i < SManager.instance.targetList.Count; i++)
+				{
+					if (SManager.instance.targetCondition[i].combatSpeed.x < value || value == 0)
+					{
+						SManager.instance.target = SManager.instance.targetList[i];
+						value = SManager.instance.targetCondition[i].combatSpeed.x;
+					}
+				}
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.プレイヤーの体力がマックス:
 				//以下の場合攻撃すると標的は敵リストの先頭に。大技を撃ったり回復等の他のモードに移行したり
+				SManager.instance.target = SManager.instance.targetList[0];
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.プレイヤーの体力が半分以下:
-
+				SManager.instance.target = SManager.instance.targetList[0];
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.プレイヤーの体力が二割以下:
-
+				SManager.instance.target = SManager.instance.targetList[0];
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.状態異常にかかった時:
-
+				SManager.instance.target = SManager.instance.targetList[0];
 				break;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.TargetJudge.なし:
 				//	ランダムバリュー使ってレコードから指定
+				SManager.instance.target = SManager.instance.targetList[RandomValue(0, SManager.instance.targetList.Count - 1)];
 				break;
 			//-----------------------------------------------------------------------------------------------------
 		}
@@ -476,8 +654,8 @@ public class SisterFire : MonoBehaviour
 		switch (condition)
 		{
 			case SisterParameter.SupportJudge.かかっていない支援がある:
-				useSupport.Clear();
-				foreach(SisMagic s in SManager.instance.supportMagi)
+				useSupport = null;
+				foreach (SisMagic s in SManager.instance.supportMagi)
                 {
                     if (!s.effectNow)
                     {
@@ -490,7 +668,7 @@ public class SisterFire : MonoBehaviour
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.SupportJudge.アクション強化がない:
 
-				useSupport.Clear();
+				useSupport = null;
 				foreach (SisMagic s in SManager.instance.supportMagi)
 				{
 					if (!s.effectNow && s.sType == SisMagic.SupportType.アクション強化)
@@ -503,7 +681,7 @@ public class SisterFire : MonoBehaviour
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.SupportJudge.エンチャントがない:
 
-				useSupport.Clear();
+				useSupport = null;
 				foreach (SisMagic s in SManager.instance.supportMagi)
 				{
 					if (!s.effectNow && s.sType == SisMagic.SupportType.エンチャント)
@@ -516,7 +694,7 @@ public class SisterFire : MonoBehaviour
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.SupportJudge.バリアがない:
 
-				useSupport.Clear();
+				useSupport = null;
 				foreach (SisMagic s in SManager.instance.supportMagi)
 				{
 					if (!s.effectNow && s.sType == SisMagic.SupportType.バリア)
@@ -529,7 +707,7 @@ public class SisterFire : MonoBehaviour
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.SupportJudge.防御強化がない:
 
-				useSupport.Clear();
+				useSupport = null;
 				foreach (SisMagic s in SManager.instance.supportMagi)
 				{
 					if (!s.effectNow && s.sType == SisMagic.SupportType.防御強化)
@@ -542,7 +720,7 @@ public class SisterFire : MonoBehaviour
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.SupportJudge.攻撃強化がない:
 
-				useSupport.Clear();
+				useSupport = null;
 				foreach (SisMagic s in SManager.instance.supportMagi)
 				{
 					if (!s.effectNow && s.sType == SisMagic.SupportType.攻撃強化)
@@ -654,22 +832,22 @@ public class SisterFire : MonoBehaviour
 		{
 			case SisterParameter.RecoverJudge.プレイヤーの体力がマックス:
 
-				return GManager.instance.pStatus.hp == GManager.instance.pStatus.maxHp ? true : false;
+				return GManager.instance.pStatus.hp == GManager.instance.pStatus.maxHp;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.RecoverJudge.プレイヤーの体力が半分以下:
 
-				return GManager.instance.pStatus.hp <= GManager.instance.pStatus.maxHp / 2 ? true : false;
+				return GManager.instance.pStatus.hp <= GManager.instance.pStatus.maxHp / 2;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.RecoverJudge.プレイヤーの体力が二割以下:
 
-				return GManager.instance.pStatus.hp <= GManager.instance.pStatus.maxHp / 5 ? true : false;
+				return GManager.instance.pStatus.hp <= GManager.instance.pStatus.maxHp / 5;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.RecoverJudge.状態異常にかかった時:
 
-				return GManager.instance.badCondition ? true : false;
+				return GManager.instance.badCondition;
 			//-----------------------------------------------------------------------------------------------------
 			case SisterParameter.RecoverJudge.リジェネが切れたとき:
-				useSupport.Clear();
+				useSupport = null;
 				foreach (SisMagic s in SManager.instance.recoverMagi)
 				{
 					if (!s.effectNow && s.sType == SisMagic.SupportType.リジェネ)

@@ -3,32 +3,25 @@
 public class GetEquip : MonoBehaviour
 {
 
-    string playerTag = "Player";
+    ////string playerTag = "Player";
     //public ToolManager tm;
-    [SerializeField] string addTool;
-    [SerializeField] int addNum;
+    [SerializeField] Equip[] addTool;
+    [SerializeField] int[] addNum;
     bool isFirst;
 
     // Start is called before the first frame update
-    void Start()
-    {
 
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5) && !isFirst)
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18) && !isFirst)
         {
-            EquipManager.instance.takeItem = addTool;
-            EquipManager.instance.changeNum = addNum;
-            EquipManager.instance.AddItem();
+            // MagicManager.instance.takeItem = addTool;
+            //  MagicManager.instance.changeNum = addNum;
+            EquipManager.instance.ChangeNum(addTool, addNum);
             isFirst = true;
+            addTool = null;
             Destroy(this.gameObject);
         }
 

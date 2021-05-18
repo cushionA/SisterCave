@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyDataManager : MonoBehaviour
 {
 	public static EnemyDataManager instance = null;
-	[HideInInspector] public GameObject selectButton;
+//	[HideInInspector] public GameObject selectButton;
 	[HideInInspector] public EnemyLibrary selectItem;
 	[Header("出現させるウインドウ。装備窓とかあってもいいかも")]
 	public GameObject selectWindow;
@@ -26,13 +26,13 @@ public class EnemyDataManager : MonoBehaviour
 	[SerializeField]
 	private EnemyDataBase toolDataBase;
 	//　アイテム数管理
-	private Dictionary<EnemyLibrary, int> numOfItem = new Dictionary<EnemyLibrary, int>();
+	//private Dictionary<EnemyLibrary, int> numOfItem = new Dictionary<EnemyLibrary, int>();
 
-	string playerTag = "Player";
-	[HideInInspector]
-	public int changeNum;
-	[HideInInspector]
-	public string takeItem;
+	//string playerTag = "Player";
+	//[HideInInspector]
+
+//	[HideInInspector]
+	
 
 	bool isUp;
 	//[HideInInspector]public EnemyLibrary use;
@@ -41,25 +41,18 @@ public class EnemyDataManager : MonoBehaviour
 	void Start()
 	{
 
-		for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
-		{
-			//　アイテム数を適当に設定
-			numOfItem.Add(toolDataBase.GetItemLists()[i], 0);
 
-			//　確認の為データ出力
-			////Debug.log(toolDataBase.GetItemLists()[i].GetItemName() + ": " + toolDataBase.GetItemLists()[i].GetInformation());
-		}
 
-		////Debug.log(GetItem("ナイフ").GetInformation());
-		////Debug.log(numOfItem[GetItem("ハーブ")]);
+		//////Debug.log(GetItem("ナイフ").GetInformation());
+		//////Debug.log(numOfItem[GetItem("ハーブ")]);
 
 	}
 
 
 	private void Update()
 	{
-		////Debug.log(GetItem("test4").inventoryNum);
-		////Debug.log(GetItem("テスト3").inventoryNum);
+		//////Debug.log(GetItem("test4").inventoryNum);
+		//////Debug.log(GetItem("テスト3").inventoryNum);
 
 
 
@@ -86,36 +79,25 @@ public class EnemyDataManager : MonoBehaviour
 
 	}
 
-	public void AddItem()
+	public void ChangeNum(EnemyData[] takeItem, int[] changeNum)
 	{
 
+		for (int i = 0; i < takeItem.Length; i++)
+		{
+			int pas = takeItem[i].inventoryNum;
+			takeItem[i].inventoryNum = pas + changeNum[i];
+			isUp = true;
+			/*int pas = numOfItem[GetItem($"{takeItem}")];
+			numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
+			isUp = true;*/
+			if (takeItem[i].inventoryNum < 0)
+			{
+				takeItem[i].inventoryNum = 0;
 
-		int pas = GetItem($"{takeItem}").inventoryNum;
-		GetItem($"{takeItem}").inventoryNum = pas + changeNum;
-		isUp = true;
-		/*int pas = numOfItem[GetItem($"{takeItem}")];
-		numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
-		isUp = true;*/
-
-
+			}
+		}
 	}
-	public void ReduceItem()
-	{
 
-		/*int pas = numOfItem[GetItem($"{takeItem}")];
-		numOfItem[GetItem($"{takeItem}")] = pas - changeNum;
-		isUp = true;*/
-		int pas = GetItem($"{takeItem}").inventoryNum;
-		GetItem($"{takeItem}").inventoryNum = pas - changeNum;
-		isUp = true;
-
-
-
-	}
-	public Dictionary<EnemyLibrary, int> GetItemDictionary()
-	{
-		return numOfItem;
-	}
 
 
 

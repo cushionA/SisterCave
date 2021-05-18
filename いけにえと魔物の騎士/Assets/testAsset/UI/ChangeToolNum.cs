@@ -54,7 +54,7 @@ public class ChangeToolNum : MonoBehaviour
         uw.isDump = false;
         ToolManager.instance.DumpTool();
         ToolManager.instance.changeNum = 1;
-        ToolManager.instance.selectButton.GetComponent<Button>().Select();
+        MainUI.instance.selectButton.GetComponent<Button>().Select();
         uw.ResetWindow();
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
@@ -71,7 +71,7 @@ public class ChangeToolNum : MonoBehaviour
 
     public void ResetFlag()
     {
- //       ToolManager.instance.selectButton = null;
+ //       MainUI.instance.selectButton = null;
    //     ToolManager.instance.selectItem = null;
         isDump = false;
         isSUse = false;

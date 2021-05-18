@@ -19,7 +19,7 @@ public class EquipWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = EquipManager.instance.selectButton.GetComponent<EquipButton>();
+        ub = MainUI.instance.selectButton.GetComponent<EquipButton>();
     }
 
     // Update is called once per frame
@@ -73,7 +73,7 @@ public class EquipWindow : MonoBehaviour
         EquipManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
-        //  EquipManager.instance.selectButton = null;
+        //  MainUI.instance.selectButton = null;
         //    EquipManager.instance.selectItem = null;
     }
 

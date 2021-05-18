@@ -18,7 +18,7 @@ public class MagicButton : MonoBehaviour
 
     private void Start()
     {
-        GameObject ev = GameObject.Find("EventSystem");
+        //GameObject ev = GameObject.Find("EventSystem");
       //  eventSystem = ev.GetComponent<EventSystem>();
        // stIn = ev.GetComponent<StandaloneInputModule>();
     }
@@ -33,12 +33,12 @@ public class MagicButton : MonoBehaviour
 
         if (!MagicManager.instance.isUseMenu)//選択ウィンドウ出てないなら
         {
-            MagicManager.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
+            MainUI.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
 
-            //  //Debug.log($"青い稲妻{MagicManager.instance.selectButton == this.gameObject}");
-            if (MagicManager.instance.selectButton == this.gameObject && !isFirst)
+            //  ////Debug.log($"青い稲妻{MainUI.instance.selectButton == this.gameObject}");
+            if (MainUI.instance.selectButton == this.gameObject && !isFirst)
             {
-                ////Debug.log("冥王星");
+                //////Debug.log("冥王星");
                 MagicManager.instance.selectItem = item;
                 //position = this.GetComponent<RectTransform>().anchoredPosition;
                 isFirst = true;
@@ -49,7 +49,7 @@ public class MagicButton : MonoBehaviour
             }
             if (MagicManager.instance.isSisterM || MagicManager.instance.isSisterM)
             {
-                //  //Debug.log("サイパン");
+                //  ////Debug.log("サイパン");
                 if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
                     MainUI.instance.magicWindow.SetActive(false);
@@ -85,21 +85,21 @@ public class MagicButton : MonoBehaviour
 
     public void CallWindow()
     {
-        //  //Debug.log($"お名前教えて{MagicManager.instance.selectButton.name}");
-        if (MagicManager.instance.selectItem.inventoryNum > 0 && item != null && MagicManager.instance.selectButton == this.gameObject)
+        //  ////Debug.log($"お名前教えて{MainUI.instance.selectButton.name}");
+        if (MagicManager.instance.selectItem.inventoryNum > 0 && item != null && MainUI.instance.selectButton == this.gameObject)
         {
 
             if (!MagicManager.instance.isKnightM && !MagicManager.instance.isSisterM)
             {
                 MagicManager.instance.selectWindow.SetActive(true);
-                MagicManager.instance.selectWindow.transform.parent = MagicManager.instance.selectButton.transform;
+                MagicManager.instance.selectWindow.transform.parent = MainUI.instance.selectButton.transform;
                 MagicManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
             }
             else
             {
                 MagicManager.instance.equipWindow.SetActive(true);
                 //処理分けは装備窓の方で
-                MagicManager.instance.equipWindow.transform.parent = MagicManager.instance.selectButton.transform;
+                MagicManager.instance.equipWindow.transform.parent = MainUI.instance.selectButton.transform;
                 MagicManager.instance.equipWindow.GetComponent<RectTransform>().anchoredPosition = position;
             }
 
@@ -123,7 +123,7 @@ public class MagicButton : MonoBehaviour
             MagicManager.instance.equipWindow.SetActive(false);
         }
         isFirst = false;
-        MagicManager.instance.selectButton.GetComponent<Button>().Select();
+        MainUI.instance.selectButton.GetComponent<Button>().Select();
         MagicManager.instance.isUseMenu = false;
     }
 

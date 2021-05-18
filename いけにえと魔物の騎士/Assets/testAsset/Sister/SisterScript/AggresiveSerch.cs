@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SensorToolkit;
 
 public class AggresiveSerch : MonoBehaviour
 {
@@ -8,17 +9,25 @@ public class AggresiveSerch : MonoBehaviour
     string dangerTag = "Danger";
     [SerializeField] SisterBrain sister;
     //  public float SerchRadius;
-    [SerializeField]
-    private LayerMask layerMask;
+  //  [SerializeField]
+   // private LayerMask layerMask;
+
+    RangeSensor2D se;
 
     // private int layerMask = 1 << 11;//1 << 8 | 1 << 10 | 1<< 11 | 1 << 16 | 1 <<　9;
 
     void Start()
     {
-        sister = GetComponentInParent<SisterBrain>();
+     //   sister = GetComponentInParent<SisterBrain>();
+        se = GetComponent<RangeSensor2D>();
     }
 
-
+    public void SerchEnemy()
+    {
+        SManager.instance.targetList = se.DetectedObjectsOrderedByDistance;
+        SManager.instance.isTChange = true;
+    }
+    /*
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == enemyTag)
@@ -80,20 +89,20 @@ public class AggresiveSerch : MonoBehaviour
 
         }
 
-        RaycastHit2D onHitRay = Physics2D.Raycast(i_fromPosition, i_toTargetDir,/* SerchRadius,*/ layerMask.value);
+        RaycastHit2D onHitRay = Physics2D.Raycast(i_fromPosition, i_toTargetDir, layerMask.value);
         if (!onHitRay.collider)
         {
             return false;
         }
-        //  //Debug.log($"{onHitRay.transform.gameObject}");
-        //Debug.DrawRay(i_fromPosition,i_toTargetDir * SerchRadius);
+        //  ////Debug.log($"{onHitRay.transform.gameObject}");
+        ////Debug.DrawRay(i_fromPosition,i_toTargetDir * SerchRadius);
         if (onHitRay.transform.gameObject != i_target)
         {//onHitRayは当たった場所
          //当たった場所がPlayerの位置でなければ
-         ////Debug.log("あいに");
+         //////Debug.log("あいに");
             return false;
         }
 
         return true;
-    }
+    }*/
 }

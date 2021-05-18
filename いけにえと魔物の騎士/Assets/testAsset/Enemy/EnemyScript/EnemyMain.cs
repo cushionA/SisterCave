@@ -16,8 +16,8 @@ public class EnemyMain : MonoBehaviour
 
 	// === キャッシュ ==========================================
 	protected EnemyBase eb;
-	protected GameObject player;
-	protected PlayerMove pm;
+	//protected GameObject player;
+	//protected PlayerMove pm;
 	protected Rigidbody2D rb;
 
 	// === 内部パラメータ ======================================
@@ -28,8 +28,8 @@ public class EnemyMain : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody2D>();
 		eb = GetComponent<EnemyBase>();
-		player = eb.player;
-		pm = player.GetComponent<PlayerMove>();
+
+		// GManager.instance.pm;
 	}
 
 

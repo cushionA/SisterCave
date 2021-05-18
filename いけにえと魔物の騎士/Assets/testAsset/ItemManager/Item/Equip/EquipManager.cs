@@ -4,7 +4,7 @@ using UnityEngine;
 public class EquipManager : MonoBehaviour
 {
 	public static EquipManager instance = null;
-	[HideInInspector] public GameObject selectButton;
+//	[HideInInspector] public GameObject selectButton;
 	[HideInInspector] public Equip selectItem;
 	[Header("出現させるウインドウ。装備窓とかあってもいいかも")]
 	public GameObject selectWindow;
@@ -13,7 +13,7 @@ public class EquipManager : MonoBehaviour
 	[HideInInspector] public bool isUseMenu;
 	[HideInInspector] public bool isWeponM;
 	[HideInInspector] public bool isShieldM;
-
+	[HideInInspector] public int changeNum;
 
 	//　アイテムデータベース
 	[SerializeField]
@@ -21,11 +21,11 @@ public class EquipManager : MonoBehaviour
 	//　アイテム数管理
 	private Dictionary<Equip, int> numOfItem = new Dictionary<Equip, int>();
 
-	string playerTag = "Player";
-	[HideInInspector]
-	public int changeNum;
-	[HideInInspector]
-	public string takeItem;
+	//string playerTag = "Player";
+	//[HideInInspector]
+
+//	[HideInInspector]
+	
 
 	bool isUp;
 	//[HideInInspector]public Equip use;
@@ -53,20 +53,20 @@ public class EquipManager : MonoBehaviour
 			numOfItem.Add(toolDataBase.GetItemLists()[i], 0);
 
 			//　確認の為データ出力
-			////Debug.log(toolDataBase.GetItemLists()[i].GetItemName() + ": " + toolDataBase.GetItemLists()[i].GetInformation());
+			//////Debug.log(toolDataBase.GetItemLists()[i].GetItemName() + ": " + toolDataBase.GetItemLists()[i].GetInformation());
 		}
 
-		////Debug.log(GetItem("ナイフ").GetInformation());
-		////Debug.log(numOfItem[GetItem("ハーブ")]);
+		//////Debug.log(GetItem("ナイフ").GetInformation());
+		//////Debug.log(numOfItem[GetItem("ハーブ")]);
 
 	}
 
 
 	private void Update()
 	{
-		////Debug.log($"盾窓選択{isShieldM}");
-		////Debug.log($"武器窓選択{isWeponM}");
-		////Debug.log(GetItem("テスト3").inventoryNum);
+		//////Debug.log($"盾窓選択{isShieldM}");
+		//////Debug.log($"武器窓選択{isWeponM}");
+		//////Debug.log(GetItem("テスト3").inventoryNum);
 
 
 
@@ -93,29 +93,23 @@ public class EquipManager : MonoBehaviour
 
 	}
 
-	public void AddItem()
-	{
-		int pas = GetItem($"{takeItem}").inventoryNum;
-		GetItem($"{takeItem}").inventoryNum = pas + changeNum;
-		isUp = true;
-		/*int pas = numOfItem[GetItem($"{takeItem}")];
-		numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
-		isUp = true;*/
-
-
-	}
-	public void ReduceItem()
+	public void ChangeNum(Equip[] takeItem, int[] changeNum)
 	{
 
-		/*int pas = numOfItem[GetItem($"{takeItem}")];
-		numOfItem[GetItem($"{takeItem}")] = pas - changeNum;
-		isUp = true;*/
-		int pas = GetItem($"{takeItem}").inventoryNum;
-		GetItem($"{takeItem}").inventoryNum = pas - changeNum;
-		isUp = true;
+		for (int i = 0; i < takeItem.Length; i++)
+		{
+			int pas = takeItem[i].inventoryNum;
+			takeItem[i].inventoryNum = pas + changeNum[i];
+			isUp = true;
+			/*int pas = numOfItem[GetItem($"{takeItem}")];
+			numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
+			isUp = true;*/
+			if (takeItem[i].inventoryNum < 0)
+			{
+				takeItem[i].inventoryNum = 0;
 
-
-
+			}
+		}
 	}
 	public Dictionary<Equip, int> GetItemDictionary()
 	{
@@ -124,8 +118,8 @@ public class EquipManager : MonoBehaviour
 
 	public void DumpEquip()
 	{
-		selectItem.inventoryNum -= changeNum;
-		changeNum = 1;
+		int pas = selectItem.inventoryNum;
+		selectItem.inventoryNum = pas - changeNum;
 	}
 
 }

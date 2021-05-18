@@ -8,6 +8,10 @@ public class EnemyManager : MonoBehaviour
 
     public AnimationCurve jMove;
     public AnimationCurve jPower;
+    [HideInInspector] public string PMagicTag = "PlayerMagic";
+    [HideInInspector] public string SMagicTag = "SisterMagic";
+    [HideInInspector] public string AttackTag = "Attack";
+    [HideInInspector] public string JumpTag = "JumpTrigger";
     ///<summary>
     ///マスクしてやれば地面しか検出しない。
     ///</summary>

@@ -6,7 +6,7 @@ public class MagicManager : MonoBehaviour
 {
 
 	public static MagicManager instance = null;
-	[HideInInspector] public GameObject selectButton;
+	//[HideInInspector] public GameObject selectButton;
 	[HideInInspector] public Magic selectItem;
 	public GameObject selectWindow;
 	public GameObject equipWindow;
@@ -31,13 +31,13 @@ public class MagicManager : MonoBehaviour
 	[SerializeField]
 	private MagicDataBase toolDataBase;
 	//　アイテム数管理
-	private Dictionary<Magic, int> numOfItem = new Dictionary<Magic, int>();
+//	private Dictionary<Magic, int> numOfItem = new Dictionary<Magic, int>();
 
-	string playerTag = "Player";
-	[HideInInspector]
-	public int changeNum;
-	[HideInInspector]
-	public string takeItem;
+	////string playerTag = "Player";
+
+
+	//[HideInInspector]
+	
 
 	bool isUp;
 	//[HideInInspector]public Magic use;
@@ -46,25 +46,18 @@ public class MagicManager : MonoBehaviour
 	void Start()
 	{
 
-		for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
-		{
-			//　アイテム数を適当に設定
-			numOfItem.Add(toolDataBase.GetItemLists()[i], 0);
 
-			//　確認の為データ出力
-			////Debug.log(toolDataBase.GetItemLists()[i].GetItemName() + ": " + toolDataBase.GetItemLists()[i].GetInformation());
-		}
 
-		////Debug.log(GetItem("ナイフ").GetInformation());
-		////Debug.log(numOfItem[GetItem("ハーブ")]);
+		//////Debug.log(GetItem("ナイフ").GetInformation());
+		//////Debug.log(numOfItem[GetItem("ハーブ")]);
 
 	}
 
 
 	private void Update()
 	{
-		////Debug.log(GetItem("test4").inventoryNum);
-		////Debug.log(GetItem("テスト3").inventoryNum);
+		//////Debug.log(GetItem("test4").inventoryNum);
+		//////Debug.log(GetItem("テスト3").inventoryNum);
 
 
 
@@ -91,36 +84,25 @@ public class MagicManager : MonoBehaviour
 
 	}
 
-	public void AddItem()
+	public void ChangeNum(Magic[] takeItem,int[] changeNum)
 	{
 
+		for(int i = 0;i < takeItem.Length; i++)
+        {
+			int pas = takeItem[i].inventoryNum;
+			takeItem[i].inventoryNum = pas + changeNum[i];
+			isUp = true;
+			/*int pas = numOfItem[GetItem($"{takeItem}")];
+			numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
+			isUp = true;*/
+			if(takeItem[i].inventoryNum < 0)
+            {
+				takeItem[i].inventoryNum = 0;
 
-		int pas = GetItem($"{takeItem}").inventoryNum;
-		GetItem($"{takeItem}").inventoryNum = pas + changeNum;
-		isUp = true;
-		/*int pas = numOfItem[GetItem($"{takeItem}")];
-		numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
-		isUp = true;*/
-
-
+			}
+		}
 	}
-	public void ReduceItem()
-	{
 
-		/*int pas = numOfItem[GetItem($"{takeItem}")];
-		numOfItem[GetItem($"{takeItem}")] = pas - changeNum;
-		isUp = true;*/
-		int pas = GetItem($"{takeItem}").inventoryNum;
-		GetItem($"{takeItem}").inventoryNum = pas - changeNum;
-		isUp = true;
-
-
-
-	}
-	public Dictionary<Magic, int> GetItemDictionary()
-	{
-		return numOfItem;
-	}
 
 
 }
