@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager instance = null;
-
     public AnimationCurve jMove;
     public AnimationCurve jPower;
     [HideInInspector] public string PMagicTag = "PlayerMagic";

@@ -195,8 +195,7 @@ public class EnemyStatus : CharacterStatus
         Stab,//刺突
         Strike//打撃
     }
-	[HideInInspector]
-	public AttackType atType;
+
 
 	[HideInInspector]
 	public enum WeakPoint
@@ -247,19 +246,9 @@ public class EnemyStatus : CharacterStatus
 	///</Summary>
 	public List<int> serectableNumber; 
 
-	[HideInInspector]public float coolTime;
+
 	public List<EnemyValue> atValue;
 
-	[Header("追加のアーマー")]
-	///<summary>
-	///スパアマ時に追加
-	///</summary>>
-	[HideInInspector]public float aditionalArmor;
-
-	/// <summary>
-	/// //吹っ飛ばし攻撃
-	/// </summary>
-	[HideInInspector]public bool isBlow;
 
 	/// <summary>
 	/// //パリィ可能攻撃
@@ -269,15 +258,7 @@ public class EnemyStatus : CharacterStatus
 
 	[Header("カメラ範囲に行動を拘束されない")]
 	public bool unBaind;
-	[HideInInspector]
-	[Header("吹っ飛ばす力")]
-	public Vector2 blowVector;
-	[HideInInspector]
-	public float Shock;//強靭削り
-	[HideInInspector]
-	public float mValue;//強靭削り
-	[HideInInspector]
-	public bool isCombo;//コンボするかどうか。最終段ではfalseに
+
 	/// <summary>
 	/// 衝突できる回数。毎回設定しなおす
 	/// </summary>

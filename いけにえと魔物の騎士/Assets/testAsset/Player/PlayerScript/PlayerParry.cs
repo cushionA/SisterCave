@@ -7,9 +7,10 @@ public class PlayerParry : MonoBehaviour
     //public bool guardHit;//ガードにヒット中にスタミナブレイクしたらってことか
     public GameObject Player;
     Rigidbody2D rb;
-    BoxCollider2D parry;
+   // BoxCollider2D parry;
     float defenceTime;
     PlayerMove pm;
+    bool isParryEnd;
 
     private void Start()
     {
@@ -19,80 +20,64 @@ public class PlayerParry : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GManager.instance.isParry)
+        if (GManager.instance.isGuard && !isParryEnd)
         {
             defenceTime = Time.fixedDeltaTime;
             if (!GManager.instance.pStatus.equipWeapon.twinHand)
             {
-                if (defenceTime >= GManager.instance.pStatus.equipShield.parryStart)
+                if (defenceTime >= GManager.instance.pStatus.equipShield.parryStart && !GManager.instance.isParry)
                 {
-                    parry.enabled = true;
-                    pm.isStop = true;
-                    pm.Stop();
+                    GManager.instance.isParry = true;
+                 //   parry.enabled = true;
+                   // pm.isStop = true;
+                    //pm.Stop();
                 }
-                else if (defenceTime - GManager.instance.pStatus.equipShield.parryStart <= GManager.instance.pStatus.equipShield.parryTime)
+/*                else if (defenceTime - GManager.instance.pStatus.equipShield.parryStart <= GManager.instance.pStatus.equipShield.parryTime && !isStart)
                 {
-                    pm.isStop = true;
-                    pm.Stop();
-                }
+                   // pm.isStop = true;
+                   // pm.Stop();
+                    isStart = true;
+                }*/
                 else if (defenceTime - GManager.instance.pStatus.equipShield.parryStart > GManager.instance.pStatus.equipShield.parryTime)
                 {
-                    parry.enabled = false;
-                    pm.isStop = false;
+                    //parry.enabled = false;
+                    //pm.isStop = false;
                     GManager.instance.isParry = false;
-                    defenceTime = 0.0f;
+                     defenceTime = 0.0f;
+                    isParryEnd = true;
+                  
                 }
             }
             else
             {
-                if (defenceTime >= GManager.instance.pStatus.equipWeapon.parryStart)
+                if (defenceTime >= GManager.instance.pStatus.equipWeapon.parryStart && !GManager.instance.isParry)
                 {
-                    parry.enabled = true;
+                    GManager.instance.isParry = true;
+                    //   parry.enabled = true;
+                    // pm.isStop = true;
+                    //pm.Stop();
+                }
+            /*    else if (defenceTime - GManager.instance.pStatus.equipWeapon.parryStart <= GManager.instance.pStatus.equipWeapon.parryTime)
+                {
                     pm.isStop = true;
                     pm.Stop();
-                }
-               else if (defenceTime - GManager.instance.pStatus.equipWeapon.parryStart <= GManager.instance.pStatus.equipWeapon.parryTime)
-                {
-                    pm.isStop = true;
-                    pm.Stop();
-                }
+                }*/
                 else if (defenceTime - GManager.instance.pStatus.equipWeapon.parryStart > GManager.instance.pStatus.equipWeapon.parryTime)
                 {
-                    parry.enabled = false;
-                    pm.isStop = false;
+                    //parry.enabled = false;
+                    //pm.isStop = false;
                     GManager.instance.isParry = false;
-                    defenceTime = 0.0f;
+                     defenceTime = 0.0f;
+                    isParryEnd = true;
                 }
             }
         }
-        else
+        else if(!GManager.instance.isGuard)
         {
-            if (parry.enabled == true)
-            {
-                parry.enabled = false;
-            }
+            isParryEnd = false;
+
         }
     }
 
-    // Start is called before the first frame update
- /*   private void OnCollisionEnter2D(Collision2D collision)
-    {
-        GManager.instance.guardHit = true;
-        //collision.gameObject.layer = 25;
-        rb.AddForce(new Vector2(-Player.transform.localScale.x * 5, 0));//ノックバック
-        //GManager.instance.guardHit = false;
-    }
-     private void OnCollisionStay2D(Collision2D collision)
-     {
-         //GManager.instance.guardHit = true;
-         //  collision.gameObject.layer = 25;
-         rb.AddForce(new Vector2(-Player.transform.localScale.x * 5, 0));
-         //GManager.instance.guardHit = false;
-     }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        GManager.instance.guardHit = false;
 
-    }
-   */
 }

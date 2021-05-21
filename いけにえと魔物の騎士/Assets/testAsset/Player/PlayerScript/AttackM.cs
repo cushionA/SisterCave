@@ -117,7 +117,7 @@ public class AttackM : MonoBehaviour
         horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
 
         changeKey = GManager.instance.InputR.GetButtonUp(MainUI.instance.rewiredAction13);
-        if (!GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction13) && GManager.instance.isEnable && !smallTrigger)
+        if (!GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction13) && GManager.instance.isEnable && !smallTrigger && !(GManager.instance.isAttack && !isAttackable))
         {
             fire1Key = GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction9);
             //lastAttack = true;
@@ -145,7 +145,7 @@ public class AttackM : MonoBehaviour
             equipChange = false;
         }
 
-        if (GManager.instance.isEnable )
+        if (GManager.instance.isEnable && !(GManager.instance.isAttack && !isAttackable))
         {
             if (!bigTrigger)
             {
@@ -222,7 +222,7 @@ public class AttackM : MonoBehaviour
 
          // Debug.Log($"どうすか？{GManager.instance.airAttack}");
 
-        if (!GManager.instance.isEnable)
+    /*    if (!GManager.instance.isEnable)
         {
             attackNumber = 0;
             alterNumber = 0;
@@ -231,8 +231,8 @@ public class AttackM : MonoBehaviour
                 bigTrigger = false;
             artsTrigger = false;
             //lastAttack = true;
-            GManager.instance.isAttack = false;
-        }
+            //GManager.instance.isAttack = false;
+        }*/
 
 
         ///<summary>
@@ -893,7 +893,7 @@ public class AttackM : MonoBehaviour
             }
             else if (GManager.instance.isAttack && isAttackable && GManager.instance.pm.isGround)
             {
-                Debug.Log("たけし");
+             //   Debug.Log("たけし");
                 GManager.instance.pm.rb.velocity = Vector2.zero;
             }
             else if(GManager.instance.isAttack && isAttackable && !GManager.instance.pm.isGround)

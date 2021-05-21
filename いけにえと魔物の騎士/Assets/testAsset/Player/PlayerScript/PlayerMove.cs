@@ -89,7 +89,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] float rayDis;
     public float sloopForce;
    [HideInInspector]public Vector3 theScale;//方向転換
-
+    bool avoidProtect;//回避キャンセル暴発抑止
 
 
     private void Awake()
@@ -127,54 +127,60 @@ public class PlayerMove : MonoBehaviour
 
             guardButton = GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction11);
 
-            if (!isAvoid && isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop)
+            if (!isAvoid)
             {
-                avoidKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction4);
-            }
-            else// if (isAvoid)
-            {
-                avoidKey = 0.0f;
-                //入力不可に
-            }
-            if (avoidKey == 1 && GManager.instance.isEnable && isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop)
-            {
-                avoidJudge += Time.deltaTime;
-                if (horizontalkey != 0 && !GManager.instance.isGuard && !isSquat)
+                if (isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop)
                 {
-                    isDash = true;
+                    avoidKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction4);
+                }
+                else// if (isAvoid)
+                {
+                    avoidKey = 0.0f;
+                    //入力不可に
+                }
 
-                    //isDashをfalseにできてなかった。
+                if (avoidKey == 1 && GManager.instance.isEnable && isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop)
+                {
+                    avoidJudge += Time.deltaTime;
+                    if (horizontalkey != 0 && !GManager.instance.isGuard && !isSquat)
+                    {
+                        isDash = true;
+
+                        //isDashをfalseにできてなかった。
+                    }
+                    else
+                    {
+                        isDash = false;
+                    }
+                }
+                else if (avoidKey == 0 && isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop && GManager.instance.isEnable)
+                {
+                    if (avoidJudge > 0.0f && avoidJudge < 1.0f)
+                    {
+                        //回避の最初のところは七回呼ばれてる。ここも七回呼ばれてる。なぜか動かない
+                        GManager.instance.StaminaUse(18);
+                        isDash = false;
+                        avoidJudge = 0.0f;
+                        isAvoid = true;
+                        GManager.instance.StaminaUse(18);
+                        // MasterAudio.PlaySound("FireS");
+                    }
+                    else
+                    {
+                        avoidJudge = 0.0f;
+                        isDash = false;
+
+                    }
+
                 }
                 else
                 {
                     isDash = false;
-                }
-            }
-            else if (avoidKey == 0 && isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop)
-            {
-                if (avoidJudge > 0.0f && avoidJudge < 1.0f && GManager.instance.isEnable)
-                {
-                    //回避の最初のところは七回呼ばれてる。ここも七回呼ばれてる。なぜか動かない
-                    GManager.instance.StaminaUse(18);
-                    isDash = false;
                     avoidJudge = 0.0f;
-                    isAvoid = true;
-                    MasterAudio.PlaySound("FireS");
+                    isAvoid = false;
                 }
-                else
-                {
-                    avoidJudge = 0.0f;
-                    isDash = false;
-
-                }
-
             }
-            else
-            {
-                isDash = false;
-                avoidJudge = 0.0f;
-                isAvoid = false;
-            }
+
         }
         #endregion
 
@@ -261,7 +267,7 @@ public class PlayerMove : MonoBehaviour
             Guard.SetActive(GManager.instance.isGuard == true ? true : false);
         }
       //  //Debug.Log($"どうすか？{GManager.instance.isAttack}");
-        if (!isDown && !isAvoid && !GManager.instance.isAttack && !isStop && !GManager.instance.onGimmick && !GManager.instance.guardHit)
+        if (!isDown && !isAvoid && !GManager.instance.isAttack  && !GManager.instance.onGimmick && !GManager.instance.guardHit)
         {
             if (GManager.instance.pStatus.stamina > 0 && !GManager.instance.isGBreak && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop && !isJump)
             {
@@ -643,7 +649,7 @@ public class PlayerMove : MonoBehaviour
             ////Debug.Log($"Xは{xSpeed}だよ");
 
 
-            Debug.Log($"落下は{ySpeed}です");
+           // Debug.Log($"落下は{ySpeed}です");
             move.Set(xSpeed + addVelocity.x, ySpeed + addVelocity.y);
             rb.velocity = move;
             
@@ -733,11 +739,12 @@ public class PlayerMove : MonoBehaviour
                     move.Set(0, -gravity);
                     rb.velocity = move;
 
-
+                    avoidProtect = true;
                     SetLayer(11);
-
-                    Invoke("AChange", 0.3f);
-
+                    avoidJudge = 0.0f;
+                    Invoke("AChange", 0.15f);
+                    //ここが少し回避できない原因
+                    //装備により硬直変えてもいいかも
                 }
 
 
@@ -768,10 +775,12 @@ public class PlayerMove : MonoBehaviour
                 {
                     move.Set(0, -gravity);
                     rb.velocity = move;
-
+                    avoidProtect = true;
                     SetLayer(11);
-
-                    Invoke("AChange", 0.3f);
+                    avoidJudge = 0.0f;
+                    Invoke("AChange", 0.15f);
+                    //ここが少し回避できない原因
+                    //装備により硬直変えてもいいかも
                 }
 
             }
@@ -791,9 +800,14 @@ public class PlayerMove : MonoBehaviour
 
     void AChange()
     {
+        if (avoidProtect)
+        {
+            //こいつが複数呼ばれてる
+            isAvoid = false;
+            avoidTime = 0.0f;
+            avoidProtect = false;
+        }
 
-        isAvoid = false;
-        avoidTime = 0.0f;
 
     }
 
@@ -898,6 +912,7 @@ public class PlayerMove : MonoBehaviour
 
    public void Stop()
     {
+        //全部初期化して止めるだけ？
         rb.velocity = Vector2.zero;
 
             isJump = false;
@@ -909,7 +924,7 @@ public class PlayerMove : MonoBehaviour
             jumpTime = 0.0f;
             rushTime = 0.0f;
             fallTime = 0.0f;
-            isGround = false;
+            //isGround = false;
 
             SetLayer(11);
 

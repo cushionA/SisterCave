@@ -6,9 +6,9 @@ using UnityEngine;
 public struct EnemyValue
 {
     [Header("モーション値")]
-    public float mvalue;
+    public float mValue;
     [Header("攻撃時のアーマー")]
-    public float addArmor;
+    public float aditionalArmor;
     [Header("強靭削り")]
     public float shock;
  //   [Header("ヒット数")]
@@ -20,7 +20,7 @@ public struct EnemyValue
     [Header("攻撃タイプ")]
     public EnemyStatus.AttackType type;
     [Header("クールタイム")]
-    public float coolList;
+    public float coolTime;
     [Header("吹き飛ばす力")]
     public Vector2 blowPower;
     [Header("コンボするかどうか")]

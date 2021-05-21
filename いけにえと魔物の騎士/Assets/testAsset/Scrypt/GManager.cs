@@ -30,7 +30,7 @@ public class GManager : MonoBehaviour
     public float initialStaminaSl;
 
     public string playerTag = "Player";
-
+    public string guardTag = "Guard";
 
     [HideInInspector]public Player InputR;
     [HideInInspector] public Rigidbody2D rb;
@@ -51,7 +51,8 @@ public class GManager : MonoBehaviour
     [HideInInspector] public bool isGBreak;//ガードブレイク
     [HideInInspector] public bool isGuard;
     [HideInInspector] public bool guardEnable;
-    [HideInInspector]public bool isParry;
+    [HideInInspector]public bool isParry;//ジャスガ
+    [HideInInspector] public bool parrySuccess;
     [HideInInspector] public bool isBounce;//攻撃を跳ね返されたフラグ
     [HideInInspector] public bool onGimmick;//ギミック利用中かどうか
     [HideInInspector]public bool guardHit;//ガードにヒットした
@@ -59,7 +60,7 @@ public class GManager : MonoBehaviour
     [HideInInspector]public bool isDamage;//ダメージ受けたかどうか
     [HideInInspector] public bool blowDown;//吹き飛ばされたフラグ
     [HideInInspector] public bool fallAttack;//空中強攻撃の落下終了までisAttackをキープするためのフラグ。敵判定回避にも使う
-
+    [HideInInspector] public float nowArmor;
 
     //isDown && blowDown の判定とisDownのみとisGBreakの使い分けで
     //具体的処理は敵AIを参考に
@@ -78,7 +79,7 @@ public class GManager : MonoBehaviour
     #endregion
 
     public Vector2 blowVector;
-
+    
     float stTime;
     //スタミナが回復する間隔の時間が経過したかどうか
     float disEnaTime;
@@ -97,6 +98,7 @@ public class GManager : MonoBehaviour
     //プレイヤーがレベルアップしたらHPとスタミナのスライダーの長さをチェックして伸ばす。
     //あとステータス画面に格納する値のチェックも
     bool isSoundFirst;
+    bool statusChange;
 
     private void Awake()
     {
@@ -119,21 +121,22 @@ public class GManager : MonoBehaviour
  //       at = Player.GetComponent<AttackM>();
    //     pm = Player.GetComponent<PlayerMove>();
         //スライダーを満タンに
-        stSlider.value = 1;
-        HpSlider.value = 1;
         //HPなどを最大と同じに
-        pStatus.hp = pStatus.maxHp;
-        pStatus.stamina = pStatus.maxStamina;
-        pStatus.mp = pStatus.maxMp;
+
         SetAtk();
         SetMagicAssist();
         SetMagicAtk();
         SetParameter();
-        SetSlider();
+      //  SetSlider();
+        pStatus.hp = pStatus.maxHp;
+        pStatus.stamina = pStatus.maxStamina;
+        pStatus.mp = pStatus.maxMp;
         hpSl = HpSlider.GetComponent<RectTransform>();
         mpSl = MpSlider.GetComponent<RectTransform>();
         staminaSl = stSlider.GetComponent<RectTransform>();
-  
+        stSlider.value = 1;
+        HpSlider.value = 1;
+        MpSlider.value = 1;
         SetSlider();
 
         if (!isSoundFirst)
@@ -149,7 +152,12 @@ public class GManager : MonoBehaviour
     void Update()
     {
         DamageAvoid();
-       SetSlider();
+        if (statusChange)
+        {
+            SetSlider();
+            statusChange = false;
+        }
+
         stTime += Time.deltaTime;
 
         if(pStatus.isParalyze || pStatus.isPoison)
@@ -469,10 +477,7 @@ public class GManager : MonoBehaviour
     }
     public void SetSlider()
     {
-        if (staminaSl == null)
-        {
-            return;
-        }
+
 
        // initialHpSl = 
 

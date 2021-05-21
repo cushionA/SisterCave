@@ -62,7 +62,12 @@ public class EnemyBase : MonoBehaviour
 	protected bool isDamage;
 	protected bool isMovable;
 	protected bool isAnimeStart;//アニメの開始に使う
-
+	protected bool isFalter;//よろめき
+	protected bool isBounce;//攻撃をはじかれた
+	/// <summary>
+	/// 攻撃の値
+	/// </summary>
+	[HideInInspector]public EnemyValue atV;
 	// === キャッシュ ==========================================
 	public Animator animator;
 	public SimpleAnimation sAni;
@@ -102,6 +107,11 @@ public class EnemyBase : MonoBehaviour
 	protected bool isWakeUp;//ダウン終了後起き上がるフラグ
 	protected bool blowDown;
 	protected Vector2 move;
+	protected Vector2 blowM;
+	protected float blowTime;
+	protected float recoverTime;//アーマー回復までにかかる時間
+	protected float lastArmor;
+	protected float nowArmor;
 	[SerializeField]protected UltimateTextDamageManager um;
 
 	// === コード（Monobehaviour基本機能の実装） ================
@@ -237,9 +247,12 @@ public class EnemyBase : MonoBehaviour
 		SetVelocity();
 		HitCheck();
 		WaitAttack();
+		ArmorRecover();
 		DamageAvoid();
 		EnemyFall();
+		Parry();
 		NockBack();
+		Blow();
 		Down();
 	}
 	public void ActionFire(int i,float random = 0.0f)
@@ -332,30 +345,32 @@ public class EnemyBase : MonoBehaviour
 			}
 
 			////Debug.log($"{ damage * GManager.instance.pStatus.attackBuff}ダメージ");
-			//////Debug.log($"{status.nowArmor}a-mor");
-			status.hp -= damage * GManager.instance.pStatus.attackBuff;//HP減らす
-		//	Debug.Log($"ダメージ{damage}とトランスフォーム{this.transform.position}");
+			//////Debug.log($"{nowArmor}a-mor");
+			damage = Mathf.Floor(damage * GManager.instance.pStatus.attackBuff);
+			status.hp -= damage;//HP引いてる
+								//	Debug.Log($"ダメージ{damage}とトランスフォーム{this.transform.position}");
 
 			um.AddStack(damage, this.transform);
 			if (!isAttack)
 			{
-				status.nowArmor -= GManager.instance.pStatus.equipWeapon.shock;
+				nowArmor -= GManager.instance.pStatus.equipWeapon.shock;
 
 			}
 			else
 			{
-				if (status.aditionalArmor > 0)
+				if (atV.aditionalArmor > 0)
 				{
-					status.nowArmor -= (GManager.instance.pStatus.equipWeapon.shock - status.aditionalArmor) < 0 ? 0 : (GManager.instance.pStatus.equipWeapon.shock - status.aditionalArmor);
-					status.aditionalArmor -= GManager.instance.pStatus.equipWeapon.shock;
+					nowArmor -= (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor) < 0 ? 0 : (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor);
+					atV.aditionalArmor -= GManager.instance.pStatus.equipWeapon.shock;
 				}
 			}
 			ArmorControll();
 			if (isDown && GManager.instance.pStatus.equipWeapon.isBlow)
 			{
-				Debug.Log("aaaa");
-				move.Set(GManager.instance.pStatus.equipWeapon.blowPower.x * -direction, GManager.instance.pStatus.equipWeapon.blowPower.y);
-				rb.AddForce(move, ForceMode2D.Impulse);
+			//	Debug.Log("aaaa");
+				blowM.Set(GManager.instance.pStatus.equipWeapon.blowPower.x * -direction, GManager.instance.pStatus.equipWeapon.blowPower.y);
+
+				//rb.AddForce(move);
 				blowDown = true;
 				//Invoke("Down", 1f);
 			}
@@ -407,20 +422,19 @@ public class EnemyBase : MonoBehaviour
 			}
 
 			//////Debug.log($"{ damage * GManager.instance.pStatus.attackBuff}ダメージ");
-			//////Debug.log($"{status.nowArmor}a-mor");
-			status.hp -= damage * GManager.instance.pStatus.attackBuff;//HP減らす
+			damage = Mathf.Floor(damage * GManager.instance.pStatus.attackBuff);
+			status.hp -= damage;//HP引いてる
 			um.AddStack(damage, this.transform);
-			status.nowArmor -= (GManager.instance.pStatus.equipWeapon.shock * 2) * ((100 - status.guardPower) / 100);
+			nowArmor -= (GManager.instance.pStatus.equipWeapon.shock * 2) * ((100 - status.guardPower) / 100);
 
 			if(GManager.instance.pStatus.equipWeapon.isLight && status.guardPower >= 50)
             {
 				GManager.instance.isBounce = true;//受け値50以上で弾く
 
 			}
-			if (status.nowArmor <= 0 && (GManager.instance.pStatus.equipWeapon.isBlow))
+			if (nowArmor <= 0 && (GManager.instance.pStatus.equipWeapon.isBlow))
 			{
-				move.Set(GManager.instance.pStatus.equipWeapon.blowPower.x * -direction, GManager.instance.pStatus.equipWeapon.blowPower.y);
-				rb.AddForce(move, ForceMode2D.Impulse);
+				blowM.Set(GManager.instance.pStatus.equipWeapon.blowPower.x * -direction, GManager.instance.pStatus.equipWeapon.blowPower.y);
 				blowDown = true;
 			}
             else
@@ -472,25 +486,25 @@ public class EnemyBase : MonoBehaviour
 			{
 				damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.thunderAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.thunderAtk + status.thunderDef);
 			}
-			status.hp -= damage * GManager.instance.pStatus.attackBuff;//HP引いてる
+			damage = Mathf.Floor(damage * GManager.instance.pStatus.attackBuff);
+			status.hp -= damage;//HP引いてる
 			um.AddStack(damage, this.transform);
 			if (!isAttack)
 			{
-				status.nowArmor -= GManager.instance.pStatus.useMagic.shock;
+				nowArmor -= GManager.instance.pStatus.useMagic.shock;
 			}
 			else
 			{
-				if (status.aditionalArmor > 0)
+				if (atV.aditionalArmor > 0)
 				{
-					status.nowArmor -= (GManager.instance.pStatus.equipWeapon.shock - status.aditionalArmor) < 0 ? 0 : (GManager.instance.pStatus.equipWeapon.shock - status.aditionalArmor);
-					status.aditionalArmor -= GManager.instance.pStatus.equipWeapon.shock;
+					nowArmor -= (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor) < 0 ? 0 : (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor);
+					atV.aditionalArmor -= GManager.instance.pStatus.equipWeapon.shock;
 				}
 			}
 			ArmorControll();
 			if (isDown && GManager.instance.pStatus.useMagic.isBlow)
 			{
-				move.Set(GManager.instance.pStatus.useMagic.blowPower.x * -direction, GManager.instance.pStatus.useMagic.blowPower.y);
-				rb.AddForce(move, ForceMode2D.Impulse);
+				blowM.Set(GManager.instance.pStatus.useMagic.blowPower.x * -direction, GManager.instance.pStatus.useMagic.blowPower.y);
 				blowDown = true;
 				//Invoke("Down",1f);
 			}
@@ -537,21 +551,22 @@ public class EnemyBase : MonoBehaviour
 			{
 				damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.thunderAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.thunderAtk + status.thunderDef) * (100 - status.thunderCut)/100;
 			}
-			status.hp -= damage * GManager.instance.pStatus.attackBuff;//HP引いてる
+			damage = Mathf.Floor(damage * GManager.instance.pStatus.attackBuff);
+			status.hp -= damage;//HP引いてる
 			um.AddStack(damage, this.transform);
 			if (GManager.instance.pStatus.equipWeapon.isBlow)
 			{
-				status.nowArmor -= ((GManager.instance.pStatus.useMagic.shock * 2) * status.guardPower / 100) * 1.2f;
+				nowArmor -= ((GManager.instance.pStatus.useMagic.shock * 2) * status.guardPower / 100) * 1.2f;
 			}
 			else
 			{
-				status.nowArmor -= (GManager.instance.pStatus.useMagic.shock * 2) * ((100 - status.guardPower) / 100);
+				nowArmor -= (GManager.instance.pStatus.useMagic.shock * 2) * ((100 - status.guardPower) / 100);
 			}
 
-			if (status.nowArmor <= 0 && GManager.instance.pStatus.useMagic.isBlow)
+			if (nowArmor <= 0 && GManager.instance.pStatus.useMagic.isBlow)
 			{
-				move.Set(GManager.instance.pStatus.useMagic.blowPower.x * -direction, GManager.instance.pStatus.useMagic.blowPower.y);
-				rb.AddForce(move, ForceMode2D.Impulse);
+				blowM.Set(GManager.instance.pStatus.useMagic.blowPower.x * -direction, GManager.instance.pStatus.useMagic.blowPower.y);
+				//rb.AddForce(move, ForceMode2D.Impulse);
 				blowDown = true;
 			}
 			else
@@ -599,25 +614,27 @@ public class EnemyBase : MonoBehaviour
 			{
 				damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.thunderAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.thunderAtk + status.thunderDef);
 			}
-			status.hp -= damage * SManager.instance.sisStatus.attackBuff;
+			damage = Mathf.Floor(damage * SManager.instance.sisStatus.attackBuff);
+			status.hp -= damage;
+			//Mathf.Floor(status.hp);
 			um.AddStack(damage, this.transform);
 			if (!isAttack)
 			{
-				status.nowArmor -= SManager.instance.sisStatus.useMagic.shock;
+				nowArmor -= SManager.instance.sisStatus.useMagic.shock;
 			}
 			else
 			{
-				if (status.aditionalArmor > 0)
+				if (atV.aditionalArmor > 0)
 				{
-					status.nowArmor -= (GManager.instance.pStatus.equipWeapon.shock - status.aditionalArmor) < 0 ? 0 : (GManager.instance.pStatus.equipWeapon.shock - status.aditionalArmor);
-					status.aditionalArmor -= GManager.instance.pStatus.equipWeapon.shock;
+					nowArmor -= (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor) < 0 ? 0 : (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor);
+					atV.aditionalArmor -= GManager.instance.pStatus.equipWeapon.shock;
 				}
 			}
 			ArmorControll();
 			if (isDown && SManager.instance.sisStatus.useMagic.isBlow)
 			{
-				move.Set(SManager.instance.sisStatus.useMagic.blowPower.x * direction, SManager.instance.sisStatus.useMagic.blowPower.y);
-				rb.AddForce(move, ForceMode2D.Impulse);
+				blowM.Set(SManager.instance.sisStatus.useMagic.blowPower.x * direction, SManager.instance.sisStatus.useMagic.blowPower.y);
+			//	rb.AddForce(move, ForceMode2D.Impulse);
 				blowDown = true;
 			}
 		}
@@ -663,23 +680,25 @@ public class EnemyBase : MonoBehaviour
 			{
 				damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.thunderAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.thunderAtk + status.thunderDef) * (100 -status.thunderCut)/100;
 			}
-			status.hp -= damage * SManager.instance.sisStatus.attackBuff;
-			um.AddStack(damage,this.transform);
-			
+			damage = Mathf.Floor(damage * SManager.instance.sisStatus.attackBuff);
+			status.hp -= damage;
+			//Mathf.Floor(status.hp);
+			um.AddStack(damage, this.transform);
+
 
 			if (SManager.instance.sisStatus.useMagic.isBlow)
 			{
-				status.nowArmor -= ((SManager.instance.sisStatus.useMagic.shock * 2) * status.guardPower / 100) * 1.2f;
+				nowArmor -= ((SManager.instance.sisStatus.useMagic.shock * 2) * status.guardPower / 100) * 1.2f;
 			}
 			else
 			{
-				status.nowArmor -= (SManager.instance.sisStatus.useMagic.shock * 2) * ((100 - status.guardPower) / 100);
+				nowArmor -= (SManager.instance.sisStatus.useMagic.shock * 2) * ((100 - status.guardPower) / 100);
 			}
 
-			if (status.nowArmor <= 0 && SManager.instance.sisStatus.useMagic.isBlow)
+			if (nowArmor <= 0 && SManager.instance.sisStatus.useMagic.isBlow)
 			{
-				move.Set(SManager.instance.sisStatus.useMagic.blowPower.x * direction, SManager.instance.sisStatus.useMagic.blowPower.y);
-				rb.AddForce(move, ForceMode2D.Impulse);
+				blowM.Set(SManager.instance.sisStatus.useMagic.blowPower.x * direction, SManager.instance.sisStatus.useMagic.blowPower.y);
+				//rb.AddForce(move, ForceMode2D.Impulse);
 				blowDown = true;
 			}
 			else
@@ -688,68 +707,94 @@ public class EnemyBase : MonoBehaviour
 			}
 		}
 	}
+
+	public void PlayerParry()
+    {
+		if (!GManager.instance.isDamage && !GManager.instance.guardHit && atV.parriable)
+		{
+			if (!GManager.instance.pStatus.equipWeapon.twinHand)
+            {
+				GManager.instance.pStatus.stamina += GManager.instance.pStatus.equipShield.parryRecover;
+            }
+            else
+            {
+				GManager.instance.pStatus.stamina += GManager.instance.pStatus.equipWeapon.parryRecover;
+			}
+			GManager.instance.isDamage = true;
+			GManager.instance.isGuard = false;
+			GManager.instance.parrySuccess = true;
+			isBounce = true;
+		}
+	}
 	public void AttackDamage()
     {
-		if (!GManager.instance.isDamage)
+		//Debug.Log("シャイニング１");
+		if (!GManager.instance.isDamage && !GManager.instance.guardHit)
 		{
-			GManager.instance.isDamage = true;
+			//GManager.instance.isDamage = true;
 			//status.hitLimmit--;
 								 //mValueはモーション値
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			if (status.phyAtk > 0)
 			{
 				//斬撃刺突打撃を管理
-				if (status.atType == EnemyStatus.AttackType.Slash)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * status.mValue) / (status.phyAtk + GManager.instance.pStatus.Def); }
-				else if (status.atType == EnemyStatus.AttackType.Stab)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * status.mValue) / (status.phyAtk + GManager.instance.pStatus.pierDef); }
-				else if (status.atType == EnemyStatus.AttackType.Strike)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * status.mValue) / (status.phyAtk + GManager.instance.pStatus.strDef); }
+				if (atV.type == EnemyStatus.AttackType.Slash)
+				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.Def); }
+				else if (atV.type == EnemyStatus.AttackType.Stab)
+				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.pierDef); }
+				else if (atV.type == EnemyStatus.AttackType.Strike)
+				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.strDef); }
 			}
 			//神聖
 			if (status.holyAtk > 0)
 			{
-				damage += (Mathf.Pow(status.holyAtk, 2) * status.mValue) / (status.holyAtk + GManager.instance.pStatus.holyDef);
+				damage += (Mathf.Pow(status.holyAtk, 2) * atV.mValue) / (status.holyAtk + GManager.instance.pStatus.holyDef);
 			}
 			//闇
 			if (status.darkAtk > 0)
 			{
-				damage += (Mathf.Pow(status.darkAtk, 2) * status.mValue) / (status.darkAtk + GManager.instance.pStatus.darkDef);
+				damage += (Mathf.Pow(status.darkAtk, 2) * atV.mValue) / (status.darkAtk + GManager.instance.pStatus.darkDef);
 			}
 			//炎
 			if (status.fireAtk > 0)
 			{
-				damage += (Mathf.Pow(status.fireAtk, 2) * status.mValue) / (status.fireAtk + GManager.instance.pStatus.fireDef);
+				damage += (Mathf.Pow(status.fireAtk, 2) * atV.mValue) / (status.fireAtk + GManager.instance.pStatus.fireDef);
 			}
 			//雷
 			if (status.thunderAtk > 0)
 			{
-				damage += (Mathf.Pow(status.thunderAtk, 2) * status.mValue) / (status.thunderAtk + GManager.instance.pStatus.thunderDef);
+				damage += (Mathf.Pow(status.thunderAtk, 2) * atV.mValue) / (status.thunderAtk + GManager.instance.pStatus.thunderDef);
 			}
 			if (!GManager.instance.isAttack)
 			{
-				GManager.instance.pStatus.nowArmor -= status.Shock;
+				GManager.instance.nowArmor -= atV.shock;
 			}
 			else
 			{
-				GManager.instance.pStatus.nowArmor -= (status.Shock - GManager.instance.pStatus.equipWeapon.atAromor) < 0 ? 0 : (status.Shock - GManager.instance.pStatus.equipWeapon.atAromor);
+				GManager.instance.nowArmor -= (atV.shock - GManager.instance.pStatus.equipWeapon.atAromor) < 0 ? 0 : (atV.shock - GManager.instance.pStatus.equipWeapon.atAromor);
 			}
-			GManager.instance.pStatus.hp -= damage * status.attackBuff;
+			damage = Mathf.Floor(damage * status.attackBuff);
+			//GManager.instance.HpReduce;
+			GManager.instance.pStatus.hp = GManager.instance.pStatus.hp - damage;
+			//GManager.instance.pStatus.hp = 10;
+			Debug.Log($"ダメージ{damage}");
+			Debug.Log($"残り{GManager.instance.pStatus.hp}");
+			GManager.instance.isDamage = true;
 		}
-		if (GManager.instance.pStatus.nowArmor <= 0)
+		if (GManager.instance.nowArmor <= 0)
 		{
 			GManager.instance.isDown = true;
-			if (status.isBlow == true)
+			if (atV.isBlow == true)
 			{
 				GManager.instance.blowDown = true;
 				if (direction > 0)
 				{
-					GManager.instance.blowVector = status.blowVector;
+					GManager.instance.blowVector = atV.blowPower;
 
 				}
 				if (direction < 0)
 				{
-					GManager.instance.blowVector.Set(-status.blowVector.x, status.blowVector.y);
+					GManager.instance.blowVector.Set(-atV.blowPower.x, atV.blowPower.y);
 
 				}
 			}
@@ -758,7 +803,7 @@ public class EnemyBase : MonoBehaviour
 
 	public void PlayerGuard()
     {
-		if (!GManager.instance.isDamage && GManager.instance.isGuard)
+		if (!GManager.instance.isDamage && !GManager.instance.guardHit)
 		{
 			//status.hitLimmit--;
 			//mValueはモーション値
@@ -766,60 +811,62 @@ public class EnemyBase : MonoBehaviour
 			if (status.phyAtk > 0)
 			{
 				//斬撃刺突打撃を管理
-				if (status.atType == EnemyStatus.AttackType.Slash)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * status.mValue) / (status.phyAtk + GManager.instance.pStatus.Def); }
-				else if (status.atType == EnemyStatus.AttackType.Stab)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * status.mValue) / (status.phyAtk + GManager.instance.pStatus.pierDef); }
-				else if (status.atType == EnemyStatus.AttackType.Strike)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * status.mValue) / (status.phyAtk + GManager.instance.pStatus.strDef); }
+				if (atV.type == EnemyStatus.AttackType.Slash)
+				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.Def); }
+				else if (atV.type == EnemyStatus.AttackType.Stab)
+				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.pierDef); }
+				else if (atV.type == EnemyStatus.AttackType.Strike)
+				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.strDef); }
 
 				damage *= (100 - GManager.instance.pStatus.phyCut)/100;
 			}
 			//神聖
 			if (status.holyAtk > 0)
 			{
-				damage += ((Mathf.Pow(status.holyAtk, 2) * status.mValue) / (status.holyAtk + GManager.instance.pStatus.holyDef)) * (100 - GManager.instance.pStatus.holyCut)/100;
+				damage += ((Mathf.Pow(status.holyAtk, 2) * atV.mValue) / (status.holyAtk + GManager.instance.pStatus.holyDef)) * (100 - GManager.instance.pStatus.holyCut)/100;
 			}
 			//闇
 			if (status.darkAtk > 0)
 			{
-				damage += ((Mathf.Pow(status.darkAtk, 2) * status.mValue) / (status.darkAtk + GManager.instance.pStatus.darkDef)) * (100 - GManager.instance.pStatus.darkCut)/100;
+				damage += ((Mathf.Pow(status.darkAtk, 2) * atV.mValue) / (status.darkAtk + GManager.instance.pStatus.darkDef)) * (100 - GManager.instance.pStatus.darkCut)/100;
 			}
 				//炎
 				if (status.fireAtk > 0)
 			{
-				damage += ((Mathf.Pow(status.fireAtk, 2) * status.mValue) / (status.fireAtk + GManager.instance.pStatus.fireDef)) * (100 - GManager.instance.pStatus.fireCut)/100;
+				damage += ((Mathf.Pow(status.fireAtk, 2) * atV.mValue) / (status.fireAtk + GManager.instance.pStatus.fireDef)) * (100 - GManager.instance.pStatus.fireCut)/100;
 			}
 			//雷
 			if (status.thunderAtk > 0)
 			{
-				damage += ((Mathf.Pow(status.thunderAtk, 2) * status.mValue) / (status.thunderAtk + GManager.instance.pStatus.thunderDef)) * (100 - GManager.instance.pStatus.thunderCut)/100;
+				damage += ((Mathf.Pow(status.thunderAtk, 2) * atV.mValue) / (status.thunderAtk + GManager.instance.pStatus.thunderDef)) * (100 - GManager.instance.pStatus.thunderCut)/100;
 			}
 			if (status.isLight && GManager.instance.pStatus.guardPower >= 50)
 			{//受け値50以上の盾は軽い攻撃をはじく
 				//sAni.Play(status.motionIndex["弾かれ"]);
 			}
-			    GManager.instance.pStatus.stamina -= (status.Shock * 2) * (1 - (GManager.instance.pStatus.guardPower / 100));
+			    GManager.instance.pStatus.stamina -= (atV.shock * 2) * (1 - (GManager.instance.pStatus.guardPower / 100));
 
 
-
+			damage = Mathf.Floor(damage * status.attackBuff);
 			GManager.instance.pStatus.hp -= damage * status.attackBuff;
+			//GManager.instance.isDamage = true;
 		}
 		if (GManager.instance.pStatus.stamina <= 0)
 		{
-			if (status.isBlow == true)
+			if (atV.isBlow == true)
 			{
 				GManager.instance.isDown = true;
 				GManager.instance.blowDown = true;
 				GManager.instance.isGuard = false;
+				GManager.instance.isDamage = true;
 				if (direction > 0)
 				{
-					GManager.instance.blowVector = status.blowVector;
+					GManager.instance.blowVector = atV.blowPower;
 
 				}
 				if (direction < 0)
 				{
-					GManager.instance.blowVector.Set(-status.blowVector.x, status.blowVector.y);
+					GManager.instance.blowVector.Set(-atV.blowPower.x, atV.blowPower.y);
 
 				}
 			}
@@ -829,6 +876,11 @@ public class EnemyBase : MonoBehaviour
 				GManager.instance.isGBreak = true;
 				GManager.instance.isGuard = false;
 			}
+		}
+        else
+        {
+			GManager.instance.isDamage = true;
+			GManager.instance.guardHit = true;
 		}
 
 
@@ -1094,6 +1146,8 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void AgrMove()
     {
+
+		//if()
 		stateJudge += Time.fixedDeltaTime;
 		#region//判断
 		if ((status.ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && status.ground != EnemyStatus.MoveState.escape)
@@ -1141,6 +1195,7 @@ public class EnemyBase : MonoBehaviour
 					sAni.Play("Guard");
 					Flip(direction);
 					move.Set(0, rb.velocity.y);
+
 					rb.velocity = move;
 					isReach = true;
 				}
@@ -1169,6 +1224,8 @@ public class EnemyBase : MonoBehaviour
 				sAni.Play("Stand");
 				Flip(direction);
 				move.Set(0, rb.velocity.y);
+
+			//Debug.Log($"ねずみ{blowM.x}");
 				rb.velocity = move;
 				isReach = true;
 			}
@@ -1356,12 +1413,15 @@ public class EnemyBase : MonoBehaviour
 		}
         else
         {
-			if (!isGround && !isAttack && !isDown && !isJump)
+			if (!isGround && !isAttack&& !isJump)
 			{
-
-				sAni.Play("Fall");
+				if (!isDown)
+				{
+					sAni.Play("Fall");
+				}
 				GravitySet(status.firstGravity);
 			}
+			
 		}
 	}
 
@@ -1521,15 +1581,45 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void ArmorReset()
     {
-		status.nowArmor = status.Armor;
+		nowArmor = status.Armor;
     }
+
+	public void ArmorRecover()
+	{
+		if(!isDown && nowArmor == lastArmor)
+        {
+			recoverTime += Time.fixedDeltaTime;
+			if(recoverTime >= 15)
+            {
+				ArmorReset();
+				recoverTime = 0.0f;
+				lastArmor = nowArmor; 
+			}
+            else if(nowArmor < status.Armor - 5 && recoverTime >= 3)
+            {
+				recoverTime = 0.0f;
+				nowArmor += 3;
+				lastArmor = nowArmor;
+			}
+        }
+        else if(!isDown)
+        {
+			recoverTime = 0.0f;
+			lastArmor = nowArmor;
+		}
+        else
+        {
+			recoverTime = 0.0f;
+		}
+	}
+
 
 	/// <summary>
 	/// アーマー値に応じてイベントとばす
 	/// </summary>
 	public void ArmorControll()
     {
-		if(status.nowArmor <= 0) 
+		if(nowArmor <= 0) 
 		{
 			isDown = true;
 			isAttack = false;
@@ -1544,7 +1634,7 @@ public class EnemyBase : MonoBehaviour
 
 /*	public void EnemyArmorControll()
 	{
-		if (GManager.instance.pStatus.nowArmor <= 0 && status.isBlow)
+		if (GManager.instance.nowArmor <= 0 && status.isBlow)
 		{
 			GManager.instance.isDown = true;
 			GManager.instance.blowDown = true;
@@ -1564,17 +1654,72 @@ public class EnemyBase : MonoBehaviour
 		{
 			if (!isAnimeStart)
 				{
+				isFalter = true;
 				isAnimeStart = true;
 				sAni.Play("Falter");
 			    }
-            if (!CheckEnd("Falter"))
+            else if (!CheckEnd("Falter"))
             {
 				isDown = false;
-				Debug.Log("おかま");
+				//Debug.Log("おかま");
 				isAnimeStart = false;
             }
 
 
+		}
+        if(blowDown && isFalter)
+        {
+			isFalter = false;
+			isAnimeStart = false;
+		}
+	}
+	/// <summary>
+	/// 攻撃をはじかれノックバックする。
+	/// </summary>
+	public void Parry()
+	{
+		if (isBounce)
+		{
+			if (!isAnimeStart)
+			{
+				isDown = true;
+				isFalter = true;
+				isAnimeStart = true;
+				sAni.Play("Bounce");
+			}
+			　else if (!CheckEnd("Bounce"))
+			{
+				isDown = false;
+				//Debug.Log("おかま");
+				isAnimeStart = false;
+				isBounce = false;
+			}
+
+
+		}
+		if (isBounce && (blowDown || isFalter))
+		{
+			isBounce = false;
+			isAnimeStart = false;
+		}
+	}
+	public void Blow()
+    {
+		if (blowDown)
+		{
+
+			blowTime += Time.fixedDeltaTime;
+			if(blowTime <= 0.3)
+			{
+				//Debug.Log($"速度{blowM.x}");
+				isGround = false;
+				rb.AddForce(blowM,ForceMode2D.Impulse); 
+			}
+            else if(blowTime <= 1.5)
+            {
+				blowM.Set(blowM.x, 0);
+				rb.AddForce(blowM, ForceMode2D.Impulse);
+			}
 		}
 	}
 
@@ -1604,7 +1749,6 @@ public class EnemyBase : MonoBehaviour
 					}
 						//GravitySet(status.firstGravity);
 						AllStop(status.downRes);
-						ArmorReset();
 
 						//isDown = false;
 						//ダウンアニメ
@@ -1624,7 +1768,10 @@ public class EnemyBase : MonoBehaviour
 					//	isAnimeStart = false;
 							isDown = false;
 							isWakeUp = false;
-						}
+						blowDown = false;
+						blowTime = 0;
+						ArmorReset();
+					}
 					}
 				}
 
@@ -1638,7 +1785,7 @@ public class EnemyBase : MonoBehaviour
 		////////Debug.log("開始");
 		if(collision.tag == EnemyManager.instance.AttackTag && (isHitable || lastHit != collision.gameObject))
         {
-			Debug.Log("きたで");
+			//Debug.Log("きたで");
 			WeponDamage();
 			if (!isAggressive)
 			{
@@ -1688,7 +1835,7 @@ public class EnemyBase : MonoBehaviour
 	{
 		if (collision.tag == EnemyManager.instance.AttackTag && (isHitable || lastHit != collision.gameObject))
 		{
-			Debug.Log("きたで");
+			//Debug.Log("きたで");
 			WeponDamage();
 			isHit = true;
 			isHitable = false;
@@ -1789,16 +1936,16 @@ public class EnemyBase : MonoBehaviour
 	public void AttackPrepare()
     {
 		isAttack = true;
-		status.coolTime = status.atValue[attackNumber].coolList;
-		status.isBlow = status.atValue[attackNumber].isBlow;
-		status.mValue = status.atValue[attackNumber].mvalue;
-		status.aditionalArmor = status.atValue[attackNumber].addArmor;
-		status.isLight = status.atValue[attackNumber].isLight;
-		//status.hitLimmit = status.atValue[attackNumber].hitLimmit;
-		status.blowVector = status.atValue[attackNumber].blowPower;
-		status.Shock = status.atValue[attackNumber].shock;
-		status.atType = status.atValue[attackNumber].type;
-		status.isCombo = status.atValue[attackNumber].isCombo;
+		atV.coolTime = status.atValue[attackNumber].coolTime;
+		atV.isBlow = status.atValue[attackNumber].isBlow;
+		atV.mValue = status.atValue[attackNumber].mValue;
+		atV.aditionalArmor = status.atValue[attackNumber].aditionalArmor;
+		atV.isLight = status.atValue[attackNumber].isLight;
+		atV.parriable = status.atValue[attackNumber].parriable;
+		atV.blowPower = status.atValue[attackNumber].blowPower;
+		atV.shock = status.atValue[attackNumber].shock;
+		atV.type = status.atValue[attackNumber].type;
+		atV.isCombo = status.atValue[attackNumber].isCombo;
 	}
 
 
@@ -1896,16 +2043,16 @@ public class EnemyBase : MonoBehaviour
 
 		else if (!isAttack)
 		{
-			if (!isAtEnable && !status.isCombo)
+			if (!isAtEnable && !atV.isCombo)
 			{
 				stayTime += Time.fixedDeltaTime;
-				if (stayTime >= status.coolTime)
+				if (stayTime >= atV.coolTime)
 				{
 					isAtEnable = true;
 					stayTime = 0.0f;
 				}
 			}
-			if (isAtEnable && status.isCombo)
+			if (isAtEnable && atV.isCombo)
 			{
 				isAtEnable = true;
 				attackNumber++;

@@ -16,7 +16,7 @@ MonoBehaviour:
   isParalyze: 0
   level: 1
   maxHp: 5000000
-  hp: 4997662.5
+  hp: 4999616
   maxMp: 30
   mp: 30
   maxStamina: 60
@@ -28,7 +28,7 @@ MonoBehaviour:
   skill: 1
   _int: 1
   Atk: 0
-  phyAtk: 0
+  phyAtk: 20
   holyAtk: 0
   darkAtk: 0
   fireAtk: 100
@@ -47,15 +47,14 @@ MonoBehaviour:
   thunderCut: 0
   guardPower: 100
   Armor: 40
-  nowArmor: 25
   nockBackPower: 0
-  attackBuff: 0
+  attackBuff: 1
   judgePace: 2
   addSpeed: {x: 300, y: 0}
-  patrolSpeed: {x: 40, y: 0}
+  patrolSpeed: {x: 30, y: 0}
   waitDistance: {x: 15, y: 0}
   waitRes: 1
-  combatSpeed: {x: 40, y: 0}
+  combatSpeed: {x: 30, y: 0}
   agrDistance: {x: 4, y: 0}
   walkDistance: {x: 70, y: 0}
   adjust: 30
@@ -68,7 +67,7 @@ MonoBehaviour:
   avoidSpeed: {x: -300, y: 0}
   avoidRes: 0.4
   avoidCool: 12
-  firstGravity: 20
+  firstGravity: 30
   downRes: 2
   velocityMin: {x: -1000, y: -1000}
   velocityMax: {x: 1000, y: 1000}
@@ -82,34 +81,22 @@ MonoBehaviour:
   ground: 0
   air: 6
   kind: 0
-  atType: 2
   wp: 01000000
-  PMagicTag: PlayerMagic
-  SMagicTag: SisterMagic
-  AttackTag: Attack
-  JumpTag: JumpTrigger
   attackName:
   - Attack1
   serectableNumber: 01000000
-  coolTime: 2
   atValue:
-  - mvalue: 1
-    addArmor: 18
+  - mValue: 1
+    aditionalArmor: 0
     shock: 20
     isBlow: 0
     isLight: 1
     type: 2
-    coolList: 2
+    coolTime: 0
     blowPower: {x: 0, y: 0}
     isCombo: 0
     isShoot: 0
     parriable: 1
-  aditionalArmor: 18
-  isBlow: 0
   parriable: 0
   unBaind: 0
-  blowVector: {x: 0, y: 0}
-  Shock: 20
-  mValue: 1
-  isCombo: 0
   isLight: 1

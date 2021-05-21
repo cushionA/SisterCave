@@ -203,15 +203,16 @@ public class EnemyFireBullet : MonoBehaviour
 			}
 			if (!GManager.instance.isAttack)
 			{
-				GManager.instance.pStatus.nowArmor -= em.Shock;
+				GManager.instance.nowArmor -= em.Shock;
 			}
 			else
 			{
-				GManager.instance.pStatus.nowArmor -= (em.Shock - GManager.instance.pStatus.equipWeapon.atAromor) < 0 ? 0 : (em.Shock - GManager.instance.pStatus.equipWeapon.atAromor);
+				GManager.instance.nowArmor -= (em.Shock - GManager.instance.pStatus.equipWeapon.atAromor) < 0 ? 0 : (em.Shock - GManager.instance.pStatus.equipWeapon.atAromor);
 			}
-			GManager.instance.pStatus.hp -= damage * em.attackBuff;
+			damage = Mathf.Floor(damage * em.attackBuff);
+			GManager.instance.pStatus.hp -= damage;
 		}
-		if(em.isBlow == true && GManager.instance.pStatus.nowArmor <= 0)
+		if(em.isBlow == true && GManager.instance.nowArmor <= 0)
         {
 			GManager.instance.blowDown = true;
 

@@ -11,6 +11,9 @@ public class SetFPS : MonoBehaviour
     /// </summary>
     [SerializeField, Range(0.1f, 1.0f)]
     float EveryCalcurationTime = 0.5f;
+
+    [SerializeField] bool isEnable;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -37,7 +40,10 @@ public class SetFPS : MonoBehaviour
     }
     void Update()
     {
-       // Debug.Log($"FPSは{Rate}");
+        if (isEnable)
+        {
+            Debug.Log($"FPSは{Rate}");
+        }
         frameCount++;
         float time = Time.realtimeSinceStartup - prevTime;
 

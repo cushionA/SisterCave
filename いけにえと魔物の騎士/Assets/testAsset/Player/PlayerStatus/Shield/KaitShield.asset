@@ -121,7 +121,7 @@ MonoBehaviour:
     isBlow: 1
     isLight: 0
     type: 2
-    blowPower: {x: 35, y: 15}
+    blowPower: {x: 1000, y: 100}
     useStamina: 18
   - x: 1
     y: 20
@@ -130,5 +130,5 @@ MonoBehaviour:
     isBlow: 1
     isLight: 0
     type: 2
-    blowPower: {x: 35, y: 15}
+    blowPower: {x: 1000, y: 100}
     useStamina: 18

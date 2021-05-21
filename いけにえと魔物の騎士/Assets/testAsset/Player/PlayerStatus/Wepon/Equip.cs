@@ -38,6 +38,8 @@ public class Equip : Item
     [Header("ジャスガ受付時間")]
     public float parryTime;
 
+    [Header("パリィでのスタミナ回復量")]
+    public float parryRecover;//パリィでのスタミナ回復量
     /// <summary>
     /// アーマー削り
     /// </summary>

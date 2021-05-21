@@ -777,7 +777,7 @@ MonoBehaviour:
     isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 10, y: 40}
+    blowPower: {x: 0, y: 400}
     useStamina: 15
   - x: 1.2
     y: 20
@@ -815,17 +815,17 @@ MonoBehaviour:
     isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 70, y: 30}
+    blowPower: {x: 300, y: 200}
     useStamina: 20
   artsValue:
   - x: 0.3
     y: 20
     z: 50
     isCombo: 0
-    isBlow: 1
+    isBlow: 0
     isLight: 0
     type: 2
-    blowPower: {x: 2000, y: 2000}
+    blowPower: {x: 0, y: 250}
     useStamina: 15
   - x: 1.6
     y: 20
@@ -834,12 +834,12 @@ MonoBehaviour:
     isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 300, y: 500}
+    blowPower: {x: 1000, y: 200}
     useStamina: 20
   isLight: 0
   shieldAct: 0
   twinHand: 1
   isBlow: 1
   isCombo: 0
-  blowPower: {x: 300, y: 500}
+  blowPower: {x: 1000, y: 200}
   guardSpeed: 0

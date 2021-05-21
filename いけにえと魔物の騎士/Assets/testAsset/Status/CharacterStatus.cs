@@ -90,7 +90,7 @@ public abstract class CharacterStatus : ScriptableObject
 
     //小怯み。普段は基本ゼロ。攻撃時だけ
     public float Armor = 1;
-    [HideInInspector]public float nowArmor;
+ //   [HideInInspector]public float nowArmor;
 
     public float nockBackPower;
 
