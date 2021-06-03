@@ -1,0 +1,211 @@
+Using pre-set license
+Built from '2020.3/staging' branch; Version is '2020.3.6f1 (338bb68529b2) revision 3378102'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 10 Pro; OS build 19041.985; Version 2004; 64bit' Language: 'ja' Physical Memory: 16222 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+ COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2020.3.6f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+C:/Users/tatuk/Documents/SisterCave/Cave
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+59184
+Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
+C:/Users/tatuk/Documents/SisterCave/Cave
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 305.73 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2020.3.6f1 (338bb68529b2)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/tatuk/Documents/SisterCave/Cave/Assets
+GfxDevice: creating device client; threaded=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2070 Super (ID=0x1ed1)
+    Vendor:   
+    VRAM:     8011 MB
+    Driver:   27.21.14.6230
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56004
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.002141 seconds.
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 306.59 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.237 seconds
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.012443 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 289.85 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.005 seconds
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Refreshing native plugins compatible for Editor in 2.33 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6721 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 294.1 MB.
+System memory in use after: 294.5 MB.
+
+Unloading 74 unused Assets to reduce memory usage. Loaded Objects now: 7272.
+Total: 3.799800 ms (FindLiveObjects: 0.596400 ms CreateObjectMapping: 0.348200 ms MarkObjects: 2.714900 ms  DeleteObjects: 0.139600 ms)
+
+========================================================================
+Received Import Request.
+  path: Assets/testAsset/Scenes/SampleScene/PostProcess Profile.asset
+  artifactKey: Guid(67d4c3519f8741347b7f656edf0f92f8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Scenes/SampleScene/PostProcess Profile.asset using Guid(67d4c3519f8741347b7f656edf0f92f8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0b10892d894439a62b48cda29189a5d6') in 0.055834 seconds
+  Import took 0.065332 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 64.719312 seconds.
+  path: Assets/testAsset/PostProcess.asset
+  artifactKey: Guid(a21046659154883439ba131f9eef5cee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/PostProcess.asset using Guid(a21046659154883439ba131f9eef5cee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0c72942bd96e24e486239a0621903ae4') in 0.007156 seconds
+  Import took 0.018207 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 2.146845 seconds.
+  path: Assets/testAsset/Player/DaySideSister.psb
+  artifactKey: Guid(d2730892b807257428beac38210ee56d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/DaySideSister.psb using Guid(d2730892b807257428beac38210ee56d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '84c7232d95659d52b440feeb68f01f72') in 0.104300 seconds
+  Import took 0.113699 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.789792 seconds.
+  path: Assets/testAsset/Player/PlayerScript/ZeroFriction.physicsMaterial2D
+  artifactKey: Guid(0a1ae9298746d5c468794c1e033a08e4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerScript/ZeroFriction.physicsMaterial2D using Guid(0a1ae9298746d5c468794c1e033a08e4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1a728f77cb6f2fd551d6e0a5944ccec4') in 0.006558 seconds
+  Import took 0.016377 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 4.082751 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/Sprite/BackKnight.psb
+  artifactKey: Guid(1c003d6d35cfade4baaed1b2a8dbee23) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/Sprite/BackKnight.psb using Guid(1c003d6d35cfade4baaed1b2a8dbee23) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3fa8fcde1ad39afbf52e589da58e74ec') in 0.200290 seconds
+  Import took 0.223169 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000237 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/Sprite/NanameKnight.spriteatlas
+  artifactKey: Guid(19ee52e69bed017419fdb0c98629c630) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/Sprite/NanameKnight.spriteatlas using Guid(19ee52e69bed017419fdb0c98629c630) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '80d69cb8010621852827b0b6bef5a2a9') in 0.008620 seconds
+  Import took 0.021872 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000259 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.spriteatlas
+  artifactKey: Guid(83203ff6a7ee6cf4cbc0cb685f79f052) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.spriteatlas using Guid(83203ff6a7ee6cf4cbc0cb685f79f052) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b33e356257f1928fa394048893fae188') in 0.007856 seconds
+  Import took 0.019008 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000165 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/Sprite/FrontKnight.psb
+  artifactKey: Guid(272f82b456988f841a605404175904b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/Sprite/FrontKnight.psb using Guid(272f82b456988f841a605404175904b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9efa0bf84aca6b7667736563092b8efe') in 0.075558 seconds
+  Import took 0.086265 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000198 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb
+  artifactKey: Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb using Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '85c800b2e16b91a53f99328ea698b1da') in 0.137734 seconds
+  Import took 0.147175 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000183 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/Sprite/BackKnight.spriteatlas
+  artifactKey: Guid(e22338033cf0e89418cb69176e2355f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/Sprite/BackKnight.spriteatlas using Guid(e22338033cf0e89418cb69176e2355f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '66b388871d527896f8445e127718a847') in 0.004054 seconds
+  Import took 0.014077 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000257 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/Sprite/FrontKnight.spriteatlas
+  artifactKey: Guid(8fc5ed428d13c34498bb74404f77b0c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/Sprite/FrontKnight.spriteatlas using Guid(8fc5ed428d13c34498bb74404f77b0c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '05da46934ec3d7715f3ed954e21c4155') in 0.002645 seconds
+  Import took 0.013916 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000218 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/Sprite/NanameKnight.psb
+  artifactKey: Guid(cb910de58fe396045a62dbdf0713401d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/Sprite/NanameKnight.psb using Guid(cb910de58fe396045a62dbdf0713401d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '406ed626d7dcecdac74e95b5a7e9df1c') in 0.146263 seconds
+  Import took 0.156912 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 83.555680 seconds.
+  path: Assets/Beautify/URP/Demo/DemoSources/URP Settings/UniversalRenderPipelineAsset.asset
+  artifactKey: Guid(0420a5f7bad574a20bf7ad3eddd45a6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Beautify/URP/Demo/DemoSources/URP Settings/UniversalRenderPipelineAsset.asset using Guid(0420a5f7bad574a20bf7ad3eddd45a6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '296cfef3a58f7dc3911d115f11a47c64') in 0.027455 seconds
+  Import took 0.038982 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000200 seconds.
+  path: Assets/Beautify/URP/Demo/DemoSources/URP Settings/UniversalRenderPipelineAsset_Renderer.asset
+  artifactKey: Guid(9f2b19a61cd1c4f9d9720feb89e96e43) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Beautify/URP/Demo/DemoSources/URP Settings/UniversalRenderPipelineAsset_Renderer.asset using Guid(9f2b19a61cd1c4f9d9720feb89e96e43) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '692605bbac2056fc8581b7c4713bb67d') in 0.018495 seconds
+  Import took 0.031740 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000145 seconds.
+  path: Assets/Beautify/URP/Demo/DemoSources/URP Settings/UniversalRenderPipelineAsset.asset
+  artifactKey: Guid(0420a5f7bad574a20bf7ad3eddd45a6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Beautify/URP/Demo/DemoSources/URP Settings/UniversalRenderPipelineAsset.asset using Guid(0420a5f7bad574a20bf7ad3eddd45a6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '296cfef3a58f7dc3911d115f11a47c64') in 0.012196 seconds
+  Import took 0.024089 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000211 seconds.
+  path: Assets/Beautify/URP/Demo/DemoSources/URP Settings/UniversalRenderPipelineAsset_Renderer.asset
+  artifactKey: Guid(9f2b19a61cd1c4f9d9720feb89e96e43) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Beautify/URP/Demo/DemoSources/URP Settings/UniversalRenderPipelineAsset_Renderer.asset using Guid(9f2b19a61cd1c4f9d9720feb89e96e43) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '692605bbac2056fc8581b7c4713bb67d') in 0.012115 seconds
+  Import took 0.021933 seconds .
+
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file

@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NanameIdiot
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 512
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 75
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: -2754060674147614561, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: 1066353445630930472, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: 8132120508096929549, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: -7318918045201067141, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: 4278418533645791788, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: 1498283576630812621, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: 3348676270290076922, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: -21185485755722558, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: 71450170470354788, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: 7362723520992549582, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: 5558478181001812382, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: 7210531116228108634, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: -1567238250027224609, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: -6141694661834952615, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    - {fileID: 5823696367917296060, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+    totalSpriteSurfaceArea: 80319
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: -2754060674147614561, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: -21185485755722558, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: 4278418533645791788, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: 3348676270290076922, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: 5823696367917296060, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: -6141694661834952615, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: 71450170470354788, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: -1567238250027224609, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: 1498283576630812621, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: -7318918045201067141, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: 1066353445630930472, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: 8132120508096929549, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: 5558478181001812382, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: 7210531116228108634, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  - {fileID: 7362723520992549582, guid: a0f301f7e9a527d4491013dec467c237, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - DArm
+  - Head
+  - DLeg_1
+  - Hand_1
+  - ULeg_1
+  - ULeg
+  - NShoes
+  - UBody
+  - Hand
+  - DLeg
+  - DArm_1
+  - DBody
+  - UArm
+  - UArm_1
+  - NShoes_1
+  m_RenderDataMap: {}
+  m_Tag: NanameIdiot
+  m_IsVariant: 0

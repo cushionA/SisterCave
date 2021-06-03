@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 487739a193817f74c94f6af74ca7866e, type: 3}
+  m_Name: TestMagi
+  m_EditorClassIdentifier: 
+  atType: 0
+  effects:
+  - m_AssetGUID: a8f228fe3147e544597eef0d2a53ea28
+    m_SubObjectName: 
+  phyAtk: 0
+  holyAtk: 0
+  darkAtk: 0
+  fireAtk: 0
+  thunderAtk: 0
+  motionValue: []
+  mValue: 0
+  castTime: 0
+  fireType: 2
+  attackNockBackVector: {x: 55, y: 0}
+  penetration: 0
+  lifeTime: 6
+  speedV: 120
+  speedA: 1
+  angle: 0
+  homingTime: 12
+  homingAngleV: 365.78784
+  homingAngleA: 4
+  hitEffect:
+    m_AssetGUID: 
+    m_SubObjectName: 
+  hitEffectScale: {x: 1, y: 1, z: 1}
+  rotateVt: 360
+  isRotate: 0
+  bulletScaleV: {x: 0, y: 0, z: 0}
+  bulletScaleA: {x: 0, y: 0, z: 0}

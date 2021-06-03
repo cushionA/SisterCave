@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8105e1bad43ebc243971ee12a86b078d, type: 3}
+  m_Name: Test4
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: e85080ae4150f414e9ec785f90aad8be, type: 3}
+  itemName: test4
+  hiraganaName: "\u3066\u3059\u3068\u3075\u3049\u30FC"
+  information: 
+  number: 0
+  holdLimmit: 0
+  isDrop: 0
+  inventoryNum: 0
+  kindOfItem: 0
+  summarizeUse: 0

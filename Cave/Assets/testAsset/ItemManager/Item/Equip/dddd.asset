@@ -1,0 +1,277 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2942df316d830840abe5726a48337a5, type: 3}
+  m_Name: dddd
+  m_EditorClassIdentifier: 
+  icon: {fileID: 4150303973451584137, guid: 0f04a8a49cd379e44ba7993e6988b533, type: 3}
+  itemName: dddd
+  hiraganaName: 
+  information: 
+  number: 0
+  holdLimmit: 0
+  isDrop: 0
+  inventoryNum: 1
+  front:
+  - {fileID: 0}
+  - {fileID: 0}
+  Side:
+  - {fileID: 0}
+  - {fileID: 0}
+  Naname:
+  - {fileID: 0}
+  - {fileID: 0}
+  phyBase: []
+  holyBase: []
+  darkBase: []
+  fireBase: []
+  thunderBase: []
+  needPower: 0
+  needSkill: 0
+  needInt: 0
+  phyCut: []
+  holyCut: []
+  darkCut: []
+  fireCut: []
+  thunderCut: []
+  guardPower: []
+  parryStart: 0
+  parryTime: 0
+  parryRecover: 0
+  shock: 0
+  artsMP: []
+  wLevel: 0
+  atType: 0
+  isTwin: 0
+  isMagic: 0
+  MagicAssistBase: 100
+  MagicAssist: 0
+  castSkill: 1
+  powerCurve: []
+  skillCurve: []
+  intCurve: []
+  MAssistCurve: []
+  CastCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  mValue: 0
+  atAromor: 0
+  chargeRes: 0
+  sValue: []
+  bValue: []
+  chargeValue: []
+  airValue: []
+  strikeValue:
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  twinSValue: []
+  twinBValue: []
+  twinChargeValue: []
+  twinAirValue: []
+  twinStrikeValue:
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  artsValue:
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  - x: 0
+    y: 0
+    z: 0
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 0
+  isLight: 0
+  shieldAct: 0
+  twinHand: 0
+  isBlow: 0
+  isCombo: 0
+  blowPower: {x: 0, y: 0}
+  guardSpeed: 0
