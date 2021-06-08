@@ -70,8 +70,8 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	[HideInInspector]public EnemyValue atV;
 	// === キャッシュ ==========================================
-	public Animator animator;
-	public SimpleAnimation sAni;
+	//public Animator animator;
+	public Animator sAni;
 	
 	
 	public Rigidbody2D rb;//継承先で使うものはprotected
@@ -161,6 +161,8 @@ public class EnemyBase : MonoBehaviour
         {
 			if (!status.unBaind)
 			{
+				Debug.Log("停止");
+				//縛られないなら先に
 				return;
 			}
         }
@@ -245,7 +247,7 @@ public class EnemyBase : MonoBehaviour
 				avoidTime = 0;
 			}
 		}*/
-		SetVelocity();
+	//	SetVelocity();
 		HitCheck();
 		WaitAttack();
 		ArmorRecover();
@@ -350,7 +352,7 @@ public class EnemyBase : MonoBehaviour
 			//////Debug.log($"{nowArmor}a-mor");
 			damage = Mathf.Floor(damage * GManager.instance.pStatus.attackBuff);
 			hp -= damage;//HP引いてる
-								//	Debug.Log($"ダメージ{damage}とトランスフォーム{this.transform.position}");
+					//				Debug.Log($"ダメージ{damage}とトランスフォーム{this.transform.position}");
 
 			um.AddStack(damage, this.transform);
 			if (!isAttack)
@@ -1445,13 +1447,14 @@ public class EnemyBase : MonoBehaviour
 		}
         else
         {
-			if (!isGround && !isAttack&& !isJump)
+			if (!isGround && !isAttack && !isJump && !isDown)
 			{
-				if (!isDown)
-				{
 					sAni.Play("Fall");
-				}
-				GravitySet(status.firstGravity);
+
+			}
+			else if (isJump)
+            {
+				sAni.Play("Jump");
 			}
 			
 		}
@@ -1737,16 +1740,20 @@ public class EnemyBase : MonoBehaviour
 		{
 
 			blowTime += Time.fixedDeltaTime;
-			if(blowTime <= 0.3)
+			if(blowTime <= 0.2)
 			{
-				//Debug.Log($"速度{blowM.x}");
-				isGround = false;
-				rb.AddForce(blowM,ForceMode2D.Impulse); 
+				//	Debug.Log($"速度{blowM.x}");
+				if (blowTime <= 0.1)
+				{
+					isGround = false;
+				}
+					rb.AddForce(blowM,ForceMode2D.Impulse); 
 			}
-            else if(blowTime <= 1.5)
+            else if(blowTime <= 1.5)// || !isGround)
             {
-				blowM.Set(blowM.x, 0);
+				blowM.Set(blowM.x,0);
 				rb.AddForce(blowM, ForceMode2D.Impulse);
+
 			}
 		}
 	}
@@ -1762,46 +1769,52 @@ public class EnemyBase : MonoBehaviour
 		{
 				if (!isWakeUp)
 				{
-					if (isDown && !isGround)
+					if (!isGround)
 					{
 						sAni.Play("Blow");
-					//	SetLayer(17);//回避レイヤーの場所変わってるかもな。追加や削除で
-						//GravitySet(15);
-					}
-					else if (isDown && isGround)
+						//SetLayer(17);//回避レイヤーの場所変わってるかもな。追加や削除で
+					//GravitySet(15);
+
+				    }
+					else if (isGround)
 					{
+					rb.velocity = Vector2.zero;
 					if (!isAnimeStart)
 					{
 						sAni.Play("Down");
 						isAnimeStart = true;
 					}
-						//GravitySet(status.firstGravity);
+					//GravitySet(status.firstGravity);
+					else if (!CheckEnd("Down"))
+					{
 						AllStop(status.downRes);
+						//Debug.Log("醤油");
+						
+					}
 
 						//isDown = false;
 						//ダウンアニメ
 					}
 				}
-				else
-				{
-					if (isDown && isGround)
-					{
+			else if (isDown && isGround && isWakeUp)
+			{				
+				//前のでisAnimeStartが真のままだから
 					if (isAnimeStart)
 					{
 						isAnimeStart = false;
 						sAni.Play("WakeUp");
 					}
-						if (!CheckEnd("WakeUp"))
-						{
+					else if (!CheckEnd("WakeUp"))
+					{
 					//	isAnimeStart = false;
 							isDown = false;
 							isWakeUp = false;
 						blowDown = false;
 						blowTime = 0;
 						ArmorReset();
-					    }
-					}
-				}
+				    }
+					
+			}
 
 		}
 	}
@@ -2073,7 +2086,7 @@ public class EnemyBase : MonoBehaviour
     {
 		if (isAttack)
 		{
-			if (!CheckEnd(status.attackName[attackNumber]))
+			if (!CheckEnd(status.attackName[attackNumber]) || isDown)
 			{
 			//	isAtEnable = true;これクールタイムで管理しようよ
 				isAttack = false;
@@ -2101,11 +2114,30 @@ public class EnemyBase : MonoBehaviour
 		}
     }
 
-	bool CheckEnd(string _currentStateName)
+//	bool CheckEnd(string _currentStateName)
+	//{
+	//	return sAni.IsPlaying(_currentStateName);
+	//}
+	    bool CheckEnd(string Name)
 	{
-		return sAni.IsPlaying(_currentStateName);
-	}
 
+		if (!sAni.GetCurrentAnimatorStateInfo(0).IsName(Name))// || sAni.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
+		{   // ここに到達直後はnormalizedTimeが"Default"の経過時間を拾ってしまうので、Resultに遷移完了するまではreturnする。
+			return true;
+		}
+		if (sAni.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+		{   // 待機時間を作りたいならば、ここの値を大きくする。
+			return true;
+		}
+		//AnimatorClipInfo[] clipInfo = sAni.GetCurrentAnimatorClipInfo(0);
+
+		////Debug.Log($"アニメ終了");
+
+		return false;
+
+		// return !(sAni.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+		//  (_currentStateName);
+	}
 
 
 

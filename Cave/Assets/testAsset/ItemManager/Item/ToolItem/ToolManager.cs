@@ -40,7 +40,7 @@ public class ToolManager : MonoBehaviour
 	//[HideInInspector]
 	
 
-	bool isUp;
+	
 	//[HideInInspector]public ToolItem use;
 
 	// Use this for initialization
@@ -70,7 +70,7 @@ public class ToolManager : MonoBehaviour
 		{
 			int pas = takeItem[i].inventoryNum;
 			takeItem[i].inventoryNum = pas + changeNum[i];
-			isUp = true;
+			//isUp = true;
 			/*int pas = numOfItem[GetItem($"{takeItem}")];
 			numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
 			isUp = true;*/

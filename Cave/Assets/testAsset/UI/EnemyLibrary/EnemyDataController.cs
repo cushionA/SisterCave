@@ -31,14 +31,14 @@ public class EnemyDataController : MonoBehaviour, IEnhancedScrollerDelegate
     List<EnemyLibrary> setList;
 
     [HideInInspector] public bool isEver;
-    int lLimit;
-    int uLimit;
+    //int lLimit;
+    
 
     float limit;
     float pos;
 
-    bool isTop;
-    bool isLast;
+   // bool isTop;
+    
 
     bool isFirstU;
     bool isSecondU;
@@ -50,7 +50,7 @@ public class EnemyDataController : MonoBehaviour, IEnhancedScrollerDelegate
 
     bool isReverse;
 
-    int jumpDataIndex;
+   // int jumpDataIndex;
 
 
     int N = 3;
@@ -391,8 +391,8 @@ public class EnemyDataController : MonoBehaviour, IEnhancedScrollerDelegate
             var nextCell = i == (cells.Length - 1) ? null : cells[i + 1];
             var buttonCount = cell.ContentButtons.Length;
 
-            uLimit = 0;
-            lLimit = this.data.Count;
+           // uLimit = 0;
+           // lLimit = this.data.Count;
 
             /* if (i == (cells.Length - 1) )
                        {

@@ -33,7 +33,7 @@ public class KeyManager : MonoBehaviour
 	//[HideInInspector]
 	
 
-	bool isUp;
+	
 	//[HideInInspector]public KeyItem use;
 
 	// Use this for initialization
@@ -85,7 +85,7 @@ public class KeyManager : MonoBehaviour
 		{
 			int pas = takeItem[i].inventoryNum;
 			takeItem[i].inventoryNum = pas + changeNum[i];
-			isUp = true;
+			//isUp = true;
 			/*int pas = numOfItem[GetItem($"{takeItem}")];
 			numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
 			isUp = true;*/

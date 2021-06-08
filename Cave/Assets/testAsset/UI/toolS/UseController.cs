@@ -29,8 +29,8 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
     List<ToolItem> setList;
 
 
-    int lLimit;
-    int uLimit;
+ //  int lLimit;
+   // int uLimit;
 
     float limit;
     float pos;
@@ -396,8 +396,8 @@ public class UseController : MonoBehaviour, IEnhancedScrollerDelegate
             var nextCell = i == (cells.Length - 1) ? null : cells[i + 1];
             var buttonCount = cell.ContentButtons.Length;
 
-            uLimit = 0;
-        lLimit = this.data.Count;
+       //     uLimit = 0;
+       // lLimit = this.data.Count;
 
  /* if (i == (cells.Length - 1) )
             {

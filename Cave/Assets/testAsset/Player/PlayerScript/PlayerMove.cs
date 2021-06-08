@@ -39,7 +39,7 @@ public class PlayerMove : MonoBehaviour
     [HideInInspector] public bool isAvoid;
     [HideInInspector] public bool isDash;
     [HideInInspector] public bool isSquat;
-    [HideInInspector] public bool isUp;
+    //[HideInInspector] public 
     [HideInInspector] public bool isEnAt;
     [HideInInspector] public bool isStUse;
     [HideInInspector] public bool isRJump;

@@ -39,7 +39,7 @@ public class MagicManager : MonoBehaviour
 	//[HideInInspector]
 	
 
-	bool isUp;
+	
 	//[HideInInspector]public Magic use;
 
 	// Use this for initialization
@@ -91,7 +91,7 @@ public class MagicManager : MonoBehaviour
         {
 			int pas = takeItem[i].inventoryNum;
 			takeItem[i].inventoryNum = pas + changeNum[i];
-			isUp = true;
+			//isUp = true;
 			/*int pas = numOfItem[GetItem($"{takeItem}")];
 			numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
 			isUp = true;*/

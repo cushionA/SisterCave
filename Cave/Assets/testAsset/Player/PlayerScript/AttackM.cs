@@ -956,7 +956,7 @@ public class AttackM : MonoBehaviour
         {   // 待機時間を作りたいならば、ここの値を大きくする。
             return true;
         }
-           AnimatorClipInfo[] clipInfo = GManager.instance.pm.anim.GetCurrentAnimatorClipInfo(0);
+     //      AnimatorClipInfo[] clipInfo = GManager.instance.pm.anim.GetCurrentAnimatorClipInfo(0);
 
         ////Debug.Log($"アニメ終了");
  

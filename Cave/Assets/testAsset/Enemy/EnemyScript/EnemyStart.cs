@@ -7,21 +7,22 @@ using UnityEngine;
 public class EnemyStart : MonoBehaviour
 {
     EnemyBase eb;
-    [System.NonSerialized] public bool cameraEnabled = false;
+    [System.NonSerialized] public bool cameraEnabled = false;//一回カメラに映った
     [System.NonSerialized] public bool inActiveZone = false;
-    protected Rigidbody2D rb;
+   // protected Rigidbody2D eb.rb;
     string avtiveTag = "ActiveZone";
 
     bool activeEnter;
     bool activeStay;
-    bool isSleep;
-    Animator ani;
+    //bool activeOut;
+    bool isSleep;//休眠中フラグ
+   // Animator ani;
 
     void Start()
     {
         eb = GetComponent<EnemyBase>();
-        rb = GetComponent<Rigidbody2D>();
-        ani = GetComponent<Animator>();
+        eb.rb = GetComponent<Rigidbody2D>();
+        //ani = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -29,10 +30,11 @@ public class EnemyStart : MonoBehaviour
     {
       //  if (Camera.current.tag == "MainCamera")レンダリングしてるカメラがメインカメラならってやつ。しかしおそらくURPのせいで動かない
        // {
-            rb.WakeUp();
+            
             eb.cameraRendered = true;
             cameraEnabled = true;
-      //  }
+
+        //  }
     }
 
     private void FixedUpdate()
@@ -40,31 +42,41 @@ public class EnemyStart : MonoBehaviour
 
         ////Debug.log($"カメラないでーす{eb.cameraRendered}");
         ////Debug.log($"カメラな{activeStay}");
-        if (!cameraEnabled)
+        if (!cameraEnabled && !isSleep)
         {
-            rb.Sleep();
+            //カメラにうつってない
+            eb.rb.Sleep();
             isSleep = true;
-            ani.enabled = false;
+            //Debug.Log("あああｓで");
+            eb.sAni.enabled = false;
+            eb.cameraRendered = false;
+            return;
         }
-        if (eb.cameraRendered && !isSleep)
-        {
-           rb.WakeUp();
+        if (eb.cameraRendered && isSleep)
+        { 
+
+           eb.rb.WakeUp();
+            //isSleep = false;
             isSleep = false;
+            eb.sAni.enabled = true;
         }
 
         if (cameraEnabled)
         {
             if (activeEnter || activeStay)
             {
+                //アクティブゾーンにいるなら
                 eb.cameraRendered = true;
-
+               //activeOut = false;
             }
             else
             {
-                eb.cameraRendered = false;
-                rb.Sleep();
-                isSleep = true;
-                ani.enabled = false;
+              //  eb.cameraRendered = false;
+              //  eb.rb.Sleep();
+              //  isSleep = true;
+              //  eb.sAni.enabled = false;
+                cameraEnabled = false;
+                
             }
             activeStay = false;
             activeEnter = false;

@@ -344,10 +344,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3271ff202fb4a374d93d829affcbba99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labelTMP: {fileID: 114435666248084168}
+  label: {fileID: 0}
   stackToStringType: 0
   toStringFormat: 0
-  stackReusableTime: 0.5
+  stackReusableTime: 0.3
   onItemStackUse:
     m_PersistentCalls:
       m_Calls: []

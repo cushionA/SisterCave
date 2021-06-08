@@ -9,17 +9,17 @@ C:\Program Files\Unity\Hub\Editor\2020.3.6f1\Editor\Unity.exe
 -batchMode
 -noUpm
 -name
-AssetImportWorker0
+AssetImportWorker1
 -projectPath
 C:/Users/tatuk/Documents/SisterCave/Cave
 -logFile
-Logs/AssetImportWorker0.log
+Logs/AssetImportWorker1.log
 -srvPort
-54840
+59831
 Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
 C:/Users/tatuk/Documents/SisterCave/Cave
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 316.98 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 458.37 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.6f1 (338bb68529b2)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/Resources/UnitySubsystems
@@ -39,31 +39,31 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56152
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56080
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.002998 seconds.
+Registered in 0.004285 seconds.
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 310.65 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 405.53 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.231 seconds
+- Completed reload, in  1.829 seconds
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.013377 seconds.
+Registered in 0.013807 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 307.91 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 366.43 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  2.138 seconds
+- Completed reload, in  3.895 seconds
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
@@ -71,255 +71,307 @@ Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Ren
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 4.00 ms, found 2 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.11 seconds
+Refreshing native plugins compatible for Editor in 2.92 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6787 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 307.4 MB.
-System memory in use after: 307.8 MB.
+System memory in use before: 307.5 MB.
+System memory in use after: 307.9 MB.
 
 Unloading 74 unused Assets to reduce memory usage. Loaded Objects now: 7351.
-Total: 4.708900 ms (FindLiveObjects: 1.204600 ms CreateObjectMapping: 0.477800 ms MarkObjects: 2.819600 ms  DeleteObjects: 0.205900 ms)
+Total: 4.685000 ms (FindLiveObjects: 0.659700 ms CreateObjectMapping: 0.331600 ms MarkObjects: 3.440400 ms  DeleteObjects: 0.251900 ms)
 
 ========================================================================
 Received Import Request.
-  path: Assets/testAsset/Player/PlayerAnime/AnimationController/LongSword.controller
-  artifactKey: Guid(d8f95866c996df149b096a0c658c22f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/AnimationController/LongSword.controller using Guid(d8f95866c996df149b096a0c658c22f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0940c117cda4571797e0978901d0b71a') in 0.202678 seconds
-  Import took 0.219459 seconds .
+  path: Assets/testAsset/Enemy/EnemyAnime/Idiot/Animator/NoHandIdiot.controller
+  artifactKey: Guid(9cf8182951af9984eb770dae454add15) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Enemy/EnemyAnime/Idiot/Animator/NoHandIdiot.controller using Guid(9cf8182951af9984eb770dae454add15) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd4d05e43b702afa05be4e6723398e2f4') in 0.089575 seconds
+  Import took 0.102386 seconds .
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.024941 seconds.
+Registered in 0.019487 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 3.01 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 3.39 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.394 seconds
+- Completed reload, in  1.787 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.55 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 3.74 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
 System memory in use before: 288.6 MB.
 System memory in use after: 289.0 MB.
 
 Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7360.
-Total: 4.286700 ms (FindLiveObjects: 0.749700 ms CreateObjectMapping: 0.436000 ms MarkObjects: 2.930200 ms  DeleteObjects: 0.169800 ms)
+Total: 5.054700 ms (FindLiveObjects: 0.706900 ms CreateObjectMapping: 0.593100 ms MarkObjects: 3.519200 ms  DeleteObjects: 0.234000 ms)
 
 ========================================================================
 Received Import Request.
-  Time since last request: 401.184322 seconds.
-  path: Assets/testAsset/Player/PlayerAnime/Sprite/BackKnight.psb
-  artifactKey: Guid(1c003d6d35cfade4baaed1b2a8dbee23) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/Sprite/BackKnight.psb using Guid(1c003d6d35cfade4baaed1b2a8dbee23) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'daef8d86c32ff66f90b2fcff1b0b4dee') in 0.558179 seconds
-  Import took 0.684607 seconds .
+  Time since last request: 275.962315 seconds.
+  path: Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Jump.anim
+  artifactKey: Guid(6e3d159b36a379d459f649861246793b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Jump.anim using Guid(6e3d159b36a379d459f649861246793b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '34e96a14f00e20094789d211a027b7c8') in 0.031469 seconds
+  Import took 0.045674 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 24.289209 seconds.
-  path: Assets/testAsset/Player/PlayerAnime/Sprite/NanameKnight.psb
-  artifactKey: Guid(cb910de58fe396045a62dbdf0713401d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/Sprite/NanameKnight.psb using Guid(cb910de58fe396045a62dbdf0713401d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f79f10f631d74039b1ea2bfc956d4b69') in 0.192903 seconds
-  Import took 0.204115 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 13.655041 seconds.
-  path: Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb
-  artifactKey: Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb using Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '51a2b9e9219030bef4a95b2ae3b34d6b') in 0.167589 seconds
-  Import took 0.189164 seconds .
+  Time since last request: 0.011268 seconds.
+  path: Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Jump.anim
+  artifactKey: Guid(6e3d159b36a379d459f649861246793b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Jump.anim using Guid(6e3d159b36a379d459f649861246793b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '34e96a14f00e20094789d211a027b7c8') in 0.004277 seconds
+  Import took 0.018247 seconds .
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.016136 seconds.
+Registered in 0.014398 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.70 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 3.06 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.395 seconds
+- Completed reload, in  1.876 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.51 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 4.26 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 297.4 MB.
-System memory in use after: 297.8 MB.
+System memory in use before: 288.8 MB.
+System memory in use after: 289.1 MB.
 
-Unloading 65 unused Assets to reduce memory usage. Loaded Objects now: 7794.
-Total: 5.363800 ms (FindLiveObjects: 0.738100 ms CreateObjectMapping: 0.705900 ms MarkObjects: 3.749900 ms  DeleteObjects: 0.169200 ms)
-
-========================================================================
-Received Import Request.
-  Time since last request: 53.337569 seconds.
-  path: Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb
-  artifactKey: Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb using Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '27e48a88296a8a25d73155bc875182d4') in 0.269763 seconds
-  Import took 0.281062 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 88.714638 seconds.
-  path: Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb
-  artifactKey: Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb using Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '943c4c424f574d86407160416f35cf1c') in 0.129095 seconds
-  Import took 0.145448 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 69.696754 seconds.
-  path: Assets/testAsset/Player/PlayerAnime/Sprite/FrontKnight.psb
-  artifactKey: Guid(272f82b456988f841a605404175904b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/Sprite/FrontKnight.psb using Guid(272f82b456988f841a605404175904b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '31e55f047cdc1ec6f13a927b19de5221') in 0.073576 seconds
-  Import took 0.084627 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 20.402492 seconds.
-  path: Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb
-  artifactKey: Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb using Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4ed44cadd099b0574c3db8f13c8430f2') in 0.155247 seconds
-  Import took 0.166936 seconds .
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7369.
+Total: 7.266100 ms (FindLiveObjects: 0.764900 ms CreateObjectMapping: 0.565000 ms MarkObjects: 5.697400 ms  DeleteObjects: 0.237700 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.012792 seconds.
+Registered in 0.016655 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.51 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.88 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.367 seconds
+- Completed reload, in  1.915 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.55 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.58 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 297.7 MB.
-System memory in use after: 298.1 MB.
+System memory in use before: 288.8 MB.
+System memory in use after: 289.2 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7861.
-Total: 5.399000 ms (FindLiveObjects: 1.268000 ms CreateObjectMapping: 0.574000 ms MarkObjects: 3.355700 ms  DeleteObjects: 0.199900 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7378.
+Total: 5.813700 ms (FindLiveObjects: 0.923000 ms CreateObjectMapping: 0.570100 ms MarkObjects: 4.084100 ms  DeleteObjects: 0.235200 ms)
 
 ========================================================================
 Received Import Request.
-  Time since last request: 36.133702 seconds.
-  path: Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb
-  artifactKey: Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb using Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a831f56279bc02332f204f40a3774203') in 0.263378 seconds
-  Import took 0.274844 seconds .
+  Time since last request: 92.925130 seconds.
+  path: Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Attack1.anim
+  artifactKey: Guid(6f790ae07fb4ec2439c1854e6b77b3cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Attack1.anim using Guid(6f790ae07fb4ec2439c1854e6b77b3cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9794526ef90b4826d54467bd6b7363ba') in 0.024711 seconds
+  Import took 0.037728 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.044985 seconds.
+  path: Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Attack1.anim
+  artifactKey: Guid(6f790ae07fb4ec2439c1854e6b77b3cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Attack1.anim using Guid(6f790ae07fb4ec2439c1854e6b77b3cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9794526ef90b4826d54467bd6b7363ba') in 0.005963 seconds
+  Import took 0.019972 seconds .
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011514 seconds.
+Registered in 0.013645 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.72 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 3.58 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.421 seconds
+- Completed reload, in  1.695 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.54 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 3.80 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 297.9 MB.
-System memory in use after: 298.3 MB.
+System memory in use before: 288.9 MB.
+System memory in use after: 289.3 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7910.
-Total: 5.075400 ms (FindLiveObjects: 0.722900 ms CreateObjectMapping: 0.537300 ms MarkObjects: 3.667000 ms  DeleteObjects: 0.147300 ms)
-
-========================================================================
-Received Import Request.
-  Time since last request: 100.850276 seconds.
-  path: Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb
-  artifactKey: Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb using Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5633a3ade256ac46a6ddb51545b39e9e') in 0.301752 seconds
-  Import took 0.313174 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 2.870659 seconds.
-  path: Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb
-  artifactKey: Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb using Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5633a3ade256ac46a6ddb51545b39e9e') in 0.130519 seconds
-  Import took 0.141841 seconds .
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7387.
+Total: 4.753200 ms (FindLiveObjects: 0.682900 ms CreateObjectMapping: 0.506900 ms MarkObjects: 3.343900 ms  DeleteObjects: 0.218000 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011841 seconds.
+Registered in 0.014564 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.62 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.63 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.339 seconds
+- Completed reload, in  1.347 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.59 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.57 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.2 MB.
-System memory in use after: 298.6 MB.
+System memory in use before: 288.9 MB.
+System memory in use after: 289.3 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7959.
-Total: 5.272400 ms (FindLiveObjects: 0.744400 ms CreateObjectMapping: 0.488400 ms MarkObjects: 3.831500 ms  DeleteObjects: 0.207200 ms)
-
-========================================================================
-Received Import Request.
-  Time since last request: 27.487371 seconds.
-  path: Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb
-  artifactKey: Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerAnime/Sprite/SideKnight.psb using Guid(8e147a19ed9cdde428bfd842de685b63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1e0f94ad27323e6133faaa074bddc361') in 0.279553 seconds
-  Import took 0.296961 seconds .
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7396.
+Total: 5.222700 ms (FindLiveObjects: 0.732800 ms CreateObjectMapping: 0.422400 ms MarkObjects: 3.832300 ms  DeleteObjects: 0.234200 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011354 seconds.
+Registered in 0.011379 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.46 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.44 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.337 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.56 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 288.9 MB.
+System memory in use after: 289.3 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7405.
+Total: 4.672400 ms (FindLiveObjects: 0.718400 ms CreateObjectMapping: 0.479300 ms MarkObjects: 3.302100 ms  DeleteObjects: 0.171700 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.012027 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 4.24 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.468 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.96 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.0 MB.
+System memory in use after: 289.4 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7414.
+Total: 4.626300 ms (FindLiveObjects: 0.699500 ms CreateObjectMapping: 0.534700 ms MarkObjects: 3.231300 ms  DeleteObjects: 0.160000 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011578 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.64 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.372 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.52 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.0 MB.
+System memory in use after: 289.4 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7423.
+Total: 4.355300 ms (FindLiveObjects: 0.687200 ms CreateObjectMapping: 0.473900 ms MarkObjects: 3.029000 ms  DeleteObjects: 0.164300 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011543 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.47 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.356 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.58 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.0 MB.
+System memory in use after: 289.4 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7432.
+Total: 6.011600 ms (FindLiveObjects: 1.227400 ms CreateObjectMapping: 0.615000 ms MarkObjects: 3.932500 ms  DeleteObjects: 0.235700 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011346 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.63 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
 - Completed reload, in  1.335 seconds
@@ -329,100 +381,46 @@ Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Ren
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.54 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.67 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.3 MB.
-System memory in use after: 298.7 MB.
+System memory in use before: 289.0 MB.
+System memory in use after: 289.4 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8008.
-Total: 5.823000 ms (FindLiveObjects: 1.047700 ms CreateObjectMapping: 0.522500 ms MarkObjects: 4.045000 ms  DeleteObjects: 0.207100 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7441.
+Total: 5.234700 ms (FindLiveObjects: 0.668100 ms CreateObjectMapping: 0.602100 ms MarkObjects: 3.623200 ms  DeleteObjects: 0.340200 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011640 seconds.
+Registered in 0.012238 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.68 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.434 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
 Refreshing native plugins compatible for Editor in 2.58 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.3 MB.
-System memory in use after: 298.7 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8017.
-Total: 5.941700 ms (FindLiveObjects: 1.268400 ms CreateObjectMapping: 0.684200 ms MarkObjects: 3.779400 ms  DeleteObjects: 0.209100 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.012309 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.60 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.568 seconds
+- Completed reload, in  1.479 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 3.01 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.80 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.4 MB.
-System memory in use after: 298.8 MB.
+System memory in use before: 289.1 MB.
+System memory in use after: 289.4 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8026.
-Total: 4.721700 ms (FindLiveObjects: 0.963800 ms CreateObjectMapping: 0.574000 ms MarkObjects: 3.024300 ms  DeleteObjects: 0.158200 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7450.
+Total: 4.469700 ms (FindLiveObjects: 0.752200 ms CreateObjectMapping: 0.577400 ms MarkObjects: 2.982300 ms  DeleteObjects: 0.156700 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011389 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.82 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.366 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.56 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.4 MB.
-System memory in use after: 298.8 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8035.
-Total: 4.759000 ms (FindLiveObjects: 0.743400 ms CreateObjectMapping: 0.475600 ms MarkObjects: 3.358800 ms  DeleteObjects: 0.180700 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.011493 seconds.
+Registered in 0.013867 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
@@ -430,61 +428,7 @@ Native extension for WebGL target not found
 Refreshing native plugins compatible for Editor in 2.52 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.399 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.55 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.4 MB.
-System memory in use after: 298.8 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8044.
-Total: 4.577400 ms (FindLiveObjects: 0.905500 ms CreateObjectMapping: 0.459700 ms MarkObjects: 2.997300 ms  DeleteObjects: 0.214200 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.011786 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.51 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.434 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.59 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.4 MB.
-System memory in use after: 298.8 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8053.
-Total: 5.228700 ms (FindLiveObjects: 0.723500 ms CreateObjectMapping: 0.506900 ms MarkObjects: 3.788200 ms  DeleteObjects: 0.209400 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.012041 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.60 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.456 seconds
+- Completed reload, in  1.364 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
@@ -494,21 +438,102 @@ Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
 Refreshing native plugins compatible for Editor in 2.53 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.5 MB.
-System memory in use after: 298.9 MB.
+System memory in use before: 289.1 MB.
+System memory in use after: 289.5 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8062.
-Total: 5.282500 ms (FindLiveObjects: 0.713700 ms CreateObjectMapping: 0.595200 ms MarkObjects: 3.754600 ms  DeleteObjects: 0.218400 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7459.
+Total: 5.124300 ms (FindLiveObjects: 1.524900 ms CreateObjectMapping: 0.561900 ms MarkObjects: 2.818500 ms  DeleteObjects: 0.217800 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011604 seconds.
+Registered in 0.012068 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.50 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.51 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.325 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.66 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.1 MB.
+System memory in use after: 289.5 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7468.
+Total: 4.054500 ms (FindLiveObjects: 0.667000 ms CreateObjectMapping: 0.495100 ms MarkObjects: 2.680200 ms  DeleteObjects: 0.211300 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011481 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.74 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.349 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.56 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.1 MB.
+System memory in use after: 289.5 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7477.
+Total: 5.442200 ms (FindLiveObjects: 1.115300 ms CreateObjectMapping: 0.918800 ms MarkObjects: 3.233300 ms  DeleteObjects: 0.174100 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011773 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 3.27 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.378 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.94 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.1 MB.
+System memory in use after: 289.5 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7486.
+Total: 5.188300 ms (FindLiveObjects: 0.649100 ms CreateObjectMapping: 0.518900 ms MarkObjects: 3.839400 ms  DeleteObjects: 0.179900 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011404 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 3.06 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
 - Completed reload, in  1.403 seconds
@@ -518,132 +543,213 @@ Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Ren
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.58 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.5 MB.
-System memory in use after: 298.9 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8071.
-Total: 5.077100 ms (FindLiveObjects: 0.616200 ms CreateObjectMapping: 0.412600 ms MarkObjects: 3.831400 ms  DeleteObjects: 0.216100 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.011968 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 3.43 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.415 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.53 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.5 MB.
-System memory in use after: 298.9 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8080.
-Total: 5.298700 ms (FindLiveObjects: 0.946300 ms CreateObjectMapping: 0.458700 ms MarkObjects: 3.659600 ms  DeleteObjects: 0.233200 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.011312 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.62 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.440 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
 Refreshing native plugins compatible for Editor in 2.55 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.5 MB.
-System memory in use after: 298.9 MB.
+System memory in use before: 289.2 MB.
+System memory in use after: 289.6 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8089.
-Total: 5.683000 ms (FindLiveObjects: 1.469900 ms CreateObjectMapping: 0.583400 ms MarkObjects: 3.412400 ms  DeleteObjects: 0.216700 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7495.
+Total: 4.212400 ms (FindLiveObjects: 0.623700 ms CreateObjectMapping: 0.499800 ms MarkObjects: 2.875000 ms  DeleteObjects: 0.213100 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.014594 seconds.
+Registered in 0.011669 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.62 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 3.00 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.432 seconds
+- Completed reload, in  1.411 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.53 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.60 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.6 MB.
-System memory in use after: 299.0 MB.
+System memory in use before: 289.2 MB.
+System memory in use after: 289.6 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8098.
-Total: 5.041400 ms (FindLiveObjects: 0.840300 ms CreateObjectMapping: 0.532300 ms MarkObjects: 3.431500 ms  DeleteObjects: 0.236700 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7504.
+Total: 4.317300 ms (FindLiveObjects: 0.680500 ms CreateObjectMapping: 0.520400 ms MarkObjects: 2.932200 ms  DeleteObjects: 0.183400 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011355 seconds.
+Registered in 0.011334 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.45 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.65 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.429 seconds
+- Completed reload, in  1.420 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.50 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.72 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.6 MB.
-System memory in use after: 299.0 MB.
+System memory in use before: 289.2 MB.
+System memory in use after: 289.6 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8107.
-Total: 5.219200 ms (FindLiveObjects: 0.785000 ms CreateObjectMapping: 0.367400 ms MarkObjects: 3.844900 ms  DeleteObjects: 0.221300 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7513.
+Total: 5.881700 ms (FindLiveObjects: 1.123100 ms CreateObjectMapping: 0.611800 ms MarkObjects: 3.924800 ms  DeleteObjects: 0.221100 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.012767 seconds.
+Registered in 0.013487 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.57 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.58 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.381 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.52 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.2 MB.
+System memory in use after: 289.6 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7522.
+Total: 4.521400 ms (FindLiveObjects: 0.912600 ms CreateObjectMapping: 0.480500 ms MarkObjects: 2.912400 ms  DeleteObjects: 0.215100 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011931 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.51 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.434 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.60 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.3 MB.
+System memory in use after: 289.7 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7531.
+Total: 5.219900 ms (FindLiveObjects: 1.043800 ms CreateObjectMapping: 0.835000 ms MarkObjects: 3.156600 ms  DeleteObjects: 0.183500 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011757 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 4.71 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.565 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 4.09 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.3 MB.
+System memory in use after: 289.7 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7540.
+Total: 4.131900 ms (FindLiveObjects: 0.680400 ms CreateObjectMapping: 0.467800 ms MarkObjects: 2.814400 ms  DeleteObjects: 0.167700 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.012108 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.49 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.463 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.54 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.3 MB.
+System memory in use after: 289.7 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7549.
+Total: 4.684900 ms (FindLiveObjects: 0.667300 ms CreateObjectMapping: 0.432200 ms MarkObjects: 3.365300 ms  DeleteObjects: 0.218700 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011389 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.56 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.462 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.60 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.3 MB.
+System memory in use after: 289.7 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7558.
+Total: 5.218800 ms (FindLiveObjects: 0.632200 ms CreateObjectMapping: 0.726700 ms MarkObjects: 3.581600 ms  DeleteObjects: 0.277500 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011110 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.58 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
 - Completed reload, in  1.435 seconds
@@ -653,216 +759,108 @@ Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Ren
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.57 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.67 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.6 MB.
-System memory in use after: 299.0 MB.
+System memory in use before: 289.4 MB.
+System memory in use after: 289.7 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8116.
-Total: 5.716800 ms (FindLiveObjects: 1.307700 ms CreateObjectMapping: 0.728200 ms MarkObjects: 3.419000 ms  DeleteObjects: 0.261200 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7567.
+Total: 5.403400 ms (FindLiveObjects: 1.077300 ms CreateObjectMapping: 0.527500 ms MarkObjects: 3.563300 ms  DeleteObjects: 0.234100 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.010969 seconds.
+Registered in 0.012134 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.46 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.45 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.418 seconds
+- Completed reload, in  1.442 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.52 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.85 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.6 MB.
-System memory in use after: 299.0 MB.
+System memory in use before: 289.4 MB.
+System memory in use after: 289.8 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8125.
-Total: 5.517700 ms (FindLiveObjects: 0.817800 ms CreateObjectMapping: 0.550700 ms MarkObjects: 3.929900 ms  DeleteObjects: 0.218600 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7576.
+Total: 5.515100 ms (FindLiveObjects: 1.466800 ms CreateObjectMapping: 0.647000 ms MarkObjects: 3.192100 ms  DeleteObjects: 0.208000 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.013229 seconds.
+Registered in 0.013827 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.91 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.96 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.454 seconds
+- Completed reload, in  1.448 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.50 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.59 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.7 MB.
-System memory in use after: 299.1 MB.
+System memory in use before: 289.4 MB.
+System memory in use after: 289.8 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8134.
-Total: 5.223400 ms (FindLiveObjects: 0.715300 ms CreateObjectMapping: 0.534900 ms MarkObjects: 3.780400 ms  DeleteObjects: 0.192100 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7585.
+Total: 4.272300 ms (FindLiveObjects: 0.730200 ms CreateObjectMapping: 0.446300 ms MarkObjects: 2.908400 ms  DeleteObjects: 0.186300 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.012306 seconds.
+Registered in 0.011524 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.70 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.87 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.425 seconds
+- Completed reload, in  1.422 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.52 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.54 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.7 MB.
-System memory in use after: 299.1 MB.
+System memory in use before: 289.4 MB.
+System memory in use after: 289.8 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8143.
-Total: 5.797200 ms (FindLiveObjects: 1.472300 ms CreateObjectMapping: 0.501100 ms MarkObjects: 3.594400 ms  DeleteObjects: 0.228400 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7594.
+Total: 4.563500 ms (FindLiveObjects: 0.809400 ms CreateObjectMapping: 0.860800 ms MarkObjects: 2.670400 ms  DeleteObjects: 0.221800 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.012087 seconds.
+Registered in 0.012785 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 3.28 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.60 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.625 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.64 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.7 MB.
-System memory in use after: 299.1 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8152.
-Total: 5.823000 ms (FindLiveObjects: 0.914800 ms CreateObjectMapping: 0.694600 ms MarkObjects: 4.030900 ms  DeleteObjects: 0.181500 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.012056 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.75 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.625 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 3.43 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.7 MB.
-System memory in use after: 299.1 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8161.
-Total: 5.884700 ms (FindLiveObjects: 1.043700 ms CreateObjectMapping: 0.628000 ms MarkObjects: 4.023900 ms  DeleteObjects: 0.187400 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.012453 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.78 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.578 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.56 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.8 MB.
-System memory in use after: 299.2 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8170.
-Total: 5.315900 ms (FindLiveObjects: 0.834500 ms CreateObjectMapping: 0.499400 ms MarkObjects: 3.689300 ms  DeleteObjects: 0.291800 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.011391 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.93 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.485 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.63 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.8 MB.
-System memory in use after: 299.2 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8179.
-Total: 5.344200 ms (FindLiveObjects: 1.282700 ms CreateObjectMapping: 0.523100 ms MarkObjects: 3.315300 ms  DeleteObjects: 0.222500 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.012178 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.57 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.500 seconds
+- Completed reload, in  1.469 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
@@ -872,67 +870,24 @@ Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
 Refreshing native plugins compatible for Editor in 2.58 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.8 MB.
-System memory in use after: 299.2 MB.
+System memory in use before: 289.4 MB.
+System memory in use after: 289.8 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8188.
-Total: 5.529400 ms (FindLiveObjects: 0.756200 ms CreateObjectMapping: 0.511200 ms MarkObjects: 3.983200 ms  DeleteObjects: 0.277600 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.012321 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.50 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.513 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.56 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.8 MB.
-System memory in use after: 299.2 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8197.
-Total: 5.182000 ms (FindLiveObjects: 1.031500 ms CreateObjectMapping: 0.599300 ms MarkObjects: 3.318100 ms  DeleteObjects: 0.232000 ms)
-
-========================================================================
-Received Import Request.
-  Time since last request: 4354.990219 seconds.
-  path: Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Blow.anim
-  artifactKey: Guid(913b864aa0fdc4147beca01a59df5744) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Blow.anim using Guid(913b864aa0fdc4147beca01a59df5744) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8145aa3a1faf3c391c9af6cc59ab30ff') in 0.020601 seconds
-  Import took 0.037321 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.045292 seconds.
-  path: Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Blow.anim
-  artifactKey: Guid(913b864aa0fdc4147beca01a59df5744) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Enemy/EnemyAnime/Idiot/Animation/NoHand/Blow.anim using Guid(913b864aa0fdc4147beca01a59df5744) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8145aa3a1faf3c391c9af6cc59ab30ff') in 0.003885 seconds
-  Import took 0.017654 seconds .
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7603.
+Total: 5.331200 ms (FindLiveObjects: 0.694000 ms CreateObjectMapping: 0.532800 ms MarkObjects: 3.871000 ms  DeleteObjects: 0.232700 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011499 seconds.
+Registered in 0.011995 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.62 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 2.61 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.460 seconds
+- Completed reload, in  1.488 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
@@ -942,16 +897,16 @@ Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
 Refreshing native plugins compatible for Editor in 2.53 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.8 MB.
-System memory in use after: 299.2 MB.
+System memory in use before: 289.5 MB.
+System memory in use after: 289.9 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8206.
-Total: 5.228800 ms (FindLiveObjects: 0.540700 ms CreateObjectMapping: 0.336700 ms MarkObjects: 4.119400 ms  DeleteObjects: 0.231100 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7612.
+Total: 5.535000 ms (FindLiveObjects: 1.105300 ms CreateObjectMapping: 0.682600 ms MarkObjects: 3.543000 ms  DeleteObjects: 0.203200 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011476 seconds.
+Registered in 0.011129 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
@@ -959,61 +914,7 @@ Native extension for WebGL target not found
 Refreshing native plugins compatible for Editor in 2.54 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.477 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.74 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.9 MB.
-System memory in use after: 299.3 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8215.
-Total: 4.340800 ms (FindLiveObjects: 0.760400 ms CreateObjectMapping: 0.448300 ms MarkObjects: 2.913900 ms  DeleteObjects: 0.217400 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.012835 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.91 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.579 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.78 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.9 MB.
-System memory in use after: 299.3 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8224.
-Total: 6.669500 ms (FindLiveObjects: 1.381900 ms CreateObjectMapping: 0.736800 ms MarkObjects: 4.198400 ms  DeleteObjects: 0.350900 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.011945 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 3.02 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.588 seconds
+- Completed reload, in  1.456 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
@@ -1023,16 +924,16 @@ Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
 Refreshing native plugins compatible for Editor in 2.56 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 298.9 MB.
-System memory in use after: 299.3 MB.
+System memory in use before: 289.5 MB.
+System memory in use after: 289.9 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8233.
-Total: 5.018000 ms (FindLiveObjects: 0.796200 ms CreateObjectMapping: 0.431500 ms MarkObjects: 3.560200 ms  DeleteObjects: 0.229300 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7621.
+Total: 5.728600 ms (FindLiveObjects: 1.203500 ms CreateObjectMapping: 0.581400 ms MarkObjects: 3.718200 ms  DeleteObjects: 0.224700 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011484 seconds.
+Registered in 0.011142 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
@@ -1040,7 +941,7 @@ Native extension for WebGL target not found
 Refreshing native plugins compatible for Editor in 2.49 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.532 seconds
+- Completed reload, in  1.398 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
@@ -1050,16 +951,43 @@ Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
 Refreshing native plugins compatible for Editor in 2.54 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 299.0 MB.
-System memory in use after: 299.4 MB.
+System memory in use before: 289.5 MB.
+System memory in use after: 289.9 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8242.
-Total: 4.726200 ms (FindLiveObjects: 0.740200 ms CreateObjectMapping: 0.495600 ms MarkObjects: 3.284900 ms  DeleteObjects: 0.204800 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7630.
+Total: 4.613100 ms (FindLiveObjects: 0.679700 ms CreateObjectMapping: 0.405000 ms MarkObjects: 3.254100 ms  DeleteObjects: 0.273800 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011224 seconds.
+Registered in 0.011922 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.60 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.640 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.90 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.5 MB.
+System memory in use after: 289.9 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7639.
+Total: 4.457500 ms (FindLiveObjects: 0.738700 ms CreateObjectMapping: 0.589100 ms MarkObjects: 2.943400 ms  DeleteObjects: 0.185000 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.012233 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
@@ -1067,26 +995,26 @@ Native extension for WebGL target not found
 Refreshing native plugins compatible for Editor in 2.79 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.539 seconds
+- Completed reload, in  1.676 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.55 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 3.04 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 299.0 MB.
-System memory in use after: 299.4 MB.
+System memory in use before: 289.6 MB.
+System memory in use after: 289.9 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8251.
-Total: 4.885500 ms (FindLiveObjects: 0.746000 ms CreateObjectMapping: 0.486500 ms MarkObjects: 3.426400 ms  DeleteObjects: 0.225900 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7648.
+Total: 5.524700 ms (FindLiveObjects: 1.101200 ms CreateObjectMapping: 0.835400 ms MarkObjects: 3.392900 ms  DeleteObjects: 0.193800 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.012392 seconds.
+Registered in 0.011694 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
@@ -1094,61 +1022,7 @@ Native extension for WebGL target not found
 Refreshing native plugins compatible for Editor in 2.59 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.561 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.55 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 299.0 MB.
-System memory in use after: 299.4 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8260.
-Total: 5.147200 ms (FindLiveObjects: 0.826900 ms CreateObjectMapping: 0.500200 ms MarkObjects: 3.613900 ms  DeleteObjects: 0.205500 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.014132 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.57 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.543 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.53 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 299.0 MB.
-System memory in use after: 299.4 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8269.
-Total: 5.503000 ms (FindLiveObjects: 1.310900 ms CreateObjectMapping: 0.552700 ms MarkObjects: 3.468700 ms  DeleteObjects: 0.169700 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.011490 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.54 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.571 seconds
+- Completed reload, in  1.469 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
@@ -1158,88 +1032,10 @@ Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
 Refreshing native plugins compatible for Editor in 2.57 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 299.0 MB.
-System memory in use after: 299.5 MB.
+System memory in use before: 289.6 MB.
+System memory in use after: 290.0 MB.
 
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8278.
-Total: 5.002400 ms (FindLiveObjects: 0.655600 ms CreateObjectMapping: 0.424200 ms MarkObjects: 3.571500 ms  DeleteObjects: 0.350300 ms)
-
-========================================================================
-Received Import Request.
-  Time since last request: 2278.833110 seconds.
-  path: Assets/testAsset/Sister/SisAnime/Controller/SisterSan.controller
-  artifactKey: Guid(d56a7b1ce05480646b11394bcb96acc7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Sister/SisAnime/Controller/SisterSan.controller using Guid(d56a7b1ce05480646b11394bcb96acc7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '77c7481e90bf96a300518a73c273864b') in 0.058070 seconds
-  Import took 0.078681 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 68.843298 seconds.
-  path: Assets/testAsset/Sister/SisAnime/Anime/PrayWait.anim
-  artifactKey: Guid(f7db8ba61470b864eb01dac541121298) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Sister/SisAnime/Anime/PrayWait.anim using Guid(f7db8ba61470b864eb01dac541121298) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '968cf21a9815f4eacea24b4d4c073fd7') in 0.008348 seconds
-  Import took 0.021561 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 155.211307 seconds.
-  path: Assets/testAsset/Enemy/EnemyAnime/Idiot/Animator/NoHandIdiot.controller
-  artifactKey: Guid(9cf8182951af9984eb770dae454add15) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Enemy/EnemyAnime/Idiot/Animator/NoHandIdiot.controller using Guid(9cf8182951af9984eb770dae454add15) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4b963591c05e00ccbb5308f194b12a93') in 0.024656 seconds
-  Import took 0.037251 seconds .
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.011711 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.55 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.583 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.64 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 299.1 MB.
-System memory in use after: 299.5 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8287.
-Total: 5.135300 ms (FindLiveObjects: 0.804800 ms CreateObjectMapping: 0.566600 ms MarkObjects: 3.494500 ms  DeleteObjects: 0.268400 ms)
-
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.011253 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 2.46 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.576 seconds
-Platform modules already initialized, skipping
-Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
-Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.51 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 299.1 MB.
-System memory in use after: 299.5 MB.
-
-Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 8296.
-Total: 4.158100 ms (FindLiveObjects: 0.587400 ms CreateObjectMapping: 0.263700 ms MarkObjects: 3.074000 ms  DeleteObjects: 0.232300 ms)
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7657.
+Total: 4.613900 ms (FindLiveObjects: 1.135700 ms CreateObjectMapping: 0.495500 ms MarkObjects: 2.745900 ms  DeleteObjects: 0.235900 ms)
 
 AssetImportWorkerClient::OnTransportError - code=2 error=End of file

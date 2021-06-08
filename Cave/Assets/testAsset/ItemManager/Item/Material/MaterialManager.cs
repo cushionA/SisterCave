@@ -10,7 +10,7 @@ public class MaterialManager : MonoBehaviour
 	public GameObject selectWindow;
 	[HideInInspector] public bool isUseMenu;
 	[HideInInspector] public int changeNum;
-
+	//bool isUp;
 	private void Awake()
 	{
 		if (instance == null)
@@ -35,7 +35,7 @@ public class MaterialManager : MonoBehaviour
 	//[HideInInspector]
 	
 
-	bool isUp;
+	
 	//[HideInInspector]public MaterialItem use;
 
 	// Use this for initialization
@@ -87,7 +87,7 @@ public class MaterialManager : MonoBehaviour
 		{
 			int pas = takeItem[i].inventoryNum;
 			takeItem[i].inventoryNum = pas + changeNum[i];
-			isUp = true;
+			//isUp = true;
 			/*int pas = numOfItem[GetItem($"{takeItem}")];
 			numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
 			isUp = true;*/

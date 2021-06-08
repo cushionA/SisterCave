@@ -34,13 +34,13 @@ public class KeyController : MonoBehaviour, IEnhancedScrollerDelegate
 
 
     int lLimit;
-    int uLimit;
+    
 
     float limit;
     float pos;
 
     bool isTop;
-    bool isLast;
+    int uLimit;
 
     bool isFirstU;
     bool isSecondU;

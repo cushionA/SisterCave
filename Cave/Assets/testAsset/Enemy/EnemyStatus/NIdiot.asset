@@ -67,7 +67,7 @@ MonoBehaviour:
   avoidSpeed: {x: -300, y: 0}
   avoidRes: 0.4
   avoidCool: 12
-  firstGravity: 30
+  firstGravity: 25
   downRes: 2
   velocityMin: {x: -1000, y: -1000}
   velocityMax: {x: 1000, y: 1000}
@@ -78,7 +78,7 @@ MonoBehaviour:
   dropItem: []
   strong: 0
   boss: 0
-  ground: 0
+  ground: 1
   air: 6
   kind: 0
   wp: 01000000
@@ -96,7 +96,7 @@ MonoBehaviour:
     blowPower: {x: 0, y: 0}
     isCombo: 0
     isShoot: 0
-    parriable: 1
+    disParry: 0
   parriable: 0
   unBaind: 0
   isLight: 1

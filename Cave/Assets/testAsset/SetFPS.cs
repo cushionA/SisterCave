@@ -17,7 +17,7 @@ public class SetFPS : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        Application.targetFrameRate = FPS;
+     //  Application.targetFrameRate = FPS;
     }
 
     /// <summary>

@@ -22,13 +22,13 @@ public class VolumeWindow : MonoBehaviour
 
     bool isChange;
     GameObject selectObject;
-    bool isUp;
+    
     bool isDown;
     bool wait;
     bool charge;//長押し完了してるかどうか。完了してたらぱっぱと変わる
     bool isFirst;//最初に音量設定開いたかどうか
     bool isBlock;
-
+    bool isUp;
     float verticalKey;
     float changeTime;
 

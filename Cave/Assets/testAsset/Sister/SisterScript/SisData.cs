@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class SisData : MonoBehaviour
+public class SisData
 {
 
     //　アイテムのImage画像
