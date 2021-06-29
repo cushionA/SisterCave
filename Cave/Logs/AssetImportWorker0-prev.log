@@ -15,11 +15,11 @@ C:/Users/tatuk/Documents/SisterCave/Cave
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-54478
+55275
 Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
 C:/Users/tatuk/Documents/SisterCave/Cave
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 291.94 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 413.72 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.6f1 (338bb68529b2)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/Resources/UnitySubsystems
@@ -39,31 +39,31 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56244
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56804
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.002130 seconds.
+Registered in 0.002995 seconds.
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 300.25 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 421.86 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.188 seconds
+- Completed reload, in  1.745 seconds
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.012400 seconds.
+Registered in 0.014613 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 300.40 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 408.78 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  2.042 seconds
+- Completed reload, in  2.846 seconds
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
@@ -71,48 +71,306 @@ Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Ren
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 2.54 ms, found 2 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
+Refreshing native plugins compatible for Editor in 3.03 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6787 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 307.5 MB.
-System memory in use after: 307.9 MB.
+System memory in use before: 307.7 MB.
+System memory in use after: 308.0 MB.
 
 Unloading 74 unused Assets to reduce memory usage. Loaded Objects now: 7351.
-Total: 4.148500 ms (FindLiveObjects: 0.576200 ms CreateObjectMapping: 0.368500 ms MarkObjects: 2.990700 ms  DeleteObjects: 0.212200 ms)
+Total: 5.784200 ms (FindLiveObjects: 1.170400 ms CreateObjectMapping: 0.596900 ms MarkObjects: 3.786100 ms  DeleteObjects: 0.229600 ms)
 
 ========================================================================
 Received Import Request.
-  path: Assets/testAsset/Enemy/EnemyStatus/NIdiot.asset
-  artifactKey: Guid(ea3d9112975a3c9459940c0623e1a6ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Enemy/EnemyStatus/NIdiot.asset using Guid(ea3d9112975a3c9459940c0623e1a6ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '01275e3ec99d259c11240a78b248c01a') in 0.040571 seconds
-  Import took 0.050963 seconds .
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordStand.anim
+  artifactKey: Guid(0b73952c6c9f77e48b7dc2071ea00ecc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordStand.anim using Guid(0b73952c6c9f77e48b7dc2071ea00ecc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4a70effaf7a4890d72819e18bc9f503e') in 0.049201 seconds
+  Import took 0.064089 seconds .
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.011780 seconds.
+Registered in 0.014728 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 3.05 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 4.27 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.308 seconds
+- Completed reload, in  2.023 seconds
 Platform modules already initialized, skipping
 Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
 Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
 Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Refreshing native plugins compatible for Editor in 2.63 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 4.04 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 288.6 MB.
-System memory in use after: 289.0 MB.
+System memory in use before: 288.8 MB.
+System memory in use after: 289.2 MB.
 
 Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7360.
-Total: 5.323000 ms (FindLiveObjects: 0.892600 ms CreateObjectMapping: 0.553700 ms MarkObjects: 3.672200 ms  DeleteObjects: 0.203500 ms)
+Total: 7.011700 ms (FindLiveObjects: 0.864400 ms CreateObjectMapping: 0.717100 ms MarkObjects: 5.218500 ms  DeleteObjects: 0.210500 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011520 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.54 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.353 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.57 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 288.9 MB.
+System memory in use after: 289.3 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7369.
+Total: 4.927200 ms (FindLiveObjects: 0.689400 ms CreateObjectMapping: 0.509200 ms MarkObjects: 3.431100 ms  DeleteObjects: 0.296400 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011756 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.52 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.381 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.55 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.0 MB.
+System memory in use after: 289.4 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7378.
+Total: 4.938500 ms (FindLiveObjects: 0.799200 ms CreateObjectMapping: 0.487800 ms MarkObjects: 3.500200 ms  DeleteObjects: 0.150600 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 3203.375323 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquatMove.anim
+  artifactKey: Guid(77739d510988f2445a539794beabd908) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquatMove.anim using Guid(77739d510988f2445a539794beabd908) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b7b4950b331195a415e1acc2f81ae395') in 0.021309 seconds
+  Import took 0.033429 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 4.169911 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquatMove 1.anim
+  artifactKey: Guid(a5a5942c848ec194f823180a5e857d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquatMove 1.anim using Guid(a5a5942c848ec194f823180a5e857d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '61272a1612da8eab1ac63fcdf3f7ca58') in 0.007530 seconds
+  Import took 0.024008 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002325 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquatMove 1.anim
+  artifactKey: Guid(a5a5942c848ec194f823180a5e857d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquatMove 1.anim using Guid(a5a5942c848ec194f823180a5e857d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '61272a1612da8eab1ac63fcdf3f7ca58') in 0.004070 seconds
+  Import took 0.015481 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.056025 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordStand.anim
+  artifactKey: Guid(0b73952c6c9f77e48b7dc2071ea00ecc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordStand.anim using Guid(0b73952c6c9f77e48b7dc2071ea00ecc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '55bdc4a0e8867dcd4c163873e9b50fd3') in 0.003495 seconds
+  Import took 0.017848 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 2.036538 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquatMove.anim
+  artifactKey: Guid(77739d510988f2445a539794beabd908) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquatMove.anim using Guid(77739d510988f2445a539794beabd908) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f807875d319bd86f718e10a0e5afcc0a') in 0.004664 seconds
+  Import took 0.019060 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 2.060957 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquat.anim
+  artifactKey: Guid(eef703a1f5a9aa14ab4a34f4dc9c4b6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquat.anim using Guid(eef703a1f5a9aa14ab4a34f4dc9c4b6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1016b53f50032734c35d47f999e03016') in 0.008213 seconds
+  Import took 0.020191 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 18.485291 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquat.anim
+  artifactKey: Guid(a5a5942c848ec194f823180a5e857d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquat.anim using Guid(a5a5942c848ec194f823180a5e857d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '63bead10364d32c9b6f07884c2dcaa1f') in 0.003950 seconds
+  Import took 0.019649 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 87.611160 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSAttack3.anim
+  artifactKey: Guid(33d8fda205c0c4d44b8c4119e9081beb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSAttack3.anim using Guid(33d8fda205c0c4d44b8c4119e9081beb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'de7ec1e413e814c1d557d5186051a224') in 0.009850 seconds
+  Import took 0.022158 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.012637 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.47 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.402 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.60 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.1 MB.
+System memory in use after: 289.5 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7387.
+Total: 6.079300 ms (FindLiveObjects: 1.243000 ms CreateObjectMapping: 0.548200 ms MarkObjects: 4.020700 ms  DeleteObjects: 0.266500 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 1775.902637 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordStand.anim
+  artifactKey: Guid(0b73952c6c9f77e48b7dc2071ea00ecc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordStand.anim using Guid(0b73952c6c9f77e48b7dc2071ea00ecc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3e837d02144870b78157ee60d058b47b') in 0.027153 seconds
+  Import took 0.041855 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.022610 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.43 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.352 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.52 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.1 MB.
+System memory in use after: 289.5 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7396.
+Total: 5.194500 ms (FindLiveObjects: 0.927600 ms CreateObjectMapping: 0.581900 ms MarkObjects: 3.500900 ms  DeleteObjects: 0.183100 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 2788.654558 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquat.anim
+  artifactKey: Guid(a5a5942c848ec194f823180a5e857d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquat.anim using Guid(a5a5942c848ec194f823180a5e857d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5477640008d525ec0a4cbfe8fce20233') in 0.019686 seconds
+  Import took 0.033061 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.056629 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquat.anim
+  artifactKey: Guid(a5a5942c848ec194f823180a5e857d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordSquat.anim using Guid(a5a5942c848ec194f823180a5e857d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5477640008d525ec0a4cbfe8fce20233') in 0.003247 seconds
+  Import took 0.014042 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011674 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.66 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.412 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.47 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.1 MB.
+System memory in use after: 289.5 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7405.
+Total: 4.963100 ms (FindLiveObjects: 0.681900 ms CreateObjectMapping: 0.603200 ms MarkObjects: 3.436200 ms  DeleteObjects: 0.241100 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 5772.358864 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordDash.anim
+  artifactKey: Guid(a23c635454012e54682f6f10e76fc981) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordDash.anim using Guid(a23c635454012e54682f6f10e76fc981) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b159e88f36d56ce7ec99bf0fccf0bc6c') in 0.031778 seconds
+  Import took 0.054356 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.012805 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 2.65 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.514 seconds
+Platform modules already initialized, skipping
+Switching build target platform(5) subTarget(0) extendedPlatform(0) -> platform(21) subTarget(1) extendedPlatform(0)
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 2.55 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 6547 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 289.2 MB.
+System memory in use after: 289.6 MB.
+
+Unloading 64 unused Assets to reduce memory usage. Loaded Objects now: 7414.
+Total: 4.596200 ms (FindLiveObjects: 0.631000 ms CreateObjectMapping: 0.585400 ms MarkObjects: 3.218400 ms  DeleteObjects: 0.160600 ms)
 
 AssetImportWorkerClient::OnTransportError - code=2 error=End of file
