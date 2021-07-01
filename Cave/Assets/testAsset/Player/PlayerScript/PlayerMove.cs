@@ -155,7 +155,7 @@ public class PlayerMove : MonoBehaviour
                 }
                 else if (avoidKey == 0 && isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick && !isStop && GManager.instance.isEnable)
                 {
-                    if (avoidJudge > 0.0f && avoidJudge < 1.0f)
+                    if (avoidJudge > 0.0f && avoidJudge < 0.18f)
                     {
                         //回避の最初のところは七回呼ばれてる。ここも七回呼ばれてる。なぜか動かない
                         GManager.instance.StaminaUse(18);

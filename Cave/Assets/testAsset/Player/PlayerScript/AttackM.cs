@@ -864,6 +864,7 @@ public class AttackM : MonoBehaviour
                 // GManager.instance.pm.jumpTime = 0.0f;
                 if (groundTime >= 0.1f)
                 {
+                    isAttackable = true;
                     //GManager.instance.isAttack = false;
                     //  GManager.instance.airAttack = false;
                     // GManager.instance.isArmor = false;
@@ -930,7 +931,6 @@ public class AttackM : MonoBehaviour
        // GManager.instance.pm.anim.Play("OArts1");
 
         ////Debug.Log("攻撃可能に");
-        isAttackable = true;
         
         GManager.instance.StaminaUse(useStamina);
 
@@ -941,6 +941,7 @@ public class AttackM : MonoBehaviour
         else
         {
             GManager.instance.isArmor = false;
+            isAttackable = true;
         }
     }
 
