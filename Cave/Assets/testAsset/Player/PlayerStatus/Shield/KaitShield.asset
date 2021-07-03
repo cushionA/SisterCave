@@ -97,8 +97,9 @@ MonoBehaviour:
   - 40
   - 42
   - 47
-  parryStart: 0.05
-  parryTime: 0.15
+  parryStart: 0
+  parryTime: 10
+  parryRecover: 0
   shock: 0
   artsMP:
   - 7

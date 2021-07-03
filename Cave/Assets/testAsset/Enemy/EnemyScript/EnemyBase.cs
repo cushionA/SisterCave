@@ -741,6 +741,8 @@ public class EnemyBase : MonoBehaviour
 			GManager.instance.isGuard = false;
 			GManager.instance.isParry = false;
 			GManager.instance.parrySuccess = true;
+			atV.isCombo = false;
+			isAttack = false;
 			isBounce = true;
 			isDown = true;
 		}
@@ -1716,15 +1718,18 @@ public class EnemyBase : MonoBehaviour
 		{
 			isBounce = false;
 			isAnimeStart = false;
+
 		}
-		if (isDown && isBounce && !blowDown)
+		if (isBounce && !blowDown)
 		{
 			if (!isAnimeStart)
 			{
-				//isDown = true;
+				isAttack = false;
+				isDown = true;
 				//isFalter = true;
 				isAnimeStart = true;
 				sAni.Play("Bounce");
+				//Debug.Log("弾かれ");
 			}
 			　else if (!CheckEnd("Bounce"))
 			{
@@ -1996,7 +2001,7 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void Attack()
 	{
-		if (isAtEnable && !isDown)
+		if (isAtEnable && !isDown && !isAttack)
 		{
 			AttackPrepare();
 			sAni.Play(status.attackName[attackNumber]);
@@ -2095,7 +2100,7 @@ public class EnemyBase : MonoBehaviour
 
 		else if (!isAttack)
 		{
-			if (!isAtEnable && !atV.isCombo)
+			if (!isAtEnable && !atV.isCombo && !isDown)
 			{
 				stayTime += Time.fixedDeltaTime;
 				if (stayTime >= atV.coolTime)
@@ -2104,7 +2109,7 @@ public class EnemyBase : MonoBehaviour
 					stayTime = 0.0f;
 				}
 			}
-			if (!isAtEnable && atV.isCombo)
+			if (!isAtEnable && atV.isCombo && !isDown)
 			{
 				isAtEnable = true;
 				attackNumber++;
