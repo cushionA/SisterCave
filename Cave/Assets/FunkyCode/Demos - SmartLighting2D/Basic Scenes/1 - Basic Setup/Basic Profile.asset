@@ -16,9 +16,9 @@ MonoBehaviour:
     list:
     - name: Main
       sortingLayer:
-        name: Lighting
+        name: MyLighting
         Order: 0
-      darknessColor: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+      darknessColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
       lightingResolution: 1
       dayLayers:
         list:
@@ -55,7 +55,7 @@ MonoBehaviour:
         - layerID: 0
   qualitySettings:
     HDR: 1
-    lightTextureSize: 1
+    lightTextureSize: 2
     lightEffectTextureSize: 2
     lightFilterMode: 1
     updateMethod: 0

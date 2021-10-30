@@ -56,7 +56,7 @@ public class MagicButton : MonoBehaviour
                     MainUI.instance.eqWindow.SetActive(true);
                     if (MagicManager.instance.isKnightM && !MagicManager.instance.isSisterM)
                     {
-                        // EquipmentManager.instance.EqWepon[ToolManager.instance.setNumber].Select();
+                        // EquipmentManager.instance.EqWeapon[ToolManager.instance.setNumber].Select();
                         //魔法選択画面のインベントリ消した後選ぶボタンを入れる
                     }
                     else if (!MagicManager.instance.isKnightM && MagicManager.instance.isSisterM)

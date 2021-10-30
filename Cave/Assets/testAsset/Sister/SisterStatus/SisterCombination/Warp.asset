@@ -1,0 +1,146 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adbe8e97ad9c63d43a9cf2737985b795, type: 3}
+  m_Name: Warp
+  m_EditorClassIdentifier: 
+  icon: {fileID: 0}
+  itemName: "\u30EF\u30FC\u30D7"
+  hiraganaName: "\u308F\u30FC\u3077"
+  information: 
+  number: 1
+  holdLimmit: 1
+  isDrop: 0
+  inventoryNum: 0
+  selectable: 1
+  atType: 0
+  magicLevel: 0
+  phyBase: 0
+  holyBase: 0
+  darkBase: 0
+  fireBase: 0
+  thunderBase: 0
+  phyAtk: 0
+  holyAtk: 0
+  darkAtk: 0
+  fireAtk: 0
+  thunderAtk: 0
+  displayAtk: 0
+  recoverBase: 0
+  recoverAmount: 0
+  castTime: 0
+  useMP: 40
+  effectTime: 0
+  effectNow: 0
+  effects:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  powerCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  skillCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  intCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  shock: 0
+  mValue: 0
+  fireType: 1
+  penetration: 0
+  lifeTime: 1
+  speedV: 0
+  speedA: 0
+  angle: 0
+  homingTime: 0
+  homingAngleV: 0
+  homingAngleA: 0
+  isChild: 0
+  rotateVt: 0
+  isRotate: 0
+  bulletScaleV: {x: 0, y: 0}
+  bulletScaleA: {x: 0, y: 0}
+  isBlow: 0
+  isChaice: 1
+  blowPower: {x: 0, y: 0}
+  bulletNumber: 0
+  VRandom: 0
+  HRandom: 0
+  castEffect:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  fireSound: 
+  existSound: 
+  hitSound: 
+  FireAnime: 
+  castAnime: 
+  hitEffect:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  isHit: 0
+  attackType: 0
+  startRotation: {x: 0, y: 0, z: 0}
+  isTargeting: 1
+  chainNumber: 3
+  coolTime: 20
+  mainTarget:
+  - condition: 0
+    percentage: 4
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  - condition: 0
+    percentage: 4
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  - condition: 0
+    percentage: 4
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  subTarget:
+  - condition: 0
+    percentage: 4
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  - condition: 0
+    percentage: 4
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  - condition: 0
+    percentage: 4
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0

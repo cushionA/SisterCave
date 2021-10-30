@@ -508,18 +508,18 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             {
                // yield return item;
 
-              if (!EquipManager.instance.isShieldM && !EquipManager.instance.isWeponM || item == space2 || item == space1 || item == space3)
+              if (!EquipManager.instance.isShieldM && !EquipManager.instance.isWeaponM || item == space2 || item == space1 || item == space3)
                 {
                  //   ////Debug.log("お月様キラキラ");
                     yield return item;
                 }
-                else if(!EquipManager.instance.isShieldM && EquipManager.instance.isWeponM && item.GetType() == typeof(Wepon))
+                else if(!EquipManager.instance.isShieldM && EquipManager.instance.isWeaponM && item.GetType() == typeof(Weapon))
                 {
                   //  ////Debug.log("お日様キラキラ");
                         yield return item;
 
                 }
-                else if (EquipManager.instance.isShieldM && !EquipManager.instance.isWeponM && item.GetType() == typeof(Shield))
+                else if (EquipManager.instance.isShieldM && !EquipManager.instance.isWeaponM && item.GetType() == typeof(Shield))
                 {
                    // ////Debug.log("お星様キラキラ");
                     yield return item;

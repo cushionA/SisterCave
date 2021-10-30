@@ -43,19 +43,19 @@ public class WSEquip : MonoBehaviour
         EquipManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
-        MainUI.instance.weponWindow.SetActive(false);
+        MainUI.instance.weaponWindow.SetActive(false);
         MainUI.instance.eqWindow.SetActive(true);
-        if (EquipManager.instance.isWeponM)
+        if (EquipManager.instance.isWeaponM)
         {
-            GManager.instance.setWepon[EquipManager.instance.setNumber] = EquipManager.instance.selectItem as Wepon;
-            EquipmentManager.instance.EqWepon[EquipManager.instance.setNumber].Select();
+            GManager.instance.setWeapon[EquipManager.instance.setNumber] = EquipManager.instance.selectItem as Weapon;
+            EquipmentManager.instance.EqWeapon[EquipManager.instance.setNumber].Select();
         }
         else
         {
             GManager.instance.setShield[EquipManager.instance.setNumber] = EquipManager.instance.selectItem as Shield;
             EquipmentManager.instance.EqShield[EquipManager.instance.setNumber].Select();
         }
-        EquipManager.instance.isWeponM = false;
+        EquipManager.instance.isWeaponM = false;
         EquipManager.instance.isShieldM = false;
         isFirst = false;
         MainUI.instance.ButtonOn();

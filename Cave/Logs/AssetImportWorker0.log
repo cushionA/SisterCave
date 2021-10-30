@@ -1,0 +1,638 @@
+Using pre-set license
+Built from '2020.3/staging' branch; Version is '2020.3.6f1 (338bb68529b2) revision 3378102'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 10 Pro; OS build 19043.1288; Version 2009; 64bit' Language: 'ja' Physical Memory: 16222 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+ COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2020.3.6f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+C:/Users/tatuk/Documents/SisterCave/Cave
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+53088
+Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
+C:/Users/tatuk/Documents/SisterCave/Cave
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 427.48 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2020.3.6f1 (338bb68529b2)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/tatuk/Documents/SisterCave/Cave/Assets
+GfxDevice: creating device client; threaded=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2070 Super (ID=0x1ed1)
+    Vendor:   
+    VRAM:     8011 MB
+    Driver:   30.0.14.7111
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56824
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.6f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.002033 seconds.
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 440.06 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.353 seconds
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.013966 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 417.16 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.504 seconds
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Refreshing native plugins compatible for Editor in 4.61 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 7837 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 462.8 MB.
+System memory in use after: 458.5 MB.
+
+Unloading 106 unused Assets to reduce memory usage. Loaded Objects now: 8379.
+Total: 11.855800 ms (FindLiveObjects: 0.912700 ms CreateObjectMapping: 0.811000 ms MarkObjects: 5.744200 ms  DeleteObjects: 4.386200 ms)
+
+========================================================================
+Received Import Request.
+  path: Assets/Ultimate Sound FX Bundle/Hero Voice Jack/You better watch it.wav
+  artifactKey: Guid(ef91a8cfe88f11a48b60a10162d0045d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Hero Voice Jack/You better watch it.wav using Guid(ef91a8cfe88f11a48b60a10162d0045d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a4e615ee4e9d360382dc5397f63739bb') in 0.137570 seconds
+  Import took 0.155318 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000352 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Textures/ForVFX/Embers/BetterEmbers04.png
+  artifactKey: Guid(f51b5dcd1f0c48e1812ca83158a65239) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Textures/ForVFX/Embers/BetterEmbers04.png using Guid(f51b5dcd1f0c48e1812ca83158a65239) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5291332b7fec492e20c4d269de4188f3') in 0.048434 seconds
+  Import took 0.065696 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000171 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Bear Roars/Bear Roars 5.wav
+  artifactKey: Guid(b70279fd8605e9843a200617b4e4079d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Bear Roars/Bear Roars 5.wav using Guid(b70279fd8605e9843a200617b4e4079d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '632e418590900d7196aaa40b483c556a') in 0.018459 seconds
+  Import took 0.033695 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000162 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Bear Roars/Bear Roars 4.wav
+  artifactKey: Guid(f31f881d313b2f34fb213a10da77ee74) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Bear Roars/Bear Roars 4.wav using Guid(f31f881d313b2f34fb213a10da77ee74) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9877b813860b51078af9cf716cb4063a') in 0.014559 seconds
+  Import took 0.028748 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000300 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Textures/ForVFX/Embers/BetterEmbers07.png
+  artifactKey: Guid(0903a99127b64324a73871e4cc76d9b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Textures/ForVFX/Embers/BetterEmbers07.png using Guid(0903a99127b64324a73871e4cc76d9b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '152a7d02fa574f5296e6b890c792c17e') in 0.016688 seconds
+  Import took 0.031112 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000140 seconds.
+  path: Assets/beffio/UI - BUILDER/Source Files/Photography ┬⌐ beffio Tom Lassota/Amsterdam Netherlands Architecture - ┬⌐ beffio Tom Lassota.jpg
+  artifactKey: Guid(4cfb71e2d176b461d9150cea41bc5b32) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/beffio/UI - BUILDER/Source Files/Photography ┬⌐ beffio Tom Lassota/Amsterdam Netherlands Architecture - ┬⌐ beffio Tom Lassota.jpg using Guid(4cfb71e2d176b461d9150cea41bc5b32) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '10f075c09cea0dd71f0cdc3cd0ea36f2') in 0.038283 seconds
+  Import took 0.057439 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000207 seconds.
+  path: Assets/TheraBytes/BetterUI/README.txt
+  artifactKey: Guid(e754d5e1d99288f4d928991d2db7c3ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/TheraBytes/BetterUI/README.txt using Guid(e754d5e1d99288f4d928991d2db7c3ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a10d04140d8d0c69c972902271af6117') in 0.011107 seconds
+  Import took 0.030874 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000202 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Bear Roars/Bear Roars 3.wav
+  artifactKey: Guid(8c4a1c6aad737504d87232ea46eb05d8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Bear Roars/Bear Roars 3.wav using Guid(8c4a1c6aad737504d87232ea46eb05d8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5f9d92faa155b91f8d90165475c41ab3') in 0.021267 seconds
+  Import took 0.037656 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000183 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Natural Ambiances Vol2/Beach _w people/Beach _w people 1.wav
+  artifactKey: Guid(bb46c353f17654e4bb5590df1410eca1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Natural Ambiances Vol2/Beach _w people/Beach _w people 1.wav using Guid(bb46c353f17654e4bb5590df1410eca1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '193c48346a2af3e52ed9f60b3f16e709') in 0.019258 seconds
+  Import took 0.035563 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000284 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/ArrowMat_AlbedoTransparency.png
+  artifactKey: Guid(b170717156ba1364c9a7200661a4d469) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/ArrowMat_AlbedoTransparency.png using Guid(b170717156ba1364c9a7200661a4d469) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7dd5be0ef99b54f760de3610cc4dc719') in 0.022830 seconds
+  Import took 0.039409 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000160 seconds.
+  path: Assets/TheraBytes/BetterUI
+  artifactKey: Guid(15046e5fea4776745b6cb7844e3943f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/TheraBytes/BetterUI using Guid(15046e5fea4776745b6cb7844e3943f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '18bd6adfc72ef0b35a006bba18a55b5f') in 0.005809 seconds
+  Import took 0.020565 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000153 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Alien sounds Pro/Alien Behind you.wav
+  artifactKey: Guid(3e7098b3ad3f9584fa515c6e185e2ec5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Alien sounds Pro/Alien Behind you.wav using Guid(3e7098b3ad3f9584fa515c6e185e2ec5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0002f2dbd255e35dbc013b0a1dafb4d1') in 0.015516 seconds
+  Import took 0.031117 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000152 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Textures/ForVFX/Embers/BetterEmbers08_Packed.png
+  artifactKey: Guid(2f1d9e04eb064fba91114c969699e332) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Textures/ForVFX/Embers/BetterEmbers08_Packed.png using Guid(2f1d9e04eb064fba91114c969699e332) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '26210708f0bbfb01fb17493f36b3ced3') in 0.018169 seconds
+  Import took 0.033257 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000232 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Bear Roars/Bear Roars 1.wav
+  artifactKey: Guid(78d17ebabd2f8d24494b35a6c1aff9b3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Bear Roars/Bear Roars 1.wav using Guid(78d17ebabd2f8d24494b35a6c1aff9b3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1a341e51ea87201a8905b22cc7686c94') in 0.015742 seconds
+  Import took 0.030903 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000177 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Hero Voice Amy/You better watch it.wav
+  artifactKey: Guid(9953dd544faf52848bb964f307e4078a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Hero Voice Amy/You better watch it.wav using Guid(9953dd544faf52848bb964f307e4078a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1c60978ab93ca74e0e59e9311b71aac2') in 0.014283 seconds
+  Import took 0.029745 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000181 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Bear Roars/Bear Roars 2.wav
+  artifactKey: Guid(1f9c363445224ae4780a195b93f045c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Bear Roars/Bear Roars 2.wav using Guid(1f9c363445224ae4780a195b93f045c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '356d471bdcb012f970a82c50f79f45cf') in 0.017417 seconds
+  Import took 0.033764 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.014701 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 7.11 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  3.111 seconds
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 4.26 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 7492 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 434.7 MB.
+System memory in use after: 430.4 MB.
+
+Unloading 79 unused Assets to reduce memory usage. Loaded Objects now: 8403.
+Total: 8.155700 ms (FindLiveObjects: 1.125200 ms CreateObjectMapping: 1.005700 ms MarkObjects: 4.490400 ms  DeleteObjects: 1.532500 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.017062 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 4.50 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.795 seconds
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 3.85 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 7492 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 434.8 MB.
+System memory in use after: 430.5 MB.
+
+Unloading 79 unused Assets to reduce memory usage. Loaded Objects now: 8412.
+Total: 6.837400 ms (FindLiveObjects: 0.818800 ms CreateObjectMapping: 0.621900 ms MarkObjects: 3.884400 ms  DeleteObjects: 1.510600 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.014090 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 3.92 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.628 seconds
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 3.71 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 7492 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 434.8 MB.
+System memory in use after: 430.5 MB.
+
+Unloading 79 unused Assets to reduce memory usage. Loaded Objects now: 8421.
+Total: 7.421000 ms (FindLiveObjects: 1.253400 ms CreateObjectMapping: 0.687400 ms MarkObjects: 3.871400 ms  DeleteObjects: 1.607900 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.014342 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 3.91 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.720 seconds
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 3.81 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 7493 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 434.9 MB.
+System memory in use after: 430.6 MB.
+
+Unloading 79 unused Assets to reduce memory usage. Loaded Objects now: 8431.
+Total: 6.599400 ms (FindLiveObjects: 1.088000 ms CreateObjectMapping: 0.575700 ms MarkObjects: 3.416700 ms  DeleteObjects: 1.518000 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.014028 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 3.46 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.508 seconds
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 3.58 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 7493 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 435.0 MB.
+System memory in use after: 430.6 MB.
+
+Unloading 79 unused Assets to reduce memory usage. Loaded Objects now: 8440.
+Total: 7.271600 ms (FindLiveObjects: 1.139200 ms CreateObjectMapping: 0.602600 ms MarkObjects: 3.959700 ms  DeleteObjects: 1.568800 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.013791 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 4.85 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.736 seconds
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 4.42 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 7492 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 435.0 MB.
+System memory in use after: 430.6 MB.
+
+Unloading 78 unused Assets to reduce memory usage. Loaded Objects now: 8449.
+Total: 8.506800 ms (FindLiveObjects: 0.840800 ms CreateObjectMapping: 0.658400 ms MarkObjects: 5.180100 ms  DeleteObjects: 1.825100 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.013772 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 4.67 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.640 seconds
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 3.96 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 7492 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 435.0 MB.
+System memory in use after: 430.7 MB.
+
+Unloading 78 unused Assets to reduce memory usage. Loaded Objects now: 8458.
+Total: 8.334900 ms (FindLiveObjects: 1.361400 ms CreateObjectMapping: 0.932700 ms MarkObjects: 4.147200 ms  DeleteObjects: 1.891900 ms)
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.419056 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 4.03 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.630 seconds
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Universal Render Pipeline/Particles/Lit': fallback shader 'Universal Render Pipeline/Particles/SimpleLit' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 4.04 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 7517 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 435.6 MB.
+System memory in use after: 431.3 MB.
+
+Unloading 78 unused Assets to reduce memory usage. Loaded Objects now: 8492.
+Total: 7.515200 ms (FindLiveObjects: 1.173600 ms CreateObjectMapping: 0.683100 ms MarkObjects: 3.855200 ms  DeleteObjects: 1.801500 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 5081.553340 seconds.
+  path: Assets/MudBun/MudBun.asmdef
+  artifactKey: Guid(046b95c25191c2d4c913a869364ae926) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MudBun/MudBun.asmdef using Guid(046b95c25191c2d4c913a869364ae926) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6d73da16468ebd80bb57f3c3eef746d1') in 0.016249 seconds
+  Import took 0.029764 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 104.746231 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/playmaker-logo.png
+  artifactKey: Guid(29e4bc6e0351f4a498f69f4956ece448) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/playmaker-logo.png using Guid(29e4bc6e0351f4a498f69f4956ece448) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b346ebdb868c20dc134aa7c38cfb22fa') in 0.041977 seconds
+  Import took 0.055730 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 2.346791 seconds.
+  path: Assets/Plugins/Easy Save 3/PlayMaker
+  artifactKey: Guid(0a6bee318130749539d0eec8a7b37ccd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Plugins/Easy Save 3/PlayMaker using Guid(0a6bee318130749539d0eec8a7b37ccd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9c26de8daf1a98397e1de38616adc148') in 0.005499 seconds
+  Import took 0.018233 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.093628 seconds.
+  path: Assets/Plugins/Easy Save 3/PlayMaker
+  artifactKey: Guid(0a6bee318130749539d0eec8a7b37ccd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Plugins/Easy Save 3/PlayMaker using Guid(0a6bee318130749539d0eec8a7b37ccd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9c26de8daf1a98397e1de38616adc148') in 0.002246 seconds
+  Import took 0.014986 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 9.862135 seconds.
+  path: Assets/SensorToolkit/PlayMaker
+  artifactKey: Guid(49e52883a21e87242b9f91efe7cd9d3e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SensorToolkit/PlayMaker using Guid(49e52883a21e87242b9f91efe7cd9d3e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '338fb02ec3f5a25796e1753ffa953c8f') in 0.001754 seconds
+  Import took 0.013987 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 273.262778 seconds.
+  path: Assets/SimpleAnimationComponent/SimpleAnimationComponent.asmdef
+  artifactKey: Guid(aff632302a0b84b498c3f33f7639b4d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SimpleAnimationComponent/SimpleAnimationComponent.asmdef using Guid(aff632302a0b84b498c3f33f7639b4d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9401e39b3d72c4a2bc1cda2b40e65fe7') in 0.005787 seconds
+  Import took 0.017839 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 71.224509 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Buff_01.wav
+  artifactKey: Guid(a27ae245f760b4bf191c0234d3b43918) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Buff_01.wav using Guid(a27ae245f760b4bf191c0234d3b43918) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd5f0803a38894bc401dde46a4890e2f8') in 0.028000 seconds
+  Import took 0.040785 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000126 seconds.
+  path: Assets/A.M.P. DEMO/AMP_DeBuff_02.wav
+  artifactKey: Guid(945068035d6f84ee2bd2da8e08e7b375) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_DeBuff_02.wav using Guid(945068035d6f84ee2bd2da8e08e7b375) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0fe1508ed8336289e63bd3ff167dec60') in 0.018366 seconds
+  Import took 0.029833 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000209 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Cast_General_04.wav
+  artifactKey: Guid(f08ce2b0c20924bfe844560b4770fe5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Cast_General_04.wav using Guid(f08ce2b0c20924bfe844560b4770fe5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e12525d8f03ba122d920b6f6c710a8b1') in 0.019869 seconds
+  Import took 0.031923 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000235 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Buff_08.wav
+  artifactKey: Guid(dddde2397affa4973880bcc238b6ad30) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Buff_08.wav using Guid(dddde2397affa4973880bcc238b6ad30) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '22e6771f2b150dc877e1546448fe640f') in 0.017138 seconds
+  Import took 0.029018 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000334 seconds.
+  path: Assets/A.M.P. DEMO/AMP_DeBuff_09.wav
+  artifactKey: Guid(68a4d3b8869e442398b2fae15bc7c50b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_DeBuff_09.wav using Guid(68a4d3b8869e442398b2fae15bc7c50b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fc61649c8f2051034c9673ba1a7cdde6') in 0.019663 seconds
+  Import took 0.033089 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000280 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Earth_Cast_02.wav
+  artifactKey: Guid(076c674d9627d49d7bc9428ecb754613) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Earth_Cast_02.wav using Guid(076c674d9627d49d7bc9428ecb754613) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'eab5b6f1fce7b665e4d1028658b52faf') in 0.018326 seconds
+  Import took 0.034031 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000271 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Ice_Cast_06.wav
+  artifactKey: Guid(8171342f1983747b3a1e3a85ad95097b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Ice_Cast_06.wav using Guid(8171342f1983747b3a1e3a85ad95097b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c7a0acc09a4f1e930b26f4c5bdccaf0a') in 0.019962 seconds
+  Import took 0.033686 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000207 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Lightning_Impact_06.wav
+  artifactKey: Guid(a15c0f3fe74004cf89b51cfd5604f582) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Lightning_Impact_06.wav using Guid(a15c0f3fe74004cf89b51cfd5604f582) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4f7afb547d5cf27a95f40286d5466be6') in 0.023472 seconds
+  Import took 0.036617 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000263 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Cast_General_01.wav
+  artifactKey: Guid(87a2e502ddd174591af0e35f76e448a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Cast_General_01.wav using Guid(87a2e502ddd174591af0e35f76e448a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '38dcbec0d312115a64d6847c0be3a110') in 0.018092 seconds
+  Import took 0.031060 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000204 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Fire_Cast_04.wav
+  artifactKey: Guid(674258a055e994b72bbb15a28eb79838) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Fire_Cast_04.wav using Guid(674258a055e994b72bbb15a28eb79838) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2f6295009cf40faa256f0626c950fbd1') in 0.018189 seconds
+  Import took 0.031435 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000258 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Fire_Impact_01.wav
+  artifactKey: Guid(8a44b12d3e3f24b1a89dc7f0b66756f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Fire_Impact_01.wav using Guid(8a44b12d3e3f24b1a89dc7f0b66756f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cc42a87dc46e3e2a711df6a2a814e1d1') in 0.017965 seconds
+  Import took 0.031052 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000248 seconds.
+  path: Assets/A.M.P. DEMO/AMP_DeBuff_06.wav
+  artifactKey: Guid(5dc0d27bde15c4bb7bafcde9f394bc12) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_DeBuff_06.wav using Guid(5dc0d27bde15c4bb7bafcde9f394bc12) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '680cff8690be754982bffe1cb351b14e') in 0.018820 seconds
+  Import took 0.030859 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000202 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Lightning_Cast_05.wav
+  artifactKey: Guid(81dbc2b345d4a4d8aa98f60aa04e5145) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Lightning_Cast_05.wav using Guid(81dbc2b345d4a4d8aa98f60aa04e5145) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dcd1fae1c3b3367ae18b87d879081c70') in 0.014610 seconds
+  Import took 0.025531 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000220 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Water_Impact_02.wav
+  artifactKey: Guid(670023a95d5524aa79ad7583b1534d22) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Water_Impact_02.wav using Guid(670023a95d5524aa79ad7583b1534d22) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f280dfe5363d9bce5d0335cde17debde') in 0.017134 seconds
+  Import took 0.028170 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000176 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Water_Cast_06.wav
+  artifactKey: Guid(cbabab23c893648bda632823ccbe5d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Water_Cast_06.wav using Guid(cbabab23c893648bda632823ccbe5d31) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5dccaa92f773333a87dedbee450d48e7') in 0.018085 seconds
+  Import took 0.030360 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000174 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Buff_04.wav
+  artifactKey: Guid(304d546b80cae47fb872be812b98b2c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Buff_04.wav using Guid(304d546b80cae47fb872be812b98b2c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '361253a7d6f33dec7d0661b6b0b49a76') in 0.017623 seconds
+  Import took 0.030025 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000216 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Ice_Impact_01.wav
+  artifactKey: Guid(90af38775c5bd43c084091ac77fe7257) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Ice_Impact_01.wav using Guid(90af38775c5bd43c084091ac77fe7257) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7798d98988f56951e1be3880425f1906') in 0.018726 seconds
+  Import took 0.030339 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000139 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Earth_Impact_01.wav
+  artifactKey: Guid(cdfae31f0b58546d3ac1015effc38f01) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Earth_Impact_01.wav using Guid(cdfae31f0b58546d3ac1015effc38f01) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '37e9d159f83b6d584ca9b4d6ded838ed') in 0.017122 seconds
+  Import took 0.029036 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.389400 seconds.
+  path: Assets/A.M.P. DEMO/AMP_Cast_General_01.wav
+  artifactKey: Guid(87a2e502ddd174591af0e35f76e448a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/A.M.P. DEMO/AMP_Cast_General_01.wav using Guid(87a2e502ddd174591af0e35f76e448a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '38dcbec0d312115a64d6847c0be3a110') in 0.012699 seconds
+  Import took 0.026989 seconds .
+

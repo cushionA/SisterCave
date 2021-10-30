@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DarkTonic.MasterAudio;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +23,12 @@ public abstract class CharacterStatus : ScriptableObject
     //　最大HP
     public float maxHp = 100;
 
-    //　HP
-    public float hp = 100;
+
 
     //　最大MP
     public float maxMp = 30;
 
-    //　MP
-    public float mp = 30;
+
 
     //　最大スタミナ
     public float maxStamina = 60;
@@ -51,17 +50,7 @@ public abstract class CharacterStatus : ScriptableObject
     public float _int = 1;
 
 
-    public float Atk;
-    //　無属性
-    public float phyAtk;
-    //神聖
-    public float holyAtk;
-    //闇
-    public float darkAtk;
-    //炎
-    public float fireAtk;
-    //雷
-    public float thunderAtk;
+
 
     //　無属性防御力。体力で上がる
     public float Def = 70;
@@ -78,25 +67,39 @@ public abstract class CharacterStatus : ScriptableObject
     //雷防御。賢さと持久で上がる。
     public float thunderDef = 70;
 
-    public float phyCut;//カット率
-    public float holyCut;//光。
-    public float darkCut;//闇。
-    public float fireCut;//魔力
-    public float thunderCut;//魔力
 
-    public float guardPower;//受け値
 
     //isGuardの時使う
 
     //小怯み。普段は基本ゼロ。攻撃時だけ
     public float Armor = 1;
- //   [HideInInspector]public float nowArmor;
-
-    public float nockBackPower;
+ 
 
     //大怯み、吹っ飛び。基本均一でアーマー値を足す
 
-    public float attackBuff = 1.0f;
     //攻撃バフ値
     //[HideInInspector] public float defBuff;防御力は直接加算
+
+
+    [Header("使用する音声")]
+    [SoundGroup]
+    ///<Summary>
+    ///　使用する音声のリスト。
+    ///　Status.useSound[i]という形でアニメイベントで指定
+    ///</Summary>
+    public List<string> useSound;
+    [Header("足音の音声")]
+    [SoundGroup]
+    ///<Summary>
+    ///　使用する音声
+    ///</Summary>
+    public string footStepSound;
+
+    [Header("歩く音声")]
+    [SoundGroup]
+    ///<Summary>
+    ///　使用する音声
+    ///</Summary>
+    public string walkSound;
+
 }

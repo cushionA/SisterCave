@@ -13,7 +13,7 @@ public class EquipmentManager : MonoBehaviour
     public Button[] EqItem = new Button[7];
     public Button[] EqMagic = new Button[7];
 
-    public Button[] EqWepon = new Button[2];
+    public Button[] EqWeapon = new Button[2];
     public Button[] EqShield = new Button[2];
     public Button EqCore;
 

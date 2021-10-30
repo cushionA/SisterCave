@@ -92,3 +92,7 @@ ChangeLog
 
 1.6.5
 - Fix for TriggerSensors repeatedly detecting the same objects when fixedTimeStep set above a certain value.
+
+1.6.6
+- Update minimum version of Unity to 2018.4
+- Fix Line-Of-Sight testpoint generation for scaled gameobjects.

@@ -68,7 +68,7 @@ public class Ladder : MonoBehaviour
         {
             GManager.instance.isLadder = true;
             isGJudge = GrounndJudge();
-            pm.Stop();
+            pm.AllStop();
             pm.enabled = false;
             player.transform.localScale = new Vector3(ClimbDirection, 1, 1);
 

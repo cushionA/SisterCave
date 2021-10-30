@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41ed277e88186ad48b672dd0a5a3ccdc, type: 3}
+  m_Name: JetExplosion
+  m_EditorClassIdentifier: 
+  icon: {fileID: 0}
+  itemName: asd
+  hiraganaName: 
+  information: 
+  number: 0
+  holdLimmit: 1
+  isDrop: 0
+  inventoryNum: 0
+  selectable: 0
+  atType: 0
+  magicLevel: 0
+  phyBase: 0
+  holyBase: 0
+  darkBase: 0
+  fireBase: 0
+  thunderBase: 300
+  phyAtk: 0
+  holyAtk: 0
+  darkAtk: 0
+  fireAtk: 0
+  thunderAtk: 350
+  displayAtk: 500
+  recoverBase: 0
+  recoverAmount: 0
+  castTime: 0
+  useMP: 0
+  effectTime: 0
+  effectNow: 0
+  effects:
+    m_AssetGUID: ded30f2e21296b94f94c3031c340a989
+    m_SubObjectName: 
+    m_SubObjectType: 
+  powerCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  skillCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  intCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.03206253
+      value: 0.39151
+      inSlope: 0.5895864
+      outSlope: 0.5895864
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.5895864
+      outSlope: 0.5895864
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  shock: 50
+  mValue: 1.2
+  fireType: 4
+  penetration: 1
+  lifeTime: 0.2
+  speedV: 10
+  speedA: 0
+  angle: 0
+  homingTime: 0
+  homingAngleV: 180
+  homingAngleA: 20
+  isChild: 1
+  rotateVt: 0
+  isRotate: 0
+  bulletScaleV: {x: 0, y: 0}
+  bulletScaleA: {x: 0, y: 0}
+  isBlow: 1
+  isChaice: 0
+  blowPower: {x: 1800, y: 150}
+  bulletNumber: 1
+  VRandom: 0
+  HRandom: 0
+  castEffect:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+  fireSound: LightningJetExplode
+  existSound: 
+  hitSound: 
+  FireAnime: 
+  castAnime: 
+  hitEffect:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+  isHit: 0
+  attackType: 128
+  startRotation: {x: 0, y: 0, z: 0}
+  mType: 0
+  sType: 0
+  isExprode: 1
+  isSlip: 0
+  cureCondition: 0
+  isWide: 0
+  regeneAmount: 0
+  coolTime: 0
+  faithCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0000011688098
+      value: 0.29718134
+      inSlope: 0.70281947
+      outSlope: 0.70281947
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.70281947
+      outSlope: 0.70281947
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

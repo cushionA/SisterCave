@@ -20,7 +20,7 @@ public class PlayerStatus : CharacterStatus
     //　スタミナ初期値
     public float initialStamina = 60;
 
-    public int magicNumber = 1;
+    
     public float initialWeight;
 
     //　獲得した魂
@@ -28,8 +28,7 @@ public class PlayerStatus : CharacterStatus
     public float earnedSoul = 0;
     //　装備している武器
     [SerializeField]
-    public Wepon equipWeapon = null;
-    public Shield equipShield;
+
     public CoreItem equipCore;
 
     public AnimationCurve HpCurve;
@@ -37,7 +36,7 @@ public class PlayerStatus : CharacterStatus
     public AnimationCurve weightCurve;
     public AnimationCurve MpCurve;
 
-    public float equipWeight = 1;//装備重量
+   
     public float capacityWeight;
 
     //　装備している鎧
@@ -45,9 +44,7 @@ public class PlayerStatus : CharacterStatus
     //　アイテムと個数のDictionary
     public ItemDictionary itemDictionary = null;
 
-    //　装備している鎧
-    public List<PlayerMagic> equipMagic = null;
-    [HideInInspector]public PlayerMagic useMagic;
+
 
     public float guardSpeed;//ガード中の移動速度
 

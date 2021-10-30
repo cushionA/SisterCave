@@ -35,20 +35,23 @@ public class VolumeWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //最初にボリュームの数値をスライダーに適用するコード
-
+        bgmSlider.value = 50;
+        seSlider.value = 50;
     }
 
     // Update is called once per frame
     void Update()
     {
+ 
+
         selectObject = MainUI.instance.eventSystem.currentSelectedGameObject;
         verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
 
         if (!isFirst)
         {
-            bgmSlider.value = DarkTonic.MasterAudio.MasterAudio.GrabBusByName("BGM").volume;
-            seSlider.value = DarkTonic.MasterAudio.MasterAudio.GrabBusByName("SE").volume;
+            bgmSlider.value = DarkTonic.MasterAudio.MasterAudio.GrabBusByName("BGM").volume * 100;
+            seSlider.value = DarkTonic.MasterAudio.MasterAudio.GrabBusByName("SE").volume * 100;
+
             isFirst = true;
         }
 
@@ -84,9 +87,11 @@ public class VolumeWindow : MonoBehaviour
             {
                 ////Debug.log("bgm調整中");
 
+                //決定ボタン
                 if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
-                    bgmSlider.value = DarkTonic.MasterAudio.MasterAudio.GrabBusByName("BGM").volume;
+                    
+                    bgmSlider.value = MasterAudio.GrabBusByName("BGM").volume * 100;
                     //DarkTonic.MasterAudio.MasterAudio.GetBusVolume();
                    // bgmButton.enabled = true;
                     bgmButton.Select();
@@ -99,7 +104,7 @@ public class VolumeWindow : MonoBehaviour
                     if (!isBlock)
                     {
                         //音量変更。スライダーの数値を音量に入れる。
-                        MasterAudio.SetBusVolumeByName("BGM", bgmSlider.value);
+                        MasterAudio.SetBusVolumeByName("BGM", bgmSlider.value / 100);
                         // bgmButton.enabled = true;
                         bgmButton.Select();
                         isChange = false;
@@ -128,7 +133,7 @@ public class VolumeWindow : MonoBehaviour
             {
                 if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
-                    seSlider.value = DarkTonic.MasterAudio.MasterAudio.GrabBusByName("SE").volume;
+                    seSlider.value = DarkTonic.MasterAudio.MasterAudio.GrabBusByName("SE").volume * 100;
                     seButton.Select();
                     isChange = false;
                 }
@@ -137,7 +142,7 @@ public class VolumeWindow : MonoBehaviour
                     if (!isBlock)
                     {
                         //音量変更。スライダーの数値を音量に入れる。
-                        MasterAudio.SetBusVolumeByName("SE", seSlider.value);
+                        MasterAudio.SetBusVolumeByName("SE", seSlider.value / 100);
                         // bgmButton.enabled = true;
                         seButton.Select();
                         isChange = false;

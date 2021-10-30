@@ -23,7 +23,7 @@ public class Shield : Equip
 
 
 
-    public int sLevel = 0;
+
 
    // public List<float> phyBase;//物理攻撃。これが1以上ならモーションにアニメイベントとかで斬撃打撃の属性つける
    // public List<float> holyBase;//光。筋力と賢さが関係。生命力だから
@@ -45,7 +45,7 @@ public class Shield : Equip
 
     //public List<float> guardPower;//受け値
     public bool isParry;//パリィ可能かどうか
-    public bool weponArts;//武器の特殊技を使えるかどうか
+    public bool weaponArts;//武器の特殊技を使えるかどうか
 
  //   public float parryStartTime;
 //    public float parringTime;//パリィ継続時間

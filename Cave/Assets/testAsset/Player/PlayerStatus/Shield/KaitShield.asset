@@ -28,6 +28,13 @@ MonoBehaviour:
   Naname:
   - {fileID: -4539555768064283279, guid: 1860425645c00dc4dac5cef33565c3a1, type: 3}
   - {fileID: 819121023632663461, guid: 1860425645c00dc4dac5cef33565c3a1, type: 3}
+  wLevel: 0
+  Atk: 3920
+  phyAtk: 70
+  holyAtk: 0
+  darkAtk: 0
+  fireAtk: 0
+  thunderAtk: 0
   phyBase:
   - 70
   - 90
@@ -61,49 +68,136 @@ MonoBehaviour:
   needPower: 1
   needSkill: 1
   needInt: 0
-  phyCut:
+  phyCut: 100
+  holyCut: 55
+  darkCut: 30
+  fireCut: 40
+  thunderCut: 30
+  guardPower: 70
+  phyCutSet:
   - 100
   - 100
   - 100
   - 100
   - 100
-  holyCut:
-  - 50
-  - 50
+  holyCutSet:
   - 55
   - 55
-  - 60
-  darkCut:
-  - 50
-  - 60
-  - 70
-  - 75
-  - 80
-  fireCut:
-  - 60
-  - 65
-  - 65
-  - 70
-  - 70
-  thunderCut:
-  - 50
-  - 50
-  - 50
-  - 50
   - 55
-  guardPower:
-  - 35
-  - 37
+  - 55
+  - 55
+  darkCutSet:
+  - 30
+  - 30
+  - 30
+  - 30
+  - 30
+  fireCutSet:
   - 40
-  - 42
-  - 47
-  parryStart: 0
-  parryTime: 10
-  parryRecover: 0
+  - 40
+  - 40
+  - 45
+  - 45
+  thunderCutSet:
+  - 30
+  - 30
+  - 33
+  - 35
+  - 35
+  powerCurve:
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  skillCurve:
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  intCurve:
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  - serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 0
+  guardPowerSet:
+  - 40
+  - 45
+  - 48
+  - 50
+  - 52
+  parryStart: 0.1
+  parryTime: 0.5
+  parryRecover: 25
   shock: 0
   artsMP:
   - 7
   - 7
+  useSound:
+  - MetalNGuard
+  attackType: 1
   artsAnime:
   - {fileID: 0}
   - {fileID: 0}
@@ -111,25 +205,34 @@ MonoBehaviour:
   - {fileID: -6357838179149488024, guid: 1860425645c00dc4dac5cef33565c3a1, type: 3}
   - {fileID: 5933913999138112031, guid: 1860425645c00dc4dac5cef33565c3a1, type: 3}
   guardAnime: OGuard
-  sLevel: 0
   isParry: 0
-  weponArts: 0
+  weaponArts: 0
   artsValue:
   - x: 1
     y: 20
-    z: 35
+    z: 39
     isCombo: 0
     isBlow: 1
     isLight: 0
     type: 2
     blowPower: {x: 1000, y: 100}
     useStamina: 18
+    attackEffect:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - x: 1
     y: 20
-    z: 35
+    z: 39
     isCombo: 0
     isBlow: 1
     isLight: 0
     type: 2
     blowPower: {x: 1000, y: 100}
     useStamina: 18
+    attackEffect:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

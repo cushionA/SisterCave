@@ -7,11 +7,10 @@ using UnityEngine.AddressableAssets;
 
 public class SisterBrain : MonoBehaviour
 {
-	//「//sAni.」を「sAni.」で置き換える。アニメ作ったら
-	[Header("プレーヤーオブジェクト")]
-	///<summary>
-	///プレイヤー
-	///</summary>
+
+
+
+
 	//public GameObject player;
 	[Header("警戒ステートの時間")]
 	public float patrolTime;
@@ -39,7 +38,11 @@ public class SisterBrain : MonoBehaviour
 	///</summary>
 	public Transform firePosition;
 
+	[SerializeField]
+	 private LayerMask layerMask;
 
+	bool disEnable;
+	bool isReset;
 
 
 	public enum SisterState
@@ -65,16 +68,18 @@ public class SisterBrain : MonoBehaviour
 	 float stopTime;//停止時間を数える
 	 bool isStop;//停止フラグ
 	 float waitTime;//パトロール時の待ち時間数える
-	 bool posiReset;//戦闘の持ち場再設定するフラグ
+//	 bool posiReset;//戦闘の持ち場再設定するフラグ
 	 bool nowJump;
-	bool isGround;
+	[HideInInspector]
+	public bool isGround;
 
 	 Vector2 targetPosition;//敵の場所
 	 int initialLayer;
 	 bool jumpTrigger;
 
 	 bool isWait;//このフラグが真なら待機モーションする。マントいじったり遊んだり。
-	　　　　　　//モーションは好感度とか進行度でモーション名リストが切り替わって決まる。
+				 //モーションは好感度とか進行度でモーション名リストが切り替わって決まる。
+	bool isWarp;//ワープ中
 
 	[HideInInspector]public bool isPosition;//持ち場フラグ
 	[HideInInspector] public bool nowPosition;//持ち場フラグ
@@ -88,15 +93,14 @@ public class SisterBrain : MonoBehaviour
 	public Rigidbody2D rb;//継承先で使うものは
 
 	// === 内部パラメータ ======================================
-	 float xSpeed;
-	 float ySpeed;
+
 	 int direction;
 	 int directionY;
 	 float moveDirectionX;
 	 float moveDirectionY;
 	 float jumpTime;//ジャンプのクールタイム。処理自体はインパルスで
-	 bool disenableJump;//ジャンプ不可能状態
-	 AudioSource[] seAnimationList;
+
+
 	 Vector2 basePosition;
 	/// <summary>
 	/// プレイヤーが向いてる方向。基準
@@ -105,9 +109,9 @@ public class SisterBrain : MonoBehaviour
 	 bool isDown;
 	 float randomTime = 2.5f;//ランダム移動測定のため
 	[HideInInspector] public bool guardHit;
-	float stateJudge;//ステート判断間隔
+
 //	public Rigidbody2D GManager.instance.GManager.instance.pm.rb;//プレイヤーのリジッドボディ
-	PlayerMove pm;
+
 	bool isSquat;
 	string squatTag = "SquatWall";
 	float PositionJudge;
@@ -125,19 +129,21 @@ public class SisterBrain : MonoBehaviour
 	bool isVertical;//垂直飛びするフラグ
 	Vector2 waitPosition;
 	//持ち場再判断
-	float reJudgePositionTime;
+	[HideInInspector]public float reJudgePositionTime;
 	[HideInInspector] public int stateNumber;
 	[HideInInspector] public int beforeNumber;
 	[HideInInspector] public float reJudgeTime;
-	[HideInInspector] public bool changeable;
+	[HideInInspector] public bool changeable;//歩行からダッシュなど変更可能か
 
 	float directionChangeWait;
 	float battleEndTime;
 	Vector2 move;
 
+
 	// === コード（Monobehaviour基本機能の実装） ================
 	 void Start()
 	{
+		Serch3.SetActive(false);
 		//rb = GetComponent<Rigidbody2D>();
 		//GManager.instance.GManager.instance.pm.rb = player.gameObject.GetComponent<Rigidbody2D>();
 		
@@ -159,7 +165,40 @@ public class SisterBrain : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		isGround = rb.IsTouching(SManager.instance.sisStatus.filter);
+		if (rb.IsTouching(SManager.instance.sisStatus.filter))
+		{
+			isGround = true;
+
+		}
+
+		else
+		{
+
+			RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 2, layerMask);
+			if (hit && isGround)
+			{
+
+
+				isGround = true;
+
+
+			}
+			else
+			{
+
+				isGround = false;
+				//}
+			}
+		}
+
+		if (isWarp)
+        {
+			disEnable = true;
+        }
+        else
+        {
+			disEnable = false;
+        }
 
 		basePosition = GManager.instance.Player.transform.position;
 		baseDirection = GManager.instance.Player.transform.localScale;
@@ -170,11 +209,14 @@ public class SisterBrain : MonoBehaviour
 		direction = distance.x >= 0 ? 1 : -1;//距離が正、または0の時1。そうでないとき-1。方向
 		directionY = distance.y >= 0 ? 1 : -1;//ほかのAIで弓構えるときのアニメの判定	にも使えそう
 
-			//Debug.Log($"現在の状態{isPosition}");
+		//	Debug.Log($"現在のステート{nowState}");
 		SisterFall();
+		EscapeWarp();
 		if (nowState == SisterState.戦い)
 		{
-
+			//Debug.Log($"位置についてますかー{nowPosition}");
+			SManager.instance.BattleEndCheck();
+			BattleEnd();
 
 			if (!isPosition)
 			{
@@ -195,15 +237,16 @@ public class SisterBrain : MonoBehaviour
 
 			//Serch.SetActive(true);ほかのステートに移動するときに
 			//Serch2.SetActive(true);
-			if (!nowPosition)
-			{
 
+			if (!SManager.instance.actNow)
+			{
 				PatrolMove();
+		
 
 			//	PositionSetting();
 				TriggerJump();
 				Verticaljump();
-
+	        }
 
 			//	PositionChange();
 				if (patrolJudge >= patrolTime)
@@ -218,19 +261,21 @@ public class SisterBrain : MonoBehaviour
 					//Serch.SetActive(true);
 				}
 
-			}
+
 		}
 		else if (nowState == SisterState.のんびり)
 		{
+			if (!SManager.instance.actNow)
+			{
+				PlayMove();
 
-			PlayMove();
-
-			TriggerJump();
-			Verticaljump();
+				TriggerJump();
+				Verticaljump();
+			}
 			WaitJudge();
 			//待機状態には色々する
 
-			PositionChange();
+			//PositionChange();
 
 			//if()
 
@@ -252,73 +297,128 @@ public class SisterBrain : MonoBehaviour
 	/// </summary>
 	public void PositionSetting()
     {
-		if (Serch3.activeSelf == true)
+		if (Serch3.activeSelf == false)
 		{
-			Serch3.SetActive(false);
+			Serch3.SetActive(true);
 		}
-
-        if (!posiReset)
-        {
-			for(int i =0; i >= SManager.instance.targetList.Count; i++)
+        #region
+        //  if (!posiReset)
+        //   {
+        /*	for(int i =0; i >= SManager.instance.targetList.Count; i++)
             {
-				if (i == 0)
-				{
-					SManager.instance.closestEnemy = SManager.instance.targetList[0].transform.position.x;
-				}
-				else
-				{
-					if(Mathf.Abs(transform.position.x - SManager.instance.targetList[i].transform.position.x) < Mathf.Abs(transform.position.x - SManager.instance.closestEnemy))
-                    {
-						SManager.instance.closestEnemy = SManager.instance.closestEnemy = SManager.instance.targetList[i].transform.position.x;
-					}
-				}
-
-				if(i >= SManager.instance.targetList.Count - 1)
+                //敵が単体なら
+                if (i == 0)
                 {
-					posiReset = true;
+                    SManager.instance.closestEnemy = SManager.instance.targetList[0].transform.position.x;
                 }
-			}
+                //敵が複数なら
+                else
+                {
+                    if(Mathf.Abs(transform.position.x - SManager.instance.targetList[i].transform.position.x) < Mathf.Abs(transform.position.x - SManager.instance.closestEnemy))
+                    {
+                        SManager.instance.closestEnemy = SManager.instance.targetList[i].transform.position.x;
+                    }
+                }
+                //調べ終わったら
+                if(i >= SManager.instance.targetList.Count - 1)
+                {
+                    posiReset = true;
+                }
+            }*/
+        //	SManager.instance.GetClosestEnemyX();
+        //	posiReset = true;
 
-        }
-		else if (posiReset)
-		{
-
-			//ポジションにつきに行く
-			if (isPosition && !nowPosition && isGround)
+        //}
+        //	else if (posiReset)
+        //	{
+        #endregion
+        if (!SManager.instance.actNow && isPosition && isGround && !disEnable) { 
+			//ポジションにつきに行く。かつついてなくて地面にいる
+			if (!nowPosition)
 			{
-				if (SManager.instance.closestEnemy - myPosition.x >= 0)
+				SManager.instance.GetClosestEnemyX();
+				float mDirection = Mathf.Sign(SManager.instance.closestEnemy - myPosition.x);
+				//一番近い敵が右にいるとき
+				if (mDirection >= 0)
 				{
-					//プレイヤーの左に行く
-					if (myPosition.x <= basePosition.x - status.battleDis && myPosition.x >= basePosition.x - status.battleDis * 2)
+					//没
+					#region
+					/*			//プレイヤーの左に行く
+								if (myPosition.x <= basePosition.x - status.battleDis && myPosition.x >= basePosition.x - status.battleDis * 2)
+								{
+									rb.velocity = Vector2.zero;
+									Flip(-1);
+									//おんぶする
+									//ポジションに到着
+									nowPosition = true;
+									sAni.Play("Stand");
+								}
+								else if (myPosition.x > basePosition.x - status.battleDis)
+								{
+									Flip(-1);
+									move.Set(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0);
+									rb.AddForce(move);
+									sAni.Play("Dash");
+								}
+								else if (myPosition.x < basePosition.x - status.battleDis * 2)
+								{
+									Flip(1);
+									move.Set(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0);
+									rb.AddForce(move);
+									sAni.Play("Dash");
+								}*/
+					#endregion
+
+					reJudgeTime += Time.fixedDeltaTime;
+					if (reJudgeTime >= 1.5)
 					{
+						if (SManager.instance.closestEnemy - myPosition.x >= status.battleDis)
+						{
+							stateNumber = 0;
+
+						}
+						else// if (SManager.instance.closestEnemy - myPosition.x < status.battleDis)
+						{
+							stateNumber = 1;
+							
+						}
+						reJudgeTime = 0;
+					}
+					if (stateNumber == 0)
+					{
+					//	Debug.Log("停止");
 						rb.velocity = Vector2.zero;
-						Flip(direction);
+						Flip(mDirection,true);
 						//おんぶする
+						//ポジションに到着
 						nowPosition = true;
 						sAni.Play("Stand");
+						reJudgeTime = 100;
 					}
-					else if (myPosition.x > basePosition.x - status.battleDis)
+					else if (stateNumber == 1)
 					{
-						Flip(-1);
+					//	Debug.Log($"逃げる{mDirection}");
+						Flip(-mDirection);
 						move.Set(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0);
 						rb.AddForce(move);
 						sAni.Play("Dash");
 					}
-					else if (myPosition.x < basePosition.x - status.battleDis * 2)
+
+					else
 					{
-						Flip(1);
-						move.Set(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0);
-						rb.AddForce(move);
-						sAni.Play("Dash");
+						reJudgeTime = 100;
 					}
 				}
-				else if (SManager.instance.closestEnemy - myPosition.x < 0)
+				else// if (SManager.instance.closestEnemy - myPosition.x < 0)
 				{
+					#region
+					/*
 					if (myPosition.x >= basePosition.x + status.battleDis && myPosition.x <= basePosition.x + status.battleDis * 2)
 					{
 						rb.velocity = Vector2.zero;
-						Flip(direction);
+						Flip(1);
 						nowPosition = true;
+						//ポジションに到着
 						sAni.Play("Stand");
 					}
 					else if (myPosition.x < basePosition.x + status.battleDis)
@@ -335,82 +435,84 @@ public class SisterBrain : MonoBehaviour
 						rb.AddForce(move);
 						sAni.Play("Dash");
 					}
+
+					*/
+					#endregion
+					reJudgeTime += Time.fixedDeltaTime;
+					if (reJudgeTime >= 1.5)
+					{
+						if (Mathf.Abs(SManager.instance.closestEnemy - myPosition.x) >= status.battleDis)
+						{
+							stateNumber = 2;
+
+						}
+						else// if (Mathf.Abs(SManager.instance.closestEnemy - myPosition.x) < status.battleDis)
+						{
+							stateNumber = 3;
+
+						}
+						reJudgeTime = 0;
+					}
+					if (stateNumber == 2)
+					{
+						rb.velocity = Vector2.zero;
+						Flip(mDirection,true);
+						//おんぶする
+						//ポジションに到着
+						nowPosition = true;
+						sAni.Play("Stand");
+						reJudgeTime = 100;
+					}
+					else if(stateNumber == 3) 
+					{
+						Flip(-mDirection);
+
+						move.Set(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0);
+						rb.AddForce(move);
+						sAni.Play("Dash");
+					}
+                    else
+                    {
+						reJudgeTime = 100;
+                    }
 				}
 			}
-			else if(isPosition && nowPosition && isGround)
+			else if( nowPosition)
             {
 				//再判定するかどうか
 				//範囲内にて聞いたら再判定
-				reJudgePositionTime += Time.fixedDeltaTime;
-
-				rb.velocity = Vector2.zero;
-				Flip(direction);
-				//おんぶする
-
-				if (reJudgePositionTime >= SManager.instance.sisStatus.escapeTime)
+				if (!SManager.instance.castNow)
+				{
+					float atDirection;
+					reJudgePositionTime += Time.fixedDeltaTime;
+					if (SManager.instance.target != null)
+					{
+						 atDirection = SManager.instance.target.transform.position.x - myPosition.x;
+						rb.velocity = Vector2.zero;
+						atDirection = Mathf.Sign(atDirection);
+						Flip(atDirection);
+					}
+               /*     else
+                    {
+						atDirection = direction;
+                    }*/
+					
+					//おんぶする
+				}
+			if (reJudgePositionTime >= SManager.instance.sisStatus.escapeTime)
                 {
 					reJudgePositionTime = 0.0f;
+					reJudgeTime = 150;
 					SManager.instance.GetClosestEnemyX();
-					if (Mathf.Abs(distance.x) >= SManager.instance.sisStatus.warpDistance || Mathf.Abs(distance.y) >= SManager.instance.sisStatus.warpDistance)
-                    {
+					//プレイヤーがワープ上限より離れていたら
+
+					//敵が逃げるゾーンより近かったから
+
 						nowPosition = false;
-						isPosition = false;
-						SManager.instance.isEscape = true;
-						nowState = SisterState.警戒;
-						//escapeがtrueの時警戒から戦闘にならない
-						stateNumber = 3;
-						beforeNumber = 0;
-						reJudgeTime = 0;
-						changeable = true;
-						Serch3.SetActive(false);
-						Serch2.SetActive(false);
-						Serch.SetActive(false);
-						SManager.instance.targetList = null;
-						SManager.instance.targetCondition = null;
-						SManager.instance.target = null;
-						EscapeWarp();
-						//逃走ワープメソッドで元に戻す
-					}
-					else if(Mathf.Abs(SManager.instance.closestEnemy) <= SManager.instance.sisStatus.escapeZone)
-                    {
-						nowPosition = false;
-					}
-
-					if(SManager.instance.targetList == null)
-                    {
-						battleEndTime += Time.fixedDeltaTime;
-
-                        //時間計測して警戒に移行
-                        if (battleEndTime >= 6)
-                        {
-							//六秒以上敵検知せんずれば警戒フェイズへ
-							nowPosition = false;
-							isPosition = false;
-							SManager.instance.isEscape = true;
-							nowState = SisterState.警戒;
-							//escapeがtrueの時警戒から戦闘にならない
-							stateNumber = 3;
-							beforeNumber = 0;
-							reJudgeTime = 0;
-							changeable = true;
-							Serch3.SetActive(false);
-							Serch2.SetActive(true);
-							Serch.SetActive(true);
-							battleEndTime = 0;
-							SManager.instance.targetList = null;
-							SManager.instance.targetCondition = null;
-							SManager.instance.target = null;
-						}
-
-                    }
-                    else
-                    {
-						battleEndTime = 0.0f;
-                    }
-
                 }
 
             }
+	//	}
 		}
 	}
 
@@ -461,9 +563,9 @@ public class SisterBrain : MonoBehaviour
 
 	}*/
 
-	public void Flip(float direction)
+	public void Flip(float direction,bool isForce = false)
 	{
-		if (!isStop && directionChangeWait >= 0.3)
+		if (!isStop && (directionChangeWait >= 0.3 || isForce) )
 		{
 			// Switch the way the player is labelled as facing.
 
@@ -484,8 +586,8 @@ public class SisterBrain : MonoBehaviour
 	/// 待機中の哨戒行動
 	/// </summary>
 	public void PatrolMove()
-	{
-		if (isGround)
+	{	
+		if (isGround && !disEnable)
 		{
 			if (reJudgeTime >= 1 && changeable)
 			{
@@ -493,12 +595,14 @@ public class SisterBrain : MonoBehaviour
 				{
 					stateNumber = 1;
 				}
-				else if ((Mathf.Abs(distance.x) <= status.walkDistance && Mathf.Abs(transform.position.x) > status.patrolDistance) || GManager.instance.pm.rb.velocity.x != 0)
+
+				else if ((Mathf.Abs(distance.x) <= status.walkDistance && Mathf.Abs(distance.x) > status.patrolDistance) || (Mathf.Sign(GManager.instance.pm.rb.velocity.x) == Mathf.Sign(transform.localScale.x) && GManager.instance.pm.rb.velocity.x != 0))
 				{
 					stateNumber = 2;
 				}
-				else if (GManager.instance.pm.rb.velocity.x == 0 && Mathf.Abs(transform.position.x) > status.patrolDistance)
+				else if ((Mathf.Sign(GManager.instance.pm.rb.velocity.x) != Mathf.Sign(transform.localScale.x) || GManager.instance.pm.rb.velocity.x == 0) && Mathf.Abs(distance.x) <= status.patrolDistance)
 				{
+				
 					stateNumber = 3;
 				}
 				if (beforeNumber == 0)
@@ -527,6 +631,7 @@ public class SisterBrain : MonoBehaviour
 			}
 			if (stateNumber == 1)
 			{
+				
 				Flip(direction);
 				move.Set(status.addSpeed * (status.patrolSpeed * direction - rb.velocity.x), 0);
 				rb.AddForce(move);
@@ -535,14 +640,17 @@ public class SisterBrain : MonoBehaviour
 			}
 			else if (stateNumber == 2)
 			{
+			//Debug.Log("でそ");
 				Flip(direction);
 				move.Set(status.addSpeed * (status.walkSpeed * direction - rb.velocity.x), 0);
+				rb.AddForce(move);
 				isWait = false;
 				sAni.Play("Walk");
 			}
 			else if (stateNumber == 3)
 			{
-				rb.velocity = Vector2.zero;
+			//	Debug.Log("です");
+				rb.velocity.Set(0,0);
 				isWait = true;
 				sAni.Play("Stand");
 			}
@@ -552,7 +660,7 @@ public class SisterBrain : MonoBehaviour
 	}
 	public void PlayMove()
 	{//のんびり
-		if (isGround)
+		if (isGround && !disEnable)
 		{
 			if (reJudgeTime >= 1.5 && changeable)
 			{
@@ -957,7 +1065,7 @@ public class SisterBrain : MonoBehaviour
 	/// </summary>	
 	public void GroundJump(float jumpMove, float jumpPower)
 	{
-		if (!isStop&& !isDown)
+		if (!isStop&& !isDown && !disEnable)
 		{
 			/*	if (isJump)
 				{
@@ -1193,7 +1301,10 @@ public class SisterBrain : MonoBehaviour
 		if (!isGround)
 		{
 			GravitySet(SManager.instance.sisStatus.firstGravity);
-			sAni.Play("Fall");
+			if (!isWarp) 
+			{
+				sAni.Play("Fall"); 
+			}
 		}
 		else
 		{
@@ -1222,20 +1333,215 @@ public class SisterBrain : MonoBehaviour
 	}
 
 
-	bool CheckEnd(string _currentStateName)
-	{
-		return !(sAni.GetCurrentAnimatorStateInfo(0).normalizedTime == 1);
-	}
+
 
 	/// <summary>
 	/// 戦闘時に逃げるワープ
 	/// </summary>
 	private void EscapeWarp()
     {
-		//転送後
-		Serch.SetActive(true);
-		Serch2.SetActive(true);
+		if (!isJump)
+		{
+			if (!isWarp)
+			{
+				//転送後
+				if ((Mathf.Abs(distance.x) >= SManager.instance.sisStatus.warpDistance.x || Mathf.Abs(distance.y) >= SManager.instance.sisStatus.warpDistance.y))// && GManager.instance.pm.isGround)
+				{
+
+					//方向でxに2ずらした数値にワープ
+					if (baseDirection.x >= 0)
+					{
+						move.Set(basePosition.x - 6, basePosition.y);
+						move.y = RayGroundCheck(move) + 10;
+						transform.position = move;
+						Flip(1);
+					}
+					else
+					{
+						move.Set(basePosition.x + 6, basePosition.y);
+						move.y = RayGroundCheck(move) + 10;
+						transform.position = move;
+						Flip(-1);
+					}
+					isWarp = true;
+					nowPosition = false;
+					isPosition = false;
+					SManager.instance.isEscape = true;
+					//escapeがtrueの時警戒から戦闘にならない
+					stateNumber = 0;
+					beforeNumber = 0;
+					reJudgeTime = 0;
+					changeable = true;
+
+					sAni.Play("WarpPray");
+
+					if(status.mp >= 5)
+                    {
+						status.mp -= 5;
+                    }
+					
+					if (nowState == SisterState.戦い)
+					{
+						reJudgeTime = 0;
+						nowState = SisterState.警戒;
+						Serch3.SetActive(false);
+						Serch2.SetActive(true);
+						Serch.SetActive(true);
+						reJudgePositionTime = 0;
+						SManager.instance.targetList.Clear();
+						SManager.instance.targetCondition.Clear();
+						SManager.instance.target = null;
+					}
+					//EscapeWarp();
+					//逃走ワープメソッドで元に戻す
+				}
+			}
+            else
+            {
+				battleEndTime += Time.fixedDeltaTime;
+				sAni.Play("WarpPray");
+				if (!CheckEnd("WarpPray") || battleEndTime >= 6)
+                {
+
+					battleEndTime = 0;
+					isWarp = false;
+                }
+
+			}
+		}
 	}
+
+	/// <summary>
+	/// 戦闘終了
+	/// </summary>
+	private void BattleEnd()
+    {
+
+		//敵がいなかったら
+		if (SManager.instance.isBattleEnd && !(SManager.instance.targetList.Count >= 1))
+		{
+				battleEndTime += Time.fixedDeltaTime;
+
+			//時間計測して警戒に移行
+			 if (battleEndTime >= 2 && !isReset)
+			     {
+
+				isReset = true;
+			//六秒以上敵検知せんずれば警戒フェイズへ
+			nowPosition = false;
+			isPosition = false;
+			SManager.instance.isEscape = true;
+			nowState = SisterState.警戒;
+			//escapeがtrueの時警戒から戦闘にならない
+			stateNumber = 3;
+			beforeNumber = 0;
+			reJudgeTime = 0;
+			reJudgePositionTime = 0;
+			changeable = true;
+			Serch3.SetActive(false);
+			Serch2.SetActive(true);
+			Serch.SetActive(true);
+			battleEndTime = 0;
+			SManager.instance.targetList.Clear();
+			SManager.instance.targetCondition.Clear();
+			SManager.instance.target = null;
+			SManager.instance.isBattleEnd = false;
+				}
+
+		}
+		else
+		{
+			isReset = false;
+			SManager.instance.isBattleEnd = false;
+			battleEndTime = 0.0f;
+		}
+	}
+	public void WarpEffect()
+    {
+		Transform gofire = firePosition;
+
+		//Transform rotate = SManager.instance.sisStatus.useMagic.castEffect.LoadAssetAsync<Transform>().Result as Transform;
+
+		Addressables.InstantiateAsync("WarpCircle", gofire.position, gofire.rotation);//.Result;//発生位置をPlayer
+		GManager.instance.PlaySound("Warp", transform.position);
+	}
+
+    public float RayGroundCheck(Vector2 position)
+    {
+
+		//真下にレイを飛ばしましょう
+			RaycastHit2D onHitRay = Physics2D.Raycast(position, Vector2.down, Mathf.Infinity,layerMask.value);
+
+		//  ////Debug.log($"{onHitRay.transform.gameObject}");
+		////Debug.DrawRay(i_fromPosition,i_toTargetDir * SerchRadius);
+
+		//Debug.Log($"当たったもの{onHitRay.transform.gameObject.name}");
+		return onHitRay.point.y;
+	}
+	bool CheckEnd(string Name)
+	{
+
+		if (!sAni.GetCurrentAnimatorStateInfo(0).IsName(Name))// || sAni.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
+		{   // ここに到達直後はnormalizedTimeが"Default"の経過時間を拾ってしまうので、Resultに遷移完了するまではreturnする。
+			return true;
+		}
+		if (sAni.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+		{   // 待機時間を作りたいならば、ここの値を大きくする。
+			return true;
+		}
+		//AnimatorClipInfo[] clipInfo = sAni.GetCurrentAnimatorClipInfo(0);
+
+		////Debug.Log($"アニメ終了");
+
+		return false;
+
+		// return !(sAni.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+		//  (_currentStateName);
+	}
+
+	public void StepSound(int type)
+	{
+		if (type == 0)
+		{
+			GManager.instance.PlaySound("LightFootStep", transform.position);
+		}
+		else
+		{
+			GManager.instance.PlaySound("LightWalkStep", transform.position);
+		}
+		if (GManager.instance.isWater)
+		{
+			GManager.instance.PlaySound("WaterStep", transform.position);
+		}
+	}
+	public void AnimeSound(string useSoundName)
+	{
+
+		GManager.instance.PlaySound(useSoundName, transform.position);
+
+
+	}
+	public void AnimeChaise(string useSoundName)
+	{
+
+		GManager.instance.FollowSound(useSoundName, transform);
+
+	}
+
+/*	/// <summary>
+	/// アニメイベント
+	/// 詠唱完了時に一度呼ぶ
+	/// 魔法レベルと属性で
+	/// </summary>
+	public void CallCastSound()
+    {
+		//待てこれキャストサウンド介する必要ある？
+		//普通に判断して普通に入れよ
+		GManager.instance.PlaySound("NormalCastEnd", transform.position);
+	}*/
+
+
+
 
 }
 

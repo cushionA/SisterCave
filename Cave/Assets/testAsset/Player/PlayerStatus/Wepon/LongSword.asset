@@ -26,8 +26,15 @@ MonoBehaviour:
   - {fileID: 1080394939938363784, guid: 76354687f293219479e71829882ea142, type: 3}
   Naname:
   - {fileID: -6782956637094246760, guid: 76354687f293219479e71829882ea142, type: 3}
+  wLevel: 0
+  Atk: 36319.375
+  phyAtk: 210.86946
+  holyAtk: 0
+  darkAtk: 0
+  fireAtk: 0
+  thunderAtk: 0
   phyBase:
-  - 120
+  - 200
   - 160
   - 200
   - 240
@@ -59,56 +66,42 @@ MonoBehaviour:
   needPower: 1
   needSkill: 1
   needInt: 0
-  phyCut:
-  - 35
-  - 35
-  - 35
-  - 40
+  phyCut: 50
+  holyCut: 20
+  darkCut: 20
+  fireCut: 20
+  thunderCut: 20
+  guardPower: 25
+  phyCutSet:
   - 50
-  holyCut:
-  - 15
-  - 15
-  - 15
-  - 15
-  - 30
-  darkCut:
-  - 20
-  - 25
-  - 30
-  - 30
   - 50
-  fireCut:
-  - 15
-  - 15
-  - 18
-  - 21
-  - 35
-  thunderCut:
-  - 10
-  - 10
-  - 12
-  - 14
-  - 20
-  guardPower:
+  - 50
+  - 55
+  - 60
+  holyCutSet:
   - 20
   - 25
   - 25
   - 30
   - 35
-  parryStart: 0
-  parryTime: 5
-  parryRecover: 0
-  shock: 19
-  artsMP:
-  - 5
-  - 100
-  wLevel: 0
-  atType: 0
-  isTwin: 0
-  isMagic: 0
-  MagicAssistBase: 100
-  MagicAssist: 100
-  castSkill: 1
+  darkCutSet:
+  - 20
+  - 25
+  - 25
+  - 30
+  - 35
+  fireCutSet:
+  - 20
+  - 25
+  - 25
+  - 30
+  - 35
+  thunderCutSet:
+  - 20
+  - 25
+  - 25
+  - 30
+  - 35
   powerCurve:
   - serializedVersion: 2
     m_Curve:
@@ -601,6 +594,28 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  guardPowerSet:
+  - 25
+  - 30
+  - 30
+  - 33
+  - 35
+  parryStart: 0.15
+  parryTime: 0.15
+  parryRecover: 40
+  shock: 39
+  artsMP:
+  - 5
+  - 10
+  useSound:
+  - MetalSGuard
+  attackType: 1
+  atType: 2
+  isTwin: 0
+  isMagic: 0
+  MagicAssistBase: 100
+  MagicAssist: 100
+  castSkill: 1
   MAssistCurve:
   - serializedVersion: 2
     m_Curve: []
@@ -633,212 +648,317 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  mValue: 1.2
-  atAromor: 18
+  mValue: 1
+  atAromor: 20
   chargeRes: 1.3
   sValue:
-  - x: 0.8
+  - x: 0.65
     y: 5
-    z: 10
+    z: 5
     isCombo: 0
     isBlow: 0
-    isLight: 0
+    isLight: 1
     type: 0
     blowPower: {x: 0, y: 0}
-    useStamina: 12
-  - x: 0.8
-    y: 5
-    z: 10
+    useStamina: 10
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - x: 0.7
+    y: 8
+    z: 8
     isCombo: 0
     isBlow: 0
-    isLight: 0
+    isLight: 1
     type: 0
     blowPower: {x: 0, y: 0}
-    useStamina: 12
+    useStamina: 10
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   bValue:
-  - x: 1.3
-    y: 12
-    z: 18
+  - x: 1
+    y: 10
+    z: 10
     isCombo: 0
     isBlow: 0
     isLight: 0
     type: 1
     blowPower: {x: 0, y: 0}
-    useStamina: 17
-  - x: 1.3
-    y: 12
-    z: 18
+    useStamina: 13
+    attackEffect:
+      m_AssetGUID: f315a38a9c056f64b8bca44fe9689f06
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - x: 1.05
+    y: 13
+    z: 15
     isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
-    useStamina: 17
+    useStamina: 14
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   chargeValue:
-  - x: 1.5
-    y: 20
-    z: 22
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 1
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  - x: 1.5
-    y: 20
-    z: 25
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 0
-  airValue:
-  - x: 0.8
-    y: 5
-    z: 7
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 8
-  - x: 0.8
-    y: 7
-    z: 7
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 8
-  strikeValue:
-  - x: 1.3
+  - x: 1.2
     y: 15
     z: 15
     isCombo: 0
-    isBlow: 1
+    isBlow: 0
     isLight: 0
-    type: 0
-    blowPower: {x: 30, y: 15}
-    useStamina: 18
-  twinSValue:
-  - x: 1
-    y: 10
-    z: 12
+    type: 1
+    blowPower: {x: 0, y: 0}
+    useStamina: 20
+    attackEffect:
+      m_AssetGUID: f315a38a9c056f64b8bca44fe9689f06
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - x: 1.25
+    y: 15
+    z: 15
     isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
-    useStamina: 15
-  - x: 1
-    y: 12
-    z: 12
+    useStamina: 20
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  airValue:
+  - x: 0.6
+    y: 5
+    z: 7
     isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
-    useStamina: 15
+    useStamina: 8
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - x: 0.65
+    y: 6
+    z: 7
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 8
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  strikeValue:
   - x: 1.1
     y: 15
     z: 15
     isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 17
-  twinBValue:
-  - x: 1.2
-    y: 18
-    z: 19
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 30
-  - x: 1.2
-    y: 18
-    z: 19
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 30
-  twinChargeValue:
-  - x: 1.6
-    y: 20
-    z: 20
-    isCombo: 0
     isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 0, y: 400}
+    blowPower: {x: 100, y: 0}
     useStamina: 15
-  - x: 1.2
-    y: 20
-    z: 32
-    isCombo: 0
-    isBlow: 0
-    isLight: 0
-    type: 0
-    blowPower: {x: 0, y: 0}
-    useStamina: 32
-  twinAirValue:
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  twinSValue:
   - x: 0.8
-    y: 5
+    y: 10
     z: 10
     isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
-    useStamina: 9
-  - x: 0.8
-    y: 5
+    useStamina: 10
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - x: 0.83
+    y: 11
+    z: 11
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 10
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - x: 0.88
+    y: 12
     z: 12
     isCombo: 0
     isBlow: 0
     isLight: 0
     type: 0
     blowPower: {x: 0, y: 0}
-    useStamina: 9
-  twinStrikeValue:
-  - x: 1.3
-    y: 20
+    useStamina: 12
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  twinBValue:
+  - x: 1.15
+    y: 13
+    z: 13
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 15
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - x: 1.2
+    y: 13
+    z: 14
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 15
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  twinChargeValue:
+  - x: 1.35
+    y: 16
     z: 18
     isCombo: 0
     isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 300, y: 200}
-    useStamina: 20
-  artsValue:
-  - x: 0.3
+    blowPower: {x: 0, y: 1000}
+    useStamina: 18
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - x: 0.95
     y: 20
+    z: 9
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 20
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  twinAirValue:
+  - x: 0.75
+    y: 8
+    z: 8
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 10
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - x: 0.75
+    y: 8
+    z: 8
+    isCombo: 0
+    isBlow: 0
+    isLight: 0
+    type: 0
+    blowPower: {x: 0, y: 0}
+    useStamina: 10
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  twinStrikeValue:
+  - x: 1.15
+    y: 15
+    z: 13
+    isCombo: 0
+    isBlow: 1
+    isLight: 0
+    type: 0
+    blowPower: {x: 100, y: 0}
+    useStamina: 15
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  artsValue:
+  - x: 0.35
+    y: 15
     z: 50
     isCombo: 0
     isBlow: 0
     isLight: 0
     type: 2
-    blowPower: {x: 0, y: 250}
-    useStamina: 15
-  - x: 1.6
+    blowPower: {x: 0, y: 0}
+    useStamina: 20
+    attackEffect:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - x: 1.35
     y: 20
     z: 15
     isCombo: 0
     isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 1000, y: 200}
-    useStamina: 20
+    blowPower: {x: 1500, y: 150}
+    useStamina: 15
+    attackEffect:
+      m_AssetGUID: 7f9db16e38fbd114fa303102028b4e92
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   isLight: 0
-  twinHand: 1
-  isBlow: 0
+  twinHand: 0
+  isBlow: 1
   isCombo: 0
-  blowPower: {x: 0, y: 0}
+  blowPower: {x: 1000, y: 100}
   guardSpeed: 0

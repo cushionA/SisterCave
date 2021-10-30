@@ -5,8 +5,7 @@ using SensorToolkit;
 public class EnemySerch : MonoBehaviour
 {
 
-    string enemyTag = "Enemy";
-    string dangerTag = "Danger";
+
     //危険物はトラップエリアの入り口とかにおく？
     //危険フラグ立ててその間は動かないとか新しく待機ステート作って待機させるとか
     [SerializeField] SisterBrain sister;
@@ -24,28 +23,30 @@ public class EnemySerch : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == enemyTag)
+        if (collision.tag == SManager.instance.enemyTag)
         {
             if (CheckFoundObject(collision.gameObject) && !SManager.instance.isEscape && sister.nowState != SisterBrain.SisterState.戦い)
             {
                 SManager.instance.playObject = null;
                 sister.isPlay = false;
 
-                if (!SManager.instance.targetList.Contains(collision.gameObject))
-                {
-           //         //Debug.Log("牧島");
-                    SManager.instance.targetList.Add(collision.gameObject);
+
+                sister.reJudgeTime = 150;
+                //         Debug.Log("牧島");
+                SManager.instance.TargetAdd(collision.gameObject);
+                    SManager.instance.targetCondition.Add(SManager.instance.targetList[0].GetComponent<EnemyBase>());
                     sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
                     sister.Serch3.SetActive(true);
                     sister.Serch.SetActive(false);
                     sister.Serch2.SetActive(false);
-                    SManager.instance.playObject = null;
-                    SManager.instance.isTChange = true;
-                }
+                sister.reJudgePositionTime = SManager.instance.sisStatus.escapeTime;
+                SManager.instance.playObject = null;
+                   SManager.instance.GetClosestEnemyX();
+                
                 //検索はAgrSerchに任せる。いや入れていい。最初に検知されるのは近いやつだしどうせすぐ更新される
             }
         }
-        else if (collision.tag == dangerTag)
+        else if (collision.tag == SManager.instance.dangerTag)
         {
 
             if (CheckFoundObject(collision.gameObject) && sister.nowState != SisterBrain.SisterState.警戒)
@@ -67,28 +68,30 @@ public class EnemySerch : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == enemyTag)
+        if (collision.tag == SManager.instance.enemyTag)
         {
             if (CheckFoundObject(collision.gameObject) && !SManager.instance.isEscape && sister.nowState != SisterBrain.SisterState.戦い)
             {
                 SManager.instance.playObject = null;
                 sister.isPlay = false;
 
-                if (!SManager.instance.targetList.Contains(collision.gameObject))
-                {
-               //     //Debug.Log("牧島");
-                    SManager.instance.targetList.Add(collision.gameObject);
+
+                   //Debug.Log("牧島");
+                    SManager.instance.TargetAdd(collision.gameObject);
+                    SManager.instance.targetCondition.Add(SManager.instance.targetList[0].GetComponent<EnemyBase>());
                     sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
                     sister.Serch3.SetActive(true);
                     sister.Serch.SetActive(false);
                     sister.Serch2.SetActive(false);
-                    SManager.instance.playObject = null;
-                    SManager.instance.isTChange = true;
-                }
+                sister.reJudgePositionTime = SManager.instance.sisStatus.escapeTime;
+                SManager.instance.playObject = null;
+                  //  SManager.instance.isTChange = true;
+                    SManager.instance.GetClosestEnemyX();
+                sister.reJudgeTime = 150;
                 //検索はAgrSerchに任せる。いや入れていい。最初に検知されるのは近いやつだしどうせすぐ更新される
             }
         }
-        else if (collision.tag == dangerTag)
+        else if (collision.tag == SManager.instance.dangerTag)
         {
 
             if (CheckFoundObject(collision.gameObject) && sister.nowState != SisterBrain.SisterState.警戒)

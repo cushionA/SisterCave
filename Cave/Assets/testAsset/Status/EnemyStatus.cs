@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DarkTonic.MasterAudio;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,37 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "EnemyStatus", menuName = "CreateEnemyStatus")]
 public class EnemyStatus : CharacterStatus
 {
+	public float Atk;
+	//　無属性
+	public float phyAtk;
+	//神聖
+	public float holyAtk;
+	//闇
+	public float darkAtk;
+	//炎
+	public float fireAtk;
+	//雷
+	public float thunderAtk;
+
+	public float phyCut;//カット率
+	public float holyCut;//光。
+	public float darkCut;//闇。
+	public float fireCut;//魔力
+	public float thunderCut;//魔力
+
+	public float guardPower;//受け値
+
 	[Header("移動設定判断")]
 	///<summary>
 	///移動ステート切り替え
 	///</summary>
 	public float judgePace = 3.0f;
 
-
-
+	[Header("鎧着てるかどうか")]
+	/// <summary>
+	/// 鎧着てるかどうか
+	/// </summary>
+	 public bool isMetal;//鎧着てるかどうか
 
 	[Header("加速速度")]
 	///<summary>
@@ -56,13 +80,15 @@ public class EnemyStatus : CharacterStatus
 	///<summary>
 	///戦闘中はこの距離を目指して動く
 	///</summary>
-	public Vector2 agrDistance;
+	public List<Vector2> agrDistance;
 
 	[Header("攻撃状態で歩く距離")]
 	///<summary>
 	///戦闘中はこの距離なら歩く
 	///</summary>
 	public Vector2 walkDistance;
+
+
 
 	[Header("停止範囲")]
 	///<summary>
@@ -184,8 +210,7 @@ public class EnemyStatus : CharacterStatus
 		escape,//逃げる
 		wakeup//デフォルト
 	}
-	[HideInInspector]public MoveState ground = MoveState.wakeup;
-	[HideInInspector]public MoveState air = MoveState.wakeup;
+
 
 	public KindofEnemy kind;
 
@@ -206,7 +231,8 @@ public class EnemyStatus : CharacterStatus
 		Holy,
 		Dark,
 		Fire,
-		Thunder
+		Thunder,
+		Poison
 	}
 
 	/// <summary>
@@ -244,8 +270,18 @@ public class EnemyStatus : CharacterStatus
 	///コンボの起点と非コンボの単発攻撃のみ
 	///ここからランダムにアタックナンバーに入れたりする
 	///</Summary>
-	public List<int> serectableNumber; 
+	public List<int> serectableNumber;
 
+	[Header("参照用の攻撃力")]
+	/// <summary>
+	/// 参照用の攻撃力
+	/// </summary>
+	public int atkDisplay;
+	[Header("参照用の防御力")]
+	/// <summary>
+	/// 参照用の防御力
+	/// </summary>
+	public int defDisplay;
 
 	public List<EnemyValue> atValue;
 
@@ -259,11 +295,26 @@ public class EnemyStatus : CharacterStatus
 	[Header("カメラ範囲に行動を拘束されない")]
 	public bool unBaind;
 
-	/// <summary>
-	/// 衝突できる回数。毎回設定しなおす
-	/// </summary>
-//	[HideInInspector]
-//	public int hitLimmit = 1;
+	[Header("攻撃属性")]
+	[Tooltip("物理2,4,8、以下聖16闇32炎64雷128")]
+	///<Sammary>
+	/// 攻撃の属性
+	/// 物理統合。以下聖闇炎雷
+	///</Sammary>>
+	public byte attackType;
 
-	[HideInInspector]public bool isLight;//軽い攻撃かどうか。trueなら盾ではじかれる
+	[Header("パリィ不可エフェクトのサイズ")]
+	///<Sammary>
+	/// このサイズでパリィ不可エフェクトが出る
+	///</Sammary>>
+	public Vector3 disparriableScale;
+
+	[Header("ガード音")]
+	[SoundGroup]
+
+	/// <summary>
+	// ガード時の音
+	/// </summary>
+	public string guardSound;
+
 }

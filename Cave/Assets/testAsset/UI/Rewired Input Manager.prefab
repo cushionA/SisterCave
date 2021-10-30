@@ -313,7 +313,7 @@ MonoBehaviour:
       _positiveDescriptiveName: Up
       _negativeDescriptiveName: Down
       _behaviorId: 2
-      _userAssignable: 1
+      _userAssignable: 0
       _categoryId: 0
     - _id: 8
       _name: UIHorizontal
@@ -322,7 +322,7 @@ MonoBehaviour:
       _positiveDescriptiveName: Right
       _negativeDescriptiveName: Left
       _behaviorId: 2
-      _userAssignable: 1
+      _userAssignable: 0
       _categoryId: 0
     - _id: 9
       _name: ItemUse
@@ -396,6 +396,15 @@ MonoBehaviour:
       _behaviorId: 2
       _userAssignable: 1
       _categoryId: 0
+    - _id: 22
+      _name: Combination
+      _type: 1
+      _descriptiveName: "\u9023\u643A\u30DC\u30BF\u30F3"
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 0
     actionCategories:
     - _name: Default
       _descriptiveName: Default
@@ -405,7 +414,7 @@ MonoBehaviour:
     actionCategoryMap:
       list:
       - categoryId: 0
-        actionIds: 0000000013000000010000001100000002000000030000000500000006000000090000000a0000000b0000000d0000000c0000000e0000000400000007000000080000000f00000010000000
+        actionIds: 0000000013000000010000001100000002000000030000000500000006000000090000000a0000000b0000000d0000000c0000000e0000000400000007000000080000000f0000001000000016000000
     inputBehaviors:
     - _id: 0
       _name: Default
@@ -690,6 +699,17 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 22
+        _elementType: 1
+        _elementIdentifierId: 17
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     - id: 2
       categoryId: 0
       layoutId: 0
@@ -866,6 +886,17 @@ MonoBehaviour:
         _actionId: 4
         _elementType: 1
         _elementIdentifierId: 41
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 22
+        _elementType: 1
+        _elementIdentifierId: 42
         _axisRange: 0
         _invert: 0
         _axisContribution: 0
@@ -1253,6 +1284,17 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 22
+        _elementType: 1
+        _elementIdentifierId: 14
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     - id: 10
       categoryId: 1
       layoutId: 0
@@ -1626,6 +1668,17 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 22
+        _elementType: 1
+        _elementIdentifierId: 15
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     - id: 14
       categoryId: 0
       layoutId: 0
@@ -1827,6 +1880,17 @@ MonoBehaviour:
         _axisRange: 0
         _invert: 0
         _axisContribution: 1
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 22
+        _elementType: 1
+        _elementIdentifierId: 15
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
         _keyboardKeyCode: 0
         _modifierKey1: 0
         _modifierKey2: 0
@@ -2274,6 +2338,17 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 22
+        _elementType: 1
+        _elementIdentifierId: 15
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     - id: 17
       categoryId: 1
       layoutId: 0
@@ -2564,6 +2639,17 @@ MonoBehaviour:
         _modifierKey1: 0
         _modifierKey2: 0
         _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 22
+        _elementType: 1
+        _elementIdentifierId: -1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 98
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
     - id: 1
       categoryId: 1
       layoutId: 0
@@ -2654,7 +2740,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 2
-    actionIdCounter: 22
+    actionIdCounter: 23
     actionCategoryIdCounter: 1
     inputBehaviorIdCounter: 3
     mapCategoryIdCounter: 2

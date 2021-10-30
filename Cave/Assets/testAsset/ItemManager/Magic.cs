@@ -1,16 +1,23 @@
-﻿using System.Collections;
+﻿using DarkTonic.MasterAudio;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 public class Magic : Item
 {
+
+	[Header("装備画面で選択できるか")]
+	public bool selectable;
+
 	[HideInInspector]
 	public enum FIREBULLET
 	{
 		ANGLE,//角度だけangleで指定できる
 		HOMING,//完全追尾
 		HOMING_Z,//指定した角度内に標的があるとき追尾。
+		RAIN,//最初に発射地点から標的までの角度を計算してその角度で全弾撃ちおろす
+		STOP,//動かない
 	}
 	public enum AttackType
     {
@@ -23,13 +30,15 @@ public class Magic : Item
     /// </summary>
     public AttackType atType;
 
+	public int magicLevel;
 
-    public float phyBase;//物理攻撃。これが1以上なら斬撃打撃の属性つける
+
+	public float phyBase;//物理攻撃。これが1以上なら斬撃打撃の属性つける
     public float holyBase;//光。筋力と賢さが関係。生命力だから
     public float darkBase;//闇。魔力と技量が関係
     public float fireBase;//魔力
     public float thunderBase;//魔力
-	public float recoverBase;//回復
+	//public float recoverBase;//回復
 
 	public float phyAtk;//物理攻撃。これが1以上なら斬撃打撃の属性つける
 	public float holyAtk;//光。筋力と賢さが関係。生命力だから
@@ -37,7 +46,16 @@ public class Magic : Item
 	public float fireAtk;//魔力
 	public float thunderAtk;//魔力
 
-	public float recoverAmount;//回復
+	[Header("表示用攻撃力")]
+	public float displayAtk;
+	[Header("回復の基礎量")]
+	public float recoverBase;//回復
+
+	
+	///<summary>
+	/// 最終的な回復量
+	/// </summary>
+	public float recoverAmount;
 
 	/// <summary>
 	/// 詠唱時間。スキルや秘伝書（早口言葉）、技量で少なくなる？
@@ -45,7 +63,7 @@ public class Magic : Item
 	public float castTime;
 
 	public float useMP;//消費MP
-
+   [Header("効果時間")]
     public float effectTime;//効果時間
 	[HideInInspector] public bool effectNow;//効果中かどうか
 
@@ -57,7 +75,7 @@ public class Magic : Item
 
 
 
-	public Transform firePosition;//発射位置
+	//public Transform firePosition;//発射位置
     //各能力補正
     public AnimationCurve powerCurve;
     public AnimationCurve skillCurve;
@@ -65,18 +83,13 @@ public class Magic : Item
 
     public float shock;//アーマー削り
 
-    public List<float> motionValue;
-    [HideInInspector]
+    [Header("モーション値")]
     public float mValue;//攻撃するときリストの中からその都度モーション値設定。弾丸部分と爆発部分で威力違うとかできる
 						//二つ目のエフェクトの起動時とかに
 
 	public FIREBULLET fireType = FIREBULLET.HOMING;
 
-	[Header("ヒット時のノックバック")]
-	///<summary>
-	///当たった時にノックバックさせる。
-	///</summary>
-	public Vector2 attackNockBackVector;
+
 
 	[Header("貫通弾")]
 	///<summary>
@@ -125,17 +138,21 @@ public class Magic : Item
 	/// </summary>
 	public float homingAngleA = 20.0f;
 
-	[Header("ヒット時のエフェクト")]
-	/// <summary>
-	/// こちらに爆発処理とか乗せる
-	/// </summary>
-	public AssetReference hitEffect;
 
-	[Header("追加エフェクトの大きさ")]
+
+	[Header("子弾かどうか")]
 	/// <summary>
-	/// localScaleで設定
+	/// 子弾かどうか
 	/// </summary>
-	public Vector3 hitEffectScale = Vector3.one;
+	public bool isChild;
+
+	/*	[Header("追加エフェクトの大きさ")]
+		/// <summary>
+		/// localScaleで設定
+		/// </summary>
+		public Vector3 hitEffectScale = Vector3.one;*/
+
+	[Header("弾丸の回転")]
 	public float rotateVt = 360.0f;
 
 	[Header("回転オン")]
@@ -148,18 +165,25 @@ public class Magic : Item
 	/// <summary>
 	/// 大きくしたり小さくしたり
 	/// </summary>
-	public Vector3 bulletScaleV = Vector3.zero;
+	public Vector2 bulletScaleV = Vector3.zero;
 
 	[Header("弾丸の拡大の加速率")]
 	/// <summary>
 	/// だんだん大きくしたり
 	/// </summary>
-	public Vector3 bulletScaleA = Vector3.zero;
+	public Vector2 bulletScaleA = Vector3.zero;
 
+	[Header("吹き飛ばすかどうか")]
 	/// <summary>
 	/// //吹っ飛ばし攻撃
 	/// </summary>
 	public bool isBlow;
+
+	[Header("位置をサーチして発生するか")]
+	/// <summary>
+	/// ターゲットの位置に発生するかどうか
+	/// </summary>
+	public bool isChaice;
 
 	[Header("吹っ飛ばし力")]
 	/// <summary>
@@ -167,14 +191,93 @@ public class Magic : Item
 	/// </summary>
 	public Vector2 blowPower;
 
-	/// <summary>
-	/// 衝突できる回数。毎回設定しなおす
-	/// </summary>
-	//public int hitLimmit = 1;
+
 
 	[Header("弾丸の数")]
 	/// <summary>
 	/// 一度にばらまかれる数
 	/// </summary>
 	public int bulletNumber;
+
+	[Header("弾丸の縦位置")]
+	/// <summary>
+	/// ばらまかれる際の縦のランダム要素
+	/// </summary>
+	public int VRandom;
+
+	[Header("弾丸の横位置")]
+	/// <summary>
+	/// ばらまかれる際の横のランダム要素
+	/// </summary>
+	public int HRandom;
+
+	[Header("詠唱中のエフェクト")]
+	/// <summary>
+	// 詠唱中のエフェクト
+	/// </summary>
+	public AssetReference castEffect;
+
+
+	/*	[Header("発生エフェクト")]
+		/// <summary>
+		// 発生時のエフェクト
+		/// </summary>
+		public AssetReference fireEffect;*/
+	[Header("発生サウンド")]
+	[SoundGroup]
+	/// <summary>
+	// 発生時のサウンド
+	/// </summary>
+	public string fireSound;
+
+	[Header("恒常サウンド")]
+	[SoundGroup]
+	
+	/// <summary>
+	// 存在してる間のサウンド
+	/// </summary>
+	public string existSound;
+
+	[Header("衝突サウンド")]
+	[SoundGroup]
+	/// <summary>
+	// 衝突時のサウンド
+	/// </summary>
+	public string hitSound;
+
+	[Header("発動モーション名")]
+	/// <summary>
+	// 発動のアニメ
+	/// </summary>
+	public string FireAnime;
+
+	[Header("詠唱モーション名")]
+	/// <summary>
+	// 詠唱のアニメ
+	/// </summary>
+	public string castAnime;
+
+	[Header("ヒット時のエフェクト")]
+	/// <summary>
+	/// こちらに爆発処理とか乗せる
+	/// </summary>
+	public AssetReference hitEffect;
+
+	[Header("ヒット時のエフェクトあるか")]
+	/// <summary>
+	/// こちらに爆発処理とか乗せる
+	/// </summary>
+	public bool isHit;
+
+	[Header("攻撃属性")]
+	[Tooltip("物理2,4,8、以下聖16闇32炎64雷128")]
+	///<Sammary>
+	/// 攻撃の属性
+	/// 物理統合、以下聖闇炎雷
+	///</Sammary>>
+	public byte attackType;
+
+	[Header("初期回転")]
+	///</Sammary>>
+	public Vector3 startRotation;
 }

@@ -19,9 +19,9 @@ public class KnightMagicSelect : MonoBehaviour
 
     private void Update()
     {
-        if (GManager.instance.pStatus.equipMagic[setNumber] != null)
+        if (GManager.instance.equipMagic[setNumber] != null)
         {
-            this.contentIcon.sprite = GManager.instance.pStatus.equipMagic[setNumber].icon;
+            this.contentIcon.sprite = GManager.instance.equipMagic[setNumber].icon;
         }
     }
 

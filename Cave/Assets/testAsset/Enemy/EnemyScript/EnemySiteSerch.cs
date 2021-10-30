@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EnemySiteSerch : MonoBehaviour
 {
-    public GameObject player;
+    //public
+        //GameObject player;
 
     // string GManager.instance.playerTag = "Player";
     [SerializeField] EnemyBase enemy;
@@ -17,6 +18,7 @@ public class EnemySiteSerch : MonoBehaviour
     void Start()
     {
         //     enemy = GetComponentInParent<EnemyBase>();
+       
     }
 
 
@@ -26,11 +28,12 @@ public class EnemySiteSerch : MonoBehaviour
         if (collision.tag == GManager.instance.playerTag)
         {
 
-            if (CheckFoundObject(player))
+            if (CheckFoundObject(GManager.instance.Player))
             {
                 enemy.isAggressive = true;
                 enemy.Serch.SetActive(false);
                 enemy.Serch2.SetActive(false);
+                
             }
         }
     }
@@ -39,7 +42,7 @@ public class EnemySiteSerch : MonoBehaviour
         if (collision.tag == GManager.instance.playerTag)
         {
 
-            if (CheckFoundObject(player))
+            if (CheckFoundObject(GManager.instance.Player))
             {
                 enemy.isAggressive = true;
                 enemy.Serch.SetActive(false);

@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24521e4c919450045b8baa907364fee0, type: 3}
+  m_Name: InitialCore
+  m_EditorClassIdentifier: 
+  icon: {fileID: 0}
+  itemName: "\u9996\u7121\u3057\u306E\u6838"
+  hiraganaName: 
+  information: 
+  number: 0
+  holdLimmit: 1
+  isDrop: 0
+  inventoryNum: 0
+  additionalHp: 0
+  additionalMp: 0
+  additionalStamina: 0
+  additionalWeight: 0
+  additionalVitality: 0
+  additionalEndurance: 0
+  additionalCapacity: 0
+  additionalPower: 0
+  additionalSkill: 0
+  additionalInt: 0
+  Def: 0
+  pierDef: 0
+  strDef: 0
+  holyDef: 0
+  darkDef: 0
+  fireDef: 0
+  thunderDef: 0
+  additionalArmor: 35

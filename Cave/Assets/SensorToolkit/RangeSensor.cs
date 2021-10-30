@@ -86,6 +86,7 @@ namespace SensorToolkit
             }
         }
 
+        List<GameObject> newDetections = new List<GameObject>();
         void testSensor()
         {
             prepareCollidersBuffer();
@@ -106,7 +107,7 @@ namespace SensorToolkit
             }
 
             clearColliders();
-
+            newDetections.Clear();
             for (int i = 0; i < numberDetected; i++)
             {
                 var newDetection = addCollider(collidersBuffer[i]);
@@ -118,9 +119,14 @@ namespace SensorToolkit
                     }
                     else
                     {
-                        OnDetected.Invoke(newDetection, this);
+                        newDetections.Add(newDetection);
                     }
                 }
+            }
+
+            foreach (var newDetection in newDetections) 
+            {
+                OnDetected.Invoke(newDetection, this);
             }
 
             // Any entries still in previousDetectedObjects are no longer detected

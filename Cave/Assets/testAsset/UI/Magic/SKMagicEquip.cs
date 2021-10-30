@@ -47,12 +47,12 @@ public class SKMagicEquip : MonoBehaviour
         MagicManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
         MainUI.instance.MenuCancel();
-        MainUI.instance.weponWindow.SetActive(false);
+        MainUI.instance.weaponWindow.SetActive(false);
         MainUI.instance.eqWindow.SetActive(true);
         if (MagicManager.instance.isKnightM)
         {
-            GManager.instance.pStatus.equipMagic[MagicManager.instance.setNumber] = MagicManager.instance.selectItem as PlayerMagic;
-            EquipmentManager.instance.EqWepon[MagicManager.instance.setNumber].Select();
+            GManager.instance.equipMagic[MagicManager.instance.setNumber] = MagicManager.instance.selectItem as PlayerMagic;
+            EquipmentManager.instance.EqWeapon[MagicManager.instance.setNumber].Select();
         }
         else
         {

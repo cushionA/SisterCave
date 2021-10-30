@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DarkTonic.MasterAudio;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,23 @@ public class Equip : Item
     public Sprite[] Side = new Sprite[2];
     public Sprite[] Naname = new Sprite[2];
 
+    /// <summary>
+    /// 装備レベル
+    /// </summary>
+    [HideInInspector] public int wLevel = 0;
+
+    [HideInInspector] public float Atk;
+    //　無属性
+    [HideInInspector] public float phyAtk;
+    //神聖
+    [HideInInspector] public float holyAtk;
+    //闇
+    [HideInInspector] public float darkAtk;
+    //炎
+    [HideInInspector] public float fireAtk;
+    //雷
+    [HideInInspector] public float thunderAtk;
+
     [Header("基礎攻撃力")]
     public List<float> phyBase;//物理攻撃。これが1以上ならモーションにアニメイベントとかで斬撃打撃の属性つける
     public List<float> holyBase;//光。筋力と賢さが関係。生命力だから
@@ -21,16 +39,27 @@ public class Equip : Item
     public float needSkill;//必要技量
     public float needInt;//必要な賢さ
 
+
+    [HideInInspector] public float phyCut;//カット率
+    [HideInInspector] public float holyCut;//光。
+    [HideInInspector] public float darkCut;//闇。
+    [HideInInspector] public float fireCut;//魔力
+    [HideInInspector] public float thunderCut;//魔力
+    [HideInInspector] public float guardPower;//受け値
     [Header("カット率")]
     // Start is called before the first frame update
-    public List<float> phyCut;//カット率
-    public List<float> holyCut;//光。
-    public List<float> darkCut;//闇。
-    public List<float> fireCut;//魔力
-    public List<float> thunderCut;//魔力
+    public List<float> phyCutSet;//カット率
+    public List<float> holyCutSet;//光。
+    public List<float> darkCutSet;//闇。
+    public List<float> fireCutSet;//魔力
+    public List<float> thunderCutSet;//魔力
+
+    public List<AnimationCurve> powerCurve;
+    public List<AnimationCurve> skillCurve;
+    public List<AnimationCurve> intCurve;
 
     [Header("ガード力")]
-    public List<float> guardPower;//受け値
+    public List<float> guardPowerSet;//受け値
 
     [Header("ジャスガ開始時間")]
     public float parryStart;
@@ -49,5 +78,20 @@ public class Equip : Item
     [Header("固有技の消費MP")]
     public List<float> artsMP;
 
+    [Header("使用する音声、最初はガード")]
+    [SoundGroup]
+    ///<Summary>
+    ///　使用する音声のリスト。
+    ///　Status.useSound[i]という形でアニメイベントで指定
+    ///</Summary>
+    public List<string> useSound;
 
+    [Header("攻撃属性")]
+    [Tooltip("物理2,4,8、以下聖16闇32炎64雷128")]
+    ///<Sammary>
+    /// 攻撃の属性
+    /// 物理統合、以下聖闇炎雷
+    /// エンチャント時はエンチャントタイプを利用
+    ///</Sammary>>
+    public byte attackType;
 }

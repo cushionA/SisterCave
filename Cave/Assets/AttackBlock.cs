@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,15 +10,24 @@ public class AttackBlock : MonoBehaviour
 
     //UŒ‚’Ê‚è”²‚¯‘jŽ~
     // Update is called once per frame
-    void FixedUpdate()
+    //   async UniTaskVoid FixedUpdate()
+    // {
+    //  await UniTask.RunOnThreadPool(() => attackBlock());
+    //}
+    private void FixedUpdate()
+    {
+        attackBlock();
+    }
+
+    void attackBlock()
     {
         if (!GManager.instance.fallAttack)
         {
-            if ((GManager.instance.isGuard || GManager.instance.isAttack) && !bc.enabled)
+            if ((GManager.instance.isGuard || GManager.instance.isAttack || (!GManager.instance.blowDown && GManager.instance.isDamage)) && !bc.enabled)
             {
                 bc.enabled = true;
             }
-            else if (!(GManager.instance.isGuard || GManager.instance.isAttack) && bc.enabled)
+            else if ((!GManager.instance.isGuard && !GManager.instance.isAttack && !GManager.instance.isDamage) && bc.enabled)
             {
                 bc.enabled = false;
             }
@@ -26,5 +36,11 @@ public class AttackBlock : MonoBehaviour
         {
             bc.enabled = false;
         }
+    }
+
+    void attackBlock2()
+    {
+
+        
     }
 }

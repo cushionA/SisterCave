@@ -14,7 +14,6 @@ TagManager:
   - JumpTrigger
   - rope2D
   - Attack
-  - SisterMagic
   - PlayerMagic
   - ActiveZone
   - Guard
@@ -32,15 +31,15 @@ TagManager:
   - Water
   - UI
   - PlayerSerch
-  - Sloop
+  - NBloomEffect
   - Ground
-  - Squat
+  - Effect
   - Avoid
   - Player
   - Sister
   - Attack
   - EnemyAttack
-  - SisterAttack
+  - EAttackBlock
   - Gimick
   - Enemy
   - PatrolSerch
@@ -55,7 +54,7 @@ TagManager:
   - JumpTrigger
   - EnemyAvoid
   - SquatWall
-  - SquatAttack
+  - Heal
   - Wall
   m_SortingLayers:
   - name: BackGround
@@ -78,6 +77,9 @@ TagManager:
     locked: 0
   - name: Sister
     uniqueID: 1089981123
+    locked: 0
+  - name: Effect
+    uniqueID: 4276400555
     locked: 0
   - name: FrotObject
     uniqueID: 3034338443

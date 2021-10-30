@@ -4,50 +4,114 @@ using UnityEngine;
 
 public class EAttackController : MonoBehaviour
 {
-    [SerializeField]EnemyBase eb;
+    [SerializeField] EnemyBase eb;
 
     // Start is called before the first frame update
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == GManager.instance.guardTag)
+        /*       if (collision.tag == GManager.instance.guardTag)
+               {
+                   if (GManager.instance.isParry && !eb.atV.disParry)
+                   {
+                       eb.PlayerParry();
+                   }
+                   else
+                   {
+                       eb.PlayerGuard();
+                   }
+               }
+              else  if(collision.tag == GManager.instance.playerTag)
+               {
+                   eb.AttackDamage();
+               }*/
+        if (GManager.instance.isGuard)
         {
-            if (GManager.instance.isParry && !eb.atV.disParry)
+            //Vector3 relativePoint = transform.InverseTransformPoint(co.point);
+            bool success;
+
+            if (GManager.instance.Player.transform.localScale.x > 0)
             {
-                eb.PlayerParry();
+                success = GManager.instance.Player.transform.position.x <= transform.position.x ? true : false;
             }
             else
             {
-                eb.PlayerGuard();
+                success = GManager.instance.Player.transform.position.x > transform.position.x ? true : false;
             }
+
+            if (success)
+            {
+                if (GManager.instance.isParry && !eb.atV.disParry)
+                {
+                    eb.PlayerParry();
+                }
+                else
+                {
+                    eb.PlayerGuard();
+                }
+return;
+            }
+            
         }
-       else  if(collision.tag == GManager.instance.playerTag)
+        if (collision.tag == GManager.instance.playerTag)
         {
             eb.AttackDamage();
         }
-        
 
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
 
 
-        if (collision.tag == GManager.instance.guardTag)
+        /*       if (collision.tag == GManager.instance.guardTag)
+              {
+                  if (GManager.instance.isParry && !eb.atV.disParry)
+                  {
+                      eb.PlayerParry();
+                  }
+                  else
+                  {
+                      eb.PlayerGuard();
+                  }
+              }
+             else  if(collision.tag == GManager.instance.playerTag)
+              {
+                  eb.AttackDamage();
+              }*/
+        if (GManager.instance.isGuard)
         {
-            if (GManager.instance.isParry && eb.atV.disParry)
+            //Vector3 relativePoint = transform.InverseTransformPoint(co.point);
+            bool success;
+
+            if (GManager.instance.Player.transform.localScale.x > 0)
             {
-                eb.PlayerParry();
+                success = GManager.instance.Player.transform.position.x <= transform.position.x ? true : false;
             }
             else
             {
-                eb.PlayerGuard();
+                success = GManager.instance.Player.transform.position.x > transform.position.x ? true : false;
             }
+
+            if (success)
+            {
+                if (GManager.instance.isParry && !eb.atV.disParry)
+                {
+                    eb.PlayerParry();
+                }
+                else
+                {
+                    eb.PlayerGuard();
+                }
+                return;
+            }
+            
         }
-        else if (collision.tag == GManager.instance.playerTag)
+        if (collision.tag == GManager.instance.playerTag)
         {
             eb.AttackDamage();
         }
-    }
 
+
+    }
 }

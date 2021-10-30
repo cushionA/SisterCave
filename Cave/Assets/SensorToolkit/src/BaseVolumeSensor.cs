@@ -646,6 +646,8 @@ namespace SensorToolkit
             var rp = new Vector3(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f), Random.Range(-.5f, .5f));
             rp.Scale(rc.bounds.size);
             rp += rc.bounds.center - goRoot.transform.position;
+            var goScale = goRoot.transform.lossyScale;
+            rp.Scale(new Vector3(1 / goScale.x, 1 / goScale.y, 1 / goScale.z));
             return rp;
         }
 

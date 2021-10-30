@@ -1,10 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
+using UnityEngine.AddressableAssets;
 [System.Serializable] //これを書くとinspectorに表示される。
-public struct AttackValue
+
+public class AttackValue
 {
+    
+
     [Header("モーション値")]
     public float x;
     [Header("攻撃時のアーマー")]
@@ -18,10 +19,13 @@ public struct AttackValue
     [Header("弾かれるかどうか")]
     public bool isLight;
     [Header("攻撃タイプ")]
-    public Wepon.AttackType type;
+    public Weapon.AttackType type;
     [Header("吹っ飛ばす力")]
      public Vector2 blowPower;
     [Header("スタミナ消費")]
     public int useStamina;
+    [Header("攻撃エフェクト")]
+  // [AssetReferenceUILabelRestriction("AttackEffect")]
+    public AssetReference attackEffect;
 
 }

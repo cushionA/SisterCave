@@ -87,7 +87,7 @@ public class EnemyFireBullet : MonoBehaviour
 		if (!em.penetration)
 		{
 			GameObject next = Addressables.InstantiateAsync(em.hitEffect, this.gameObject.transform.position, Quaternion.identity).Result;//次のエフェクトを
-			next.transform.localScale = em.hitEffectScale;
+			//next.transform.localScale = em.hitEffectScale;
 			Addressables.ReleaseInstance(this.gameObject);
 		}
 
@@ -207,10 +207,10 @@ public class EnemyFireBullet : MonoBehaviour
 			}
 			else
 			{
-				GManager.instance.nowArmor -= (em.Shock - GManager.instance.pStatus.equipWeapon.atAromor) < 0 ? 0 : (em.Shock - GManager.instance.pStatus.equipWeapon.atAromor);
+				GManager.instance.nowArmor -= (em.Shock - GManager.instance.equipWeapon.atAromor) < 0 ? 0 : (em.Shock - GManager.instance.equipWeapon.atAromor);
 			}
 			damage = Mathf.Floor(damage * em.attackBuff);
-			GManager.instance.pStatus.hp -= damage;
+			GManager.instance.hp -= damage;
 		}
 		if(em.isBlow == true && GManager.instance.nowArmor <= 0)
         {
@@ -235,7 +235,17 @@ public class EnemyFireBullet : MonoBehaviour
 				em.hitLimmit--;
 				//mValueはモーション値
 				float damage = 0;//バフデバフ処理用にdamageとして保持する
-				if (em.phyAtk > 0)
+			Equip useEquip;
+			if (!GManager.instance.equipWeapon.twinHand)
+			{
+				useEquip = GManager.instance.equipShield;
+			}
+			else
+			{
+				useEquip = GManager.instance.equipWeapon;
+			}
+
+			if (em.phyAtk > 0)
 				{
 					//斬撃刺突打撃を管理
 					if (em.atType == EnemyMagic.AttackType.Slash)
@@ -245,33 +255,33 @@ public class EnemyFireBullet : MonoBehaviour
 					else if (em.atType == EnemyMagic.AttackType.Strike)
 					{ damage += (Mathf.Pow(em.phyAtk, 2) * em.mValue) / (em.phyAtk + GManager.instance.pStatus.strDef); }
 
-					damage *= (100 - GManager.instance.pStatus.phyCut) / 100;
+					damage *= (100 - useEquip.phyCut) / 100;
 				}
 				//神聖
 				if (em.holyAtk > 0)
 				{
-					damage += ((Mathf.Pow(em.holyAtk, 2) * em.mValue) / (em.holyAtk + GManager.instance.pStatus.holyDef)) * (100 - GManager.instance.pStatus.holyCut) / 100;
+					damage += ((Mathf.Pow(em.holyAtk, 2) * em.mValue) / (em.holyAtk + GManager.instance.pStatus.holyDef)) * (100 - useEquip.holyCut) / 100;
 				}
 				//闇
 				if (em.darkAtk > 0)
 				{
-					damage += ((Mathf.Pow(em.darkAtk, 2) * em.mValue) / (em.darkAtk + GManager.instance.pStatus.darkDef)) * (100 - GManager.instance.pStatus.darkCut) / 100;
+					damage += ((Mathf.Pow(em.darkAtk, 2) * em.mValue) / (em.darkAtk + GManager.instance.pStatus.darkDef)) * (100 - useEquip.darkCut) / 100;
 				}
 				//炎
 				if (em.fireAtk > 0)
 				{
-					damage += ((Mathf.Pow(em.fireAtk, 2) * em.mValue) / (em.fireAtk + GManager.instance.pStatus.fireDef)) * (100 - GManager.instance.pStatus.fireCut) / 100;
+					damage += ((Mathf.Pow(em.fireAtk, 2) * em.mValue) / (em.fireAtk + GManager.instance.pStatus.fireDef)) * (100 - useEquip.fireCut) / 100;
 				}
 				//雷
 				if (em.thunderAtk > 0)
 				{
-					damage += ((Mathf.Pow(em.thunderAtk, 2) * em.mValue) / (em.thunderAtk + GManager.instance.pStatus.thunderDef)) * (100 - GManager.instance.pStatus.thunderCut) / 100;
+					damage += ((Mathf.Pow(em.thunderAtk, 2) * em.mValue) / (em.thunderAtk + GManager.instance.pStatus.thunderDef)) * (100 - useEquip.thunderCut) / 100;
 				}
 
-				GManager.instance.pStatus.stamina -= (em.Shock * 2) * ((100 - GManager.instance.pStatus.guardPower) / 100);
+				GManager.instance.pStatus.stamina -= (em.Shock * 2) * ((100 - useEquip.guardPower) / 100);
 			
 
-				GManager.instance.pStatus.hp -= damage * em.attackBuff;
+				GManager.instance.hp -= damage * em.attackBuff;
 			}
 		if (GManager.instance.pStatus.stamina <= 0)
 		{

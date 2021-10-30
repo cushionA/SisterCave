@@ -20,22 +20,44 @@ using UnityEngine.UI;
     public float Endurance = 1;
     //MPと魔法もてる数
     public float capacity = 1;
-    //技量。詠唱時間
-    public float castSkill = 1;
-    //　魔法力。賢さ
-    public float _int = 1;
-    //　信仰。これがあるからシスターさんの魔法は威力が高い
-    public float faith = 1;
-    //　獲得経験値
-    public int earnedExperience = 0;
+
+	[Header("詠唱の技量")]
+	public float castSkill = 1;
+	[Header("魔法力。賢さ")]
+	public float _int = 1;
+	[Header("信仰")]
+	//　信仰。これがあるからシスターさんの魔法は威力が高い
+	public float faith = 1;
+
+	[Header("MPの回復量")]
+	public int mpRecover = 3;
+
+	[HideInInspector]
+	///<Summary>
+	///追加の回復量
+	///</Summary>
+	public int additionalRecover = 0;
+
+
+	//　獲得経験値
+	public int earnedExperience = 0;
 
     public float attackBuff = 1.0f;
     //　装備している魔法
-    public List<SisMagic> equipMagic = null;
+	[Header("装備魔法")]
+    public List<SisMagic> equipMagic;
     [HideInInspector]public SisMagic useMagic;
 
-    public float castSpeed;//詠唱短縮
-    public float magicAssist;
+	//　装備している魔法
+	[Header("装備連携")]
+	public SisterCombination equipCombination;
+
+	//[Header("詠唱短縮")]
+	//public float castSpeed;
+	//技量から算出すればいい
+
+	[Header("魔法の威力")]
+	public float magicPower;
     //private Item useMagic;
 
 
@@ -67,7 +89,7 @@ using UnityEngine.UI;
 	///<summary>
 	///戦闘中にプレイヤーがこれだけ離れてたらワープするという距離
 	///</summary>
-	public float warpDistance;
+	public Vector2 warpDistance;
 
 
 	[Header("加速速度")]

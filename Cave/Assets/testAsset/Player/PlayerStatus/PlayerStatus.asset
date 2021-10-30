@@ -16,23 +16,17 @@ MonoBehaviour:
   isParalyze: 0
   level: 1
   maxHp: 481
-  hp: 481
+  hp: 634
   maxMp: 31
-  mp: 0
+  mp: 31
   maxStamina: 312.2092
-  stamina: 281.2092
+  stamina: 312.2092
   Vitality: 77
   Endurance: 66
   capacity: 800
   power: 10
   skill: 1
   _int: 1
-  Atk: 44070.65
-  phyAtk: 132.05594
-  holyAtk: 0
-  darkAtk: 0
-  fireAtk: 0
-  thunderAtk: 0
   Def: 70
   pierDef: 70
   strDef: 70
@@ -40,16 +34,12 @@ MonoBehaviour:
   darkDef: 70
   fireDef: 70
   thunderDef: 70
-  phyCut: 0
-  holyCut: 0
-  darkCut: 0
-  fireCut: 0
-  thunderCut: 0
-  guardPower: 0
   Armor: 0
-  nowArmor: 0
   nockBackPower: 0
   attackBuff: 1
+  useSound: []
+  footStepSound: 
+  walkSound: 
   PlayerLevel: 1
   initialHp: 480
   initialMp: 30

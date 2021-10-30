@@ -1,7 +1,7 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
 
-public class WeponEquipButton : MonoBehaviour
+public class WeaponEquipButton : MonoBehaviour
 {
 
     public int setNumber;
@@ -17,22 +17,22 @@ public class WeponEquipButton : MonoBehaviour
 
     private void Update()
     {
-        if (GManager.instance.setWepon[setNumber] != null)
+        if (GManager.instance.setWeapon[setNumber] != null)
         {
-            this.contentIcon.sprite = GManager.instance.setWepon[setNumber].icon;
+            this.contentIcon.sprite = GManager.instance.setWeapon[setNumber].icon;
         }
     }
 
 
-    public void WeponEquip()
+    public void WeaponEquip()
     {
         // MainUI.instance.isReBuild = true;
         MainUI.instance.wec.isEver = false;
         MainUI.instance.wec.isIniti = false;
-        MainUI.instance.weponWindow.SetActive(true);
+        MainUI.instance.weaponWindow.SetActive(true);
         EquipmentManager.instance.InitialButton.Select();
         EquipManager.instance.setNumber = setNumber;
-        EquipManager.instance.isWeponM = true;
+        EquipManager.instance.isWeaponM = true;
         MainUI.instance.eqWindow.SetActive(false);
 
 

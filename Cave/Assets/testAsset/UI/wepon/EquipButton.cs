@@ -47,22 +47,22 @@ public class EquipButton : MonoBehaviour
             }
 
 
-            if (EquipManager.instance.isWeponM || EquipManager.instance.isShieldM)
+            if (EquipManager.instance.isWeaponM || EquipManager.instance.isShieldM)
             {
               //  ////Debug.log("サイパン");
                 if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
-                    MainUI.instance.weponWindow.SetActive(false);
+                    MainUI.instance.weaponWindow.SetActive(false);
                     MainUI.instance.eqWindow.SetActive(true);
-                    if (EquipManager.instance.isWeponM && !EquipManager.instance.isShieldM)
+                    if (EquipManager.instance.isWeaponM && !EquipManager.instance.isShieldM)
                     {
-                        EquipmentManager.instance.EqWepon[ToolManager.instance.setNumber].Select();
+                        EquipmentManager.instance.EqWeapon[ToolManager.instance.setNumber].Select();
                     }
-                    else if (!EquipManager.instance.isWeponM && EquipManager.instance.isShieldM)
+                    else if (!EquipManager.instance.isWeaponM && EquipManager.instance.isShieldM)
                     {
                         EquipmentManager.instance.EqShield[ToolManager.instance.setNumber].Select();
                     }
-                    EquipManager.instance.isWeponM = false;
+                    EquipManager.instance.isWeaponM = false;
                     EquipManager.instance.isShieldM = false;
                     MainUI.instance.ButtonOn();
                     //MainUI.instance.eqButton.SetActive(true);
@@ -88,7 +88,7 @@ public class EquipButton : MonoBehaviour
         {
             EquipManager.instance.selectItem = item;
             // position = this.GetComponent<RectTransform>().anchoredPosition;
-            if (!EquipManager.instance.isWeponM && !EquipManager.instance.isShieldM)
+            if (!EquipManager.instance.isWeaponM && !EquipManager.instance.isShieldM)
             {
                 EquipManager.instance.selectWindow.SetActive(true);
                 EquipManager.instance.selectWindow.transform.parent = MainUI.instance.selectButton.transform;
@@ -114,7 +114,7 @@ public class EquipButton : MonoBehaviour
 
     public void CancelWindow()
     {
-        if (!EquipManager.instance.isWeponM && !EquipManager.instance.isShieldM)
+        if (!EquipManager.instance.isWeaponM && !EquipManager.instance.isShieldM)
         {
             EquipManager.instance.selectWindow.SetActive(false);
         }

@@ -1,0 +1,187 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 832aa2b1771573b45a71909acaa2b710, type: 3}
+  m_Name: SScorpion
+  m_EditorClassIdentifier: 
+  isPoison: 0
+  isParalyze: 0
+  level: 1
+  maxHp: 900
+  maxMp: 30
+  maxStamina: 60
+  stamina: 60
+  Vitality: 1
+  Endurance: 1
+  capacity: 1
+  power: 1
+  skill: 1
+  _int: 1
+  Def: 140
+  pierDef: 170
+  strDef: 90
+  holyDef: 100
+  darkDef: 70
+  fireDef: 70
+  thunderDef: 70
+  Armor: 90
+  useSound: []
+  footStepSound: 
+  walkSound: 
+  Atk: 120
+  phyAtk: 120
+  holyAtk: 0
+  darkAtk: 0
+  fireAtk: 0
+  thunderAtk: 0
+  phyCut: 100
+  holyCut: 60
+  darkCut: 60
+  fireCut: 55
+  thunderCut: 40
+  guardPower: 70
+  judgePace: 2.5
+  isMetal: 1
+  addSpeed: {x: 300, y: 0}
+  patrolSpeed: {x: 13, y: 0}
+  waitDistance: {x: 50, y: 0}
+  waitRes: 1
+  combatSpeed: {x: 13, y: 0}
+  agrDistance:
+  - {x: 15, y: 0}
+  walkDistance: {x: 1000, y: 0}
+  adjust: 15
+  escapeDistance: {x: 200, y: 100}
+  chaseRes: 25
+  jumpMove: 0
+  jumpPower: 0
+  jumpRes: 0.4
+  jumpCool: 0
+  avoidSpeed: {x: 0, y: 0}
+  avoidRes: 0
+  avoidCool: 0
+  firstGravity: 30
+  downRes: 1.5
+  velocityMin: {x: -100, y: -100}
+  velocityMax: {x: 100, y: 50}
+  enemyFire: []
+  dogPile: {fileID: 0}
+  money: 0
+  dropItem: []
+  strong: 0
+  boss: 0
+  kind: 3
+  wp: 06000000
+  attackName:
+  - Attack2
+  - Attack5
+  - Attack3
+  - Attack1
+  - Attack4
+  serectableNumber: 00000000010000000300000004000000
+  atkDisplay: 0
+  defDisplay: 0
+  atValue:
+  - mValue: 1.1
+    aditionalArmor: 18
+    shock: 18
+    isBlow: 0
+    isLight: 1
+    type: 0
+    coolTime: 2
+    blowPower: {x: 0, y: 0}
+    isCombo: 0
+    isShoot: 0
+    disParry: 0
+    parryResist: 0
+    escapePercentage: 10
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - mValue: 1.1
+    aditionalArmor: 18
+    shock: 18
+    isBlow: 0
+    isLight: 1
+    type: 0
+    coolTime: 2
+    blowPower: {x: 0, y: 0}
+    isCombo: 1
+    isShoot: 0
+    disParry: 0
+    parryResist: 50
+    escapePercentage: 0
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - mValue: 1.2
+    aditionalArmor: 20
+    shock: 20
+    isBlow: 0
+    isLight: 0
+    type: 0
+    coolTime: 2
+    blowPower: {x: 0, y: 0}
+    isCombo: 0
+    isShoot: 0
+    disParry: 0
+    parryResist: 20
+    escapePercentage: 55
+    attackEffect:
+      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - mValue: 2.5
+    aditionalArmor: 30
+    shock: 40
+    isBlow: 1
+    isLight: 0
+    type: 1
+    coolTime: 4
+    blowPower: {x: 120, y: 15}
+    isCombo: 0
+    isShoot: 0
+    disParry: 1
+    parryResist: 0
+    escapePercentage: 100
+    attackEffect:
+      m_AssetGUID: 2dd5e642c1aeda842bf7ff1b80deead5
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - mValue: 1.3
+    aditionalArmor: 25
+    shock: 30
+    isBlow: 0
+    isLight: 0
+    type: 1
+    coolTime: 0
+    blowPower: {x: 0, y: 0}
+    isCombo: 0
+    isShoot: 0
+    disParry: 0
+    parryResist: 0
+    escapePercentage: 10
+    attackEffect:
+      m_AssetGUID: f315a38a9c056f64b8bca44fe9689f06
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  parriable: 0
+  unBaind: 0
+  attackType: 0
+  disparriableScale: {x: 15, y: 10, z: 10}
+  guardSound: MetalBGuard

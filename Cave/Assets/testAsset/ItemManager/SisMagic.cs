@@ -27,15 +27,17 @@ public class SisMagic : Magic
     }
     public SupportType sType;
 
+    [Header("爆発するかどうか")]
     public bool isExprode;//爆発するかどうか
+
     public bool isSlip;//継続してダメージを与える
+    [Header("状態異常を治すか")]
     public bool cureCondition;//状態異常
     public bool isWide;//範囲攻撃。混沌の嵐とかみたいな
-    public float regeneRes;//リジェネ回復の制限時間
-
-    public float recobverBase;//回復基礎量
+    [Header("リジェネ回復量")]
+    public float regeneAmount;//リジェネ回復の制限時間
     public float coolTime;
-    public float useLimit;//使用可能回数
+//    public float useLimit;//使用可能回数
 
     public AnimationCurve faithCurve;//信仰補。シスターさんは魔力と信仰
 

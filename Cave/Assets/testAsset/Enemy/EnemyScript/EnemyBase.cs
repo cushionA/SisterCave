@@ -1,14 +1,18 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
+using Cysharp.Threading.Tasks;
 using Guirao.UltimateTextDamage;
 
 public class EnemyBase : MonoBehaviour
 {
 	//「//sAni.」を「sAni.」で置き換える。アニメ作ったら
+
+	[SerializeField] GameObject effectController;
 
 	[Header("視覚探知")]
 	///<summary>
@@ -29,8 +33,17 @@ public class EnemyBase : MonoBehaviour
 	///弾丸出す場所
 	///</summary>
 	public Transform firePosition;
+	[SerializeField]
+	Transform dispary;
 
+	/// <summary>
+	/// カメラに写ってるか
+	/// </summary>
 	[HideInInspector] public bool cameraRendered;
+	/// <summary>
+	/// 水踏んでるかどうか
+	/// </summary>
+	[HideInInspector] public bool isWater;
 	[HideInInspector] public float hp;
 
 	[Header("エネミーのステータス")]
@@ -45,6 +58,7 @@ public class EnemyBase : MonoBehaviour
 	protected　bool isJump;//ジャンプしてるかどうか
 	protected bool isAvoid;
 	protected float avoidTime;
+	protected float guardTime;
 	protected float stopTime;//停止時間を数える
 	protected bool isStop;//停止フラグ
 	protected float waitTime;//パトロール時の待ち時間数える
@@ -56,7 +70,8 @@ public class EnemyBase : MonoBehaviour
 	protected bool isUp;
 	protected int initialLayer;
 	protected bool jumpTrigger;
-	protected bool isWait;
+	//ガード判定したかどうか
+	protected bool guardJudge;
 	protected float stayTime;//攻撃後の待機時間
 	protected int attackNumber;//何番の攻撃をしているのか
 	protected bool isAtEnable = true;
@@ -65,10 +80,30 @@ public class EnemyBase : MonoBehaviour
 	protected bool isAnimeStart;//アニメの開始に使う
 	protected bool isFalter;//よろめき
 	protected bool isBounce;//攻撃をはじかれた
+	protected byte damageType;
+	protected bool heavy;
+
+	[HideInInspector]public int bulletDirection;//敵弾がどちらから来たか
+
+	//振り向き待ち時間
+	protected float flipWaitTime = 0f;
+	protected float lastDirection;
+
+	protected float attackBuff = 1;//攻撃倍率
+
+	bool soundTest;
+
+	/// <summary>
+	/// 攻撃の値
+	/// </summary>
+	protected string useSound;
+
 	/// <summary>
 	/// 攻撃の値
 	/// </summary>
 	[HideInInspector]public EnemyValue atV;
+	[HideInInspector] public EnemyStatus.MoveState ground = EnemyStatus.MoveState.wakeup;
+	[HideInInspector] public EnemyStatus.MoveState air = EnemyStatus.MoveState.wakeup;
 	// === キャッシュ ==========================================
 	//public Animator animator;
 	public Animator sAni;
@@ -111,21 +146,35 @@ public class EnemyBase : MonoBehaviour
 	protected Vector2 blowM;
 	protected float blowTime;
 	protected float recoverTime;//アーマー回復までにかかる時間
-	protected float lastArmor;
+	protected int lastArmor = 1;
 	protected float nowArmor;
-	[SerializeField]protected UltimateTextDamageManager um;
+	protected UltimateTextDamageManager um;
+	[HideInInspector]public SisMagic sm;
+	[HideInInspector] public bool insert;
+	protected bool isDie;
+	/// <summary>
+	/// 攻撃後フラグ。攻撃後の挙動で使う
+	/// </summary>
+	protected bool attackComp;
 
 	// === コード（Monobehaviour基本機能の実装） ================
 	protected virtual void Start()
 	{
 		initialLayer = this.gameObject.layer;
 		ArmorReset();
-		GravitySet(status.firstGravity);//重力設定
-		rb = this.gameObject.GetComponent<Rigidbody2D>();
+		if (status.kind != EnemyStatus.KindofEnemy.Fly)
+		{
+			GravitySet(status.firstGravity);//重力設定
+		}
+        else
+        {
+			GravitySet(0);//重力設定
+		}
+	//	rb = this.gameObject.GetComponent<Rigidbody2D>();
 		startPosition = transform.position;
 		firstDirection = transform.localScale;
 		HPReset();
-
+		um = EnemyManager.instance.um;
 		if(status.dogPile != null)
         {
 			basePosition = status.dogPile.transform.position;
@@ -154,9 +203,35 @@ public class EnemyBase : MonoBehaviour
 
 	protected virtual void FixedUpdate()
 	{
-		isGround = rb.IsTouching(EnemyManager.instance.filter);
+	
+
+		if (rb.IsTouching(EnemyManager.instance.filter))
+		{
+			isGround = true;
+
+		}
+
+		else
+		{
+
+			RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 2, EnemyManager.instance.rayFilter);
+			if (hit && isGround)
+			{
 
 
+				isGround = true;
+
+
+			}
+			else
+			{
+
+				isGround = false;
+				//}
+			}
+		}
+
+	//	Debug.Log($"知り");
 		if (!cameraRendered)
         {
 			if (!status.unBaind)
@@ -166,9 +241,10 @@ public class EnemyBase : MonoBehaviour
 				return;
 			}
         }
+	//	Debug.Log($"知りたい");
 		if (status.kind != EnemyStatus.KindofEnemy.Fly)
 		{
-			if (isDown || isDown || !isGround || isGuard || isAvoid || isAttack || isJump || guardBreak)
+			if (isDown || !isGround || guardHit || isAvoid || isAttack || isJump || guardBreak || isDie)
 			{
 				isMovable = false;
 			}
@@ -179,7 +255,7 @@ public class EnemyBase : MonoBehaviour
 		}
         else
         {
-			if (isDown || isDown || isGuard || isAvoid || isAttack || isJump || guardBreak)
+			if (isDown || guardHit || isAvoid || isAttack || isJump || guardBreak || isDie)
 			{
 				isMovable = false;
 			}
@@ -188,7 +264,7 @@ public class EnemyBase : MonoBehaviour
 				isMovable = true;
 			}
 		}
-
+		//Debug.Log($"知りたいのだ");
 		if (status.dogPile != null)
 		{
 			basePosition = status.dogPile.transform.position;
@@ -202,8 +278,9 @@ public class EnemyBase : MonoBehaviour
 		}
 
 		targetPosition = GManager.instance.Player.transform.position;
-		Vector2 myPosition = this.transform.position;
-		distance = targetPosition - myPosition;
+		
+		distance = targetPosition - (Vector2)transform.position;
+		//Debug.Log($"知りたいのだ{targetPosition.x}");
 		direction = distance.x >= 0 ? 1 : -1;//距離が正、または0の時1。そうでないとき-1。方向
 		directionY = distance.y >= 0 ? 1 : -1;//弓構えるときのアニメの判定	にも使えそう
 
@@ -258,6 +335,24 @@ public class EnemyBase : MonoBehaviour
 		NockBack();
 		Blow();
 		Down();
+		if (insert)
+		{
+			//SisMagic sm = collision.gameObject.GetComponent<SisMagic>();
+		//	Debug.Log($"偵察m{sm.name}");
+			SisterMagicDamage();
+
+			if (!isAggressive)
+			{
+				Serch.SetActive(false);
+				Serch2.SetActive(false);
+				isAggressive = true;
+				Flip(direction);
+			}
+			//Debug.Log($"収支{sm.name}");
+			//	lastHit = 
+			insert = false;
+		}
+
 	}
 	public void ActionFire(int i,float random = 0.0f)
 	{//ランダムに入れてもいいけど普通に入れてもいい
@@ -302,153 +397,289 @@ public class EnemyBase : MonoBehaviour
 	/// <summary>
 	/// プレイヤーの物理攻撃によるダメージ
 	/// </summary>
-	public void WeponDamage()
+	public void WeaponDamage()
 	{
+
+		bool back = false;
+		bool stab = false;
 		//isDamage = true;
-		//SetLayer(10);
+		//SetLayer(28);
 		//////Debug.log($"ガード中か否か{guardHit}");
-		if (!guardHit /*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */&& !isDamage)
+		if ( /*&& GManager.instance.equipWeapon.hitLimmit > 0 */ !isDamage)
 		{
 			isDamage = true;
-		//	GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			//	GManager.instance.equipWeapon.hitLimmit--;
+
+			Equip useEquip;
+			byte attackType = 0;
+            if (!GManager.instance.isShieldAttack)
+            {
+				useEquip = GManager.instance.equipWeapon;
+            }
+            else
+            {
+				useEquip = GManager.instance.equipShield;
+			}
 
 			//////Debug.log("終了");
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
-			float mValue = GManager.instance.pStatus.equipWeapon.mValue;
+			float mValue = GManager.instance.equipWeapon.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
-			if (GManager.instance.pStatus.phyAtk > 0)
+			if (useEquip.phyAtk > 0)
 			{
 				//斬撃刺突打撃を管理
-				if (GManager.instance.pStatus.equipWeapon.atType == Wepon.AttackType.Slash)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.phyAtk, 2) * mValue) / (GManager.instance.pStatus.phyAtk + status.Def); }
-				else if (GManager.instance.pStatus.equipWeapon.atType == Wepon.AttackType.Stab)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.phyAtk, 2) * mValue) / (GManager.instance.pStatus.phyAtk + status.pierDef); }
-				else if (GManager.instance.pStatus.equipWeapon.atType == Wepon.AttackType.Strike)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.phyAtk, 2) * mValue) / (GManager.instance.pStatus.phyAtk + status.strDef); }
+				if (GManager.instance.equipWeapon.atType == Weapon.AttackType.Slash)
+				{
+					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.Def);
+					if(useEquip.attackType == 1 || useEquip.attackType == 0)
+                    {
+						attackType = 1;
+                    }
+				}
+				else if (GManager.instance.equipWeapon.atType == Weapon.AttackType.Stab)
+				{
+					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.pierDef);
+					stab = true;
+					if (useEquip.attackType == 1 || useEquip.attackType == 0)
+					{
+						attackType = 2;
+					}
+				}
+				else
+				{
+					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.strDef);
+					if (useEquip.attackType == 1 || useEquip.attackType == 0)
+						{
+						attackType = 4;
+                        //						Debug.Log("皿だ");
+                        if (GManager.instance.equipWeapon.shock >= 40)
+                        {
+							heavy = true;
+                        }
+					}
+				}
 
 			}
 			//神聖
-			if (GManager.instance.pStatus.holyAtk > 0)
+			if (useEquip.holyAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.holyAtk, 2) * mValue) / (GManager.instance.pStatus.holyAtk + status.holyDef);
+				damage += (Mathf.Pow(useEquip.holyAtk, 2) * mValue) / (useEquip.holyAtk + status.holyDef);
+
 			}
 			//闇
-			if (GManager.instance.pStatus.darkAtk > 0)
+			if (useEquip.darkAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.darkAtk, 2) * mValue) / (GManager.instance.pStatus.darkAtk + status.darkDef);
+				damage += (Mathf.Pow(useEquip.darkAtk, 2) * mValue) / (useEquip.darkAtk + status.darkDef);
+
 			}
 			//炎
-			if (GManager.instance.pStatus.fireAtk > 0)
+			if (useEquip.fireAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.fireAtk, 2) * mValue) / (GManager.instance.pStatus.fireAtk + status.fireDef);
+				damage += (Mathf.Pow(useEquip.fireAtk, 2) * mValue) / (useEquip.fireAtk + status.fireDef);
 			}
 			//雷
-			if (GManager.instance.pStatus.thunderAtk > 0)
+			if (useEquip.thunderAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.thunderAtk, 2) * mValue) / (GManager.instance.pStatus.thunderAtk + status.thunderDef);
+				damage += (Mathf.Pow(useEquip.thunderAtk, 2) * mValue) / (useEquip.thunderAtk + status.thunderDef);
+
+			}
+			if (useEquip.attackType > 4)
+			{
+				attackType = useEquip.attackType;
+			}
+				DamageSound(attackType);
+
+			if ((transform.position.x <= GManager.instance.Player.transform.position.x && transform.localScale.x < 0) ||
+	(transform.position.x > GManager.instance.Player.transform.position.x && transform.localScale.x > 0))
+			{
+				back = true;
 			}
 
-			////Debug.log($"{ damage * GManager.instance.pStatus.attackBuff}ダメージ");
+			////Debug.log($"{ damage * GManager.instance.attackBuff}ダメージ");
 			//////Debug.log($"{nowArmor}a-mor");
-			damage = Mathf.Floor(damage * GManager.instance.pStatus.attackBuff);
-			hp -= damage;//HP引いてる
-					//				Debug.Log($"ダメージ{damage}とトランスフォーム{this.transform.position}");
+			damage = Mathf.Floor(damage * GManager.instance.attackBuff);
 
-			um.AddStack(damage, this.transform);
+            if (back)
+            {
+				damage *= 1.08f;
+            }
+            if (isDown && !isWakeUp)
+            {
+				damage *= 1.2f;
+            }
+			else if(isDown && isWakeUp)
+            {
+				damage *= 0.9f;
+            }
+			else if (isAttack && stab)
+            {
+				damage *= 1.1f;
+            }
+
+			hp -= damage;//HP引いてる
+
+							Debug.Log($"背後{back}");
+
+				um.AddStack(damage, this.transform);
 			if (!isAttack)
 			{
-				nowArmor -= GManager.instance.pStatus.equipWeapon.shock;
+
+				float shock = GManager.instance.equipWeapon.shock;
+				if (back)
+				{
+					shock *= 1.2f;
+				}
+				nowArmor -= shock;
 
 			}
 			else
 			{
-				if (atV.aditionalArmor > 0)
+				if (atV.aditionalArmor != 0)
 				{
-					nowArmor -= (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor) < 0 ? 0 : (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor);
-					atV.aditionalArmor -= GManager.instance.pStatus.equipWeapon.shock;
+					//バックアタック
+
+					float shock = GManager.instance.equipWeapon.shock;
+					if(back)
+                    {
+						shock *= 1.2f;
+                    }
+
+					nowArmor -= (shock - atV.aditionalArmor) < 0 ? 0 : (shock - atV.aditionalArmor);
+					atV.aditionalArmor = (atV.aditionalArmor - shock) < 0 ? 0 : atV.aditionalArmor - shock;
+
 				}
 			}
 			ArmorControll();
-			if (isDown && GManager.instance.pStatus.equipWeapon.isBlow)
+			if (isDown)
 			{
-			//	Debug.Log("aaaa");
-				blowM.Set(GManager.instance.pStatus.equipWeapon.blowPower.x * -direction, GManager.instance.pStatus.equipWeapon.blowPower.y);
+				if (GManager.instance.equipWeapon.isBlow)
+				{
+					//	Debug.Log("aaaa");
+					blowM.Set(GManager.instance.equipWeapon.blowPower.x * -direction, GManager.instance.equipWeapon.blowPower.y);
 
-				//rb.AddForce(move);
-				blowDown = true;
-				//Invoke("Down", 1f);
+					//rb.AddForce(move);
+					blowDown = true;
+					//Invoke("Down", 1f);
+				}
+				else
+				{
+					isFalter = true;
+				}
 			}
-            else
-            {
-				isFalter = true;
+			if (hp <= 0)
+			{
+				isDie = true;
+				isAnimeStart = false;
 			}
 		}
 	}
 
-	public void WeponGuard()
+	public void WeaponGuard()
 	{
-		if (/*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */!isDamage)
+		if (/*&& GManager.instance.equipWeapon.hitLimmit > 0 */!isDamage)
 		{
+
+			GManager.instance.PlaySound(status.guardSound,transform.position);
+
 			isDamage = true;
-			//GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			guardHit = true;
+			//GManager.instance.equipWeapon.hitLimmit--;
 
 			//////Debug.log("終了");
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
-			float mValue = GManager.instance.pStatus.equipWeapon.mValue;
+			float mValue = GManager.instance.equipWeapon.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
-			if (GManager.instance.pStatus.phyAtk > 0)
+
+			Equip useEquip;
+			if (!GManager.instance.isShieldAttack)
+			{
+				useEquip = GManager.instance.equipWeapon;
+			}
+			else
+			{
+				useEquip = GManager.instance.equipShield;
+			}
+			if (useEquip.phyAtk > 0)
 			{
 				//斬撃刺突打撃を管理
-				if (GManager.instance.pStatus.equipWeapon.atType == Wepon.AttackType.Slash)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.phyAtk, 2) * mValue) / (GManager.instance.pStatus.phyAtk + status.Def); }
-				else if (GManager.instance.pStatus.equipWeapon.atType == Wepon.AttackType.Stab)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.phyAtk, 2) * mValue) / (GManager.instance.pStatus.phyAtk + status.pierDef); }
-				else if (GManager.instance.pStatus.equipWeapon.atType == Wepon.AttackType.Strike)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.phyAtk, 2) * mValue) / (GManager.instance.pStatus.phyAtk + status.strDef); }
+				if (GManager.instance.equipWeapon.atType == Weapon.AttackType.Slash)
+				{
+					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.Def);
+
+				}
+				else if (GManager.instance.equipWeapon.atType == Weapon.AttackType.Stab)
+				{
+					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.pierDef);
+
+				}
+				else if (GManager.instance.equipWeapon.atType == Weapon.AttackType.Strike)
+				{
+					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.strDef);
+
+				}
 
 				damage *= (100 - status.phyCut)/100;
 			}
 			//神聖
-			if (GManager.instance.pStatus.holyAtk > 0)
+			if (useEquip.holyAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.holyAtk, 2) * mValue) / (GManager.instance.pStatus.holyAtk + status.holyDef) * (100 - status.holyCut)/100;
+				damage += (Mathf.Pow(useEquip.holyAtk, 2) * mValue) / (useEquip.holyAtk + status.holyDef) * (100 - status.holyCut)/100;
+
+
 			}
 			//闇
-			if (GManager.instance.pStatus.darkAtk > 0)
+			if (useEquip.darkAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.darkAtk, 2) * mValue) / (GManager.instance.pStatus.darkAtk + status.darkDef) * (100 - status.darkCut)/100;
+				damage += (Mathf.Pow(useEquip.darkAtk, 2) * mValue) / (useEquip.darkAtk + status.darkDef) * (100 - status.darkCut)/100;
+
 			}
 			//炎
-			if (GManager.instance.pStatus.fireAtk > 0)
+			if (useEquip.fireAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.fireAtk, 2) * mValue) / (GManager.instance.pStatus.fireAtk + status.fireDef) * (100 - status.fireCut)/100;
+				damage += (Mathf.Pow(useEquip.fireAtk, 2) * mValue) / (useEquip.fireAtk + status.fireDef) * (100 - status.fireCut)/100;
 			}
 			//雷
-			if (GManager.instance.pStatus.thunderAtk > 0)
+			if (useEquip.thunderAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.thunderAtk, 2) * mValue) / (GManager.instance.pStatus.thunderAtk + status.thunderDef) * (100 - status.thunderCut)/100;
+				damage += (Mathf.Pow(useEquip.thunderAtk, 2) * mValue) / (useEquip.thunderAtk + status.thunderDef) * (100 - status.thunderCut)/100;
+
 			}
+			//音出し
 
-			//////Debug.log($"{ damage * GManager.instance.pStatus.attackBuff}ダメージ");
-			damage = Mathf.Floor(damage * GManager.instance.pStatus.attackBuff);
+			//まぁまてや。ガード音にしよう
+			//DamageSound(useEquip.attackType);
+			//////Debug.log($"{ damage * GManager.instance.attackBuff}ダメージ");
+			damage = Mathf.Floor(damage * GManager.instance.attackBuff);
 			hp -= damage;//HP引いてる
+			
 			um.AddStack(damage, this.transform);
-			nowArmor -= (GManager.instance.pStatus.equipWeapon.shock * 2) * ((100 - status.guardPower) / 100);
+			nowArmor -= (GManager.instance.equipWeapon.shock * 2.5f) * ((100 - status.guardPower) / 100);
 
-			if(GManager.instance.pStatus.equipWeapon.isLight && status.guardPower >= 50)
+			if(GManager.instance.equipWeapon.isLight && status.guardPower >= 50)
             {
 				GManager.instance.isBounce = true;//受け値50以上で弾く
 
 
 			}
-			if (nowArmor <= 0 && (GManager.instance.pStatus.equipWeapon.isBlow))
+			ArmorControll();
+			if (isDown) 
 			{
-				blowM.Set(GManager.instance.pStatus.equipWeapon.blowPower.x * -direction, GManager.instance.pStatus.equipWeapon.blowPower.y);
-				blowDown = true;
-			}
+				
+				if (GManager.instance.equipWeapon.isBlow)
+				{
+					blowM.Set(GManager.instance.equipWeapon.blowPower.x * -direction, GManager.instance.equipWeapon.blowPower.y);
+					blowDown = true;
+				}
             else
             {
 				guardBreak = true;
+			}
+			}
+
+			if (hp <= 0)
+			{
+				isDie = true;
+				isAnimeStart = false;
 			}
 		}
 	}
@@ -458,62 +689,77 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void PlayerMagicDamage()
     {
-		if (!guardHit /*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */&& !isDamage)
+		if (/*&& GManager.instance.equipWeapon.hitLimmit > 0 &&*/ !isDamage)
 		{
 			isDamage = true;
-			//GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			//GManager.instance.equipWeapon.hitLimmit--;
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
-			float mValue = GManager.instance.pStatus.useMagic.mValue;
+			float mValue = GManager.instance.useMagic.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
-			if (GManager.instance.pStatus.useMagic.phyAtk > 0)
+
+			if (GManager.instance.useMagic.phyAtk > 0)
 			{
 				//斬撃刺突打撃を管理
-				if (GManager.instance.pStatus.useMagic.atType == Magic.AttackType.Slash)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.phyAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.phyAtk + status.Def); }
-				else if (GManager.instance.pStatus.useMagic.atType == Magic.AttackType.Stab)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.phyAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.phyAtk + status.pierDef); }
-				else if (GManager.instance.pStatus.useMagic.atType == Magic.AttackType.Strike)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.phyAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.phyAtk + status.strDef); }
+				if (GManager.instance.useMagic.atType == Magic.AttackType.Slash)
+				{
+					damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.Def);
+				}
+				else if (GManager.instance.useMagic.atType == Magic.AttackType.Stab)
+				{
+					damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.pierDef);
+
+				}
+				else if (GManager.instance.useMagic.atType == Magic.AttackType.Strike)
+				{
+					damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.strDef);
+				}
 			}
 			//神聖
-			if (GManager.instance.pStatus.useMagic.holyAtk > 0)
+			if (GManager.instance.useMagic.holyAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.holyAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.holyAtk + status.holyDef);
+				damage += (Mathf.Pow(GManager.instance.useMagic.holyAtk, 2) * mValue) / (GManager.instance.useMagic.holyAtk + status.holyDef);
 			}
 			//闇
-			if (GManager.instance.pStatus.useMagic.darkAtk > 0)
+			if (GManager.instance.useMagic.darkAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.darkAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.darkAtk + status.darkDef);
+				damage += (Mathf.Pow(GManager.instance.useMagic.darkAtk, 2) * mValue) / (GManager.instance.useMagic.darkAtk + status.darkDef);
 			}
 			//炎
-			if (GManager.instance.pStatus.useMagic.fireAtk > 0)
+			if (GManager.instance.useMagic.fireAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.fireAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.fireAtk + status.fireDef);
+				damage += (Mathf.Pow(GManager.instance.useMagic.fireAtk, 2) * mValue) / (GManager.instance.useMagic.fireAtk + status.fireDef);
 			}
 			//雷
-			if (GManager.instance.pStatus.useMagic.thunderAtk > 0)
+			if (GManager.instance.useMagic.thunderAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.thunderAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.thunderAtk + status.thunderDef);
+				damage += (Mathf.Pow(GManager.instance.useMagic.thunderAtk, 2) * mValue) / (GManager.instance.useMagic.thunderAtk + status.thunderDef);
 			}
-			damage = Mathf.Floor(damage * GManager.instance.pStatus.attackBuff);
+
+			
+		//	DamageSound();
+
+			damage = Mathf.Floor(damage * GManager.instance.attackBuff);
 			hp -= damage;//HP引いてる
+
 			um.AddStack(damage, this.transform);
 			if (!isAttack)
 			{
-				nowArmor -= GManager.instance.pStatus.useMagic.shock;
+				nowArmor -= GManager.instance.useMagic.shock;
 			}
 			else
 			{
-				if (atV.aditionalArmor > 0)
+				if (atV.aditionalArmor != 0)
 				{
-					nowArmor -= (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor) < 0 ? 0 : (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor);
-					atV.aditionalArmor -= GManager.instance.pStatus.equipWeapon.shock;
+
+					nowArmor -= (GManager.instance.useMagic.shock - atV.aditionalArmor) < 0 ? 0 : (GManager.instance.useMagic.shock - atV.aditionalArmor);
+					atV.aditionalArmor = (atV.aditionalArmor - GManager.instance.useMagic.shock) < 0 ? 0 : atV.aditionalArmor - GManager.instance.useMagic.shock;
+
 				}
 			}
 			ArmorControll();
-			if (isDown && GManager.instance.pStatus.useMagic.isBlow)
+			if (isDown && GManager.instance.useMagic.isBlow)
 			{
-				blowM.Set(GManager.instance.pStatus.useMagic.blowPower.x * -direction, GManager.instance.pStatus.useMagic.blowPower.y);
+				blowM.Set(GManager.instance.useMagic.blowPower.x * -direction, GManager.instance.useMagic.blowPower.y);
 				blowDown = true;
 				//Invoke("Down",1f);
 			}
@@ -521,132 +767,153 @@ public class EnemyBase : MonoBehaviour
 			{
 				isFalter = true;
 			}
+			if (hp <= 0)
+			{
+				isDie = true;isAnimeStart = false;
+			}
 		}
 	}
 	public void PlayerMagicGuard()
 	{
-		if (/*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */!isDamage)
+		if (/*&& GManager.instance.equipWeapon.hitLimmit > 0 */!isDamage)
 		{
 			isDamage = true;
 
-			//GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			//GManager.instance.equipWeapon.hitLimmit--;
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
-			float mValue = GManager.instance.pStatus.useMagic.mValue;
+			float mValue = GManager.instance.useMagic.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
-			if (GManager.instance.pStatus.useMagic.phyAtk > 0)
+			if (GManager.instance.useMagic.phyAtk > 0)
 			{
 				//斬撃刺突打撃を管理
-				if (GManager.instance.pStatus.useMagic.atType == Magic.AttackType.Slash)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.phyAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.phyAtk + status.Def); }
-				else if (GManager.instance.pStatus.useMagic.atType == Magic.AttackType.Stab)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.phyAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.phyAtk + status.pierDef); }
-				else if (GManager.instance.pStatus.useMagic.atType == Magic.AttackType.Strike)
-				{ damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.phyAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.phyAtk + status.strDef); }
+				if (GManager.instance.useMagic.atType == Magic.AttackType.Slash)
+				{ damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.Def); }
+				else if (GManager.instance.useMagic.atType == Magic.AttackType.Stab)
+				{ damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.pierDef); }
+				else if (GManager.instance.useMagic.atType == Magic.AttackType.Strike)
+				{ damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.strDef); }
 				damage *= (100 - status.phyCut)/100;
 			}
 			//神聖
-			if (GManager.instance.pStatus.useMagic.holyAtk > 0)
+			if (GManager.instance.useMagic.holyAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.holyAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.holyAtk + status.holyDef) * (100 - status.holyCut)/100;
+				damage += (Mathf.Pow(GManager.instance.useMagic.holyAtk, 2) * mValue) / (GManager.instance.useMagic.holyAtk + status.holyDef) * (100 - status.holyCut)/100;
 			}
 			//闇
-			if (GManager.instance.pStatus.useMagic.darkAtk > 0)
+			if (GManager.instance.useMagic.darkAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.darkAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.darkAtk + status.darkDef * status.darkCut) * (100 - status.darkCut)/100;
+				damage += (Mathf.Pow(GManager.instance.useMagic.darkAtk, 2) * mValue) / (GManager.instance.useMagic.darkAtk + status.darkDef * status.darkCut) * (100 - status.darkCut)/100;
 			}
 			//炎
-			if (GManager.instance.pStatus.useMagic.fireAtk > 0)
+			if (GManager.instance.useMagic.fireAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.fireAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.fireAtk + status.fireDef) * status.fireCut * (100 - status.fireCut)/100;
+				damage += (Mathf.Pow(GManager.instance.useMagic.fireAtk, 2) * mValue) / (GManager.instance.useMagic.fireAtk + status.fireDef) * status.fireCut * (100 - status.fireCut)/100;
 			}
 			//雷
-			if (GManager.instance.pStatus.useMagic.thunderAtk > 0)
+			if (GManager.instance.useMagic.thunderAtk > 0)
 			{
-				damage += (Mathf.Pow(GManager.instance.pStatus.useMagic.thunderAtk, 2) * mValue) / (GManager.instance.pStatus.useMagic.thunderAtk + status.thunderDef) * (100 - status.thunderCut)/100;
+				damage += (Mathf.Pow(GManager.instance.useMagic.thunderAtk, 2) * mValue) / (GManager.instance.useMagic.thunderAtk + status.thunderDef) * (100 - status.thunderCut)/100;
 			}
-			damage = Mathf.Floor(damage * GManager.instance.pStatus.attackBuff);
+			damage = Mathf.Floor(damage * GManager.instance.attackBuff);
 			hp -= damage;//HP引いてる
+
 			um.AddStack(damage, this.transform);
-			if (GManager.instance.pStatus.equipWeapon.isBlow)
+			if (GManager.instance.equipWeapon.isBlow)
 			{
-				nowArmor -= ((GManager.instance.pStatus.useMagic.shock * 2) * status.guardPower / 100) * 1.2f;
+				nowArmor -= ((GManager.instance.useMagic.shock * 2) * status.guardPower / 100) * 1.2f;
 			}
 			else
 			{
-				nowArmor -= (GManager.instance.pStatus.useMagic.shock * 2) * ((100 - status.guardPower) / 100);
+				nowArmor -= (GManager.instance.useMagic.shock * 2) * ((100 - status.guardPower) / 100);
 			}
 
-			if (nowArmor <= 0 && GManager.instance.pStatus.useMagic.isBlow)
+			if (nowArmor <= 0)
 			{
-				blowM.Set(GManager.instance.pStatus.useMagic.blowPower.x * -direction, GManager.instance.pStatus.useMagic.blowPower.y);
-				//rb.AddForce(move, ForceMode2D.Impulse);
-				blowDown = true;
-			}
+				if (GManager.instance.useMagic.isBlow)
+				{
+					blowM.Set(GManager.instance.useMagic.blowPower.x * -direction, GManager.instance.useMagic.blowPower.y);
+					//rb.AddForce(move, ForceMode2D.Impulse);
+					blowDown = true;
+				}
+
 			else
+				{
+					guardBreak = true;
+				}
+			}
+			if (hp <= 0)
 			{
-				guardBreak = true;
+				isDie = true;isAnimeStart = false;
 			}
 		}
 	}
 	public void SisterMagicDamage()
 	{
-		if (!guardHit /*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */&& !isDamage)
+	//	Debug.Log($"起動{sm.name}邪魔者{isDamage}");
+		if (/*&& GManager.instance.equipWeapon.hitLimmit > 0 &&*/ !isDamage && !isDie)
 		{
+
+		//	Debug.Log($"怪異{sm.name}");
+
 			isDamage = true;
-			//GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			//GManager.instance.equipWeapon.hitLimmit--;
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
-			float mValue = SManager.instance.sisStatus.useMagic.mValue;
+			float mValue = sm.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
-			if (SManager.instance.sisStatus.useMagic.phyAtk > 0)
+			if (sm.phyAtk > 0)
 			{
 				//斬撃刺突打撃を管理
-				if (SManager.instance.sisStatus.useMagic.atType == Magic.AttackType.Slash)
-				{ damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.phyAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.phyAtk + status.Def); }
-				else if (SManager.instance.sisStatus.useMagic.atType == Magic.AttackType.Stab)
-				{ damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.phyAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.phyAtk + status.pierDef); }
-				else if (SManager.instance.sisStatus.useMagic.atType == Magic.AttackType.Strike)
-				{ damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.phyAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.phyAtk + status.strDef); }
+				if (sm.atType == Magic.AttackType.Slash)
+				{ damage += (Mathf.Pow(sm.phyAtk, 2) * mValue) / (sm.phyAtk + status.Def); }
+				else if (sm.atType == Magic.AttackType.Stab)
+				{ damage += (Mathf.Pow(sm.phyAtk, 2) * mValue) / (sm.phyAtk + status.pierDef); }
+				else if (sm.atType == Magic.AttackType.Strike)
+				{ damage += (Mathf.Pow(sm.phyAtk, 2) * mValue) / (sm.phyAtk + status.strDef); }
 			}
 			//神聖
-			if (SManager.instance.sisStatus.useMagic.holyAtk > 0)
+			if (sm.holyAtk > 0)
 			{
-				damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.holyAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.holyAtk + status.holyDef);
+				damage += (Mathf.Pow(sm.holyAtk, 2) * mValue) / (sm.holyAtk + status.holyDef);
 			}
 			//闇
-			if (SManager.instance.sisStatus.useMagic.darkAtk > 0)
+			if (sm.darkAtk > 0)
 			{
-				damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.darkAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.darkAtk + status.darkDef);
+				damage += (Mathf.Pow(sm.darkAtk, 2) * mValue) / (sm.darkAtk + status.darkDef);
 			}
 			//炎
-			if (SManager.instance.sisStatus.useMagic.fireAtk > 0)
+			if (sm.fireAtk > 0)
 			{
-				damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.fireAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.fireAtk + status.fireDef);
+				damage += (Mathf.Pow(sm.fireAtk, 2) * mValue) / (sm.fireAtk + status.fireDef);
 			}
 			//雷
-			if (SManager.instance.sisStatus.useMagic.thunderAtk > 0)
+			if (sm.thunderAtk > 0)
 			{
-				damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.thunderAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.thunderAtk + status.thunderDef);
+				damage += (Mathf.Pow(sm.thunderAtk, 2) * mValue) / (sm.thunderAtk + status.thunderDef);
 			}
+			DamageSound(sm.attackType);
 			damage = Mathf.Floor(damage * SManager.instance.sisStatus.attackBuff);
 			hp -= damage;
+
 			//Mathf.Floor(hp);
 			um.AddStack(damage, this.transform);
 			if (!isAttack)
 			{
-				nowArmor -= SManager.instance.sisStatus.useMagic.shock;
+				nowArmor -= sm.shock;
 			}
 			else
 			{
-				if (atV.aditionalArmor > 0)
+				if (atV.aditionalArmor != 0)
 				{
-					nowArmor -= (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor) < 0 ? 0 : (GManager.instance.pStatus.equipWeapon.shock - atV.aditionalArmor);
-					atV.aditionalArmor -= GManager.instance.pStatus.equipWeapon.shock;
+
+					nowArmor -= (sm.shock - atV.aditionalArmor) < 0 ? 0 : (sm.shock - atV.aditionalArmor);
+					atV.aditionalArmor = (atV.aditionalArmor - sm.shock) < 0 ? 0 : atV.aditionalArmor - sm.shock;
+
 				}
 			}
 			ArmorControll();
-			if (isDown && SManager.instance.sisStatus.useMagic.isBlow)
+			if (isDown && sm.isBlow)
 			{
-				blowM.Set(SManager.instance.sisStatus.useMagic.blowPower.x * direction, SManager.instance.sisStatus.useMagic.blowPower.y);
+				blowM.Set(sm.blowPower.x * bulletDirection, sm.blowPower.y);
 			//	rb.AddForce(move, ForceMode2D.Impulse);
 				blowDown = true;
 			}
@@ -654,14 +921,18 @@ public class EnemyBase : MonoBehaviour
 			{
 				isFalter = true;
 			}
+			if (hp <= 0)
+			{
+				isDie = true;isAnimeStart = false;
+			}
 		}
 	}
 	public void SisterMagicGuard()
 	{
-		if (/*&& GManager.instance.pStatus.equipWeapon.hitLimmit > 0 */!isDamage)
+		if (/*&& GManager.instance.equipWeapon.hitLimmit > 0 */!isDamage)
 		{
 			isDamage = true;
-			//GManager.instance.pStatus.equipWeapon.hitLimmit--;
+			//GManager.instance.equipWeapon.hitLimmit--;
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			float mValue = SManager.instance.sisStatus.useMagic.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
@@ -699,6 +970,7 @@ public class EnemyBase : MonoBehaviour
 			}
 			damage = Mathf.Floor(damage * SManager.instance.sisStatus.attackBuff);
 			hp -= damage;
+
 			//Mathf.Floor(hp);
 			um.AddStack(damage, this.transform);
 
@@ -714,7 +986,7 @@ public class EnemyBase : MonoBehaviour
 
 			if (nowArmor <= 0 && SManager.instance.sisStatus.useMagic.isBlow)
 			{
-				blowM.Set(SManager.instance.sisStatus.useMagic.blowPower.x * direction, SManager.instance.sisStatus.useMagic.blowPower.y);
+				blowM.Set(SManager.instance.sisStatus.useMagic.blowPower.x * bulletDirection, SManager.instance.sisStatus.useMagic.blowPower.y);
 				//rb.AddForce(move, ForceMode2D.Impulse);
 				blowDown = true;
 			}
@@ -722,35 +994,56 @@ public class EnemyBase : MonoBehaviour
 			{
 				guardBreak = true;
 			}
+			if (hp <= 0)
+			{
+				isDie = true;isAnimeStart = false;
+			}
 		}
 	}
 
 	public void PlayerParry()
     {
-		if (!GManager.instance.isDamage && !GManager.instance.guardHit)
+		if (!GManager.instance.isDamage)
 		{
-			if (!GManager.instance.pStatus.equipWeapon.twinHand)
+			if (!GManager.instance.equipWeapon.twinHand)
             {
-				GManager.instance.pStatus.stamina += GManager.instance.pStatus.equipShield.parryRecover;
+				GManager.instance.stamina += GManager.instance.equipShield.parryRecover;
             }
             else
             {
-				GManager.instance.pStatus.stamina += GManager.instance.pStatus.equipWeapon.parryRecover;
+				GManager.instance.stamina += GManager.instance.equipWeapon.parryRecover;
 			}
+
 			GManager.instance.isDamage = true;
 			GManager.instance.isGuard = false;
 			GManager.instance.isParry = false;
-			GManager.instance.parrySuccess = true;
+
+			Debug.Log($"mae{nowArmor}");
+			nowArmor -= status.Armor * ((100 - atV.parryResist) / 100);
+			Debug.Log($"あと{nowArmor}");
+			//Debug.Log($"tellme{nowArmor}{atV.parryResist}");
+
+			if(nowArmor <= 0)
+            {
 			atV.isCombo = false;
 			isAttack = false;
 			isBounce = true;
 			isDown = true;
+			GManager.instance.parrySuccess = true;
+            }
+            else
+            {
+				GManager.instance.blocking = true;
+				GManager.instance.parrySuccess = true;
+			}
+
+
 		}
 	}
 	public void AttackDamage()
     {
 
-		if (!GManager.instance.isDamage && !GManager.instance.guardHit)
+		if (!GManager.instance.isDamage)// && !GManager.instance.guardHit)
 		{
 			//GManager.instance.isDamage = true;
 			//status.hitLimmit--;
@@ -760,31 +1053,49 @@ public class EnemyBase : MonoBehaviour
 			{
 				//斬撃刺突打撃を管理
 				if (atV.type == EnemyStatus.AttackType.Slash)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.Def); }
+				{
+					damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.Def);
+					GManager.instance.attackType = 1;
+				}
 				else if (atV.type == EnemyStatus.AttackType.Stab)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.pierDef); }
+				{
+					damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pierDef);
+					GManager.instance.attackType = 2;
+				}
 				else if (atV.type == EnemyStatus.AttackType.Strike)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.strDef); }
+				{
+					damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.strDef);
+					GManager.instance.attackType = 4;
+					//						Debug.Log("皿だ");
+					if (atV.shock >= 40)
+					{
+						GManager.instance.heavy = true;
+					}
+				}
 			}
 			//神聖
 			if (status.holyAtk > 0)
 			{
-				damage += (Mathf.Pow(status.holyAtk, 2) * atV.mValue) / (status.holyAtk + GManager.instance.pStatus.holyDef);
+				damage += (Mathf.Pow(status.holyAtk, 2) * atV.mValue) / (status.holyAtk + GManager.instance.holyDef);
+				GManager.instance.attackType = 8;
 			}
 			//闇
 			if (status.darkAtk > 0)
 			{
-				damage += (Mathf.Pow(status.darkAtk, 2) * atV.mValue) / (status.darkAtk + GManager.instance.pStatus.darkDef);
+				damage += (Mathf.Pow(status.darkAtk, 2) * atV.mValue) / (status.darkAtk + GManager.instance.darkDef);
+				GManager.instance.attackType = 16;
 			}
 			//炎
 			if (status.fireAtk > 0)
 			{
-				damage += (Mathf.Pow(status.fireAtk, 2) * atV.mValue) / (status.fireAtk + GManager.instance.pStatus.fireDef);
+				damage += (Mathf.Pow(status.fireAtk, 2) * atV.mValue) / (status.fireAtk + GManager.instance.fireDef);
+				GManager.instance.attackType = 32;
 			}
 			//雷
 			if (status.thunderAtk > 0)
 			{
-				damage += (Mathf.Pow(status.thunderAtk, 2) * atV.mValue) / (status.thunderAtk + GManager.instance.pStatus.thunderDef);
+				damage += (Mathf.Pow(status.thunderAtk, 2) * atV.mValue) / (status.thunderAtk + GManager.instance.thunderDef);
+				GManager.instance.attackType = 64;
 			}
 			if (!GManager.instance.isAttack)
 			{
@@ -792,31 +1103,45 @@ public class EnemyBase : MonoBehaviour
 			}
 			else
 			{
-				GManager.instance.nowArmor -= (atV.shock - GManager.instance.pStatus.equipWeapon.atAromor) < 0 ? 0 : (atV.shock - GManager.instance.pStatus.equipWeapon.atAromor);
+				GManager.instance.nowArmor -= (atV.shock - GManager.instance.equipWeapon.atAromor) < 0 ? 0 : (atV.shock - GManager.instance.equipWeapon.atAromor);
 			}
-			damage = Mathf.Floor(damage * status.attackBuff);
+
+			GManager.instance.DamageSound(GManager.instance.attackType);
+			GManager.instance.ArmorControll();
+
+			damage = Mathf.Floor(damage * attackBuff);
 			//GManager.instance.HpReduce;
-			GManager.instance.pStatus.hp = GManager.instance.pStatus.hp - damage;
-			//GManager.instance.pStatus.hp = 10;
-			Debug.Log($"ダメージ{damage}");
-			Debug.Log($"残り{GManager.instance.pStatus.hp}");
+			GManager.instance.hp -= damage;
+			//Debug.Log($"攻撃時のダメージ{damage}");
+			//GManager.instance.hp = 10;
+			//Debug.Log($"ダメージ{damage}");
+			//Debug.Log($"残り{GManager.instance.hp}");
 			GManager.instance.isDamage = true;
 		}
 		if (GManager.instance.nowArmor <= 0)
 		{
 			GManager.instance.isDown = true;
-			if (atV.isBlow == true)
+			if (atV.isBlow == true || !GManager.instance.pm.isGround)
 			{
 				GManager.instance.blowDown = true;
-				if (direction > 0)
+				if (atV.isBlow)
 				{
-					GManager.instance.blowVector = atV.blowPower;
+					if (direction >= 0)
+					{
+						GManager.instance.blowVector = atV.blowPower;
 
+					}
+					else if (direction < 0)
+					{
+						
+						GManager.instance.blowVector.Set(-atV.blowPower.x, atV.blowPower.y);
+
+					}
 				}
-				if (direction < 0)
-				{
-					GManager.instance.blowVector.Set(-atV.blowPower.x, atV.blowPower.y);
-
+                else
+                {
+					GManager.instance.pm.rb.velocity = Vector2.zero;
+					GManager.instance.blowVector.Set(0, 18f);
 				}
 			}
             else
@@ -828,8 +1153,19 @@ public class EnemyBase : MonoBehaviour
 
 	public void PlayerGuard()
     {
-		if (!GManager.instance.isDamage && !GManager.instance.guardHit)
+		if (!GManager.instance.isDamage) //&& !GManager.instance.guardHit)
 		{
+
+			Equip useEquip;
+            if (!GManager.instance.equipWeapon.twinHand)
+            {
+				useEquip = GManager.instance.equipShield;
+			}
+            else
+            {
+				useEquip = GManager.instance.equipWeapon;
+			}
+
 			//status.hitLimmit--;
 			//mValueはモーション値
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
@@ -837,46 +1173,60 @@ public class EnemyBase : MonoBehaviour
 			{
 				//斬撃刺突打撃を管理
 				if (atV.type == EnemyStatus.AttackType.Slash)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.Def); }
+				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.Def); }
 				else if (atV.type == EnemyStatus.AttackType.Stab)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.pierDef); }
+				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pierDef); }
 				else if (atV.type == EnemyStatus.AttackType.Strike)
-				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.pStatus.strDef); }
+				{ damage += (Mathf.Pow(status.phyAtk, 2) * atV.mValue) / (status.phyAtk + GManager.instance.strDef); }
 
-				damage *= (100 - GManager.instance.pStatus.phyCut)/100;
+				damage *= (100 - useEquip.phyCut)/100;
 			}
 			//神聖
 			if (status.holyAtk > 0)
 			{
-				damage += ((Mathf.Pow(status.holyAtk, 2) * atV.mValue) / (status.holyAtk + GManager.instance.pStatus.holyDef)) * (100 - GManager.instance.pStatus.holyCut)/100;
+				damage += ((Mathf.Pow(status.holyAtk, 2) * atV.mValue) / (status.holyAtk + GManager.instance.holyDef)) * (100 - useEquip.holyCut)/100;
 			}
 			//闇
 			if (status.darkAtk > 0)
 			{
-				damage += ((Mathf.Pow(status.darkAtk, 2) * atV.mValue) / (status.darkAtk + GManager.instance.pStatus.darkDef)) * (100 - GManager.instance.pStatus.darkCut)/100;
+				damage += ((Mathf.Pow(status.darkAtk, 2) * atV.mValue) / (status.darkAtk + GManager.instance.darkDef)) * (100 - useEquip.darkCut)/100;
 			}
 				//炎
 				if (status.fireAtk > 0)
 			{
-				damage += ((Mathf.Pow(status.fireAtk, 2) * atV.mValue) / (status.fireAtk + GManager.instance.pStatus.fireDef)) * (100 - GManager.instance.pStatus.fireCut)/100;
+				damage += ((Mathf.Pow(status.fireAtk, 2) * atV.mValue) / (status.fireAtk + GManager.instance.fireDef)) * (100 - useEquip.fireCut)/100;
 			}
 			//雷
 			if (status.thunderAtk > 0)
 			{
-				damage += ((Mathf.Pow(status.thunderAtk, 2) * atV.mValue) / (status.thunderAtk + GManager.instance.pStatus.thunderDef)) * (100 - GManager.instance.pStatus.thunderCut)/100;
+				damage += ((Mathf.Pow(status.thunderAtk, 2) * atV.mValue) / (status.thunderAtk + GManager.instance.thunderDef)) * (100 - useEquip.thunderCut)/100;
 			}
-			if (status.isLight && GManager.instance.pStatus.guardPower >= 50)
+			if (atV.isLight && useEquip.guardPower >= 50)
 			{//受け値50以上の盾は軽い攻撃をはじく
 				//sAni.Play(status.motionIndex["弾かれ"]);
 			}
-			    GManager.instance.pStatus.stamina -= (atV.shock * 2) * (1 - (GManager.instance.pStatus.guardPower / 100));
+			    GManager.instance.stamina -= (atV.shock * 3) * (1 - (useEquip.guardPower / 100));
 
 
-			damage = Mathf.Floor(damage * status.attackBuff);
-			GManager.instance.pStatus.hp -= damage * status.attackBuff;
+
+			damage = Mathf.Floor(damage * attackBuff);
+			//Debug.Log($"ガード時のダメージ{damage}");
+			GManager.instance.hp -= damage * attackBuff;
+			GManager.instance.PlaySound(useEquip.useSound[0], transform.position);
+			if (!GManager.instance.equipWeapon.twinHand)
+			{
+
+				GManager.instance.pm.anim.Play("OGuard");
+				//Debug.Log("ガード");
+			}
+			else
+			{
+				GManager.instance.pm.anim.Play("TGuard");
+				//Debug.Log("ガード");
+			}
 			//GManager.instance.isDamage = true;
-		}
-		if (GManager.instance.pStatus.stamina <= 0)
+
+		if (GManager.instance.stamina <= 0)
 		{
 			if (atV.isBlow == true)
 			{
@@ -886,7 +1236,7 @@ public class EnemyBase : MonoBehaviour
 				GManager.instance.isDamage = true;
 				if (direction > 0)
 				{
-					GManager.instance.blowVector = atV.blowPower;
+					GManager.instance.blowVector.Set(atV.blowPower.x, atV.blowPower.y);
 
 				}
 				if (direction < 0)
@@ -899,27 +1249,42 @@ public class EnemyBase : MonoBehaviour
 			else
 			{
 				GManager.instance.isGBreak = true;
-				GManager.instance.isGuard = false;
+				GManager.instance.isGuard = false; 
+				GManager.instance.isDamage = true;
+
 			}
 		}
         else
         {
+
 			GManager.instance.isDamage = true;
 			GManager.instance.guardHit = true;
+			if (GManager.instance.Player.transform.localScale.x > 0)
+			{
+					//退かせたい
+					GManager.instance.nockBack = (atV.shock * -200) * (1f - (useEquip.guardPower / 100));
+
+			}
+			else
+			{
+					GManager.instance.nockBack = (atV.shock * 200) * (1f - (useEquip.guardPower / 100));
+
+				}
 		}
 
-
+		}
 	}
 
 	public void Flip(float direction)
     {
 		if (!isStop)
 		{
+		//	Debug.Log("士官");
 			// Switch the way the player is labelled as facing.
 
 			// Multiply the player's x local scale by -1.
 			Vector3 theScale = transform.localScale;
-			theScale.x = direction;
+			theScale.x = direction * Mathf.Abs(theScale.x);
 			transform.localScale = theScale;
 		}
     }
@@ -929,7 +1294,7 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void PositionReset()
 	{
-		if (posiReset && !isDown && !isStop)
+		if (posiReset && !isDown && !isStop && !isDie)
 		{
 			if (transform.position.x <= basePosition.x)
 			{
@@ -1036,7 +1401,7 @@ public class EnemyBase : MonoBehaviour
 	public void PatrolMove()
     {
 
-		if (!isStop && !posiReset && !nowJump && !isDown) {
+		if (!isStop && !posiReset && !nowJump && !isDown && !isDie) {
 			if (transform.position.x <= startPosition.x + status.waitDistance.x && isRight)
 			{
 				sAni.Play("Move");
@@ -1076,7 +1441,7 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void PatrolFly()
     {
-		if (!isStop && !posiReset && !nowJump && !isDown)
+		if (!isStop && !posiReset && !nowJump && !isDown && !isDie)
 		{
 
 			if (transform.position.y <= startPosition.y + status.waitDistance.y && isUp)
@@ -1108,7 +1473,7 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void Wait()
     {
-		if (!posiReset)
+		if (!posiReset && !isDie)
 		{
 			if (dRb == null)
 			{
@@ -1148,8 +1513,8 @@ public class EnemyBase : MonoBehaviour
 				Serch.SetActive(true);
 				Serch2.SetActive(true);
 				isAggressive = false;
-				status.ground = EnemyStatus.MoveState.wakeup;
-				status.air = EnemyStatus.MoveState.wakeup;
+				ground = EnemyStatus.MoveState.wakeup;
+				air = EnemyStatus.MoveState.wakeup;
             }
 		}
         else
@@ -1169,127 +1534,166 @@ public class EnemyBase : MonoBehaviour
 	/// <summary>
 	/// 戦闘中の距離の取り方
 	/// </summary>
-	public void AgrMove()
+	public void AgrMove(int disIndex = 0)
     {
 
 		//if()
 		stateJudge += Time.fixedDeltaTime;
 		#region//判断
-		if ((status.ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && status.ground != EnemyStatus.MoveState.escape)
+		if ((ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && ground != EnemyStatus.MoveState.escape)
 		//escapeだけはスクリプトから動かす
 		{
-			if (Mathf.Abs(distance.x) <= status.agrDistance.x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance.x - status.adjust)
-			{
-				status.ground = EnemyStatus.MoveState.stay;
+            if (attackComp && RandomValue(0,100) <= atV.escapePercentage)
+            {
+				if (status.agrDistance[disIndex].x <= 30)
+				{
+					ground = EnemyStatus.MoveState.leaveWalk;
+				}
+				else if(Mathf.Abs((Mathf.Abs(distance.x) / status.agrDistance[disIndex].x)) >= 0.6)
+				{
+					ground = EnemyStatus.MoveState.leaveDash;
+					
+				}
+                  
 			}
-			else if (Mathf.Abs(distance.x) > status.agrDistance.x)//近づく方じゃね？
+			//20パーセントの確率で停止以外に
+			else if (((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust) && RandomValue(0,100) >= 40) || guardHit)
+			{
+				
+				ground = EnemyStatus.MoveState.stay;
+			//	flipWaitTime = 10;
+			}
+			else if (Mathf.Abs(distance.x) > status.agrDistance[disIndex].x)//近づく方じゃね？
 			{
 				if (Mathf.Abs(distance.x) <= status.walkDistance.x || isGuard)
 				{
-					status.ground = EnemyStatus.MoveState.accessWalk;
+					ground = EnemyStatus.MoveState.accessWalk;
 				}
 				else
 				{
-					status.ground = EnemyStatus.MoveState.accessDash;
+					ground = EnemyStatus.MoveState.accessDash;
 				}
 			}
-			else if (Mathf.Abs(distance.x) < status.agrDistance.x)//遠ざかる
+			else if (Mathf.Abs(distance.x) < status.agrDistance[disIndex].x)//遠ざかる
 			{
 				//歩き距離なら敵を見たまま撃つ
 				//動かない弓兵とかは移動速度ゼロに
-				if (Mathf.Abs((Mathf.Abs(distance.x) - status.agrDistance.x)) <= -status.walkDistance.x || isGuard)
+				if (Mathf.Abs((Mathf.Abs(distance.x) - status.agrDistance[disIndex].x)) <= status.walkDistance.x / 2 || isGuard)
 				{
-					status.ground = EnemyStatus.MoveState.leaveWalk;
+					ground = EnemyStatus.MoveState.leaveWalk;
 				}
 				else
 				{
-					status.ground = EnemyStatus.MoveState.leaveDash;
+					ground = EnemyStatus.MoveState.leaveDash;
 				}
 			}
 			stateJudge = 0;
+			attackComp = false;
 		}
 		#endregion
 
-		if (!isStop && !nowJump && !isAvoid && !isDown && isGround)
+		if (!isStop && !nowJump && !isAvoid && !isDown && isGround && !isDie && !isAttack)
 		{
-
-            if (isGuard)
+			move.y = 0;
+    /*        if (isGuard)
             {
-                if (status.ground == EnemyStatus.MoveState.stay)
+                if (ground == EnemyStatus.MoveState.stay)
                 {
 					sAni.Play("Guard");
-					Flip(direction);
+					BattleFlip(direction);
 					move.Set(0, rb.velocity.y);
 
 					rb.velocity = move;
 					isReach = true;
 				}
-				else if (status.ground == EnemyStatus.MoveState.leaveWalk || status.ground == EnemyStatus.MoveState.leaveDash)//遠ざかる
+				else if (ground == EnemyStatus.MoveState.leaveWalk || ground == EnemyStatus.MoveState.leaveDash)//遠ざかる
 				{
 					//近距離の場合歩き範囲をダッシュで離れるのより大きく
 					//歩き距離なら敵を見たまま撃つ
 					//動かない弓兵とかは移動速度ゼロに
-					Flip(direction);
-					isReach = status.ground == EnemyStatus.MoveState.leaveWalk;
+					BattleFlip(direction);
+					isReach = ground == EnemyStatus.MoveState.leaveWalk;
 					sAni.Play(status.motionIndex["BackGuard"]);
 					move.Set(status.addSpeed.x * (-direction * status.patrolSpeed.x - rb.velocity.x), 0);
 					rb.AddForce(move);
 				}
                 else
                 {
-					Flip(direction);
-					isReach = (Mathf.Abs(distance.x) - status.agrDistance.x) <= status.walkDistance.x ? true : false;
+					BattleFlip(direction);
+					isReach = (Mathf.Abs(distance.x) - status.agrDistance[disIndex].x) <= status.walkDistance.x ? true : false;
 					move.Set(status.addSpeed.x * (direction * status.patrolSpeed.x - rb.velocity.x), 0);
 					rb.AddForce(move);
 					sAni.Play("GuardMove");
 				}
-			}
-			else if (status.ground == EnemyStatus.MoveState.stay)
+			}*/
+			if (ground == EnemyStatus.MoveState.stay)
 			{
-				sAni.Play("Stand");
-				Flip(direction);
-				move.Set(0, rb.velocity.y);
+				if (isGuard)
+				{
+					sAni.Play("Guard");
+				}
+				else
+				{
+					sAni.Play("Pose");
+				}
+				BattleFlip(direction);
+				move.x = 0;
 
 			//Debug.Log($"ねずみ{blowM.x}");
 				rb.velocity = move;
 				isReach = true;
 			}
-			else if (status.ground == EnemyStatus.MoveState.accessWalk)
+			else if (ground == EnemyStatus.MoveState.accessWalk)
 			{
-				Flip(direction);
-				isReach = (Mathf.Abs(distance.x) - status.agrDistance.x) <= status.walkDistance.x ? true : false;
+				BattleFlip(direction);
+				isReach = (Mathf.Abs(distance.x) - status.agrDistance[disIndex].x) <= status.walkDistance.x ? true : false;
 				move.Set(status.addSpeed.x * (direction * status.patrolSpeed.x - rb.velocity.x), 0);
 				rb.AddForce(move);
-				sAni.Play("Move");
+				
+				if (isGuard)
+				{
+					sAni.Play("GuardMove");
+				}
+				else
+				{
+					sAni.Play("Move");
+				}
 			}
-			else if (status.ground == EnemyStatus.MoveState.accessDash) 
+			else if (ground == EnemyStatus.MoveState.accessDash) 
 			{
-				Flip(direction);
+				BattleFlip(direction);
 				isReach = false;
 				sAni.Play("Dash");
 				move.Set(status.addSpeed.x * (direction * status.combatSpeed.x - rb.velocity.x),0);
 				rb.AddForce(move);
-                if (Mathf.Abs(distance.x) <= status.agrDistance.x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance.x - status.adjust)
+                if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
                 {
-					status.ground = EnemyStatus.MoveState.accessWalk;
+					ground = EnemyStatus.MoveState.accessWalk;
 					stateJudge = 0.0f;
 				}
 			}
-			else if (status.ground == EnemyStatus.MoveState.leaveWalk)//遠ざかる
+			else if (ground == EnemyStatus.MoveState.leaveWalk)//遠ざかる
 			{
 				//近距離の場合歩き範囲をダッシュで離れるのより大きく
 				//歩き距離なら敵を見たまま撃つ
 				//動かない弓兵とかは移動速度ゼロに
-					Flip(direction);
+					BattleFlip(direction);
 					isReach = true;
-				sAni.Play("BackMove");
+				if (!isGuard)
+				{
+					sAni.Play("BackMove");
+				}
+                else
+                {
+					sAni.Play("BackGuard");
+				}
 				move.Set(status.addSpeed.x * (-direction * status.patrolSpeed.x - rb.velocity.x), 0);
 				rb.AddForce(move);
 			}
-				else if(status.ground == EnemyStatus.MoveState.leaveDash)
+				else if(ground == EnemyStatus.MoveState.leaveDash)
 				{
 					sAni.Play("Dash");
-					Flip(-direction);
+					BattleFlip(-direction);
 					isReach = false;
 				move.Set(status.addSpeed.x * (-direction * status.combatSpeed.x - rb.velocity.x),0);
 				rb.AddForce(move);
@@ -1300,77 +1704,288 @@ public class EnemyBase : MonoBehaviour
 	/// <summary>
 	/// 空を飛ぶタイプのエネミーに戦闘中乗せる。空を飛ぶ
 	/// </summary>
-	public void AgrFly()
+	public void AgrFly(int disIndex = 0)
 	{
-		float judgeDistance = transform.position.y - targetPosition.y;
-
-		if (!isStop && !nowJump && !isAvoid && !isDown)
+		stateJudge += Time.fixedDeltaTime;
+		#region//判断
+		if ((ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && ground != EnemyStatus.MoveState.escape)
+		//escapeだけはスクリプトから動かす
 		{
-			sAni.Play("Move");
-			if (judgeDistance　== status.agrDistance.y)//ゆとりの範疇なら我慢
+
+			bool isSet = false;
+
+			//この場合はパーセンテージは分けるのに使おう
+			if (attackComp && atV.escapePercentage > 0)
 			{
-				move.Set(rb.velocity.x,0);
-				rb.velocity = move;
-			}
-			else if (judgeDistance < status.agrDistance.y)//距離はなす
-			{
-				if (judgeDistance >= (status.agrDistance.y - status.walkDistance.y))
+				if (atV.escapePercentage % 2 == 0)
 				{
-					if (Mathf.Abs(rb.velocity.y) >=  status.patrolSpeed.y)
-					{
-						move.Set(0,-status.addSpeed.y);
-						rb.AddForce(move);
-					}
-					else if (Mathf.Abs(rb.velocity.y) <= status.patrolSpeed.y)
-					{
-						move.Set(0, status.addSpeed.y);
-						rb.AddForce(move);
-					}
+					ground = EnemyStatus.MoveState.leaveWalk;
+
+					air = atV.escapePercentage == 2 ? EnemyStatus.MoveState.leaveWalk : EnemyStatus.MoveState.stay;
+
 				}
 				else
 				{
-					if (Mathf.Abs(rb.velocity.y) >= status.combatSpeed.y)
-					{
-						move.Set(0, -status.addSpeed.y);
-						rb.AddForce(move);
-					}
-					else if (Mathf.Abs(rb.velocity.y) <= status.combatSpeed.y)
-					{
-						move.Set(0, status.addSpeed.y);
-						rb.AddForce(move);
-					}
+					ground = EnemyStatus.MoveState.leaveDash;
+					air = atV.escapePercentage == 1 ? EnemyStatus.MoveState.leaveDash : EnemyStatus.MoveState.stay;
 				}
+				isSet = true;
 			}
-			else if (judgeDistance > status.agrDistance.y)//距離近づく
+			//20パーセントの確率で停止以外に
+			else if ((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)|| guardHit)
 			{
-				if (judgeDistance <= (status.agrDistance.y + status.walkDistance.y))
+
+				ground = EnemyStatus.MoveState.stay;
+				//	flipWaitTime = 10;
+			}
+			else if (Mathf.Abs(distance.x) > status.agrDistance[disIndex].x)//近づく方じゃね？
+			{
+				if (Mathf.Abs(distance.x) <= status.walkDistance.x || isGuard)
 				{
-					if (Mathf.Abs(rb.velocity.y) >= status.patrolSpeed.y)
-					{
-						move.Set(0, status.addSpeed.y);
-						rb.AddForce(move);
-					}
-					else if (Mathf.Abs(rb.velocity.y) <= status.patrolSpeed.y)
-					{
-						move.Set(0, -status.addSpeed.y);
-						rb.AddForce(move);
-					}
+					ground = EnemyStatus.MoveState.accessWalk;
 				}
 				else
 				{
-					if (Mathf.Abs(rb.velocity.y) >= status.combatSpeed.y)
+					ground = EnemyStatus.MoveState.accessDash;
+				}
+			}
+			else if (Mathf.Abs(distance.x) < status.agrDistance[disIndex].x)//遠ざかる
+			{
+				//歩き距離なら敵を見たまま撃つ
+				//動かない弓兵とかは移動速度ゼロに
+				if (Mathf.Abs((Mathf.Abs(distance.x) - status.agrDistance[disIndex].x)) <= status.walkDistance.x / 2 || isGuard)
+				{
+					ground = EnemyStatus.MoveState.leaveWalk;
+				}
+				else
+				{
+					ground = EnemyStatus.MoveState.leaveDash;
+				}
+			}
+
+			//縦
+			if (!isSet)
+			{
+				//条件まとめ
+				//超下にいるとき     lvD
+				//超上にいる時       acD
+				//ちょい下にいるとき lvW
+				//ちょい上にいるとき acW
+				//動かなくていいとき stay
+
+				//現在のプレイヤー高度と合わせて目標高度を割りだす。
+				float targetHigh = - distance.y;
+
+				if ((targetHigh <= status.agrDistance[disIndex].y + status.adjust && targetHigh >= status.agrDistance[disIndex].y - status.adjust) || guardHit)
+				{
+
+					air = EnemyStatus.MoveState.stay;
+					//	flipWaitTime = 10;
+				}
+				else if (targetHigh <= status.agrDistance[disIndex].y)//近づく方じゃね？
+				{
+					if (status.agrDistance[disIndex].y - targetHigh <= status.walkDistance.y || isGuard)
 					{
-						move.Set(0, status.addSpeed.y);
-						rb.AddForce(move);
+						air = EnemyStatus.MoveState.accessWalk;
 					}
-					if (Mathf.Abs(rb.velocity.y) <= status.combatSpeed.y)
+					else
 					{
-						move.Set(0, -status.addSpeed.y);
-						rb.AddForce(move);
+						air = EnemyStatus.MoveState.accessDash;
 					}
 				}
+				else if (targetHigh > status.agrDistance[disIndex].y)//遠ざかる
+				{
+					//歩き距離なら敵を見たまま撃つ
+					//動かない弓兵とかは移動速度ゼロに
+					if (targetHigh - status.agrDistance[disIndex].y <= status.walkDistance.y || isGuard)
+					{
+						air = EnemyStatus.MoveState.leaveWalk;
+					}
+					else
+					{
+						air = EnemyStatus.MoveState.leaveDash;
+					}
+				}
+			}
+			stateJudge = 0;
+			attackComp = false;
+		//	Debug.Log($"空{air}陸{ground}");
+			Debug.Log($"空{distance.y}");
+			
+		}
+		#endregion
+
+		if(ground != EnemyStatus.MoveState.wakeup && !soundTest)
+        {
+			GManager.instance.PlaySound(status.walkSound, transform.position);
+			soundTest = true;
+		}
+
+		if(hp != status.maxHp)
+        {
+			GManager.instance.StopSound(status.walkSound, 0.5f);
+		}
+
+		if (!isStop && !nowJump && !isAvoid && !isDown && !isDie && !isAttack)
+		{
+
+			VerTicalMoveJudge();
+
+
+
+
+			if (ground == EnemyStatus.MoveState.stay)
+			{
+				if (isGuard)
+				{
+					sAni.Play("Guard");
+				}
+				else
+				{
+					sAni.Play("Pose");
+				}
+				BattleFlip(direction);
+				//move.x = 0;
+				move.Set(status.addSpeed.x * (0 - rb.velocity.x), move.y);
+				//Debug.Log($"ねずみ{blowM.x}");
+				//rb.velocity = move;
+				isReach = true;
+				if (air == EnemyStatus.MoveState.stay)
+				{
+					rb.velocity = Vector2.zero;
+				}
+				else
+				{
+					rb.AddForce(move);
+				}
+			}
+			else if (ground == EnemyStatus.MoveState.accessWalk)
+			{
+				BattleFlip(direction);
+				isReach = (Mathf.Abs(distance.x) - status.agrDistance[disIndex].x) <= status.walkDistance.x ? true : false;
+				move.Set(status.addSpeed.x * (direction * status.patrolSpeed.x - rb.velocity.x), move.y);
+				rb.AddForce(move);
+
+				if (isGuard)
+				{
+					sAni.Play("GuardMove");
+				}
+				else
+				{
+					sAni.Play("Move");
+				}
+			}
+			else if (ground == EnemyStatus.MoveState.accessDash)
+			{
+				BattleFlip(direction);
+				isReach = false;
+				sAni.Play("Dash");
+				move.Set(status.addSpeed.x * (direction * status.combatSpeed.x - rb.velocity.x), move.y);
+				rb.AddForce(move);
+				if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
+				{
+					ground = EnemyStatus.MoveState.accessWalk;
+					stateJudge = 0.0f;
+				}
+			}
+			else if (ground == EnemyStatus.MoveState.leaveWalk)//遠ざかる
+			{
+				//近距離の場合歩き範囲をダッシュで離れるのより大きく
+				//歩き距離なら敵を見たまま撃つ
+				//動かない弓兵とかは移動速度ゼロに
+				BattleFlip(direction);
+				isReach = true;
+				if (!isGuard)
+				{
+					sAni.Play("BackMove");
+				}
+				else
+				{
+					sAni.Play("BackGuard");
+				}
+				move.Set(status.addSpeed.x * (-direction * status.patrolSpeed.x - rb.velocity.x), move.y);
+				rb.AddForce(move);
+			}
+			else if (ground == EnemyStatus.MoveState.leaveDash)
+			{
+				//Debug.Log("ｊｊ");
+				sAni.Play("Dash");
+				BattleFlip(-direction);
+				isReach = false;
+				move.Set(status.addSpeed.x * (-direction * status.combatSpeed.x - rb.velocity.x), move.y);
+				rb.AddForce(move);
 			}
 		}
+
+		/*		float judgeDistance = transform.position.y - targetPosition.y;
+
+				if (!isStop && !nowJump && !isAvoid && !isDown && !isDie)
+				{
+					sAni.Play("Move");
+					if (judgeDistance　== status.agrDistance[disIndex].y)//ゆとりの範疇なら我慢
+					{
+						move.Set(rb.velocity.x,0);
+						rb.velocity = move;
+					}
+					else if (judgeDistance < status.agrDistance[disIndex].y)//距離はなす
+					{
+						if (judgeDistance >= (status.agrDistance[disIndex].y - status.walkDistance.y))
+						{
+							if (Mathf.Abs(rb.velocity.y) >=  status.patrolSpeed.y)
+							{
+								move.Set(0,-status.addSpeed.y);
+								rb.AddForce(move);
+							}
+							else if (Mathf.Abs(rb.velocity.y) <= status.patrolSpeed.y)
+							{
+								move.Set(0, status.addSpeed.y);
+								rb.AddForce(move);
+							}
+						}
+						else
+						{
+							if (Mathf.Abs(rb.velocity.y) >= status.combatSpeed.y)
+							{
+								move.Set(0, -status.addSpeed.y);
+								rb.AddForce(move);
+							}
+							else if (Mathf.Abs(rb.velocity.y) <= status.combatSpeed.y)
+							{
+								move.Set(0, status.addSpeed.y);
+								rb.AddForce(move);
+							}
+						}
+					}
+					else if (judgeDistance > status.agrDistance[disIndex].y)//距離近づく
+					{
+						if (judgeDistance <= (status.agrDistance[disIndex].y + status.walkDistance.y))
+						{
+							if (Mathf.Abs(rb.velocity.y) >= status.patrolSpeed.y)
+							{
+								move.Set(0, status.addSpeed.y);
+								rb.AddForce(move);
+							}
+							else if (Mathf.Abs(rb.velocity.y) <= status.patrolSpeed.y)
+							{
+								move.Set(0, -status.addSpeed.y);
+								rb.AddForce(move);
+							}
+						}
+						else
+						{
+							if (Mathf.Abs(rb.velocity.y) >= status.combatSpeed.y)
+							{
+								move.Set(0, status.addSpeed.y);
+								rb.AddForce(move);
+							}
+							if (Mathf.Abs(rb.velocity.y) <= status.combatSpeed.y)
+							{
+								move.Set(0, -status.addSpeed.y);
+								rb.AddForce(move);
+							}
+						}
+					}
+				}*/
 	}
 	/// <summary>
 	/// 回避。方向指定も可能だが戦闘時に限りdirectionで前方。-directionで後ろに
@@ -1378,7 +1993,7 @@ public class EnemyBase : MonoBehaviour
 	/// <param name="direction"></param>
 	public void Avoid(float direction) 
 	{
-		if (!isStop && !nowJump && !isDown)
+		if (!isStop && !nowJump && !isDown && !isDie)
 		{
 			if (isAvoid)
 			{
@@ -1388,7 +2003,7 @@ public class EnemyBase : MonoBehaviour
 				move.Set(direction * status.avoidSpeed.x, status.avoidSpeed.y);
 				rb.AddForce(move);
 				Flip(direction);
-				SetLayer(10);
+				SetLayer(28);
 				if (avoidTime >= status.avoidRes)
 				{
 					isAvoid = false;
@@ -1409,28 +2024,44 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void DamageAvoid()
 	{
-		if (isDamage) 
+		if (isDamage || isDie) 
 		{
 			avoidTime += Time.fixedDeltaTime;
-			SetLayer(10);
-			if (avoidTime >= 0.15 && !GManager.instance.fallAttack)
+			SetLayer(28);
+			if (avoidTime >= 0.15 && !GManager.instance.fallAttack && !isDie)
 			{
+				guardJudge = true;
 				isDamage = false;
+                if (guardHit)
+                {
+					guardTime = avoidTime;
+                }
 				avoidTime = 0;
 				SetLayer(initialLayer);
 			}
 		}
         else if(isDown)
         {
-            if (blowDown && !isWakeUp)
+            if (blowDown && isWakeUp)
             {
-				SetLayer(10);
+				SetLayer(28);
 			}
             else
             {
 				SetLayer(initialLayer);
 			}
         }
+
+        if (guardHit && !isDamage)
+        {
+			guardTime += Time.fixedDeltaTime;
+            if (guardTime >= 0.5 && !GManager.instance.fallAttack)
+            {
+				guardHit = false;
+				guardTime = 0;
+            }
+		}
+
 	}
 	//status.kind == EnemyStatus.KindofEnemy.Fly
 
@@ -1440,10 +2071,12 @@ public class EnemyBase : MonoBehaviour
 		{
 			if (!isGround && blowDown)
 			{
+			//	Debug.Log("v");
 				GravitySet(status.firstGravity);
 			}
 			else
 			{
+				Debug.Log("vvv");
 				GravitySet(0);
 			}
 		}
@@ -1623,26 +2256,28 @@ public class EnemyBase : MonoBehaviour
 
 	public void ArmorRecover()
 	{
-		if(!isDown && nowArmor == lastArmor)
+	//	Debug.Log($"今のアーマー{nowArmor}");
+		if(!isDown && !isDamage)
         {
 			recoverTime += Time.fixedDeltaTime;
-			if(recoverTime >= 15)
+			if(recoverTime >= 15 || nowArmor > status.Armor)
             {
 				ArmorReset();
 				recoverTime = 0.0f;
-				lastArmor = nowArmor; 
+				lastArmor = 1;
+			//	lastArmor = nowArmor; 
 			}
-            else if(nowArmor < status.Armor - 5 && recoverTime >= 3)
+            else if(nowArmor < status.Armor && recoverTime >= 3 * lastArmor)
             {
-				recoverTime = 0.0f;
-				nowArmor += 3;
-				lastArmor = nowArmor;
+				//recoverTime = 0.0f;
+				nowArmor += status.Armor / 6;
+				lastArmor++;
 			}
         }
         else
         {
 			recoverTime = 0.0f;
-			lastArmor = nowArmor;
+			lastArmor = 1;
 		}
 
 	}
@@ -1685,7 +2320,7 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void NockBack()
     {
-		if (blowDown && isFalter)
+		if ((blowDown || guardBreak) && isFalter)
 		{
 			isFalter = false;
 			isAnimeStart = false;
@@ -1703,6 +2338,7 @@ public class EnemyBase : MonoBehaviour
 				isDown = false;
 				isAnimeStart = false;
 				isFalter = false;
+				ArmorReset();
 				
             }
 
@@ -1718,6 +2354,8 @@ public class EnemyBase : MonoBehaviour
 		{
 			isBounce = false;
 			isAnimeStart = false;
+
+
 
 		}
 		if (isBounce && !blowDown)
@@ -1736,12 +2374,13 @@ public class EnemyBase : MonoBehaviour
 				isDown = false;
 				isAnimeStart = false;
 				isBounce = false;
+				ArmorReset();
 			}
 		}
 	}
 	public void Blow()
     {
-		if (blowDown)
+		if (blowDown && isDown)
 		{
 
 			blowTime += Time.fixedDeltaTime;
@@ -1770,7 +2409,7 @@ public class EnemyBase : MonoBehaviour
 	{
 		//////Debug.log("吹き飛ぶ");
 
-		if (blowDown)
+		if (blowDown && isDown)
 		{
 				if (!isWakeUp)
 				{
@@ -1786,12 +2425,27 @@ public class EnemyBase : MonoBehaviour
 					rb.velocity = Vector2.zero;
 					if (!isAnimeStart)
 					{
+						if (status.isMetal)
+						{
+							GManager.instance.PlaySound(SoundManager.instance.downSound[0], transform.position);
+						}
+						else
+						{
+							GManager.instance.PlaySound(SoundManager.instance.downSound[1], transform.position);
+						}
 						sAni.Play("Down");
+
 						isAnimeStart = true;
 					}
 					//GravitySet(status.firstGravity);
 					else if (!CheckEnd("Down"))
 					{
+						if(isDie)
+                        {
+							isDown = false;
+							isAnimeStart = false;
+							return;
+                        }
 						AllStop(status.downRes);
 						//Debug.Log("醤油");
 						
@@ -1811,6 +2465,7 @@ public class EnemyBase : MonoBehaviour
 					}
 					else if (!CheckEnd("WakeUp"))
 					{
+					SetLayer(initialLayer);
 					//	isAnimeStart = false;
 							isDown = false;
 							isWakeUp = false;
@@ -1827,100 +2482,155 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-		//////Debug.log($"{collision.tag}タグ");
-		////////Debug.log("開始");
-		if(collision.tag == EnemyManager.instance.AttackTag && (isHitable || lastHit != collision.gameObject))
-        {
-			WeponDamage();
-			if (!isAggressive)
-			{
-				Serch.SetActive(false);
-				Serch2.SetActive(false);
-				isAggressive = true;
-			}
-			lastHit = collision.gameObject;
-		}
-		else if (collision.tag == EnemyManager.instance.PMagicTag && (isHitable || lastHit != collision.gameObject))
+
+
+		if (!isDie)
 		{
-
-			PlayerMagicDamage();
-			if (!isAggressive)
+			//////Debug.log($"{collision.tag}タグ");
+			////////Debug.log("開始");
+			if (collision.tag == EnemyManager.instance.AttackTag && (isHitable || lastHit != collision.gameObject))
 			{
-				Serch.SetActive(false);
-				Serch2.SetActive(false);
-				isAggressive = true;
+
+				bool success;
+				if (isGuard)
+				{
+					if (transform.localScale.x > 0)
+					{
+						success = transform.position.x <= GManager.instance.Player.transform.position.x ? true : false;
+					}
+					else
+					{
+						success = transform.position.x > GManager.instance.Player.transform.position.x ? true : false;
+					}
+
+					if (success)
+					{
+						WeaponGuard();
+						return;
+					}
+				}
+				WeaponDamage();
+				if (!isAggressive)
+				{
+					Serch.SetActive(false);
+					Serch2.SetActive(false);
+					isAggressive = true;
+					Flip(direction);
+				}
+				lastHit = collision.gameObject;
+				isHit = true;
+				isHitable = false;
+				lastHit = collision.gameObject;
 			}
-			lastHit = collision.gameObject;
+
+			else if (collision.tag == EnemyManager.instance.PMagicTag && (isHitable || lastHit != collision.gameObject))
+			{
+
+				PlayerMagicDamage();
+				if (!isAggressive)
+				{
+					Serch.SetActive(false);
+					Serch2.SetActive(false);
+					isAggressive = true;
+					Flip(direction);
+				}
+				lastHit = collision.gameObject;
+			}
+			else if (collision.tag == EnemyManager.instance.SMagicTag) //&& (isHitable || lastHit != collision.gameObject))
+			{
+				//SisMagic sm = collision.gameObject.GetComponent<SisMagic>();
+
+				//		SisterMagicDamage();
+
+				//	if (!isAggressive)
+				//	{
+		//		Debug.Log($"衝突したもの{collision.gameObject.name}");
+			//	}
+			//	lastHit = collision.gameObject;
+			}
+
+			if (isAggressive && collision.tag == EnemyManager.instance.JumpTag && isGround)
+			{
+				if (collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+				{
+
+					//ステータスでジャンプタグ設定しなければジャンプできない敵が作れる
+					jumpTrigger = true;
+				}
+			}
 		}
-		else if (collision.tag == EnemyManager.instance.SMagicTag && (isHitable || lastHit != collision.gameObject)) 
-		{
-
-			SisterMagicDamage();
-			if (!isAggressive)
-			{
-				Serch.SetActive(false);
-				Serch2.SetActive(false);
-				isAggressive = true;
-			}
-			lastHit = collision.gameObject;
-		}
-
-		if(isAggressive && collision.tag == EnemyManager.instance.JumpTag && isGround)
-        {
-			if (collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
-			{
-
-				//ステータスでジャンプタグ設定しなければジャンプできない敵が作れる
-				jumpTrigger = true;
-			}
-        }
-
 	}
 	protected virtual void OnTriggerStay2D(Collider2D collision)
 	{
-		if (collision.tag == EnemyManager.instance.AttackTag && (isHitable || lastHit != collision.gameObject))
+		if (!isDie)
 		{
 			//Debug.Log("きたで");
-			WeponDamage();
-			isHit = true;
-			isHitable = false;
-			lastHit = collision.gameObject;
-		}
-		else if (collision.tag == EnemyManager.instance.PMagicTag && (isHitable || lastHit != collision.gameObject))
-		{
-
-			PlayerMagicDamage();
-			isHit = true;
-			isHitable = false;
-			lastHit = collision.gameObject;
-		}
-		else if (collision.tag == EnemyManager.instance.SMagicTag && (isHitable || lastHit != collision.gameObject))
-		{
-
-			SisterMagicDamage();
-			isHit = true;
-			isHitable = false;
-			lastHit = collision.gameObject;
-		}
-
-
-
-		if (isAggressive && collision.tag == EnemyManager.instance.JumpTag && isGround)
-		{
-			if (collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+			if (collision.tag == EnemyManager.instance.AttackTag && (isHitable || lastHit != collision.gameObject))
 			{
 
-				//ステータスでジャンプタグ設定しなければジャンプできない敵が作れる
-				jumpTrigger = true;
+				bool success;
+				if (isGuard)
+				{
+					if (transform.localScale.x > 0)
+					{
+						success = transform.position.x <= GManager.instance.Player.transform.position.x ? true : false;
+					}
+					else
+					{
+						success = transform.position.x > GManager.instance.Player.transform.position.x ? true : false;
+					}
+
+					if (success)
+					{
+						WeaponGuard();
+						return;
+					}
+				}
+				//WeaponDamage();
+				WeaponDamage();
+				isHit = true;
+				isHitable = false;
+				lastHit = collision.gameObject;
+			}
+			else if (collision.tag == EnemyManager.instance.PMagicTag && (isHitable || lastHit != collision.gameObject))
+			{
+
+				PlayerMagicDamage();
+				isHit = true;
+				isHitable = false;
+				lastHit = collision.gameObject;
+			}
+			else if (collision.tag == EnemyManager.instance.SMagicTag)// && !isAggressive) //&& (isHitable || lastHit != collision.gameObject))
+			{
+				//SisMagic sm = collision.gameObject.GetComponent<SisMagic>();
+
+				//		SisterMagicDamage();
+
+				//	if (!isAggressive)
+				//	{
+			//	Debug.Log($"衝突したもの{collision.gameObject.name}");
+				//	}
+				//	lastHit = collision.gameObject;
+			}
+
+
+
+			if (isAggressive && collision.tag == EnemyManager.instance.JumpTag && isGround)
+			{
+				if (collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+				{
+
+					//ステータスでジャンプタグ設定しなければジャンプできない敵が作れる
+					jumpTrigger = true;
+				}
 			}
 		}
-
 	}
 
     protected virtual void OnTriggerExit2D(Collider2D collision)
     {
 
-		if (collision.tag == EnemyManager.instance.PMagicTag)
+	/*	if (collision.tag == EnemyManager.instance.PMagicTag)
 		{
 			//ここで最終弾だけ吹き飛ばすようにする？
 			PlayerMagicDamage();
@@ -1929,9 +2639,9 @@ public class EnemyBase : MonoBehaviour
 		else if (collision.tag == EnemyManager.instance.SMagicTag)
 		{
 
-			SisterMagicDamage();
+			SisterMagicDamage(collision.gameObject);
 			isHit = false;
-		}
+		}*/
 
 	}
 
@@ -1960,7 +2670,7 @@ public class EnemyBase : MonoBehaviour
 		public void MagicBlow(Collider2D c)
 		{
 
-			rb.AddForce(move(GManager.instance.pStatus.equipWeapon.blowPower.x * -direction, GManager.instance.pStatus.equipWeapon.blowPower.y));
+			rb.AddForce(move(GManager.instance.equipWeapon.blowPower.x * -direction, GManager.instance.equipWeapon.blowPower.y));
 		}*/
 
 	public void HPReset()
@@ -1969,9 +2679,57 @@ public class EnemyBase : MonoBehaviour
     }
 	public void Die()
     {
-        if (hp <= 0)
+        if (isDie)
         {
-			Destroy(this.gameObject);
+			
+            if(!isDown && blowDown)
+            {
+				if (!isAnimeStart)
+				{
+					rb.velocity = Vector2.zero;
+					sAni.Play("DDie");
+					isAnimeStart = true;
+				}
+				else
+				{
+					rb.velocity = Vector2.zero;
+					if (!CheckEnd("DDie"))
+					{
+						SManager.instance.EnemyDeath(this.gameObject);
+						if (SManager.instance.target == this.gameObject)
+						{
+							SManager.instance.target = null;
+						}
+						Destroy(this.gameObject);
+					}
+
+				}
+			}
+			
+			else if (!isDown && !blowDown) 
+			{
+				
+                if (!isAnimeStart)
+                {
+
+                  sAni.Play("NDie");
+					isAnimeStart = true;
+                }
+                else
+                {
+                    if (!CheckEnd("NDie"))
+                    {
+						SManager.instance.EnemyDeath(this.gameObject);
+						if(SManager.instance.target == this.gameObject)
+                        {
+							SManager.instance.target = null;
+                        }
+						Destroy(this.gameObject);
+					}
+
+                }
+				
+			}
         }
     }
 
@@ -1991,23 +2749,43 @@ public class EnemyBase : MonoBehaviour
 		atV.shock = status.atValue[attackNumber].shock;
 		atV.type = status.atValue[attackNumber].type;
 		atV.isCombo = status.atValue[attackNumber].isCombo;
+		atV.escapePercentage = status.atValue[attackNumber].escapePercentage;
+		atV.parryResist = status.atValue[attackNumber].parryResist;
+		atV.attackEffect = status.atValue[attackNumber].attackEffect;
 	}
 
 
 	/// <summary>
 	/// 攻撃
 	/// 改修要請
-	/// isShoot = trueの時の処理
+	/// isShoot = trueの時の処理つくる？。いらない？つまりたまうちってこったな
+	/// リヴァースで逆向く
 	/// </summary>
-	public void Attack()
+	public void Attack(bool select = false,int number = 0,bool reverse = false)
 	{
-		if (isAtEnable && !isDown && !isAttack)
+
+		
+		if (isAtEnable && !isDown && !isAttack && !isDie && !guardHit)
 		{
+			if (!reverse)
+			{
+				Flip(direction);
+			}
+            else
+            {
+				Flip(-direction);
+			}
+            
+            if (select)
+            {
+				attackNumber = number;
+            }
+
 			AttackPrepare();
 			sAni.Play(status.attackName[attackNumber]);
 			isAttack = true;
 			isAtEnable = false;
-
+			attackComp = true;
 		}
 	}
 
@@ -2038,7 +2816,7 @@ public class EnemyBase : MonoBehaviour
 		rb.AddForce(move);
 
 	}
-
+	/*
 	/// <summary>
 	/// ガードする
 	/// </summary>
@@ -2053,7 +2831,7 @@ public class EnemyBase : MonoBehaviour
 		{
 			Guard.SetActive(false);
 		}
-	}
+	}*/
 	/// <summary>
 	/// ガードブレイク
 	/// 必要ならisGuard点火とセットでFUpdateに入れる
@@ -2062,7 +2840,7 @@ public class EnemyBase : MonoBehaviour
     {
         if (guardBreak)
         {
-			if (guardBreak && (blowDown || isFalter))
+			if (guardBreak && blowDown)
 			{
 				guardBreak = false;
 				isAnimeStart = false;
@@ -2074,8 +2852,9 @@ public class EnemyBase : MonoBehaviour
 				sAni.Play("GuardBreak");
 				isAnimeStart = true;
 			}
-           else if (!CheckEnd("GuardBreak") && isAnimeStart)
+           else if (!CheckEnd("GuardBreak"))
             {
+				ArmorReset();
 				guardBreak = false;
 				isAnimeStart = false;
 				isDown = false;
@@ -2093,6 +2872,10 @@ public class EnemyBase : MonoBehaviour
 		{
 			if (!CheckEnd(status.attackName[attackNumber]) || isDown)
 			{
+				if (!isDown)
+				{
+					Flip(direction);
+				}
 			//	isAtEnable = true;これクールタイムで管理しようよ
 				isAttack = false;
 			}
@@ -2144,6 +2927,224 @@ public class EnemyBase : MonoBehaviour
 		//  (_currentStateName);
 	}
 
+	/// <summary>
+	/// エンチャ時はエンチャントタイプを参照
+	/// </summary>
+	/// <param name="damageType"></param>
+	void DamageSound(byte damageType)
+    {
+		if (damageType == 1)
+		{
+			GManager.instance.PlaySound("SlashDamage", transform.position);
+		}
+		else if (damageType == 2)
+		{
+			GManager.instance.PlaySound("StabDamage", transform.position);
+		}
+		else if (damageType == 4)
+		{
+			if (!heavy)
+			{
+			//	Debug.Log("チキン");
+				GManager.instance.PlaySound("StrikeDamage", transform.position);
+			}
+            else
+            {
+				GManager.instance.PlaySound("HeavyStrikeDamage", transform.position);
+				heavy = false;
+			}
+		}
+		else if (damageType == 8)
+		{
+			GManager.instance.PlaySound("HolyDamage", transform.position);
+		}
+		else if (damageType == 16)
+		{
+			GManager.instance.PlaySound("DarkDamage", transform.position);
+		}
+		else if (damageType == 32)
+		{
+			GManager.instance.PlaySound("FireDamage", transform.position);
+		}
+		else if (damageType == 64)
+		{
+			GManager.instance.PlaySound("ThunderDamage", transform.position);
+		}
+	}
+
+	public void MoveSound(int type)
+    {
+		if (status.kind != EnemyStatus.KindofEnemy.Fly)
+		{
+			if (!isAggressive)
+			{
+				GManager.instance.PlaySound(status.footStepSound, transform.position);
+			}
+			else
+			{
+				if (ground == EnemyStatus.MoveState.accessDash || ground == EnemyStatus.MoveState.leaveDash)
+				{
+                    if (status.isMetal)
+                    {
+						GManager.instance.PlaySound(SoundManager.instance.armorFootSound[type], transform.position);
+					}
+                    else
+                    {
+						GManager.instance.PlaySound(SoundManager.instance.bareFootSound[type], transform.position);
+					}
+				}
+				else
+				{
+					if (status.isMetal)
+					{
+						GManager.instance.PlaySound(SoundManager.instance.armorWalkSound[type], transform.position);
+					}
+					else
+					{
+						GManager.instance.PlaySound(SoundManager.instance.bareWalkSound[type], transform.position);
+					}
+				}
+			}
+            if (isWater)
+            {
+				//水の足音
+            }
+		}
+        else
+        {
+			GManager.instance.PlaySound(status.walkSound, transform.position);
+		}
+    }
+
+	public void ActionSound(string useName)
+    {
+		GManager.instance.PlaySound(useName, transform.position);
+	}
+
+	public void SwingSound(int type = 0)
+	{
+		//斬撃刺突打撃を管理
+		if (atV.type == EnemyStatus.AttackType.Stab)
+		{
+			GManager.instance.PlaySound(SoundManager.instance.stabSound[type], transform.position);
+		}
+		else
+		{
+			GManager.instance.PlaySound(SoundManager.instance.swingSound[type], transform.position);
+		}
+
+		//エンチャしてる場合も
+
+	}
+	public void FistSound(int type = 0)
+	{
+			GManager.instance.PlaySound(SoundManager.instance.fistSound[type], transform.position);
+		
+		//エンチャしてる場合も
+
+	}
+
+	public void DisParriableAct()
+    {
+		GManager.instance.PlaySound("DisenableParry",transform.position);
+		Vector3 Scale = Vector3.zero;
+		if (transform.localScale.x > 0)
+        {
+			Scale.Set(status.disparriableScale.x, status.disparriableScale.y, status.disparriableScale.z);
+        }
+        else
+        {
+			Scale.Set(status.disparriableScale.x * -1f, status.disparriableScale.y, status.disparriableScale.z);
+		}
+
+		dispary.transform.localScale = Scale;
+		dispary.transform.rotation = Quaternion.Euler(-10, 0, 0);
+		Addressables.InstantiateAsync("DisParriableEffect",dispary.transform);
+    }
+	public void attackEffect()
+	{
+		// Debug.Log($"アイイイイイイ{atEffect.SubObjectName}");
+		Addressables.InstantiateAsync(atV.attackEffect, effectController.transform);
+	}
+
+	public void BattleFlip(float direction)
+    {
+		if(lastDirection != direction)
+        {
+		flipWaitTime += Time.fixedDeltaTime;
+
+		if(flipWaitTime >= 1f)
+        {
+				
+			flipWaitTime = 0f;
+			Flip(direction);
+		    lastDirection = direction;
+        }
+        }
+        else
+        {
+			flipWaitTime = 0;
+        }
+
+
+
+    }
+
+	/// <summary>
+	/// FixedUpdateに置いてガードさせる
+	/// 引数はガードする確率
+	/// </summary>
+	protected void GroundGuardAct(float guardProballity)
+    {
+		//後ろ歩きガードどうする？
+		isGuard = ground == EnemyStatus.MoveState.stay && !isDown && !isAttack ? true : false;
+		if (!isAttack && !isDown && guardJudge && !isGuard)
+		{
+			if ((Mathf.Sign(transform.localScale.x) != Mathf.Sign(GManager.instance.Player.transform.localScale.x)))
+			{
+				if (RandomValue(0, 100) >= (100 - guardProballity))
+				{
+					//flipWaitTime = 100;
+					ground = EnemyStatus.MoveState.stay;
+				//	Debug.Log("ｆ");
+				}
+				guardJudge = false;
+			}
+		}
+
+	}
+
+	protected void VerTicalMoveJudge()
+    {
+		if(air == EnemyStatus.MoveState.stay)
+        {
+			move.Set(0, status.addSpeed.y * (0 - rb.velocity.y));
+			//move.y = 0;
+        }
+        else if(air == EnemyStatus.MoveState.accessDash)
+        {
+			move.Set(0,status.addSpeed.y * (status.combatSpeed.y - rb.velocity.y));
+			//move.y = ;
+
+		}
+		else if(air == EnemyStatus.MoveState.accessWalk)
+
+		{
+			move.Set(0, status.addSpeed.y * (status.patrolSpeed.y - rb.velocity.y));
+		//	move.y = status.addSpeed.y * (status.patrolSpeed.y - rb.velocity.y);
+		}
+		else if(air == EnemyStatus.MoveState.leaveDash)
+		{
+			move.Set(0,status.addSpeed.y * (-status.combatSpeed.y - rb.velocity.y));
+			//move.y = ;
+		}
+		else if (air == EnemyStatus.MoveState.leaveWalk)
+
+		{
+			move.Set(0,status.addSpeed.y * (-status.patrolSpeed.y - rb.velocity.y));
+			//move.y = ;
+		}
+	}
 
 
 }

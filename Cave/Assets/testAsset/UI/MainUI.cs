@@ -18,7 +18,7 @@ public class MainUI : MonoBehaviour
     [HideInInspector] public GameObject selectButton;//各UIの選択用
     public GameObject eqButton;
     public GameObject useButton;
-    public GameObject weponButton;
+    public GameObject weaponButton;
     public GameObject magicButton;
     public GameObject coreButton;
     public GameObject keyButton;
@@ -28,7 +28,7 @@ public class MainUI : MonoBehaviour
 
     public Button eqB;
     public Button useB;
-    public Button weponB;
+    public Button weaponB;
     public Button magicB;
     public Button coreB;
     public Button keyB;
@@ -39,7 +39,7 @@ public class MainUI : MonoBehaviour
 
     public GameObject eqWindow;
     public GameObject useWindow;
-    public GameObject weponWindow;
+    public GameObject weaponWindow;
     public GameObject magicWindow;
     public GameObject coreWindow;
     public GameObject keyWindow;
@@ -124,6 +124,9 @@ public class MainUI : MonoBehaviour
 
     [ActionIdProperty(typeof(RewiredConsts.Action))]
     public int rewiredAction18;
+
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction19;
 
     #endregion
     //  Button eq;
@@ -268,7 +271,7 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
-                    weponWindow.SetActive(false);
+                    weaponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
 
@@ -286,7 +289,7 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
-                    weponWindow.SetActive(false);
+                    weaponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
 
@@ -294,7 +297,7 @@ public class MainUI : MonoBehaviour
                     usec.isIniti = false;
                     isInitial = false;
                 }
-                else if (selectButtom == weponButton)
+                else if (selectButtom == weaponButton)
                 {
 
                     eqWindow.SetActive(false);
@@ -303,7 +306,7 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
-                    weponWindow.SetActive(true);
+                    weaponWindow.SetActive(true);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
                     isInitial = false;
@@ -319,7 +322,7 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
-                    weponWindow.SetActive(false);
+                    weaponWindow.SetActive(false);
                     coreWindow.SetActive(true);
                     materialWindow.SetActive(false);
                     isInitial = false;
@@ -335,7 +338,7 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
-                    weponWindow.SetActive(false);
+                    weaponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
                     isInitial = false;
@@ -351,7 +354,7 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(true);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
-                    weponWindow.SetActive(false);
+                    weaponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
                     isInitial = false;
@@ -367,7 +370,7 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(false);
-                    weponWindow.SetActive(false);
+                    weaponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(true);
                     isInitial = false;
@@ -383,7 +386,7 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(true);
                     systemWindow.SetActive(false);
-                    weponWindow.SetActive(false);
+                    weaponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
                     isInitial = false;
@@ -399,7 +402,7 @@ public class MainUI : MonoBehaviour
                     magicWindow.SetActive(false);
                     libraryWindow.SetActive(false);
                     systemWindow.SetActive(true);
-                    weponWindow.SetActive(false);
+                    weaponWindow.SetActive(false);
                     coreWindow.SetActive(false);
                     materialWindow.SetActive(false);
                     isInitial = false;
@@ -447,7 +450,7 @@ public class MainUI : MonoBehaviour
 
     public void ButtonOff()
     {
-        weponB.enabled = false;
+        weaponB.enabled = false;
         useB.enabled = false;
         coreB.enabled = false;
         magicB.enabled = false;
@@ -460,7 +463,7 @@ public class MainUI : MonoBehaviour
     }
     public void ButtonOn()
     {
-        weponB.enabled = true;
+        weaponB.enabled = true;
         useB.enabled = true;
         coreB.enabled = true;
         magicB.enabled = true;

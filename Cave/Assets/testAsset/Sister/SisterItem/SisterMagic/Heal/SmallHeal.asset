@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41ed277e88186ad48b672dd0a5a3ccdc, type: 3}
+  m_Name: SmallHeal
+  m_EditorClassIdentifier: 
+  icon: {fileID: 0}
+  itemName: 
+  hiraganaName: 
+  information: 
+  number: 0
+  holdLimmit: 0
+  isDrop: 0
+  inventoryNum: 0
+  selectable: 1
+  atType: 0
+  magicLevel: 0
+  phyBase: 0
+  holyBase: 0
+  darkBase: 0
+  fireBase: 0
+  thunderBase: 0
+  phyAtk: 0
+  holyAtk: 0
+  darkAtk: 0
+  fireAtk: 0
+  thunderAtk: 0
+  displayAtk: 0
+  recoverBase: 200
+  recoverAmount: 400
+  castTime: 5
+  useMP: 50
+  effectTime: 0
+  effectNow: 0
+  effects:
+    m_AssetGUID: 566b689ca17ec49468e42d895239a5e9
+    m_SubObjectName: 
+    m_SubObjectType: 
+  powerCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  skillCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  intCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  shock: 0
+  mValue: 0
+  fireType: 1
+  penetration: 1
+  lifeTime: 1.5
+  speedV: 0
+  speedA: 0
+  angle: 0
+  homingTime: 0
+  homingAngleV: 0
+  homingAngleA: 0
+  isChild: 0
+  rotateVt: 0
+  isRotate: 0
+  bulletScaleV: {x: 0, y: 0}
+  bulletScaleA: {x: 0, y: 0}
+  isBlow: 0
+  isChaice: 1
+  blowPower: {x: 0, y: 0}
+  bulletNumber: 0
+  VRandom: 0
+  HRandom: 0
+  castEffect:
+    m_AssetGUID: df5eeaefb9c8168468981f3f8a76febb
+    m_SubObjectName: 
+    m_SubObjectType: 
+  fireSound: HealStart
+  existSound: 
+  hitSound: HealHit
+  FireAnime: Fire2
+  castAnime: StandPray
+  hitEffect:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+  isHit: 0
+  attackType: 0
+  startRotation: {x: -94, y: 0, z: 0}
+  mType: 1
+  sType: 6
+  isExprode: 0
+  isSlip: 0
+  cureCondition: 0
+  isWide: 0
+  regeneAmount: 0
+  coolTime: 2.5
+  faithCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

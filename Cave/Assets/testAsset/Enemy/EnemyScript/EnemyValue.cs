@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 [System.Serializable] //これを書くとinspectorに表示される。
-public struct EnemyValue
+public class EnemyValue
 {
     [Header("モーション値")]
     public float mValue;
@@ -29,4 +30,17 @@ public struct EnemyValue
     public bool isShoot;
     [Header("パリィ不可")]
     public bool disParry;
+    [Header("パリィ抵抗値")]
+    public float parryResist;
+
+    [Header("戦闘時に攻撃後退く可能性")]
+    [Tooltip("飛行タイプはこの数値が1ならダッシュで逃げる。2ならゆっくり。3なら上昇せずに走る。4なら上昇せずに歩く")]
+    ///<summary>
+    ///この確率で攻撃後退く
+    ///</summary>
+    public float escapePercentage;
+
+    [Header("攻撃エフェクト")]
+    [AssetReferenceUILabelRestriction("AttackEffect")]
+    public AssetReference attackEffect;
 }

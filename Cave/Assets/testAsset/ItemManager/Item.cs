@@ -19,7 +19,7 @@ public class Item : ScriptableObject
 	[Header("ソート用のナンバー")]
 	public int number;
 	[Header("所持限界")]
-	public int holdLimmit;
+	public int holdLimmit = 1;
 
 	[Header("ドロップアイテムかどうか")]
 	///<summary>

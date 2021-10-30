@@ -101,7 +101,7 @@ public class Hanging : MonoBehaviour
         if (!pm.isGround && coll.gameObject.tag == "Hanging")
         {
             col.enabled = false;
-            pm.Stop();
+            pm.AllStop();
             pm.enabled = false;   //プレーヤーコントローラーを停止
             Player.transform.position = new Vector3(coll.transform.position.x + (distaX * -Player.transform.localScale.x),coll.transform.position.y - distaY,0);
             isHang = true;

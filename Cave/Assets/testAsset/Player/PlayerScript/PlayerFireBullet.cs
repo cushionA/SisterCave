@@ -74,7 +74,7 @@ public class PlayerFireBullet : MonoBehaviour
 		if (!em.penetration)
 		{
 			GameObject next = Addressables.InstantiateAsync(em.hitEffect, this.gameObject.transform.position, Quaternion.identity).Result;//次のエフェクトを
-			next.transform.localScale = em.hitEffectScale;
+			//next.transform.localScale = em.hitEffectScale;
 			Addressables.ReleaseInstance(this.gameObject);
 		}
 	}
@@ -141,7 +141,7 @@ void FixedUpdate()
 		speed += em.speedA * Time.fixedDeltaTime;
 
 		// スケール計算
-		transform.localScale += em.bulletScaleV;
+		//transform.localScale += em.bulletScaleV;
 		em.bulletScaleV += em.bulletScaleA * Time.fixedDeltaTime;
 		if (transform.localScale.x < 0.0f || transform.localScale.y < 0.0f || transform.localScale.z < 0.0f)
 		{
@@ -153,28 +153,28 @@ void FixedUpdate()
 
 		if (em.phyBase >= 1)
 		{
-			em.phyAtk = em.phyBase + (em.powerCurve.Evaluate(GManager.instance.pStatus.power)) +
-							   em.skillCurve.Evaluate(GManager.instance.pStatus.skill) +
-							   em.intCurve.Evaluate(GManager.instance.pStatus._int) * GManager.instance.pStatus.equipWeapon.MagicAssist;//	物理の賢さ補正は低くする
+			em.phyAtk = em.phyBase + (em.powerCurve.Evaluate(GManager.instance.power)) +
+							   em.skillCurve.Evaluate(GManager.instance.skill) +
+							   em.intCurve.Evaluate(GManager.instance._int) * GManager.instance.equipWeapon.MagicAssist;//	物理の賢さ補正は低くする
 		}
 		if (em.holyBase >= 1)
 		{
-			em.holyAtk = em.holyBase + (em.powerCurve.Evaluate(GManager.instance.pStatus.power)) +
-							   em.intCurve.Evaluate(GManager.instance.pStatus._int) * GManager.instance.pStatus.equipWeapon.MagicAssist;
+			em.holyAtk = em.holyBase + (em.powerCurve.Evaluate(GManager.instance.power)) +
+							   em.intCurve.Evaluate(GManager.instance._int) * GManager.instance.equipWeapon.MagicAssist;
 		}
 		if (em.darkBase >= 1)
 		{
-			em.darkAtk = em.darkBase + (em.intCurve.Evaluate(GManager.instance.pStatus._int)) *GManager.instance.pStatus.equipWeapon.MagicAssist +
-							   em.skillCurve.Evaluate(GManager.instance.pStatus.skill);
+			em.darkAtk = em.darkBase + (em.intCurve.Evaluate(GManager.instance._int)) *GManager.instance.equipWeapon.MagicAssist +
+							   em.skillCurve.Evaluate(GManager.instance.skill);
 		}
 		if (em.fireBase >= 1)
 		{
-			em.fireAtk = (em.fireBase + em.intCurve.Evaluate(GManager.instance.pStatus._int))
-				* GManager.instance.pStatus.equipWeapon.MagicAssist;
+			em.fireAtk = (em.fireBase + em.intCurve.Evaluate(GManager.instance._int))
+				* GManager.instance.equipWeapon.MagicAssist;
 		}
 		if (em.thunderBase >= 1)
 		{
-			em.thunderAtk = em.thunderBase + em.intCurve.Evaluate(GManager.instance.pStatus._int) * GManager.instance.pStatus.equipWeapon.MagicAssist;
+			em.thunderAtk = em.thunderBase + em.intCurve.Evaluate(GManager.instance._int) * GManager.instance.equipWeapon.MagicAssist;
 		}
 
 

@@ -5,9 +5,11 @@ using SensorToolkit;
 
 public class AggresiveSerch : MonoBehaviour
 {
-    string enemyTag = "Enemy";
-    string dangerTag = "Danger";
+
     [SerializeField] SisterBrain sister;
+    [SerializeField] float pulseWait;
+    float pulseTime;
+
     //  public float SerchRadius;
   //  [SerializeField]
    // private LayerMask layerMask;
@@ -24,9 +26,31 @@ public class AggresiveSerch : MonoBehaviour
 
     public void SerchEnemy()
     {
-        SManager.instance.targetList = se.DetectedObjectsOrderedByDistance;
-        SManager.instance.isTChange = true;
+        
+      //  Debug.Log("調査");
+        SManager.instance.targetList.Clear();
+        SManager.instance.targetCondition.Clear();
+        for (int i = 0; i < se.DetectedObjectsOrderedByDistance.Count; i++)
+        {
+            SManager.instance.TargetAdd(se.DetectedObjectsOrderedByDistance[i]);
+            SManager.instance.targetCondition.Add(SManager.instance.targetList[i].GetComponent<EnemyBase>());
+        }
+      //  SManager.instance.isTChange = true;
     }
+
+    private void FixedUpdate()
+    {
+        pulseTime += Time.fixedDeltaTime;
+        if (pulseTime >= pulseWait)
+        {
+            //Debug.Log("機能してますよー");
+            se.Pulse();
+            SManager.instance.isSerch = true;
+            pulseTime = 0;
+        }
+
+    }
+
     /*
     private void OnTriggerEnter2D(Collider2D collision)
     {

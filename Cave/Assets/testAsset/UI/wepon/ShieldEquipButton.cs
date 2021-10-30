@@ -28,7 +28,7 @@ public class ShieldEquipButton : MonoBehaviour
     {
         // MainUI.instance.isReBuild = true;
         MainUI.instance.wec.isEver = false;
-        MainUI.instance.weponWindow.SetActive(true);
+        MainUI.instance.weaponWindow.SetActive(true);
         EquipmentManager.instance.InitialButton.Select();
         EquipManager.instance.setNumber = setNumber;
         EquipManager.instance.isShieldM = true;
