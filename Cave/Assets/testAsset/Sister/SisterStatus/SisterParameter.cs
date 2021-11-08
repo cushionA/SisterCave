@@ -9,6 +9,15 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "SisterParameter", menuName = "CreateSisterParameter")]
 public class SisterParameter : ScriptableObject
 {
+    [Header("作戦名")]
+    public string oparationName;
+
+    [Header("作戦説明")]
+    public string oparationDescription;
+
+    [Header("何番目の作戦か示す")]
+    public int FairstNumber;
+
     [Header("先制攻撃するかどうか")]
     public bool isPreemtive;
     [Header("最初に支援するかどうか")]

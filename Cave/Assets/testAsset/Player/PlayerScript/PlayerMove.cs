@@ -117,7 +117,7 @@ public class PlayerMove : MonoBehaviour
         #region//入力系
         if (Time.timeScale != 0.0f)
         {
-            if(!GManager.instance.isAttack && !isStop && !GManager.instance.isDown)
+            if(!GManager.instance.isAttack && !isStop && !GManager.instance.isDown && !GManager.instance.isDamage)
             {
                    horizontalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
                    verticalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction2);
@@ -160,7 +160,7 @@ public class PlayerMove : MonoBehaviour
                 {
                     if (avoidJudge > 0.0f && avoidJudge < 0.22f)
                     {
-                        Debug.Log("aa"); 
+                       // Debug.Log("aa"); 
                         //回避の最初のところは七回呼ばれてる。ここも七回呼ばれてる。なぜか動かない
                         GManager.instance.StaminaUse(18);
                         isDash = false;
@@ -201,7 +201,7 @@ public class PlayerMove : MonoBehaviour
     {
         // //Debug.Log($"Yは{ySpeed}です");
 
-        Debug.Log($"どうかな{GManager.instance.nowArmor}");
+       // Debug.Log($"どうかな{GManager.instance.nowArmor}");
         #region//フラグ管理
         // &&  &&  && 
         if (isAvoid || isJump || isDash || GManager.instance.isAttack || GManager.instance.isGuard || GManager.instance.isGBreak)

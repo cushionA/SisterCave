@@ -9122,6 +9122,7 @@ GameObject:
   - component: {fileID: 6444313021878292972}
   - component: {fileID: 6444313021878292978}
   - component: {fileID: 6444313021878292977}
+  - component: {fileID: 7361437873978045024}
   m_Layer: 17
   m_Name: SaberScorpionKight
   m_TagString: Enemy
@@ -9276,6 +9277,8 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+  ground: 6
+  air: 6
   sAni: {fileID: 6444313021878292974}
   rb: {fileID: 6444313021878292973}
   guardHit: 0
@@ -9285,6 +9288,13 @@ MonoBehaviour:
   lastHit: {fileID: 0}
   sm: {fileID: 0}
   insert: 0
+  parentMatt: {fileID: 6444313021878292977}
+  materialSet: 0
+  spriteList:
+  - {fileID: 3420738520798552974}
+  - {fileID: 6299462662477338980}
+  test: 0
+  tesnum: 0
 --- !u!212 &6444313021878292977
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9336,6 +9346,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7361437873978045024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6444313021878292969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee158225ee1e59f4791627785501d950, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shaderTypes: 0
+  normalStrenght: 5
+  normalSmoothing: 1
+  computingNormal: 0
 --- !u!1 &6444313022171469316
 GameObject:
   m_ObjectHideFlags: 0

@@ -1843,7 +1843,7 @@ public class AttackM : MonoBehaviour
         {
             if (!GManager.instance.blocking)
             {
-                Debug.Log("t");
+          //      Debug.Log("t");
                 if (!GManager.instance.equipWeapon.twinHand)
             {
                 GManager.instance.pm.anim.Play("OParry");
@@ -1857,7 +1857,7 @@ public class AttackM : MonoBehaviour
             }
             else if (GManager.instance.blocking)
             {
-                Debug.Log("s");
+             //   Debug.Log("s");
                 if (!GManager.instance.equipWeapon.twinHand)
                 {
                     GManager.instance.pm.anim.Play("OBlock");
@@ -1874,7 +1874,7 @@ public class AttackM : MonoBehaviour
         }
         else if (!GManager.instance.blocking && isParring)
         {
-            Debug.Log("sssssss");
+           // Debug.Log("sssssss");
             if (!GManager.instance.equipWeapon.twinHand && !CheckEnd("OParry"))
             {
                 Debug.Log("sss");

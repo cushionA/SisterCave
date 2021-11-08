@@ -32,7 +32,7 @@ public class SScorpion : EnemyBase
 
     protected override void FixedUpdate()
     {
-        Die();
+   //     Debug.Log($"‚Â‚¢‚Ä‚é‚©{isAnimeStart}");
 
 
 

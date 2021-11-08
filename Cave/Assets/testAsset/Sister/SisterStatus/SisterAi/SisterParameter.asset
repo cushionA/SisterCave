@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26de9fd7602a30f49b6b0e574503a53a, type: 3}
   m_Name: SisterParameter
   m_EditorClassIdentifier: 
+  oparationName: 
+  oparationDescription: 
+  FairstNumber: 0
   isPreemtive: 0
   startSupport: 0
   autoHeal: 1
@@ -124,7 +127,6 @@ MonoBehaviour:
   firstPlan:
     UseMagic: {fileID: 0}
     sCondition: 0
-    Type: 0
     needSupport: 0
     percentage: 0
     highOrLow: 0
@@ -135,7 +137,6 @@ MonoBehaviour:
   secondPlan:
     UseMagic: {fileID: 0}
     sCondition: 0
-    Type: 0
     needSupport: 0
     percentage: 0
     highOrLow: 0
@@ -146,7 +147,6 @@ MonoBehaviour:
   thirdPlan:
     UseMagic: {fileID: 0}
     sCondition: 0
-    Type: 0
     needSupport: 0
     percentage: 0
     highOrLow: 0
@@ -157,7 +157,6 @@ MonoBehaviour:
   forthPlan:
     UseMagic: {fileID: 0}
     sCondition: 0
-    Type: 0
     needSupport: 0
     percentage: 0
     highOrLow: 0
@@ -168,7 +167,6 @@ MonoBehaviour:
   fivePlan:
     UseMagic: {fileID: 0}
     sCondition: 0
-    Type: 0
     needSupport: 0
     percentage: 0
     highOrLow: 0
@@ -179,7 +177,6 @@ MonoBehaviour:
   sixPlan:
     UseMagic: {fileID: 0}
     sCondition: 0
-    Type: 0
     needSupport: 0
     percentage: 0
     highOrLow: 0
@@ -190,7 +187,6 @@ MonoBehaviour:
   firstRecover:
     UseMagic: {fileID: 0}
     condition: 2
-    Type: 0
     needSupport: 6
     percentage: 50
     highOrLow: 1
@@ -201,7 +197,6 @@ MonoBehaviour:
   secondRecover:
     UseMagic: {fileID: 0}
     condition: 2
-    Type: 0
     needSupport: 6
     percentage: 50
     highOrLow: 0
@@ -211,8 +206,7 @@ MonoBehaviour:
     upDown: 0
   thirdRecover:
     UseMagic: {fileID: 0}
-    condition: 0
-    Type: 0
+    condition: 8
     needSupport: 0
     percentage: 0
     highOrLow: 0
@@ -223,7 +217,6 @@ MonoBehaviour:
   forthRecover:
     UseMagic: {fileID: 0}
     condition: 0
-    Type: 0
     needSupport: 0
     percentage: 0
     highOrLow: 0
@@ -234,7 +227,6 @@ MonoBehaviour:
   fiveRecover:
     UseMagic: {fileID: 0}
     condition: 0
-    Type: 0
     needSupport: 0
     percentage: 0
     highOrLow: 0
@@ -245,7 +237,6 @@ MonoBehaviour:
   nonRecover:
     UseMagic: {fileID: 0}
     condition: 0
-    Type: 0
     needSupport: 0
     percentage: 0
     highOrLow: 0
@@ -256,7 +247,6 @@ MonoBehaviour:
   nFirstRecover:
     UseMagic: {fileID: 0}
     condition: 2
-    Type: 0
     needSupport: 6
     percentage: 99
     highOrLow: 0
@@ -267,7 +257,6 @@ MonoBehaviour:
   nSecondRecover:
     UseMagic: {fileID: 0}
     condition: 8
-    Type: 0
     needSupport: 0
     percentage: 0
     highOrLow: 0
@@ -278,7 +267,6 @@ MonoBehaviour:
   nThirdRecover:
     UseMagic: {fileID: 0}
     condition: 8
-    Type: 0
     needSupport: 0
     percentage: 0
     highOrLow: 0

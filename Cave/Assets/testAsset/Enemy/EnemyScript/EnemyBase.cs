@@ -48,14 +48,15 @@ public class EnemyBase : MonoBehaviour
 
 	[Header("エネミーのステータス")]
 	public EnemyStatus status;
-    // === 外部パラメータ ======================================
-    /*[HideInInspector]*/ public bool isAggressive;//攻撃モードの敵
+	// === 外部パラメータ ======================================
+	/*[HideInInspector]*/
+	public bool isAggressive;//攻撃モードの敵
 	[HideInInspector] public bool isAttack;//これがTrueの時ひるまない
 	protected bool isRight = true;//右にパトロールするかどうか
 	protected bool isGround;
 	protected Vector2 distance;//プレイヤーとの距離
 	protected float escapeTime;//数えるだけ
-	protected　bool isJump;//ジャンプしてるかどうか
+	protected bool isJump;//ジャンプしてるかどうか
 	protected bool isAvoid;
 	protected float avoidTime;
 	protected float guardTime;
@@ -83,7 +84,7 @@ public class EnemyBase : MonoBehaviour
 	protected byte damageType;
 	protected bool heavy;
 
-	[HideInInspector]public int bulletDirection;//敵弾がどちらから来たか
+	[HideInInspector] public int bulletDirection;//敵弾がどちらから来たか
 
 	//振り向き待ち時間
 	protected float flipWaitTime = 0f;
@@ -98,17 +99,19 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	protected string useSound;
 
+	List<Transform> mattTrans = new List<Transform>();
+
 	/// <summary>
 	/// 攻撃の値
 	/// </summary>
-	[HideInInspector]public EnemyValue atV;
+	[HideInInspector] public EnemyValue atV;
 	[HideInInspector] public EnemyStatus.MoveState ground = EnemyStatus.MoveState.wakeup;
 	[HideInInspector] public EnemyStatus.MoveState air = EnemyStatus.MoveState.wakeup;
 	// === キャッシュ ==========================================
 	//public Animator animator;
 	public Animator sAni;
-	
-	
+
+
 	public Rigidbody2D rb;//継承先で使うものはprotected
 
 	// === 内部パラメータ ======================================
@@ -130,14 +133,14 @@ public class EnemyBase : MonoBehaviour
 	protected float randomTime = 2.5f;//ランダム移動測定のため
 	protected bool isGuard;
 	protected bool guardBreak;//ガードブレイク
-	[HideInInspector]public bool guardHit;
+	[HideInInspector] public bool guardHit;
 	protected float stateJudge;//ステート判断間隔
 	protected Rigidbody2D dRb;//ドッグパイルのリジッドボディ
 							  //	protected float nowDirection;//今の敵の方向
 
-	[HideInInspector]public float damageDelay;
-	[HideInInspector]public bool isHit;//ヒット中
-	[HideInInspector]public bool isHitable;
+	[HideInInspector] public float damageDelay;
+	[HideInInspector] public bool isHit;//ヒット中
+	[HideInInspector] public bool isHitable;
 	[HideInInspector] public GameObject lastHit;
 	protected float jumpWait;
 	protected bool isWakeUp;//ダウン終了後起き上がるフラグ
@@ -149,13 +152,38 @@ public class EnemyBase : MonoBehaviour
 	protected int lastArmor = 1;
 	protected float nowArmor;
 	protected UltimateTextDamageManager um;
-	[HideInInspector]public SisMagic sm;
+	[HideInInspector] public SisMagic sm;
 	[HideInInspector] public bool insert;
 	protected bool isDie;
 	/// <summary>
 	/// 攻撃後フラグ。攻撃後の挙動で使う
 	/// </summary>
 	protected bool attackComp;
+
+	/// <summary>
+	/// エフェクト操作用のマテリアル
+	/// </summary>
+	 [SerializeReference]
+	protected Renderer parentMatt;
+	/// <summary>
+	/// マテリアル操作始動フラグ
+	/// </summary>
+    [SerializeReference]
+	protected int materialSet;
+	/// <summary>
+	/// 操作対象のマテリアル管理ナンバー。0から
+	/// </summary>
+	int mattControllNum;
+	/// <summary>
+	/// 操作対象のスプライト一覧
+	/// </summary>
+	public Transform[] spriteList;
+	/*
+	/// <summary>
+	/// マテリアルがセットされたか
+	/// </summary>
+	protected bool spriteSet;*/
+	protected List<Renderer> controllTarget = new List<Renderer>();
 
 	// === コード（Monobehaviour基本機能の実装） ================
 	protected virtual void Start()
@@ -191,6 +219,7 @@ public class EnemyBase : MonoBehaviour
         {
 			enableFire = true;
         }
+		//parentMatt = GetComponent<SpriteRenderer>().material;
 	}
 
 
@@ -236,7 +265,7 @@ public class EnemyBase : MonoBehaviour
         {
 			if (!status.unBaind)
 			{
-				Debug.Log("停止");
+			//	Debug.Log("停止");
 				//縛られないなら先に
 				return;
 			}
@@ -335,6 +364,8 @@ public class EnemyBase : MonoBehaviour
 		NockBack();
 		Blow();
 		Down();
+		Die();
+		MaterialControll();
 		if (insert)
 		{
 			//SisMagic sm = collision.gameObject.GetComponent<SisMagic>();
@@ -518,7 +549,7 @@ public class EnemyBase : MonoBehaviour
 
 			hp -= damage;//HP引いてる
 
-							Debug.Log($"背後{back}");
+				//			Debug.Log($"背後{back}");
 
 				um.AddStack(damage, this.transform);
 			if (!isAttack)
@@ -1018,9 +1049,9 @@ public class EnemyBase : MonoBehaviour
 			GManager.instance.isGuard = false;
 			GManager.instance.isParry = false;
 
-			Debug.Log($"mae{nowArmor}");
-			nowArmor -= status.Armor * ((100 - atV.parryResist) / 100);
-			Debug.Log($"あと{nowArmor}");
+			//Debug.Log($"mae{nowArmor}");
+			nowArmor -= Mathf.Ceil(status.Armor * ((100 - atV.parryResist) / 100));
+			Debug.Log($"あと{Mathf.Ceil(status.Armor * ((100 - atV.parryResist) / 100))}");
 			//Debug.Log($"tellme{nowArmor}{atV.parryResist}");
 
 			if(nowArmor <= 0)
@@ -1810,7 +1841,7 @@ public class EnemyBase : MonoBehaviour
 			stateJudge = 0;
 			attackComp = false;
 		//	Debug.Log($"空{air}陸{ground}");
-			Debug.Log($"空{distance.y}");
+		//	Debug.Log($"空{distance.y}");
 			
 		}
 		#endregion
@@ -2076,7 +2107,7 @@ public class EnemyBase : MonoBehaviour
 			}
 			else
 			{
-				Debug.Log("vvv");
+			//	Debug.Log("vvv");
 				GravitySet(0);
 			}
 		}
@@ -2257,7 +2288,7 @@ public class EnemyBase : MonoBehaviour
 	public void ArmorRecover()
 	{
 	//	Debug.Log($"今のアーマー{nowArmor}");
-		if(!isDown && !isDamage)
+		if(!isDown && !isDamage && !isAttack)
         {
 			recoverTime += Time.fixedDeltaTime;
 			if(recoverTime >= 15 || nowArmor > status.Armor)
@@ -2386,6 +2417,7 @@ public class EnemyBase : MonoBehaviour
 			blowTime += Time.fixedDeltaTime;
 			if(blowTime <= 0.2)
 			{
+				isAnimeStart = false;
 				//	Debug.Log($"速度{blowM.x}");
 				if (blowTime <= 0.1)
 				{
@@ -3146,7 +3178,122 @@ public class EnemyBase : MonoBehaviour
 		}
 	}
 
+	protected void MaterialControll()
+    {
+        if (materialSet > 0)
+        {
 
+
+			//親マテリアルの情報を見る
+						Debug.Log($"{parentMatt.material}");
+					if (materialSet == 1)
+					{
+
+						GetAllChildren(spriteList[mattControllNum], ref mattTrans);
+					//	await UniTask.WaitForFixedUpdate();
+
+						materialSet++;
+					}
+					if (materialSet > 1)
+					{
+						//Debug.Log($"Hello{controllTarget[2].material.name}");
+jumpTime += Time.fixedDeltaTime;
+				float test = Mathf.Lerp(0f, 1, jumpTime/2);
+						for (int i = 0; i >= controllTarget.Count; i++)
+				{
+
+
+					controllTarget[i].material.SetFloat("_FadeAmount", test);
+
+				}
+
+					/*	for (int i = 0; i >= mattTrans.Count; i++)
+						{
+							Debug.Log("Hi");
+							//	controllTarget[i].CopyPropertiesFromMaterial(parentMatt);
+						//	SpriteRenderer sr = mattTrans[i].GetComponent<SpriteRenderer>();
+						 Debug.Log($"マテリアル名{controllTarget[i].name}{parentMatt.name}");//
+							controllTarget[i].material.CopyPropertiesFromMaterial(parentMatt.material);
+						/*	if(sr != null)
+							{
+
+								//sr.material = parentMatt;
+							}
+						}*/
+					}
+
+		}
+
+    }
+	/// <summary>
+	/// 死ぬときのマテリアル操作始動用メソッド。リストのゼロはよく使うやつにするのが無難
+	/// 二秒で消える
+	/// </summary>
+	/// <param name="controllNumber"></param>
+	protected void MattControllStart(int controllNumber = 0)
+    {
+		materialSet = 1;
+		
+        if (controllNumber != mattControllNum)
+        {
+			jumpTime = 0;
+			controllTarget = null;
+			controllTarget = new List<Renderer>();
+			mattControllNum = controllNumber;
+			mattTrans = null;
+        }
+    }
+
+
+	/*	private void GetAllChildren(Transform parent)
+		{
+			int x = 0;
+			Debug.Log($"確認{parent.name}");
+			for (int i = 0; i >= parent.childCount; i++)
+			{
+				Debug.Log("ｓｓｓｓ");
+				Transform child = parent.GetChild(i);
+				SpriteRenderer matt = child.GetComponent<SpriteRenderer>();
+				if (matt != null)
+				{
+					controllTarget.Add(matt.material);
+				}
+				//さらに子オブジェクト探索
+				GetAllChildren(child);
+				x++;
+			}
+
+		}*/
+
+	private void GetAllChildren(Transform parent, ref List<Transform> transforms,bool weapon = false)
+	{
+		foreach (Transform child in parent)
+		{
+			transforms.Add(child);
+			GetAllChildren(child, ref transforms,true);
+			Renderer sr = child.GetComponent<Renderer>();
+			if(sr != null)
+            {
+				//Debug.Log(sr.name);
+				controllTarget.Add(sr);
+            }
+		}
+		if (!weapon)
+		{
+			Transform die = transform.Find("Attack");
+			if (die != null)
+			{
+				GetAllChildren(die,ref transforms,true);
+			}
+			die = transform.Find("Guard");
+			if (die != null)
+			{
+				GetAllChildren(die, ref transforms, true);
+			}
+
+		}
+
+	}
 }
 
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 [System.Serializable]
-public struct SupportCondition
+public class SupportCondition
 {
 
     /// <summary>
@@ -19,14 +19,14 @@ public struct SupportCondition
         敵タイプ,
         強敵がいるかどうか,
         //状態異常が切れている敵がいる,
-        かかっていない支援がある,//全てかかってるのは当てはまらないとき
+       // かかっていない支援がある,//全てかかってるのは当てはまらないとき
         指定なし
 
     }
 
-    public SupportStatus sCondition;
-    public EnemyStatus.KindofEnemy Type;
-    public SisMagic.SupportType needSupport;
+    public SupportStatus sCondition = SupportStatus.指定なし;
+   // public EnemyStatus.KindofEnemy Type = EnemyStatus.KindofEnemy.Soldier;
+    public SisMagic.SupportType needSupport = SisMagic.SupportType.なし;
 
      public int percentage;
     [Tooltip("trueで上、Falseで下")]
@@ -42,8 +42,8 @@ public struct SupportCondition
         なにもしない
 
     }
-    public MagicJudge ActBase;
-    public SisMagic.SupportType useSupport;
+    public MagicJudge ActBase= MagicJudge.なにもしない;
+    public SisMagic.SupportType useSupport = SisMagic.SupportType.なし;
 
     public enum AdditionalJudge
     {
@@ -53,7 +53,7 @@ public struct SupportCondition
         指定なし
     }
 
-    public AdditionalJudge nextCondition;
+    public AdditionalJudge nextCondition = AdditionalJudge.指定なし;
 
      public bool upDown;//あるいは低い方か多い方か
 
