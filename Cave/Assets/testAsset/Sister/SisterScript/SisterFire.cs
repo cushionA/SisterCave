@@ -1440,6 +1440,30 @@ public class SisterFire : MonoBehaviour
 							}
 						}
 					}
+					else if (condition.nextCondition == SupportCondition.AdditionalJudge.強化倍率)
+					{
+						if (condition.upDown)
+						{
+							for (int i = 0; i < candidate.Count; i++)
+							{
+								if (selectNumber == 150 || candidate[i].mValue > candidate[selectNumber].mValue)
+								{
+									selectNumber = i;
+								}
+
+							}
+						}
+						else
+						{
+							for (int i = 0; i < candidate.Count; i++)
+							{
+								if (selectNumber == 150 || candidate[i].mValue < candidate[selectNumber].mValue)
+								{
+									selectNumber = i;
+								}
+							}
+						}
+					}
 					SManager.instance.sisStatus.useMagic = candidate[selectNumber];
 
 				}
@@ -1853,8 +1877,6 @@ public class SisterFire : MonoBehaviour
 					}
 					else if (condition.nextCondition == RecoverCondition.AdditionalJudge.状態異常回復)
 					{
-						if (condition.upDown)
-						{
 							for (int i = 0; i < candidate.Count; i++)
 							{
 								if (selectNumber == 150 || candidate[i].cureCondition)
@@ -1864,18 +1886,7 @@ public class SisterFire : MonoBehaviour
 								}
 
 							}
-						}
-						else
-						{
-							for (int i = 0; i < candidate.Count; i++)
-							{
-								if (selectNumber == 150 || candidate[i].recoverBase < candidate[selectNumber].recoverBase)
-								{
-									selectNumber = i;
-									break;
-								}
-							}
-						}
+
 					}
 					SManager.instance.sisStatus.useMagic = candidate[selectNumber];
 					condition.UseMagic = candidate[selectNumber];
@@ -2248,7 +2259,7 @@ public class SisterFire : MonoBehaviour
 						}
 					}
 				}
-				else if (condition.nextCondition != AttackJudge.AdditionalJudge.敵の高度)
+				else if (condition.nextCondition != AttackJudge.AdditionalJudge.敵の高度)//真なら高い
 				{
 					if (condition.upDown)
 					{

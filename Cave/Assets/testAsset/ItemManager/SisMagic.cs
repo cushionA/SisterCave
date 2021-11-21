@@ -35,7 +35,7 @@ public class SisMagic : Magic
     public bool cureCondition;//状態異常
     public bool isWide;//範囲攻撃。混沌の嵐とかみたいな
     [Header("リジェネ回復量")]
-    public float regeneAmount;//リジェネ回復の制限時間
+    public float regeneAmount;//リジェネ回復の量
     public float coolTime;
 //    public float useLimit;//使用可能回数
 

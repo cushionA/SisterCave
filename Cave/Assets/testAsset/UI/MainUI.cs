@@ -143,6 +143,7 @@ public class MainUI : MonoBehaviour
     /// 作戦UIで使うパラメータ
     /// </summary>
     #region
+
     ///<summary>
     /// 設定中のウィンドウはなにか
     /// 基本とか攻撃とか
@@ -152,7 +153,8 @@ public class MainUI : MonoBehaviour
     public int settingNumber;
 
     ///<summary>
-    /// 何番目の条件を編集中か。第三条件とかで参照先獲得
+    /// 何番目の条件を編集中か。参照先獲得
+    /// 第一条件編集中とか
     /// セッティングナンバーと併用で特定できる
     ///</summary>
     [HideInInspector]
@@ -165,14 +167,33 @@ public class MainUI : MonoBehaviour
     public SisterParameter editParameter;
 
     /// <summary>
+    /// 別々のUIをつなぐ選択要素を。この辺はSettingナンバーが確定するあたりで操作。
+    /// </summary>
+    [HideInInspector]
+    public Selectable preObject;
+
+    /// <summary>
     /// 別々のUIをつなぐ選択要素を
     /// </summary>
-     [HideInInspector]
-    public List<Selectable> selectList;
+    [HideInInspector]
+    public Selectable nextObject;
 
+    /// <summary>
+    /// ドロップダウン変更による入れ替え対象
+    /// </summary>
+    [HideInInspector]
     public Selectable changeTarget;
 
-    public bool isChange;
+    /// <summary>
+    /// 先ほどセットしたゲームオブジェクト。参照用
+    /// </summary>
+    [HideInInspector]
+    public GameObject beforeSet;
+
+    /// <summary>
+    /// 接続変更するとき
+    /// </summary>
+    public int isChange;
 
     //求められる機能
     //

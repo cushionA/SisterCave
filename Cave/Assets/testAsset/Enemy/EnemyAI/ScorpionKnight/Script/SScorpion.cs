@@ -20,8 +20,10 @@ public class SScorpion : EnemyBase
     [SerializeField] int tesnum;
     protected override void Start()
     {
+      //  rb = GetComponent<Rigidbody2D>();
+      //  Debug.Log("mennti");
         base.Start();
-        rb = GetComponent<Rigidbody2D>();
+
     }
 
     // Update is called once per frame

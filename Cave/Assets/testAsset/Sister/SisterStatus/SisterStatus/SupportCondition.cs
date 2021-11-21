@@ -50,6 +50,7 @@ public class SupportCondition
         ‰r¥ŠÔ,
         ‘±Œø‰ÊŠÔ,
         MPg—p—Ê,
+        ‹­‰»”{—¦,
         w’è‚È‚µ
     }
 

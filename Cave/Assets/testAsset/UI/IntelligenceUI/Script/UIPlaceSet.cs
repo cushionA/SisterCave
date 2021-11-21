@@ -44,15 +44,57 @@ public class UIPlaceSet : MonoBehaviour
     /// 始動用ドロップダウンか、それとも敵タイプ設定する窓なのかとか
     /// 自分が継続用ドロップダウンである場合は前の窓の（SelectListからUIPlaceSetで取得）タイプにより調整距離を変える
     /// 0は開始ドロップダウン、１は継続用ドロップダウン、2は設定用ドロップダウン、3は数値とBool（ハイロー）、4は長いチェックボックス、5は短いチェックボックス
-    /// 
     /// </summary>
     public int windowType;
 
+    //基本的に各スクリプトはsaveNumberを改変保存する。
+
+    //セッッティングナンバーは六種類
+    //攻撃条件設定は４フェーズ、一個目がドロップダウン（確定）、二個目は色々（敵タイプ窓、数値設定、何もなしでスキップ）、三個目は弱点ドロップダウン
+    //、四個目はドロップダウン（UpDownあり）。肯定側は全部真
+    //一個目のドロップダウンで残りの窓をすべて出す。指定なし以外
+    //攻撃選択は3フェーズ、全部ドロップダウン。最後のドロップダウンはUpDownあり。一個目のドロップダウンで残りの窓をすべて出す。指定なしと移行以外
+    //支援条件は2フェーズ、一個目ドロップダウン、二個目は数値設定か敵チェックか必要な支援を選んだりを決めるドロップダウンか
+    //一個目のドロップダウンで残りの窓を出す。指定なしの時以外
+    //支援選択は３フェーズ、一個目ドロップダウン、二個目ドロップダウン、三個目もドロップダウン（UpDownあり）。指定なし以外残りが出てくる。
+    //回復条件は2フェーズ、一個目ドロップダウン、二個目は数値設定か敵チェックか必要な支援を選んだり強敵がいるかを決めるドロップダウンか
+    //回復選択は３フェーズ、一個目ドロップダウン、二個目ドロップダウン、三個目もドロップダウン（UpDownあり）
+
+
+    //ファーストドロップ、セカンドドロップなどのドロップダウンの切り替えはセットナンバーで行う。
+
+    //攻撃条件
+    //ファーストドロップ（基礎条件）→値設定（強敵、状態異常、支援、なしの時はない）→セカンドドロップ（弱点）→サードドロップ（標的条件）
+    //攻撃選択パターン
+    //ファーストドロップ（選択行動、属性）（なにもしないと移行で後の窓が消える）→セカンドドロップ（使用する攻撃の条件設定）→サードドロップ（さらに条件）
+    //支援条件パターン
+    //ファーストドロップ（基礎条件）→値設定（強敵、なしの時はない）
+    //支援選択パターン
+    //ファーストドロップ（行動選択）（なにもしないと移行で後の窓が消える）→セカンドドロップ（どんなサポートがついたものを選ぶか）→サードドロップ（どんな条件で魔法選ぶか）
+
+    //選択制御スクリプトに必要な機能
+    //セッッティングナンバー見てドロップダウンを有効無効を切り替える
+    //魔法選択はすでに軒並み決定してる。
+    //さらに魔法選択でのレイアウト変更はウィンドウの消去回復だけ
+    //厄介なのは各ステートの条件設定
+    //値設定の前後だけSelectableを入れなおす、さらにレイアウトの変更もある。
+    //でもそれも条件判断で切り替えられそうなんだよなぁ
+    //出てくる窓は最大四つ。配置換えの時点で以下全部配置しなおそ
+
+
+
+    //いろいろ入り混じるのは三か所だけ（攻撃条件の２、支援回復条件の三個目）
+
+    //全て消すときはEditNumで戻ればいい。
+    //ドロップダウンは最大三つ必要
 
     // Start is called before the first frame update
+
+    RectTransform myPosi;
+
     void Start()
     {
-        
+        myPosi = GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
@@ -61,53 +103,104 @@ public class UIPlaceSet : MonoBehaviour
         
     }
 
-
+    private void OnEnable()
+    {
+        PlaceSet();
+    }
     public void PlaceSet()
     {
         if(windowType == 0)
         {
+            //ドロップダウン
+            if(MainUI.instance.beforeSet == null)
+            {
+                //既定の場所にセット
+              //  RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
+                Vector2 posi = new Vector2(425, 300);
+                myPosi.anchoredPosition = posi;
+            }
+            else
+            {
+                UIPlaceSet before = MainUI.instance.beforeSet.GetComponent<UIPlaceSet>();
+                RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
 
+                if (before.windowType == 0)
+                {
+                    Vector2 posi = new Vector2(myPosi.anchoredPosition.x, bt.anchoredPosition.y - 125);
+                    myPosi.anchoredPosition = posi;
+                    //規定値を前のオブジェクトの位置に足した場所に入れる
+                    //125下がった位置に入れる
+                }
+                else if (before.windowType == 1)
+                {
+                    Vector2 posi = new Vector2(myPosi.anchoredPosition.x, bt.anchoredPosition.y - 130);
+                    myPosi.anchoredPosition = posi;
+                    //規定値を前のオブジェクトの位置に足した場所に入れる
+                    //130下がった位置に入れる
+                }
+                else
+                {
+                    Vector2 posi = new Vector2(myPosi.anchoredPosition.x, bt.anchoredPosition.y - 162);
+                    myPosi.anchoredPosition = posi;
+                    //規定値を前のオブジェクトの位置に足した場所に入れる
+                    //162下げた場所に置く
+                }
+            }
         }
         else if (windowType == 1)
         {
-            //SelectListにAddされるのはUpdateから
-
-            int number = MainUI.instance.selectList[MainUI.instance.selectList.Count - 1].gameObject.GetComponent<UIPlaceSet>().windowType;
-
-            if(number == 2)
+            RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
+            Vector2 posi = new Vector2(myPosi.anchoredPosition.x, bt.anchoredPosition.y - 130);
+            myPosi.anchoredPosition = posi;
+#if false
+            //敵タイプ
+            UIPlaceSet before = MainUI.instance.beforeSet.GetComponent<UIPlaceSet>();
+            if (before.windowType == 0)
             {
-                addjustPosition = 0;
+                //規定値を前のオブジェクトの位置に足した場所に入れる
+                //130下がった位置に入れる
             }
-            else if (number == 3)
+            else if (before.windowType == 1)
             {
-                addjustPosition = 0;
+                //規定値を前のオブジェクトの位置に足した場所に入れる
+                //ない可能性高い。一個目の条件だけでオーケー
             }
-            else if (number == 4)
+            else
             {
-                addjustPosition = 0;
+                //規定値を前のオブジェクトの位置に足した場所に入れる
+                //ない可能性高い。一個目の条件だけでオーケー
             }
-            else if (number == 5)
-            {
-                addjustPosition = 0;
-            }
-
-            //ここに前のUIの位置からaddjustをりようしてやる
-
+#endif
         }
-    }
-
-    /// <summary>
-    /// 最初のドロップダウンを終了させる。
-    /// バックスペースで行くか
-    /// </summary>
-    public void UIEnd()
-    {
-        MainUI.instance.selectList = new List<Selectable>();
-        if(MainUI.instance.settingNumber % 2 == 1)
+        else
         {
-            MainUI.instance.settingNumber--;
+            RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
+            Vector2 posi = new Vector2(myPosi.anchoredPosition.x, bt.anchoredPosition.y - 162);
+             myPosi.anchoredPosition = posi;
+            #if false
+            //窓タイプ２、数値設定
+            UIPlaceSet before = MainUI.instance.beforeSet.GetComponent<UIPlaceSet>();
+            if (before.windowType == 0)
+            {
+                //規定値を前のオブジェクトの位置に足した場所に入れる
+                //162下がった位置に入れる。
+            }
+            else if (before.windowType == 1)
+            {
+                //規定値を前のオブジェクトの位置に足した場所に入れる
+                //ない可能性高い。一個目の条件だけでオーケー
+            }
+            else
+            {
+                //規定値を前のオブジェクトの位置に足した場所に入れる
+                //ない可能性高い。一個目の条件だけでオーケー
+            }
+#endif
         }
-        this.gameObject.SetActive(false);
+        //入れ替え
+        MainUI.instance.beforeSet = this.gameObject;
     }
+
+
 
 }

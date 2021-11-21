@@ -29,9 +29,9 @@ public class SelectControll : MonoBehaviour
   //  [SerializeField] bool isUpSet;
 
     /// <summary>
-    /// マスターというか、上下の起点になるかどうか
+    /// Falseなら下
     /// </summary>
-    [SerializeField] bool isMaster;
+    [SerializeField] bool isUp;
     /// <summary>
     /// 同時に設定するオブジェクトを持つ。下を設定
     /// </summary>
@@ -42,20 +42,13 @@ public class SelectControll : MonoBehaviour
     /// <summary>
     /// 初期設定に戻すのに使う
     /// </summary>
-    Navigation mine;
+   // Navigation mine;
     Selectable me;
 
 
-    /// <summary>
-    /// 呼び出される際に初期化される番号
-    /// この数値にあうUIがあてがわれる。
-    /// </summary>
-    public int UINumber;
 
-    /// <summary>
-    /// セットリストに設定したかどうか
-    /// </summary>
-    bool done;
+
+
 
   //  public bool isChange;
 
@@ -65,28 +58,49 @@ public class SelectControll : MonoBehaviour
         
        // mine = GetComponent<Navigation>();
         me = GetComponent<Selectable>();
-        mine = me.navigation;
-        ChangeItem();
-        UpSet();
+   //     mine = me.navigation;
+        //ChangeItem();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (done)
-        {
-            done = false;
-            MainUI.instance.selectList.Add(me);
-        }
+        /*     if (done)
+             {
+                 done = false;
+                 MainUI.instance.selectList.Add(me);
+             }*/
+        //基本的に値設定窓は一つなのでisChangeが他にいじられない
 
+        if (MainUI.instance.isChange > 0) 
+        {
+            if (MainUI.instance.isChange == 1)
+            {
+                UpSet();
+                MainUI.instance.isChange = 2;
+            }
+            else
+            {
+                UnderSet();
+                MainUI.instance.isChange = 0;
+            }
+        }
     }
 
-    public void UnderSet(Selectable raid)
+    /// <summary>
+    /// 
+    /// </summary>
+    public void UnderSet()
     {
         Navigation navi = me.navigation;
-        navi.selectOnDown = raid;
+        navi.selectOnDown = MainUI.instance.nextObject;
         me.navigation = navi;
-        if(raidObject.Count > 0)
+        navi = MainUI.instance.nextObject.navigation;
+        navi.selectOnUp = me;
+        MainUI.instance.nextObject.navigation = navi;
+
+        if (raidObject.Count > 0)
         {
 
             //   navi.selectOnDown = raid;
@@ -94,7 +108,7 @@ public class SelectControll : MonoBehaviour
             for (int i = 0; i >= raidObject.Count; i++)
             {
                  navi = raidObject[i];
-                navi.selectOnDown = raid;
+                navi.selectOnDown = MainUI.instance.nextObject;
                 raidObject[i] = navi;
             }
         }
@@ -105,41 +119,35 @@ public class SelectControll : MonoBehaviour
     /// <param name="raid"></param>
     public void UpSet()
     {
-        if (mine.selectOnUp == null)
+        Navigation navi = me.navigation;
+        navi.selectOnUp = MainUI.instance.preObject;
+        me.navigation = navi;
+        navi = MainUI.instance.preObject.navigation;
+        navi.selectOnDown = me;
+        MainUI.instance.preObject.navigation = navi;
+
+        if (raidObject.Count > 0)
         {
-            if (MainUI.instance.selectList.Count > 0)
+
+            //   navi.selectOnDown = raid;
+            //Navigation navi;
+            for (int i = 0; i >= raidObject.Count; i++)
             {
-                Navigation navi = me.navigation;
-                navi.selectOnUp = MainUI.instance.selectList[MainUI.instance.selectList.Count - 1];
-                me.navigation = navi;
-                if (isMaster)
-                {
-                    MainUI.instance.selectList[MainUI.instance.selectList.Count - 1].gameObject.GetComponent<SelectControll>().UnderSet(me);
-                    
-                }
+                navi = raidObject[i];
+                navi.selectOnUp = MainUI.instance.preObject;
+                raidObject[i] = navi;
             }
-            else
-            {
-                if (isMaster)
-                {
-                    MainUI.instance.selectList.Add(me);
-                }
-            }
-        }
-        else if(isMaster)
-        {
-            done = true;
         }
     }
 
-    public void SelectReset(Selectable change)
+ /*   public void SelectReset(Selectable change)
     {
 
         MainUI.instance.changeTarget = me;
          me.navigation = mine;
-    }
+    }*/
 
-    public void ChangeItem()
+  /*  public void ChangeItem()
     {
         if (MainUI.instance.isChange && isMaster && mine.selectOnUp == null)
         {
@@ -155,6 +163,6 @@ public class SelectControll : MonoBehaviour
             }
             MainUI.instance.isChange = false;
         }
-    }
+    }*/
 
 }
