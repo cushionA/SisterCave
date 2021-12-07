@@ -117,7 +117,7 @@ public class PlayerMove : MonoBehaviour
         #region//入力系
         if (Time.timeScale != 0.0f)
         {
-            if(!GManager.instance.isAttack && !isStop && !GManager.instance.isDown && !GManager.instance.isDamage)
+            if(!GManager.instance.isAttack && !isStop)
             {
                    horizontalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
                    verticalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction2);
@@ -671,8 +671,14 @@ GManager.instance.isGBreak = false;
 
             if (!GManager.instance.anotherMove)
             {
+                if (GManager.instance.isDamage)
+                {
+                    //ダメージ受けたら速度低下
+                    xSpeed *= 0.5f;
+                }
                 // Debug.Log($"落下は{ySpeed}です");
                 move.Set(xSpeed + addVelocity.x, ySpeed + addVelocity.y);
+
                 rb.velocity = move;
             }
            // test = rb.velocity.y;

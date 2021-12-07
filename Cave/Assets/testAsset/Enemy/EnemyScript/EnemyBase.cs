@@ -3199,7 +3199,7 @@ public class EnemyBase : MonoBehaviour
 						//Debug.Log($"Hello{controllTarget[2].material.name}");
 jumpTime += Time.fixedDeltaTime;
 				float test = Mathf.Lerp(0f, 1, jumpTime/2);
-						for (int i = 0; i >= controllTarget.Count; i++)
+						for (int i = 0; i <= controllTarget.Count; i++)
 				{
 
 

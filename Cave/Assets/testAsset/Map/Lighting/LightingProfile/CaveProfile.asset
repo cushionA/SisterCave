@@ -12,22 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b19cefa3bf552f94390d1c272b19ea6e, type: 3}
   m_Name: CaveProfile
   m_EditorClassIdentifier: 
-  bufferPresets:
+  lightmapPresets:
     list:
-    - name: Main
-      sortingLayer:
-        name: MyLighting
-        Order: 0
-      darknessColor: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
-      lightingResolution: 1
+    - name: Default
+      type: 0
+      darknessColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+      depth: -100
+      resolution: 1
       dayLayers:
         list:
-        - layer: 0
+        - id: 0
           type: 0
           sorting: 0
       lightLayers:
         list:
-        - layer: 0
+        - id: 0
           type: 0
           sorting: 0
   lightPresets:

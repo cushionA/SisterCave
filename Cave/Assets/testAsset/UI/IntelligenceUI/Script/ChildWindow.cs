@@ -13,10 +13,26 @@ public class ChildWindow : MonoBehaviour
     public List<GameObject> objList;
 
     /// <summary>
+    /// マスター窓であるか
+    /// </summary>
+    [SerializeField]
+    bool Master;
+
+    /// <summary>
     /// これがドロップダウンか何か
     /// </summary>
     [SerializeField]
     int type;
+
+    /// <summary>
+    /// 説明用の文字配列
+    /// </summary>
+    [SerializeField]
+    string[] introduction;
+
+    //説明用の文字
+    [SerializeField]
+    Text tx;
 
     // Start is called before the first frame update
     void Start()
@@ -34,38 +50,51 @@ public class ChildWindow : MonoBehaviour
     {
         if (type >= 0 && type < 3)
         {
+            ResetWindow();
+            int i;
             //ドロップダウンが何を参照してるかでUIのドロップダウンのやつを決める
             //objListからドロップダウンを引きずりだす
             //あとオブジェクトリストとSとeでうまいことSetActiveを操る。
             int s = MainUI.instance.settingNumber;
+           // Debug.Log($"数値か？{s}");
             if (s == 1)
             {
 
                 objList[0].SetActive(true);
-
+                i = 0;
             }
             //攻撃
             else if (s == 2)
             {
                 objList[1].SetActive(true);
+                i = 1;
             }
             else if (s == 3)
             {
+                i = 4;
                 objList[4].SetActive(true);
             }
             else if (s == 4)
             {
                 objList[2].SetActive(true);
-
+                i = 2;
             }
             else if (s == 5)
             {
                 //これは最初のドロップダウンだけ
                 objList[4].SetActive(true);
+                i = 4;
             }
             else
             {
                 objList[3].SetActive(true);
+                i = 3;
+            }
+
+            tx.text = introduction[i];
+            if (Master)
+            {
+                objList[i].GetComponent<Selectable>().Select();
             }
         }
         //アプライバリューの前にどのオブジェクトを表示するかを決める
@@ -76,6 +105,7 @@ public class ChildWindow : MonoBehaviour
         if (type >= 0 && type < 3)
         {
             ResetWindow();
+            tx.text = null;
         }
     }
     /// <summary>
@@ -839,9 +869,13 @@ public class ChildWindow : MonoBehaviour
                     {
                         target.isOn = ((p & 0b00000100) == 0b00000100);
                     }
-                    else
+                    else if (i == 3)
                     {
                         target.isOn = ((p & 0b00001000) == 0b00001000);
+                    }
+                    else
+                    {
+                        target.isOn = ((p & 0b00001000) == 0b00010000);
                     }
                 }
             }
@@ -875,7 +909,8 @@ public class ChildWindow : MonoBehaviour
     {
         for (int i = 0;i >= objList.Count; i++)
         {
-            objList[i].SetActive(false);
+            if (objList[i].activeSelf == true)
+                objList[i].SetActive(false);
         }
 
     }

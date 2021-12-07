@@ -90,11 +90,14 @@ public class UIPlaceSet : MonoBehaviour
 
     // Start is called before the first frame update
 
+    [SerializeField]
     RectTransform myPosi;
+
+    
 
     void Start()
     {
-        myPosi = GetComponent<RectTransform>();
+      //  myPosi = GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
@@ -105,22 +108,31 @@ public class UIPlaceSet : MonoBehaviour
 
     private void OnEnable()
     {
-        PlaceSet();
+        //これめちゃくちゃに配置されね？
+       // PlaceSet();
     }
     public void PlaceSet()
     {
+
+        
+        
+
         if(windowType == 0)
         {
             //ドロップダウン
-            if(MainUI.instance.beforeSet == null)
+
+            if (MainUI.instance.beforeSet == null)
             {
                 //既定の場所にセット
-              //  RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
+                //  RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
                 Vector2 posi = new Vector2(425, 300);
+                Debug.Log($"肉{posi.x}あ{posi.y}");
                 myPosi.anchoredPosition = posi;
+
             }
             else
             {
+
                 UIPlaceSet before = MainUI.instance.beforeSet.GetComponent<UIPlaceSet>();
                 RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
 

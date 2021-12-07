@@ -26,16 +26,26 @@ public class SelectControll : MonoBehaviour
     //ほんなら引数いらないやん！！
 
 
-  //  [SerializeField] bool isUpSet;
+    //整理しよう。
+    //まずこれを使うのは攻撃条件の下、支援回復条件の上下、タイプとスライダーの上下になる。
+    //preとかネクストとか消してChildWindowにUseナンバーをつけて何番のオブジェクトリストを利用してるかを得るか
+    //オブジェクトを得る方法とSとかで
+    //てかUseナンバーなくてもSとかの時セカンドウィンドウとかで何使われてるかわかるよね
+    //
+    //sが1のファーストウィンドウの下とタイプとスライダーの上下、セカンドは接続対象としてだけ存在。
+    //支援回復条件の時、ファーストウィンドウの下とタイプとスライダーの上下、スライダーやタイプの下はファーストになる
+    //
+    //これを利用してコード書こう
+    //考慮すべきはS＝1,3,5だけ
+    //
 
-    /// <summary>
-    /// Falseなら下
-    /// </summary>
-    [SerializeField] bool isUp;
+    //  [SerializeField] bool isUpSet;
+
+
     /// <summary>
     /// 同時に設定するオブジェクトを持つ。下を設定
     /// </summary>
-    [SerializeField] List<Navigation> raidObject;
+    [SerializeField] List<Selectable> raidObject;
 
 
 
@@ -75,14 +85,52 @@ public class SelectControll : MonoBehaviour
 
         if (MainUI.instance.isChange > 0) 
         {
+            int s = MainUI.instance.settingNumber;
+            //int e = MainUI.instance.editNumber;
+            Selectable sl;
+            int num;
+
+            #region
+            if (s == 1)
+            {
+                num = 0;
+            }
+            else if(s == 2)
+            {
+                num = 1;
+            }
+            else if (s == 3 || s == 5)
+            {
+                num = 4;
+            }
+            else if (s == 4)
+            {
+                num = 2;
+            }
+            else
+            {
+                num = 3;
+            }
+            #endregion
+
             if (MainUI.instance.isChange == 1)
             {
-                UpSet();
+                
+                sl = MainUI.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                UpSet(sl);
                 MainUI.instance.isChange = 2;
             }
             else
             {
-                UnderSet();
+                if (s == 1)
+                {
+                    sl = MainUI.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                }
+                else
+                {
+                    sl = MainUI.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                }
+                UnderSet(sl);
                 MainUI.instance.isChange = 0;
             }
         }
@@ -91,25 +139,25 @@ public class SelectControll : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public void UnderSet()
+    public void UnderSet(Selectable nextObject)
     {
         Navigation navi = me.navigation;
-        navi.selectOnDown = MainUI.instance.nextObject;
+        navi.selectOnDown = nextObject;
         me.navigation = navi;
-        navi = MainUI.instance.nextObject.navigation;
+        navi = nextObject.navigation;
         navi.selectOnUp = me;
-        MainUI.instance.nextObject.navigation = navi;
+        nextObject.navigation = navi;
 
         if (raidObject.Count > 0)
         {
-
+            Debug.Log("あああ");
             //   navi.selectOnDown = raid;
             //Navigation navi;
-            for (int i = 0; i >= raidObject.Count; i++)
+            for (int i = 0; i <= raidObject.Count - 1; i++)
             {
-                 navi = raidObject[i];
-                navi.selectOnDown = MainUI.instance.nextObject;
-                raidObject[i] = navi;
+                 navi = raidObject[i].navigation;
+                navi.selectOnDown = nextObject;
+                raidObject[i].navigation = navi;
             }
         }
     }
@@ -117,25 +165,25 @@ public class SelectControll : MonoBehaviour
     /// 上のオブジェクト設定。
     /// </summary>
     /// <param name="raid"></param>
-    public void UpSet()
+    public void UpSet(Selectable preObject)
     {
         Navigation navi = me.navigation;
-        navi.selectOnUp = MainUI.instance.preObject;
+        navi.selectOnUp = preObject;
         me.navigation = navi;
-        navi = MainUI.instance.preObject.navigation;
+        navi = preObject.navigation;
         navi.selectOnDown = me;
-        MainUI.instance.preObject.navigation = navi;
+        preObject.navigation = navi;
 
         if (raidObject.Count > 0)
         {
 
             //   navi.selectOnDown = raid;
             //Navigation navi;
-            for (int i = 0; i >= raidObject.Count; i++)
+            for (int i = 0; i <= raidObject.Count - 1; i++)
             {
-                navi = raidObject[i];
-                navi.selectOnUp = MainUI.instance.preObject;
-                raidObject[i] = navi;
+                navi = raidObject[i].navigation;
+                navi.selectOnUp = preObject;
+                raidObject[i].navigation = navi;
             }
         }
     }

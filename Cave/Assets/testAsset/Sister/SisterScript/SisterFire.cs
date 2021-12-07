@@ -892,7 +892,7 @@ public class SisterFire : MonoBehaviour
 					for (int i = 0; i < SManager.instance.targetList.Count; i++)
 					{
 						//test = ;
-
+						Debug.Log("大根");
 
 						if ((condition.percentage & 0b00000001) == 0b00000001)
 						{
@@ -911,10 +911,11 @@ public class SisterFire : MonoBehaviour
 								}
 								targetCanList.Add(SManager.instance.targetList[i]);
 								targetCanStatus.Add(SManager.instance.targetCondition[i]);
+								continue;
 							}
 						}
 						//test = 0b01000000;
-						else if ((condition.percentage & 0b00000010) == 0b00000010)
+						if ((condition.percentage & 0b00000010) == 0b00000010)
 						{
 							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Fly)
 							{
@@ -930,9 +931,31 @@ public class SisterFire : MonoBehaviour
 								}
 								targetCanList.Add(SManager.instance.targetList[i]);
 								targetCanStatus.Add(SManager.instance.targetCondition[i]);
+								continue;
 							}
 						}
-						else if ((condition.percentage & 0b00000100) == 0b00000100)
+						if ((condition.percentage & 0b00000100) == 0b00000100)
+						{
+							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Shooter)
+							{
+								if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
+								{
+
+									AttackStateChange(act);
+									return;
+								}
+								else if (act.condition == FireCondition.ActJudge.なにもしない)
+								{
+									return;
+								}
+								//	siroko++;
+								//		Debug.Log($"今の数字{siroko}");
+								targetCanList.Add(SManager.instance.targetList[i]);
+								targetCanStatus.Add(SManager.instance.targetCondition[i]);
+								continue;
+							}
+						}
+						if ((condition.percentage & 0b00001000) == 0b00001000)
 						{
 							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Knight)
 							{
@@ -950,9 +973,10 @@ public class SisterFire : MonoBehaviour
 							//		Debug.Log($"今の数字{siroko}");
 								targetCanList.Add(SManager.instance.targetList[i]);
 								targetCanStatus.Add(SManager.instance.targetCondition[i]);
+								continue;
 							}
 						}
-						else if ((condition.percentage & 0b00001000) == 0b00001000)
+						if ((condition.percentage & 0b00010000) == 0b00010000)
 						{
 							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Trap)
 							{
@@ -968,6 +992,7 @@ public class SisterFire : MonoBehaviour
 								}
 								targetCanList.Add(SManager.instance.targetList[i]);
 								targetCanStatus.Add(SManager.instance.targetCondition[i]);
+								continue;
 							}
 						}
 					}
@@ -1232,7 +1257,7 @@ public class SisterFire : MonoBehaviour
 			//-----------------------------------------------------------------------------------------------------
 			case SupportCondition.SupportStatus.敵タイプ:
 				//   Soldier,//陸の雑兵
-					if ((0b11111000 & condition.percentage) == 0b11111000)
+					if ((0b00011111 & condition.percentage) == 0b00011111)
 					{
 						return true;
 					}
@@ -1242,7 +1267,7 @@ public class SisterFire : MonoBehaviour
 					//test = ;
 
 
-					if ((0b10000000 & condition.percentage) == 0b10000000)
+					if ((0b00000001 & condition.percentage) == 0b00000001)
 					{
 						if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Soldier)
 						{
@@ -1250,14 +1275,21 @@ public class SisterFire : MonoBehaviour
 						}
 					}
 					//test = 0b01000000;
-					else if ((0b01000000 & condition.percentage) == 0b01000000)
+					else if ((0b00000010 & condition.percentage) == 0b00000010)
 					{
 						if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Fly)
 						{
 							return true;
 						}
 					}
-					else if ((0b00100000 & condition.percentage) == 0b00100000)
+					else if ((0b00000100 & condition.percentage) == 0b00000100)
+					{
+						if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Shooter)
+						{
+							return true;
+						}
+					}
+					else if ((0b00001000 & condition.percentage) == 0b00001000)
 					{
 						if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Knight)
 						{
@@ -1565,46 +1597,53 @@ public class SisterFire : MonoBehaviour
 			//-----------------------------------------------------------------------------------------------------
 			case RecoverCondition.RecoverStatus.敵タイプ:
 				//   Soldier,//陸の雑兵
-				if ((0b11111000 & condition.percentage) == 0b11111000)
+				if ((0b00011111 & condition.percentage) == 0b00011111)
 				{
 					return true;
 				}
 				//int test;
 				for (int i = 0; i < SManager.instance.targetList.Count; i++)
-			{
-				//test = ;
+				{
+					//test = ;
 
 
-				if ((0b10000000 & condition.percentage) == 0b10000000)
-				{
-					if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Soldier)
+					if ((0b00000001 & condition.percentage) == 0b00000001)
 					{
-						return true;
+						if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Soldier)
+						{
+							return true;
+						}
+					}
+					//test = 0b01000000;
+					else if ((0b00000010 & condition.percentage) == 0b00000010)
+					{
+						if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Fly)
+						{
+							return true;
+						}
+					}
+					else if ((0b00000100 & condition.percentage) == 0b00000100)
+					{
+						if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Shooter)
+						{
+							return true;
+						}
+					}
+					else if ((0b00001000 & condition.percentage) == 0b00001000)
+					{
+						if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Knight)
+						{
+							return true;
+						}
+					}
+					else if ((0b00010000 & condition.percentage) == 0b00010000)
+					{
+						if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Trap)
+						{
+							return true;
+						}
 					}
 				}
-				//test = 0b01000000;
-				else if ((0b01000000 & condition.percentage) == 0b01000000)
-				{
-					if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Fly)
-					{
-						return true;
-					}
-				}
-				else if ((0b00100000 & condition.percentage) == 0b00100000)
-				{
-					if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Knight)
-					{
-						return true;
-					}
-				}
-				else if ((0b00010000 & condition.percentage) == 0b00010000)
-				{
-					if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Trap)
-					{
-						return true;
-					}
-				}
-			}
 			return false;
 			//-----------------------------------------------------------------------------------------------------
 			case RecoverCondition.RecoverStatus.任意の支援が切れているとき:

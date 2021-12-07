@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TypeWindow : ValueChangeBase
 {
@@ -11,7 +12,7 @@ public class TypeWindow : ValueChangeBase
     // Start is called before the first frame update
    protected override void Start()
     {
-        
+        fase = 1;
     }
 
     // Update is called once per frame
@@ -39,16 +40,20 @@ public class TypeWindow : ValueChangeBase
         {
             numberSave |= 0b00000100;
         }
-        else
+        else if(type == 3)
         {
             numberSave |= 0b000001000;
+        }
+        else
+        {
+            numberSave |= 0b000010000;
         }
         ApplyValue();
     }
     /// <summary>
     /// ƒgƒOƒ‹‚ª‹U‚ÌŽžŒÄ‚Î‚ê‚é
     /// </summary>
-    void TypeDelete()
+     void TypeDelete()
     {
         //•ºŽm1,”ò‚Ô‚â‚Â2,Shooter,Knight4,Trap8,–â‚í‚¸0
 
@@ -64,10 +69,29 @@ public class TypeWindow : ValueChangeBase
         {
             numberSave &= 0b11111011;
         }
-        else
+        else if(type == 3)
         {
             numberSave &= 0b11110111;
         }
+        else
+        {
+            numberSave |= 0b11101111;
+        }
         ApplyValue();
     }
+
+    public void ApplyType()
+    {
+        bool value = GetComponent<Toggle>().isOn;
+        if (value)
+        {
+            TypeAdd();
+        }
+        else
+        {
+            TypeDelete();
+        }
+    }
+
+
 }

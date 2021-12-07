@@ -31,7 +31,7 @@ public class AttackJudge
       //Trap//待ち構えてるやつ00010000
       //UIチェックボックス入れて数字変える
       [Header("選択する敵とパーセントの数字")]
-      [Tooltip("兵士1,飛ぶやつ2,Shooter,Knight4,Trap8,問わず0")]
+      [Tooltip("兵士1,飛ぶやつ2,Shooter4,Knight8,Trap,問わず0")]
     public int percentage;
     [Tooltip("trueで上、Falseで下")]
      public bool highOrLow;//その項目が以上か以下か。

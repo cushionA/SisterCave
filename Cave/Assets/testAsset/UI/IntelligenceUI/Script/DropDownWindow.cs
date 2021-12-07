@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class DoropDownWindow : MonoBehaviour
+public class DropDownWindow : ValueChangeBase
 {
+
+
+
+    
+
     // Start is called before the first frame update
-    void Start()
+
+
+    public void ApplyDrop()
     {
-        
+
+        Dropdown d = this.gameObject.GetComponent<Dropdown>();
+        numberSave = d.value;
+        ApplyValue();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

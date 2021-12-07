@@ -133,10 +133,14 @@ public class MainUI : MonoBehaviour
     //  Button eq;
     SisUI sis;
 
-    GameObject selectButtom;
+
 
     bool isFirst;
     bool isInitial;
+
+    /// <summary>
+    /// こいつ注意
+    /// </summary>
     bool isConversation;
 
     /// <summary>
@@ -163,20 +167,14 @@ public class MainUI : MonoBehaviour
     ///<summary>
     /// 編集用のパラメータ。いろいろ参照する。
     ///</summary>
-    [HideInInspector]
+    
     public SisterParameter editParameter;
 
-    /// <summary>
-    /// 別々のUIをつなぐ選択要素を。この辺はSettingナンバーが確定するあたりで操作。
-    /// </summary>
-    [HideInInspector]
-    public Selectable preObject;
-
-    /// <summary>
-    /// 別々のUIをつなぐ選択要素を
-    /// </summary>
-    [HideInInspector]
-    public Selectable nextObject;
+    public GameObject secondDrop;
+    //1個目の窓
+    public GameObject firstDrop;
+    //値設定
+    public GameObject valueWindow;
 
     /// <summary>
     /// ドロップダウン変更による入れ替え対象
@@ -194,6 +192,12 @@ public class MainUI : MonoBehaviour
     /// 接続変更するとき
     /// </summary>
     public int isChange;
+
+    /// <summary>
+    /// セーブしたかどうか、色々使える
+    /// ゲーム開始時か鳴らす偽に
+    /// </summary>
+    public bool isSave;
 
     //求められる機能
     //
@@ -366,8 +370,12 @@ public class MainUI : MonoBehaviour
             //メニュー展開中
             else if (isMenu)
             {
-
-                selectButtom = eventSystem.currentSelectedGameObject;
+                bool change = false;
+                if (selectButton != eventSystem.currentSelectedGameObject)
+                {
+                    selectButton = eventSystem.currentSelectedGameObject;
+                    change = true;
+                }
 
                 Time.timeScale = 0;
 
@@ -379,153 +387,157 @@ public class MainUI : MonoBehaviour
                     masterUI.SetActive(true);
                 }
 
-                if(selectButtom == eqButton && !isInitial)
-                {//セレクトしているボタンが左端のボタンの時
-
-                    eqWindow.SetActive(true);
-                    useWindow.SetActive(false);
-                    keyWindow.SetActive(false);
-                    magicWindow.SetActive(false);
-                    libraryWindow.SetActive(false);
-                    systemWindow.SetActive(false);
-                    weaponWindow.SetActive(false);
-                    coreWindow.SetActive(false);
-                    materialWindow.SetActive(false);
-
-                    wec.isIniti = false;
-                    coc.isIniti = false;
-                    usec.isIniti = false;
-                    //表示するUIの選択
-                    isInitial = true;
-                }
-                else if(selectButtom == useButton)
+              //切り替わってるなら
+                if (change)
                 {
-                    eqWindow.SetActive(false);
-                    useWindow.SetActive(true);
-                    keyWindow.SetActive(false);
-                    magicWindow.SetActive(false);
-                    libraryWindow.SetActive(false);
-                    systemWindow.SetActive(false);
-                    weaponWindow.SetActive(false);
-                    coreWindow.SetActive(false);
-                    materialWindow.SetActive(false);
+                    //イベントトリガーで
+                    if (selectButton == eqButton && !isInitial)
+                    {//セレクトしているボタンが左端のボタンの時
 
-                    EquipMenuReset();
-                    usec.isIniti = false;
-                    isInitial = false;
-                }
-                else if (selectButtom == weaponButton)
-                {
+                        eqWindow.SetActive(true);
+                        useWindow.SetActive(false);
+                        keyWindow.SetActive(false);
+                        magicWindow.SetActive(false);
+                        libraryWindow.SetActive(false);
+                        systemWindow.SetActive(false);
+                        weaponWindow.SetActive(false);
+                        coreWindow.SetActive(false);
+                        materialWindow.SetActive(false);
 
-                    eqWindow.SetActive(false);
-                    useWindow.SetActive(false);
-                    keyWindow.SetActive(false);
-                    magicWindow.SetActive(false);
-                    libraryWindow.SetActive(false);
-                    systemWindow.SetActive(false);
-                    weaponWindow.SetActive(true);
-                    coreWindow.SetActive(false);
-                    materialWindow.SetActive(false);
-                    isInitial = false;
-                    wec.isIniti = false;
-                    EquipMenuReset();
-                }
-                else if (selectButtom == coreButton)
-                {
+                        wec.isIniti = false;
+                        coc.isIniti = false;
+                        usec.isIniti = false;
+                        //表示するUIの選択
+                        isInitial = true;
+                    }
+                    else if (selectButton == useButton)
+                    {
+                        eqWindow.SetActive(false);
+                        useWindow.SetActive(true);
+                        keyWindow.SetActive(false);
+                        magicWindow.SetActive(false);
+                        libraryWindow.SetActive(false);
+                        systemWindow.SetActive(false);
+                        weaponWindow.SetActive(false);
+                        coreWindow.SetActive(false);
+                        materialWindow.SetActive(false);
 
-                    eqWindow.SetActive(false);
-                    useWindow.SetActive(false);
-                    keyWindow.SetActive(false);
-                    magicWindow.SetActive(false);
-                    libraryWindow.SetActive(false);
-                    systemWindow.SetActive(false);
-                    weaponWindow.SetActive(false);
-                    coreWindow.SetActive(true);
-                    materialWindow.SetActive(false);
-                    isInitial = false;
-                    coc.isIniti = false;
-                    EquipMenuReset();
-                }
-                else if (selectButtom == keyButton)
-                {
-                   
-                    eqWindow.SetActive(false);
-                    useWindow.SetActive(false);
-                    keyWindow.SetActive(true);
-                    magicWindow.SetActive(false);
-                    libraryWindow.SetActive(false);
-                    systemWindow.SetActive(false);
-                    weaponWindow.SetActive(false);
-                    coreWindow.SetActive(false);
-                    materialWindow.SetActive(false);
-                    isInitial = false;
-                    kec.isIniti = false;
-                    EquipMenuReset();
-                }
-                else if (selectButtom == magicButton)
-                {
-                  
-                    eqWindow.SetActive(false);
-                    useWindow.SetActive(false);
-                    keyWindow.SetActive(false);
-                    magicWindow.SetActive(true);
-                    libraryWindow.SetActive(false);
-                    systemWindow.SetActive(false);
-                    weaponWindow.SetActive(false);
-                    coreWindow.SetActive(false);
-                    materialWindow.SetActive(false);
-                    isInitial = false;
-                    mac.isIniti = false;
-                    EquipMenuReset();
-                }
-                else if (selectButtom == materialButton)
-                {
+                        EquipMenuReset();
+                        usec.isIniti = false;
+                        isInitial = false;
+                    }
+                    else if (selectButton == weaponButton)
+                    {
 
-                    eqWindow.SetActive(false);
-                    useWindow.SetActive(false);
-                    keyWindow.SetActive(false);
-                    magicWindow.SetActive(false);
-                    libraryWindow.SetActive(false);
-                    systemWindow.SetActive(false);
-                    weaponWindow.SetActive(false);
-                    coreWindow.SetActive(false);
-                    materialWindow.SetActive(true);
-                    isInitial = false;
-                    mtc.isIniti = false;
-                    EquipMenuReset();
-                }
-                else if (selectButtom == libraryButton)
-                {
+                        eqWindow.SetActive(false);
+                        useWindow.SetActive(false);
+                        keyWindow.SetActive(false);
+                        magicWindow.SetActive(false);
+                        libraryWindow.SetActive(false);
+                        systemWindow.SetActive(false);
+                        weaponWindow.SetActive(true);
+                        coreWindow.SetActive(false);
+                        materialWindow.SetActive(false);
+                        isInitial = false;
+                        wec.isIniti = false;
+                        EquipMenuReset();
+                    }
+                    else if (selectButton == coreButton)
+                    {
 
-                    eqWindow.SetActive(false);
-                    useWindow.SetActive(false);
-                    keyWindow.SetActive(false);
-                    magicWindow.SetActive(false);
-                    libraryWindow.SetActive(true);
-                    systemWindow.SetActive(false);
-                    weaponWindow.SetActive(false);
-                    coreWindow.SetActive(false);
-                    materialWindow.SetActive(false);
-                    isInitial = false;
-                    lic.isIniti = false;
-                    EquipMenuReset();
-                }
-                else if (selectButtom == systemButton)
-                {
-                   
-                    eqWindow.SetActive(false);
-                    useWindow.SetActive(false);
-                    keyWindow.SetActive(false);
-                    magicWindow.SetActive(false);
-                    libraryWindow.SetActive(false);
-                    systemWindow.SetActive(true);
-                    weaponWindow.SetActive(false);
-                    coreWindow.SetActive(false);
-                    materialWindow.SetActive(false);
-                    isInitial = false;
-                    EquipMenuReset();
-                }
+                        eqWindow.SetActive(false);
+                        useWindow.SetActive(false);
+                        keyWindow.SetActive(false);
+                        magicWindow.SetActive(false);
+                        libraryWindow.SetActive(false);
+                        systemWindow.SetActive(false);
+                        weaponWindow.SetActive(false);
+                        coreWindow.SetActive(true);
+                        materialWindow.SetActive(false);
+                        isInitial = false;
+                        coc.isIniti = false;
+                        EquipMenuReset();
+                    }
+                    else if (selectButton == keyButton)
+                    {
 
+                        eqWindow.SetActive(false);
+                        useWindow.SetActive(false);
+                        keyWindow.SetActive(true);
+                        magicWindow.SetActive(false);
+                        libraryWindow.SetActive(false);
+                        systemWindow.SetActive(false);
+                        weaponWindow.SetActive(false);
+                        coreWindow.SetActive(false);
+                        materialWindow.SetActive(false);
+                        isInitial = false;
+                        kec.isIniti = false;
+                        EquipMenuReset();
+                    }
+                    else if (selectButton == magicButton)
+                    {
+
+                        eqWindow.SetActive(false);
+                        useWindow.SetActive(false);
+                        keyWindow.SetActive(false);
+                        magicWindow.SetActive(true);
+                        libraryWindow.SetActive(false);
+                        systemWindow.SetActive(false);
+                        weaponWindow.SetActive(false);
+                        coreWindow.SetActive(false);
+                        materialWindow.SetActive(false);
+                        isInitial = false;
+                        mac.isIniti = false;
+                        EquipMenuReset();
+                    }
+                    else if (selectButton == materialButton)
+                    {
+
+                        eqWindow.SetActive(false);
+                        useWindow.SetActive(false);
+                        keyWindow.SetActive(false);
+                        magicWindow.SetActive(false);
+                        libraryWindow.SetActive(false);
+                        systemWindow.SetActive(false);
+                        weaponWindow.SetActive(false);
+                        coreWindow.SetActive(false);
+                        materialWindow.SetActive(true);
+                        isInitial = false;
+                        mtc.isIniti = false;
+                        EquipMenuReset();
+                    }
+                    else if (selectButton == libraryButton)
+                    {
+
+                        eqWindow.SetActive(false);
+                        useWindow.SetActive(false);
+                        keyWindow.SetActive(false);
+                        magicWindow.SetActive(false);
+                        libraryWindow.SetActive(true);
+                        systemWindow.SetActive(false);
+                        weaponWindow.SetActive(false);
+                        coreWindow.SetActive(false);
+                        materialWindow.SetActive(false);
+                        isInitial = false;
+                        lic.isIniti = false;
+                        EquipMenuReset();
+                    }
+                    else if (selectButton == systemButton)
+                    {
+
+                        eqWindow.SetActive(false);
+                        useWindow.SetActive(false);
+                        keyWindow.SetActive(false);
+                        magicWindow.SetActive(false);
+                        libraryWindow.SetActive(false);
+                        systemWindow.SetActive(true);
+                        weaponWindow.SetActive(false);
+                        coreWindow.SetActive(false);
+                        materialWindow.SetActive(false);
+                        isInitial = false;
+                        EquipMenuReset();
+                    }
+                }
             }
         }
     }
@@ -547,7 +559,7 @@ public class MainUI : MonoBehaviour
         lic.isEver = false;
         mtc.isEver = false;
         coc.isEver = false;
-        selectButtom = null;
+        selectButton = null;
         ButtonOn();
       // MainUI.instance.selectButton = null;
        // ToolManager.instance.selectItem = null;
@@ -576,7 +588,7 @@ public class MainUI : MonoBehaviour
         systemB.enabled = false;
         libraryB.enabled = false;
         menuButtonOff = true;
-        selectButtom = null;
+        selectButton = null;
     }
     public void ButtonOn()
     {

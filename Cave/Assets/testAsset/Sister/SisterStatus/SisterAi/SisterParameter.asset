@@ -50,7 +50,7 @@ MonoBehaviour:
     upDown: 0
   secondTarget:
     condition: 0
-    percentage: 4
+    percentage: 8
     highOrLow: 0
     wp: 8
     nextCondition: 5
@@ -85,7 +85,7 @@ MonoBehaviour:
     nextCondition: 5
     upDown: 0
   secondAttack:
-    UseMagic: {fileID: 0}
+    UseMagic: {fileID: 11400000, guid: ce2ad0639a113fa48b1d116eebbfe137, type: 2}
     AutoWait: 0
     CoolTime: 0
     condition: 6
@@ -195,7 +195,7 @@ MonoBehaviour:
     nextCondition: 7
     upDown: 0
   secondRecover:
-    UseMagic: {fileID: 0}
+    UseMagic: {fileID: 11400000, guid: c2e81e9985be0824cade631e1c4c9b5a, type: 2}
     condition: 2
     needSupport: 6
     percentage: 50
@@ -245,7 +245,7 @@ MonoBehaviour:
     nextCondition: 0
     upDown: 0
   nFirstRecover:
-    UseMagic: {fileID: 0}
+    UseMagic: {fileID: 11400000, guid: c2e81e9985be0824cade631e1c4c9b5a, type: 2}
     condition: 2
     needSupport: 6
     percentage: 99

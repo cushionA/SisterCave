@@ -542,13 +542,18 @@ public  class ValueChangeBase : MonoBehaviour
                     else if (numberSave == 5)
                     {
                         editSP.sCondition = SupportCondition.SupportStatus.‹­“G‚ª‚¢‚é‚©‚Ç‚¤‚©;
+                        editSP.highOrLow = false;
                     }
                     else if (numberSave == 6)
                     {
+                        editSP.sCondition = SupportCondition.SupportStatus.‹­“G‚ª‚¢‚é‚©‚Ç‚¤‚©;
+                        editSP.highOrLow = true;
+                    }
+                    else if (numberSave == 7)
+                    {
                         editSP.sCondition = SupportCondition.SupportStatus.”CˆÓ‚Ìx‰‡‚ªØ‚ê‚Ä‚¢‚é‚Æ‚«;
                     }
-
-                    else if (numberSave == 7)
+                    else if (numberSave == 8)
                     {
                         editSP.sCondition = SupportCondition.SupportStatus.w’è‚È‚µ;
                     }
@@ -792,18 +797,21 @@ public  class ValueChangeBase : MonoBehaviour
                     else if (numberSave == 5)
                     {
                         editRC.condition = RecoverCondition.RecoverStatus.‹­“G‚ª‚¢‚é‚©‚Ç‚¤‚©;
+                        editRC.highOrLow = false;
                     }
                     else if (numberSave == 6)
                     {
+                        editRC.condition = RecoverCondition.RecoverStatus.‹­“G‚ª‚¢‚é‚©‚Ç‚¤‚©;
+                        editRC.highOrLow = true;
+                    }
+                    else if (numberSave == 7)
+                    {
                         editRC.condition = RecoverCondition.RecoverStatus.”CˆÓ‚Ìx‰‡‚ªØ‚ê‚Ä‚¢‚é‚Æ‚«;
                     }
-
-                    else if (numberSave == 7)
+                    else if (numberSave == 8)
                     {
                         editRC.condition = RecoverCondition.RecoverStatus.w’è‚È‚µ;
                     }
-
-
                 }
                 else if (fase == 1)
                 {
