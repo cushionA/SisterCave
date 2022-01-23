@@ -44,8 +44,8 @@ public class SManager : MonoBehaviour
     [HideInInspector] public bool actNow;
     //  public Slider MpSlider;//シスターさんのMP管理
 
-    [SerializeField] GameObject NIdoit;
-    [SerializeField] bool isDEEEp;
+    //[SerializeField] GameObject NIdoit;
+    //[SerializeField] bool isDEEEp;
 
     private void Awake()
     {
@@ -224,6 +224,7 @@ public class SManager : MonoBehaviour
         if (!SManager.instance.targetList.Contains(target))
         {
             SManager.instance.targetList.Add(target);
+            target.GetComponent<EnemyBase>().TargetEffectCon();
         }
     }
 

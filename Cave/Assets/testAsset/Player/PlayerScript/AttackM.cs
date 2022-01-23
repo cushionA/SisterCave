@@ -115,7 +115,7 @@ public class AttackM : MonoBehaviour
     private void Update()
     {
 
-        if (!GManager.instance.isDown)
+        if (!GManager.instance.isDown && !GManager.instance.onGimmick)
         {
             //    //////Debug.log($"攻撃可能？{isAttackable}");
             //   //////Debug.log($"攻撃中？{GManager.instance.isAttack}");
@@ -1932,7 +1932,7 @@ public class AttackM : MonoBehaviour
 
     public void attackEffect()
     {
-       // Debug.Log($"アイイイイイイ{atEffect.SubObjectName}");
+
         Addressables.InstantiateAsync(atEffect,GManager.instance.pm.eContoroller.transform);
     }
 

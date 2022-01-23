@@ -74,6 +74,8 @@ MonoBehaviour:
   homingTime: 0
   homingAngleV: 0
   homingAngleA: 0
+  waitTime: 0
+  delayTime: 0
   isChild: 0
   rotateVt: 0
   isRotate: 0
@@ -91,6 +93,7 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   fireSound: 
+  moveSound: 
   existSound: 
   hitSound: 
   FireAnime: 
@@ -108,7 +111,7 @@ MonoBehaviour:
   coolTime: 20
   mainTarget:
   - condition: 0
-    percentage: 4
+    percentage: 8
     highOrLow: 0
     wp: 8
     nextCondition: 5
@@ -120,26 +123,26 @@ MonoBehaviour:
     nextCondition: 5
     upDown: 0
   - condition: 0
-    percentage: 4
+    percentage: 1
     highOrLow: 0
     wp: 8
     nextCondition: 5
     upDown: 0
   subTarget:
   - condition: 0
-    percentage: 4
+    percentage: 31
     highOrLow: 0
     wp: 8
     nextCondition: 5
     upDown: 0
   - condition: 0
-    percentage: 4
+    percentage: 31
     highOrLow: 0
     wp: 8
     nextCondition: 5
     upDown: 0
   - condition: 0
-    percentage: 4
+    percentage: 31
     highOrLow: 0
     wp: 8
     nextCondition: 5

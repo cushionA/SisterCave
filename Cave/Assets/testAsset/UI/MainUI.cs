@@ -13,6 +13,7 @@ public class MainUI : MonoBehaviour
     [HideInInspector] public bool openWindow;
     [HideInInspector] public bool menuButtonOff;
 
+    [HideInInspector]
     public bool isMenu;
     public GameObject masterUI;
 
@@ -56,11 +57,15 @@ public class MainUI : MonoBehaviour
     public EnemyDataController lic;
     public MaterialController mtc;
 
-    float verticalKey;
+    [HideInInspector]
+    public bool isTips;
+
+    [HideInInspector]
+    public bool tipNeed;
 
     public bool isReBuild;
     public GameObject Scon;
-
+    public SaveWinCon saveWin;
 
     public RewiredEventSystem eventSystem;
     public RewiredStandaloneInputModule stIn;
@@ -129,6 +134,9 @@ public class MainUI : MonoBehaviour
     [ActionIdProperty(typeof(RewiredConsts.Action))]
     public int rewiredAction19;
 
+    [ActionIdProperty(typeof(RewiredConsts.Action))]
+    public int rewiredAction20;
+
     #endregion
     //  Button eq;
     SisUI sis;
@@ -141,7 +149,8 @@ public class MainUI : MonoBehaviour
     /// <summary>
     /// こいつ注意
     /// </summary>
-    bool isConversation;
+    [HideInInspector]
+    public bool isConversation;
 
     /// <summary>
     /// 作戦UIで使うパラメータ
@@ -174,6 +183,7 @@ public class MainUI : MonoBehaviour
     //1個目の窓
     public GameObject firstDrop;
     //値設定
+    [HideInInspector]
     public GameObject valueWindow;
 
     /// <summary>
@@ -194,10 +204,22 @@ public class MainUI : MonoBehaviour
     public int isChange;
 
     /// <summary>
+    /// オートヒール設定中
+    /// </summary>
+    [HideInInspector]
+    public bool isAH;
+
+    /// <summary>
     /// セーブしたかどうか、色々使える
     /// ゲーム開始時か鳴らす偽に
     /// </summary>
+     [HideInInspector]
     public bool isSave;
+    [HideInInspector]
+    public bool editNow;
+
+    [SerializeField]
+    Transform TipsWindow;
 
     //求められる機能
     //
@@ -293,7 +315,22 @@ public class MainUI : MonoBehaviour
         //    }
 
 
-        if (isConversation)
+        if (tipNeed && isTips)
+        {
+            TipsWindow.gameObject.SetActive(true);
+        }
+        else
+        {
+            TipsWindow.gameObject.SetActive(false);
+            isTips = false;
+
+        }
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction20) && eventSystem.currentSelectedGameObject != null)
+        {
+            tipNeed = !tipNeed;
+        }
+
+    /*    if (isConversation)
         {
             Time.timeScale = 0;
         }
@@ -301,6 +338,7 @@ public class MainUI : MonoBehaviour
         {
             Time.timeScale = 1;
         }
+    */
 
       //  //Debug.Log($"時間{Time.timeScale}");
         if (MaterialManager.instance.isUseMenu || ToolManager.instance.isUseMenu || EquipManager.instance.isUseMenu
@@ -315,7 +353,7 @@ public class MainUI : MonoBehaviour
         }
        // ////Debug.log($"さぁて真になれ{openWindow}");
 
-         verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
+
 
        // ////Debug.log($"装備窓確認trueになれ{isInitial}");
 

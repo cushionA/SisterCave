@@ -12,6 +12,9 @@ public class EnemyManager : MonoBehaviour
     [HideInInspector] public string JumpTag = "JumpTrigger";
     public UltimateTextDamageManager um;
     public LayerMask rayFilter;
+
+    public Color[] stateClor;
+
     ///<summary>
     ///マスクしてやれば地面しか検出しない。
     ///</summary>

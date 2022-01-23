@@ -43,11 +43,14 @@ public class ChildWindow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 
     private void OnEnable()
     {
+        //aまだバグある
+        
+
         if (type >= 0 && type < 3)
         {
             ResetWindow();
@@ -90,11 +93,12 @@ public class ChildWindow : MonoBehaviour
                 objList[3].SetActive(true);
                 i = 3;
             }
-
+             objList[i].GetComponent<ValueChangeBase>().NumberSet();
             tx.text = introduction[i];
             if (Master)
             {
                 objList[i].GetComponent<Selectable>().Select();
+                
             }
         }
         //アプライバリューの前にどのオブジェクトを表示するかを決める
@@ -124,7 +128,7 @@ public class ChildWindow : MonoBehaviour
             //あとオブジェクトリストとSとeでうまいことSetActiveを操る。
             if (s == 1)
             {
-                AttackJudge editor = GetTarget(s, e);
+                AttackJudge editor = GetTarget(e);
                 Dropdown dd = objList[0].GetComponent<Dropdown>();
                 //標的
                 //ちょっと複雑すぎる
@@ -284,7 +288,7 @@ public class ChildWindow : MonoBehaviour
             //攻撃
             else if (s == 2)
             {
-                FireCondition editor = GetAttack(s, e);
+                FireCondition editor = GetAttack(e);
                 Dropdown dd = objList[1].GetComponent<Dropdown>();
                 //ちょっと複雑すぎる
                 if (type == 0)
@@ -449,7 +453,7 @@ public class ChildWindow : MonoBehaviour
             }
             else if (s == 3)
             {
-                SupportCondition editor = GetSupport(s, e);
+                SupportCondition editor = GetSupport(e);
                 //これは最初のドロップダウンだけ
                 Dropdown dd = objList[4].GetComponent<Dropdown>();
                 if (type == 0)
@@ -532,7 +536,7 @@ public class ChildWindow : MonoBehaviour
             }
             else if (s == 4)
             {
-                SupportCondition editor = GetSupport(s, e);
+                SupportCondition editor = GetSupport(e);
                 Dropdown dd = objList[2].GetComponent<Dropdown>();
                 //ちょっと複雑すぎる
                 if (type == 0)
@@ -640,7 +644,7 @@ public class ChildWindow : MonoBehaviour
             }
             else if (s == 5)
             {
-                RecoverCondition editor = GetRecover(s, e);
+                RecoverCondition editor = GetRecover(e);
                 //これは最初のドロップダウンだけ
                 Dropdown dd = objList[4].GetComponent<Dropdown>();
                 if (type == 0)
@@ -722,7 +726,7 @@ public class ChildWindow : MonoBehaviour
             }
             else
             {
-                RecoverCondition editor = GetRecover(s, e);
+                RecoverCondition editor = GetRecover(e);
                 Dropdown dd = objList[3].GetComponent<Dropdown>();
                 //ちょっと複雑すぎる
                 if (type == 0)
@@ -854,11 +858,13 @@ public class ChildWindow : MonoBehaviour
             int p = GetType(s, e);
             if (p != 0)
             {
-                for (int i = 0; i >= objList.Count; i++)
+             //   Debug.Log("wee");
+                for (int i = 0; i <= objList.Count - 1; i++)
                 {
                     target = objList[i].GetComponent<Toggle>();
                     if (i == 0)
                     {
+                     //   Debug.Log("ssssあｓ");
                         target.isOn = ((p & 0b00000001) == 0b00000001);
                     }
                     else if (i == 1)
@@ -875,13 +881,14 @@ public class ChildWindow : MonoBehaviour
                     }
                     else
                     {
-                        target.isOn = ((p & 0b00001000) == 0b00010000);
+                        target.isOn = ((p & 0b00010000) == 0b00010000);
                     }
                 }
             }
             else
             {
-                for (int i = 0; i >= objList.Count; i++)
+                Debug.Log("aee");
+                for (int i = 0; i <= objList.Count- 1; i++)
                 {
                     target = objList[i].GetComponent<Toggle>();
                     target.isOn = false;
@@ -907,7 +914,7 @@ public class ChildWindow : MonoBehaviour
 
     void ResetWindow()
     {
-        for (int i = 0;i >= objList.Count; i++)
+        for (int i = 0;i <= objList.Count - 1; i++)
         {
             if (objList[i].activeSelf == true)
                 objList[i].SetActive(false);
@@ -1078,7 +1085,7 @@ public class ChildWindow : MonoBehaviour
         }
     }
 
-    AttackJudge GetTarget(int s,int e)
+    AttackJudge GetTarget(int e)
     {
         if (e == 1)
         {
@@ -1101,7 +1108,7 @@ public class ChildWindow : MonoBehaviour
             return MainUI.instance.editParameter.fiveTarget;
         }
     }
-    FireCondition GetAttack(int s, int e)
+    FireCondition GetAttack(int e)
     {
         if (e == 1)
         {
@@ -1129,7 +1136,7 @@ public class ChildWindow : MonoBehaviour
         }
     }
 
-    SupportCondition GetSupport(int s, int e)
+    SupportCondition GetSupport(int e)
     {
         if (e == 1)
         {
@@ -1156,31 +1163,49 @@ public class ChildWindow : MonoBehaviour
             return MainUI.instance.editParameter.sixPlan;
         }
     }
-    RecoverCondition GetRecover(int s, int e)
+    RecoverCondition GetRecover( int e)
     {
-        if (e == 1)
+        if (!MainUI.instance.isAH)
         {
-            return MainUI.instance.editParameter.firstRecover;
-        }
-        else if (e == 2)
-        {
-            return MainUI.instance.editParameter.secondRecover;
-        }
-        else if (e == 3)
-        {
-            return MainUI.instance.editParameter.thirdRecover;
-        }
-        else if (e == 4)
-        {
-            return MainUI.instance.editParameter.forthRecover;
-        }
-        else if (e == 5)
-        {
-            return MainUI.instance.editParameter.fiveRecover;
+            if (e == 1)
+            {
+                return MainUI.instance.editParameter.firstRecover;
+            }
+            else if (e == 2)
+            {
+                return MainUI.instance.editParameter.secondRecover;
+            }
+            else if (e == 3)
+            {
+                return MainUI.instance.editParameter.thirdRecover;
+            }
+            else if (e == 4)
+            {
+                return MainUI.instance.editParameter.forthRecover;
+            }
+            else if (e == 5)
+            {
+                return MainUI.instance.editParameter.fiveRecover;
+            }
+            else
+            {
+                return MainUI.instance.editParameter.nonRecover;
+            }
         }
         else
         {
-            return MainUI.instance.editParameter.nonRecover;
+            if (e == 1)
+            {
+                return MainUI.instance.editParameter.nFirstRecover;
+            }
+            else if (e == 2)
+            {
+                return MainUI.instance.editParameter.nSecondRecover;
+            }
+            else
+            {
+                return MainUI.instance.editParameter.nThirdRecover;
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ public class GManager : MonoBehaviour
     //プレイヤーオブジェクト
     public PlayerStatus pStatus;
     //プレイヤーのステータスを取得
-    public int stRecover = 3;
+    public float stRecover = 1.5f;
     //スタミナ回復量
     public Slider stSlider;
     //スタミナスライダー

@@ -1,25 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using Cysharp.Threading.Tasks;
 
 public class BattleTest : MonoBehaviour
 {
     [SerializeField] GameObject Enemy;
+    GameObject sis;
     [SerializeField] bool isBattle;
+
+    [SerializeField]
+    AssetReference EnemyData;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (isBattle && Enemy != null)
+        if ( Enemy != null)
         {
             Enemy.transform.position = this.gameObject.transform.position;
-            GManager.instance.Player.transform.position = this.gameObject.transform.position;
+         //   GManager.instance.Player.transform.position = this.gameObject.transform.position;
         }
     }
 
     // Update is called once per frame
-    void Update()
+
+
+    public void Reset()
     {
-        
+        //   GameObject dd;
+
+            if(Enemy == null)
+            {
+                Enemy = sis.gameObject;
+            }
+            //GameObject del = Enemy.gameObject;
+            Destroy(Enemy);
+
     }
+
+    public async  UniTaskVoid ReSporn()
+    {
+        Debug.Log($"{Enemy.name}");
+        sis = await Addressables.InstantiateAsync(EnemyData);
+        //  Enemy = dd;
+        sis.transform.position = this.gameObject.transform.position;
+    }
+
 }

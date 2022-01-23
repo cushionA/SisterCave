@@ -339,6 +339,7 @@ public class SisterBrain : MonoBehaviour
 				SManager.instance.GetClosestEnemyX();
 				float mDirection = Mathf.Sign(SManager.instance.closestEnemy - myPosition.x);
 				//一番近い敵が右にいるとき
+				reJudgeTime += Time.fixedDeltaTime;
 				if (mDirection >= 0)
 				{
 					//没
@@ -369,18 +370,19 @@ public class SisterBrain : MonoBehaviour
 								}*/
 					#endregion
 
-					reJudgeTime += Time.fixedDeltaTime;
+					
 					if (reJudgeTime >= 1.5)
 					{
 						if (SManager.instance.closestEnemy - myPosition.x >= status.battleDis)
 						{
 							stateNumber = 0;
-
+							directionChangeWait = 99;
 						}
 						else// if (SManager.instance.closestEnemy - myPosition.x < status.battleDis)
 						{
 							stateNumber = 1;
-							
+							directionChangeWait = 99;
+
 						}
 						reJudgeTime = 0;
 					}
@@ -438,7 +440,7 @@ public class SisterBrain : MonoBehaviour
 
 					*/
 					#endregion
-					reJudgeTime += Time.fixedDeltaTime;
+					//reJudgeTime += Time.fixedDeltaTime;
 					if (reJudgeTime >= 1.5)
 					{
 						if (Mathf.Abs(SManager.instance.closestEnemy - myPosition.x) >= status.battleDis)
@@ -509,7 +511,8 @@ public class SisterBrain : MonoBehaviour
 					//敵が逃げるゾーンより近かったから
 
 						nowPosition = false;
-                }
+					directionChangeWait = 99;
+				}
 
             }
 	//	}
@@ -581,7 +584,13 @@ public class SisterBrain : MonoBehaviour
 
         }
 	}
+	public void ATFlip()
+	{
 
+			Vector3 theScale = transform.localScale;
+			theScale.x = SManager.instance.target.transform.position.x - myPosition.x >= 0 ? 1 : -1;
+			transform.localScale = theScale;
+	}
 	/// <summary>
 	/// 待機中の哨戒行動
 	/// </summary>
@@ -618,7 +627,9 @@ public class SisterBrain : MonoBehaviour
 				{
 					changeable = false;
 					beforeNumber = 0;
+					directionChangeWait = 99;
 				}
+
 			}
 			else if (reJudgeTime >= 1 && !changeable)
 			{
@@ -749,7 +760,8 @@ public class SisterBrain : MonoBehaviour
                     {
 						changeable = false;
 						beforeNumber = 0;
-                    }
+						directionChangeWait = 99;
+					}
 
 				}
 			}
@@ -1388,7 +1400,12 @@ public class SisterBrain : MonoBehaviour
 						Serch2.SetActive(true);
 						Serch.SetActive(true);
 						reJudgePositionTime = 0;
+                        for(int i=0;i < SManager.instance.targetList.Count; i++)
+                        {
+							SManager.instance.targetList[i].GetComponent<EnemyBase>().TargetEffectCon(1);
+						}
 						SManager.instance.targetList.Clear();
+
 						SManager.instance.targetCondition.Clear();
 						SManager.instance.target = null;
 					}
@@ -1418,7 +1435,7 @@ public class SisterBrain : MonoBehaviour
     {
 
 		//敵がいなかったら
-		if (SManager.instance.isBattleEnd && !(SManager.instance.targetList.Count >= 1))
+		if (SManager.instance.isBattleEnd && !(SManager.instance.targetList.Count == 0))
 		{
 				battleEndTime += Time.fixedDeltaTime;
 
@@ -1442,6 +1459,7 @@ public class SisterBrain : MonoBehaviour
 			Serch2.SetActive(true);
 			Serch.SetActive(true);
 			battleEndTime = 0;
+
 			SManager.instance.targetList.Clear();
 			SManager.instance.targetCondition.Clear();
 			SManager.instance.target = null;

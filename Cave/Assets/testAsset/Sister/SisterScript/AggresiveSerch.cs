@@ -29,6 +29,10 @@ public class AggresiveSerch : MonoBehaviour
         
       //  Debug.Log("調査");
         SManager.instance.targetList.Clear();
+        for (int i = 0; i < SManager.instance.targetList.Count; i++)
+        {
+            SManager.instance.targetList[i].GetComponent<EnemyBase>().TargetEffectCon(1);
+        }
         SManager.instance.targetCondition.Clear();
         for (int i = 0; i < se.DetectedObjectsOrderedByDistance.Count; i++)
         {

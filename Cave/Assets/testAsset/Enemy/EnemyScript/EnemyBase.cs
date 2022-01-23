@@ -12,6 +12,16 @@ public class EnemyBase : MonoBehaviour
 {
 	//「//sAni.」を「sAni.」で置き換える。アニメ作ったら
 
+	//アニメの種類
+	//必須
+	//移動（Move）、歩き（Walk）、走り（Dash）、怯み（Falter）、ダウン（Down）、起き上がり（Wakeup）
+	//吹き飛び（Blow）、弾かれ（Bounce）、後ろ歩き（BackMove）、戦闘待機（Pose）、立つ（Stand）、死亡（NDie,DDie）
+	//
+	//必要に応じて
+	//落下（Fall）、ガード（Guard）、ガード移動（GuardMove）、後ろガード移動（BackGuard）、ガードブレイク（GuardBreak）
+	//回避（Avoid）、ジャンプ（Jump）
+	//
+
 	[SerializeField] GameObject effectController;
 
 	[Header("視覚探知")]
@@ -92,7 +102,7 @@ public class EnemyBase : MonoBehaviour
 
 	protected float attackBuff = 1;//攻撃倍率
 
-	bool soundTest;
+	bool flyNow;
 
 	/// <summary>
 	/// 攻撃の値
@@ -155,6 +165,12 @@ public class EnemyBase : MonoBehaviour
 	[HideInInspector] public SisMagic sm;
 	[HideInInspector] public bool insert;
 	protected bool isDie;
+
+	[SerializeField]
+	protected SpriteRenderer td;
+
+	[SerializeField]
+	protected Transform atBlock;
 	/// <summary>
 	/// 攻撃後フラグ。攻撃後の挙動で使う
 	/// </summary>
@@ -163,12 +179,11 @@ public class EnemyBase : MonoBehaviour
 	/// <summary>
 	/// エフェクト操作用のマテリアル
 	/// </summary>
-	 [SerializeReference]
+	 [SerializeField]
 	protected Renderer parentMatt;
 	/// <summary>
 	/// マテリアル操作始動フラグ
 	/// </summary>
-    [SerializeReference]
 	protected int materialSet;
 	/// <summary>
 	/// 操作対象のマテリアル管理ナンバー。0から
@@ -220,6 +235,7 @@ public class EnemyBase : MonoBehaviour
 			enableFire = true;
         }
 		//parentMatt = GetComponent<SpriteRenderer>().material;
+		//td = GetComponent<TargetDisplay>();
 	}
 
 
@@ -600,7 +616,13 @@ public class EnemyBase : MonoBehaviour
 			if (hp <= 0)
 			{
 				isDie = true;
+				atBlock.gameObject.SetActive(false);
+				//atBlock.gameObject.SetActive(false);
 				isAnimeStart = false;
+                if (!isGround)
+                {
+					isDown = true;
+                }
 			}
 		}
 	}
@@ -710,7 +732,12 @@ public class EnemyBase : MonoBehaviour
 			if (hp <= 0)
 			{
 				isDie = true;
+				atBlock.gameObject.SetActive(false);
 				isAnimeStart = false;
+				if (!isGround)
+				{
+					isDown = true;
+				}
 			}
 		}
 	}
@@ -801,6 +828,11 @@ public class EnemyBase : MonoBehaviour
 			if (hp <= 0)
 			{
 				isDie = true;isAnimeStart = false;
+				atBlock.gameObject.SetActive(false);
+				if (!isGround)
+				{
+					isDown = true;
+				}
 			}
 		}
 	}
@@ -875,6 +907,11 @@ public class EnemyBase : MonoBehaviour
 			if (hp <= 0)
 			{
 				isDie = true;isAnimeStart = false;
+				atBlock.gameObject.SetActive(false);
+				if (!isGround)
+				{
+					isDown = true;
+				}
 			}
 		}
 	}
@@ -954,7 +991,13 @@ public class EnemyBase : MonoBehaviour
 			}
 			if (hp <= 0)
 			{
-				isDie = true;isAnimeStart = false;
+				isDie = true;
+				atBlock.gameObject.SetActive(false);
+				isAnimeStart = false;
+				if (!isGround)
+				{
+					isDown = true;
+				}
 			}
 		}
 	}
@@ -1027,7 +1070,13 @@ public class EnemyBase : MonoBehaviour
 			}
 			if (hp <= 0)
 			{
-				isDie = true;isAnimeStart = false;
+				isDie = true;
+				atBlock.gameObject.SetActive(false);
+				isAnimeStart = false;
+				if (!isGround)
+				{
+					isDown = true;
+				}
 			}
 		}
 	}
@@ -1319,6 +1368,17 @@ public class EnemyBase : MonoBehaviour
 			transform.localScale = theScale;
 		}
     }
+
+	/// <summary>
+	/// アニメの都合上反対側向きたいときのメソッド
+	/// </summary>
+	public void AnimeFlip()
+    {
+		Vector3 theScale = transform.localScale;
+		theScale.x *= -1;
+		transform.localScale = theScale;
+		lastDirection = direction;
+	}
 
 	/// <summary>
 	/// 最初の位置に戻る。
@@ -1739,7 +1799,7 @@ public class EnemyBase : MonoBehaviour
 	{
 		stateJudge += Time.fixedDeltaTime;
 		#region//判断
-		if ((ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && ground != EnemyStatus.MoveState.escape)
+		if ((ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && ground != EnemyStatus.MoveState.escape && !isDown)
 		//escapeだけはスクリプトから動かす
 		{
 
@@ -1840,22 +1900,15 @@ public class EnemyBase : MonoBehaviour
 			}
 			stateJudge = 0;
 			attackComp = false;
-		//	Debug.Log($"空{air}陸{ground}");
-		//	Debug.Log($"空{distance.y}");
-			
+			//	Debug.Log($"空{air}陸{ground}");
+			//	Debug.Log($"空{distance.y}");
+			//状態切り替え時には振り向くように
+			flipWaitTime = 3;
 		}
 		#endregion
 
-		if(ground != EnemyStatus.MoveState.wakeup && !soundTest)
-        {
-			GManager.instance.PlaySound(status.walkSound, transform.position);
-			soundTest = true;
-		}
 
-		if(hp != status.maxHp)
-        {
-			GManager.instance.StopSound(status.walkSound, 0.5f);
-		}
+
 
 		if (!isStop && !nowJump && !isAvoid && !isDown && !isDie && !isAttack)
 		{
@@ -2055,11 +2108,12 @@ public class EnemyBase : MonoBehaviour
 	/// </summary>
 	public void DamageAvoid()
 	{
+
 		if (isDamage || isDie) 
 		{
 			avoidTime += Time.fixedDeltaTime;
 			SetLayer(28);
-			if (avoidTime >= 0.15 && !GManager.instance.fallAttack && !isDie)
+			if (avoidTime >= 0.15 &&  !isDie)// &&!GManager.instance.fallAttack
 			{
 				guardJudge = true;
 				isDamage = false;
@@ -2075,6 +2129,7 @@ public class EnemyBase : MonoBehaviour
         {
             if (blowDown && isWakeUp)
             {
+			
 				SetLayer(28);
 			}
             else
@@ -2100,7 +2155,7 @@ public class EnemyBase : MonoBehaviour
 	{
 		if (status.kind == EnemyStatus.KindofEnemy.Fly)
 		{
-			if (!isGround && blowDown)
+			if (!isGround && (blowDown || isDie))
 			{
 			//	Debug.Log("v");
 				GravitySet(status.firstGravity);
@@ -2731,6 +2786,7 @@ public class EnemyBase : MonoBehaviour
 						if (SManager.instance.target == this.gameObject)
 						{
 							SManager.instance.target = null;
+							TargetEffectCon(1);
 						}
 						Destroy(this.gameObject);
 					}
@@ -2755,6 +2811,7 @@ public class EnemyBase : MonoBehaviour
 						if(SManager.instance.target == this.gameObject)
                         {
 							SManager.instance.target = null;
+							TargetEffectCon(1);
                         }
 						Destroy(this.gameObject);
 					}
@@ -2996,11 +3053,29 @@ public class EnemyBase : MonoBehaviour
 		}
 		else if (damageType == 32)
 		{
+
+			
 			GManager.instance.PlaySound("FireDamage", transform.position);
 		}
 		else if (damageType == 64)
 		{
+			Debug.Log("sdfgg");
 			GManager.instance.PlaySound("ThunderDamage", transform.position);
+		}
+	}
+
+
+	public void FlySound(int fly)
+    {
+		if (fly == 1 && !flyNow)
+		{
+			GManager.instance.PlaySound(status.walkSound, transform.position);
+			flyNow = true;
+		}
+		else if (fly == 0)
+		{
+			flyNow = false;
+			GManager.instance.StopSound(status.walkSound, 0.5f);
 		}
 	}
 
@@ -3042,10 +3117,7 @@ public class EnemyBase : MonoBehaviour
 				//水の足音
             }
 		}
-        else
-        {
-			GManager.instance.PlaySound(status.walkSound, transform.position);
-		}
+
     }
 
 	public void ActionSound(string useName)
@@ -3185,7 +3257,7 @@ public class EnemyBase : MonoBehaviour
 
 
 			//親マテリアルの情報を見る
-						Debug.Log($"{parentMatt.material}");
+					//	Debug.Log($"{parentMatt.material}");
 					if (materialSet == 1)
 					{
 
@@ -3199,7 +3271,7 @@ public class EnemyBase : MonoBehaviour
 						//Debug.Log($"Hello{controllTarget[2].material.name}");
 jumpTime += Time.fixedDeltaTime;
 				float test = Mathf.Lerp(0f, 1, jumpTime/2);
-						for (int i = 0; i <= controllTarget.Count; i++)
+						for (int i = 0; i <= controllTarget.Count - 1; i++)
 				{
 
 
@@ -3294,6 +3366,31 @@ jumpTime += Time.fixedDeltaTime;
 		}
 
 	}
+
+
+	public void TargetEffectCon(int state = 0)
+    {
+		if(state == 0)
+        {
+			td.gameObject.SetActive(true);
+			td.color = EnemyManager.instance.stateClor[0];
+		}
+		else if(state == 1)
+		{
+			td.gameObject.SetActive(false);
+		}
+		else if (state == 2)
+		{
+			td.gameObject.SetActive(true);
+			td.color = EnemyManager.instance.stateClor[1];
+		}
+		else
+		{
+			// td.enabled = true;
+			td.color = EnemyManager.instance.stateClor[0];
+		}
+	}
+
 }
 
 

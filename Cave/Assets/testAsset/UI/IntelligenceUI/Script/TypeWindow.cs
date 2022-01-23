@@ -9,8 +9,10 @@ public class TypeWindow : ValueChangeBase
     [SerializeField]
     int type;
 
+    //fase設定忘れか
+
     // Start is called before the first frame update
-   protected override void Start()
+   protected  void Start()
     {
         fase = 1;
     }
@@ -27,6 +29,7 @@ public class TypeWindow : ValueChangeBase
     void TypeAdd()
     {
         //兵士1,飛ぶやつ2,Shooter,Knight4,Trap8,問わず0
+
 
         if (type == 0)
         {
@@ -75,13 +78,16 @@ public class TypeWindow : ValueChangeBase
         }
         else
         {
-            numberSave |= 0b11101111;
+           // Debug.Log($"だ{numberSave & 0b11101111}");
+            numberSave &= 0b11101111;
         }
         ApplyValue();
     }
 
     public void ApplyType()
     {
+        numberSave = GetType(MainUI.instance.settingNumber,MainUI.instance.editNumber);
+
         bool value = GetComponent<Toggle>().isOn;
         if (value)
         {
@@ -93,5 +99,84 @@ public class TypeWindow : ValueChangeBase
         }
     }
 
+    /// <summary>
+    /// 参照してるタイプを確認
+    /// </summary>
+    /// <param name="s"></param>
+    /// <param name="e"></param>
+    /// <param name="t"></param>
+    /// <returns></returns>
+    int GetType(int s, int e)
+    {
+        if (s == 1)
+        {
+            if (e == 1)
+            {
+                return MainUI.instance.editParameter.firstTarget.percentage;
+            }
+            else if (e == 2)
+            {
+                return MainUI.instance.editParameter.secondTarget.percentage;
+            }
+            else if (e == 3)
+            {
+                return MainUI.instance.editParameter.thirdTarget.percentage;
+            }
+            else if (e == 4)
+            {
+                return MainUI.instance.editParameter.forthTarget.percentage;
+            }
+            else
+            {
+                return MainUI.instance.editParameter.fiveTarget.percentage;
+            }
+        }
+        else if (s == 3)
+        {
+            if (e == 1)
+            {
+                return MainUI.instance.editParameter.firstPlan.percentage;
+            }
+            else if (e == 2)
+            {
+                return MainUI.instance.editParameter.secondPlan.percentage;
+            }
+            else if (e == 3)
+            {
+                return MainUI.instance.editParameter.thirdPlan.percentage;
+            }
+            else if (e == 4)
+            {
+                return MainUI.instance.editParameter.forthPlan.percentage;
+            }
+            else
+            {
+                return MainUI.instance.editParameter.fivePlan.percentage;
+            }
+        }
+        else
+        {
+            if (e == 1)
+            {
+                return MainUI.instance.editParameter.firstRecover.percentage;
+            }
+            else if (e == 2)
+            {
+                return MainUI.instance.editParameter.secondRecover.percentage;
+            }
+            else if (e == 3)
+            {
+                return MainUI.instance.editParameter.thirdRecover.percentage;
+            }
+            else if (e == 4)
+            {
+                return MainUI.instance.editParameter.forthRecover.percentage;
+            }
+            else
+            {
+                return MainUI.instance.editParameter.fiveRecover.percentage;
+            }
+        }
+    }
 
 }

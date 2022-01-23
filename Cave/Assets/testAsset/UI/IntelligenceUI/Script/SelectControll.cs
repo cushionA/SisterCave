@@ -55,7 +55,11 @@ public class SelectControll : MonoBehaviour
    // Navigation mine;
     Selectable me;
 
-
+    /// <summary>
+    /// value窓用
+    /// </summary>
+     [SerializeField]
+    bool isValue;
 
 
 
@@ -115,22 +119,29 @@ public class SelectControll : MonoBehaviour
 
             if (MainUI.instance.isChange == 1)
             {
-                
-                sl = MainUI.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
-                UpSet(sl);
-                MainUI.instance.isChange = 2;
+                 sl = MainUI.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                    UpSet(sl);
+               MainUI.instance.isChange = 2;
             }
             else
             {
-                if (s == 1)
+                    if (s == 1)
+                    {
+                        sl = MainUI.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                    }
+                    else
+                    {
+                        sl = MainUI.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                    }
+                if (!isValue)
                 {
-                    sl = MainUI.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                        UnderSet(sl);
                 }
                 else
                 {
-                    sl = MainUI.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                    AnotherSet(sl);
                 }
-                UnderSet(sl);
+
                 MainUI.instance.isChange = 0;
             }
         }
@@ -148,9 +159,9 @@ public class SelectControll : MonoBehaviour
         navi.selectOnUp = me;
         nextObject.navigation = navi;
 
-        if (raidObject.Count > 0)
+        if (raidObject.Count > 0 && !isValue)
         {
-            Debug.Log("あああ");
+        //    Debug.Log("あああ");
             //   navi.selectOnDown = raid;
             //Navigation navi;
             for (int i = 0; i <= raidObject.Count - 1; i++)
@@ -174,7 +185,7 @@ public class SelectControll : MonoBehaviour
         navi.selectOnDown = me;
         preObject.navigation = navi;
 
-        if (raidObject.Count > 0)
+        if (raidObject.Count > 0 && !isValue)
         {
 
             //   navi.selectOnDown = raid;
@@ -188,29 +199,44 @@ public class SelectControll : MonoBehaviour
         }
     }
 
- /*   public void SelectReset(Selectable change)
+    /// <summary>
+    /// 
+    /// </summary>
+    public void AnotherSet(Selectable nextObject)
     {
+        
 
-        MainUI.instance.changeTarget = me;
-         me.navigation = mine;
-    }*/
+        Navigation navi = raidObject[0].navigation;
+        navi.selectOnDown = nextObject;
+        raidObject[0].navigation = navi;
+        navi = nextObject.navigation;
+        navi.selectOnUp = raidObject[0];
+        nextObject.navigation = navi;
+    }
 
-  /*  public void ChangeItem()
-    {
-        if (MainUI.instance.isChange && isMaster && mine.selectOnUp == null)
-        {
-            for (int i = 0; i >= MainUI.instance.selectList.Count; i++)
-            {
-                //新しいやつと入れ替え。
-                if (MainUI.instance.selectList[i] == MainUI.instance.changeTarget)
-                {
-                    MainUI.instance.selectList[i] = me;
-                    i = 100;
-                }
+    /*   public void SelectReset(Selectable change)
+       {
 
-            }
-            MainUI.instance.isChange = false;
-        }
-    }*/
+           MainUI.instance.changeTarget = me;
+            me.navigation = mine;
+       }*/
+
+    /*  public void ChangeItem()
+      {
+          if (MainUI.instance.isChange && isMaster && mine.selectOnUp == null)
+          {
+              for (int i = 0; i >= MainUI.instance.selectList.Count; i++)
+              {
+                  //新しいやつと入れ替え。
+                  if (MainUI.instance.selectList[i] == MainUI.instance.changeTarget)
+                  {
+                      MainUI.instance.selectList[i] = me;
+                      i = 100;
+                  }
+
+              }
+              MainUI.instance.isChange = false;
+          }
+      }*/
 
 }

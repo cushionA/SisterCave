@@ -87,7 +87,7 @@ public class Equip : Item
     public List<string> useSound;
 
     [Header("攻撃属性")]
-    [Tooltip("物理2,4,8、以下聖16闇32炎64雷128")]
+    [Tooltip("物理1,2,4、以下聖8闇16炎32雷64")]
     ///<Sammary>
     /// 攻撃の属性
     /// 物理統合、以下聖闇炎雷

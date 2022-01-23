@@ -57,8 +57,9 @@ public class Magic : Item
 	/// </summary>
 	public float recoverAmount;
 
+	[Header("詠唱時間")]
 	/// <summary>
-	/// 詠唱時間。スキルや秘伝書（早口言葉）、技量で少なくなる？
+	/// スキルや秘伝書（早口言葉）、技量で少なくなる？
 	/// </summary>
 	public float castTime;
 
@@ -138,7 +139,17 @@ public class Magic : Item
 	/// </summary>
 	public float homingAngleA = 20.0f;
 
+	[Header("射出開始までの時間")]
+	/// <summary>
+	/// これがあると一定秒数待つよ
+	/// </summary>
+	public float waitTime = 0f;
 
+	[Header("弾丸生成までの時間")]
+	/// <summary>
+	/// これがあると一定秒数待つよ
+	/// </summary>
+	public float delayTime = 0f;
 
 	[Header("子弾かどうか")]
 	/// <summary>
@@ -178,6 +189,12 @@ public class Magic : Item
 	/// //吹っ飛ばし攻撃
 	/// </summary>
 	public bool isBlow;
+
+	[Header("子弾が吹き飛ばすかどうか")]
+	/// <summary>
+	/// //吹っ飛ばし攻撃
+	/// </summary>
+	public bool cBlow;
 
 	[Header("位置をサーチして発生するか")]
 	/// <summary>
@@ -230,6 +247,14 @@ public class Magic : Item
 	/// </summary>
 	public string fireSound;
 
+	[Header("始動サウンド")]
+	[SoundGroup]
+
+	/// <summary>
+	// wait切れの時のサウンド
+	/// </summary>
+	public string moveSound;
+
 	[Header("恒常サウンド")]
 	[SoundGroup]
 	
@@ -270,7 +295,7 @@ public class Magic : Item
 	public bool isHit;
 
 	[Header("攻撃属性")]
-	[Tooltip("物理2,4,8、以下聖16闇32炎64雷128")]
+	[Tooltip("物理1,2,4、以下聖8闇16炎32雷64")]
 	///<Sammary>
 	/// 攻撃の属性
 	/// 物理統合、以下聖闇炎雷

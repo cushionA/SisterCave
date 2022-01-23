@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
-
+using System;
+using UnityEngine.UI;
 
 /// <summary>
 /// 設計思想
@@ -35,8 +36,7 @@ using Cysharp.Threading.Tasks;
 
 public class SisterFire : MonoBehaviour
 {
-	int kuroko;
-	int siroko;
+
 	public SisterParameter sister;
 	public SisterStatus status;
 	//public GameObject firePosition;
@@ -55,7 +55,6 @@ public class SisterFire : MonoBehaviour
 
 	int judgeSequence;
 	bool useMagic;
-	bool battleNow;
 	
 	/// <summary>
 	/// 詠唱中つかう音
@@ -95,6 +94,21 @@ public class SisterFire : MonoBehaviour
 	//回復時間
 	float healJudge;
 
+	//弾丸生成を待っているか
+	bool delayNow;
+
+	[SerializeField]
+	Text cCounter;
+
+	[SerializeField]
+	Transform cIcon;
+
+	[SerializeField]
+	Slider cSlider;
+
+	//最初完了音鳴らさない
+	bool first;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -104,7 +118,54 @@ public class SisterFire : MonoBehaviour
 
     private void Update()
     {
-		if (status.equipCombination != null)
+		if (!combiEnable && ((!SManager.instance.actNow) || (SManager.instance.actNow && SManager.instance.castNow)))
+		{
+			//	Debug.Log($"野菜売り場");
+			//連携のクールタイム計測
+			combinationCool += Time.deltaTime;
+
+		 	cSlider.value = combinationCool / status.equipCombination.coolTime;
+
+			if (combinationCool >= status.equipCombination.coolTime)
+			{
+				combinationCool = 0;
+				conboChain = 0;
+				combiEnable = true;
+				cIcon.gameObject.SetActive(true);
+				if (!first)
+				{
+					first = true;
+				}
+				else
+				{
+					GManager.instance.PlaySound("CombiCharge", GManager.instance.Player.transform.position);
+				}
+			}
+		}
+		else if (combiEnable && conboChain > 0)
+		{
+			//
+			//チェイン中でかつ行動してないとき
+
+			combinationCool += Time.deltaTime;
+			if (combinationCool >= 3.5f)
+			{
+				//Debug.Log($"お菓子売り場{conboChain}");
+				combinationCool = 0;
+				conboChain = 0;
+				combiEnable = false;
+				
+			}
+		}
+
+        if (!combiEnable && conboChain == 0)
+        {
+			cCounter.text = (Mathf.Round(status.equipCombination.coolTime - combinationCool)).ToString();
+		}
+
+
+
+		if (status.equipCombination != null && !GManager.instance.isDown && !GManager.instance.onGimmick)
 		{
 			if (status.equipCombination != null && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction19))
 			{
@@ -120,8 +181,14 @@ public class SisterFire : MonoBehaviour
 					SManager.instance.actNow = true;
 					SManager.instance.castNow = false;
 					Combination();
+					cCounter.text = ((int)status.equipCombination.coolTime).ToString();
+					if (cIcon.gameObject.activeSelf)
+					{
+						cIcon.gameObject.SetActive(false);
+					}
+					cSlider.value = 0;
 				}
-				else if (!combiEnable  && combinationCool >= 2.5f && status.equipCombination.useMP <= status.mp)
+				else if (!combiEnable  && combinationCool >= 1f && status.equipCombination.useMP <= status.mp)
 				{
 			//	Debug.Log($"お肉売り場{conboChain}");
 					combinationCool = 0;
@@ -131,9 +198,16 @@ public class SisterFire : MonoBehaviour
 					SManager.instance.castNow = false;
 					SManager.instance.sisStatus.mp -= status.equipCombination.useMP;
 					Combination();
+					cCounter.text = ((int)status.equipCombination.coolTime).ToString();
+					if (cIcon.gameObject.activeSelf)
+					{
+						cIcon.gameObject.SetActive(false);
+					}
+					cSlider.value = 0;
 				}
 			}
 		}
+
     }
 
     // Update is called once per frame
@@ -144,7 +218,7 @@ public class SisterFire : MonoBehaviour
         //	Debug.Log($"判断基準開示{targetType}");
 
         //Debug.lo
-
+		/*
         if (!combiEnable && ((!SManager.instance.actNow) || (SManager.instance.actNow && SManager.instance.castNow)))
         {
 		//	Debug.Log($"野菜売り場");
@@ -165,12 +239,13 @@ public class SisterFire : MonoBehaviour
 
 				combinationCool += Time.fixedDeltaTime;
 				if (combinationCool >= 3.5f)
-				{Debug.Log($"お菓子売り場{conboChain}");
+				{
+				//Debug.Log($"お菓子売り場{conboChain}");
 					combinationCool = 0;
 					conboChain = 0;
 					combiEnable = false;
 				}
-        }
+        }*/
 		if (useMagic)
 		{
 
@@ -197,6 +272,7 @@ public class SisterFire : MonoBehaviour
 				stateJudge = 0;
 				waitCast = 0;
 				coolTime = 0;
+			//	SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(3);
 				SManager.instance.target = null;
 				SManager.instance.castNow = false;
 				isReset = false;
@@ -220,8 +296,7 @@ public class SisterFire : MonoBehaviour
 
 				if (SManager.instance.targetList == null)
 				{
-					//ステート解除
-					//Brainでしてるか確認
+
 				}
 
 					//	targetJudge += Time.fixedDeltaTime;
@@ -241,7 +316,8 @@ public class SisterFire : MonoBehaviour
 
 					if (sister.nowMove == SisterParameter.MoveType.攻撃)
 					{
-						SManager.instance.target = null;
+						//SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(3);
+						//SManager.instance.target = null;
 
 
 						if (/*targetJudge >= sister.targetResetRes ||*/ SManager.instance.target == null)
@@ -330,10 +406,12 @@ public class SisterFire : MonoBehaviour
 							else if (judgeSequence == 2)
 							{
 								AttackAct(sister.secondAttack);
+							//	Debug.Log($"あじゃばー");
 							}
 							else if (judgeSequence == 3)
 							{
 								AttackAct(sister.thirdAttack);
+								
 							}
 							else if (judgeSequence == 4)
 							{
@@ -506,22 +584,22 @@ public class SisterFire : MonoBehaviour
 							{
 
 								RecoverAct(sister.nFirstRecover);
-								Debug.Log($"1{SManager.instance.sisStatus.useMagic}");
+								//Debug.Log($"1{SManager.instance.sisStatus.useMagic}");
 							}
 							else if (HealJudge(sister.nSecondRecover))
 							{
 								RecoverAct(sister.nSecondRecover);
-								Debug.Log("2");
+								//Debug.Log("2");
 							}
 							else if (HealJudge(sister.nThirdRecover))
 							{
 								RecoverAct(sister.nThirdRecover);
-								Debug.Log("3");
+								//Debug.Log("3");
 							}
 							else
 							{
 								SManager.instance.sisStatus.useMagic = null;
-								Debug.Log("4");
+								//Debug.Log("4");
 							}
 
 							healJudge = 0;
@@ -535,7 +613,7 @@ public class SisterFire : MonoBehaviour
 					if (SManager.instance.target != null && SManager.instance.sisStatus.useMagic != null)
 					{
 
-						Debug.Log("げせぬ");
+						//Debug.Log("げせぬ");
 						ActionFire();
 					}
 					}
@@ -689,8 +767,8 @@ public class SisterFire : MonoBehaviour
 
 						if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
 						{
-							kuroko++;
-							Debug.Log($"朝顔{sister.nowMove}");
+							//kuroko++;
+							//Debug.Log($"朝顔{sister.nowMove}");
 
 							AttackStateChange(act);
 						return;
@@ -869,8 +947,9 @@ public class SisterFire : MonoBehaviour
 				targetCanStatus = new List<EnemyBase>();
 
 				//選ぶ敵タイプがすべてと選択されてるなら
-				if ((0b00011111 & condition.percentage) == 0b00011111)
+				if (condition.percentage == 0b00011111)
 				{
+					
 					if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
 					{
 
@@ -883,6 +962,8 @@ public class SisterFire : MonoBehaviour
 					}
 					targetCanList = new List<GameObject>(SManager.instance.targetList);
 					targetCanStatus = new List<EnemyBase>(SManager.instance.targetCondition);
+					
+					
 					SecondTargetJudge(targetCanList, condition, targetCanStatus);
 					//break;
 				}
@@ -892,7 +973,7 @@ public class SisterFire : MonoBehaviour
 					for (int i = 0; i < SManager.instance.targetList.Count; i++)
 					{
 						//test = ;
-						Debug.Log("大根");
+						//Debug.Log("大根");
 
 						if ((condition.percentage & 0b00000001) == 0b00000001)
 						{
@@ -996,8 +1077,9 @@ public class SisterFire : MonoBehaviour
 							}
 						}
 					}
+					SecondTargetJudge(targetCanList, condition, targetCanStatus);
 				}
-				SecondTargetJudge(targetCanList, condition, targetCanStatus);
+				
 				break;
 		　　//-----------------------------------------------------------------------------------------------------
 		}
@@ -1010,8 +1092,10 @@ public class SisterFire : MonoBehaviour
 	/// <param name="condition"></param>
 	public void AttackAct(FireCondition condition)
 	{
-	//	Debug.Log($"重要状態開示{sister.nowMove }");
+		//	Debug.Log($"重要状態開示{sister.nowMove }");
+		//Debug.Log($"asgd{condition.condition}");
 		if (condition.UseMagic == null) {
+			//Debug.Log("ghdks");
 			switch (condition.condition)
 			{
 				case FireCondition.ActJudge.斬撃属性:
@@ -1081,6 +1165,7 @@ public class SisterFire : MonoBehaviour
 					break;
 				//-----------------------------------------------------------------------------------------------------
 				case FireCondition.ActJudge.炎属性:
+					Debug.Log($"rrrr");
 					magicCanList = new List<SisMagic>();
 					for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 					{
@@ -1090,10 +1175,12 @@ public class SisterFire : MonoBehaviour
 							break;
 						}
 					}
+					//Debug.Log($"asgd{magicCanList[0].name}");
 					secondATMagicJudge(magicCanList, condition);
 					break;
 				//-----------------------------------------------------------------------------------------------------
 				case FireCondition.ActJudge.雷属性:
+					//Debug.Log($"ssssss");
 					magicCanList = new List<SisMagic>();
 					for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 					{
@@ -1246,11 +1333,12 @@ public class SisterFire : MonoBehaviour
 				{
 					for (int i = 0; i < SManager.instance.targetList.Count; i++)
 					{
-						if (!SManager.instance.targetCondition[i].status.strong)
+						if (SManager.instance.targetCondition[i].status.strong)
 						{
-							return true;
+							return false;
 						}
 					}
+					return true;
 				}
 				return false;
 			//	break;
@@ -1259,6 +1347,7 @@ public class SisterFire : MonoBehaviour
 				//   Soldier,//陸の雑兵
 					if ((0b00011111 & condition.percentage) == 0b00011111)
 					{
+
 						return true;
 					}
 				//int test;
@@ -1510,7 +1599,7 @@ public class SisterFire : MonoBehaviour
 	public bool HealJudge(RecoverCondition condition)
 	{
 
-		Debug.Log($"回復判断{condition.condition}真なら上{condition.highOrLow}");
+		//Debug.Log($"回復判断{condition.condition}真なら上{condition.highOrLow}");
 		
 		switch (condition.condition)
 		{
@@ -1586,11 +1675,12 @@ public class SisterFire : MonoBehaviour
 			{
 				for (int i = 0; i < SManager.instance.targetList.Count; i++)
 				{
-					if (!SManager.instance.targetCondition[i].status.strong)
+					if (SManager.instance.targetCondition[i].status.strong)
 					{
-						return true;
+						return false;
 					}
 				}
+					return true;
 			}
 			return false;
 			//	break;
@@ -1953,6 +2043,7 @@ public class SisterFire : MonoBehaviour
 		{
 			disEnable = false;
 			waitCast = 0;
+			//SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(3);
 			SManager.instance.target = null;
 		}
 
@@ -1978,8 +2069,11 @@ public class SisterFire : MonoBehaviour
 	/// <param name="vRandom"></param>
 	void MagicUse(int hRandom, int vRandom)
 	{
-	//	Debug.Log($"ハザード{SManager.instance.sisStatus.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
-		bCount += 1;
+		//	Debug.Log($"ハザード{SManager.instance.sisStatus.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
+		if (!delayNow)
+		{
+			bCount += 1;
+		}
 		Vector3 goFire = sb.firePosition.position;
 		if (bCount == 1)
 		{
@@ -2020,13 +2114,21 @@ public class SisterFire : MonoBehaviour
 			}
 			//	xRandom = RandomValue(RandomValue(-random,0),RandomValue(0, random));
 			//	yRandom = RandomValue(RandomValue(-random, 0), RandomValue(0, random));
+
 			goFire = new Vector3(sb.firePosition.position.x + xRandom, sb.firePosition.position.y + yRandom, 0);//銃口から
 
 		}
 
-        //Debug.Log($"魔法の名前5{SManager.instance.sisStatus.useMagic.hiraganaName}");
-    //    MyInstantiate(SManager.instance.sisStatus.useMagic.effects, goFire, Quaternion.identity).Forget();//.Result;//発生位置をPlayer
-		Addressables.InstantiateAsync(SManager.instance.sisStatus.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.sisStatus.useMagic.startRotation));																								
+		//Debug.Log($"魔法の名前5{SManager.instance.sisStatus.useMagic.hiraganaName}");
+		//    MyInstantiate(SManager.instance.sisStatus.useMagic.effects, goFire, Quaternion.identity).Forget();//.Result;//発生位置をPlayer
+		if (SManager.instance.sisStatus.useMagic.delayTime == 0 || bCount == 1)
+		{
+			Addressables.InstantiateAsync(SManager.instance.sisStatus.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.sisStatus.useMagic.startRotation));
+		}
+        else if(bCount > 1 && !delayNow)
+        {
+			DelayInstantiate(SManager.instance.sisStatus.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.sisStatus.useMagic.startRotation)).Forget();
+        }
 		if (bCount >= SManager.instance.sisStatus.useMagic.bulletNumber)
 		{
 			//Debug.Log($"テンペスト{SManager.instance.sisStatus.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
@@ -2038,6 +2140,7 @@ public class SisterFire : MonoBehaviour
 			SManager.instance.actNow = false;
 			//SManager.instance.target = null;
 			SManager.instance.sisStatus.useMagic = null;
+			SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(3);
 		}
 		//	bCount += 1;
 	}
@@ -2068,6 +2171,7 @@ public class SisterFire : MonoBehaviour
 
 		castSound = "normalCast";
 		soundStart = 1;
+		sb.ATFlip();
 	}
 
 	/// <summary>
@@ -2094,8 +2198,11 @@ public class SisterFire : MonoBehaviour
 	void SecondTargetJudge(List<GameObject> targetList, AttackJudge condition, List<EnemyBase> statusList)
 	{
 
+	//	Debug.Log($"sddf{targetCanList[0].name}");
+	//	Debug.Log($"sdgs{targetList[0].name}");
 
-		if (targetList.Count == 0)
+
+		if (targetList.Count == 0 || targetList == null)
 		{
 			return;
 		}
@@ -2349,11 +2456,15 @@ public class SisterFire : MonoBehaviour
 						}
 					}
 				}
+				
 				SManager.instance.target = targetList[selectNumber];
+                SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(2);
 			}
             else
             {
+				
 				SManager.instance.target = targetList[0];
+				SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(2);
 			}
 			targetCanList = null;
 		　　targetCanStatus = null;
@@ -2383,9 +2494,9 @@ public class SisterFire : MonoBehaviour
 				{
 					for (int i = 0; i < magicList.Count; i++)
 					{
-						if (!magicList[i].isBlow)
+						if (!magicList[i].isBlow && !magicList[i].cBlow)
 						{
-							Debug.Log("削除");
+							//Debug.Log("削除");
 							removeNumber.Add(i);
 						}
 					}
@@ -2478,7 +2589,7 @@ public class SisterFire : MonoBehaviour
 
 		if (magicList.Count == 0)
 		{
-		//	Debug.Log("帰れ");
+			Debug.Log("帰れ");
 			return;
 		}
 		else
@@ -2647,6 +2758,7 @@ public class SisterFire : MonoBehaviour
 		if (condition == SupportCondition.MagicJudge.攻撃ステートに)
 		{
 		//	targetJudge = sister.targetResetRes;
+
 			SManager.instance.target = null;
 			sister.nowMove = SisterParameter.MoveType.攻撃;
 		}
@@ -2665,7 +2777,8 @@ public class SisterFire : MonoBehaviour
 	{
 		if (condition == RecoverCondition.MagicJudge.攻撃ステートに)
 		{
-		//	targetJudge = sister.targetResetRes;
+			//	targetJudge = sister.targetResetRes;
+			SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(3);
 			SManager.instance.target = null;
 			sister.nowMove = SisterParameter.MoveType.攻撃;
 		}
@@ -2715,6 +2828,7 @@ public class SisterFire : MonoBehaviour
 
         if (status.equipCombination.isTargeting)
         {
+			SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(3);
 			SManager.instance.target = null;
 
 		/*	for (int i = 0; i >= status.equipCombination.chainNumber || SManager.instance.target != null; i++)
@@ -2739,7 +2853,7 @@ public class SisterFire : MonoBehaviour
 		if (SManager.instance.target != null || !status.equipCombination.isTargeting)
 		{
 			conboChain++;
-			Debug.Log($"お肉売り場{conboChain}");
+			//Debug.Log($"お肉売り場{conboChain}");
 			if (conboChain >= status.equipCombination.chainNumber)
 			{
 				conboChain = 0;
@@ -2749,10 +2863,20 @@ public class SisterFire : MonoBehaviour
 			{
 				combiEnable = true;
 			}
+
 			SManager.instance.target = null;
 			SManager.instance.actNow = false;
 			SManager.instance.target = null;
 		}
+	}
+
+
+	 async UniTaskVoid DelayInstantiate(object key, Vector3 position, Quaternion rotation, Transform parent = null, bool trackHandle = true)
+    {
+		delayNow = true;
+		await UniTask.Delay(TimeSpan.FromSeconds(SManager.instance.sisStatus.useMagic.delayTime));
+		await Addressables.InstantiateAsync(key,position,rotation,parent);
+		delayNow = false;
 	}
 
 }

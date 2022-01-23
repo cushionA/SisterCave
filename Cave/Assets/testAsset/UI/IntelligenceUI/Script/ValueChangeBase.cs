@@ -43,11 +43,745 @@ public  class ValueChangeBase : MonoBehaviour
     protected bool boolSave;
 
 
+
     // Start is called before the first frame update
-    virtual protected void Start()
+    public void NumberSet()
     {
-        
+        int s = MainUI.instance.settingNumber;
+        int e = MainUI.instance.editNumber;
+        //ドロップダウンなら
+        //  0以上3以下
+        if (fase >= 0 && fase < 3)
+        {
+            //ドロップダウンが何を参照してるかでUIのドロップダウンのやつを決める
+            //objListからドロップダウンを引きずりだす
+            //あとオブジェクトリストとSとeでうまいことSetActiveを操る。
+            if (s == 1)
+            {
+                AttackJudge editor = GetTarget(e);
+             //   Dropdown dd = objList[0].GetComponent<Dropdown>();
+                //標的
+                //ちょっと複雑すぎる
+                if (fase == 0)
+                {
+                    //タイプゼロは五個ある
+
+
+                    if (editor.condition == AttackJudge.TargetJudge.敵タイプ)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.condition == AttackJudge.TargetJudge.プレイヤーのHPが規定値に達した際)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.condition == AttackJudge.TargetJudge.プレイヤーのMPが規定値に達した際)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.condition == AttackJudge.TargetJudge.自分のMPが規定値に達した際)
+                    {
+                        numberSave = 3;
+                    }
+                    else if (editor.condition == AttackJudge.TargetJudge.プレイヤーが状態異常にかかった時)
+                    {
+                        numberSave = 4;
+                    }
+                    else if (editor.condition == AttackJudge.TargetJudge.強敵の存在)
+                    {
+                        if (editor.highOrLow)
+                        {
+                            numberSave = 5;
+                        }
+                        else
+                        {
+                            numberSave = 6;
+                        }
+                    }
+                    else if (editor.condition == AttackJudge.TargetJudge.状態異常にかかってる敵)
+                    {
+                        numberSave = 7;
+                    }
+                    else if (editor.condition == AttackJudge.TargetJudge.かかってない支援がある)
+                    {
+                        
+                        numberSave = 8;
+                    }
+                    else if (editor.condition == AttackJudge.TargetJudge.指定なし)
+                    {
+                        numberSave = 9;
+                    }
+
+                }
+                else if (fase == 1)
+                {
+                    if (editor.wp == AttackJudge.WeakPoint.斬撃属性)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.wp == AttackJudge.WeakPoint.刺突属性)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.wp == AttackJudge.WeakPoint.打撃属性)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.wp == AttackJudge.WeakPoint.聖属性)
+                    {
+                        numberSave = 3;
+                    }
+                    else if (editor.wp == AttackJudge.WeakPoint.闇属性)
+                    {
+                        numberSave = 4;
+                    }
+                    else if (editor.wp == AttackJudge.WeakPoint.炎属性)
+                    {
+                        numberSave = 5;
+                    }
+                    else if (editor.wp == AttackJudge.WeakPoint.雷属性)
+                    {
+                        numberSave = 6;
+                    }
+                    else if (editor.wp == AttackJudge.WeakPoint.毒属性)
+                    {
+                        numberSave = 7;
+                    }
+                    else if (editor.wp == AttackJudge.WeakPoint.指定なし)
+                    {
+                        numberSave = 8;
+                    }
+                }
+                else if (fase == 2)
+                {
+                    if (editor.nextCondition == AttackJudge.AdditionalJudge.敵のHP)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 0;
+                        }
+                        else
+                        {
+                            numberSave = 1;
+                        }
+                    }
+                    else if (editor.nextCondition == AttackJudge.AdditionalJudge.敵の距離)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 2;
+                        }
+                        else
+                        {
+                            numberSave = 3;
+                        }
+                    }
+                    else if (editor.nextCondition == AttackJudge.AdditionalJudge.敵の高度)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 4;
+                        }
+                        else
+                        {
+                            numberSave = 5;
+                        }
+                    }
+                    else if (editor.nextCondition == AttackJudge.AdditionalJudge.敵の攻撃力)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 6;
+                        }
+                        else
+                        {
+                            numberSave = 7;
+                        }
+                    }
+                    else if (editor.nextCondition == AttackJudge.AdditionalJudge.敵の防御力)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 8;
+                        }
+                        else
+                        {
+                            numberSave = 9;
+                        }
+                    }
+                    else if (editor.nextCondition == AttackJudge.AdditionalJudge.指定なし)
+                    {
+                        numberSave = 10;
+                    }
+
+                }
+            }
+            //攻撃
+            else if (s == 2)
+            {
+                FireCondition editor = GetAttack(e);
+           //     Dropdown dd = objList[1].GetComponent<Dropdown>();
+                //ちょっと複雑すぎる
+                if (fase == 0)
+                {
+                    if (editor.condition == FireCondition.ActJudge.斬撃属性)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.刺突属性)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.打撃属性)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.聖属性)
+                    {
+                        numberSave = 3;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.闇属性)
+                    {
+                        numberSave = 4;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.炎属性)
+                    {
+                        numberSave = 5;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.雷属性)
+                    {
+                        numberSave = 6;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.毒属性)
+                    {
+                        numberSave = 7;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.移動速度低下攻撃)
+                    {
+                        numberSave = 8;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.攻撃力低下攻撃)
+                    {
+                        numberSave = 9;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.防御力低下攻撃)
+                    {
+                        numberSave = 10;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.属性指定なし)
+                    {
+                        numberSave = 11;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.支援行動に移行)
+                    {
+                        numberSave = 12;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.回復行動に移行)
+                    {
+                        numberSave = 13;
+                    }
+                    else if (editor.condition == FireCondition.ActJudge.なにもしない)
+                    {
+                        numberSave = 14;
+                    }
+
+                }
+                else if (fase == 1)
+                {
+                    if (editor.firstCondition == FireCondition.FirstCondition.敵を吹き飛ばす)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.firstCondition == FireCondition.FirstCondition.貫通する)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.firstCondition == FireCondition.FirstCondition.設置攻撃)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.firstCondition == FireCondition.FirstCondition.範囲攻撃)
+                    {
+                        numberSave = 3;
+                    }
+                    else if (editor.firstCondition == FireCondition.FirstCondition.追尾する)
+                    {
+                        numberSave = 4;
+                    }
+                    else if (editor.firstCondition == FireCondition.FirstCondition.サーチ攻撃)
+                    {
+                        numberSave = 5;
+                    }
+                    else if (editor.firstCondition == FireCondition.FirstCondition.指定なし)
+                    {
+                        numberSave = 6;
+                    }
+                }
+                else if (fase == 2)
+                {
+                    if (editor.nextCondition == FireCondition.AdditionalCondition.発射数)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 0;
+                        }
+                        else
+                        {
+                            numberSave = 1;
+                        }
+                    }
+                    else if (editor.nextCondition == FireCondition.AdditionalCondition.詠唱時間)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 2;
+                        }
+                        else
+                        {
+                            numberSave = 3;
+                        }
+                    }
+                    else if (editor.nextCondition == FireCondition.AdditionalCondition.攻撃力)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 4;
+                        }
+                        else
+                        {
+                            numberSave = 5;
+                        }
+                    }
+                    else if (editor.nextCondition == FireCondition.AdditionalCondition.削り値)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 6;
+                        }
+                        else
+                        {
+                            numberSave = 7;
+                        }
+                    }
+                    else if (editor.nextCondition == FireCondition.AdditionalCondition.MP使用量)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 8;
+                        }
+                        else
+                        {
+                            numberSave = 9;
+                        }
+                    }
+                    else if (editor.nextCondition == FireCondition.AdditionalCondition.指定なし)
+                    {
+                        numberSave = 10;
+                    }
+
+
+                }
+            }
+            else if (s == 3)
+            {
+                SupportCondition editor = GetSupport(e);
+                //これは最初のドロップダウンだけ
+               // Dropdown dd = objList[4].GetComponent<Dropdown>();
+                if (fase == 0)
+                {
+                    if (editor.sCondition == SupportCondition.SupportStatus.敵タイプ)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.sCondition == SupportCondition.SupportStatus.プレイヤーの体力が規定値の時)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.sCondition == SupportCondition.SupportStatus.プレイヤーのMPが規定値に達した際)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.sCondition == SupportCondition.SupportStatus.自分のMPが規定値に達した際)
+                    {
+                        numberSave = 3;
+                    }
+                    else if (editor.sCondition == SupportCondition.SupportStatus.プレイヤーが状態異常にかかった時)
+                    {
+                        numberSave = 4;
+                    }
+                    else if (editor.sCondition == SupportCondition.SupportStatus.強敵がいるかどうか)
+                    {
+                        if (editor.highOrLow)
+                        {
+                            numberSave = 5;
+                        }
+                        else
+                        {
+                            numberSave = 6;
+                        }
+
+                    }
+                    else if (editor.sCondition == SupportCondition.SupportStatus.任意の支援が切れているとき)
+                    {
+                        numberSave = 7;
+                    }
+
+                    else if (editor.sCondition == SupportCondition.SupportStatus.指定なし)
+                    {
+                        numberSave = 8;
+                    }
+
+                }
+                else if (fase == 1)
+                {
+                    if (editor.needSupport == SisMagic.SupportType.攻撃強化)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.防御強化)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.エンチャント)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.アクション強化)
+                    {
+                        numberSave = 3;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.バリア)
+                    {
+                        numberSave = 4;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.リジェネ)
+                    {
+                        numberSave = 5;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.なし)
+                    {
+                        numberSave = 6;
+                    }
+                }
+
+            }
+            else if (s == 4)
+            {
+                SupportCondition editor = GetSupport(e);
+              //  Dropdown dd = objList[2].GetComponent<Dropdown>();
+                //ちょっと複雑すぎる
+                if (fase == 0)
+                {
+                    if (editor.ActBase == SupportCondition.MagicJudge.各種支援魔法)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.ActBase == SupportCondition.MagicJudge.攻撃ステートに)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.ActBase == SupportCondition.MagicJudge.回復ステートに)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.ActBase == SupportCondition.MagicJudge.なにもしない)
+                    {
+                        numberSave = 3;
+                    }
+                }
+                else if (fase == 1)
+                {
+                    if (editor.useSupport == SisMagic.SupportType.攻撃強化)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.防御強化)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.エンチャント)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.アクション強化)
+                    {
+                        numberSave = 3;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.バリア)
+                    {
+                        numberSave = 4;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.リジェネ)
+                    {
+                        numberSave = 5;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.なし)
+                    {
+                        numberSave = 6;
+                    }
+                }
+                else if (fase == 2)
+                {
+                    if (editor.nextCondition == SupportCondition.AdditionalJudge.詠唱時間)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 0;
+                        }
+                        else
+                        {
+                            numberSave = 1;
+                        }
+                    }
+                    else if (editor.nextCondition == SupportCondition.AdditionalJudge.持続効果時間)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 2;
+                        }
+                        else
+                        {
+                            numberSave = 3;
+                        }
+                    }
+                    else if (editor.nextCondition == SupportCondition.AdditionalJudge.MP使用量)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 4;
+                        }
+                        else
+                        {
+                            numberSave = 5;
+                        }
+                    }
+                    else if (editor.nextCondition == SupportCondition.AdditionalJudge.強化倍率)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 6;
+                        }
+                        else
+                        {
+                            numberSave = 7;
+                        }
+                    }
+                    else if (editor.nextCondition == SupportCondition.AdditionalJudge.指定なし)
+                    {
+                        numberSave = 8;
+                    }
+
+                }
+            }
+            else if (s == 5)
+            {
+                RecoverCondition editor = GetRecover(e);
+                //これは最初のドロップダウンだけ
+            //    Dropdown dd = objList[4].GetComponent<Dropdown>();
+                if (fase == 0)
+                {
+                    if (editor.condition == RecoverCondition.RecoverStatus.敵タイプ)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.condition == RecoverCondition.RecoverStatus.プレイヤーのHPが規定値の時)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.condition == RecoverCondition.RecoverStatus.プレイヤーのMPが規定値に達した際)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.condition == RecoverCondition.RecoverStatus.自分のMPが規定値に達した際)
+                    {
+                        numberSave = 3;
+                    }
+                    else if (editor.condition == RecoverCondition.RecoverStatus.プレイヤーが状態異常にかかった時)
+                    {
+                        numberSave = 4;
+                    }
+                    else if (editor.condition == RecoverCondition.RecoverStatus.強敵がいるかどうか)
+                    {
+                        if (editor.highOrLow)
+                        {
+                            numberSave = 5;
+                        }
+                        else
+                        {
+                            numberSave = 6;
+                        }
+
+                    }
+                    else if (editor.condition == RecoverCondition.RecoverStatus.任意の支援が切れているとき)
+                    {
+                        numberSave = 7;
+                    }
+
+                    else if (editor.condition == RecoverCondition.RecoverStatus.指定なし)
+                    {
+                        numberSave = 8;
+                    }
+
+                }
+                else if (fase == 1)
+                {
+                    if (editor.needSupport == SisMagic.SupportType.攻撃強化)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.防御強化)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.エンチャント)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.アクション強化)
+                    {
+                        numberSave = 3;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.バリア)
+                    {
+                        numberSave = 4;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.リジェネ)
+                    {
+                        numberSave = 5;
+                    }
+                    else if (editor.needSupport == SisMagic.SupportType.なし)
+                    {
+                        numberSave = 6;
+                    }
+                }
+            }
+            else
+            {
+                RecoverCondition editor = GetRecover(e);
+               // Dropdown dd = objList[3].GetComponent<Dropdown>();
+                //ちょっと複雑すぎる
+                if (fase == 0)
+                {
+                    if (editor.ActBase == RecoverCondition.MagicJudge.治癒魔法)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.ActBase == RecoverCondition.MagicJudge.攻撃ステートに)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.ActBase == RecoverCondition.MagicJudge.支援ステートに)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.ActBase == RecoverCondition.MagicJudge.なにもしない)
+                    {
+                        numberSave = 3;
+                    }
+                }
+                else if (fase == 1)
+                {
+                    if (editor.useSupport == SisMagic.SupportType.攻撃強化)
+                    {
+                        numberSave = 0;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.防御強化)
+                    {
+                        numberSave = 1;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.エンチャント)
+                    {
+                        numberSave = 2;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.アクション強化)
+                    {
+                        numberSave = 3;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.バリア)
+                    {
+                        numberSave = 4;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.リジェネ)
+                    {
+                        numberSave = 5;
+                    }
+                    else if (editor.useSupport == SisMagic.SupportType.なし)
+                    {
+                        numberSave = 6;
+                    }
+                }
+                else if (fase == 2)
+                {
+                    if (editor.nextCondition == RecoverCondition.AdditionalJudge.詠唱時間)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 0;
+                        }
+                        else
+                        {
+                            numberSave = 1;
+                        }
+                    }
+                    else if (editor.nextCondition == RecoverCondition.AdditionalJudge.持続効果時間)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 2;
+                        }
+                        else
+                        {
+                            numberSave = 3;
+                        }
+                    }
+                    else if (editor.nextCondition == RecoverCondition.AdditionalJudge.MP使用量)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 4;
+                        }
+                        else
+                        {
+                            numberSave = 5;
+                        }
+                    }
+                    else if (editor.nextCondition == RecoverCondition.AdditionalJudge.回復量)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 6;
+                        }
+                        else
+                        {
+                            numberSave = 7;
+                        }
+                    }
+                    else if (editor.nextCondition == RecoverCondition.AdditionalJudge.リジェネ回復量)
+                    {
+                        if (editor.upDown)
+                        {
+                            numberSave = 8;
+                        }
+                        else
+                        {
+                            numberSave = 9;
+                        }
+                    }
+                    else if (editor.nextCondition == RecoverCondition.AdditionalJudge.状態異常回復)
+                    {
+                        numberSave = 10;
+                    }
+                    else if (editor.nextCondition == RecoverCondition.AdditionalJudge.指定なし)
+                    {
+                        numberSave = 11;
+                    }
+                }
+            }
+
+        }
     }
+
+
 
     // Update is called once per frame
 
@@ -56,7 +790,7 @@ public  class ValueChangeBase : MonoBehaviour
     /// </summary>
     public void ApplyValue()
     {
-        SisterParameter sis = MainUI.instance.editParameter;
+        //Debug.Log("sadfkgj");
         int s = MainUI.instance.settingNumber;
         int e = MainUI.instance.editNumber;
         if (s == 1)
@@ -66,23 +800,23 @@ public  class ValueChangeBase : MonoBehaviour
             #region
             if (e == 1)
             {
-                editJudge = sis.firstTarget;
+                editJudge = MainUI.instance.editParameter.firstTarget;
             }
             else if (e == 2)
             {
-                editJudge = sis.secondTarget;
+                editJudge = MainUI.instance.editParameter.secondTarget;
             }
             else if (e == 3)
             {
-                editJudge = sis.thirdTarget;
+                editJudge = MainUI.instance.editParameter.thirdTarget;
             }
             else if (e == 4)
             {
-                editJudge = sis.forthTarget;
+                editJudge = MainUI.instance.editParameter.forthTarget;
             }
             else
             {
-                editJudge = sis.fiveTarget;
+                editJudge = MainUI.instance.editParameter.fiveTarget;
             }
             #endregion
 
@@ -128,6 +862,7 @@ public  class ValueChangeBase : MonoBehaviour
                 }
                 else if (numberSave == 8)
                 {
+                //    Debug.Log($"ebihurai{gameObject.name}");
                     editJudge.condition = AttackJudge.TargetJudge.かかってない支援がある;
                 }
                 else if (numberSave == 9)
@@ -238,27 +973,33 @@ public  class ValueChangeBase : MonoBehaviour
             }
             #endregion
 
+
             //設定
             #region
             if (e == 1)
             {
-                sis.firstTarget = editJudge;
+                MainUI.instance.editParameter.firstTarget = editJudge;
+           //     MainUI.instance.editParameter.firstAttack.UseMagic = null;
             }
             else if (e == 2)
             {
-                sis.secondTarget = editJudge;
+                MainUI.instance.editParameter.secondTarget = editJudge;
+             //   MainUI.instance.editParameter.secondAttack.UseMagic = null;
             }
             else if (e == 3)
             {
-                sis.thirdTarget = editJudge;
+                MainUI.instance.editParameter.thirdTarget = editJudge;
+             //   MainUI.instance.editParameter.thirdAttack.UseMagic = null;
             }
             else if (e == 4)
             {
-                sis.forthTarget = editJudge;
+                MainUI.instance.editParameter.forthTarget = editJudge;
+              //  MainUI.instance.editParameter.fourthAttack.UseMagic = null;
             }
             else if (e == 5)
             {
-                sis.fiveTarget = editJudge;
+                MainUI.instance.editParameter.fiveTarget = editJudge;
+               // MainUI.instance.editParameter.fiveAttack.UseMagic = null;
             }
             #endregion
         }
@@ -270,27 +1011,27 @@ public  class ValueChangeBase : MonoBehaviour
             #region
             if (e == 1)
             {
-                editAT = sis.firstAttack;
+                editAT = MainUI.instance.editParameter.firstAttack;
             }
             else if (e == 2)
             {
-                editAT = sis.secondAttack;
+                editAT = MainUI.instance.editParameter.secondAttack;
             }
             else if (e == 3)
             {
-                editAT = sis.thirdAttack;
+                editAT = MainUI.instance.editParameter.thirdAttack;
             }
             else if (e == 4)
             {
-                editAT = sis.fourthAttack;
+                editAT = MainUI.instance.editParameter.fourthAttack;
             }
             else if (e == 5)
             {
-                editAT = sis.fiveAttack;
+                editAT = MainUI.instance.editParameter.fiveAttack;
             }
             else
             {
-                editAT = sis.nonAttack;
+                editAT = MainUI.instance.editParameter.nonAttack;
             }
             #endregion
             //行動
@@ -365,7 +1106,7 @@ public  class ValueChangeBase : MonoBehaviour
             }
             else if (fase == 1)
             {
-                //  sis.firstTarget.wp = saveWeak;
+                //  MainUI.instance.editParameter.firstTarget.wp = saveWeak;
 
                 if (numberSave == 0)
                 {
@@ -451,30 +1192,32 @@ public  class ValueChangeBase : MonoBehaviour
                 }  
             }
             #endregion
+            //UseMagicをなしに
+            editAT.UseMagic = null;
             #region
             if (e == 1)
             {
-                sis.firstAttack = editAT;
+                MainUI.instance.editParameter.firstAttack = editAT;
             }
             else if (e == 2)
             {
-                sis.secondAttack = editAT;
+                MainUI.instance.editParameter.secondAttack = editAT;
             }
             else if (e == 3)
             {
-                sis.thirdAttack = editAT;
+                MainUI.instance.editParameter.thirdAttack = editAT;
             }
             else if (e == 4)
             {
-                sis.fourthAttack = editAT;
+                MainUI.instance.editParameter.fourthAttack = editAT;
             }
             else if (e == 5)
             {
-                sis.fiveAttack = editAT;
+                MainUI.instance.editParameter.fiveAttack = editAT;
             }
             else if (e == 6)
             {
-                sis.nonAttack = editAT;
+                MainUI.instance.editParameter.nonAttack = editAT;
             }
             #endregion
         }
@@ -486,27 +1229,27 @@ public  class ValueChangeBase : MonoBehaviour
             #region
             if (e == 1)
             {
-                editSP = sis.firstPlan;
+                editSP = MainUI.instance.editParameter.firstPlan;
             }
             else if (e == 2)
             {
-                editSP = sis.secondPlan;
+                editSP = MainUI.instance.editParameter.secondPlan;
             }
             else if (e == 3)
             {
-                editSP = sis.thirdPlan;
+                editSP = MainUI.instance.editParameter.thirdPlan;
             }
             else if (e == 4)
             {
-                editSP = sis.forthPlan;
+                editSP = MainUI.instance.editParameter.forthPlan;
             }
             else if (e == 5)
             {
-                editSP = sis.fivePlan;
+                editSP = MainUI.instance.editParameter.fivePlan;
             }
             else
             {
-                editSP = sis.sixPlan;
+                editSP = MainUI.instance.editParameter.sixPlan;
             }
             #endregion
             if (s == 3)
@@ -542,12 +1285,12 @@ public  class ValueChangeBase : MonoBehaviour
                     else if (numberSave == 5)
                     {
                         editSP.sCondition = SupportCondition.SupportStatus.強敵がいるかどうか;
-                        editSP.highOrLow = false;
+                        editSP.highOrLow = true;
                     }
                     else if (numberSave == 6)
                     {
                         editSP.sCondition = SupportCondition.SupportStatus.強敵がいるかどうか;
-                        editSP.highOrLow = true;
+                        editSP.highOrLow = false;
                     }
                     else if (numberSave == 7)
                     {
@@ -703,31 +1446,33 @@ public  class ValueChangeBase : MonoBehaviour
                 #endregion
 
             }
+            //UseMagicをなしに
+            editSP.UseMagic = null;
             //設定
             #region
             if (e == 1)
             {
-                sis.firstPlan = editSP;
+                MainUI.instance.editParameter.firstPlan = editSP;
             }
             else if (e == 2)
             {
-                sis.secondPlan = editSP;
+                MainUI.instance.editParameter.secondPlan = editSP;
             }
             else if (e == 3)
             {
-                sis.thirdPlan = editSP;
+                MainUI.instance.editParameter.thirdPlan = editSP;
             }
             else if (e == 4)
             {
-                sis.forthPlan = editSP;
+                MainUI.instance.editParameter.forthPlan = editSP;
             }
             else if (e == 5)
             {
-                sis.fivePlan = editSP;
+                MainUI.instance.editParameter.fivePlan = editSP;
             }
             else
             {
-                sis.sixPlan = editSP;
+                MainUI.instance.editParameter.sixPlan = editSP;
             }
             #endregion
         }
@@ -739,29 +1484,47 @@ public  class ValueChangeBase : MonoBehaviour
             RecoverCondition editRC;
             //設定
             #region
-            if (e == 1)
+            if (!MainUI.instance.isAH)
             {
-                editRC = sis.firstRecover;
-            }
-            else if (e == 2)
-            {
-                editRC = sis.secondRecover;
-            }
-            else if (e == 3)
-            {
-                editRC = sis.thirdRecover;
-            }
-            else if (e == 4)
-            {
-                editRC = sis.forthRecover;
-            }
-            else if (e == 5)
-            {
-                editRC = sis.fiveRecover;
+                if (e == 1)
+                {
+                    editRC = MainUI.instance.editParameter.firstRecover;
+                }
+                else if (e == 2)
+                {
+                    editRC = MainUI.instance.editParameter.secondRecover;
+                }
+                else if (e == 3)
+                {
+                    editRC = MainUI.instance.editParameter.thirdRecover;
+                }
+                else if (e == 4)
+                {
+                    editRC = MainUI.instance.editParameter.forthRecover;
+                }
+                else if (e == 5)
+                {
+                    editRC = MainUI.instance.editParameter.fiveRecover;
+                }
+                else
+                {
+                    editRC = MainUI.instance.editParameter.nonRecover;
+                }
             }
             else
             {
-                editRC = sis.nonRecover;
+                if (e == 1)
+                {
+                    editRC = MainUI.instance.editParameter.nFirstRecover;
+                }
+                else if (e == 2)
+                {
+                    editRC = MainUI.instance.editParameter.nSecondRecover;
+                }
+                else
+                {
+                    editRC = MainUI.instance.editParameter.nThirdRecover;
+                }
             }
             #endregion
             if (s == 5)
@@ -797,12 +1560,12 @@ public  class ValueChangeBase : MonoBehaviour
                     else if (numberSave == 5)
                     {
                         editRC.condition = RecoverCondition.RecoverStatus.強敵がいるかどうか;
-                        editRC.highOrLow = false;
+                        editRC.highOrLow = true;
                     }
                     else if (numberSave == 6)
                     {
                         editRC.condition = RecoverCondition.RecoverStatus.強敵がいるかどうか;
-                        editRC.highOrLow = true;
+                        editRC.highOrLow = false;
                     }
                     else if (numberSave == 7)
                     {
@@ -982,42 +1745,196 @@ public  class ValueChangeBase : MonoBehaviour
 
             }
             //設定
+
+            //UseMagicをなしに
+            editRC.UseMagic = null;
+
             #region
-            if (e == 1)
+            if (!MainUI.instance.isAH)
             {
-                sis.firstRecover = editRC;
-            }
-            else if (e == 2)
-            {
-                sis.secondRecover = editRC;
-            }
-            else if (e == 3)
-            {
-                sis.thirdRecover = editRC;
-            }
-            else if (e == 4)
-            {
-                sis.forthRecover = editRC;
-            }
-            else if (e == 5)
-            {
-                sis.fiveRecover = editRC;
+                if (e == 1)
+                {
+                    MainUI.instance.editParameter.firstRecover = editRC;
+                }
+                else if (e == 2)
+                {
+                    MainUI.instance.editParameter.secondRecover = editRC;
+                }
+                else if (e == 3)
+                {
+                    MainUI.instance.editParameter.thirdRecover = editRC;
+                }
+                else if (e == 4)
+                {
+                    MainUI.instance.editParameter.forthRecover = editRC;
+                }
+                else if (e == 5)
+                {
+                    MainUI.instance.editParameter.fiveRecover = editRC;
+                }
+                else
+                {
+                    MainUI.instance.editParameter.nonRecover = editRC;
+                }
             }
             else
             {
-                sis.nonRecover = editRC;
-            } 
+                if (e == 1)
+                {
+                    MainUI.instance.editParameter.nFirstRecover = editRC;
+                }
+                else if (e == 2)
+                {
+                    MainUI.instance.editParameter.nSecondRecover = editRC;
+                }
+                else
+                {
+                    MainUI.instance.editParameter.nThirdRecover = editRC;
+                }
+            }
             #endregion
         }
 
 
-
-        MainUI.instance.editParameter = sis;
+        MainUI.instance.isSave = false;
+        //MainUI.instance.editParameter = sis;
     }
 
-   //abstract public void ValueSet(ref int valueInt,ref bool valueBool) ;
+    //abstract public void ValueSet(ref int valueInt,ref bool valueBool) ;
 
 
+    public void EditStart()
+    {
+        MainUI.instance.editNow = true;
+    }
+
+    public void EditEnd()
+    {
+        MainUI.instance.editNow = false;
+    }
 
 
+    AttackJudge GetTarget(int e)
+    {
+        if (e == 1)
+        {
+            return MainUI.instance.editParameter.firstTarget;
+        }
+        else if (e == 2)
+        {
+            return MainUI.instance.editParameter.secondTarget;
+        }
+        else if (e == 3)
+        {
+            return MainUI.instance.editParameter.thirdTarget;
+        }
+        else if (e == 4)
+        {
+            return MainUI.instance.editParameter.forthTarget;
+        }
+        else
+        {
+            return MainUI.instance.editParameter.fiveTarget;
+        }
+    }
+    FireCondition GetAttack(int e)
+    {
+        if (e == 1)
+        {
+            return MainUI.instance.editParameter.firstAttack;
+        }
+        else if (e == 2)
+        {
+            return MainUI.instance.editParameter.secondAttack;
+        }
+        else if (e == 3)
+        {
+            return MainUI.instance.editParameter.thirdAttack;
+        }
+        else if (e == 4)
+        {
+            return MainUI.instance.editParameter.fourthAttack;
+        }
+        else if (e == 5)
+        {
+            return MainUI.instance.editParameter.fiveAttack;
+        }
+        else
+        {
+            return MainUI.instance.editParameter.nonAttack;
+        }
+    }
+
+    SupportCondition GetSupport(int e)
+    {
+        if (e == 1)
+        {
+            return MainUI.instance.editParameter.firstPlan;
+        }
+        else if (e == 2)
+        {
+            return MainUI.instance.editParameter.secondPlan;
+        }
+        else if (e == 3)
+        {
+            return MainUI.instance.editParameter.thirdPlan;
+        }
+        else if (e == 4)
+        {
+            return MainUI.instance.editParameter.forthPlan;
+        }
+        else if (e == 5)
+        {
+            return MainUI.instance.editParameter.fivePlan;
+        }
+        else
+        {
+            return MainUI.instance.editParameter.sixPlan;
+        }
+    }
+    RecoverCondition GetRecover(int e)
+    {
+        if (!MainUI.instance.isAH)
+        {
+            if (e == 1)
+            {
+                return MainUI.instance.editParameter.firstRecover;
+            }
+            else if (e == 2)
+            {
+                return MainUI.instance.editParameter.secondRecover;
+            }
+            else if (e == 3)
+            {
+                return MainUI.instance.editParameter.thirdRecover;
+            }
+            else if (e == 4)
+            {
+                return MainUI.instance.editParameter.forthRecover;
+            }
+            else if (e == 5)
+            {
+                return MainUI.instance.editParameter.fiveRecover;
+            }
+            else
+            {
+                return MainUI.instance.editParameter.nonRecover;
+            }
+        }
+        else
+        {
+            if (e == 1)
+            {
+                return MainUI.instance.editParameter.nFirstRecover;
+            }
+            else if (e == 2)
+            {
+                return MainUI.instance.editParameter.nSecondRecover;
+            }
+            else
+            {
+                return MainUI.instance.editParameter.nThirdRecover;
+            }
+        }
+    }
 }

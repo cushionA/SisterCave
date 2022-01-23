@@ -6,7 +6,7 @@ public class Porter : EnemyBase
 {
 
     float attackChanceTime;//UŒ‚ŠÔŠu
-    [SerializeField] Material myWing;
+    //[SerializeField] Material myWing;
     bool isChange;
     // Start is called before the first frame update
     int take;
@@ -32,11 +32,18 @@ public class Porter : EnemyBase
 
             attackChanceTime += Time.fixedDeltaTime;
 
+
                 if (attackChanceTime >= 6)
                 {
                     if (!isAttack)
                     {
-                    if((ground == EnemyStatus.MoveState.stay && air == EnemyStatus.MoveState.stay) && !isChange)
+
+                    if (isDown)
+                    {
+                        attackChanceTime = 0f;
+                    }
+
+                    if ((ground == EnemyStatus.MoveState.stay && air == EnemyStatus.MoveState.stay) && !isChange)
                     {
                         isChange = true;
                         ground = EnemyStatus.MoveState.wakeup;
@@ -79,7 +86,11 @@ public class Porter : EnemyBase
                         moveType = 1;
                     }
                     take++;
-                   
+                    if (isDown)
+                    {
+                        //      ˆÚ“®ƒ^ƒCƒv‚ð•ÏX
+                        moveType = moveType == 0 ? 1 : 1;
+                    }
                 }
                 else if (take >= 4)
                 {

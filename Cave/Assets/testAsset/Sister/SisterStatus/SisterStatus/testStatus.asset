@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 1
   maxMp: 200
-  mp: 184
+  mp: 24
   Endurance: 1
   capacity: 1
   castSkill: 0
@@ -28,7 +28,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5f1fb068811c62f45b1ca2f5ce0496ff, type: 2}
   - {fileID: 11400000, guid: ce2ad0639a113fa48b1d116eebbfe137, type: 2}
   - {fileID: 11400000, guid: c2e81e9985be0824cade631e1c4c9b5a, type: 2}
-  useMagic: {fileID: 11400000, guid: ce2ad0639a113fa48b1d116eebbfe137, type: 2}
+  - {fileID: 11400000, guid: 37c6e5e57dfe6ed41a37f81dcf48bf9c, type: 2}
+  useMagic: {fileID: 11400000, guid: c2e81e9985be0824cade631e1c4c9b5a, type: 2}
   equipCombination: {fileID: 11400000, guid: 3fb36971383b2dc4e994b245d632b845, type: 2}
   magicPower: 100
   judgePace: 3

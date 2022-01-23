@@ -44,6 +44,7 @@ MonoBehaviour:
     m_AssetGUID: d86f1d752fbf0a849bbceaef7590af0c
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   powerCurve:
     serializedVersion: 2
     m_Curve: []
@@ -87,10 +88,12 @@ MonoBehaviour:
   lifeTime: 5
   speedV: 1
   speedA: 400
-  angle: -17.489967
+  angle: -47.43334
   homingTime: 0.05
   homingAngleV: 30
   homingAngleA: 20
+  waitTime: 0
+  delayTime: 0
   isChild: 0
   rotateVt: 360
   isRotate: 0
@@ -106,17 +109,20 @@ MonoBehaviour:
     m_AssetGUID: df5eeaefb9c8168468981f3f8a76febb
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   fireSound: SHolyBulletFly
+  moveSound: 
   existSound: 
   hitSound: HolyBulletBreak
-  FireAnime: Fire1
+  FireAnime: Fire3
   castAnime: StandPray
   hitEffect:
     m_AssetGUID: e96482c459afbc14ea18f40c2e2f30cc
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   isHit: 0
-  attackType: 16
+  attackType: 8
   startRotation: {x: 0, y: 0, z: 0}
   mType: 0
   sType: 0

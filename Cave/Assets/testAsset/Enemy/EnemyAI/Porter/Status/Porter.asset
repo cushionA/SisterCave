@@ -16,9 +16,7 @@ MonoBehaviour:
   isParalyze: 0
   level: 1
   maxHp: 350
-  hp: 100
   maxMp: 30
-  mp: 30
   maxStamina: 60
   stamina: 60
   Vitality: 1
@@ -28,15 +26,13 @@ MonoBehaviour:
   skill: 1
   _int: 1
   Def: 70
-  pierDef: 70
+  pierDef: 40
   strDef: 70
   holyDef: 70
   darkDef: 70
   fireDef: 70
   thunderDef: 70
   Armor: 1
-  nockBackPower: 0
-  attackBuff: 1
   useSound: []
   footStepSound: 
   walkSound: InsectFly
@@ -85,7 +81,7 @@ MonoBehaviour:
   strong: 0
   boss: 0
   kind: 1
-  wp: 
+  wp: 01000000
   attackName:
   - Attack1
   serectableNumber: 00000000

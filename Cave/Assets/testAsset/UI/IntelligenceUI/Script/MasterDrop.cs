@@ -21,10 +21,20 @@ public class MasterDrop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+            if (!MainUI.instance.editNow && (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17)))
+            {
+            int i = MainUI.instance.isAH ? 3 : 2;
+
+         //   Debug.Log($"‚¢‚Â‚à{MainUI.instance.editNow}");
+                UIEnd();
+                value[i].GetComponent<SettingWindowCon>().CancelWindow();
+            }
+
+
     }
 
-    private void Awake()
+    private void OnEnable()
     {
         ChangeWindow();
     }
@@ -76,10 +86,7 @@ public class MasterDrop : MonoBehaviour
     public void UIEnd()
     {
         //   MainUI.instance.selectList = new List<Selectable>();
-        if (MainUI.instance.settingNumber % 2 == 1)
-        {
-            MainUI.instance.settingNumber--;
-        }
+
         MainUI.instance.beforeSet = null;
         this.gameObject.SetActive(false);
         if (MainUI.instance.valueWindow != null)
@@ -327,15 +334,36 @@ public class MasterDrop : MonoBehaviour
             #region
             if (e == 1)
             {
-                editRC = sis.firstRecover;
+                if (MainUI.instance.isAH)
+                {
+                    editRC = sis.nFirstRecover;
+                }
+                else
+                {
+                    editRC = sis.firstRecover;
+                }
             }
             else if (e == 2)
             {
-                editRC = sis.secondRecover;
+                if (MainUI.instance.isAH)
+                {
+                    editRC = sis.nSecondRecover;
+                }
+                else
+                {
+                    editRC = sis.secondRecover;
+                }
             }
             else if (e == 3)
             {
-                editRC = sis.thirdRecover;
+                if (MainUI.instance.isAH)
+                {
+                    editRC = sis.nThirdRecover;
+                }
+                else
+                {
+                    editRC = sis.thirdRecover;
+                }
             }
             else if (e == 4)
             {
@@ -343,6 +371,7 @@ public class MasterDrop : MonoBehaviour
             }
             else if (e == 5)
             {
+
                 editRC = sis.fiveRecover;
             }
             else

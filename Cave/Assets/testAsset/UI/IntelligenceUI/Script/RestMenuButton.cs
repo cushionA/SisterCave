@@ -11,11 +11,33 @@ public class RestMenuButton : MonoBehaviour
     /// これはいろんなボタンに使えるかもね
     /// </summary>
 
+    [SerializeField]
+    RestPoint res;
+
+    [SerializeField]
+    bool master;
+    //次開くやつ
     public GameObject window;
+
+    private void OnEnable()
+    {
+        if (master)
+        {
+            if (!res.isFirst)
+            {
+              //   Debug.Log($"aas");
+
+                res.isFirst = true;
+            }
+        }
+    }
+
     public void WindowSet()
     {
+       // Debug.Log("sssssssss");
         window.SetActive(true);
         this.transform.root.gameObject.SetActive(false);
+        res.isFirst = false;
     }
 
 }

@@ -18,9 +18,9 @@ public class NIdiot : EnemyBase
         base.Start();
         rb = GetComponent<Rigidbody2D>();
       //  Material mat = GetComponent<Renderer>().material;
-        mat.material.EnableKeyword(" FADE_ON");
+        //mat.material.EnableKeyword(" FADE_ON");
 
-        Debug.Log($"{mat.name}");
+       // Debug.Log($"{mat.name}");
     }
 
     // Update is called once per frame

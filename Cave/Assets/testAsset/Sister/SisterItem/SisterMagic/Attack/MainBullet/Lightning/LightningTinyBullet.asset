@@ -44,6 +44,7 @@ MonoBehaviour:
     m_AssetGUID: 5733a1a46de084f45959a76e823de58a
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   powerCurve:
     serializedVersion: 2
     m_Curve: []
@@ -91,12 +92,15 @@ MonoBehaviour:
   homingTime: 3
   homingAngleV: 260
   homingAngleA: -30
+  waitTime: 0
+  delayTime: 0
   isChild: 0
   rotateVt: 0
   isRotate: 0
   bulletScaleV: {x: 0, y: 0}
   bulletScaleA: {x: 0, y: 0}
   isBlow: 0
+  cBlow: 1
   isChaice: 0
   blowPower: {x: 0, y: 0}
   bulletNumber: 1
@@ -106,7 +110,9 @@ MonoBehaviour:
     m_AssetGUID: df5eeaefb9c8168468981f3f8a76febb
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   fireSound: ThunderDamage
+  moveSound: 
   existSound: TinyThunderFly
   hitSound: 
   FireAnime: Fire2
@@ -115,8 +121,9 @@ MonoBehaviour:
     m_AssetGUID: ded30f2e21296b94f94c3031c340a989
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   isHit: 1
-  attackType: 128
+  attackType: 64
   startRotation: {x: 0, y: 0, z: 0}
   mType: 0
   sType: 0

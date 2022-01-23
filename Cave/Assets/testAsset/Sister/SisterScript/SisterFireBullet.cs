@@ -39,11 +39,19 @@ public class SisterFireBullet : MonoBehaviour
 	bool playerEffect;//サポートや回復が効果を及ぼす
 	float effectWait;//サポートや回復が再度効果を現すまで
 
+	/// <summary>
+	/// 何秒待ったかなー
+	/// </summary>
+	float waitNow;
+	Collider2D col;
+    bool movable;
 	// === コード（Monobehaviour基本機能の実装） ================
 	async UniTaskVoid Start()
 	{
 		ownwer = SManager.instance.Sister.transform;
 		fireTime = 0;
+
+		col = GetComponent<Collider2D>();
 		//em = SManager.instance.sisStatus.useMagic;
 
 		// オーナーチェック
@@ -74,6 +82,7 @@ public class SisterFireBullet : MonoBehaviour
 
 			case SisMagic.FIREBULLET.ANGLE:
 				speed = (ownwer.localScale.x < 0.0f) ? -em.speedV : +em.speedV;
+
 				break;
 			case SisMagic.FIREBULLET.HOMING:
 				speed = em.speedV;
@@ -216,29 +225,70 @@ public class SisterFireBullet : MonoBehaviour
 		if (homing)
 		{
 			//Debug.Log($"あああああ設定{target.name}");
-			posTarget = target.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+			posTarget = target.transform.position + Vector3.up;
 		}
+		
+		if(em.waitTime > 0 && !movable)
+        {
+			col.enabled = false;
+			//movable = false;
+			waitNow += Time.fixedDeltaTime;
+            if (waitNow >= em.waitTime)
+            {
+				if(em.moveSound != null)
+                {
+					GManager.instance.PlaySound(em.moveSound,transform.position);
+                }
+				movable = true;
+				col.enabled = true;
+				waitNow = 0;
+			}
 
+        }
+        else if(em.waitTime == 0)
+        {
+			movable = true;
+        }
 
 		// ホーミング処理
 		switch (em.fireType)
 		{
 			case SisMagic.FIREBULLET.ANGLE: // 指定した角度に発射
-				rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
+				if (movable)
+				{
+					rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
+				}
 				break;
 
 			case SisMagic.FIREBULLET.RAIN: // 指定した角度に発射
-				rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
+				if (movable)
+				{
+					rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
+				}
 				break;
 
 			case SisMagic.FIREBULLET.HOMING: // 完璧にホーミング
 				{
+					//WaitTimeとHormingTimeを同じかそれ以下にすれば停止中だけ敵を狙うやつになる
 					if (homing)
 					{
 						homingRotate = Quaternion.LookRotation(posTarget - transform.position);
+						//transform.rotation = 
+						transform.rotation = Quaternion.Euler(new Vector3(0,0,(Quaternion.FromToRotation(Vector3.up, posTarget - transform.position).eulerAngles.z - 90)));
+						
+						// Quaternion.Euler(new Vector3(0,0,Mathf.Atan2(posTarget.x - transform.position.x, posTarget.y - transform.position.y)));
+					//	Debug.Log($"アイイイ{Quaternion.FromToRotation(Vector3.up, posTarget - transform.position).eulerAngles.z}");
 					}
+
+					// 対象物へ回転する
+
+					//transform.rotation =
+					
 					Vector3 vecMove = (homingRotate * Vector3.forward) * speed;
-					rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * vecMove;
+					if (movable)
+					{
+						rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * vecMove;
+					}
 				}
 				break;
 
@@ -258,11 +308,18 @@ public class SisterFireBullet : MonoBehaviour
 					homingRange += (em.homingAngleA * Time.fixedDeltaTime);
 					homingRotate = Quaternion.Euler(0.0f, 0.0f, homingAngle);
 				}
-				rb.velocity = (homingRotate * Vector3.right) * speed;
+				if (movable)
+				{
+					rb.velocity = (homingRotate * Vector3.right) * speed;
+				}
 				break;
 		}
 
+        if (!movable)
+        {
+			rb.velocity = Vector3.zero;
 
+		}
 			speed += em.speedA * Time.fixedDeltaTime;
 
 
@@ -469,5 +526,17 @@ public class SisterFireBullet : MonoBehaviour
 
 
 	}
-
+	/// <summary>
+	/// 二点間の角度を求める
+	/// </summary>
+	/// <param name="p1">自分の座標</param>
+	/// <param name="p2">相手の座標</param>
+	/// <returns></returns>
+	float GetAim(Vector2 p1, Vector2 p2)
+	{
+		float dx = p2.x - p1.x;
+		float dy = p2.y - p1.y;
+		float rad = Mathf.Atan2(dy, dx);
+		return rad * Mathf.Rad2Deg;
+	}
 }

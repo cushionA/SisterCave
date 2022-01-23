@@ -126,7 +126,7 @@ public class UIPlaceSet : MonoBehaviour
                 //Šù’è‚ÌêŠ‚ÉƒZƒbƒg
                 //  RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
                 Vector2 posi = new Vector2(425, 300);
-                Debug.Log($"“÷{posi.x}‚ {posi.y}");
+             //   Debug.Log($"“÷{posi.x}‚ {posi.y}");
                 myPosi.anchoredPosition = posi;
 
             }

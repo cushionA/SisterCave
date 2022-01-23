@@ -18,7 +18,8 @@ public class RestPoint : MonoBehaviour
     bool isCallable;
     CircleCollider2D c;
 
-    bool isFirst;
+    [HideInInspector]
+    public bool isFirst;
 
     // Start is called before the first frame update
     void Start()
@@ -29,30 +30,51 @@ public class RestPoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (isCallable && GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction5))
+Debug.Log($"s{c.enabled}s");
+        if (isCallable && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5))
         {
             WindowSet();
             isCallable = false;
             c.enabled = false;
+            button.Select();
+            
+            if (!isFirst)
+            {
+                // Debug.Log($"aas{isFirst}");
+
+                isFirst = true;
+            }
+           // Debug.Log("ssssssssseerf");
+            GManager.instance.onGimmick = true;
+            if (!GManager.instance.equipWeapon.twinHand)
+            {
+
+                GManager.instance.pm.anim.Play("OStand");
+
+            }
+            else
+            {
+                GManager.instance.pm.anim.Play("TStand");
+
+            }
+            MainUI.instance.isConversation = true;
         }
-        else if (isFirst && !isCallable && GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction17))
+        else if (isFirst && !isCallable && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17) && window.activeSelf)
         {
+            //Ç±Ç±å¥àˆ
             WindowCansel();
             c.enabled = true;
+            //
             isFirst = false;
+            GManager.instance.onGimmick = false;
+            MainUI.instance.tipNeed = false;
+            MainUI.instance.isConversation = false;
+            MainUI.instance.isSave = false;
         }
+
     }
 
-    private void OnEnable()
-    {
-        if (!isFirst)
-        {
-            button.Select();
-            isFirst = true;
-        }
-     //   WindowChange();
-    }
+
 
     ///<summary>
     ///ëãÇèâä˙âªÇ∑ÇÈÇ‚Ç¬

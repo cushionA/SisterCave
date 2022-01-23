@@ -38,7 +38,7 @@ public class EditButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+      //  Debug.Log($"‚ ‚¶‚á‚Î[{MainUI.instance.edi}");
     }
 
 
@@ -86,7 +86,7 @@ public class EditButton : MonoBehaviour
                 }
                 else if (j.condition == AttackJudge.TargetJudge.‚©‚©‚Á‚Ä‚È‚¢x‰‡‚ª‚ ‚é)
                 {
-                    myTex.text = "Œø‰ÊØ‚ê‚Ìx‰‡–‚p‚ª‚ ‚é";
+                    myTex.text = "Œø‰ÊØ‚ê‚Ìx‰‡–‚–@‚ª‚ ‚é";
                 }
                 else if (j.condition == AttackJudge.TargetJudge.‹­“G‚Ì‘¶İ)
                 {
@@ -313,12 +313,13 @@ public class EditButton : MonoBehaviour
     {
         MainUI.instance.editNumber = editNum;
         //‘O‚Ì‘‹‚ğ‘€ì•s”\‚É
-        pare.o.next = false;
-        pare.nextWindow.SetActive(true);
+        pare.enable = true;
         if (isAct)
         {
             MainUI.instance.settingNumber++;
         }
+        pare.nextWindow.SetActive(true);
+
     }
 
     AttackJudge GetTarget()
