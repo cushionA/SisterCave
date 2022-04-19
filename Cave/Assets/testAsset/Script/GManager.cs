@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
+using MyCode;
 
 public class GManager : MonoBehaviour
 {
@@ -14,7 +15,10 @@ public class GManager : MonoBehaviour
     //プレイヤーオブジェクト
     public PlayerStatus pStatus;
     //プレイヤーのステータスを取得
+    //セーブデータごとにステータスがある。
+
     public float stRecover = 1.5f;
+    public float additionalStRecover;
     //スタミナ回復量
     public Slider stSlider;
     //スタミナスライダー
@@ -102,10 +106,34 @@ public class GManager : MonoBehaviour
     public List<PlayerMagic> equipMagic = null;
     [HideInInspector] public PlayerMagic useMagic;
 
+    /// <summary>
+    /// 装備重量で変化する要素
+    /// </summary>
+
+    public float lightSpeed;
+    public float middleSpeed;
+    public float heavySpeed;
+    public float overSpeed;
+
+    public float lightDash;
+    public float middleDash;
+    public float heavyDash;
+    public float overDash;
+
+    public float lightAvoid;
+    public float middleAvoid;
+    public float heavyAvoid;
+    public float overAvoid;
+
+    public float lightStRecover;
+    public float middleStRecover;
+    public float heavyStRecover;
+    public float overStRecover;
 
     #endregion
 
-
+    [HideInInspector]
+    public AttackValue useAtValue;
 
 
     public ToolItem[] useList = new ToolItem[7];
@@ -149,9 +177,12 @@ public class GManager : MonoBehaviour
     [HideInInspector] public bool isDamage;//ダメージ受けたかどうか
     [HideInInspector] public bool blowDown;//吹き飛ばされたフラグ
     [HideInInspector] public bool fallAttack;//空中強攻撃の落下終了までisAttackをキープするためのフラグ。敵判定回避にも使う
-    [HideInInspector] public float nowArmor;
+
     [HideInInspector] public bool isShieldAttack;
     [HideInInspector] public float nockBack;//ガードした時に下がる数値
+    [HideInInspector] public bool  twinHand;//片手かどうか。真なら両手
+
+
     /// <summary>
     /// ノックバックやふっとびなどほかの動きをしたいとき
     /// </summary>
@@ -211,6 +242,9 @@ public class GManager : MonoBehaviour
     [HideInInspector] public bool isDie;
     [HideInInspector] public bool heavy;
     [HideInInspector] public byte attackType;
+
+    public int avoidLayer;
+
     #endregion
 
 
@@ -236,14 +270,6 @@ public class GManager : MonoBehaviour
         //     pm = Player.GetComponent<PlayerMove>();
         //スライダーを満タンに
         //HPなどを最大と同じに
-　　　　　SetParameter();
-        ActionSet();
-        SetAtk(equipWeapon);
-        SetAtk(equipShield);
-        SetGuard(equipWeapon);
-        SetGuard(equipShield);
-        SetMagicAssist();
-        SetMagicAtk();
 
         
 
@@ -254,10 +280,9 @@ public class GManager : MonoBehaviour
         mpSl = MpSlider.GetComponent<RectTransform>();
         staminaSl = stSlider.GetComponent<RectTransform>();
         stSlider.value = 1;
-        HpSlider.value = 1;
-        MpSlider.value = 1;
+        HpSlider.value = hp / maxHp;
+        MpSlider.value = mp / maxMp;
         SetSlider();
-        ArmorReset();
         if (!isSoundFirst)
         {
             MasterAudio.SetBusVolumeByName("BGM", 0.5f);
@@ -294,7 +319,7 @@ public class GManager : MonoBehaviour
             //前回のスタミナ回復から0.1秒経っててスタミナ使ってなくてスタミナ回復できるフラグあるなら
             disEnaTime = 0.0f;
 
-            stamina += stRecover;
+            stamina += stRecover + additionalStRecover;
             stTime = 0.0f;
             if (stBreake)
             {
@@ -476,7 +501,9 @@ public class GManager : MonoBehaviour
         // }
 
     }
-
+    /// <summary>
+    /// 持久力と
+    /// </summary>
     public void SetParameter()
     {
 
@@ -498,6 +525,9 @@ public class GManager : MonoBehaviour
         //  ////Debug.log($"テスト数値{pStatus.StaminaCurve.Evaluate(Endurance)}");
 
 
+
+
+        
 
 
 
@@ -540,39 +570,51 @@ public class GManager : MonoBehaviour
         equipMagic.Capacity = (magicNumber);
 
     }
-
+    /// <summary>
+    /// 装備重量確認と重量状態による変更
+    /// </summary>
     public void ActionSet()
     {
+        equipWeight = 0;
+        equipWeight += equipWeapon._weight;
+        equipWeight += equipShield._weight;
 
 
         float weightState = equipWeight / capacityWeight;
         if (weightState <= 0.3 && weightState >= 0)
         {
-
-            pm.speed = pStatus.lightSpeed;
-            pm.dashSpeed = pStatus.lightDash;
-            pm.avoidRes = pStatus.lightAvoid;
+            pStatus.moveSpeed = lightSpeed;
+            pStatus.dashSpeed = lightDash;
+            pStatus.avoidRes = lightAvoid;
+            stRecover = lightStRecover;
+            pStatus._weightState = PlayerStatus.PlayerWeightState.軽装備;
         }
         else if (weightState > 0.3 && weightState <= 0.7)
         {
 
-            pm.speed = pStatus.middleSpeed;
-            pm.dashSpeed = pStatus.middleDash;
-            pm.avoidRes = pStatus.middleAvoid;
+            pStatus.moveSpeed = middleSpeed;
+            pStatus.dashSpeed = middleDash;
+            pStatus.avoidRes = middleAvoid;
+            stRecover = middleStRecover;
+            pStatus._weightState = PlayerStatus.PlayerWeightState.通常装備;
         }
         else if (weightState > 0.7 && weightState <= 1)
         {
 
-            pm.speed = pStatus.heavySpeed;
-            pm.dashSpeed = pStatus.heavyDash;
-            pm.avoidRes = pStatus.heavyAvoid;
+            pStatus.moveSpeed = heavySpeed;
+            pStatus.dashSpeed = heavyDash;
+            pStatus.avoidRes = heavyAvoid;
+            stRecover = heavyStRecover;
+            pStatus._weightState = PlayerStatus.PlayerWeightState.重装備;
         }
         else if (weightState > 1)
         {
 
-            pm.speed = pStatus.overSpeed;
-            pm.dashSpeed = pStatus.overDash;
-            pm.avoidRes = pStatus.overAvoid;
+            pStatus.moveSpeed = overSpeed;
+            pStatus.dashSpeed = overDash;
+            pStatus.avoidRes = overAvoid;
+            stRecover = overStRecover;
+            pStatus._weightState = PlayerStatus.PlayerWeightState.重量オーバー;
         }
     }
     public void SetMagicAssist()
@@ -583,6 +625,8 @@ public class GManager : MonoBehaviour
         equipWeapon.castSkill = 1;
         equipWeapon.castSkill -= equipWeapon.CastCurve.Evaluate(skill) / 100;
     }
+
+
     public void SetMagicAtk()
     {
         if (useMagic == null)
@@ -614,6 +658,11 @@ public class GManager : MonoBehaviour
 
         }
     }
+
+
+
+
+
     public void SetSlider()
     {
 
@@ -645,59 +694,13 @@ public class GManager : MonoBehaviour
             }
         }
     }
-    /// <summary>
-    /// アーマーをリセット
-    /// </summary>
-    public void ArmorReset()
-    {
-        nowArmor = Armor;
-    }
 
-    public void ArmorRecover()
+    public void HPReset()
     {
-        //	Debug.Log($"今のアーマー{nowArmor}");
-        if (!isDown && !isDamage)
-        {
-            recoverTime += Time.fixedDeltaTime;
-            if (recoverTime >= 15 || nowArmor > Armor)
-            {
-                ArmorReset();
-                recoverTime = 0.0f;
-                lastArmor = 1;
-                //	lastArmor = nowArmor; 
-            }
-            else if (nowArmor < Armor && recoverTime >= 3 * lastArmor)
-            {
-                //recoverTime = 0.0f;
-                nowArmor += Armor / 6;
-                lastArmor++;
-            }
-        }
-        else
-        {
-            recoverTime = 0.0f;
-            lastArmor = 1;
-        }
-
+        hp = pStatus.maxHp;
     }
 
 
-    /// <summary>
-    /// アーマー値に応じてイベントとばす
-    /// </summary>
-    public void ArmorControll()
-    {
-        if (nowArmor <= 0)
-        {
-            isDown = true;
-            isAttack = false;
-            //   at.isAttackable = true;
-        }
-        else
-        {
-            isDown = false;
-        }
-    }
 
 
 
@@ -737,7 +740,7 @@ public class GManager : MonoBehaviour
                 isDown = false;
                 isAnimeStart = false;
                 isFalter = false;
-                ArmorReset();
+                
 
             }
 
@@ -820,7 +823,6 @@ public class GManager : MonoBehaviour
             pm.isStop = false;
             pm.isWakeUp = false;
             GManager.instance.blowTime = 0;
-            GManager.instance.ArmorReset();
             isAnimeStart = false;
         }
     }
@@ -889,7 +891,7 @@ public class GManager : MonoBehaviour
                     pm.isWakeUp = false;
                     blowDown = false;
                     blowTime = 0;
-                    ArmorReset();
+                    
                 }
 
             }

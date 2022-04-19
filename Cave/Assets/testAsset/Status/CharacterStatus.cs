@@ -30,24 +30,7 @@ public abstract class CharacterStatus : ScriptableObject
 
 
 
-    //　最大スタミナ
-    public float maxStamina = 60;
-    //　スタミナ
-    //[HideInInspector]
-    public float stamina = 60;
 
-    //生命力
-    public float Vitality = 1;
-    //持久力
-    public float Endurance = 1;
-    //MPと魔法もてる数
-    public float capacity = 1;
-    //　力
-    public float power = 1;
-    //技量
-    public float skill = 1;
-    //　魔法力。賢さ
-    public float _int = 1;
 
 
 

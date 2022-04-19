@@ -50,14 +50,14 @@ public class Hanging : MonoBehaviour
         if (isHang)
         {
             
-            sAni.Play("Hang");
+            //("Hang");
             rb.velocity = Vector2.zero;
         }
         else if(climb)
         {
             if (!isFirst)
             {
-                sAni.Play("Climb");
+                //("Climb");
                 isFirst = true;
             }
             if (CheckEnd("Climb"))
@@ -68,7 +68,7 @@ public class Hanging : MonoBehaviour
             {
                 if (!isSecond)
                 {
-                    sAni.Play("Climb2");
+                    //("Climb2");
                     isSecond = true;
                 }
             }

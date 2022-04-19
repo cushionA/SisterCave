@@ -58,6 +58,14 @@ public class EnemyBase : MonoBehaviour
 
 	[Header("エネミーのステータス")]
 	public EnemyStatus status;
+
+
+	[Header("ドッグパイル")]
+	///<summary>
+	///移動の中心となるオブジェクト。敵を引き連れたり
+	///</summary>
+	public GameObject dogPile;
+
 	// === 外部パラメータ ======================================
 	/*[HideInInspector]*/
 	public bool isAggressive;//攻撃モードの敵
@@ -218,11 +226,11 @@ public class EnemyBase : MonoBehaviour
 		firstDirection = transform.localScale;
 		HPReset();
 		um = EnemyManager.instance.um;
-		if(status.dogPile != null)
+		if(dogPile != null)
         {
-			basePosition = status.dogPile.transform.position;
-			baseDirection = status.dogPile.transform.localScale;
-			dRb = status.dogPile.GetComponent<Rigidbody2D>();
+			basePosition = dogPile.transform.position;
+			baseDirection = dogPile.transform.localScale;
+			dRb = dogPile.GetComponent<Rigidbody2D>();
         }
         else
         {
@@ -310,10 +318,10 @@ public class EnemyBase : MonoBehaviour
 			}
 		}
 		//Debug.Log($"知りたいのだ");
-		if (status.dogPile != null)
+		if (dogPile != null)
 		{
-			basePosition = status.dogPile.transform.position;
-			baseDirection = status.dogPile.transform.localScale;
+			basePosition = dogPile.transform.position;
+			baseDirection = dogPile.transform.localScale;
 		}
 		else
 		{
@@ -447,12 +455,13 @@ public class EnemyBase : MonoBehaviour
 	public void WeaponDamage()
 	{
 
-		bool back = false;
-		bool stab = false;
+
 		//isDamage = true;
 		//SetLayer(28);
 		//////Debug.log($"ガード中か否か{guardHit}");
-		if ( /*&& GManager.instance.equipWeapon.hitLimmit > 0 */ !isDamage)
+/*			bool back = false;
+		bool stab = false;
+if (!isDamage)
 		{
 			isDamage = true;
 			//	GManager.instance.equipWeapon.hitLimmit--;
@@ -475,7 +484,7 @@ public class EnemyBase : MonoBehaviour
 			if (useEquip.phyAtk > 0)
 			{
 				//斬撃刺突打撃を管理
-				if (GManager.instance.equipWeapon.atType == Weapon.AttackType.Slash)
+				if (GManager.instance.equipWeapon.atType == MyCode.Weapon.AttackType.Slash)
 				{
 					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.Def);
 					if(useEquip.attackType == 1 || useEquip.attackType == 0)
@@ -483,7 +492,7 @@ public class EnemyBase : MonoBehaviour
 						attackType = 1;
                     }
 				}
-				else if (GManager.instance.equipWeapon.atType == Weapon.AttackType.Stab)
+				else if (GManager.instance.equipWeapon.atType == MyCode.Weapon.AttackType.Stab)
 				{
 					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.pierDef);
 					stab = true;
@@ -624,7 +633,7 @@ public class EnemyBase : MonoBehaviour
 					isDown = true;
                 }
 			}
-		}
+		}*/
 	}
 
 	public void WeaponGuard()
@@ -655,17 +664,17 @@ public class EnemyBase : MonoBehaviour
 			if (useEquip.phyAtk > 0)
 			{
 				//斬撃刺突打撃を管理
-				if (GManager.instance.equipWeapon.atType == Weapon.AttackType.Slash)
+				if (GManager.instance.equipWeapon.atType == MyCode.Weapon.AttackType.Slash)
 				{
 					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.Def);
 
 				}
-				else if (GManager.instance.equipWeapon.atType == Weapon.AttackType.Stab)
+				else if (GManager.instance.equipWeapon.atType == MyCode.Weapon.AttackType.Stab)
 				{
 					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.pierDef);
 
 				}
-				else if (GManager.instance.equipWeapon.atType == Weapon.AttackType.Strike)
+				else if (GManager.instance.equipWeapon.atType == MyCode.Weapon.AttackType.Strike)
 				{
 					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.strDef);
 
@@ -1008,39 +1017,39 @@ public class EnemyBase : MonoBehaviour
 			isDamage = true;
 			//GManager.instance.equipWeapon.hitLimmit--;
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
-			float mValue = SManager.instance.sisStatus.useMagic.mValue;
+			float mValue = SManager.instance.useMagic.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
-			if (SManager.instance.sisStatus.useMagic.phyAtk > 0)
+			if (SManager.instance.useMagic.phyAtk > 0)
 			{
 				//斬撃刺突打撃を管理
-				if (SManager.instance.sisStatus.useMagic.atType == Magic.AttackType.Slash)
-				{ damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.phyAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.phyAtk + status.Def); }
-				else if (SManager.instance.sisStatus.useMagic.atType == Magic.AttackType.Stab)
-				{ damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.phyAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.phyAtk + status.pierDef); }
-				else if (SManager.instance.sisStatus.useMagic.atType == Magic.AttackType.Strike)
-				{ damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.phyAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.phyAtk + status.strDef); }
+				if (SManager.instance.useMagic.atType == Magic.AttackType.Slash)
+				{ damage += (Mathf.Pow(SManager.instance.useMagic.phyAtk, 2) * mValue) / (SManager.instance.useMagic.phyAtk + status.Def); }
+				else if (SManager.instance.useMagic.atType == Magic.AttackType.Stab)
+				{ damage += (Mathf.Pow(SManager.instance.useMagic.phyAtk, 2) * mValue) / (SManager.instance.useMagic.phyAtk + status.pierDef); }
+				else if (SManager.instance.useMagic.atType == Magic.AttackType.Strike)
+				{ damage += (Mathf.Pow(SManager.instance.useMagic.phyAtk, 2) * mValue) / (SManager.instance.useMagic.phyAtk + status.strDef); }
 
 				damage *= (100 - status.phyCut)/100;
 			}
 			//神聖
-			if (SManager.instance.sisStatus.useMagic.holyAtk > 0)
+			if (SManager.instance.useMagic.holyAtk > 0)
 			{
-				damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.holyAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.holyAtk + status.holyDef) * (100 - status.holyCut)/100;
+				damage += (Mathf.Pow(SManager.instance.useMagic.holyAtk, 2) * mValue) / (SManager.instance.useMagic.holyAtk + status.holyDef) * (100 - status.holyCut)/100;
 			}
 			//闇
-			if (SManager.instance.sisStatus.useMagic.darkAtk > 0)
+			if (SManager.instance.useMagic.darkAtk > 0)
 			{
-				damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.darkAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.darkAtk + status.darkDef) * (100 - status.darkCut)/100;
+				damage += (Mathf.Pow(SManager.instance.useMagic.darkAtk, 2) * mValue) / (SManager.instance.useMagic.darkAtk + status.darkDef) * (100 - status.darkCut)/100;
 			}
 			//炎
-			if (SManager.instance.sisStatus.useMagic.fireAtk > 0)
+			if (SManager.instance.useMagic.fireAtk > 0)
 			{
-				damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.fireAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.fireAtk + status.fireDef) * (100 - status.fireCut)/100;
+				damage += (Mathf.Pow(SManager.instance.useMagic.fireAtk, 2) * mValue) / (SManager.instance.useMagic.fireAtk + status.fireDef) * (100 - status.fireCut)/100;
 			}
 			//雷
-			if (SManager.instance.sisStatus.useMagic.thunderAtk > 0)
+			if (SManager.instance.useMagic.thunderAtk > 0)
 			{
-				damage += (Mathf.Pow(SManager.instance.sisStatus.useMagic.thunderAtk, 2) * mValue) / (SManager.instance.sisStatus.useMagic.thunderAtk + status.thunderDef) * (100 -status.thunderCut)/100;
+				damage += (Mathf.Pow(SManager.instance.useMagic.thunderAtk, 2) * mValue) / (SManager.instance.useMagic.thunderAtk + status.thunderDef) * (100 -status.thunderCut)/100;
 			}
 			damage = Mathf.Floor(damage * SManager.instance.sisStatus.attackBuff);
 			hp -= damage;
@@ -1049,18 +1058,18 @@ public class EnemyBase : MonoBehaviour
 			um.AddStack(damage, this.transform);
 
 
-			if (SManager.instance.sisStatus.useMagic.isBlow)
+			if (SManager.instance.useMagic.isBlow)
 			{
-				nowArmor -= ((SManager.instance.sisStatus.useMagic.shock * 2) * status.guardPower / 100) * 1.2f;
+				nowArmor -= ((SManager.instance.useMagic.shock * 2) * status.guardPower / 100) * 1.2f;
 			}
 			else
 			{
-				nowArmor -= (SManager.instance.sisStatus.useMagic.shock * 2) * ((100 - status.guardPower) / 100);
+				nowArmor -= (SManager.instance.useMagic.shock * 2) * ((100 - status.guardPower) / 100);
 			}
 
-			if (nowArmor <= 0 && SManager.instance.sisStatus.useMagic.isBlow)
+			if (nowArmor <= 0 && SManager.instance.useMagic.isBlow)
 			{
-				blowM.Set(SManager.instance.sisStatus.useMagic.blowPower.x * bulletDirection, SManager.instance.sisStatus.useMagic.blowPower.y);
+				blowM.Set(SManager.instance.useMagic.blowPower.x * bulletDirection, SManager.instance.useMagic.blowPower.y);
 				//rb.AddForce(move, ForceMode2D.Impulse);
 				blowDown = true;
 			}
@@ -1179,15 +1188,15 @@ public class EnemyBase : MonoBehaviour
 			}
 			if (!GManager.instance.isAttack)
 			{
-				GManager.instance.nowArmor -= atV.shock;
+			//	GManager.instance.nowArmor -= atV.shock;
 			}
 			else
 			{
-				GManager.instance.nowArmor -= (atV.shock - GManager.instance.equipWeapon.atAromor) < 0 ? 0 : (atV.shock - GManager.instance.equipWeapon.atAromor);
+			//	GManager.instance.nowArmor -= (atV.shock - GManager.instance.equipWeapon.atAromor) < 0 ? 0 : (atV.shock - GManager.instance.equipWeapon.atAromor);
 			}
 
 			GManager.instance.DamageSound(GManager.instance.attackType);
-			GManager.instance.ArmorControll();
+		//	GManager.instance.ArmorControll();
 
 			damage = Mathf.Floor(damage * attackBuff);
 			//GManager.instance.HpReduce;
@@ -1198,10 +1207,10 @@ public class EnemyBase : MonoBehaviour
 			//Debug.Log($"残り{GManager.instance.hp}");
 			GManager.instance.isDamage = true;
 		}
-		if (GManager.instance.nowArmor <= 0)
+		if (1 <= 0)
 		{
-			GManager.instance.isDown = true;
-			if (atV.isBlow == true || !GManager.instance.pm.isGround)
+		//	GManager.instance.isDown = true;
+			/*if (atV.isBlow == true || !GManager.instance.pm.isGround)
 			{
 				GManager.instance.blowDown = true;
 				if (atV.isBlow)
@@ -1227,7 +1236,7 @@ public class EnemyBase : MonoBehaviour
             else
             {
 				GManager.instance.isFalter = true;
-            }
+            }*/
 		}
 }
 
@@ -1283,7 +1292,7 @@ public class EnemyBase : MonoBehaviour
 			}
 			if (atV.isLight && useEquip.guardPower >= 50)
 			{//受け値50以上の盾は軽い攻撃をはじく
-				//sAni.Play(status.motionIndex["弾かれ"]);
+				////(status.motionIndex["弾かれ"]);
 			}
 			    GManager.instance.stamina -= (atV.shock * 3) * (1 - (useEquip.guardPower / 100));
 
@@ -1397,7 +1406,7 @@ public class EnemyBase : MonoBehaviour
 						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
 							(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
 					{
-						sAni.Play("Stand");
+						//("Stand");
 						//スタートが地面だから大丈夫。落ちてくる系のやつにはDogpileを与えてやれ
 						rb.velocity = Vector2.zero;
 						posiReset = false;
@@ -1406,11 +1415,11 @@ public class EnemyBase : MonoBehaviour
 					}
                     else
                     {
-						//sAni.Play(status.motionIndex[status.dogPile == null ? "歩き":"走り"]);
-						move.Set(status.addSpeed.x * ((status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x) - rb.velocity.x),(status.addSpeed.y * (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y)) - rb.velocity.y);
+						////(status.motionIndex[dogPile == null ? "歩き":"走り"]);
+						move.Set(status.addSpeed.x * ((dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x) - rb.velocity.x),(status.addSpeed.y * (dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y)) - rb.velocity.y);
 						rb.AddForce(move);
 						//rb.AddForce(move(0, ;
-						sAni.Play($"{(status.dogPile == null ? "Move" : "Dash")}");
+						//($"{(dogPile == null ? "Move" : "Dash")}");
 					}
 				}
 				else if (transform.position.y >= basePosition.y)
@@ -1421,7 +1430,7 @@ public class EnemyBase : MonoBehaviour
 						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
 							(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
 					{
-						sAni.Play("Stand");
+						//("Stand");
 						rb.velocity = Vector2.zero;
 						posiReset = false;
 						isRight = true;
@@ -1429,10 +1438,10 @@ public class EnemyBase : MonoBehaviour
 					}
                     else
                     {
-						move.Set(status.addSpeed.x * ((status.dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x) - rb.velocity.x), (status.addSpeed.y * (status.dogPile == null ? -status.patrolSpeed.y : -status.combatSpeed.y)) - rb.velocity.y);
+						move.Set(status.addSpeed.x * ((dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x) - rb.velocity.x), (status.addSpeed.y * (dogPile == null ? -status.patrolSpeed.y : -status.combatSpeed.y)) - rb.velocity.y);
 						rb.AddForce(move);
 						//rb.AddForce(move(0);
-						sAni.Play($"{(status.dogPile == null ? "Move" : "Dash")}");
+						//($"{(dogPile == null ? "Move" : "Dash")}");
 					}
 				}
 			}
@@ -1446,7 +1455,7 @@ public class EnemyBase : MonoBehaviour
 						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
 						(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
 					{
-						sAni.Play("Stand");
+						//("Stand");
 						rb.velocity = Vector2.zero;
 						posiReset = false;
 						isRight = true;
@@ -1454,8 +1463,8 @@ public class EnemyBase : MonoBehaviour
 					}
                     else
                     {
-						sAni.Play($"{(status.dogPile == null ? "Move" : "Dash")}");
-						move.Set(status.addSpeed.x * ((status.dogPile == null ? -status.patrolSpeed.x : -status.combatSpeed.x) - rb.velocity.x),(status.addSpeed.y * (status.dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y)) - rb.velocity.y);
+						//($"{(dogPile == null ? "Move" : "Dash")}");
+						move.Set(status.addSpeed.x * ((dogPile == null ? -status.patrolSpeed.x : -status.combatSpeed.x) - rb.velocity.x),(status.addSpeed.y * (dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y)) - rb.velocity.y);
 						rb.AddForce(move);
 						//rb.AddForce(move(0, ();
 					}
@@ -1468,7 +1477,7 @@ public class EnemyBase : MonoBehaviour
 						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
 						(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
 					{
-						sAni.Play("Stand");
+						//("Stand");
 						rb.velocity = Vector2.zero;
 						posiReset = false;
 						isRight = true;
@@ -1476,8 +1485,8 @@ public class EnemyBase : MonoBehaviour
 					}
                     else
                     {
-						sAni.Play($"{(status.dogPile == null ? "Move" : "Dash")}");
-						move.Set(status.addSpeed.x * ((status.dogPile == null ? -status.patrolSpeed.x : -status.combatSpeed.x) - rb.velocity.x),(status.addSpeed.y * (status.dogPile == null ? -status.patrolSpeed.y : -status.combatSpeed.y)) - rb.velocity.y);
+						//($"{(dogPile == null ? "Move" : "Dash")}");
+						move.Set(status.addSpeed.x * ((dogPile == null ? -status.patrolSpeed.x : -status.combatSpeed.x) - rb.velocity.x),(status.addSpeed.y * (dogPile == null ? -status.patrolSpeed.y : -status.combatSpeed.y)) - rb.velocity.y);
 						rb.AddForce(move);
 						//rb.AddForce(move(0, );
 					}
@@ -1495,7 +1504,7 @@ public class EnemyBase : MonoBehaviour
 		if (!isStop && !posiReset && !nowJump && !isDown && !isDie) {
 			if (transform.position.x <= startPosition.x + status.waitDistance.x && isRight)
 			{
-				sAni.Play("Move");
+				//("Move");
 				Flip(1);
 				move.Set(status.addSpeed.x * (status.patrolSpeed.x - rb.velocity.x), 0);
 				rb.AddForce(move);
@@ -1503,14 +1512,14 @@ public class EnemyBase : MonoBehaviour
 			}
 			else if (transform.position.x >= startPosition.x - status.waitDistance.x && !isRight)
 			{
-				sAni.Play("Move");
+				//("Move");
 				Flip(-1);
 				move.Set(status.addSpeed.x * (-status.patrolSpeed.x - rb.velocity.x), 0);
 				rb.AddForce(move);
 			}
 			else
 			{
-				sAni.Play("Stand");
+				//("Stand");
 					////////Debug.log("ああああ");
 					waitTime += Time.fixedDeltaTime;
                     move.Set(0, rb.velocity.y);
@@ -1539,20 +1548,20 @@ public class EnemyBase : MonoBehaviour
 			{
 				move.Set(0, status.addSpeed.y * (status.patrolSpeed.y - rb.velocity.y));
 				rb.AddForce(move);
-				sAni.Play("Move");
+				//("Move");
 			}
 			else if(transform.position.y >= startPosition.y - status.waitDistance.y && !isUp)
 			{
 				move.Set(0, status.addSpeed.y * (-status.patrolSpeed.y - rb.velocity.y));
 				rb.AddForce(move);
-				sAni.Play("Move");
+				//("Move");
 			}
             else
             {
 				isUp = !isUp;
 				move.Set(rb.velocity.x, 0);
 				rb.velocity = move;
-				sAni.Play("Move");
+				//("Move");
 			}
 		}
 	}
@@ -1568,7 +1577,7 @@ public class EnemyBase : MonoBehaviour
 		{
 			if (dRb == null)
 			{
-				sAni.Play("Stand");
+				//("Stand");
 				waitTime += Time.fixedDeltaTime;
 				move.Set(0, rb.velocity.y);
 				rb.velocity = move;
@@ -1580,9 +1589,9 @@ public class EnemyBase : MonoBehaviour
 			}
 			if(dRb != null)
             {
-				sAni.Play("Move");
+				//("Move");
 				rb.velocity = dRb.velocity;
-				transform.localScale = status.dogPile.transform.localScale;
+				transform.localScale = dogPile.transform.localScale;
             }
 
 
@@ -1690,7 +1699,7 @@ public class EnemyBase : MonoBehaviour
             {
                 if (ground == EnemyStatus.MoveState.stay)
                 {
-					sAni.Play("Guard");
+					//("Guard");
 					BattleFlip(direction);
 					move.Set(0, rb.velocity.y);
 
@@ -1704,7 +1713,7 @@ public class EnemyBase : MonoBehaviour
 					//動かない弓兵とかは移動速度ゼロに
 					BattleFlip(direction);
 					isReach = ground == EnemyStatus.MoveState.leaveWalk;
-					sAni.Play(status.motionIndex["BackGuard"]);
+					//(status.motionIndex["BackGuard"]);
 					move.Set(status.addSpeed.x * (-direction * status.patrolSpeed.x - rb.velocity.x), 0);
 					rb.AddForce(move);
 				}
@@ -1714,18 +1723,18 @@ public class EnemyBase : MonoBehaviour
 					isReach = (Mathf.Abs(distance.x) - status.agrDistance[disIndex].x) <= status.walkDistance.x ? true : false;
 					move.Set(status.addSpeed.x * (direction * status.patrolSpeed.x - rb.velocity.x), 0);
 					rb.AddForce(move);
-					sAni.Play("GuardMove");
+					//("GuardMove");
 				}
 			}*/
 			if (ground == EnemyStatus.MoveState.stay)
 			{
 				if (isGuard)
 				{
-					sAni.Play("Guard");
+					//("Guard");
 				}
 				else
 				{
-					sAni.Play("Pose");
+					//("Pose");
 				}
 				BattleFlip(direction);
 				move.x = 0;
@@ -1743,18 +1752,18 @@ public class EnemyBase : MonoBehaviour
 				
 				if (isGuard)
 				{
-					sAni.Play("GuardMove");
+					//("GuardMove");
 				}
 				else
 				{
-					sAni.Play("Move");
+					//("Move");
 				}
 			}
 			else if (ground == EnemyStatus.MoveState.accessDash) 
 			{
 				BattleFlip(direction);
 				isReach = false;
-				sAni.Play("Dash");
+				//("Dash");
 				move.Set(status.addSpeed.x * (direction * status.combatSpeed.x - rb.velocity.x),0);
 				rb.AddForce(move);
                 if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
@@ -1772,18 +1781,18 @@ public class EnemyBase : MonoBehaviour
 					isReach = true;
 				if (!isGuard)
 				{
-					sAni.Play("BackMove");
+					//("BackMove");
 				}
                 else
                 {
-					sAni.Play("BackGuard");
+					//("BackGuard");
 				}
 				move.Set(status.addSpeed.x * (-direction * status.patrolSpeed.x - rb.velocity.x), 0);
 				rb.AddForce(move);
 			}
 				else if(ground == EnemyStatus.MoveState.leaveDash)
 				{
-					sAni.Play("Dash");
+					//("Dash");
 					BattleFlip(-direction);
 					isReach = false;
 				move.Set(status.addSpeed.x * (-direction * status.combatSpeed.x - rb.velocity.x),0);
@@ -1922,11 +1931,11 @@ public class EnemyBase : MonoBehaviour
 			{
 				if (isGuard)
 				{
-					sAni.Play("Guard");
+					//("Guard");
 				}
 				else
 				{
-					sAni.Play("Pose");
+					//("Pose");
 				}
 				BattleFlip(direction);
 				//move.x = 0;
@@ -1952,18 +1961,18 @@ public class EnemyBase : MonoBehaviour
 
 				if (isGuard)
 				{
-					sAni.Play("GuardMove");
+					//("GuardMove");
 				}
 				else
 				{
-					sAni.Play("Move");
+					//("Move");
 				}
 			}
 			else if (ground == EnemyStatus.MoveState.accessDash)
 			{
 				BattleFlip(direction);
 				isReach = false;
-				sAni.Play("Dash");
+				//("Dash");
 				move.Set(status.addSpeed.x * (direction * status.combatSpeed.x - rb.velocity.x), move.y);
 				rb.AddForce(move);
 				if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
@@ -1981,11 +1990,11 @@ public class EnemyBase : MonoBehaviour
 				isReach = true;
 				if (!isGuard)
 				{
-					sAni.Play("BackMove");
+					//("BackMove");
 				}
 				else
 				{
-					sAni.Play("BackGuard");
+					//("BackGuard");
 				}
 				move.Set(status.addSpeed.x * (-direction * status.patrolSpeed.x - rb.velocity.x), move.y);
 				rb.AddForce(move);
@@ -1993,7 +2002,7 @@ public class EnemyBase : MonoBehaviour
 			else if (ground == EnemyStatus.MoveState.leaveDash)
 			{
 				//Debug.Log("ｊｊ");
-				sAni.Play("Dash");
+				//("Dash");
 				BattleFlip(-direction);
 				isReach = false;
 				move.Set(status.addSpeed.x * (-direction * status.combatSpeed.x - rb.velocity.x), move.y);
@@ -2005,7 +2014,7 @@ public class EnemyBase : MonoBehaviour
 
 				if (!isStop && !nowJump && !isAvoid && !isDown && !isDie)
 				{
-					sAni.Play("Move");
+					//("Move");
 					if (judgeDistance　== status.agrDistance[disIndex].y)//ゆとりの範疇なら我慢
 					{
 						move.Set(rb.velocity.x,0);
@@ -2082,9 +2091,9 @@ public class EnemyBase : MonoBehaviour
 			if (isAvoid)
 			{
 				//アニメを時間に合わせろ
-				sAni.Play("Avoid");
+				//("Avoid");
 				avoidTime += Time.fixedDeltaTime;
-				move.Set(direction * status.avoidSpeed.x, status.avoidSpeed.y);
+			//	move.Set(direction * status.avoidSpeed.x, status.avoidSpeed.y);
 				rb.AddForce(move);
 				Flip(direction);
 				SetLayer(28);
@@ -2112,6 +2121,7 @@ public class EnemyBase : MonoBehaviour
 		if (isDamage || isDie) 
 		{
 			avoidTime += Time.fixedDeltaTime;
+
 			SetLayer(28);
 			if (avoidTime >= 0.15 &&  !isDie)// &&!GManager.instance.fallAttack
 			{
@@ -2170,12 +2180,12 @@ public class EnemyBase : MonoBehaviour
         {
 			if (!isGround && !isAttack && !isJump && !isDown)
 			{
-					sAni.Play("Fall");
+					//("Fall");
 
 			}
 			else if (isJump)
             {
-				sAni.Play("Jump");
+				//("Jump");
 			}
 			
 		}
@@ -2194,7 +2204,7 @@ public class EnemyBase : MonoBehaviour
 				jumpTime += Time.fixedDeltaTime;
 				move.Set(jumpMove * EnemyManager.instance.jMove.Evaluate(jumpTime), jumpSpeed * EnemyManager.instance.jPower.Evaluate(jumpTime));
 				rb.AddForce(move);
-				sAni.Play("Jump");
+				//("Jump");
 				if (isGround && jumpTime > 0.1)//ここJumpRessとかにしてもいいかもね
 				{//
 					rb.velocity = Vector2.zero;
@@ -2247,7 +2257,7 @@ public class EnemyBase : MonoBehaviour
 		{
 			if (isJump)
 			{
-				sAni.Play("Jump");
+				//("Jump");
 				jumpTime += Time.fixedDeltaTime;
 				move.Set(jumpMove * EnemyManager.instance.jMove.Evaluate(jumpTime), jumpSpeed * EnemyManager.instance.jPower.Evaluate(jumpTime));
 				rb.AddForce(move);
@@ -2417,7 +2427,7 @@ public class EnemyBase : MonoBehaviour
 				{
 				//isFalter = true;
 				isAnimeStart = true;
-				sAni.Play("Falter");
+				//("Falter");
 			    }
             else if (!CheckEnd("Falter"))
             {
@@ -2452,7 +2462,7 @@ public class EnemyBase : MonoBehaviour
 				isDown = true;
 				//isFalter = true;
 				isAnimeStart = true;
-				sAni.Play("Bounce");
+				//("Bounce");
 				//Debug.Log("弾かれ");
 			}
 			　else if (!CheckEnd("Bounce"))
@@ -2502,7 +2512,7 @@ public class EnemyBase : MonoBehaviour
 				{
 					if (!isGround)
 					{
-						sAni.Play("Blow");
+						//("Blow");
 						//SetLayer(17);//回避レイヤーの場所変わってるかもな。追加や削除で
 					//GravitySet(15);
 
@@ -2514,13 +2524,13 @@ public class EnemyBase : MonoBehaviour
 					{
 						if (status.isMetal)
 						{
-							GManager.instance.PlaySound(SoundManager.instance.downSound[0], transform.position);
+							GManager.instance.PlaySound( MyCode.SoundManager.instance.downSound[0], transform.position);
 						}
 						else
 						{
-							GManager.instance.PlaySound(SoundManager.instance.downSound[1], transform.position);
+							GManager.instance.PlaySound( MyCode.SoundManager.instance.downSound[1], transform.position);
 						}
-						sAni.Play("Down");
+						//("Down");
 
 						isAnimeStart = true;
 					}
@@ -2548,7 +2558,7 @@ public class EnemyBase : MonoBehaviour
 					if (isAnimeStart)
 					{
 						isAnimeStart = false;
-						sAni.Play("WakeUp");
+						//("WakeUp");
 					}
 					else if (!CheckEnd("WakeUp"))
 					{
@@ -2774,7 +2784,7 @@ public class EnemyBase : MonoBehaviour
 				if (!isAnimeStart)
 				{
 					rb.velocity = Vector2.zero;
-					sAni.Play("DDie");
+					//("DDie");
 					isAnimeStart = true;
 				}
 				else
@@ -2800,7 +2810,7 @@ public class EnemyBase : MonoBehaviour
                 if (!isAnimeStart)
                 {
 
-                  sAni.Play("NDie");
+                  //("NDie");
 					isAnimeStart = true;
                 }
                 else
@@ -2871,7 +2881,7 @@ public class EnemyBase : MonoBehaviour
             }
 
 			AttackPrepare();
-			sAni.Play(status.attackName[attackNumber]);
+			//(status.attackName[attackNumber]);
 			isAttack = true;
 			isAtEnable = false;
 			attackComp = true;
@@ -2938,7 +2948,7 @@ public class EnemyBase : MonoBehaviour
 			if (!isAnimeStart)
 			{
 				isDown = true;
-				sAni.Play("GuardBreak");
+				//("GuardBreak");
 				isAnimeStart = true;
 			}
            else if (!CheckEnd("GuardBreak"))
@@ -3093,22 +3103,22 @@ public class EnemyBase : MonoBehaviour
 				{
                     if (status.isMetal)
                     {
-						GManager.instance.PlaySound(SoundManager.instance.armorFootSound[type], transform.position);
+						GManager.instance.PlaySound( MyCode.SoundManager.instance.armorFootSound[type], transform.position);
 					}
                     else
                     {
-						GManager.instance.PlaySound(SoundManager.instance.bareFootSound[type], transform.position);
+						GManager.instance.PlaySound( MyCode.SoundManager.instance.bareFootSound[type], transform.position);
 					}
 				}
 				else
 				{
 					if (status.isMetal)
 					{
-						GManager.instance.PlaySound(SoundManager.instance.armorWalkSound[type], transform.position);
+						GManager.instance.PlaySound( MyCode.SoundManager.instance.armorWalkSound[type], transform.position);
 					}
 					else
 					{
-						GManager.instance.PlaySound(SoundManager.instance.bareWalkSound[type], transform.position);
+						GManager.instance.PlaySound( MyCode.SoundManager.instance.bareWalkSound[type], transform.position);
 					}
 				}
 			}
@@ -3130,11 +3140,11 @@ public class EnemyBase : MonoBehaviour
 		//斬撃刺突打撃を管理
 		if (atV.type == EnemyStatus.AttackType.Stab)
 		{
-			GManager.instance.PlaySound(SoundManager.instance.stabSound[type], transform.position);
+			GManager.instance.PlaySound( MyCode.SoundManager.instance.stabSound[type], transform.position);
 		}
 		else
 		{
-			GManager.instance.PlaySound(SoundManager.instance.swingSound[type], transform.position);
+			GManager.instance.PlaySound( MyCode.SoundManager.instance.swingSound[type], transform.position);
 		}
 
 		//エンチャしてる場合も
@@ -3142,7 +3152,7 @@ public class EnemyBase : MonoBehaviour
 	}
 	public void FistSound(int type = 0)
 	{
-			GManager.instance.PlaySound(SoundManager.instance.fistSound[type], transform.position);
+			GManager.instance.PlaySound( MyCode.SoundManager.instance.fistSound[type], transform.position);
 		
 		//エンチャしてる場合も
 
@@ -3337,7 +3347,7 @@ jumpTime += Time.fixedDeltaTime;
 
 		}*/
 
-	private void GetAllChildren(Transform parent, ref List<Transform> transforms,bool weapon = false)
+	private void GetAllChildren(Transform parent, ref List<Transform> transforms,bool Weapon = false)
 	{
 		foreach (Transform child in parent)
 		{
@@ -3350,7 +3360,7 @@ jumpTime += Time.fixedDeltaTime;
 				controllTarget.Add(sr);
             }
 		}
-		if (!weapon)
+		if (!Weapon)
 		{
 			Transform die = transform.Find("Attack");
 			if (die != null)

@@ -1917,13 +1917,13 @@ public class AttackM : MonoBehaviour
     public void SwingSound(int type = 0)
     {
         //斬撃刺突打撃を管理
-        if (GManager.instance.equipWeapon.atType == Weapon.AttackType.Stab)
+        if (GManager.instance.equipWeapon.atType == MyCode.Weapon.AttackType.Stab)
         {
-            GManager.instance.PlaySound(SoundManager.instance.stabSound[type], transform.position);
+            GManager.instance.PlaySound( MyCode.SoundManager.instance.stabSound[type], transform.position);
         }
         else 
         {
-            GManager.instance.PlaySound(SoundManager.instance.swingSound[type], transform.position);
+            GManager.instance.PlaySound( MyCode.SoundManager.instance.swingSound[type], transform.position);
         }
 
         //エンチャしてる場合も

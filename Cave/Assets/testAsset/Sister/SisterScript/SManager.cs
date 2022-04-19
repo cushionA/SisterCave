@@ -43,7 +43,7 @@ public class SManager : MonoBehaviour
     [HideInInspector] public bool castNow;
     [HideInInspector] public bool actNow;
     //  public Slider MpSlider;//シスターさんのMP管理
-
+    [HideInInspector] public SisMagic useMagic;
     //[SerializeField] GameObject NIdoit;
     //[SerializeField] bool isDEEEp;
 
@@ -69,43 +69,43 @@ public class SManager : MonoBehaviour
 
     public void SetMagicAtk()
     {
-        if (sisStatus.useMagic.mType == SisMagic.MagicType.Attack)
+        if (useMagic.mType == SisMagic.MagicType.Attack)
         {
-            if (sisStatus.useMagic.phyBase >= 1)
+            if (useMagic.phyBase >= 1)
             {
-                sisStatus.useMagic.phyAtk = sisStatus.useMagic.phyBase + (sisStatus.useMagic.intCurve.Evaluate(sisStatus._int)) +
-                                   sisStatus.useMagic.faithCurve.Evaluate(sisStatus.faith);
+                useMagic.phyAtk = useMagic.phyBase + (useMagic.intCurve.Evaluate(sisStatus._int)) +
+                                   useMagic.faithCurve.Evaluate(sisStatus.faith);
             }
-            if (sisStatus.useMagic.holyBase >= 1)
+            if (useMagic.holyBase >= 1)
             {
-                sisStatus.useMagic.holyAtk = sisStatus.useMagic.phyBase + (sisStatus.useMagic.intCurve.Evaluate(sisStatus._int)) +
-                                   sisStatus.useMagic.faithCurve.Evaluate(sisStatus.faith);
+                useMagic.holyAtk = useMagic.phyBase + (useMagic.intCurve.Evaluate(sisStatus._int)) +
+                                   useMagic.faithCurve.Evaluate(sisStatus.faith);
             }
-            if (sisStatus.useMagic.darkBase >= 1)
+            if (useMagic.darkBase >= 1)
             {
-                sisStatus.useMagic.darkAtk = sisStatus.useMagic.phyBase + (sisStatus.useMagic.intCurve.Evaluate(sisStatus._int)) +
-                                   sisStatus.useMagic.faithCurve.Evaluate(sisStatus.faith);
+                useMagic.darkAtk = useMagic.phyBase + (useMagic.intCurve.Evaluate(sisStatus._int)) +
+                                   useMagic.faithCurve.Evaluate(sisStatus.faith);
             }
-            if (sisStatus.useMagic.fireBase >= 1)
+            if (useMagic.fireBase >= 1)
             {
-                sisStatus.useMagic.fireAtk = sisStatus.useMagic.phyBase + (sisStatus.useMagic.intCurve.Evaluate(sisStatus._int)) +
-                                   sisStatus.useMagic.faithCurve.Evaluate(sisStatus.faith);
+                useMagic.fireAtk = useMagic.phyBase + (useMagic.intCurve.Evaluate(sisStatus._int)) +
+                                   useMagic.faithCurve.Evaluate(sisStatus.faith);
             }
-            if (sisStatus.useMagic.thunderBase >= 1)
+            if (useMagic.thunderBase >= 1)
             {
-                sisStatus.useMagic.thunderAtk = sisStatus.useMagic.phyBase + (sisStatus.useMagic.intCurve.Evaluate(sisStatus._int)) +
-                                   sisStatus.useMagic.faithCurve.Evaluate(sisStatus.faith);
+                useMagic.thunderAtk = useMagic.phyBase + (useMagic.intCurve.Evaluate(sisStatus._int)) +
+                                   useMagic.faithCurve.Evaluate(sisStatus.faith);
             }
         }
     }
     public float SetRecoverAmount(SisMagic s)
     {
-        if (sisStatus.useMagic.mType == SisMagic.MagicType.Recover)
+        if (useMagic.mType == SisMagic.MagicType.Recover)
         {
-            sisStatus.useMagic.recoverAmount = sisStatus.useMagic.recoverBase + (sisStatus.useMagic.intCurve.Evaluate(sisStatus._int)) +
-                   sisStatus.useMagic.faithCurve.Evaluate(sisStatus.faith);
+            useMagic.recoverAmount = useMagic.recoverBase + (useMagic.intCurve.Evaluate(sisStatus._int)) +
+                   useMagic.faithCurve.Evaluate(sisStatus.faith);
         }
-        return sisStatus.useMagic.recoverAmount;
+        return useMagic.recoverAmount;
     }
             /// <summary>
             /// 魔法の分類

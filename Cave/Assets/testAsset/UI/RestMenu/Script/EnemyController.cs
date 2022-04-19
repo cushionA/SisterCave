@@ -84,6 +84,7 @@ public class EnemyController : MonoBehaviour
         GManager.instance.hp = GManager.instance.maxHp;
         GManager.instance.mp = GManager.instance.maxMp;
         SManager.instance.sisStatus.mp = SManager.instance.sisStatus.maxMp;
+        SManager.instance.Sister.GetComponent<SisterFire>().AttackEnd();
         for (int i = 0;i < bt.Count;i++)
         {
             bt[i].Reset();

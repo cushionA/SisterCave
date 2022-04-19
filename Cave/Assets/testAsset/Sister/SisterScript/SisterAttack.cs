@@ -20,13 +20,13 @@ public class SisterAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sst.useMagic =eqMagi[0];
+        SManager.instance.useMagic =eqMagi[0];
     }
 
     // Update is called once per frame
     void Update()
     {
-        useMagi = sst.useMagic;
+        useMagi = SManager.instance.useMagic;
 
         sisterFireKey = Input.GetAxisRaw("SFire");
 

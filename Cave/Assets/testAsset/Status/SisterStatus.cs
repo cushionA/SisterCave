@@ -15,6 +15,7 @@ using UnityEngine.UI;
     //　MP
     public float mp = 30;
 
+	//戦闘タイプ、みたいなのを選んで戦闘中の立ち位置決めれるようにする？
 
     //クールタイム短縮
     public float Endurance = 1;
@@ -46,7 +47,6 @@ using UnityEngine.UI;
     //　装備している魔法
 	[Header("装備魔法")]
     public List<SisMagic> equipMagic;
-    [HideInInspector]public SisMagic useMagic;
 
 	//　装備している魔法
 	[Header("装備連携")]
@@ -128,11 +128,6 @@ using UnityEngine.UI;
 	///</summary>
 	public float playDistance;
 
-	[Header("のんびりのスピード。小走り")]
-	///<summary>
-	///のんびりでこの速度。
-	///</summary>
-	public float playSpeed;
 
 	[Header("のんびりでたまに停止する時間")]
 	///<summary>

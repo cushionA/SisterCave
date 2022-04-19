@@ -249,7 +249,7 @@ public class SisterFire : MonoBehaviour
 		if (useMagic)
 		{
 
-			MagicUse(SManager.instance.sisStatus.useMagic.HRandom, SManager.instance.sisStatus.useMagic.VRandom);
+			MagicUse(SManager.instance.useMagic.HRandom, SManager.instance.useMagic.VRandom);
 
 		}
 		//
@@ -495,10 +495,10 @@ public class SisterFire : MonoBehaviour
 				}
 
 				//ちゃんとターゲットと使用魔法が設定されていれば
-				if (SManager.instance.target != null && SManager.instance.sisStatus.useMagic != null)
+				if (SManager.instance.target != null && SManager.instance.useMagic != null)
 				{
 				//	bool isWrong = false;
-					if (SManager.instance.sisStatus.useMagic.mType == SisMagic.MagicType.Attack)
+					if (SManager.instance.useMagic.mType == SisMagic.MagicType.Attack)
 					{
 						if (sister.nowMove != SisterParameter.MoveType.攻撃 && targetType != 1)
 						{
@@ -508,7 +508,7 @@ public class SisterFire : MonoBehaviour
 						}
 
 					}
-					else if (SManager.instance.sisStatus.useMagic.mType == SisMagic.MagicType.Recover)
+					else if (SManager.instance.useMagic.mType == SisMagic.MagicType.Recover)
 					{
 						if (sister.nowMove != SisterParameter.MoveType.回復 && targetType != 2)
 						{
@@ -533,7 +533,7 @@ public class SisterFire : MonoBehaviour
                   //  else
                  //   {
 					//	SManager.instance.target = null;
-					//	SManager.instance.sisStatus.useMagic = null;
+					//	SManager.instance.useMagic = null;
 				//		SManager.instance.actNow = false;
 				//	}
 				}
@@ -578,13 +578,13 @@ public class SisterFire : MonoBehaviour
 						{
 							//	healAct = true;
 							//SManager.instance.target = GManager.instance.Player;
-							//SManager.instance.sisStatus.useMagic = null;
+							//SManager.instance.useMagic = null;
 							//SManager.instance.target = GManager.instance.Player;
 							if (HealJudge(sister.nFirstRecover))
 							{
 
 								RecoverAct(sister.nFirstRecover);
-								//Debug.Log($"1{SManager.instance.sisStatus.useMagic}");
+								//Debug.Log($"1{SManager.instance.useMagic}");
 							}
 							else if (HealJudge(sister.nSecondRecover))
 							{
@@ -598,7 +598,7 @@ public class SisterFire : MonoBehaviour
 							}
 							else
 							{
-								SManager.instance.sisStatus.useMagic = null;
+								SManager.instance.useMagic = null;
 								//Debug.Log("4");
 							}
 
@@ -610,7 +610,7 @@ public class SisterFire : MonoBehaviour
 							SManager.instance.target = null;
 						}
 					}
-					if (SManager.instance.target != null && SManager.instance.sisStatus.useMagic != null)
+					if (SManager.instance.target != null && SManager.instance.useMagic != null)
 					{
 
 						//Debug.Log("げせぬ");
@@ -644,17 +644,17 @@ public class SisterFire : MonoBehaviour
 	public void ActionFire(float random = 0.0f)
 	{//ランダムに入れてもいいけど普通に入れてもいい
 
-		if (status.mp >= status.useMagic.useMP && SManager.instance.target != null)
+		if (status.mp >= SManager.instance.useMagic.useMP && SManager.instance.target != null)
 		{
 
-		//	Debug.Log($"つかう魔法{SManager.instance.sisStatus.useMagic.name}");
+		//	Debug.Log($"つかう魔法{SManager.instance.useMagic.name}");
 		//	Debug.Log($"判断番号{judgeSequence}");
 			SManager.instance.actNow = true;
 			waitCast += Time.fixedDeltaTime;
-			if (waitCast >= SManager.instance.sisStatus.useMagic.castTime && SManager.instance.target != null)
+			if (waitCast >= SManager.instance.useMagic.castTime && SManager.instance.target != null)
 			{
 
-				sb.sAni.Play(SManager.instance.sisStatus.useMagic.FireAnime);
+				//sb.//(SManager.instance.useMagic.FireAnime);
 				//useMagic = true;
 				disEnable = true;
 				SManager.instance.castNow = false;
@@ -665,7 +665,7 @@ public class SisterFire : MonoBehaviour
 			{
 			//	Debug.Log("詠唱中");
 				SManager.instance.castNow = true;
-				sb.sAni.Play(SManager.instance.sisStatus.useMagic.castAnime);
+				//sb.//(SManager.instance.useMagic.castAnime);
                 if (soundStart == 1)
                 {
 					GManager.instance.PlaySound(castSound,transform.position);
@@ -1253,7 +1253,7 @@ public class SisterFire : MonoBehaviour
         else
         {
 		//	Debug.Log($"おかしなとき{condition.UseMagic.name}");
-			SManager.instance.sisStatus.useMagic = condition.UseMagic;
+			SManager.instance.useMagic = condition.UseMagic;
         }
 	}
 
@@ -1482,7 +1482,7 @@ public class SisterFire : MonoBehaviour
 			{
 				if (condition.nextCondition == SupportCondition.AdditionalJudge.指定なし)
 				{
-					SManager.instance.sisStatus.useMagic = candidate[0];
+					SManager.instance.useMagic = candidate[0];
 					condition.UseMagic = candidate[0];
 					magicCanList = null;
 				}
@@ -1585,14 +1585,14 @@ public class SisterFire : MonoBehaviour
 							}
 						}
 					}
-					SManager.instance.sisStatus.useMagic = candidate[selectNumber];
+					SManager.instance.useMagic = candidate[selectNumber];
 
 				}
 			}
 		}
 		else
 		{
-			SManager.instance.sisStatus.useMagic = condition.UseMagic;
+			SManager.instance.useMagic = condition.UseMagic;
 		}
 	}
 
@@ -1843,19 +1843,19 @@ public class SisterFire : MonoBehaviour
 			}
 			if (candidate.Count == 0)
 			{
-				//Debug.Log($"焼肉{SManager.instance.sisStatus.useMagic.name}");
-				SManager.instance.sisStatus.useMagic = null;
+				//Debug.Log($"焼肉{SManager.instance.useMagic.name}");
+				SManager.instance.useMagic = null;
 				return;
 			}
 			else
 			{
 				if (condition.nextCondition == RecoverCondition.AdditionalJudge.指定なし)
 				{
-					SManager.instance.sisStatus.useMagic = candidate[0];
+					SManager.instance.useMagic = candidate[0];
 
 					condition.UseMagic = candidate[0];
 					magicCanList = null;
-					Debug.Log($"君の名は{SManager.instance.sisStatus.useMagic.name}");
+					Debug.Log($"君の名は{SManager.instance.useMagic.name}");
 				}
 				else
 				{
@@ -2017,14 +2017,14 @@ public class SisterFire : MonoBehaviour
 							}
 
 					}
-					SManager.instance.sisStatus.useMagic = candidate[selectNumber];
+					SManager.instance.useMagic = candidate[selectNumber];
 					condition.UseMagic = candidate[selectNumber];
 				}
 			}
 		}
 		else
 		{
-			SManager.instance.sisStatus.useMagic = condition.UseMagic;
+			SManager.instance.useMagic = condition.UseMagic;
 		}
 
 		SManager.instance.target = GManager.instance.Player;
@@ -2038,7 +2038,7 @@ public class SisterFire : MonoBehaviour
 	{
 
 		waitCast += Time.fixedDeltaTime;
-		sb.sAni.Play("Stand");
+		//sb.//("Stand");
 		if (waitCast >= coolTime + 0.5f)
 		{
 			disEnable = false;
@@ -2069,7 +2069,7 @@ public class SisterFire : MonoBehaviour
 	/// <param name="vRandom"></param>
 	void MagicUse(int hRandom, int vRandom)
 	{
-		//	Debug.Log($"ハザード{SManager.instance.sisStatus.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
+		//	Debug.Log($"ハザード{SManager.instance.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
 		if (!delayNow)
 		{
 			bCount += 1;
@@ -2077,20 +2077,20 @@ public class SisterFire : MonoBehaviour
 		Vector3 goFire = sb.firePosition.position;
 		if (bCount == 1)
 		{
-          //   MyInstantiate(SManager.instance.sisStatus.useMagic.fireEffect, goFire, Quaternion.identity).Forget();
-			//Addressables.InstantiateAsync(SManager.instance.sisStatus.useMagic.fireEffect, goFire, Quaternion.identity);
-			if (SManager.instance.sisStatus.useMagic.fireType == SisMagic.FIREBULLET.RAIN)
+          //   MyInstantiate(SManager.instance.useMagic.fireEffect, goFire, Quaternion.identity).Forget();
+			//Addressables.InstantiateAsync(SManager.instance.useMagic.fireEffect, goFire, Quaternion.identity);
+			if (SManager.instance.useMagic.fireType == SisMagic.FIREBULLET.RAIN)
 			{
 				//山なりの弾道で打ちたいときとか射出角度決めれたらいいかも
 				//位置をランダムにすれば角度はどうでもいい説もある
-				SManager.instance.sisStatus.useMagic.angle = GetAim(sb.firePosition.position, SManager.instance.target.transform.position);
+				SManager.instance.useMagic.angle = GetAim(sb.firePosition.position, SManager.instance.target.transform.position);
 
 			}
-			SManager.instance.sisStatus.mp -= SManager.instance.sisStatus.useMagic.useMP;
+			SManager.instance.sisStatus.mp -= SManager.instance.useMagic.useMP;
 		}
 
 
-		if (SManager.instance.sisStatus.useMagic.isChaice)
+		if (SManager.instance.useMagic.isChaice)
 		{
 			goFire.Set(SManager.instance.target.transform.position.x, SManager.instance.target.transform.position.y, SManager.instance.target.transform.position.y);
 
@@ -2119,27 +2119,27 @@ public class SisterFire : MonoBehaviour
 
 		}
 
-		//Debug.Log($"魔法の名前5{SManager.instance.sisStatus.useMagic.hiraganaName}");
-		//    MyInstantiate(SManager.instance.sisStatus.useMagic.effects, goFire, Quaternion.identity).Forget();//.Result;//発生位置をPlayer
-		if (SManager.instance.sisStatus.useMagic.delayTime == 0 || bCount == 1)
+		//Debug.Log($"魔法の名前5{SManager.instance.useMagic.hiraganaName}");
+		//    MyInstantiate(SManager.instance.useMagic.effects, goFire, Quaternion.identity).Forget();//.Result;//発生位置をPlayer
+		if (SManager.instance.useMagic.delayTime == 0 || bCount == 1)
 		{
-			Addressables.InstantiateAsync(SManager.instance.sisStatus.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.sisStatus.useMagic.startRotation));
+			Addressables.InstantiateAsync(SManager.instance.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.useMagic.startRotation));
 		}
         else if(bCount > 1 && !delayNow)
         {
-			DelayInstantiate(SManager.instance.sisStatus.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.sisStatus.useMagic.startRotation)).Forget();
+			DelayInstantiate(SManager.instance.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.useMagic.startRotation)).Forget();
         }
-		if (bCount >= SManager.instance.sisStatus.useMagic.bulletNumber)
+		if (bCount >= SManager.instance.useMagic.bulletNumber)
 		{
-			//Debug.Log($"テンペスト{SManager.instance.sisStatus.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
+			//Debug.Log($"テンペスト{SManager.instance.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
 			useMagic = false;
 			//disEnable = true;
 			waitCast = 0;
-			coolTime = SManager.instance.sisStatus.useMagic.coolTime;
+			coolTime = SManager.instance.useMagic.coolTime;
 			bCount = 0;
 			SManager.instance.actNow = false;
 			//SManager.instance.target = null;
-			SManager.instance.sisStatus.useMagic = null;
+			SManager.instance.useMagic = null;
 			SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(3);
 		}
 		//	bCount += 1;
@@ -2156,17 +2156,17 @@ public class SisterFire : MonoBehaviour
 
 		//Transform goFire = firePosition;
 
-		//sAni.Play(SManager.instance.sisStatus.attackName[attackNumber]);
+		////(SManager.instance.sisStatus.attackName[attackNumber]);
 
-		//	for (int x = 0; x >= SManager.instance.sisStatus.useMagic.bulletNumber; x++)
+		//	for (int x = 0; x >= SManager.instance.useMagic.bulletNumber; x++)
 		//	{
 
 		Transform gofire = sb.firePosition;
 
-        //Transform rotate = SManager.instance.sisStatus.useMagic.castEffect.LoadAssetAsync<Transform>().Result as Transform;
+        //Transform rotate = SManager.instance.useMagic.castEffect.LoadAssetAsync<Transform>().Result as Transform;
 
-      //  MyInstantiate(SManager.instance.sisStatus.useMagic.castEffect, gofire.position, gofire.rotation).Forget();//.Result;//発生位置をPlayer
-		Addressables.InstantiateAsync(SManager.instance.sisStatus.useMagic.castEffect, gofire.position, gofire.rotation);
+      //  MyInstantiate(SManager.instance.useMagic.castEffect, gofire.position, gofire.rotation).Forget();//.Result;//発生位置をPlayer
+		Addressables.InstantiateAsync(SManager.instance.useMagic.castEffect, gofire.position, gofire.rotation);
 		//	}
 
 		castSound = "normalCast";
@@ -2598,7 +2598,7 @@ public class SisterFire : MonoBehaviour
 			if (condition.nextCondition == FireCondition.AdditionalCondition.指定なし)
 			{
 
-				SManager.instance.sisStatus.useMagic = magicList[0];
+				SManager.instance.useMagic = magicList[0];
 				condition.UseMagic = magicList[0];
 				magicCanList = null;
 			}
@@ -2727,7 +2727,7 @@ public class SisterFire : MonoBehaviour
 					}
 				}
 		
-				SManager.instance.sisStatus.useMagic = magicList[selectNumber];
+				SManager.instance.useMagic = magicList[selectNumber];
 				condition.UseMagic = magicList[selectNumber]; 
 				magicCanList = null;
 			}
@@ -2748,7 +2748,7 @@ public class SisterFire : MonoBehaviour
 			sister.nowMove = SisterParameter.MoveType.支援;
 		}
 		stateJudge = 0.0f;
-		SManager.instance.sisStatus.useMagic = null;
+		SManager.instance.useMagic = null;
 	}
 	/// <summary>
 	/// 支援ステートからのステート変更
@@ -2768,7 +2768,7 @@ public class SisterFire : MonoBehaviour
 		}
 		stateJudge = 0.0f;
 		//	return;
-		SManager.instance.sisStatus.useMagic = null;
+		SManager.instance.useMagic = null;
 	}
 	/// <summary>
 	/// 回復ステートからのステート変更
@@ -2786,7 +2786,7 @@ public class SisterFire : MonoBehaviour
 		{
 			sister.nowMove = SisterParameter.MoveType.支援;
 		}
-		SManager.instance.sisStatus.useMagic = null;
+		SManager.instance.useMagic = null;
 		stateJudge = 0.0f;
 	}
 
@@ -2828,9 +2828,11 @@ public class SisterFire : MonoBehaviour
 
         if (status.equipCombination.isTargeting)
         {
-			SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(3);
-			SManager.instance.target = null;
-
+			if (SManager.instance.target != null)
+			{
+				SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(3);
+				SManager.instance.target = null;
+			}
 		/*	for (int i = 0; i >= status.equipCombination.chainNumber || SManager.instance.target != null; i++)
 			{
 
@@ -2874,10 +2876,26 @@ public class SisterFire : MonoBehaviour
 	 async UniTaskVoid DelayInstantiate(object key, Vector3 position, Quaternion rotation, Transform parent = null, bool trackHandle = true)
     {
 		delayNow = true;
-		await UniTask.Delay(TimeSpan.FromSeconds(SManager.instance.sisStatus.useMagic.delayTime));
+		await UniTask.Delay(TimeSpan.FromSeconds(SManager.instance.useMagic.delayTime));
 		await Addressables.InstantiateAsync(key,position,rotation,parent);
 		delayNow = false;
 	}
+
+
+	public void AttackEnd()
+    {
+		useMagic = false;
+		//disEnable = true;
+		waitCast = 0;
+	//	coolTime = SManager.instance.useMagic.coolTime;
+		bCount = 0;
+		SManager.instance.actNow = false;
+		SManager.instance.castNow = false;
+		SManager.instance.target = null;
+		SManager.instance.useMagic = null;
+		//SManager.instance.target.GetComponent<EnemyBase>().TargetEffectCon(3);
+	}
+
 
 }
 

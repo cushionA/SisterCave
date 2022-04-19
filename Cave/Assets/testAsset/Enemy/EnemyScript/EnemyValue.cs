@@ -9,7 +9,7 @@ public class EnemyValue
     [Header("モーション値")]
     public float mValue;
     [Header("攻撃時のアーマー")]
-    public float aditionalArmor;
+    public float aditionalArmor = 1;
     [Header("強靭削り")]
     public float shock;
  //   [Header("ヒット数")]

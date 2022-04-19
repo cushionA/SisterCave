@@ -47,7 +47,7 @@ public class WSEquip : MonoBehaviour
         MainUI.instance.eqWindow.SetActive(true);
         if (EquipManager.instance.isWeaponM)
         {
-            GManager.instance.setWeapon[EquipManager.instance.setNumber] = EquipManager.instance.selectItem as Weapon;
+            GManager.instance.setWeapon[EquipManager.instance.setNumber] = EquipManager.instance.selectItem as MyCode.Weapon;
             EquipmentManager.instance.EqWeapon[EquipManager.instance.setNumber].Select();
         }
         else

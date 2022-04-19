@@ -513,7 +513,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
                  //   ////Debug.log("お月様キラキラ");
                     yield return item;
                 }
-                else if(!EquipManager.instance.isShieldM && EquipManager.instance.isWeaponM && item.GetType() == typeof(Weapon))
+                else if(!EquipManager.instance.isShieldM && EquipManager.instance.isWeaponM && item.GetType() == typeof(MyCode.Weapon))
                 {
                   //  ////Debug.log("お日様キラキラ");
                         yield return item;

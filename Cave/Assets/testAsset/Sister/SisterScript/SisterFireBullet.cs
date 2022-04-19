@@ -52,7 +52,7 @@ public class SisterFireBullet : MonoBehaviour
 		fireTime = 0;
 
 		col = GetComponent<Collider2D>();
-		//em = SManager.instance.sisStatus.useMagic;
+		//em = SManager.instance.useMagic;
 
 		// オーナーチェック
 		//		if (!ownwer)

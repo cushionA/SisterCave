@@ -32,19 +32,26 @@ public class BattleTest : MonoBehaviour
 
             if(Enemy == null)
             {
+            if (sis != null)
+            {
                 Enemy = sis.gameObject;
             }
-            //GameObject del = Enemy.gameObject;
+            }
+        //GameObject del = Enemy.gameObject;
+        if (Enemy != null)
+        {
             Destroy(Enemy);
+        }
 
     }
 
     public async  UniTaskVoid ReSporn()
     {
-        Debug.Log($"{Enemy.name}");
+        
         sis = await Addressables.InstantiateAsync(EnemyData);
         //  Enemy = dd;
         sis.transform.position = this.gameObject.transform.position;
+        Debug.Log($"{sis.name}");
     }
 
 }

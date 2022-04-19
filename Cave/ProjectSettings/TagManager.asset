@@ -4,92 +4,71 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Ground
-  - ScrollContent
-  - Wall
-  - Ladder
-  - Rope
-  - Enemy
+  - LevelBounds
+  - Music
+  - Background
+  - NoMask
   - PlayerSerch
-  - JumpTrigger
-  - rope2D
-  - Attack
-  - PlayerMagic
-  - ActiveZone
   - Guard
-  - EnemyAttack
-  - SisAttack
-  - Hanging
-  - Dialog
-  - Danger
-  - Parry
+  - Attack
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - AttackBlock
+  - 
   - Water
   - UI
-  - PlayerSerch
-  - NBloomEffect
-  - Ground
-  - Effect
-  - Avoid
+  - 
+  - 
+  - Platforms
   - Player
-  - Sister
-  - Attack
-  - EnemyAttack
-  - EAttackBlock
-  - Gimick
-  - Enemy
-  - PatrolSerch
-  - EnemyVision
-  - SisterSerch
-  - ActiveZone
-  - FlyEnemy
-  - PlayerGuard
-  - EnemyGuard
-  - GurdedFire
-  - Hanging
-  - JumpTrigger
-  - EnemyAvoid
-  - SquatWall
-  - Heal
-  - Wall
+  - Volumes
+  - OneWayPlatforms
+  - Projectiles
+  - Enemies
+  - 
+  - Ladders
+  - PlayerProjectiles
+  - MovingObjects
+  - MovingPlatforms
+  - Foreground
+  - MovingOneWayPlatforms
+  - NoCollision
+  - Background
+  - Friendlies
+  - Invulnerable
+  - PlatformsPlayerOnly
+  - MidHeightOneWayPlatforms
+  - Pushables
+  - Stairs
+  - 
+  - 
+  - 
   m_SortingLayers:
-  - name: BackGround
-    uniqueID: 900986293
-    locked: 0
-  - name: BackObject
-    uniqueID: 3708713883
-    locked: 0
-  - name: Ground
-    uniqueID: 3922050221
-    locked: 0
-  - name: CenterObject
-    uniqueID: 3204395143
+  - name: Background
+    uniqueID: 2674791413
     locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Between
+    uniqueID: 606350985
+    locked: 0
   - name: Player
-    uniqueID: 4202413775
+    uniqueID: 2666359821
     locked: 0
-  - name: Sister
-    uniqueID: 1089981123
+  - name: Platforms
+    uniqueID: 600026165
     locked: 0
-  - name: Effect
-    uniqueID: 4276400555
+  - name: Foreground
+    uniqueID: 1795597123
     locked: 0
-  - name: FrotObject
-    uniqueID: 3034338443
-    locked: 0
-  - name: UI
-    uniqueID: 3044753143
-    locked: 0
-  - name: MySprites
-    uniqueID: 290872189
+  - name: VisibleParticles
+    uniqueID: 940224915
     locked: 0
   - name: MyLighting
-    uniqueID: 1018758195
+    uniqueID: 2753688201
+    locked: 0
+  - name: UI
+    uniqueID: 3241408355
     locked: 0

@@ -835,7 +835,7 @@ GManager.instance.isGBreak = false;
         GManager.instance.NockBack();
         GManager.instance.Blow();
         GManager.instance.Down();
-        GManager.instance.ArmorRecover();
+        //GManager.instance.ArmorRecover();
     }
 
     void AChange()

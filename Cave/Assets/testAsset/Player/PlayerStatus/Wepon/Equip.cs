@@ -86,12 +86,17 @@ public class Equip : Item
     ///</Summary>
     public List<string> useSound;
 
-    [Header("攻撃属性")]
-    [Tooltip("物理1,2,4、以下聖8闇16炎32雷64")]
-    ///<Sammary>
-    /// 攻撃の属性
-    /// 物理統合、以下聖闇炎雷
-    /// エンチャント時はエンチャントタイプを利用
-    ///</Sammary>>
-    public byte attackType;
+    public enum AttackType
+    {
+        Slash,//斬撃。ほどほどに通るやつが多い
+        Stab,//刺突。弱点のやつと耐えるやつがいる
+        Strike//打撃。弱点のやつと耐えるやつがいる。アーマーとひるませ強く
+    }
+    /// <summary>
+    /// 剣で刺突するときとかはアニメイベントで変える
+    /// </summary>
+    [HideInInspector] public AttackType atType;
+
+    public float _weight;
+
 }

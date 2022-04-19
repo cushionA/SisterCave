@@ -135,10 +135,16 @@ public class EnemyStatus : CharacterStatus
 	///<summary>
 	///飛行キャラはほぼなし。
 	///</summary>
-	public float jumpCool;
+	public float jumpCool = 2;
+
+	[Header("ジャンプの回数")]
+	///<summary>
+	///飛行キャラはほぼなし。
+	///</summary>
+	public int jumpLimit;
 
 	[Header("回避時の速度")]
-	public Vector2 avoidSpeed;
+	public float avoidSpeed;
 
 	[Header("回避の継続時間")]
 	public float avoidRes;
@@ -177,11 +183,7 @@ public class EnemyStatus : CharacterStatus
 	///</summary>
 	public List<EnemyMagic> enemyFire;//エネミーの魔法
 
-	[Header("ドッグパイル")]
-	///<summary>
-	///移動の中心となるオブジェクト。敵を引き連れたり
-	///</summary>
-	public GameObject dogPile;
+
 
 
 
@@ -208,7 +210,8 @@ public class EnemyStatus : CharacterStatus
 		leaveWalk,
 		stay,//止まる
 		escape,//逃げる
-		wakeup//デフォルト
+		wakeup,//デフォルト
+		straight
 	}
 
 
