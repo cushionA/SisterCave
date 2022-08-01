@@ -21,20 +21,20 @@ public class SisterMagicSelect : MonoBehaviour
     {
         if (SManager.instance.sisStatus.equipMagic[setNumber] != null)
         {
-            this.contentIcon.sprite = SManager.instance.sisStatus.equipMagic[setNumber].icon;
+            //this.contentIcon.sprite = SManager.instance.sisStatus.equipMagic[setNumber].icon;
         }
     }
 
 
     public void PMagicEquip()
     {
-        // MainUI.instance.isReBuild = true;
-        MainUI.instance.mac.isEver = false;
-        MainUI.instance.mac.isIniti = false;
-        MainUI.instance.magicWindow.SetActive(true);
+        // MainUICon.instance.isReBuild = true;
+      /*  MainUICon.instance.mac.isEver = false;
+        MainUICon.instance.mac.isIniti = false;
+        MainUICon.instance.magicWindow.SetActive(true);
         EquipmentManager.instance.InitialButton.Select();
         MagicManager.instance.setNumber = setNumber;
         MagicManager.instance.isSisterM = true;
-        MainUI.instance.eqWindow.SetActive(false);
+        MainUICon.instance.eqWindow.SetActive(false);*/
     }
 }

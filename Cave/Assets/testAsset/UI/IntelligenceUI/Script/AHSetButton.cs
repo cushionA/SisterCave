@@ -27,15 +27,15 @@ public class AHSetButton : MonoBehaviour
         RecoverCondition e;
         if(editNum == 1)
         {
-            e = MainUI.instance.editParameter.nFirstRecover;
+            e = MainUICon.instance.editParameter.nFirstRecover;
         }
         else if(editNum == 2)
         {
-            e = MainUI.instance.editParameter.nSecondRecover;
+            e = MainUICon.instance.editParameter.nSecondRecover;
         }
         else
         {
-            e = MainUI.instance.editParameter.nThirdRecover;
+            e = MainUICon.instance.editParameter.nThirdRecover;
         }
         if (!isAct)
         {
@@ -108,17 +108,17 @@ public class AHSetButton : MonoBehaviour
     /// </summary>
     public void SelectButton()
     {
-        MainUI.instance.editNumber = editNum;
+        MainUICon.instance.editNumber = editNum;
 
         //ëOÇÃëãÇëÄçÏïsî\Ç…
         pare.enable = true;
         if (isAct)
         {
-            MainUI.instance.settingNumber = 6;
+            MainUICon.instance.settingNumber = 6;
         }
         else
         {
-            MainUI.instance.settingNumber = 5;
+            MainUICon.instance.settingNumber = 5;
         }
         pare.nextWindow.SetActive(true);
 

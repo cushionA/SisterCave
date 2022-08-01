@@ -1,6 +1,6 @@
 ﻿using DarkTonic.MasterAudio;
-using System.Collections;
-using System.Collections.Generic;
+using MoreMountains.InventoryEngine;
+
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -9,6 +9,17 @@ public class Magic : Item
 
 	[Header("装備画面で選択できるか")]
 	public bool selectable;
+
+	[HideInInspector]
+	public enum MagicType
+	{
+		Attack,//攻撃
+		Recover,//回復
+		Support,//支援
+		help//条件で勝手に発動？
+	}
+	public MagicType mType;
+
 
 	[HideInInspector]
 	public enum FIREBULLET
@@ -78,6 +89,8 @@ public class Magic : Item
 
 	//public Transform firePosition;//発射位置
     //各能力補正
+	//これ触媒補正でいいっす
+	//でもそれだと丸パクリじゃんねぇ
     public AnimationCurve powerCurve;
     public AnimationCurve skillCurve;
     public AnimationCurve intCurve;

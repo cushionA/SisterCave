@@ -12,8 +12,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
     /// <summary>
     /// TODO_DESCRIPTION
     /// </summary>
-    [AddComponentMenu("Corgi Engine/Character/Abilities/TODO_REPLACE_WITH_ABILITY_NAME")]
-    public class MyWakeUp : CharacterAbility
+    [AddComponentMenu("Corgi Engine/Character/Abilities/MyWakeUp")]
+    public class MyWakeUp : MyAbillityBase
     {
         /// このメソッドは、ヘルプボックスのテキストを表示するためにのみ使用されます。
         /// 能力のインスペクタの冒頭にある
@@ -33,8 +33,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected int _WakeAnimationParameter;
 
         //よろめき
-        protected const string _FaltterParameterName = "Faltter";
-        protected int _FaltterAnimationParameter;
+        protected const string _FalterParameterName = "Falter";
+        protected int _FalterAnimationParameter;
 
         //パリィ
         protected const string _ParriedParameterName = "Parried";
@@ -44,8 +44,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected const string _GBreakeParameterName = "GBreake";
         protected int _GBreakeAnimationParameter;
 
-
-        protected RewiredCorgiEngineInputManager ReInput;
 
         /// <summary>
         /// 1よろめき2パリィ3ガードブレイク、4ダウン
@@ -63,7 +61,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         public enum StunnType
         {
-            Faltter,
+            Falter,
             Parried,
             GuardBreake,
             Down,
@@ -79,7 +77,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             base.Initialization();
             // randomBool = false;
-            ReInput = (RewiredCorgiEngineInputManager)_inputManager;
             pr = _controller.gameObject.GetComponent<PlayerRoll>();
         }
 
@@ -102,7 +99,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             // here as an example we check if we're pressing down
             // on our main stick/direction pad/keyboard
-            if (ReInput.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+            if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
             {
                 if (nowType == 4 && !blowNow)
                 {
@@ -140,7 +137,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 //それか4以外全部まとめてアニメ松処理でもいいな
                 //今のタイプ入れるところでアニメの名前切り替えてもよかろ
 
-                if (CheckEnd("Faltter"))
+                if (CheckEnd("Falter"))
                 {
                     Recover();
                 }
@@ -200,7 +197,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 _condition.ChangeState(CharacterStates.CharacterConditions.Stunned);
 
-                if (type == StunnType.Faltter)
+                if (type == StunnType.Falter)
                 {
                     nowType = 1;
                 }
@@ -234,7 +231,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         protected override void InitializeAnimatorParameters()
         {
-            RegisterAnimatorParameter(_FaltterParameterName, AnimatorControllerParameterType.Bool, out _FaltterAnimationParameter);
+            RegisterAnimatorParameter(_FalterParameterName, AnimatorControllerParameterType.Bool, out _FalterAnimationParameter);
             RegisterAnimatorParameter(_ParriedParameterName, AnimatorControllerParameterType.Bool, out _ParriedAnimationParameter);
             RegisterAnimatorParameter(_GBreakeParameterName, AnimatorControllerParameterType.Bool, out _GBreakeAnimationParameter);
             RegisterAnimatorParameter(_BlowParameterName, AnimatorControllerParameterType.Bool, out _BlowAnimationParameter);
@@ -248,7 +245,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         public override void UpdateAnimator()
         {
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _FaltterAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned && nowType == 1), _character._animatorParameters);
+            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _FalterAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned && nowType == 1), _character._animatorParameters);
             MMAnimatorExtensions.UpdateAnimatorBool(_animator, _ParriedAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned && nowType == 2), _character._animatorParameters);
             MMAnimatorExtensions.UpdateAnimatorBool(_animator, _GBreakeAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned && nowType == 3), _character._animatorParameters);
             MMAnimatorExtensions.UpdateAnimatorBool(_animator, _DownAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned && nowType == 4), _character._animatorParameters);

@@ -26,10 +26,10 @@ public class ChangeCNumber : MonoBehaviour
     void Update()
     {
         //  ////Debug.log($"変更数{CoreManager.instance.changeNum}");
-        //  ////Debug.log($"所持数{CoreManager.instance.selectItem.inventoryNum}");
+        //  ////Debug.log($"所持数{5)//5}");
         //  ////Debug.log($"偽なら変更可能{isChange}");
-        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
-                horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction16);
+        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15);
+                horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction16);
         //    ////Debug.log($"上キー{verticalKey}");
         //  ////Debug.log($"横キー{horizontalKey}");
         if (!isChange)
@@ -38,7 +38,7 @@ public class ChangeCNumber : MonoBehaviour
             if (verticalKey > 0 && horizontalKey == 0)
             {
                 isChange = true;
-                if (CoreManager.instance.changeNum + 1 <= CoreManager.instance.selectItem.inventoryNum)
+                if (CoreManager.instance.changeNum + 1 <= 5)//5)//5)
                 {
                     CoreManager.instance.changeNum += 1;
                 }
@@ -55,13 +55,13 @@ public class ChangeCNumber : MonoBehaviour
             else if (verticalKey == 0 && horizontalKey > 0)
             {
                 isChange = true;
-                if (CoreManager.instance.changeNum + 10 <= CoreManager.instance.selectItem.inventoryNum)
+                if (CoreManager.instance.changeNum + 10 <= 5)//5)
                 {
                     CoreManager.instance.changeNum += 10;
                 }
                 else
                 {
-                    CoreManager.instance.changeNum = CoreManager.instance.selectItem.inventoryNum;
+                    CoreManager.instance.changeNum = 5;//5;
                 }
             }
             else if (verticalKey == 0 && horizontalKey < 0)

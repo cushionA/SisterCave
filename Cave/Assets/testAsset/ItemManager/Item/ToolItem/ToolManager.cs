@@ -51,11 +51,7 @@ public class ToolManager : MonoBehaviour
 
 
 
-    //　名前でアイテムを取得
-    public ToolItem GetItem(string searchName)
-	{
-		return toolDataBase.GetItemLists().Find(itemName => itemName.itemName == searchName);
-	}
+
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
@@ -68,17 +64,13 @@ public class ToolManager : MonoBehaviour
 
 		for (int i = 0; i < takeItem.Length; i++)
 		{
-			int pas = takeItem[i].inventoryNum;
-			takeItem[i].inventoryNum = pas + changeNum[i];
+			//int pas = pas;
+			//pas = pas + changeNum[i];
 			//isUp = true;
 			/*int pas = numOfItem[GetItem($"{takeItem}")];
 			numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
 			isUp = true;*/
-			if (takeItem[i].inventoryNum < 0)
-			{
-				takeItem[i].inventoryNum = 0;
 
-			}
 		}
 	}
 	//public Dictionary<ToolItem,int> GetItemDictionary()
@@ -87,18 +79,15 @@ public class ToolManager : MonoBehaviour
 	//}
 	public void Use()
 	{
-		if (selectItem.kindOfItem == ToolItem.KindOfItem.UseItem)
-		{
 
-		}
-		int pas = selectItem.inventoryNum;
-		selectItem.inventoryNum = pas - changeNum;
+	//	int pas = 5;
+	//	5 = pas - changeNum;
 
 	}
 	public void DumpTool()
     {
-		int pas = selectItem.inventoryNum;
-		selectItem.inventoryNum = pas - changeNum;
+	//	int pas = 5;
+		//5 = pas - changeNum;
 	}
 
 }

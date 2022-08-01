@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using MoreMountains.InventoryEngine;
+
 
 [Serializable]
 [CreateAssetMenu(fileName = "ToolItem", menuName = "CreateToolItem")]

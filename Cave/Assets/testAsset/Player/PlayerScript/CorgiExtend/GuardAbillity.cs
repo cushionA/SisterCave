@@ -12,8 +12,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
     /// <summary>
     /// TODO_DESCRIPTION
     /// </summary>
-    [AddComponentMenu("Corgi Engine/Character/Abilities/TODO_REPLACE_WITH_ABILITY_NAME")]
-    public class GuardAbillity : CharacterAbility
+    [AddComponentMenu("Corgi Engine/Character/Abilities/GuardAbillity")]
+    public class GuardAbillity : MyAbillityBase
     {
         /// このメソッドは、ヘルプボックスのテキストを表示するためにのみ使用されます。
         /// 能力のインスペクタの冒頭にある
@@ -26,15 +26,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //ガード歩きとかの方法考えとけよ
 
         // Animation parameters
-        protected const string _todoParameterName = "GuardNow";
-        protected int _todoAnimationParameter;
+        protected const string _guardParameterName = "GuardNow";
+        protected int _guardAnimationParameter;
 
-        protected RewiredCorgiEngineInputManager ReInput;
+
 
         [HideInInspector]
         public bool guardHit;
 
         float hitTime;
+
+
 
         /// <summary>
         ///　ここで、パラメータを初期化する必要があります。
@@ -43,7 +45,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             base.Initialization();
             // randomBool = false;
-            ReInput = (RewiredCorgiEngineInputManager)_inputManager;
+           // _inputManager = (RewiredCorgiEngineInputManager)_inputManager;
         }
 
         /// <summary>
@@ -60,17 +62,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected override void HandleInput()
         {
             //ここで何ボタンが押されているかによって引数渡すか
-            
+
             // here as an example we check if we're pressing down
             // on our main stick/direction pad/keyboard
-
-                if (_controller.State.IsGrounded)
+            // Debug.Log($"guibu{_horizontalInput}");
+            if (_controller.State.IsGrounded)
                 {
-                    if (ReInput.GuardButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed || guardHit)
+                    if ((_inputManager.GuardButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed || guardHit) && GManager.instance.isEnable)
                     {
                         ActGuard();
                     }
-                    else if(ReInput.GuardButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+                    //ボタンを離すかスタミナ使用不可なら
+                    else if(_inputManager.GuardButton.State.CurrentState == MMInput.ButtonStates.ButtonUp || !GManager.instance.isEnable)
                     {
                         GuardEnd();
                     } 
@@ -83,10 +86,25 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (guardHit)
             {
                 hitTime += _controller.DeltaTime;
+                if (isPlayer)
+                {
+                        // もしプレイヤーにガードヒットしたならスタミナは回復しなくなる
+                        //停止時間盾の受け値か種類で変えてもいいかも
+                        //ガードヒット時動けないようにしないと
+                    GManager.instance.isStUse = true;
+
+                    //ガードでヒットした際は横移動とジャンプを封じる
+                    //いやでも普通にガードヒットした状態にした方がよさそう
+                    //スタンでいいか？
+                    //スタンの参照検索してスタンにすればうごかないようにできるか調べる
+                    _inputManager.SetHorizontalMovement(0);
+                    _inputManager.JumpButton.State.ChangeState(MMInput.ButtonStates.Off);
+                }
                 if (hitTime >= 0.1)
                 {
                     guardHit = false;
                     hitTime = 0;
+                    GManager.instance.isStUse = false;
                 }
             }
 
@@ -110,6 +128,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
 
             _movement.ChangeState(CharacterStates.MovementStates.Guard);
+            if (isPlayer)
+            {
+                //ガード中に
+                GManager.instance.isGuard = true;
+            }
 
             //普通移動の速度でいいわ
             /*
@@ -122,6 +145,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void GuardEnd()
         {
             _movement.ChangeState(CharacterStates.MovementStates.Idle);
+            if (isPlayer)
+            {
+                //ガード終わらせる
+                GManager.instance.isGuard = false;
+            }
         } 
 
         /// <summary>
@@ -129,7 +157,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         protected override void InitializeAnimatorParameters()
         {
-            RegisterAnimatorParameter(_todoParameterName, AnimatorControllerParameterType.Bool, out _todoAnimationParameter);
+           // Debug.Log($"焼肉{_animator.runtimeAnimatorController.name}");
+            RegisterAnimatorParameter(_guardParameterName, AnimatorControllerParameterType.Bool, out _guardAnimationParameter);
         }
 
         /// <summary>
@@ -139,7 +168,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public override void UpdateAnimator()
         {
             //クラウチングに気をつけろよ
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _todoAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Guard), _character._animatorParameters);
+            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _guardAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Guard), _character._animatorParameters);
         }
 
         public void GuardHit()

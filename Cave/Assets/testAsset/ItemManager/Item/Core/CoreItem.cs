@@ -1,9 +1,10 @@
 ﻿using System;
 using UnityEngine;
+using MoreMountains.InventoryEngine;
 
 [Serializable]
 [CreateAssetMenu(fileName = "CoreItem", menuName = "CreateCore")]
-public class CoreItem : Item
+public class CoreItem : InventoryItem
 {
     //まぁコア的な処理を
 

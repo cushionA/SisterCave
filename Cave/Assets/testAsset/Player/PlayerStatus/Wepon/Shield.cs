@@ -8,11 +8,7 @@ using UnityEngine;
 public class Shield : Equip
 {
 
-    [Header("盾固有技のアニメーション")]
-    ///<summary>
-    ///盾固有技のアニメ
-    /// </summary>
-    public List<Animation> artsAnime;
+
 
 
     [Header("ゲーム画面で表示するスプライト")]
@@ -59,11 +55,9 @@ public class Shield : Equip
     /// </summary>
     public List<AttackValue> artsValue;
 
-   // [Header("武器固有モーションの名前リスト")]
-    /// <summary>
-    /// 武器固有モーションリスト
+    [Header("盾固有技のアニメーション")]
+    ///<summary>
+    ///盾固有技のアニメ
     /// </summary>
-   // public List<string> artsName;
-
-   // public float guardSpeed;//ガード中の移動速度
+    public AnimationClip[] artsAnime;
 }

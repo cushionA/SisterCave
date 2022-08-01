@@ -22,7 +22,7 @@ public class ChangeToolNum : MonoBehaviour
         if (isDump)
         {
 
-            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
             {
                 isDump = false;
                 uw.isDump = false;
@@ -32,7 +32,7 @@ public class ChangeToolNum : MonoBehaviour
         }
         else if (isSUse)
         {
-            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
             {
                 isSUse = false;
                 uw.isSUse = false;
@@ -41,7 +41,7 @@ public class ChangeToolNum : MonoBehaviour
             }
         }
 
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14))
         {
             ResetFlag();
             uw.ResetWindow();
@@ -54,10 +54,10 @@ public class ChangeToolNum : MonoBehaviour
         uw.isDump = false;
         ToolManager.instance.DumpTool();
         ToolManager.instance.changeNum = 1;
-        MainUI.instance.selectButton.GetComponent<Button>().Select();
+        MainUICon.instance.selectButton.GetComponent<Button>().Select();
         uw.ResetWindow();
         this.gameObject.SetActive(false);
-        MainUI.instance.MenuCancel();
+        MainUICon.instance.MenuCancel();
     }
     public void SUseAct()
     {
@@ -66,12 +66,12 @@ public class ChangeToolNum : MonoBehaviour
         ToolManager.instance.changeNum = 1;
         uw.ResetWindow();
         this.gameObject.SetActive(false);
-        MainUI.instance.MenuCancel();
+        MainUICon.instance.MenuCancel();
     }
 
     public void ResetFlag()
     {
- //       MainUI.instance.selectButton = null;
+ //       MainUICon.instance.selectButton = null;
    //     ToolManager.instance.selectItem = null;
         isDump = false;
         isSUse = false;

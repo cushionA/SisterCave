@@ -8,8 +8,8 @@ namespace MoreMountains.CorgiEngine
     /// <summary>
     /// This component allows your character to fly by moving gravity-free on both x and y axis. Here you can define the flight speed, as well as whether or not the character is always flying (in which case you don't have to press a button to fly). Important note : slope ceilings are not supported for now.
     /// </summary>
-	[AddComponentMenu("Corgi Engine/Character/Abilities/Character Fly")]
-    public class EnemyFly : CharacterAbility
+	[AddComponentMenu("Corgi Engine/Character/Abilities/EnemyFly")]
+    public class EnemyFly : MyAbillityBase
     {
         public override string HelpBoxText() { return "This component allows your character to fly by moving gravity-free on both x and y axis. Here you can define the flight speed, as well as whether or not the character is always flying (in which case you don't have to press a button to fly). Important note : slope ceilings are not supported for now."; }
 

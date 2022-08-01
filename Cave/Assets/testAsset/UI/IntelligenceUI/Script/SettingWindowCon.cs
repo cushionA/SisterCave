@@ -39,7 +39,7 @@ public class SettingWindowCon : MonoBehaviour
     {
         if (!enable && o.next)
         {
-            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
             {
                 if (isAH)
                 {
@@ -66,31 +66,31 @@ public class SettingWindowCon : MonoBehaviour
 
         if (isAH)
         {
-            if (MainUI.instance.settingNumber == 6)
+            if (MainUICon.instance.settingNumber == 6)
             {
-                //  Debug.Log($"前{MainUI.instance.settingNumber}");
-                myButton[MainUI.instance.editNumber + 2].Select();
-                MainUI.instance.settingNumber = 5;
-           //     Debug.Log($"ato{MainUI.instance.settingNumber}");
+                //  Debug.Log($"前{MainUICon.instance.settingNumber}");
+                myButton[MainUICon.instance.editNumber + 2].Select();
+                MainUICon.instance.settingNumber = 5;
+           //     Debug.Log($"ato{MainUICon.instance.settingNumber}");
             }
             else
             {
-                myButton[MainUI.instance.editNumber - 1].Select();
+                myButton[MainUICon.instance.editNumber - 1].Select();
             }
-           // MainUI.instance.isAH = false;
+           // MainUICon.instance.isAH = false;
         }
         else
         {
-            if (MainUI.instance.settingNumber % 2 == 0)
+            if (MainUICon.instance.settingNumber % 2 == 0)
             {
-                //  Debug.Log($"前{MainUI.instance.settingNumber}");
-                myButton[MainUI.instance.editNumber + 4].Select();
-                MainUI.instance.settingNumber--;
-                Debug.Log($"ato{MainUI.instance.settingNumber}");
+                //  Debug.Log($"前{MainUICon.instance.settingNumber}");
+                myButton[MainUICon.instance.editNumber + 4].Select();
+                MainUICon.instance.settingNumber--;
+                Debug.Log($"ato{MainUICon.instance.settingNumber}");
             }
             else
             {
-                myButton[MainUI.instance.editNumber - 1].Select();
+                myButton[MainUICon.instance.editNumber - 1].Select();
             }
         }
         enable = false;

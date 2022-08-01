@@ -123,19 +123,19 @@ public class AttackM : MonoBehaviour
             //  DownKeyCheck();
             //     ControllerCheck();
             //   ////Debug.Log($"状態は{GManager.instance.equipWeapon.twinHand}です");
-            horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
+            horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction0);
 
-            changeKey = GManager.instance.InputR.GetButtonUp(MainUI.instance.rewiredAction13);
-            if (!GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction13) && GManager.instance.isEnable && !smallTrigger && !(GManager.instance.isAttack && !isAttackable))
+            changeKey = GManager.instance.InputR.GetButtonUp(MainUICon.instance.rewiredAction13);
+            if (!GManager.instance.InputR.GetButton(MainUICon.instance.rewiredAction13) && GManager.instance.isEnable && !smallTrigger && !(GManager.instance.isAttack && !isAttackable))
             {
-                fire1Key = GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction9);
+                fire1Key = GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction9);
                 //lastAttack = true;
             }
             else
             {
                 fire1Key = false;
             }
-            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction9) && GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction13) && !GManager.instance.isAttack)
+            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction9) && GManager.instance.InputR.GetButton(MainUICon.instance.rewiredAction13) && !GManager.instance.isAttack)
             {
                 //武器切り替え
 
@@ -158,7 +158,7 @@ public class AttackM : MonoBehaviour
                 if (!bigTrigger)
                 {
 
-                    fire2Key = GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction10);
+                    fire2Key = GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction10);
 
                     //fire2Axis = GManager.instance.InputR.GetAxisRaw("Fire2Axis");
                 }
@@ -169,7 +169,7 @@ public class AttackM : MonoBehaviour
 
                 if (!artsTrigger)
                 {
-                    artsKey = GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction12);
+                    artsKey = GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction12);
                     // ////Debug.Log("入力");
                 }
                 else
@@ -197,7 +197,7 @@ public class AttackM : MonoBehaviour
 
             if (isCharging && !bigAttack && !chargeAttack)
             {
-                chargeKey = GManager.instance.InputR.GetButton((MainUI.instance.rewiredAction10));////////Debug.log("入力");
+                chargeKey = GManager.instance.InputR.GetButton((MainUICon.instance.rewiredAction10));////////Debug.log("入力");
             }
             else
             {
@@ -1005,13 +1005,13 @@ public class AttackM : MonoBehaviour
 
     bool AnyKey()
     {
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction4) || GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction11)
-            || GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction13))
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction4) || GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction11)
+            || GManager.instance.InputR.GetButton(MainUICon.instance.rewiredAction13))
         {
 
             return true;
         }
-        else if((GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction2) != 0) || (horizontalKey != 0))
+        else if((GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction2) != 0) || (horizontalKey != 0))
         {
             afterTime += Time.deltaTime;
             if(afterTime >= afterJudge)

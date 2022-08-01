@@ -17,17 +17,17 @@ public class CoreEquipButton : MonoBehaviour
     {
         if (GManager.instance.pStatus.equipCore != null)
         {
-            this.contentIcon.sprite = GManager.instance.pStatus.equipCore.icon;
+           // //this.contentIcon.sprite = GManager.instance.pStatus.equipCore.icon;
         }
     }
 
 
     public void EquipCore()
     {
-        MainUI.instance.coreWindow.SetActive(true);
+     //   MainUICon.instance.coreWindow.SetActive(true);
         EquipmentManager.instance.InitialButton.Select();
         CoreManager.instance.isEquipMenu = true;
-        MainUI.instance.eqWindow.SetActive(false);
+      //  MainUICon.instance.eqWindow.SetActive(false);
     }
 
 }

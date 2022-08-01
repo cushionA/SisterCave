@@ -39,7 +39,7 @@ public class DropdownScrollTemplate : MonoBehaviour
     private void Update()
     {
 
-		move = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
+		move = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15);
 
 		float d = 0;
 		if(move > 0)

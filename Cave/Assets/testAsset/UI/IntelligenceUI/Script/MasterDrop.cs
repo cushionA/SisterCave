@@ -22,11 +22,11 @@ public class MasterDrop : MonoBehaviour
     void Update()
     {
 
-            if (!MainUI.instance.editNow && (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17)))
+            if (!MainUICon.instance.editNow && (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17)))
             {
-            int i = MainUI.instance.isAH ? 3 : 2;
+            int i = MainUICon.instance.isAH ? 3 : 2;
 
-         //   Debug.Log($"いつも{MainUI.instance.editNow}");
+         //   Debug.Log($"いつも{MainUICon.instance.editNow}");
                 UIEnd();
                 value[i].GetComponent<SettingWindowCon>().CancelWindow();
             }
@@ -50,12 +50,12 @@ public class MasterDrop : MonoBehaviour
 
         //こいつはvalue窓の切り替えとUIPlaceSetの呼び出しとSetActiveだけ
 
-        if (MainUI.instance.valueWindow != null)
+        if (MainUICon.instance.valueWindow != null)
         {
-            MainUI.instance.valueWindow.SetActive(false);
+            MainUICon.instance.valueWindow.SetActive(false);
         }
-        if(MainUI.instance.secondDrop != null)
-        MainUI.instance.secondDrop.SetActive(false);
+        if(MainUICon.instance.secondDrop != null)
+        MainUICon.instance.secondDrop.SetActive(false);
 
         //窓の切り替え
         WindowJudge();
@@ -75,7 +75,7 @@ public class MasterDrop : MonoBehaviour
 
 
         //並び替えのために前のオブジェクトを改変
-      //  MainUI.instance.beforeSet = this.gameObject;
+      //  MainUICon.instance.beforeSet = this.gameObject;
     }
 
 
@@ -85,15 +85,15 @@ public class MasterDrop : MonoBehaviour
     /// </summary>
     public void UIEnd()
     {
-        //   MainUI.instance.selectList = new List<Selectable>();
+        //   MainUICon.instance.selectList = new List<Selectable>();
 
-        MainUI.instance.beforeSet = null;
+        MainUICon.instance.beforeSet = null;
         this.gameObject.SetActive(false);
-        if (MainUI.instance.valueWindow != null)
+        if (MainUICon.instance.valueWindow != null)
         {
-            MainUI.instance.valueWindow.SetActive(false);
+            MainUICon.instance.valueWindow.SetActive(false);
         }
-            MainUI.instance.secondDrop.SetActive(false);
+            MainUICon.instance.secondDrop.SetActive(false);
 
     }
 
@@ -111,9 +111,9 @@ public class MasterDrop : MonoBehaviour
         //支援選択パターン
         //ファーストドロップ（行動選択）（なにもしないと移行で後の窓が消える）→セカンドドロップ（どんなサポートがついたものを選ぶか）→サードドロップ（どんな条件で魔法選ぶか）
 
-        SisterParameter sis = MainUI.instance.editParameter;
-        int s = MainUI.instance.settingNumber;
-        int e = MainUI.instance.editNumber;
+        SisterParameter sis = MainUICon.instance.editParameter;
+        int s = MainUICon.instance.settingNumber;
+        int e = MainUICon.instance.editNumber;
         Selectable sl;
         Selectable sl2;
         int num;
@@ -142,13 +142,13 @@ public class MasterDrop : MonoBehaviour
         }
         #endregion
         sl = this.gameObject.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
-        sl2 = MainUI.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+        sl2 = MainUICon.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
 
         //上下の選択初期化、失敗してないか注意
         UnderSet(sl, null);
         UpSet(sl2, null);
         //まずセレクト初期化
-        MainUI.instance.beforeSet = null;
+        MainUICon.instance.beforeSet = null;
         this.gameObject.GetComponent<UIPlaceSet>().PlaceSet();
         if (s == 1)
         {
@@ -183,33 +183,33 @@ public class MasterDrop : MonoBehaviour
                editJudge.condition == AttackJudge.TargetJudge.指定なし ||
                editJudge.condition == AttackJudge.TargetJudge.状態異常にかかってる敵)
             {
-                if(MainUI.instance.valueWindow != null)
+                if(MainUICon.instance.valueWindow != null)
                 {
-                    MainUI.instance.valueWindow.SetActive(false);
+                    MainUICon.instance.valueWindow.SetActive(false);
                 }
             }
             else
             {
                 if(editJudge.condition == AttackJudge.TargetJudge.敵タイプ)
                 {
-                    MainUI.instance.valueWindow = value[0].gameObject;
+                    MainUICon.instance.valueWindow = value[0].gameObject;
                 }
                 else
                 {
-                    MainUI.instance.valueWindow = value[1].gameObject;
-                  //  MainUI.instance.valueWindow
+                    MainUICon.instance.valueWindow = value[1].gameObject;
+                  //  MainUICon.instance.valueWindow
                 }
-                MainUI.instance.isChange = 1;
-                MainUI.instance.valueWindow.SetActive(true);
+                MainUICon.instance.isChange = 1;
+                MainUICon.instance.valueWindow.SetActive(true);
                 valueCheck = true;
-                MainUI.instance.valueWindow.GetComponent<UIPlaceSet>().PlaceSet();
+                MainUICon.instance.valueWindow.GetComponent<UIPlaceSet>().PlaceSet();
             }
-                MainUI.instance.secondDrop.SetActive(true);
-                MainUI.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                MainUICon.instance.secondDrop.SetActive(true);
+                MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
         }
         else if(s == 2)
         {
-            //MainUI.instance.valueWindow.SetActive(false);
+            //MainUICon.instance.valueWindow.SetActive(false);
             FireCondition editAT;
             //内容割り当て
             #region
@@ -241,13 +241,13 @@ public class MasterDrop : MonoBehaviour
             if (editAT.condition == FireCondition.ActJudge.なにもしない || editAT.condition == FireCondition.ActJudge.回復行動に移行 ||
                 editAT.condition == FireCondition.ActJudge.支援行動に移行)
             {
-                MainUI.instance.secondDrop.SetActive(false);
+                MainUICon.instance.secondDrop.SetActive(false);
                // thirdDrop.SetActive(false);
             }
             else
             {
-                MainUI.instance.secondDrop.SetActive(true);
-                MainUI.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                MainUICon.instance.secondDrop.SetActive(true);
+                MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
             }
         }
         else if (s == 3 || s == 4)
@@ -285,44 +285,44 @@ public class MasterDrop : MonoBehaviour
                 if(editSP.sCondition == SupportCondition.SupportStatus.強敵がいるかどうか || editSP.sCondition == SupportCondition.SupportStatus.指定なし || editSP.sCondition == SupportCondition.SupportStatus.プレイヤーが状態異常にかかった時
                     || editSP.sCondition == SupportCondition.SupportStatus.任意の支援が切れているとき)
                 {
-                    if (MainUI.instance.valueWindow != null)
+                    if (MainUICon.instance.valueWindow != null)
                     {
-                        MainUI.instance.valueWindow.SetActive(false);
+                        MainUICon.instance.valueWindow.SetActive(false);
                     }
                     if (editSP.sCondition == SupportCondition.SupportStatus.任意の支援が切れているとき)
                     {
-                        MainUI.instance.secondDrop.SetActive(true);
-                        MainUI.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                        MainUICon.instance.secondDrop.SetActive(true);
+                        MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
                     }
                 }
                 else
                 {
                     if (editSP.sCondition == SupportCondition.SupportStatus.敵タイプ)
                     {
-                        MainUI.instance.valueWindow = value[0].gameObject;
+                        MainUICon.instance.valueWindow = value[0].gameObject;
                     }
                     else
                     {
-                        MainUI.instance.valueWindow = value[1].gameObject;
+                        MainUICon.instance.valueWindow = value[1].gameObject;
 
                     }
 
-                    MainUI.instance.valueWindow.SetActive(true);
-                    MainUI.instance.isChange = 1;
+                    MainUICon.instance.valueWindow.SetActive(true);
+                    MainUICon.instance.isChange = 1;
                     valueCheck = true;
-                    MainUI.instance.valueWindow.GetComponent<UIPlaceSet>().PlaceSet();
+                    MainUICon.instance.valueWindow.GetComponent<UIPlaceSet>().PlaceSet();
                 }
             }
             else
             {
                 if (editSP.ActBase != SupportCondition.MagicJudge.各種支援魔法)
                 {
-                    MainUI.instance.secondDrop.SetActive(false);
+                    MainUICon.instance.secondDrop.SetActive(false);
                 }
                 else
                 {
-                    MainUI.instance.secondDrop.SetActive(true);
-                    MainUI.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                    MainUICon.instance.secondDrop.SetActive(true);
+                    MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
             }
             }
 
@@ -334,7 +334,7 @@ public class MasterDrop : MonoBehaviour
             #region
             if (e == 1)
             {
-                if (MainUI.instance.isAH)
+                if (MainUICon.instance.isAH)
                 {
                     editRC = sis.nFirstRecover;
                 }
@@ -345,7 +345,7 @@ public class MasterDrop : MonoBehaviour
             }
             else if (e == 2)
             {
-                if (MainUI.instance.isAH)
+                if (MainUICon.instance.isAH)
                 {
                     editRC = sis.nSecondRecover;
                 }
@@ -356,7 +356,7 @@ public class MasterDrop : MonoBehaviour
             }
             else if (e == 3)
             {
-                if (MainUI.instance.isAH)
+                if (MainUICon.instance.isAH)
                 {
                     editRC = sis.nThirdRecover;
                 }
@@ -384,14 +384,14 @@ public class MasterDrop : MonoBehaviour
                 if(editRC.condition == RecoverCondition.RecoverStatus.強敵がいるかどうか || editRC.condition == RecoverCondition.RecoverStatus.指定なし ||
                     editRC.condition == RecoverCondition.RecoverStatus.プレイヤーが状態異常にかかった時 || editRC.condition == RecoverCondition.RecoverStatus.任意の支援が切れているとき)
                 {
-                    if (MainUI.instance.valueWindow != null)
+                    if (MainUICon.instance.valueWindow != null)
                     {
-                        MainUI.instance.valueWindow.SetActive(false);
+                        MainUICon.instance.valueWindow.SetActive(false);
                     }
                     if (editRC.condition == RecoverCondition.RecoverStatus.任意の支援が切れているとき)
                     {
-                        MainUI.instance.secondDrop.SetActive(true);
-                        MainUI.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                        MainUICon.instance.secondDrop.SetActive(true);
+                        MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
 
                     }
                 }
@@ -399,38 +399,38 @@ public class MasterDrop : MonoBehaviour
                 {
                     if(editRC.condition == RecoverCondition.RecoverStatus.敵タイプ)
                     {
-                        MainUI.instance.valueWindow = value[0].gameObject;
+                        MainUICon.instance.valueWindow = value[0].gameObject;
 
                     }
                     else
                     {
-                        MainUI.instance.valueWindow = value[1].gameObject;
+                        MainUICon.instance.valueWindow = value[1].gameObject;
 
                     }
-                        MainUI.instance.valueWindow.SetActive(true);
-                        MainUI.instance.isChange = 1;
+                        MainUICon.instance.valueWindow.SetActive(true);
+                        MainUICon.instance.isChange = 1;
                         valueCheck = true;
-                        MainUI.instance.valueWindow.GetComponent<UIPlaceSet>().PlaceSet();
+                        MainUICon.instance.valueWindow.GetComponent<UIPlaceSet>().PlaceSet();
             }
             }
             else
             {
                 if(editRC.ActBase != RecoverCondition.MagicJudge.治癒魔法)
                 {
-                    MainUI.instance.secondDrop.SetActive(false);
+                    MainUICon.instance.secondDrop.SetActive(false);
                 }
                 else
                 {
-                    MainUI.instance.secondDrop.SetActive(true);
-                    MainUI.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                    MainUICon.instance.secondDrop.SetActive(true);
+                    MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
                 }
             }
         }
 
-        if (!valueCheck && MainUI.instance.secondDrop.activeSelf)
+        if (!valueCheck && MainUICon.instance.secondDrop.activeSelf)
         {
             sl = this.gameObject.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
-            sl2 = MainUI.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+            sl2 = MainUICon.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
 
             //値窓なくて二番目ある時二番目と一番目の上下をつなげる。
             UnderSet(sl, sl2);

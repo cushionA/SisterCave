@@ -26,10 +26,10 @@ public class ChangeMNumber : MonoBehaviour
     void Update()
     {
         //  ////Debug.log($"変更数{MaterialManager.instance.changeNum}");
-        //  ////Debug.log($"所持数{MaterialManager.instance.selectItem.inventoryNum}");
+        //  ////Debug.log($"所持数{5}");
         //  ////Debug.log($"偽なら変更可能{isChange}");
-        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
-                horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction16);
+        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15);
+                horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction16);
         //    ////Debug.log($"上キー{verticalKey}");
         //  ////Debug.log($"横キー{horizontalKey}");
         if (!isChange)
@@ -38,7 +38,7 @@ public class ChangeMNumber : MonoBehaviour
             if (verticalKey > 0 && horizontalKey == 0)
             {
                 isChange = true;
-                if (MaterialManager.instance.changeNum + 1 <= MaterialManager.instance.selectItem.inventoryNum)
+                if (MaterialManager.instance.changeNum + 1 <= 5)
                 {
                     MaterialManager.instance.changeNum += 1;
                 }
@@ -55,13 +55,13 @@ public class ChangeMNumber : MonoBehaviour
             else if (verticalKey == 0 && horizontalKey > 0)
             {
                 isChange = true;
-                if (MaterialManager.instance.changeNum + 10 <= MaterialManager.instance.selectItem.inventoryNum)
+                if (MaterialManager.instance.changeNum + 10 <= 5)
                 {
                     MaterialManager.instance.changeNum += 10;
                 }
                 else
                 {
-                    MaterialManager.instance.changeNum = MaterialManager.instance.selectItem.inventoryNum;
+                    MaterialManager.instance.changeNum = 5;
                 }
             }
             else if (verticalKey == 0 && horizontalKey < 0)

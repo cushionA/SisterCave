@@ -218,7 +218,7 @@ namespace MoreMountains.CorgiEngine
             {
                 DamageCausedKnockbackForce.Set(_attackData.blowPower.x, _attackData.blowPower.y);
             }
-            else if(result == MyWakeUp.StunnType.Faltter)
+            else if(result == MyWakeUp.StunnType.Falter)
             {
 
                 float fDire = 10;

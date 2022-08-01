@@ -98,14 +98,14 @@ public class Hanging : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D coll)
     {
         //Debug.log("愛してる");
-        if (!pm.isGround && coll.gameObject.tag == "Hanging")
+     /*   if (!pm.isGround && coll.gameObject.tag == "Hanging")
         {
             col.enabled = false;
             pm.AllStop();
             pm.enabled = false;   //プレーヤーコントローラーを停止
             Player.transform.position = new Vector3(coll.transform.position.x + (distaX * -Player.transform.localScale.x),coll.transform.position.y - distaY,0);
             isHang = true;
-        }
+        }*/
 
     }
     bool CheckEnd(string _currentStateName)

@@ -10,7 +10,7 @@ namespace MoreMountains.CorgiEngine
 	/// Animator parameters : Running
 	/// </summary>
 	//[AddComponentMenu("Corgi Engine/Character/Abilities/Character Run")]
-	public class PlayerRunning : CharacterAbility
+	public class PlayerRunning : MyAbillityBase
 	{
 		/// This method is only used to display a helpbox text at the beginning of the ability's inspector
 		public override string HelpBoxText() { return "This component allows your character to change speed (defined here) when pressing the run button."; }
@@ -42,7 +42,6 @@ namespace MoreMountains.CorgiEngine
 		protected int _runningAnimationParameter;
 		protected bool _runningStarted = false;
 
-		protected RewiredCorgiEngineInputManager ReInput;
 		protected PlayerRoll roll;
 
 		//回避判定のためのボタン押し時間
@@ -54,8 +53,7 @@ namespace MoreMountains.CorgiEngine
 		protected override void Initialization()
 		{
 			base.Initialization();
-			ReInput = (RewiredCorgiEngineInputManager)_inputManager;
-			roll = _controller.gameObject.GetComponent<PlayerRoll>();
+			roll = GetComponent<PlayerRoll>();
 		}
 
 		/// <summary>
@@ -83,12 +81,12 @@ namespace MoreMountains.CorgiEngine
 			*/
 			#endregion
 
-			if (ReInput.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || ReInput.RunButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
+			if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.RunButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
 			{
 				RunStart();
 				pressTime += _controller.DeltaTime;
 			}
-			if (ReInput.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+			if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
 			{
 				RunStop();
 				//指定した時間以内にボタンが離されていたら回避
@@ -102,13 +100,13 @@ namespace MoreMountains.CorgiEngine
 
 			if (AutoRun)
 			{
-				if (ReInput.PrimaryMovement.magnitude > AutoRunThreshold)
+				if (_inputManager.PrimaryMovement.magnitude > AutoRunThreshold)
 				{
-					ReInput.RunButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed);
+					_inputManager.RunButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed);
 				}
 				else
 				{
-					ReInput.RunButton.State.ChangeState(MMInput.ButtonStates.ButtonUp);
+					_inputManager.RunButton.State.ChangeState(MMInput.ButtonStates.ButtonUp);
 					RunStop();
 				}
 			}

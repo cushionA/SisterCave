@@ -44,8 +44,8 @@ public class VolumeWindow : MonoBehaviour
     {
  
 
-        selectObject = MainUI.instance.eventSystem.currentSelectedGameObject;
-        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
+        selectObject = MainUICon.instance.eventSystem.currentSelectedGameObject;
+        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15);
 
         if (!isFirst)
         {
@@ -55,7 +55,7 @@ public class VolumeWindow : MonoBehaviour
             isFirst = true;
         }
 
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14))
         {
             isChange = false;
             isBlock = false;
@@ -67,14 +67,14 @@ public class VolumeWindow : MonoBehaviour
             changeTime = 0.0f;
             this.gameObject.SetActive(false);
             //sButton.Select();
-            MainUI.instance.MenuCancel();
+            MainUICon.instance.MenuCancel();
         }
 
 
 
-            if (!isChange && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+            if (!isChange && GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
         {
-            MainUI.instance.masterUI.SetActive(true);
+            MainUICon.instance.masterUI.SetActive(true);
             this.gameObject.SetActive(false);
             isFirst = false;
             sButton.Select();
@@ -88,7 +88,7 @@ public class VolumeWindow : MonoBehaviour
                 ////Debug.log("bgm調整中");
 
                 //決定ボタン
-                if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+                if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
                 {
                     
                     bgmSlider.value = MasterAudio.GrabBusByName("BGM").volume * 100;
@@ -99,7 +99,7 @@ public class VolumeWindow : MonoBehaviour
                     ////Debug.log("b");
                     //こっちでは逆に音量をスライダーの数値に入れる
                 }
-                else if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18))
+                else if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction18))
                 {
                     if (!isBlock)
                     {
@@ -131,13 +131,13 @@ public class VolumeWindow : MonoBehaviour
             }
             else if(seSlider.gameObject == selectObject)
             {
-                if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+                if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
                 {
                     seSlider.value = DarkTonic.MasterAudio.MasterAudio.GrabBusByName("SE").volume * 100;
                     seButton.Select();
                     isChange = false;
                 }
-                else if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18))
+                else if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction18))
                 {
                     if (!isBlock)
                     {

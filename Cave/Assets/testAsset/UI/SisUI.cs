@@ -16,12 +16,12 @@ public class SisUI : MonoBehaviour
     Button bt2;
     GameObject selectedObj;
 
-    MainUI main;
+    MainUICon main;
 
     // Start is called before the first frame update
     void Start()
     {
-        main = GetComponent<MainUI>();
+        main = GetComponent<MainUICon>();
 
         // 自分を選択状態にする
         bt1 = sisr.GetComponent<Button>();

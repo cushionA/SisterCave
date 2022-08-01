@@ -20,7 +20,7 @@ public class ChangeEquipNum : MonoBehaviour
         if (isDump)
         {
 
-            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
             {
                 isDump = false;
                 uw.isDump = false;
@@ -30,7 +30,7 @@ public class ChangeEquipNum : MonoBehaviour
         }
 
 
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14))
         {
             ResetFlag();
             uw.ResetWindow();
@@ -43,15 +43,15 @@ public class ChangeEquipNum : MonoBehaviour
         uw.isDump = false;
         EquipManager.instance.DumpEquip();
         EquipManager.instance.changeNum = 1;
-        MainUI.instance.selectButton.GetComponent<Button>().Select();
+        MainUICon.instance.selectButton.GetComponent<Button>().Select();
         uw.ResetWindow();
         this.gameObject.SetActive(false);
-        MainUI.instance.MenuCancel();
+        MainUICon.instance.MenuCancel();
     }
 
     public void ResetFlag()
     {
-        //       MainUI.instance.selectButton = null;
+        //       MainUICon.instance.selectButton = null;
         //     EquipManager.instance.selectItem = null;
         isDump = false;
         this.gameObject.SetActive(false);

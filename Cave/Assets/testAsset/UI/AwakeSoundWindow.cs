@@ -26,7 +26,7 @@ public class AwakeSoundWindow : MonoBehaviour
     {
         soundWindow.SetActive(true);
         bButton.Select();
-        MainUI.instance.masterUI.SetActive(false);
+        MainUICon.instance.masterUI.SetActive(false);
     }
 
 

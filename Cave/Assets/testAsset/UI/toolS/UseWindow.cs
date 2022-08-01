@@ -26,7 +26,7 @@ public class UseWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = MainUI.instance.selectButton.GetComponent<UseButtom>();
+        ub = MainUICon.instance.selectButton.GetComponent<UseButtom>();
     }
 
     // Update is called once per frame
@@ -38,7 +38,7 @@ public class UseWindow : MonoBehaviour
             isFirst = true;
         }
 
-        if(!isDump && !isSUse && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+        if(!isDump && !isSUse && GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
         {
             isNum = false;
             isSUse = false;
@@ -50,40 +50,40 @@ public class UseWindow : MonoBehaviour
  /*       else if (isDump)
         {
             thirdButton.Select();
-            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18))
+            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction18))
             {
                 isDump = false;
                 numChange.SetActive(false);
                 ToolManager.instance.ReduceItem();
                 ToolManager.instance.changeNum = 1;
-                MainUI.instance.selectButton.GetComponent<Button>().Select();
+                MainUICon.instance.selectButton.GetComponent<Button>().Select();
             }
-            else if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+            else if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
             {
                 isDump = false;
                 numChange.SetActive(false);
-                MainUI.instance.selectButton.GetComponent<Button>().Select();
+                MainUICon.instance.selectButton.GetComponent<Button>().Select();
             }
         }
         else if (isSUse)
         {
             secondButton.Select();
-            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18))
+            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction18))
             {
                 isSUse = false;
                 numChange.SetActive(false);
                 ToolManager.instance.Use();
                 mu.MenuCancel();
             }
-            else if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+            else if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
             {
                 isSUse = false;
                 numChange.SetActive(false);
-                MainUI.instance.selectButton.GetComponent<Button>().Select();
+                MainUICon.instance.selectButton.GetComponent<Button>().Select();
             }
         }*/
 
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14) && !isNum)
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14) && !isNum)
         {
             ResetWindow();
         }
@@ -140,8 +140,8 @@ public class UseWindow : MonoBehaviour
         isFirst = false;
         ToolManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
-        MainUI.instance.MenuCancel();
-        //  MainUI.instance.selectButton = null;
+        MainUICon.instance.MenuCancel();
+        //  MainUICon.instance.selectButton = null;
         //    ToolManager.instance.selectItem = null;
     }
 

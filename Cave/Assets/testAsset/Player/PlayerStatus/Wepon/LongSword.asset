@@ -12,14 +12,74 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2942df316d830840abe5726a48337a5, type: 3}
   m_Name: LongSword
   m_EditorClassIdentifier: 
-  icon: {fileID: -6782956637094246760, guid: 76354687f293219479e71829882ea142, type: 3}
-  itemName: "\u30ED\u30F3\u30B0\u30BD\u30FC\u30C9"
-  hiraganaName: "\u308D\u3093\u3050\u305D\u30FC\u3069"
-  information: 
-  number: 0
-  holdLimmit: 99
-  isDrop: 0
-  inventoryNum: 0
+  ItemID: 
+  TargetInventoryName: MainInventory
+  ForceSlotIndex: 0
+  TargetIndex: 0
+  Usable: 0
+  Consumable: 1
+  ConsumeQuantity: 1
+  Equippable: 0
+  MoveWhenEquipped: 1
+  Droppable: 1
+  CanMoveObject: 1
+  CanSwapObject: 1
+  Quantity: 1
+  ItemName: 
+  ShortDescription: 
+  Description: 
+  Icon: {fileID: 0}
+  Prefab: {fileID: 0}
+  DropProperties:
+    Shape: 0
+    NormalToSpawnPlane: {x: 0, y: 1, z: 0}
+    MinimumSphereRadius: 1
+    MaximumSphereRadius: 2
+    MinimumCubeBaseSize: {x: 1, y: 1, z: 1}
+    MaximumCubeBaseSize: {x: 2, y: 2, z: 2}
+    MinimumNormalAxisOffset: 0
+    MaximumNormalAxisOffset: 0
+    UseNormalAxisOffsetCurve: 0
+    NormalOffsetCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    NormalOffsetCurveRemapZero: 0
+    NormalOffsetCurveRemapOne: 1
+    InvertNormalOffsetCurve: 0
+    MinimumRotation: {x: 0, y: 0, z: 0}
+    MaximumRotation: {x: 0, y: 0, z: 0}
+    MinimumScale: {x: 1, y: 1, z: 1}
+    MaximumScale: {x: 1, y: 1, z: 1}
+  MaximumStack: 1
+  ItemClass: 0
+  TargetEquipmentInventoryName: 
+  EquippedSound: {fileID: 0}
+  UsedSound: {fileID: 0}
+  MovedSound: {fileID: 0}
+  DroppedSound: {fileID: 0}
+  UseDefaultSoundsIfNull: 1
+  _sortNumber: 0
   front:
   - {fileID: -6042941435903803190, guid: 76354687f293219479e71829882ea142, type: 3}
   Side:
@@ -609,8 +669,8 @@ MonoBehaviour:
   - 10
   useSound:
   - MetalSGuard
-  attackType: 1
   atType: 2
+  _weight: 0
   isTwin: 0
   isMagic: 0
   MagicAssistBase: 100
@@ -666,6 +726,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   - x: 0.7
     y: 8
     z: 8
@@ -680,6 +741,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   bValue:
   - x: 1
     y: 10
@@ -695,6 +757,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   - x: 1.05
     y: 13
     z: 15
@@ -709,6 +772,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   chargeValue:
   - x: 1.2
     y: 15
@@ -724,6 +788,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   - x: 1.25
     y: 15
     z: 15
@@ -738,6 +803,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   airValue:
   - x: 0.6
     y: 5
@@ -753,6 +819,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   - x: 0.65
     y: 6
     z: 7
@@ -767,6 +834,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   strikeValue:
   - x: 1.1
     y: 15
@@ -782,6 +850,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   twinSValue:
   - x: 0.8
     y: 10
@@ -797,6 +866,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   - x: 0.83
     y: 11
     z: 11
@@ -811,6 +881,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   - x: 0.88
     y: 12
     z: 12
@@ -825,6 +896,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   twinBValue:
   - x: 1.15
     y: 13
@@ -840,6 +912,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   - x: 1.2
     y: 13
     z: 14
@@ -854,6 +927,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   twinChargeValue:
   - x: 1.35
     y: 16
@@ -869,6 +943,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   - x: 0.95
     y: 20
     z: 9
@@ -883,6 +958,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   twinAirValue:
   - x: 0.75
     y: 8
@@ -898,6 +974,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   - x: 0.75
     y: 8
     z: 8
@@ -912,6 +989,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   twinStrikeValue:
   - x: 1.15
     y: 15
@@ -927,6 +1005,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   artsValue:
   - x: 0.35
     y: 15
@@ -942,6 +1021,7 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   - x: 1.35
     y: 20
     z: 15
@@ -956,9 +1036,15 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    isShield: 0
   isLight: 0
   twinHand: 0
   isBlow: 1
   isCombo: 0
   blowPower: {x: 1000, y: 100}
   guardSpeed: 0
+  _useContoroller:
+  - {fileID: 0}
+  - {fileID: 0}
+  _alterWeapon: {fileID: 0}
+  ExCore: {fileID: 0}

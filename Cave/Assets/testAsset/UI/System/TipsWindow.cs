@@ -22,14 +22,14 @@ public class TipsWindow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(MainUI.instance.eventSystem.currentSelectedGameObject == this.gameObject)
+        if(MainUICon.instance.eventSystem.currentSelectedGameObject == this.gameObject)
         {
             isFirst = true;
-            MainUI.instance.isTips = true;
+            MainUICon.instance.isTips = true;
         }
         else if (isFirst)
         {
-            MainUI.instance.isTips = false;
+            MainUICon.instance.isTips = false;
             isFirst = false;
         }
         

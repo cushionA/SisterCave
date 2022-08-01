@@ -140,6 +140,10 @@ public class SisterBrain : MonoBehaviour
 	Vector2 move;
 
 
+
+
+
+
 	// === コード（Monobehaviour基本機能の実装） ================
 	 void Start()
 	{
@@ -1360,7 +1364,7 @@ public class SisterBrain : MonoBehaviour
 				if ((Mathf.Abs(distance.x) >= SManager.instance.sisStatus.warpDistance.x || Mathf.Abs(distance.y) >= SManager.instance.sisStatus.warpDistance.y))// && GManager.instance.pm.isGround)
 				{
 
-					//方向でxに2ずらした数値にワープ
+					//プレイヤーがどっちにいるかで座標が分かれる
 					if (baseDirection.x >= 0)
 					{
 						move.Set(basePosition.x - 6, basePosition.y);
@@ -1372,10 +1376,11 @@ public class SisterBrain : MonoBehaviour
 					{
 						move.Set(basePosition.x + 6, basePosition.y);
 						move.y = RayGroundCheck(move) + 10;
-						transform.position = move;
+						
 						Flip(-1);
 					}
-					isWarp = true;
+
+
 					nowPosition = false;
 					isPosition = false;
 					SManager.instance.isEscape = true;
@@ -1387,18 +1392,12 @@ public class SisterBrain : MonoBehaviour
 
 					//("WarpPray");
 
-					if(status.mp >= 5)
-                    {
-						status.mp -= 5;
-                    }
 					
 					if (nowState == SisterState.戦い)
 					{
 						reJudgeTime = 0;
 						nowState = SisterState.警戒;
-						Serch3.SetActive(false);
-						Serch2.SetActive(true);
-						Serch.SetActive(true);
+						
 						reJudgePositionTime = 0;
                         for(int i=0;i < SManager.instance.targetList.Count; i++)
                         {

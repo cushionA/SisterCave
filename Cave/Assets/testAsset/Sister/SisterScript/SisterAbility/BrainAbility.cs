@@ -10,10 +10,12 @@ using DarkTonic.MasterAudio;
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
     /// <summary>
-    /// TODO_DESCRIPTION
+    /// 普通に状況判断して動くためのスクリプト
+	/// ワープ、攻撃、コンビネーション（各動作は分ける？）は別スクリプトに
+	/// あるいはコンビネーションは主人公に持たせる？
     /// </summary>
     [AddComponentMenu("Corgi Engine/Character/Abilities/BrainAbility")]
-    public class BrainAbility : CharacterAbility
+    public class BrainAbility : MyAbillityBase
     {
         /// このメソッドは、ヘルプボックスのテキストを表示するためにのみ使用されます。
         /// 能力のインスペクタの冒頭にある
@@ -39,11 +41,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		///</summary>
 		public GameObject Serch2;
 
-		[Header("戦闘状態の感知網")]
-		///<summary>
-		///これで環境物とかに反応
-		///</summary>
-		public GameObject Serch3;
+
 
 		[Header("射出地点")]
 		///<summary>
@@ -83,15 +81,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		bool nowJump;
 
 
-		Vector2 targetPosition;//敵の場所
 		int initialLayer;
 		bool jumpTrigger;
 
 		bool isWait;//このフラグが真なら待機モーションする。マントいじったり遊んだり。
 					//モーションは好感度とか進行度でモーション名リストが切り替わって決まる。
-		bool isWarp;//ワープ中
 
-		[HideInInspector] public bool isPosition;//持ち場フラグ
+		
+	
 		[HideInInspector] public bool nowPosition;//持ち場フラグ
 		Vector2 myPosition;
 
@@ -116,8 +113,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// プレイヤーが向いてる方向。基準
 		/// </summary>
 		Vector3 baseDirection;
-		bool isDown;
-		float randomTime = 2.5f;//ランダム移動測定のため
+
 		[HideInInspector] public bool guardHit;
 
 		//	public Rigidbody2D GManager.instance.GManager.instance.pm.rb;//プレイヤーのリジッドボディ
@@ -131,16 +127,19 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		[HideInInspector] public float playDirection;//遊ぶ時の方向
 		string jumpTag = "JumpTrigger";
 		float patrolJudge;//警戒時間を数える
-		float jumpWait;//ジャンプ可能になるまでの待機時間
-		float verticalWait;//垂直ジャンプ可能になるまでの待機時間
 		bool isVertical;//垂直飛びするフラグ
 		Vector2 waitPosition;
-		//持ち場再判断
-		[HideInInspector] public float reJudgePositionTime;
 		[HideInInspector] public int stateNumber;
 		[HideInInspector] public int beforeNumber;
+		/// <summary>
+		/// 移動状態を再判定するための時間測定
+		/// </summary>
 		[HideInInspector] public float reJudgeTime;
-		[HideInInspector] public bool changeable;//歩行からダッシュなど変更可能か
+		/// <summary>
+		/// 歩行からダッシュなどに変更可能か。
+		/// これがないと歩行と走行のはざまでガタガタ
+		/// </summary>
+		[HideInInspector] public bool changeable;//
 
 		float battleEndTime;
 		Vector2 move;
@@ -180,32 +179,69 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		protected MyDamageOntouch _damage;
 
+		protected WarpAbillity _warp;
+
+		protected FireAbility _fire;
+
 		protected new MyHealth _health;
 
 		//シスターさんの固有アクション
 
-
+		protected SensorAbility _sensor;
 		//	protected Hittable _hitInfo;
-
-
-		#endregion
-
-		// === コード（AIの内容） ================
-
 
 		protected RewiredCorgiEngineInputManager ReInput;
 
 
+		// アニメーションパラメーター
+		protected const string _stateParameterName = "_nowState";
+		protected int _stateAnimationParameter;
 
-        /// <summary>
-        ///　ここで、パラメータを初期化する必要があります。
-        /// </summary>
-        protected override void Initialization()
+		#endregion
+
+		// === ステータスパラメータ ======================================
+
+		/// <summary>
+		/// 攻撃倍率
+		/// </summary>
+		[HideInInspector]
+		public float attackFactor = 1;
+		[HideInInspector]
+		public float fireATFactor = 1;
+		[HideInInspector]
+		public float thunderATFactor = 1;
+		[HideInInspector]
+		public float darkATFactor = 1;
+		[HideInInspector]
+		public float holyATFactor = 1;
+
+		[HideInInspector]
+		//ステータス
+		//hpはヘルスでいい
+		public float maxHp;
+		[HideInInspector]
+		public float maxMp;
+
+
+		[HideInInspector]
+		public float mp;
+
+		// === コード（AIの内容） ================
+
+
+
+
+
+		/// <summary>
+		///　ここで、パラメータを初期化する必要があります。
+		/// </summary>
+		protected override void Initialization()
         {
             base.Initialization();
             // randomBool = false;
             ReInput = (RewiredCorgiEngineInputManager)_inputManager;
-			Serch3.SetActive(false);
+			//センサーアビリティの切り替え動作に変更
+			_sensor.RangeChange();
 			_characterHorizontalMovement.FlipCharacterToFaceDirection = false;
 			GravitySet(status.firstGravity);
 		}
@@ -224,7 +260,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
 
 
-			if (isWarp || isStop || _movement.CurrentState != CharacterStates.MovementStates.Rolling || _condition.CurrentState == CharacterStates.CharacterConditions.Stunned || _movement.CurrentState == CharacterStates.MovementStates.Attack
+			if (_movement.CurrentState == CharacterStates.MovementStates.Warp || isStop || _movement.CurrentState != CharacterStates.MovementStates.Rolling || _condition.CurrentState == CharacterStates.CharacterConditions.Stunned || _movement.CurrentState == CharacterStates.MovementStates.Attack
 				||	_movement.CurrentState == CharacterStates.MovementStates.Falling)
 			{
 				disEnable = true;
@@ -252,25 +288,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				SManager.instance.BattleEndCheck();
 				BattleEnd();
 
-				if (!isPosition)
-				{
-					isPosition = true;
-				}
-				PositionSetting();
-				if (!nowPosition)
-				{
-					
 
-				}
+				PositionSetting();
+
 			}
 
 			else if (nowState == SisterState.警戒)
 			{
-				patrolJudge += Time.fixedDeltaTime;
+				patrolJudge += _controller.DeltaTime;
 
 
-				//Serch.SetActive(true);ほかのステートに移動するときに
-				//Serch2.SetActive(true);
+				////Serch.SetActive(true);ほかのステートに移動するときに
+				////Serch2.SetActive(true);
 
 				if (!SManager.instance.actNow)
 				{
@@ -289,9 +318,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					stateNumber = 2;
 					changeable = true;
 					nowState = SisterState.のんびり;
-					//Serch3.SetActive(false);
-					//Serch2.SetActive(true);
-					//Serch.SetActive(true);
+					//_sensor.RangeChange();
+					////Serch2.SetActive(true);
+					////Serch.SetActive(true);
 				}
 
 
@@ -319,9 +348,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				//移動方向とキャラの方向合わないなら静止
 				_characterHorizontalMovement.SetHorizontalMove(0);
 				_characterRun.RunStop();
-            } 
+            }
 
-
+			JumpController();
 		}
 
         /// <summary>
@@ -345,14 +374,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		public void PositionSetting()
 		{
-			if (Serch3.activeSelf == false)
-			{
-				Serch3.SetActive(true);
-			}
-			#region
-
-			#endregion
-			if (!SManager.instance.actNow && isPosition && _controller.State.IsGrounded && !disEnable)
+			
+			if (!SManager.instance.actNow && _controller.State.IsGrounded && !disEnable)
 			{
 				//ポジションにつきに行く。かつついてなくて地面にいる
 				if (!nowPosition)
@@ -360,7 +383,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					SManager.instance.GetClosestEnemyX();
 					int mDirection = (int)Mathf.Sign(SManager.instance.closestEnemy - myPosition.x);
 					//一番近い敵が右にいるとき
-					reJudgeTime += Time.fixedDeltaTime;
+					reJudgeTime += _controller.DeltaTime;
 					if (mDirection >= 0)
 					{
 
@@ -456,7 +479,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						int atDirection;
 
-						reJudgePositionTime += Time.fixedDeltaTime;
+						reJudgeTime += _controller.DeltaTime;
 						if (SManager.instance.target != null)
 						{
 							atDirection = (int)Mathf.Sign(SManager.instance.target.transform.position.x - myPosition.x);
@@ -467,9 +490,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 						//おんぶする
 					}
-					if (reJudgePositionTime >= SManager.instance.sisStatus.escapeTime)
+					if (reJudgeTime >= SManager.instance.sisStatus.escapeTime)
 					{
-						reJudgePositionTime = 0.0f;
+						reJudgeTime = 0.0f;
 						reJudgeTime = 150;
 						SManager.instance.GetClosestEnemyX();
 						//プレイヤーがワープ上限より離れていたら
@@ -486,38 +509,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 
 
-		/// <summary>
-		/// 戦闘中の位置取り
-		/// これなに？
-		/// </summary>
-		public void PositionChange()
-		{
-			if (GManager.instance.pm.isSquat && !isSquat && GManager.instance.pm.rb.velocity == Vector2.zero)
-			{
-				PositionJudge += Time.fixedDeltaTime;
-				if (nowPosition)
-				{
-					if (PositionJudge >= 2.0f)
-					{
-						isPosition = false;
-						PositionJudge = 0.0f;
-					}
-				}
-				else if (!nowPosition)
-				{
-					if (PositionJudge >= 5.0f)
-					{
-						isPosition = true; ;
-						PositionJudge = 0.0f;
-					}
-				}
-			}
-			else
-			{
-				PositionJudge = 0.0f;
-			}
 
-		}
 
 
 		public void Flip(float direction)
@@ -582,7 +574,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				}
 				else if (reJudgeTime < 1)
 				{
-					reJudgeTime += Time.fixedDeltaTime;
+					reJudgeTime += _controller.DeltaTime;
 					changeable = true;
 				}
 				if (stateNumber == 1)
@@ -724,7 +716,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				}
 				else if (reJudgeTime < 1.5f)
 				{
-					reJudgeTime += Time.fixedDeltaTime;
+					reJudgeTime += _controller.DeltaTime;
 					changeable = true;
 				}
 
@@ -823,7 +815,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 				else if (stateNumber == 10)
 				{
-					waitTime += Time.fixedDeltaTime;
+					waitTime += _controller.DeltaTime;
 					Flip(direction);
 					//プレイヤーが立ち止まってて環境物がないとき
 					_characterHorizontalMovement.SetHorizontalMove(0); 
@@ -859,7 +851,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public void Wait()
 		{
 			//("Stand");
-			waitTime += Time.fixedDeltaTime;
+			waitTime += _controller.DeltaTime;
 			_characterHorizontalMovement.SetHorizontalMove(0);
 			if (waitTime >= SManager.instance.sisStatus.waitRes)
 			{
@@ -874,7 +866,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public void JumpController()
 		{
-			if (!_controller.State.IsGrounded)
+
+			//isVerticalは自分でオンオフする
+			if (!_controller.State.IsGrounded && _movement.CurrentState == CharacterStates.MovementStates.Jumping)
 			{
 				if (!isVertical)
 				{
@@ -939,7 +933,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <param name="stopRes"></param>
 		public void AllStop(float stopRes)
 		{
-			//stopTime += Time.fixedDeltaTime;
+			//stopTime += _controller.DeltaTime;
 			SetLayer(initialLayer);
 			isStop = true;
 			nowJump = false;
@@ -972,6 +966,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				{
 					isSquat = true;
 				}
+				//elseでこれしゃがみ解除あるぞ
 				if (collision.tag == jumpTag && _controller.State.IsGrounded)
 				{
 					//GetComponentはなるべくせぬように
@@ -1041,10 +1036,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			if (!_controller.State.IsGrounded)
 			{
 				GravitySet(SManager.instance.sisStatus.firstGravity);
-				if (!isWarp)
-				{
-					//("Fall");
-				}
+
 			}
 			else
 			{
@@ -1066,7 +1058,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			if (_movement.CurrentState != CharacterStates.MovementStates.Jumping)
 			{
-				if (!isWarp)
+				if (!disEnable)
 				{
 					//転送後
 					if ((Mathf.Abs(distance.x) >= SManager.instance.sisStatus.warpDistance.x || Mathf.Abs(distance.y) >= SManager.instance.sisStatus.warpDistance.y))// && GManager.instance.pm._controller.State.IsGrounded)
@@ -1087,9 +1079,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							transform.position = move;
 							Flip(-1);
 						}
-						isWarp = true;
+
 						nowPosition = false;
-						isPosition = false;
 						SManager.instance.isEscape = true;
 						//escapeがtrueの時警戒から戦闘にならない
 						stateNumber = 0;
@@ -1097,93 +1088,72 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						reJudgeTime = 0;
 						changeable = true;
 
-						//("WarpPray");
+						_warp.WarpStart(move);
 
-						if (status.mp >= 5)
-						{
-							status.mp -= 5;
-						}
+
 
 						if (nowState == SisterState.戦い)
 						{
 							reJudgeTime = 0;
 							nowState = SisterState.警戒;
-							Serch3.SetActive(false);
-							Serch2.SetActive(true);
-							Serch.SetActive(true);
-							reJudgePositionTime = 0;
-							for (int i = 0; i < SManager.instance.targetList.Count; i++)
-							{
-								SManager.instance.targetList[i].GetComponent<EnemyBase>().TargetEffectCon(1);
-							}
-							SManager.instance.targetList.Clear();
-
-							SManager.instance.targetCondition.Clear();
-							SManager.instance.target = null;
+							_sensor.RangeChange();
+							reJudgeTime = 0;
+							_sensor.ReSerch();
 						}
-						//EscapeWarp();
-						//逃走ワープメソッドで元に戻す
 					}
-				}
-				else
-				{
-					battleEndTime += Time.fixedDeltaTime;
-					//("WarpPray");
-					if (!CheckEnd("WarpPray") || battleEndTime >= 6)
-					{
-
-						battleEndTime = 0;
-						isWarp = false;
-					}
-
 				}
 			}
 		}
 
 		/// <summary>
 		/// 戦闘終了
+		/// 敵が二秒間いなければ警戒フェイズに移る
+		/// この時点で攻撃は中止しよう。Fire編集時に攻撃中止メソッドを作る
 		/// </summary>
 		private void BattleEnd()
 		{
 
 			//敵がいなかったら
-			if (SManager.instance.isBattleEnd && !(SManager.instance.targetList.Count == 0))
+			if (SManager.instance.isBattleEnd && _movement.CurrentState != CharacterStates.MovementStates.Warp)
 			{
-				battleEndTime += Time.fixedDeltaTime;
 
-				//時間計測して警戒に移行
-				if (battleEndTime >= 2 && !isReset)
+				if (SManager.instance.targetList.Count == 0)
 				{
+					battleEndTime += _controller.DeltaTime;
 
-					isReset = true;
-					//六秒以上敵検知せんずれば警戒フェイズへ
-					nowPosition = false;
-					isPosition = false;
-					SManager.instance.isEscape = true;
-					nowState = SisterState.警戒;
-					//escapeがtrueの時警戒から戦闘にならない
-					stateNumber = 3;
-					beforeNumber = 0;
-					reJudgeTime = 0;
-					reJudgePositionTime = 0;
-					changeable = true;
-					Serch3.SetActive(false);
-					Serch2.SetActive(true);
-					Serch.SetActive(true);
-					battleEndTime = 0;
+					//時間計測して警戒に移行
+					if (battleEndTime >= 2 && !isReset)
+					{
 
-					SManager.instance.targetList.Clear();
-					SManager.instance.targetCondition.Clear();
-					SManager.instance.target = null;
-					SManager.instance.isBattleEnd = false;
+						isReset = true;
+						//六秒以上敵検知せんずれば警戒フェイズへ
+						nowPosition = false;
+						SManager.instance.isEscape = true;
+						nowState = SisterState.警戒;
+						//escapeがtrueの時警戒から戦闘にならない
+						stateNumber = 3;
+						beforeNumber = 0;
+						reJudgeTime = 0;
+						reJudgeTime = 0;
+						changeable = true;
+						_sensor.RangeChange();
+						//Serch2.SetActive(true);
+						//Serch.SetActive(true);
+						battleEndTime = 0;
+
+						SManager.instance.targetList = null;
+						SManager.instance.targetCondition = null;
+						SManager.instance.target = null;
+						SManager.instance.isBattleEnd = false;
+					}
+
 				}
-
-			}
-			else
-			{
-				isReset = false;
-				SManager.instance.isBattleEnd = false;
-				battleEndTime = 0.0f;
+				else
+				{
+					isReset = false;
+					SManager.instance.isBattleEnd = false;
+					battleEndTime = 0.0f;
+				}
 			}
 		}
 		public void WarpEffect()
@@ -1195,7 +1165,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			Addressables.InstantiateAsync("WarpCircle", gofire.position, gofire.rotation);//.Result;//発生位置をPlayer
 			GManager.instance.PlaySound("Warp", transform.position);
 		}
-
+		//ワープ専用の地面探知
 		public float RayGroundCheck(Vector2 position)
 		{
 
@@ -1277,81 +1247,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			#endregion
 
 			GravitySet(status.firstGravity);
-			#region
-			/*
-					/// the speed of the character when it's walking
-	[Tooltip("the speed of the character when it's walking")]
-	public float WalkSpeed = 6f;
-	/// the multiplier to apply to the horizontal movement
-	//　読み取り専用。コードから変えてね
-	[MMReadOnly]
-	[Tooltip("水平方向の移動に適用する倍率")]
-	public float MovementSpeedMultiplier = 1f;
-	/// the multiplier to apply to the horizontal movement, dedicated to abilities
-	[MMReadOnly]
-	[Tooltip("水平方向の移動に適用する倍率で、アビリティに特化しています。")]
-	public float AbilityMovementSpeedMultiplier = 1f;
-	/// the multiplier to apply when pushing
-	[MMReadOnly]
-	[Tooltip("the multiplier to apply when pushing")]
-	public float PushSpeedMultiplier = 1f;
-	/// the multiplier that gets set and applied by CharacterSpeed
-	[MMReadOnly]
-	[Tooltip("the multiplier that gets set and applied by CharacterSpeed")]
-	public float StateSpeedMultiplier = 1f;
-	/// if this is true, the character will automatically flip to face its movement direction
-	[Tooltip("if this is true, the character will automatically flip to face its movement direction")]
-	public bool FlipCharacterToFaceDirection = true;
 
-
-	/// the current horizontal movement force
-	public float HorizontalMovementForce { get { return _horizontalMovementForce; }}
-	/// if this is true, movement will be forbidden (as well as flip)
-	public bool MovementForbidden { get; set; }
-
-	[Header("Input")]
-
-	/// if this is true, will get input from an input source, otherwise you'll have to set it via SetHorizontalMove()
-	//  これが真の場合、入力ソースからの入力を取得します。そうでない場合は、SetHorizontalMove() で設定する必要があります。
-	[Tooltip("if this is true, will get input from an input source, otherwise you'll have to set it via SetHorizontalMove()")]
-	public bool ReadInput = true;
-	/// if this is true, no acceleration will be applied to the movement, which will instantly be full speed (think Megaman movement). Attention : a character with instant acceleration won't be able to get knockbacked on the x axis as a regular character would, it's a tradeoff
-	/// これが真の場合、加速度は適用されず、瞬時に全速力となります（ロックマンの動きを想像してください）。
-	/// 注意：瞬間的な加速を持つキャラクターは、通常のキャラクターのようにX軸でノックバックを受けることはできません。
-	[Tooltip("if this is true, no acceleration will be applied to the movement, which will instantly be full speed (think Megaman movement). Attention : a character with instant acceleration won't be able to get knockbacked on the x axis as a regular character would, it's a tradeoff")]
-	public bool InstantAcceleration = false;
-	/// the threshold after which input is considered (usually 0.1f to eliminate small joystick noise)
-	/// 入力を考慮する閾値（小さなジョイスティックノイズを除去するため通常0.1f）(検知しない値を確認)
-	[Tooltip("the threshold after which input is considered (usually 0.1f to eliminate small joystick noise)")]
-	public float InputThreshold = 0.1f;
-	/// how much air control the player has
-	[Range(0f, 1f)]
-	[Tooltip("how much air control the player has")]
-	public float AirControl = 1f;
-	/// whether or not the player can flip in the air
-	[Tooltip("whether or not the player can flip in the air")]
-	public bool AllowFlipInTheAir = true;
-	/// whether or not this ability should keep taking care of horizontal movement after death
-	[Tooltip("whether or not this ability should keep taking care of horizontal movement after death")]
-	public bool ActiveAfterDeath = false;
-
-	[Header("Touching the Ground")]
-	/// the MMFeedbacks to play when the character hits the ground
-	/// キャラクターが地面に衝突したときに再生されるMMFeedbacks
-	[Tooltip("the MMFeedbacks to play when the character hits the ground")]
-	public MMFeedbacks TouchTheGroundFeedback;
-	/// the duration (in seconds) during which the character has to be airborne before a feedback can be played when touching the ground
-	/// キャラクタが空中にいる間、地面に触れてもフィードバックが再生されるまでの時間（秒）です。
-	[Tooltip("the duration (in seconds) during which the character has to be airborne before a feedback can be played when touching the ground")]
-	public float MinimumAirTimeBeforeFeedback = 0.2f;
-
-	[Header("Walls")]
-	/// Whether or not the state should be reset to Idle when colliding laterally with a wall
-	/// 壁に横から衝突したときに状態をIdleに戻すかどうか
-	[Tooltip("Whether or not the state should be reset to Idle when colliding laterally with a wall")]
-	public bool StopWalkingWhenCollidingWithAWall = false;
-			 */
-			#endregion
 			_characterHorizontalMovement.WalkSpeed = status.walkSpeed;
 			if (_characterRun != null)
 			{
@@ -1362,79 +1258,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			if (_jump != null)
 			{
-				#region
-				/*
-						/// the maximum number of jumps allowed (0 : no jump, 1 : normal jump, 2 : double jump, etc...)
-		[Tooltip("the maximum number of jumps allowed (0 : no jump, 1 : normal jump, 2 : double jump, etc...)")]
-		public int NumberOfJumps = 2;
-		/// defines how high the character can jump
-		[Tooltip("defines how high the character can jump")]
-		public float JumpHeight = 3.025f;
-		/// basic rules for jumps : where can the player jump ?
-		[Tooltip("basic rules for jumps : where can the player jump ?")]
-		public JumpBehavior JumpRestrictions = JumpBehavior.CanJumpAnywhere;
-		/// if this is true, camera offset will be reset on jump
-		[Tooltip("if this is true, camera offset will be reset on jump")]
-		public bool ResetCameraOffsetOnJump = false;
-		/// if this is true, this character can jump down one way platforms by doing down + jump
-		[Tooltip("if this is true, this character can jump down one way platforms by doing down + jump")]
-		public bool CanJumpDownOneWayPlatforms = true;
-
-		[Header("Proportional jumps")]
-
-		/// if true, the jump duration/height will be proportional to the duration of the button's press
-		[Tooltip("if true, the jump duration/height will be proportional to the duration of the button's press")]
-		public bool JumpIsProportionalToThePressTime = true;
-		/// the minimum time in the air allowed when jumping - this is used for pressure controlled jumps
-		[Tooltip("the minimum time in the air allowed when jumping - this is used for pressure controlled jumps")]
-		public float JumpMinimumAirTime = 0.1f;
-		/// the amount by which we'll modify the current speed when the jump button gets released
-		[Tooltip("the amount by which we'll modify the current speed when the jump button gets released")]
-		public float JumpReleaseForceFactor = 2f;
-
-		[Header("Quality of Life")]
-
-		/// a timeframe during which, after leaving the ground, the character can still trigger a jump
-		[Tooltip("a timeframe during which, after leaving the ground, the character can still trigger a jump")]
-		public float CoyoteTime = 0f;
-
-		/// if the character lands, and the jump button's been pressed during that InputBufferDuration, a new jump will be triggered 
-		[Tooltip("キャラクターが着地し、そのInputBufferDurationの間にジャンプボタンが押された場合、新しいジャンプが開始されます。")]
-		public float InputBufferDuration = 0f;
-
-		[Header("Collisions")]
-
-		/// duration (in seconds) we need to disable collisions when jumping down a 1 way platform
-		[Tooltip("duration (in seconds) we need to disable collisions when jumping down a 1 way platform")]
-		public float OneWayPlatformsJumpCollisionOffDuration = 0.3f;
-		/// duration (in seconds) we need to disable collisions when jumping off a moving platform
-		[Tooltip("duration (in seconds) we need to disable collisions when jumping off a moving platform")]
-		public float MovingPlatformsJumpCollisionOffDuration = 0.05f;
-
-		[Header("Air Jump")]
-
-		/// the MMFeedbacks to play when jumping in the air
-		[Tooltip("the MMFeedbacks to play when jumping in the air")]
-		public MMFeedbacks AirJumpFeedbacks;
-
-		/// the number of jumps left to the character
-		[MMReadOnly]
-		[Tooltip("the number of jumps left to the character")]
-		public int NumberOfJumpsLeft;
-
-		/// whether or not the jump happened this frame
-		public bool JumpHappenedThisFrame { get; set; }
-		/// whether or not the jump can be stopped
-		public bool CanJumpStop { get; set; }
-
-				 */
-				#endregion
 				_jump.CoyoteTime = status.jumpCool;
 				_jump.JumpHeight = status.jumpRes;
 				_jump.NumberOfJumps = 2;
 
 			}
 
+			maxMp = status.maxMp;
+			mp = maxMp;
+			maxHp = status.maxHp;
+			_health.CurrentHealth = (int)maxHp;
 		}
 
 		public void BattleFlip(int direction)
@@ -1456,8 +1289,24 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				flipWaitTime = 0;
 			}
 		}
+		/// <summary>
+		///  必要なアニメーターパラメーターがあれば、アニメーターパラメーターリストに追加します。
+		/// </summary>
+		protected override void InitializeAnimatorParameters()
+		{
+			RegisterAnimatorParameter(_stateParameterName, AnimatorControllerParameterType.Int, out _stateAnimationParameter);
+		}
 
-		
+		/// <summary>
+		/// これをオーバーライドすると、キャラクターのアニメーターにパラメータを送信することができます。
+		/// これは、Characterクラスによって、Early、normal、Late process()の後に、1サイクルごとに1回呼び出される。
+		/// </summary>
+		public override void UpdateAnimator()
+		{
+			//のんびり1、警戒2、戦い3
+			MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _stateAnimationParameter,(int)nowState , _character._animatorParameters);
+		}
+
 
 	}
 }

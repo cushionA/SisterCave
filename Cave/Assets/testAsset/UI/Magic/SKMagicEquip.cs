@@ -15,7 +15,7 @@ public class SKMagicEquip : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = MainUI.instance.selectButton.GetComponent<MagicButton>();
+        ub = MainUICon.instance.selectButton.GetComponent<MagicButton>();
     }
 
     // Update is called once per frame
@@ -27,7 +27,7 @@ public class SKMagicEquip : MonoBehaviour
             isFirst = true;
         }
 
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
         {
 
             MagicManager.instance.isUseMenu = false;
@@ -35,7 +35,7 @@ public class SKMagicEquip : MonoBehaviour
         }
 
 
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14))
         {
             ResetWindow();
         }
@@ -46,9 +46,9 @@ public class SKMagicEquip : MonoBehaviour
     {
         MagicManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
-        MainUI.instance.MenuCancel();
-        MainUI.instance.weaponWindow.SetActive(false);
-        MainUI.instance.eqWindow.SetActive(true);
+        MainUICon.instance.MenuCancel();
+       // MainUICon.instance.weaponWindow.SetActive(false);
+       // MainUICon.instance.eqWindow.SetActive(true);
         if (MagicManager.instance.isKnightM)
         {
             GManager.instance.equipMagic[MagicManager.instance.setNumber] = MagicManager.instance.selectItem as PlayerMagic;
@@ -62,17 +62,17 @@ public class SKMagicEquip : MonoBehaviour
         MagicManager.instance.isKnightM = false;
         MagicManager.instance.isSisterM = false;
         isFirst = false;
-        MainUI.instance.ButtonOn();
-        //  MainUI.instance.eqButton.SetActive(true);
+        MainUICon.instance.ButtonOn();
+        //  MainUICon.instance.eqButton.SetActive(true);
     }
     public void ResetWindow()
     {
         isFirst = false;
         MagicManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
-        MainUI.instance.MenuCancel();
-        MainUI.instance.ButtonOn();
-        //  MainUI.instance.selectButton = null;
+        MainUICon.instance.MenuCancel();
+        MainUICon.instance.ButtonOn();
+        //  MainUICon.instance.selectButton = null;
         //    EquipManager.instance.selectItem = null;
     }
 }

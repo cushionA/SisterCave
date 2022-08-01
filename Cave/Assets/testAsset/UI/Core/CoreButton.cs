@@ -27,17 +27,17 @@ public class CoreButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //  if(item.inventoryNum <= 0)
+        //  if(5 <= 0)
         //  {
-        //      MainUI.instance.UseReBuild();
+        //      MainUICon.instance.UseReBuild();
         //   }
 
         if (!CoreManager.instance.isUseMenu)//選択ウィンドウ出てないなら
         {
-            MainUI.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
+            MainUICon.instance.selectButton = MainUICon.instance.eventSystem.currentSelectedGameObject;
 
-            //  ////Debug.log($"青い稲妻{MainUI.instance.selectButton == this.gameObject}");
-            if (MainUI.instance.selectButton == this.gameObject && !isFirst)
+            //  ////Debug.log($"青い稲妻{MainUICon.instance.selectButton == this.gameObject}");
+            if (MainUICon.instance.selectButton == this.gameObject && !isFirst)
             {
                 //////Debug.log("冥王星");
                 CoreManager.instance.selectItem = item;
@@ -50,19 +50,19 @@ public class CoreButton : MonoBehaviour
             }
             if (CoreManager.instance.isEquipMenu)
             {
-                if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+                if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
                 {
                     ////Debug.log("サイパン");
-                    MainUI.instance.useWindow.SetActive(false);
-                    MainUI.instance.eqWindow.SetActive(true);
+                 //   MainUICon.instance.useWindow.SetActive(false);
+                 //   MainUICon.instance.eqWindow.SetActive(true);
                     EquipmentManager.instance.EqCore.Select();
-                    MainUI.instance.ButtonOn();
-                    //MainUI.instance.eqButton.SetActive(true);
+                    MainUICon.instance.ButtonOn();
+                    //MainUICon.instance.eqButton.SetActive(true);
                 }
-                else if(!MainUI.instance.menuButtonOff)
+                else if(!MainUICon.instance.menuButtonOff)
                 {
-                    MainUI.instance.ButtonOff();
-                    // MainUI.instance.eqButton.SetActive(false);
+                    MainUICon.instance.ButtonOff();
+                    // MainUICon.instance.eqButton.SetActive(false);
                 }
             }
         }
@@ -72,27 +72,27 @@ public class CoreButton : MonoBehaviour
 
     public void CallWindow()
     {
-        //  ////Debug.log($"お名前教えて{MainUI.instance.selectButton.name}");
-        if (CoreManager.instance.selectItem.inventoryNum > 0 && item != null && MainUI.instance.selectButton == this.gameObject && item != null && !ToolManager.instance.isEquipMenu)
+        //  ////Debug.log($"お名前教えて{MainUICon.instance.selectButton.name}");
+        if (5 > 0 && item != null && MainUICon.instance.selectButton == this.gameObject && item != null && !ToolManager.instance.isEquipMenu)
         {
             CoreManager.instance.selectItem = item;
             // position = this.GetComponent<RectTransform>().anchoredPosition;
             CoreManager.instance.selectWindow.SetActive(true);
             //CoreManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
-            //CoreManager.instance.selectWindow.GetComponent<RectTransform>().parent = MainUI.instance.selectButton.GetComponent<RectTransform>();
-            CoreManager.instance.selectWindow.transform.parent = MainUI.instance.selectButton.transform;
+            //CoreManager.instance.selectWindow.GetComponent<RectTransform>().parent = MainUICon.instance.selectButton.GetComponent<RectTransform>();
+            CoreManager.instance.selectWindow.transform.parent = MainUICon.instance.selectButton.transform;
             CoreManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
 
             CoreManager.instance.isUseMenu = true;
         }
-        else if (CoreManager.instance.selectItem.inventoryNum > 0 && item != null && MainUI.instance.selectButton == this.gameObject && CoreManager.instance.isEquipMenu)
+        else if (5 > 0 && item != null && MainUICon.instance.selectButton == this.gameObject && CoreManager.instance.isEquipMenu)
         {
             CoreManager.instance.selectItem = item;
             // position = this.GetComponent<RectTransform>().anchoredPosition;
             CoreManager.instance.equipWindow.SetActive(true);
             //CoreManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
-            //CoreManager.instance.selectWindow.GetComponent<RectTransform>().parent = MainUI.instance.selectButton.GetComponent<RectTransform>();
-            CoreManager.instance.selectWindow.transform.parent = MainUI.instance.selectButton.transform;
+            //CoreManager.instance.selectWindow.GetComponent<RectTransform>().parent = MainUICon.instance.selectButton.GetComponent<RectTransform>();
+            CoreManager.instance.selectWindow.transform.parent = MainUICon.instance.selectButton.transform;
             CoreManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
 
             CoreManager.instance.isUseMenu = true;
@@ -115,7 +115,7 @@ public class CoreButton : MonoBehaviour
             CoreManager.instance.equipWindow.SetActive(false);
         }
         isFirst = false;
-        MainUI.instance.selectButton.GetComponent<Button>().Select();
+        MainUICon.instance.selectButton.GetComponent<Button>().Select();
         CoreManager.instance.isUseMenu = false;
     }
 

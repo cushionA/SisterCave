@@ -66,7 +66,7 @@ public class EquipManager : MonoBehaviour
 	{
 		//////Debug.log($"盾窓選択{isShieldM}");
 		//////Debug.log($"武器窓選択{isWeaponM}");
-		//////Debug.log(GetItem("テスト3").inventoryNum);
+		//////Debug.log(GetItem("テスト3")5);
 
 
 
@@ -81,11 +81,7 @@ public class EquipManager : MonoBehaviour
 
 
 
-	//　名前でアイテムを取得
-	public Equip GetItem(string searchName)
-	{
-		return toolDataBase.GetItemLists().Find(itemName => itemName.itemName == searchName);
-	}
+
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
@@ -98,28 +94,16 @@ public class EquipManager : MonoBehaviour
 
 		for (int i = 0; i < takeItem.Length; i++)
 		{
-			int pas = takeItem[i].inventoryNum;
-			takeItem[i].inventoryNum = pas + changeNum[i];
-			//isUp = true;
-			/*int pas = numOfItem[GetItem($"{takeItem}")];
-			numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
-			isUp = true;*/
-			if (takeItem[i].inventoryNum < 0)
-			{
-				takeItem[i].inventoryNum = 0;
 
-			}
 		}
 	}
-	public Dictionary<Equip, int> GetItemDictionary()
-	{
-		return numOfItem;
-	}
+
+
 
 	public void DumpEquip()
 	{
-		int pas = selectItem.inventoryNum;
-		selectItem.inventoryNum = pas - changeNum;
+		
+		//5 = pas - changeNum;
 	}
 
 }

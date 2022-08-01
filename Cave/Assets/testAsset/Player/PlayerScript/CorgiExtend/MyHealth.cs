@@ -464,7 +464,7 @@ namespace MoreMountains.CorgiEngine
                 //オブジェクトがダメージ受ける
             }
             //バグ消しのリターン
-            return MyWakeUp.StunnType.Faltter;
+            return MyWakeUp.StunnType.Falter;
             
         }
 

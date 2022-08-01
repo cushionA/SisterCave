@@ -88,7 +88,7 @@ namespace MoreMountains.CorgiEngine
         protected int _rollingAnimationParameter;
         protected const string _startedRollingAnimationParameterName = "StartedRolling";
         protected int _startedRollingAnimationParameter;
-        protected RewiredCorgiEngineInputManager ReInput;
+
 
         /// <summary>
         /// アクトロールフラグは走るアクションとかからオンにしてもらうやつで、オンにしてもらえないとローリング不可能
@@ -107,7 +107,7 @@ namespace MoreMountains.CorgiEngine
             base.Initialization();
             Aim.Initialization();
             SuccessiveRollsLeft = SuccessiveRollsAmount;
-            ReInput = (RewiredCorgiEngineInputManager)_inputManager;
+           
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace MoreMountains.CorgiEngine
         {
             //ボタンのさまざまな可能な状態：オフ（デフォルトのアイドル状態）、
             //ButtonDown（ボタンが初めて押された）、ButtonPressed（ボタンが押された）、ButtonUp（ボタンが離された）
-            if (actRoll)
+            if (actRoll && GManager.instance.isEnable)
             {
                 //こいつがカギ
                 StartRoll();
@@ -415,6 +415,7 @@ namespace MoreMountains.CorgiEngine
         public override void UpdateAnimator()
         {
             MMAnimatorExtensions.UpdateAnimatorBool(_animator, _rollingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Rolling), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
+
         }
 
         /// <summary>

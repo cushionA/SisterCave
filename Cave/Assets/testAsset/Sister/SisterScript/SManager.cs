@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using MoreMountains.CorgiEngine;
 
 public class SManager : MonoBehaviour
 {
@@ -21,10 +21,13 @@ public class SManager : MonoBehaviour
     public List<GameObject> targetList;
    // [HideInInspector] public List<GameObject> targetRecord;
     //[HideInInspector]
-    public List<EnemyBase> targetCondition;
+    public List<EnemyAIBase> targetCondition;
     [HideInInspector]public float closestEnemy;
     [HideInInspector] public GameObject playObject;
-    [HideInInspector] public bool isEscape;//プレイヤー離れたフラグ。
+    /// <summary>
+    /// プレイヤーから離れたフラグ。
+    /// </summary>
+    [HideInInspector] public bool isEscape;
     /// <summary>
     /// 敵死んだフラグ。これが立つとパルス飛ばして敵検索
     /// </summary>
@@ -40,7 +43,11 @@ public class SManager : MonoBehaviour
     [HideInInspector] public bool isBattleEnd;
     //[HideInInspector] 
     public GameObject target;//攻撃対象
+    //詠唱中かどうか
     [HideInInspector] public bool castNow;
+    /// <summary>
+    /// 何かしている
+    /// </summary>
     [HideInInspector] public bool actNow;
     //  public Slider MpSlider;//シスターさんのMP管理
     [HideInInspector] public SisMagic useMagic;
@@ -62,7 +69,7 @@ public class SManager : MonoBehaviour
 
     private void Start()
     {
-        sisStatus.mp = sisStatus.maxMp;
+      //  sisStatus.mp = sisStatus.maxMp;
         MagicClassify();
         //SetMagicAtk();
     }
@@ -177,25 +184,7 @@ public class SManager : MonoBehaviour
 
     public void GetClosestEnemyX()
     {
-        //float nowPosition;
-        //位置は最初に固定する
 
-   /*     for (int i = 0; i >= SManager.instance.targetList.Count; i++)
-        {
-            if (i == 0)
-            {
-                SManager.instance.closestEnemy = SManager.instance.targetList[0].transform.position.x;
-            }
-            else
-            {
-                if (Mathf.Abs(Sister.transform.position.x - SManager.instance.targetList[i].transform.position.x) < Mathf.Abs(Sister.transform.position.x - SManager.instance.closestEnemy))
-                {
-                    SManager.instance.closestEnemy = SManager.instance.closestEnemy = SManager.instance.targetList[i].transform.position.x;
-                }
-            }
-
-
-        }*/
 
         closestEnemy = targetList[0].transform.position.x;
 
@@ -213,18 +202,24 @@ public class SManager : MonoBehaviour
     public void EnemyDeath(GameObject enemy)
     {
         targetList.Remove(enemy);
-        targetCondition.Remove(enemy.GetComponent<EnemyBase>());
+        targetCondition.Remove(enemy.GetComponent<EnemyAIBase>());
         if (targetList.Count == 0)
         {
-            isBattleEnd = true;
+            isSerch = true;
         }
     }
+    /// <summary>
+    /// ターゲットとそのAIを格納して黄色マークつけてあげる
+    /// </summary>
+    /// <param name="target"></param>
     public void TargetAdd(GameObject target)
     {
-        if (!SManager.instance.targetList.Contains(target))
+        if (!targetList.Contains(target))
         {
-            SManager.instance.targetList.Add(target);
-            target.GetComponent<EnemyBase>().TargetEffectCon();
+            targetList.Add(target);
+            targetCondition.Add(target.GetComponent<EnemyAIBase>());
+            //認識した敵に黄色のマークをつける
+            targetCondition[targetCondition.Count - 1].TargetEffectCon();
         }
     }
 

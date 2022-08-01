@@ -86,7 +86,7 @@ public class TypeWindow : ValueChangeBase
 
     public void ApplyType()
     {
-        numberSave = GetType(MainUI.instance.settingNumber,MainUI.instance.editNumber);
+        numberSave = GetType(MainUICon.instance.settingNumber,MainUICon.instance.editNumber);
 
         bool value = GetComponent<Toggle>().isOn;
         if (value)
@@ -112,69 +112,69 @@ public class TypeWindow : ValueChangeBase
         {
             if (e == 1)
             {
-                return MainUI.instance.editParameter.firstTarget.percentage;
+                return MainUICon.instance.editParameter.firstTarget.percentage;
             }
             else if (e == 2)
             {
-                return MainUI.instance.editParameter.secondTarget.percentage;
+                return MainUICon.instance.editParameter.secondTarget.percentage;
             }
             else if (e == 3)
             {
-                return MainUI.instance.editParameter.thirdTarget.percentage;
+                return MainUICon.instance.editParameter.thirdTarget.percentage;
             }
             else if (e == 4)
             {
-                return MainUI.instance.editParameter.forthTarget.percentage;
+                return MainUICon.instance.editParameter.forthTarget.percentage;
             }
             else
             {
-                return MainUI.instance.editParameter.fiveTarget.percentage;
+                return MainUICon.instance.editParameter.fiveTarget.percentage;
             }
         }
         else if (s == 3)
         {
             if (e == 1)
             {
-                return MainUI.instance.editParameter.firstPlan.percentage;
+                return MainUICon.instance.editParameter.firstPlan.percentage;
             }
             else if (e == 2)
             {
-                return MainUI.instance.editParameter.secondPlan.percentage;
+                return MainUICon.instance.editParameter.secondPlan.percentage;
             }
             else if (e == 3)
             {
-                return MainUI.instance.editParameter.thirdPlan.percentage;
+                return MainUICon.instance.editParameter.thirdPlan.percentage;
             }
             else if (e == 4)
             {
-                return MainUI.instance.editParameter.forthPlan.percentage;
+                return MainUICon.instance.editParameter.forthPlan.percentage;
             }
             else
             {
-                return MainUI.instance.editParameter.fivePlan.percentage;
+                return MainUICon.instance.editParameter.fivePlan.percentage;
             }
         }
         else
         {
             if (e == 1)
             {
-                return MainUI.instance.editParameter.firstRecover.percentage;
+                return MainUICon.instance.editParameter.firstRecover.percentage;
             }
             else if (e == 2)
             {
-                return MainUI.instance.editParameter.secondRecover.percentage;
+                return MainUICon.instance.editParameter.secondRecover.percentage;
             }
             else if (e == 3)
             {
-                return MainUI.instance.editParameter.thirdRecover.percentage;
+                return MainUICon.instance.editParameter.thirdRecover.percentage;
             }
             else if (e == 4)
             {
-                return MainUI.instance.editParameter.forthRecover.percentage;
+                return MainUICon.instance.editParameter.forthRecover.percentage;
             }
             else
             {
-                return MainUI.instance.editParameter.fiveRecover.percentage;
+                return MainUICon.instance.editParameter.fiveRecover.percentage;
             }
         }
     }

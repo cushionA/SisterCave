@@ -121,10 +121,10 @@ public class UIPlaceSet : MonoBehaviour
         {
             //ドロップダウン
 
-            if (MainUI.instance.beforeSet == null)
+            if (MainUICon.instance.beforeSet == null)
             {
                 //既定の場所にセット
-                //  RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
+                //  RectTransform bt = MainUICon.instance.beforeSet.GetComponent<RectTransform>();
                 Vector2 posi = new Vector2(425, 300);
              //   Debug.Log($"肉{posi.x}あ{posi.y}");
                 myPosi.anchoredPosition = posi;
@@ -133,8 +133,8 @@ public class UIPlaceSet : MonoBehaviour
             else
             {
 
-                UIPlaceSet before = MainUI.instance.beforeSet.GetComponent<UIPlaceSet>();
-                RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
+                UIPlaceSet before = MainUICon.instance.beforeSet.GetComponent<UIPlaceSet>();
+                RectTransform bt = MainUICon.instance.beforeSet.GetComponent<RectTransform>();
 
                 if (before.windowType == 0)
                 {
@@ -161,12 +161,12 @@ public class UIPlaceSet : MonoBehaviour
         }
         else if (windowType == 1)
         {
-            RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
+            RectTransform bt = MainUICon.instance.beforeSet.GetComponent<RectTransform>();
             Vector2 posi = new Vector2(myPosi.anchoredPosition.x, bt.anchoredPosition.y - 130);
             myPosi.anchoredPosition = posi;
 #if false
             //敵タイプ
-            UIPlaceSet before = MainUI.instance.beforeSet.GetComponent<UIPlaceSet>();
+            UIPlaceSet before = MainUICon.instance.beforeSet.GetComponent<UIPlaceSet>();
             if (before.windowType == 0)
             {
                 //規定値を前のオブジェクトの位置に足した場所に入れる
@@ -186,12 +186,12 @@ public class UIPlaceSet : MonoBehaviour
         }
         else
         {
-            RectTransform bt = MainUI.instance.beforeSet.GetComponent<RectTransform>();
+            RectTransform bt = MainUICon.instance.beforeSet.GetComponent<RectTransform>();
             Vector2 posi = new Vector2(myPosi.anchoredPosition.x, bt.anchoredPosition.y - 162);
              myPosi.anchoredPosition = posi;
             #if false
             //窓タイプ２、数値設定
-            UIPlaceSet before = MainUI.instance.beforeSet.GetComponent<UIPlaceSet>();
+            UIPlaceSet before = MainUICon.instance.beforeSet.GetComponent<UIPlaceSet>();
             if (before.windowType == 0)
             {
                 //規定値を前のオブジェクトの位置に足した場所に入れる
@@ -210,7 +210,7 @@ public class UIPlaceSet : MonoBehaviour
 #endif
         }
         //入れ替え
-        MainUI.instance.beforeSet = this.gameObject;
+        MainUICon.instance.beforeSet = this.gameObject;
     }
 
 

@@ -42,6 +42,7 @@ ScriptedImporter:
     streamingMipmaps: 1
     streamingMipmapsPriority: 0
     vTOnly: 0
+    ignoreMasterTextureLimit: 0
     nPOTScale: 1
     sRGBTexture: 1
     spriteMode: 2
@@ -96,7 +97,6 @@ ScriptedImporter:
       width: 0
       height: 0
     spriteID: 
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -120,7 +120,6 @@ ScriptedImporter:
       width: 423
       height: 436
     spriteID: 11793b0aeed0aa64cb1fbeee7b80085b
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -142,7 +141,6 @@ ScriptedImporter:
       width: 423
       height: 436
     spriteID: 7b30f16110946cb40883cb864f92a146
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -164,7 +162,6 @@ ScriptedImporter:
       width: 423
       height: 436
     spriteID: 624b23d85ceddba49961c7cdafcf3c85
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -186,7 +183,6 @@ ScriptedImporter:
       width: 423
       height: 436
     spriteID: 89dc9b92f27b42f41b8f3cf5eaaf94e1
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -196,6 +192,55 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 371, y: 384}
+  characterData:
+    bones: []
+    parts:
+    - spritePosition:
+        x: 64
+        y: 64
+        width: 423
+        height: 436
+      spriteId: 11793b0aeed0aa64cb1fbeee7b80085b
+      bones: 
+      parentGroup: 0
+      order: 0
+    - spritePosition:
+        x: 64
+        y: 64
+        width: 423
+        height: 436
+      spriteId: 7b30f16110946cb40883cb864f92a146
+      bones: 
+      parentGroup: 0
+      order: 0
+    - spritePosition:
+        x: 64
+        y: 64
+        width: 423
+        height: 436
+      spriteId: 624b23d85ceddba49961c7cdafcf3c85
+      bones: 
+      parentGroup: 0
+      order: 0
+    - spritePosition:
+        x: 64
+        y: 64
+        width: 423
+        height: 436
+      spriteId: 89dc9b92f27b42f41b8f3cf5eaaf94e1
+      bones: 
+      parentGroup: 0
+      order: 0
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    boneReadOnly: 0
   platformSettings:
   - name: DefaultTexturePlatform
     overridden: 0
@@ -253,14 +298,15 @@ ScriptedImporter:
     allowsAlphaSplitting: 0
     androidETC2FallbackOverride: 0
   mosaicLayers: 1
+  characterMode: 1
   documentPivot: {x: 0, y: 0}
   documentAlignment: 7
   importHiddenLayers: 0
-  importedTextureWidth: 256
-  importedTextureHeight: 256
-  documentSize: {x: 600, y: 600}
+  layerMappingOption: 2
+  generatePhysicsShape: 0
   paperDollMode: 0
   keepDupilcateSpriteName: 0
+  skeletonAssetReferenceID: 
   spriteCategoryList:
     categories:
     - name: HopUp
@@ -273,20 +319,20 @@ ScriptedImporter:
         spriteId: 624b23d85ceddba49961c7cdafcf3c85
       - name: Gusyagusya
         spriteId: 89dc9b92f27b42f41b8f3cf5eaaf94e1
-  textureActualWidth: 1024
-  textureActualHeight: 1024
   spritePackingTag: 
   resliceFromLayer: 0
-  characterMode: 1
   mosaicPSDLayers: []
   rigPSDLayers:
   - name: HopUp
     spriteName: 
     isGroup: 1
     parentIndex: -1
-    spriteID: 00000000000000000000000000000000
+    spriteID: 1f0e240141020a145bcb13131e060892
     layerID: 7
     mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
   - name: Exclamation
     spriteName: Exclamation
     isGroup: 0
@@ -294,6 +340,9 @@ ScriptedImporter:
     spriteID: 11793b0aeed0aa64cb1fbeee7b80085b
     layerID: 6
     mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Conversation
     spriteName: Conversation
     isGroup: 0
@@ -301,6 +350,9 @@ ScriptedImporter:
     spriteID: 7b30f16110946cb40883cb864f92a146
     layerID: 5
     mosaicPosition: {x: 435, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Question
     spriteName: Question
     isGroup: 0
@@ -308,6 +360,9 @@ ScriptedImporter:
     spriteID: 624b23d85ceddba49961c7cdafcf3c85
     layerID: 4
     mosaicPosition: {x: 4, y: 448}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Gusyagusya
     spriteName: Gusyagusya
     isGroup: 0
@@ -315,49 +370,14 @@ ScriptedImporter:
     spriteID: 89dc9b92f27b42f41b8f3cf5eaaf94e1
     layerID: 3
     mosaicPosition: {x: 435, y: 448}
-  characterData:
-    bones: []
-    parts:
-    - spritePosition:
-        x: 64
-        y: 64
-        width: 423
-        height: 436
-      spriteId: 11793b0aeed0aa64cb1fbeee7b80085b
-      bones: 
-      parentGroup: 0
-      order: 0
-    - spritePosition:
-        x: 64
-        y: 64
-        width: 423
-        height: 436
-      spriteId: 7b30f16110946cb40883cb864f92a146
-      bones: 
-      parentGroup: 0
-      order: 0
-    - spritePosition:
-        x: 64
-        y: 64
-        width: 423
-        height: 436
-      spriteId: 624b23d85ceddba49961c7cdafcf3c85
-      bones: 
-      parentGroup: 0
-      order: 0
-    - spritePosition:
-        x: 64
-        y: 64
-        width: 423
-        height: 436
-      spriteId: 89dc9b92f27b42f41b8f3cf5eaaf94e1
-      bones: 
-      parentGroup: 0
-      order: 0
-    dimension: {x: 0, y: 0}
-    characterGroups: []
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
   generateGOHierarchy: 0
   textureAssetName: SisHopUp Texture
   prefabAssetName: SisHopUp Prefab
   spriteLibAssetName: SisHopUp Sprite Lib
+  skeletonAssetName: 
   secondarySpriteTextures: []

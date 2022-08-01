@@ -29,30 +29,30 @@ public class TipsController : MonoBehaviour
 
     private void OnDisable()
     {
-        MainUI.instance.isTips = false;
+        MainUICon.instance.isTips = false;
         isFirst = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (beforeObj != MainUI.instance.eventSystem.currentSelectedGameObject || beforeObj == null)
+        if (beforeObj != MainUICon.instance.eventSystem.currentSelectedGameObject || beforeObj == null)
         {
-            MainUI.instance.isTips = false;
-            beforeObj = MainUI.instance.eventSystem.currentSelectedGameObject;
-            Debug.Log($"ｄ{MainUI.instance.eventSystem.currentSelectedGameObject.name}");
+            MainUICon.instance.isTips = false;
+            beforeObj = MainUICon.instance.eventSystem.currentSelectedGameObject;
+            Debug.Log($"ｄ{MainUICon.instance.eventSystem.currentSelectedGameObject.name}");
             Debug.Log($"s{beforeObj}");
             return;
         }
-        if (MainUI.instance.isTips && !isFirst)
+        if (MainUICon.instance.isTips && !isFirst)
         {
-            tx.text = MainUI.instance.eventSystem.currentSelectedGameObject.GetComponent<TipsWindow>().description;
+            tx.text = MainUICon.instance.eventSystem.currentSelectedGameObject.GetComponent<TipsWindow>().description;
 
-            //      Vector2 posi = MainUI.instance.eventSystem.currentSelectedGameObject.GetComponent<RectTransform>().anchoredPosition;
+            //      Vector2 posi = MainUICon.instance.eventSystem.currentSelectedGameObject.GetComponent<RectTransform>().anchoredPosition;
 
             //サイズ変更
             //  mine.anchoredPosition = new Vector2(posi.x + 120,posi.y);
-            Vector2 posi = MainUI.instance.eventSystem.currentSelectedGameObject.GetComponent<RectTransform>().position;
+            Vector2 posi = MainUICon.instance.eventSystem.currentSelectedGameObject.GetComponent<RectTransform>().position;
 
             //サイズ変更
             mine.position = new Vector2(posi.x + 30, posi.y);
@@ -60,7 +60,7 @@ public class TipsController : MonoBehaviour
             
 
         }
-        else if (!MainUI.instance.isTips)
+        else if (!MainUICon.instance.isTips)
         {
             isFirst = false;
             before = -1000;

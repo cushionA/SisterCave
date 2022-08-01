@@ -8,7 +8,7 @@ using MoreMountains.CorgiEngine;
 using Guirao.UltimateTextDamage;
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
-	public class PlyerController : CharacterAbility
+	public class PlyerController : MyAbillityBase
 {
     //必要な処理書き出し
     //攻撃受けた時のダメージ回避。重力変化。
@@ -16,12 +16,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
     //あと会話あたりの処理？
 	protected UltimateTextDamageManager um;
 
+		public Animator anim;
 
-
-		/// <summary>
-		/// 攻撃倍率
-		/// </summary>
-		[HideInInspector]
+        /// <summary>
+        /// 攻撃倍率
+        /// </summary>
+        #region
+        [HideInInspector]
 		public float attackFactor = 1;
 		[HideInInspector]
 		public float fireATFactor = 1;
@@ -33,44 +34,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public float holyATFactor = 1;
 
 		protected float attackBuff = 1;//攻撃倍率
-									   //新パラメータ
-		#region
-		/// the number of jumps to perform while in this state
-		//	[Tooltip("the number of jumps to perform while in this state")]
-		//	public int NumberOfJumps = 1;
+        #endregion
 
-		///<summary>
-		///どちらの方向を向くかのあれ。
-		/// </summary>
-		int horizontalDirection;
+
+        //新パラメータ
+        #region
+        /// the number of jumps to perform while in this state
+        //	[Tooltip("the number of jumps to perform while in this state")]
+        //	public int NumberOfJumps = 1;
+
+        ///<summary>
+        ///どちらの方向を向くかのあれ。
+        /// </summary>
+        int horizontalDirection;
 
 
 		//横移動は継承もとにあるよん
-
-		protected PlayerJump _jump;
-		//　protected int _numberOfJumps = 0;
-
-
-		//　protected int _numberOfJumps = 0;
-
-		protected PlayerRoll _rolling;
-
-		protected CharacterRun _characterRun;
-
-		protected EnemyFly _flying;
-
-		protected GuardAbillity _guard;
-
-		protected MyWakeUp _wakeup;
-
-		protected WeaponAbillity _attack;
-
-		protected MyDamageOntouch _damage;
-
-		protected new MyHealth _health;
-
-
-		//	protected Hittable _hitInfo;
 
 
 		#endregion
@@ -82,8 +61,33 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		protected float nowArmor;
 		#endregion
 
-		protected override void Initialization()
+
+		//プレイヤーのアビリティ管理に使う
+		#region
+		protected PlayerRoll _rolling;
+
+		protected PlayerRunning _running;
+
+		protected GuardAbillity _guard;
+
+		protected PlayerJump _jump;
+
+		protected WeaponAbillity _weapon;
+
+		protected MyWakeUp _wakeup;
+
+		protected WeaponAbillity _attack;
+
+		protected MyDamageOntouch _damage;
+
+		protected new MyHealth _health;
+        #endregion
+
+
+
+        protected override void Initialization()
 		{
+			base.Initialization();
 			ParameterSet(GManager.instance.pStatus);
 			ArmorReset();
 			_health = (MyHealth)base._health;
@@ -95,35 +99,38 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//parentMatt = GetComponent<SpriteRenderer>().material;
 			//td = GetComponent<TargetDisplay>();
 
-			GManager.instance.SetParameter();
-			GManager.instance.ActionSet();
-			GManager.instance.SetAtk(GManager.instance.equipWeapon);
-			GManager.instance.SetAtk(GManager.instance.equipShield);
-			GManager.instance.SetGuard(GManager.instance.equipWeapon);
-			GManager.instance.SetGuard(GManager.instance.equipShield);
-
-			GManager.instance.SetMagicAssist();
-			GManager.instance.SetMagicAtk();
+			GManager.instance.StatusSetting();
+			anim = _character._animator;
 		}
 
 
 		protected void ParameterSet(PlayerStatus status)
 	{
-		///<summary>
-		///　リスト
-		/// </summary>
-		#region
-		/*
-	 CharacterJump _characterJump;
-	 PlayerRoll _rolling;
-	 CharacterRun _characterRun;
-	 EnemyFly _flying;
-	 GuardAbillity _guard;
-	 MyWakeUp _wakeup;
-	 EAttackCon _attack;
+			if(status == null)
+            {
+				Debug.Log("ｓｆｆｇ");
+				return;
+            }
+            else if(_controller == null)
+            {
+				Debug.Log("ｈでｒｈふせｒｌｆｐ＠");
+            }
 
-		*/
-		#endregion
+			///<summary>
+			///　リスト
+			/// </summary>
+			#region
+			/*
+		 CharacterJump _characterJump;
+		 PlayerRoll _rolling;
+		 CharacterRun _characterRun;
+		 EnemyFly _flying;
+		 GuardAbillity _guard;
+		 MyWakeUp _wakeup;
+		 EAttackCon _attack;
+
+			*/
+			#endregion
 
 			GravitySet(status.firstGravity);
 			#region
@@ -201,13 +208,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	public bool StopWalkingWhenCollidingWithAWall = false;
 			 */
 			#endregion
-			_characterHorizontalMovement.WalkSpeed = GManager.instance.pStatus.moveSpeed;
-			if (_characterRun != null)
+			_characterHorizontalMovement.WalkSpeed = status.moveSpeed;
+			if (_running != null)
 			{
-				_characterRun.RunSpeed = GManager.instance.pStatus.dashSpeed;
+				_running.RunSpeed = status.dashSpeed;
 			}
+            
 
-		
+            {
+
+            }
 
 
 		if (_rolling != null)
@@ -278,83 +288,102 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 		}
-
-		if (_jump != null)
-		{
+			///<summary>
+			///ジャンプ設定
+			/// </summary>
 			#region
-			/*
-					/// the maximum number of jumps allowed (0 : no jump, 1 : normal jump, 2 : double jump, etc...)
-	[Tooltip("the maximum number of jumps allowed (0 : no jump, 1 : normal jump, 2 : double jump, etc...)")]
-	public int NumberOfJumps = 2;
-	/// defines how high the character can jump
-	[Tooltip("defines how high the character can jump")]
-	public float JumpHeight = 3.025f;
-	/// basic rules for jumps : where can the player jump ?
-	[Tooltip("basic rules for jumps : where can the player jump ?")]
-	public JumpBehavior JumpRestrictions = JumpBehavior.CanJumpAnywhere;
-	/// if this is true, camera offset will be reset on jump
-	[Tooltip("if this is true, camera offset will be reset on jump")]
-	public bool ResetCameraOffsetOnJump = false;
-	/// if this is true, this character can jump down one way platforms by doing down + jump
-	[Tooltip("if this is true, this character can jump down one way platforms by doing down + jump")]
-	public bool CanJumpDownOneWayPlatforms = true;
+			if (_jump != null)
+			{
+				#region
+				/*
+						/// the maximum number of jumps allowed (0 : no jump, 1 : normal jump, 2 : double jump, etc...)
+		[Tooltip("the maximum number of jumps allowed (0 : no jump, 1 : normal jump, 2 : double jump, etc...)")]
+		public int NumberOfJumps = 2;
+		/// defines how high the character can jump
+		[Tooltip("defines how high the character can jump")]
+		public float JumpHeight = 3.025f;
+		/// basic rules for jumps : where can the player jump ?
+		[Tooltip("basic rules for jumps : where can the player jump ?")]
+		public JumpBehavior JumpRestrictions = JumpBehavior.CanJumpAnywhere;
+		/// if this is true, camera offset will be reset on jump
+		[Tooltip("if this is true, camera offset will be reset on jump")]
+		public bool ResetCameraOffsetOnJump = false;
+		/// if this is true, this character can jump down one way platforms by doing down + jump
+		[Tooltip("if this is true, this character can jump down one way platforms by doing down + jump")]
+		public bool CanJumpDownOneWayPlatforms = true;
 
-	[Header("Proportional jumps")]
+		[Header("Proportional jumps")]
 
-	/// if true, the jump duration/height will be proportional to the duration of the button's press
-	[Tooltip("if true, the jump duration/height will be proportional to the duration of the button's press")]
-	public bool JumpIsProportionalToThePressTime = true;
-	/// the minimum time in the air allowed when jumping - this is used for pressure controlled jumps
-	[Tooltip("the minimum time in the air allowed when jumping - this is used for pressure controlled jumps")]
-	public float JumpMinimumAirTime = 0.1f;
-	/// the amount by which we'll modify the current speed when the jump button gets released
-	[Tooltip("the amount by which we'll modify the current speed when the jump button gets released")]
-	public float JumpReleaseForceFactor = 2f;
+		/// if true, the jump duration/height will be proportional to the duration of the button's press
+		[Tooltip("if true, the jump duration/height will be proportional to the duration of the button's press")]
+		public bool JumpIsProportionalToThePressTime = true;
+		/// the minimum time in the air allowed when jumping - this is used for pressure controlled jumps
+		[Tooltip("the minimum time in the air allowed when jumping - this is used for pressure controlled jumps")]
+		public float JumpMinimumAirTime = 0.1f;
+		/// the amount by which we'll modify the current speed when the jump button gets released
+		[Tooltip("ジャンプボタンが離されたときに、現在の速度を変更する量です。")]
+		public float JumpReleaseForceFactor = 2f;
 
-	[Header("Quality of Life")]
+		[Header("Quality of Life")]
 
-	/// a timeframe during which, after leaving the ground, the character can still trigger a jump
-	[Tooltip("a timeframe during which, after leaving the ground, the character can still trigger a jump")]
-	public float CoyoteTime = 0f;
+		/// a timeframe during which, after leaving the ground, the character can still trigger a jump
+		[Tooltip("a timeframe during which, after leaving the ground, the character can still trigger a jump")]
+		public float CoyoteTime = 0f;
 
-	/// if the character lands, and the jump button's been pressed during that InputBufferDuration, a new jump will be triggered 
-	[Tooltip("キャラクターが着地し、そのInputBufferDurationの間にジャンプボタンが押された場合、新しいジャンプが開始されます。")]
-	public float InputBufferDuration = 0f;
+		/// if the character lands, and the jump button's been pressed during that InputBufferDuration, a new jump will be triggered 
+		[Tooltip("キャラクターが着地し、そのInputBufferDurationの間にジャンプボタンが押された場合、新しいジャンプが開始されます。")]
+		public float InputBufferDuration = 0f;
 
-	[Header("Collisions")]
+		[Header("Collisions")]
 
-	/// duration (in seconds) we need to disable collisions when jumping down a 1 way platform
-	[Tooltip("duration (in seconds) we need to disable collisions when jumping down a 1 way platform")]
-	public float OneWayPlatformsJumpCollisionOffDuration = 0.3f;
-	/// duration (in seconds) we need to disable collisions when jumping off a moving platform
-	[Tooltip("duration (in seconds) we need to disable collisions when jumping off a moving platform")]
-	public float MovingPlatformsJumpCollisionOffDuration = 0.05f;
+		/// duration (in seconds) we need to disable collisions when jumping down a 1 way platform
+		[Tooltip("duration (in seconds) we need to disable collisions when jumping down a 1 way platform")]
+		public float OneWayPlatformsJumpCollisionOffDuration = 0.3f;
+		/// duration (in seconds) we need to disable collisions when jumping off a moving platform
+		[Tooltip("duration (in seconds) we need to disable collisions when jumping off a moving platform")]
+		public float MovingPlatformsJumpCollisionOffDuration = 0.05f;
 
-	[Header("Air Jump")]
+		[Header("Air Jump")]
 
-	/// the MMFeedbacks to play when jumping in the air
-	[Tooltip("the MMFeedbacks to play when jumping in the air")]
-	public MMFeedbacks AirJumpFeedbacks;
+		/// the MMFeedbacks to play when jumping in the air
+		[Tooltip("the MMFeedbacks to play when jumping in the air")]
+		public MMFeedbacks AirJumpFeedbacks;
 
-	/// the number of jumps left to the character
-	[MMReadOnly]
-	[Tooltip("the number of jumps left to the character")]
-	public int NumberOfJumpsLeft;
+		/// the number of jumps left to the character
+		[MMReadOnly]
+		[Tooltip("the number of jumps left to the character")]
+		public int NumberOfJumpsLeft;
 
-	/// whether or not the jump happened this frame
-	public bool JumpHappenedThisFrame { get; set; }
-	/// whether or not the jump can be stopped
-	public bool CanJumpStop { get; set; }
+		/// whether or not the jump happened this frame
+		public bool JumpHappenedThisFrame { get; set; }
+		/// whether or not the jump can be stopped
+		public bool CanJumpStop { get; set; }
 
-			 */
+				 */
+				#endregion
+				_jump.CoyoteTime = GManager.instance.pStatus.jumpCool;
+				_jump.JumpHeight = GManager.instance.pStatus.jumpRes;
+				_jump.NumberOfJumps = GManager.instance.pStatus.jumpLimit;
+
+				//ジャンプの速さとかは重力で決まる
+				//ジャンプ中だけHorizontalSpeed変えてもろて
+				//水平移動速度変わる処理入れる、いやいらんか
+				//普通に横移動速度の何割がちょうどいいかで決めよ
+			}
 			#endregion
-			_jump.CoyoteTime = GManager.instance.pStatus.jumpCool;
-			_jump.JumpHeight = GManager.instance.pStatus.jumpRes;
-			_jump.NumberOfJumps = GManager.instance.pStatus.jumpLimit;
+
+
+			///<summary>
+			///起き上がり設定
+			///</summary>
+			#region
+			if (_wakeup != null)
+			{
+
+			}
+			#endregion
 
 		}
-
-	}
 
 
 		/// <summary>
@@ -364,7 +393,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public void GravitySet(float gravity)
 		{
 			//rb.gravityScale = gravity;
-			_controller.DefaultParameters.Gravity = gravity;
+			_controller.DefaultParameters.Gravity = -gravity;
 		}
 
 
@@ -599,7 +628,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					//パリィは別発生
 					else
 					{
-						result = MyWakeUp.StunnType.Faltter;
+						result = MyWakeUp.StunnType.Falter;
 					}
 
 				}
@@ -671,5 +700,55 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				GManager.instance.PlaySound("ThunderDamage", transform.position);
 			}
 		}
+
+		/// <summary>
+		/// バフの数値を与える
+		/// 弾丸から呼ぶ
+		/// </summary>
+		public void BuffCalc(FireBullet _fire)
+        {
+		  _fire.attackFactor = attackFactor;
+		  _fire.fireATFactor = fireATFactor;
+		  _fire.thunderATFactor = thunderATFactor;
+		  _fire.darkATFactor = darkATFactor;
+		  _fire.holyATFactor = holyATFactor;
+     	}
+
+		public void SetLayer(int layerNumber)
+		{
+
+			this.gameObject.layer = layerNumber;
+
+		}
+
+		/// <summary>
+		/// スタミナ切れた時のアビリティ無効化
+		/// </summary>
+		public void StaminaExhaust()
+        {
+            if (GManager.instance.isEnable)
+            {
+
+            }
+            else
+            {
+				_rolling.AbilityPermitted = false;
+
+				_running.AbilityPermitted = false;
+
+				//_flying.AbilityPermitted = false;
+
+				_guard.AbilityPermitted = false;
+
+				_jump.AbilityPermitted = false;
+
+				_weapon.AbilityPermitted = false;
+
+				_wakeup.AbilityPermitted = false;
+
+				_attack.AbilityPermitted = false;
+			}
+        }
+
 	}
 }

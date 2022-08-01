@@ -15,8 +15,8 @@ namespace MoreMountains.CorgiEngine
 	/// ボタン離すと即座に完全に上昇やめるかとか決めれる
 	/// </summary>
 	[MMHiddenProperties("AbilityStopFeedbacks")]
-//	[AddComponentMenu("Corgi Engine/Character/Abilities/Character Jump")]
-	public class PlayerJump : CharacterAbility
+		[AddComponentMenu("Corgi Engine/Character/Abilities/PlayerJump")]
+	public class PlayerJump : MyAbillityBase
 	{
 		/// This method is only used to display a helpbox text at the beginning of the ability's inspector
 		public override string HelpBoxText() { return "This component handles jumps. Here you can define the jump height, whether the jump is proportional to the press length or not, the minimum air time (how long a character should stay in the air before being able to go down if the player has released the jump button), a jump window duration (the time during which, after falling off a cliff, a jump is still possible), jump restrictions, how many jumps the character can perform without touching the ground again, and how long collisions should be disabled when exiting 1-way platforms or moving platforms."; }
@@ -211,7 +211,7 @@ namespace MoreMountains.CorgiEngine
 			// we handle regular button presses
 			//ボタンの状態で判断してるね
 			//キャラクターステートにAttackを追加して攻撃すると入力が途切れるように
-			if (_verticalInput > 0)
+			if (_verticalInput > 0 && GManager.instance.isEnable)
 			{
 				if (!isFirst)
 				{

@@ -58,7 +58,8 @@ public class SisterParameter : ScriptableObject
     {
         攻撃,
         回復,
-        支援
+        支援,
+        なし
     }
     [Header("どのタイプの魔法を優先するか")]
     public MoveType priority;

@@ -58,7 +58,7 @@ public class ChildWindow : MonoBehaviour
             //ドロップダウンが何を参照してるかでUIのドロップダウンのやつを決める
             //objListからドロップダウンを引きずりだす
             //あとオブジェクトリストとSとeでうまいことSetActiveを操る。
-            int s = MainUI.instance.settingNumber;
+            int s = MainUICon.instance.settingNumber;
            // Debug.Log($"数値か？{s}");
             if (s == 1)
             {
@@ -117,8 +117,8 @@ public class ChildWindow : MonoBehaviour
     /// </summary>
     public void ApplyValue()
     {
-        int s = MainUI.instance.settingNumber;
-        int e = MainUI.instance.editNumber;
+        int s = MainUICon.instance.settingNumber;
+        int e = MainUICon.instance.editNumber;
         //ドロップダウンなら
         //  0以上3以下
         if (type >= 0 && type < 3)
@@ -938,69 +938,69 @@ public class ChildWindow : MonoBehaviour
         {
             if (e == 1)
             {
-               return MainUI.instance.editParameter.firstTarget.percentage;
+               return MainUICon.instance.editParameter.firstTarget.percentage;
             }
             else if (e == 2)
             {
-                return MainUI.instance.editParameter.secondTarget.percentage;
+                return MainUICon.instance.editParameter.secondTarget.percentage;
             }
             else if (e == 3)
             {
-                return MainUI.instance.editParameter.thirdTarget.percentage;
+                return MainUICon.instance.editParameter.thirdTarget.percentage;
             }
             else if (e == 4)
             {
-                return MainUI.instance.editParameter.forthTarget.percentage;
+                return MainUICon.instance.editParameter.forthTarget.percentage;
             }
             else
             {
-                return MainUI.instance.editParameter.fiveTarget.percentage;
+                return MainUICon.instance.editParameter.fiveTarget.percentage;
             }
         }
         else if (s == 3)
         {
             if (e == 1)
             {
-                return MainUI.instance.editParameter.firstPlan.percentage;
+                return MainUICon.instance.editParameter.firstPlan.percentage;
             }
             else if (e == 2)
             {
-                return MainUI.instance.editParameter.secondPlan.percentage;
+                return MainUICon.instance.editParameter.secondPlan.percentage;
             }
             else if (e == 3)
             {
-                return MainUI.instance.editParameter.thirdPlan.percentage;
+                return MainUICon.instance.editParameter.thirdPlan.percentage;
             }
             else if (e == 4)
             {
-                return MainUI.instance.editParameter.forthPlan.percentage;
+                return MainUICon.instance.editParameter.forthPlan.percentage;
             }
             else
             {
-                return MainUI.instance.editParameter.fivePlan.percentage;
+                return MainUICon.instance.editParameter.fivePlan.percentage;
             }
         }
         else
         {
             if (e == 1)
             {
-                return MainUI.instance.editParameter.firstRecover.percentage;
+                return MainUICon.instance.editParameter.firstRecover.percentage;
             }
             else if (e == 2)
             {
-                return MainUI.instance.editParameter.secondRecover.percentage;
+                return MainUICon.instance.editParameter.secondRecover.percentage;
             }
             else if (e == 3)
             {
-                return MainUI.instance.editParameter.thirdRecover.percentage;
+                return MainUICon.instance.editParameter.thirdRecover.percentage;
             }
             else if (e == 4)
             {
-                return MainUI.instance.editParameter.forthRecover.percentage;
+                return MainUICon.instance.editParameter.forthRecover.percentage;
             }
             else
             {
-                return MainUI.instance.editParameter.fiveRecover.percentage;
+                return MainUICon.instance.editParameter.fiveRecover.percentage;
             }
         }
     }
@@ -1018,69 +1018,69 @@ public class ChildWindow : MonoBehaviour
         {
             if (e == 1)
             {
-                return MainUI.instance.editParameter.firstTarget.highOrLow;
+                return MainUICon.instance.editParameter.firstTarget.highOrLow;
             }
             else if (e == 2)
             {
-                return MainUI.instance.editParameter.secondTarget.highOrLow;
+                return MainUICon.instance.editParameter.secondTarget.highOrLow;
             }
             else if (e == 3)
             {
-                return MainUI.instance.editParameter.thirdTarget.highOrLow;
+                return MainUICon.instance.editParameter.thirdTarget.highOrLow;
             }
             else if (e == 4)
             {
-                return MainUI.instance.editParameter.forthTarget.highOrLow;
+                return MainUICon.instance.editParameter.forthTarget.highOrLow;
             }
             else
             {
-                return MainUI.instance.editParameter.fiveTarget.highOrLow;
+                return MainUICon.instance.editParameter.fiveTarget.highOrLow;
             }
         }
         else if (s == 3)
         {
             if (e == 1)
             {
-                return MainUI.instance.editParameter.firstPlan.highOrLow;
+                return MainUICon.instance.editParameter.firstPlan.highOrLow;
             }
             else if (e == 2)
             {
-                return MainUI.instance.editParameter.secondPlan.highOrLow;
+                return MainUICon.instance.editParameter.secondPlan.highOrLow;
             }
             else if (e == 3)
             {
-                return MainUI.instance.editParameter.thirdPlan.highOrLow;
+                return MainUICon.instance.editParameter.thirdPlan.highOrLow;
             }
             else if (e == 4)
             {
-                return MainUI.instance.editParameter.forthPlan.highOrLow;
+                return MainUICon.instance.editParameter.forthPlan.highOrLow;
             }
             else
             {
-                return MainUI.instance.editParameter.fivePlan.highOrLow;
+                return MainUICon.instance.editParameter.fivePlan.highOrLow;
             }
         }
         else
         {
             if (e == 1)
             {
-                return MainUI.instance.editParameter.firstRecover.highOrLow;
+                return MainUICon.instance.editParameter.firstRecover.highOrLow;
             }
             else if (e == 2)
             {
-                return MainUI.instance.editParameter.secondRecover.highOrLow;
+                return MainUICon.instance.editParameter.secondRecover.highOrLow;
             }
             else if (e == 3)
             {
-                return MainUI.instance.editParameter.thirdRecover.highOrLow;
+                return MainUICon.instance.editParameter.thirdRecover.highOrLow;
             }
             else if (e == 4)
             {
-                return MainUI.instance.editParameter.forthRecover.highOrLow;
+                return MainUICon.instance.editParameter.forthRecover.highOrLow;
             }
             else
             {
-                return MainUI.instance.editParameter.fiveRecover.highOrLow;
+                return MainUICon.instance.editParameter.fiveRecover.highOrLow;
             }
         }
     }
@@ -1089,50 +1089,50 @@ public class ChildWindow : MonoBehaviour
     {
         if (e == 1)
         {
-            return MainUI.instance.editParameter.firstTarget;
+            return MainUICon.instance.editParameter.firstTarget;
         }
         else if (e == 2)
         {
-            return MainUI.instance.editParameter.secondTarget;
+            return MainUICon.instance.editParameter.secondTarget;
         }
         else if (e == 3)
         {
-            return MainUI.instance.editParameter.thirdTarget;
+            return MainUICon.instance.editParameter.thirdTarget;
         }
         else if (e == 4)
         {
-            return MainUI.instance.editParameter.forthTarget;
+            return MainUICon.instance.editParameter.forthTarget;
         }
         else
         {
-            return MainUI.instance.editParameter.fiveTarget;
+            return MainUICon.instance.editParameter.fiveTarget;
         }
     }
     FireCondition GetAttack(int e)
     {
         if (e == 1)
         {
-            return MainUI.instance.editParameter.firstAttack;
+            return MainUICon.instance.editParameter.firstAttack;
         }
         else if (e == 2)
         {
-            return MainUI.instance.editParameter.secondAttack;
+            return MainUICon.instance.editParameter.secondAttack;
         }
         else if (e == 3)
         {
-            return MainUI.instance.editParameter.thirdAttack;
+            return MainUICon.instance.editParameter.thirdAttack;
         }
         else if (e == 4)
         {
-            return MainUI.instance.editParameter.fourthAttack;
+            return MainUICon.instance.editParameter.fourthAttack;
         }
         else if (e == 5)
         {
-            return MainUI.instance.editParameter.fiveAttack;
+            return MainUICon.instance.editParameter.fiveAttack;
         }
         else
         {
-            return MainUI.instance.editParameter.nonAttack;
+            return MainUICon.instance.editParameter.nonAttack;
         }
     }
 
@@ -1140,71 +1140,71 @@ public class ChildWindow : MonoBehaviour
     {
         if (e == 1)
         {
-            return MainUI.instance.editParameter.firstPlan;
+            return MainUICon.instance.editParameter.firstPlan;
         }
         else if (e == 2)
         {
-            return MainUI.instance.editParameter.secondPlan;
+            return MainUICon.instance.editParameter.secondPlan;
         }
         else if (e == 3)
         {
-            return MainUI.instance.editParameter.thirdPlan;
+            return MainUICon.instance.editParameter.thirdPlan;
         }
         else if (e == 4)
         {
-            return MainUI.instance.editParameter.forthPlan;
+            return MainUICon.instance.editParameter.forthPlan;
         }
         else if (e == 5)
         {
-            return MainUI.instance.editParameter.fivePlan;
+            return MainUICon.instance.editParameter.fivePlan;
         }
         else
         {
-            return MainUI.instance.editParameter.sixPlan;
+            return MainUICon.instance.editParameter.sixPlan;
         }
     }
     RecoverCondition GetRecover( int e)
     {
-        if (!MainUI.instance.isAH)
+        if (!MainUICon.instance.isAH)
         {
             if (e == 1)
             {
-                return MainUI.instance.editParameter.firstRecover;
+                return MainUICon.instance.editParameter.firstRecover;
             }
             else if (e == 2)
             {
-                return MainUI.instance.editParameter.secondRecover;
+                return MainUICon.instance.editParameter.secondRecover;
             }
             else if (e == 3)
             {
-                return MainUI.instance.editParameter.thirdRecover;
+                return MainUICon.instance.editParameter.thirdRecover;
             }
             else if (e == 4)
             {
-                return MainUI.instance.editParameter.forthRecover;
+                return MainUICon.instance.editParameter.forthRecover;
             }
             else if (e == 5)
             {
-                return MainUI.instance.editParameter.fiveRecover;
+                return MainUICon.instance.editParameter.fiveRecover;
             }
             else
             {
-                return MainUI.instance.editParameter.nonRecover;
+                return MainUICon.instance.editParameter.nonRecover;
             }
         }
         else
         {
             if (e == 1)
             {
-                return MainUI.instance.editParameter.nFirstRecover;
+                return MainUICon.instance.editParameter.nFirstRecover;
             }
             else if (e == 2)
             {
-                return MainUI.instance.editParameter.nSecondRecover;
+                return MainUICon.instance.editParameter.nSecondRecover;
             }
             else
             {
-                return MainUI.instance.editParameter.nThirdRecover;
+                return MainUICon.instance.editParameter.nThirdRecover;
             }
         }
     }

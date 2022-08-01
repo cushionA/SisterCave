@@ -11,7 +11,7 @@ public class CoreEquipWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = MainUI.instance.selectButton.GetComponent<UseButtom>();
+        ub = MainUICon.instance.selectButton.GetComponent<UseButtom>();
     }
 
     // Update is called once per frame
@@ -23,7 +23,7 @@ public class CoreEquipWindow : MonoBehaviour
             isFirst = true;
         }
 
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
         {
 
             CoreManager.instance.isUseMenu = false;
@@ -31,7 +31,7 @@ public class CoreEquipWindow : MonoBehaviour
         }
 
 
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14))
         {
             ResetWindow();
         }
@@ -43,22 +43,22 @@ public class CoreEquipWindow : MonoBehaviour
         GManager.instance.pStatus.equipCore = CoreManager.instance.selectItem;
         CoreManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
-        MainUI.instance.MenuCancel();
-        MainUI.instance.coreWindow.SetActive(false);
-        MainUI.instance.eqWindow.SetActive(true);
+        MainUICon.instance.MenuCancel();
+      //  MainUICon.instance.coreWindow.SetActive(false);
+      //  MainUICon.instance.eqWindow.SetActive(true);
         EquipmentManager.instance.EqCore.Select();
         isFirst = false;
-        MainUI.instance.ButtonOn();
-        //  MainUI.instance.eqButton.SetActive(true);
+        MainUICon.instance.ButtonOn();
+        //  MainUICon.instance.eqButton.SetActive(true);
     }
     public void ResetWindow()
     {
         isFirst = false;
         CoreManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
-        MainUI.instance.MenuCancel();
-        MainUI.instance.ButtonOn();
-        //  MainUI.instance.selectButton = null;
+        MainUICon.instance.MenuCancel();
+        MainUICon.instance.ButtonOn();
+        //  MainUICon.instance.selectButton = null;
         //    CoreManager.instance.selectItem = null;
     }
 }

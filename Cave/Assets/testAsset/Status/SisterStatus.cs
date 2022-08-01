@@ -7,13 +7,10 @@ using UnityEngine.UI;
 
 [Serializable]
 [CreateAssetMenu(fileName = "SisterStatus", menuName = "CreateSisterStatus")]
- public class SisterStatus : ScriptableObject
+ public class SisterStatus : CharacterStatus
 {
-    public int level = 1;
-    //　最大MP
-    public float maxMp = 30;
-    //　MP
-    public float mp = 30;
+
+
 
 	//戦闘タイプ、みたいなのを選んで戦闘中の立ち位置決めれるようにする？
 

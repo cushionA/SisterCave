@@ -34,7 +34,7 @@ public class EnemySerch : MonoBehaviour
                 sister.reJudgeTime = 150;
                 //         Debug.Log("牧島");
                 SManager.instance.TargetAdd(collision.gameObject);
-                    SManager.instance.targetCondition.Add(SManager.instance.targetList[0].GetComponent<EnemyBase>());
+             //       SManager.instance.targetCondition.Add(SManager.instance.targetList[0].GetComponent<EnemyAIBase>());
                     sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
                     sister.Serch3.SetActive(true);
                     sister.Serch.SetActive(false);
@@ -78,7 +78,7 @@ public class EnemySerch : MonoBehaviour
 
                    //Debug.Log("牧島");
                     SManager.instance.TargetAdd(collision.gameObject);
-                    SManager.instance.targetCondition.Add(SManager.instance.targetList[0].GetComponent<EnemyBase>());
+                   // SManager.instance.targetCondition.Add(SManager.instance.targetList[0].GetComponent<EnemyBase>());
                     sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
                     sister.Serch3.SetActive(true);
                     sister.Serch.SetActive(false);

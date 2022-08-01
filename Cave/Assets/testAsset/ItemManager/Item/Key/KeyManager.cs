@@ -50,8 +50,8 @@ public class KeyManager : MonoBehaviour
 
 	private void Update()
 	{
-		//////Debug.log(GetItem("test4").inventoryNum);
-		//////Debug.log(GetItem("テスト3").inventoryNum);
+		//////Debug.log(GetItem("test4")5);
+		//////Debug.log(GetItem("テスト3")5);
 
 
 
@@ -66,11 +66,7 @@ public class KeyManager : MonoBehaviour
 
 
 
-	//　名前でアイテムを取得
-	public KeyItem GetItem(string searchName)
-	{
-		return toolDataBase.GetItemLists().Find(itemName => itemName.itemName == searchName);
-	}
+
 
 	private void OnTriggerStay2D(Collider2D collision)
 	{
@@ -83,17 +79,7 @@ public class KeyManager : MonoBehaviour
 
 		for (int i = 0; i < takeItem.Length; i++)
 		{
-			int pas = takeItem[i].inventoryNum;
-			takeItem[i].inventoryNum = pas + changeNum[i];
-			//isUp = true;
-			/*int pas = numOfItem[GetItem($"{takeItem}")];
-			numOfItem[GetItem($"{takeItem}")] = pas + changeNum;
-			isUp = true;*/
-			if (takeItem[i].inventoryNum < 0)
-			{
-				takeItem[i].inventoryNum = 0;
 
-			}
 		}
 	}
 

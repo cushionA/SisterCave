@@ -16,7 +16,7 @@ public class SampleAIReset : MonoBehaviour
 
     public void ResetAI()
     {
-        op.OparationCopy(MainUI.instance.editParameter, sis,true);
+        op.OparationCopy(MainUICon.instance.editParameter, sis,true);
     }
 
 }

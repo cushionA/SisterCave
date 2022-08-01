@@ -35,18 +35,18 @@ public class OperationTipsChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int s = MainUI.instance.settingNumber;
+        int s = MainUICon.instance.settingNumber;
 
         
 
-        if (MainUI.instance.eventSystem.currentSelectedGameObject == this.gameObject)
+        if (MainUICon.instance.eventSystem.currentSelectedGameObject == this.gameObject)
         {
             isFirst = true;
-            MainUI.instance.isTips = true;
+            MainUICon.instance.isTips = true;
         }
         else if (isFirst)
         {
-            MainUI.instance.isTips = false;
+            MainUICon.instance.isTips = false;
             isFirst = false;
         }
 

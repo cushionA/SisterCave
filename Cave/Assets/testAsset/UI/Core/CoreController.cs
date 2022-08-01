@@ -123,14 +123,14 @@ public class CoreController : MonoBehaviour, IEnhancedScrollerDelegate
         for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
         {
             //　アイテム数を適当に設定
-            toolDataBase.GetItemLists()[i].inventoryNum = 0;
+            // = 0;
 
         }
         data = null;
         setList = new List<CoreItem>(ToolList());
 
         /*(from item in toolDataBase.GetItemLists()
-               where item.inventoryNum > 0
+               where 5 > 0
                select item).ToList();*/
         //最終的に作りたいリストの初期化
         data = new List<CoreData>();
@@ -215,7 +215,7 @@ public class CoreController : MonoBehaviour, IEnhancedScrollerDelegate
             setList = new List<CoreItem>(ToolList());
 
             /*(from item in toolDataBase.GetItemLists()
-                   where item.inventoryNum > 0
+                   where 5 > 0
                    select item).ToList();*/
             //最終的に作りたいリストの初期化
             data = new List<CoreData>();
@@ -298,7 +298,7 @@ public class CoreController : MonoBehaviour, IEnhancedScrollerDelegate
         //MyItem.rowLengthが20にあたります、intで宣言しているので、floatに置換しています。
         //公式は　ScrollBarのValueの上限、セルの数、表示可能なセルの数。
 
-        if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) < 0)
+        if (GManager.instance.InputR.GetAxisPrev(MainUICon.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) < 0)
         {
             if (isReverse == true)
             {
@@ -335,7 +335,7 @@ public class CoreController : MonoBehaviour, IEnhancedScrollerDelegate
                 useBar.value += pos;
             }
         }
-        if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) > 0 && isIniti)
+        if (GManager.instance.InputR.GetAxisPrev(MainUICon.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) > 0 && isIniti)
         {
             if (!isFirstD)
             {
@@ -362,7 +362,7 @@ public class CoreController : MonoBehaviour, IEnhancedScrollerDelegate
                 useBar.value -= pos;
             }
         }
-        else if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) > 0 && !isIniti)
+        else if (GManager.instance.InputR.GetAxisPrev(MainUICon.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) > 0 && !isIniti)
         {
 
             isIniti = true;
@@ -458,7 +458,7 @@ public class CoreController : MonoBehaviour, IEnhancedScrollerDelegate
     {
         foreach (var item in toolDataBase.GetItemLists())
         {
-            if (item.inventoryNum > 0)
+            if (5 > 0)
             {
                 yield return item;
             }

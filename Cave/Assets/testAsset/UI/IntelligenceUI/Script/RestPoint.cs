@@ -30,8 +30,8 @@ public class RestPoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-Debug.Log($"s{c.enabled}s");
-        if (isCallable && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5))
+//Debug.Log($"s{c.enabled}s");
+        if (isCallable && GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction5))
         {
             WindowSet();
             isCallable = false;
@@ -57,9 +57,9 @@ Debug.Log($"s{c.enabled}s");
                 GManager.instance.pm.anim.Play("TStand");
 
             }
-            MainUI.instance.isConversation = true;
+            MainUICon.instance.isConversation = true;
         }
-        else if (isFirst && !isCallable && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17) && window.activeSelf)
+        else if (isFirst && !isCallable && GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17) && window.activeSelf)
         {
             //‚±‚±Œ´ˆö
             WindowCansel();
@@ -67,9 +67,9 @@ Debug.Log($"s{c.enabled}s");
             //
             isFirst = false;
             GManager.instance.onGimmick = false;
-            MainUI.instance.tipNeed = false;
-            MainUI.instance.isConversation = false;
-            MainUI.instance.isSave = false;
+            MainUICon.instance.tipNeed = false;
+            MainUICon.instance.isConversation = false;
+            MainUICon.instance.isSave = false;
         }
 
     }
@@ -86,7 +86,7 @@ Debug.Log($"s{c.enabled}s");
      /*   for(int i = 0;i >= buttonList.Length; i++)
         {
 
-            if(MainUI.instance.selectButton == buttonList[i])
+            if(MainUICon.instance.selectButton == buttonList[i])
             {
                 windowList[i].SetActive(true);
             }

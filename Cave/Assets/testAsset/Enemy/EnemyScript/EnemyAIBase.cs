@@ -8,7 +8,7 @@ using MoreMountains.CorgiEngine;
 using Guirao.UltimateTextDamage;
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
-	public class EnemyAIBase : CharacterAbility
+	public class EnemyAIBase : MyAbillityBase
 {
 
     //アビリティセットをルート下においてやる
@@ -181,6 +181,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public float holyATFactor = 1;
 
 		//ステータス
+		//HPはヘルスだろ
 		public float maxHp = 100;
 
 		//この辺いらないかも
@@ -288,7 +289,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		protected MyDamageOntouch _damage;
 
-		protected new MyHealth _health;
+		[HideInInspector]
+		public new MyHealth _health;
         private bool isVertical;
 
         //	protected Hittable _hitInfo;
@@ -1555,7 +1557,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					//パリィは別発生
 					else
 					{ 
-						result = MyWakeUp.StunnType.Faltter;
+						result = MyWakeUp.StunnType.Falter;
                     }
 
 				}
@@ -2457,8 +2459,30 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				_jump.NumberOfJumps = status.jumpLimit;
 				
 			}
+		 maxHp = status.maxHp;
 
-		}
+		//この辺いらないかも
+		//個別に持たせた倍率で操作すればよくね？
+
+		//　無属性防御力。体力で上がる
+		 Def = status.Def;
+		//刺突防御。筋力で上がる
+		 pierDef = status.pierDef;
+		//打撃防御、技量で上がる
+		 strDef = status.strDef;
+		//神聖防御、筋と賢さで上がる。
+		 holyDef = status.holyDef;
+		//闇防御。賢さで上がる
+		 darkDef = status.darkDef;
+		//炎防御。賢さと生命で上がる
+		 fireDef = 70;
+		//雷防御。賢さと持久で上がる。
+		 thunderDef = 70;
+
+			_health.CurrentHealth = (int)maxHp;
+
+		nowArmor = status.Armor;
+	}
 
 
 
@@ -2579,7 +2603,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			_health._defData.isGuard = _movement.CurrentState == CharacterStates.MovementStates.Guard ? true : false;
 		}
 
-
+		/// <summary>
+		/// バフの数値を与える
+		/// 弾丸から呼ぶ
+		/// </summary>
+		public void BuffCalc(FireBullet _fire)
+		{
+			_fire.attackFactor = attackFactor;
+			_fire.fireATFactor = fireATFactor;
+			_fire.thunderATFactor = thunderATFactor;
+			_fire.darkATFactor = darkATFactor;
+			_fire.holyATFactor = holyATFactor;
+		}
 
 
 

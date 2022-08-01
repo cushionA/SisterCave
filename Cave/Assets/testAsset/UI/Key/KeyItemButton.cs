@@ -26,17 +26,17 @@ public class KeyItemButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //  if(item.inventoryNum <= 0)
+        //  if(5 <= 0)
         //  {
-        //      MainUI.instance.UseReBuild();
+        //      MainUICon.instance.UseReBuild();
         //   }
 
         if (!KeyManager.instance.isUseMenu)//選択ウィンドウ出てないなら
         {
-            MainUI.instance.selectButton = MainUI.instance.eventSystem.currentSelectedGameObject;
+            MainUICon.instance.selectButton = MainUICon.instance.eventSystem.currentSelectedGameObject;
 
-            //  ////Debug.log($"青い稲妻{MainUI.instance.selectButton == this.gameObject}");
-            if (MainUI.instance.selectButton == this.gameObject && !isFirst)
+            //  ////Debug.log($"青い稲妻{MainUICon.instance.selectButton == this.gameObject}");
+            if (MainUICon.instance.selectButton == this.gameObject && !isFirst)
             {
                 //////Debug.log("冥王星");
                 KeyManager.instance.selectItem = item;
@@ -54,15 +54,15 @@ public class KeyItemButton : MonoBehaviour
 
     public void CallWindow()
     {
-        //  ////Debug.log($"お名前教えて{MainUI.instance.selectButton.name}");
-        if (KeyManager.instance.selectItem.inventoryNum > 0 && item != null && MainUI.instance.selectButton == this.gameObject)
+        //  ////Debug.log($"お名前教えて{MainUICon.instance.selectButton.name}");
+        if (5 > 0 && item != null && MainUICon.instance.selectButton == this.gameObject)
         {
             KeyManager.instance.selectItem = item;
             // position = this.GetComponent<RectTransform>().anchoredPosition;
             KeyManager.instance.selectWindow.SetActive(true);
             //KeyManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
-            //KeyManager.instance.selectWindow.GetComponent<RectTransform>().parent = MainUI.instance.selectButton.GetComponent<RectTransform>();
-            KeyManager.instance.selectWindow.transform.parent = MainUI.instance.selectButton.transform;
+            //KeyManager.instance.selectWindow.GetComponent<RectTransform>().parent = MainUICon.instance.selectButton.GetComponent<RectTransform>();
+            KeyManager.instance.selectWindow.transform.parent = MainUICon.instance.selectButton.transform;
             KeyManager.instance.selectWindow.GetComponent<RectTransform>().anchoredPosition = position;
 
             KeyManager.instance.isUseMenu = true;
@@ -78,7 +78,7 @@ public class KeyItemButton : MonoBehaviour
     {
         KeyManager.instance.selectWindow.SetActive(false);
         isFirst = false;
-        MainUI.instance.selectButton.GetComponent<Button>().Select();
+        MainUICon.instance.selectButton.GetComponent<Button>().Select();
         KeyManager.instance.isUseMenu = false;
     }
 

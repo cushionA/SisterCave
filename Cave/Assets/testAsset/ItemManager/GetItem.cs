@@ -23,7 +23,7 @@ public class GetItemScript : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == playerTag && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18))
+        if (collision.tag == playerTag && GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction18))
         {
            
 

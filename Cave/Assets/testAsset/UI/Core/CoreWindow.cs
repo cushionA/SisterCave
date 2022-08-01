@@ -19,7 +19,7 @@ public class CoreWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = MainUI.instance.selectButton.GetComponent<CoreButton>();
+        ub = MainUICon.instance.selectButton.GetComponent<CoreButton>();
     }
 
     // Update is called once per frame
@@ -31,7 +31,7 @@ public class CoreWindow : MonoBehaviour
             isFirst = true;
         }
 
-        if (!isDump && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+        if (!isDump && GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
         {
             isNum = false;
             isDump = false;
@@ -40,7 +40,7 @@ public class CoreWindow : MonoBehaviour
             ub.CancelWindow();//選択ウィンドウを消す
         }
 
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14) && !isNum)
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14) && !isNum)
         {
             ResetWindow();
         }
@@ -72,8 +72,8 @@ public class CoreWindow : MonoBehaviour
         isFirst = false;
         CoreManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
-        MainUI.instance.MenuCancel();
-        //  MainUI.instance.selectButton = null;
+        MainUICon.instance.MenuCancel();
+        //  MainUICon.instance.selectButton = null;
         //    CoreManager.instance.selectItem = null;
     }
 

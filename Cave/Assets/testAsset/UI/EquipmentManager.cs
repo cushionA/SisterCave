@@ -22,7 +22,7 @@ public class EquipmentManager : MonoBehaviour
         public Button Item2;
         public Button Item3;
         public Button Item4;
-        public Button Item5;
+        public Button 5;
         public Button Item6;
     */
     private void Awake()

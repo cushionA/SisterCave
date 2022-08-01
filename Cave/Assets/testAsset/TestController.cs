@@ -83,7 +83,7 @@ public class TestController : MonoBehaviour
     }
         unk = 0;
         GManager.instance.initialSetting();
-        SManager.instance.sisStatus.mp = SManager.instance.sisStatus.maxMp;
+       // SManager.instance.sisStatus.mp = SManager.instance.sisStatus.maxMp;
         GManager.instance.Player.transform.position = startposi.position;
         SManager.instance.Sister.transform.position = startposi.position;
 

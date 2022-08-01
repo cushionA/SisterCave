@@ -46,6 +46,7 @@ ScriptedImporter:
     streamingMipmaps: 1
     streamingMipmapsPriority: 0
     vTOnly: 0
+    ignoreMasterTextureLimit: 0
     nPOTScale: 1
     sRGBTexture: 1
     spriteMode: 2
@@ -100,7 +101,6 @@ ScriptedImporter:
       width: 0
       height: 0
     spriteID: 
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -112,19 +112,18 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
-  - name: KaitShield_0
+  - name: AdditionalShield
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 1672
-      y: 1816
-      width: 352
-      height: 60
-    spriteID: 10c9bc34e29d8d820800000000000000
-    internalID: 0
+      x: 825
+      y: 612
+      width: 840
+      height: 704
+    spriteID: 7aa25b0fb38607b4da0bf16ea68f3234
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -133,20 +132,19 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 1672, y: 1816}
-  - name: KaitShield_1
+    uvTransform: {x: 622, y: 423}
+  - name: Hold
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 1672
-      y: 1640
-      width: 328
-      height: 168
-    spriteID: 6dbb52fa21a354f40800000000000000
-    internalID: 0
+      x: 1865
+      y: 4
+      width: 94
+      height: 297
+    spriteID: e97e415f55a7d33458967ca725841ad0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -155,10 +153,52 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 1672, y: 1640}
-  - name: KaitShield_2
+    uvTransform: {x: 1264, y: -665}
+  - name: Shield
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1673
+      y: 612
+      width: 79
+      height: 1023
+    spriteID: 5dadbc0ae6cef14498114863f2cd29df
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 1016, y: 543}
+  - name: Hold_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1673
+      y: 1643
+      width: 324
+      height: 165
+    spriteID: 9c7ba854099b77044bd5ff8f61a41f2a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 998, y: 1270}
+  - name: Shield_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -167,8 +207,7 @@ ScriptedImporter:
       y: 4
       width: 813
       height: 768
-    spriteID: 9b4153a3dc195a900800000000000000
-    internalID: 0
+    spriteID: 59dbe65aa58b4e647b0db84ba32e1a09
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -177,20 +216,19 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 4, y: 4}
-  - name: KaitShield_3
+    uvTransform: {x: -315, y: -87}
+  - name: Hold_2
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 824
-      y: 608
-      width: 841
-      height: 708
-    spriteID: 6b2904d2fe5a8ee00800000000000000
-    internalID: 0
+      x: 1673
+      y: 1816
+      width: 346
+      height: 59
+    spriteID: 5793f5c4e923e424fa4e76b083d9e33d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -199,42 +237,19 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 824, y: 608}
-  - name: KaitShield_4
+    uvTransform: {x: 1040, y: 1510}
+  - name: Shield_2
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 1669
-      y: 612
-      width: 83
-      height: 1024
-    spriteID: fbde610b106632f80800000000000000
-    internalID: 0
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 1669, y: 612}
-  - name: KaitShield_5
-    originalName: 
-    pivot: {x: 0, y: 0}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 824
+      x: 825
       y: 4
-      width: 1033
+      width: 1032
       height: 600
-    spriteID: 1a3d18e98567e6590800000000000000
-    internalID: 0
+    spriteID: 3931ca14c3562d14e9245cbb4ccc0076
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -243,29 +258,20 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 824, y: 4}
-  - name: KaitShield_6
-    originalName: 
-    pivot: {x: 0, y: 0}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 1864
-      y: 4
-      width: 96
-      height: 297
-    spriteID: b58f4346c0cf56660800000000000000
-    internalID: 0
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 1864, y: 4}
+    uvTransform: {x: 723, y: -35}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    boneReadOnly: 0
   platformSettings:
   - name: Default
     overridden: 1
@@ -334,114 +340,146 @@ ScriptedImporter:
     allowsAlphaSplitting: 0
     androidETC2FallbackOverride: 0
   mosaicLayers: 1
+  characterMode: 1
   documentPivot: {x: 0, y: 0}
   documentAlignment: 7
   importHiddenLayers: 0
-  importedTextureWidth: 512
-  importedTextureHeight: 512
-  documentSize: {x: 1180, y: 1200}
+  layerMappingOption: 2
+  generatePhysicsShape: 0
   paperDollMode: 0
   keepDupilcateSpriteName: 0
+  skeletonAssetReferenceID: 
   spriteCategoryList:
     categories: []
-  textureActualWidth: 2048
-  textureActualHeight: 2048
   spritePackingTag: 
   resliceFromLayer: 0
-  characterMode: 1
   mosaicPSDLayers: []
   rigPSDLayers:
   - name: KaitShield
     spriteName: 
     isGroup: 1
     parentIndex: -1
-    spriteID: 00000000000000000000000000000000
+    spriteID: 70506ba4b519a4544a145702620b2696
     layerID: 15
     mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
   - name: FrontShield
     spriteName: 
     isGroup: 1
     parentIndex: 0
-    spriteID: 00000000000000000000000000000000
+    spriteID: 37442dfb559874745b4017b6c2f5ac16
     layerID: 17
     mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
   - name: AdditionalShield
     spriteName: AdditionalShield
     isGroup: 0
     parentIndex: 1
     spriteID: 7aa25b0fb38607b4da0bf16ea68f3234
     layerID: 16
-    mosaicPosition: {x: 4, y: 4}
+    mosaicPosition: {x: 825, y: 612}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: SideShield
     spriteName: 
     isGroup: 1
     parentIndex: 0
-    spriteID: 00000000000000000000000000000000
+    spriteID: ddae5bbbfafb3c040bc942b21f8b41f4
     layerID: 14
     mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
   - name: Hold
     spriteName: Hold
     isGroup: 0
     parentIndex: 3
     spriteID: e97e415f55a7d33458967ca725841ad0
     layerID: 13
-    mosaicPosition: {x: 1865, y: 1747}
+    mosaicPosition: {x: 1865, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Shield
     spriteName: Shield
     isGroup: 0
     parentIndex: 3
     spriteID: 5dadbc0ae6cef14498114863f2cd29df
     layerID: 12
-    mosaicPosition: {x: 1865, y: 716}
+    mosaicPosition: {x: 1673, y: 612}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: NanameShield
     spriteName: 
     isGroup: 1
     parentIndex: 0
-    spriteID: 00000000000000000000000000000000
+    spriteID: a659aa4081e743e46ba263ac8aa7c5e9
     layerID: 10
     mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
   - name: Hold
     spriteName: Hold_1
     isGroup: 0
     parentIndex: 6
     spriteID: 9c7ba854099b77044bd5ff8f61a41f2a
     layerID: 9
-    mosaicPosition: {x: 4, y: 1492}
+    mosaicPosition: {x: 1673, y: 1643}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Shield
     spriteName: Shield_1
     isGroup: 0
     parentIndex: 6
     spriteID: 59dbe65aa58b4e647b0db84ba32e1a09
     layerID: 8
-    mosaicPosition: {x: 4, y: 716}
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: BackShield
     spriteName: 
     isGroup: 1
     parentIndex: 0
-    spriteID: 00000000000000000000000000000000
+    spriteID: 1aa5f440ef68ba64ab104ea1689cadfd
     layerID: 6
     mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
   - name: Hold
     spriteName: Hold_2
     isGroup: 0
     parentIndex: 9
     spriteID: 5793f5c4e923e424fa4e76b083d9e33d
     layerID: 5
-    mosaicPosition: {x: 336, y: 1492}
+    mosaicPosition: {x: 1673, y: 1816}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Shield
     spriteName: Shield_2
     isGroup: 0
     parentIndex: 9
     spriteID: 3931ca14c3562d14e9245cbb4ccc0076
     layerID: 4
-    mosaicPosition: {x: 825, y: 716}
-  characterData:
-    bones: []
-    parts: []
-    dimension: {x: 0, y: 0}
-    characterGroups: []
+    mosaicPosition: {x: 825, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
   generateGOHierarchy: 1
   textureAssetName: KaitShield Texture
   prefabAssetName: KaitShield Prefab
   spriteLibAssetName: KaitShield Sprite Lib
+  skeletonAssetName: 
   secondarySpriteTextures: []

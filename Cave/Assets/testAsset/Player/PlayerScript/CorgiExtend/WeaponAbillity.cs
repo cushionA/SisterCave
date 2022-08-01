@@ -12,8 +12,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
     /// <summary>
     /// TODO_DESCRIPTION
     /// </summary>
-  //  [AddComponentMenu("Corgi Engine/Character/Abilities/TODO_REPLACE_WITH_ABILITY_NAME")]
-    public class WeaponAbillity : CharacterAbility
+  //  [AddComponentMenu("Corgi Engine/Character/Abilities/WeaponAbillity")]
+    public class WeaponAbillity : MyAbillityBase
     {
         /// このメソッドは、ヘルプボックスのテキストを表示するためにのみ使用されます。
         /// 能力のインスペクタの冒頭にある
@@ -25,8 +25,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
         // Animation parameters
-        protected const string _todoParameterName = "AttackNow";
-        protected int _todoAnimationParameter;
+        protected const string _attackParameterName = "AttackNow";
+        protected int _attackAnimationParameter;
 
         //内部パラメータ
         #region
@@ -62,7 +62,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         bool isDisEnable;//空中弱攻撃を二回までに制限
 
-        protected RewiredCorgiEngineInputManager ReIManager;
 
         // float delayTime;
         int attackNumber;
@@ -130,7 +129,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected override void Initialization()
         {
             base.Initialization();
-            ReIManager = (RewiredCorgiEngineInputManager)_inputManager;
+            
            // randomBool = false;
         }
 
@@ -155,23 +154,26 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             // on our main stick/direction pad/keyboard
             int state = 0;
 
-            if (ReIManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown|| smallTrigger)
+            //スタミナ利用可能なら
+            if (!GManager.instance.isEnable)
             {
-                state =  1;
-                // DoSomething();
-                smallTrigger = false;
+                if (_inputManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || smallTrigger)
+                {
+                    state = 1;
+                    // DoSomething();
+                    smallTrigger = false;
+                }
+                else if (_inputManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || bigTrigger)
+                {
+                    state = 3;
+                    bigTrigger = false;
+                }
+                else if (_inputManager.ArtsButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || artsTrigger)
+                {
+                    state = 5;
+                    artsTrigger = false;
+                }
             }
-            else if (ReIManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown ||bigTrigger)
-            {
-                state = 3;
-                bigTrigger = false;
-            }
-            else if(ReIManager.ArtsButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || artsTrigger)
-            {
-                state = 5;
-                artsTrigger = false;
-            }
-
            if (GManager.instance.equipWeapon.isCombo)
             {
                 if(attackNumber > 0)
@@ -213,7 +215,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         public void WeaponChange()
         {
-            if (ReIManager.WeaponChangeButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed && _movement.CurrentState != CharacterStates.MovementStates.Attack)
+            if (_inputManager.WeaponChangeButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed && _movement.CurrentState != CharacterStates.MovementStates.Attack)
             {
                 //武器切り替え
                 //ガードボタンで盾、攻撃ボタンで武器を切り替え
@@ -281,7 +283,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         protected override void InitializeAnimatorParameters()
         {
-            RegisterAnimatorParameter(_todoParameterName, AnimatorControllerParameterType.Bool, out _todoAnimationParameter);
+            RegisterAnimatorParameter(_attackParameterName, AnimatorControllerParameterType.Bool, out _attackAnimationParameter);
         }
 
         /// <summary>
@@ -291,7 +293,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public override void UpdateAnimator()
         {
             //今のステートがAttackであるかどうかでBool入れ替えてる
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _todoAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Attack), _character._animatorParameters);
+            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _attackAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Attack), _character._animatorParameters);
         }
 
        // 番号管理何とかしないとな
@@ -833,7 +835,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     {
                         GManager.instance.pm.anim.Play("OLanding");
                     }
-                    groundTime += Time.fixedDeltaTime;
+                    groundTime += _controller.DeltaTime;
                     GManager.instance.pm.rb.velocity = Vector2.zero;
                     GManager.instance.isArmor = false;
                     GManager.instance.airAttack = false;

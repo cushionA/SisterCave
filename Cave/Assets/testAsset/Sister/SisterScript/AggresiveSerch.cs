@@ -37,7 +37,7 @@ public class AggresiveSerch : MonoBehaviour
         for (int i = 0; i < se.DetectedObjectsOrderedByDistance.Count; i++)
         {
             SManager.instance.TargetAdd(se.DetectedObjectsOrderedByDistance[i]);
-            SManager.instance.targetCondition.Add(SManager.instance.targetList[i].GetComponent<EnemyBase>());
+          //  SManager.instance.targetCondition.Add(SManager.instance.targetList[i].GetComponent<EnemyBase>());
         }
       //  SManager.instance.isTChange = true;
     }

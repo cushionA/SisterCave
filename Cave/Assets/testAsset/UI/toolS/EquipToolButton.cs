@@ -18,18 +18,18 @@ public class EquipToolButton : MonoBehaviour
     {
         if (GManager.instance.useList[setNumber] != null)
         {
-            this.contentIcon.sprite = GManager.instance.useList[setNumber].icon;
+            //this.contentIcon.sprite = GManager.instance.useList[setNumber].icon;
         }
     }
 
 
     public void ToolEquip()
     {
-        MainUI.instance.useWindow.SetActive(true);
+      //  MainUICon.instance.useWindow.SetActive(true);
         EquipmentManager.instance.InitialButton.Select();
         ToolManager.instance.setNumber = setNumber;
         ToolManager.instance.isEquipMenu = true;
-        MainUI.instance.eqWindow.SetActive(false);
+      //  MainUICon.instance.eqWindow.SetActive(false);
 
     }
 

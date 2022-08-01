@@ -2,36 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using MoreMountains.InventoryEngine;
 
-public class Item : ScriptableObject
+public class Item : InventoryItem
 {
+    //交換条件とか書く？
+    //売値は必要
+    //売れるかどうかと売値
+    //もしかしたら別に共通クラス作るかも
+    //あとソートナンバー
 
-
-
-	[Header("アイテムのアイコン")]
-	public Sprite icon;
-	[Header("アイテムの名前")]
-	public string itemName;
-	[Header("アイテムの平仮名名")]
-	public string hiraganaName = "";
-	[Header("アイテムの情報")]
-	public string information;
-	[Header("ソート用のナンバー")]
-	public int number;
-	[Header("所持限界")]
-	public int holdLimmit = 1;
-
-	[Header("ドロップアイテムかどうか")]
-	///<summary>
-	///ドロップなら設定
-	///ドロップアイテムはロードで消え去る
-	///しかしドロップアイテムでも重要アイテムならフラグは立てない
-	///</summary>
-	public bool isDrop;
-
-	//所持数
-	[HideInInspector] public int inventoryNum = 0;
-
+    /// <summary>
+    /// 並び替えに使う番号
+    /// </summary>
+    public int _sortNumber;
 
 
 }

@@ -4,15 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SisterMagic", menuName = "SisterMagic")]
 public class SisMagic : Magic
 {
-   [HideInInspector]
-    public enum MagicType
-    {
-        Attack,//攻撃
-        Recover,//回復
-        Support,//支援
-        help//条件で勝手に発動？
-    }
-    public MagicType mType;
+
 
     [HideInInspector]
     public enum SupportType

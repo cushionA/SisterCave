@@ -12,7 +12,7 @@ public class CombinationAct : MonoBehaviour
     public void CombinationDo(SisterCombination combo,int chainNumber)
     {
         //ƒ[ƒv
-        if(combo.number == 1)
+        if(combo._sortNumber == 1)
         {
             Vector2 warpPosi = SManager.instance.target.transform.position;
             

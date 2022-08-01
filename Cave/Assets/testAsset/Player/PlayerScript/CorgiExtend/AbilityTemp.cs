@@ -13,7 +13,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
     /// TODO_DESCRIPTION
     /// </summary>
     [AddComponentMenu("Corgi Engine/Character/Abilities/TODO_REPLACE_WITH_ABILITY_NAME")]
-    public class AbillityTemp : CharacterAbility
+    public class AbillityTemp : MyAbillityBase
     {
         /// このメソッドは、ヘルプボックスのテキストを表示するためにのみ使用されます。
         /// 能力のインスペクタの冒頭にある
@@ -28,7 +28,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected const string _todoParameterName = "TODO";
         protected int _todoAnimationParameter;
 
-        protected RewiredCorgiEngineInputManager ReInput;
+
 
 
         /// <summary>
@@ -38,7 +38,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             base.Initialization();
             // randomBool = false;
-            ReInput = (RewiredCorgiEngineInputManager)_inputManager;
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             // here as an example we check if we're pressing down
             // on our main stick/direction pad/keyboard
-            if (ReInput.PrimaryMovement.y < -ReInput.Threshold.y)
+            if (_inputManager.PrimaryMovement.y < -_inputManager.Threshold.y)
             {
                 DoSomething();
             }

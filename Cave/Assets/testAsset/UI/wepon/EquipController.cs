@@ -121,14 +121,14 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
         for (int i = 0; i < toolDataBase.GetItemLists().Count; i++)
         {
             //　アイテム数を適当に設定
-            toolDataBase.GetItemLists()[i].inventoryNum = 0;
+            // = 0;
 
         }
         data = null;
         data = new List<EquipData>();
         setList = new List<Equip>(ToolList());
         //setList = (from item in toolDataBase.GetItemLists()
-        //        where item.inventoryNum > 0
+        //        where 5 > 0
         //      select item).ToList();
 
         //最終的に作りたいリストの初期化
@@ -222,7 +222,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
     private void Update()
     {
 
-        if (MainUI.instance.isReBuild && !isEver)
+        if (MainUICon.instance.isReBuild && !isEver)
         {
             #region
             data = null;//インベントリを一回からにして入れなおす
@@ -236,7 +236,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
 
             setList = new List<Equip>(ToolList());
             //setList = (from item in toolDataBase.GetItemLists()
-            //        where item.inventoryNum > 0
+            //        where 5 > 0
             //      select item).ToList();
 
             //最終的に作りたいリストの初期化
@@ -328,7 +328,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
             miniList = null;
             setList = null;
         }
-        /*else if(!MainUI.instance.isReBuild && isEver)
+        /*else if(!MainUICon.instance.isReBuild && isEver)
         {
             ////Debug.log("愛してない");
             //isEver = false;
@@ -344,7 +344,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
         //MyItem.rowLengthが20にあたります、intで宣言しているので、floatに置換しています。
         //公式は　ScrollBarのValueの上限、セルの数、表示可能なセルの数。
 
-        if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) < 0)
+        if (GManager.instance.InputR.GetAxisPrev(MainUICon.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) < 0)
         {
             if (isReverse == true)
             {
@@ -381,7 +381,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
                 useBar.value += pos;
             }
         }
-        if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) > 0 && isIniti)
+        if (GManager.instance.InputR.GetAxisPrev(MainUICon.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) > 0 && isIniti)
         {
             if (!isFirstD)
             {
@@ -408,7 +408,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
                 useBar.value -= pos;
             }
         }
-        else if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) > 0 && !isIniti)
+        else if (GManager.instance.InputR.GetAxisPrev(MainUICon.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) > 0 && !isIniti)
         {
 
             isIniti = true;
@@ -504,7 +504,7 @@ public class EquipController : MonoBehaviour, IEnhancedScrollerDelegate
     {
         foreach (var item in toolDataBase.GetItemLists())
         {
-            if (item.inventoryNum > 0)
+            if (5 > 0)
             {
                // yield return item;
 

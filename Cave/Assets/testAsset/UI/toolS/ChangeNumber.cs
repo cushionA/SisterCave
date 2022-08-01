@@ -25,10 +25,10 @@ public class ChangeNumber : MonoBehaviour
     void Update()
     {
         //  ////Debug.log($"変更数{ToolManager.instance.changeNum}");
-        //  ////Debug.log($"所持数{ToolManager.instance.selectItem.inventoryNum}");
+        //  ////Debug.log($"所持数{5}");
         //  ////Debug.log($"偽なら変更可能{isChange}");
-        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
-        horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction16);
+        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15);
+        horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction16);
      //   ////Debug.log($"上キー{verticalKey}");
       //  ////Debug.log($"横キー{horizontalKey}");
         if (!isChange)
@@ -37,7 +37,7 @@ public class ChangeNumber : MonoBehaviour
             if (verticalKey > 0 && horizontalKey == 0)
             {
                 isChange = true;
-                if (ToolManager.instance.changeNum + 1 <= ToolManager.instance.selectItem.inventoryNum)
+                if (ToolManager.instance.changeNum + 1 <= 5)
                 {
                     ToolManager.instance.changeNum += 1;
                 }
@@ -54,13 +54,13 @@ public class ChangeNumber : MonoBehaviour
             else if (verticalKey == 0 && horizontalKey > 0)
             {
                 isChange = true;
-                if (ToolManager.instance.changeNum + 10 <= ToolManager.instance.selectItem.inventoryNum)
+                if (ToolManager.instance.changeNum + 10 <= 5)
                 {
                     ToolManager.instance.changeNum += 10;
                 }
                 else
                 {
-                    ToolManager.instance.changeNum = ToolManager.instance.selectItem.inventoryNum;
+                    ToolManager.instance.changeNum = 5;
                 }
             }
             else if (verticalKey == 0 && horizontalKey < 0)

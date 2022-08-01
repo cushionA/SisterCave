@@ -38,7 +38,7 @@ public class EditButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      //  Debug.Log($"あじゃばー{MainUI.instance.edi}");
+      //  Debug.Log($"あじゃばー{MainUICon.instance.edi}");
     }
 
 
@@ -51,7 +51,7 @@ public class EditButton : MonoBehaviour
     public void ChangeString()
     {
       
-        int s = MainUI.instance.settingNumber;
+        int s = MainUICon.instance.settingNumber;
 
 
 
@@ -311,12 +311,12 @@ public class EditButton : MonoBehaviour
     /// </summary>
     public void SelectButton()
     {
-        MainUI.instance.editNumber = editNum;
+        MainUICon.instance.editNumber = editNum;
         //前の窓を操作不能に
         pare.enable = true;
         if (isAct)
         {
-            MainUI.instance.settingNumber++;
+            MainUICon.instance.settingNumber++;
         }
         pare.nextWindow.SetActive(true);
 
@@ -326,23 +326,23 @@ public class EditButton : MonoBehaviour
     {
         if (editNum== 1)
         {
-            return MainUI.instance.editParameter.firstTarget;
+            return MainUICon.instance.editParameter.firstTarget;
         }
         else if (editNum== 2)
         {
-            return MainUI.instance.editParameter.secondTarget;
+            return MainUICon.instance.editParameter.secondTarget;
         }
         else if (editNum== 3)
         {
-            return MainUI.instance.editParameter.thirdTarget;
+            return MainUICon.instance.editParameter.thirdTarget;
         }
         else if (editNum== 4)
         {
-            return MainUI.instance.editParameter.forthTarget;
+            return MainUICon.instance.editParameter.forthTarget;
         }
         else
         {
-            return MainUI.instance.editParameter.fiveTarget;
+            return MainUICon.instance.editParameter.fiveTarget;
         }
     }
 
@@ -350,27 +350,27 @@ public class EditButton : MonoBehaviour
     {
         if (editNum== 1)
         {
-            return MainUI.instance.editParameter.firstAttack;
+            return MainUICon.instance.editParameter.firstAttack;
         }
         else if (editNum== 2)
         {
-            return MainUI.instance.editParameter.secondAttack;
+            return MainUICon.instance.editParameter.secondAttack;
         }
         else if (editNum== 3)
         {
-            return MainUI.instance.editParameter.thirdAttack;
+            return MainUICon.instance.editParameter.thirdAttack;
         }
         else if (editNum== 4)
         {
-            return MainUI.instance.editParameter.fourthAttack;
+            return MainUICon.instance.editParameter.fourthAttack;
         }
         else if (editNum== 5)
         {
-            return MainUI.instance.editParameter.fiveAttack;
+            return MainUICon.instance.editParameter.fiveAttack;
         }
         else
         {
-            return MainUI.instance.editParameter.nonAttack;
+            return MainUICon.instance.editParameter.nonAttack;
         }
     }
 
@@ -378,54 +378,54 @@ public class EditButton : MonoBehaviour
     {
         if (editNum== 1)
         {
-            return MainUI.instance.editParameter.firstPlan;
+            return MainUICon.instance.editParameter.firstPlan;
         }
         else if (editNum== 2)
         {
-            return MainUI.instance.editParameter.secondPlan;
+            return MainUICon.instance.editParameter.secondPlan;
         }
         else if (editNum== 3)
         {
-            return MainUI.instance.editParameter.thirdPlan;
+            return MainUICon.instance.editParameter.thirdPlan;
         }
         else if (editNum== 4)
         {
-            return MainUI.instance.editParameter.forthPlan;
+            return MainUICon.instance.editParameter.forthPlan;
         }
         else if (editNum== 5)
         {
-            return MainUI.instance.editParameter.fivePlan;
+            return MainUICon.instance.editParameter.fivePlan;
         }
         else
         {
-            return MainUI.instance.editParameter.sixPlan;
+            return MainUICon.instance.editParameter.sixPlan;
         }
     }
     RecoverCondition GetRecover()
     {
         if (editNum== 1)
         {
-            return MainUI.instance.editParameter.firstRecover;
+            return MainUICon.instance.editParameter.firstRecover;
         }
         else if (editNum== 2)
         {
-            return MainUI.instance.editParameter.secondRecover;
+            return MainUICon.instance.editParameter.secondRecover;
         }
         else if (editNum== 3)
         {
-            return MainUI.instance.editParameter.thirdRecover;
+            return MainUICon.instance.editParameter.thirdRecover;
         }
         else if (editNum== 4)
         {
-            return MainUI.instance.editParameter.forthRecover;
+            return MainUICon.instance.editParameter.forthRecover;
         }
         else if (editNum== 5)
         {
-            return MainUI.instance.editParameter.fiveRecover;
+            return MainUICon.instance.editParameter.fiveRecover;
         }
         else
         {
-            return MainUI.instance.editParameter.nonRecover;
+            return MainUICon.instance.editParameter.nonRecover;
         }
     }
 

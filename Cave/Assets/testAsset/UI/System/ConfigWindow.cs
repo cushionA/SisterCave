@@ -10,14 +10,14 @@ public class ConfigWindow : MonoBehaviour
 
     public void CloseEvent()
     {
-        MainUI.instance.selectWindow = false;
+        MainUICon.instance.selectWindow = false;
         mUI.SetActive(true);
         configButton.Select();
     }
 
     public void OpenEvent()
     {
-        MainUI.instance.selectWindow = true;
+        MainUICon.instance.selectWindow = true;
         mUI.SetActive(false);
         doneButton.Select();
     }

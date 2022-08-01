@@ -45,39 +45,39 @@ public class OperationGeneral : MonoBehaviour
     {
        // Debug.Log("sss");
         //最初にエディットに反映。
-        OparationCopy(MainUI.instance.editParameter, SManager.instance.Sister.GetComponent<SisterFire>().sister);
+        OparationCopy(MainUICon.instance.editParameter, SManager.instance.Sister.GetComponent<SisterFire>().sister);
         myButton[0].Select();
         if (setObj[0].gameObject.activeSelf == false)
         {
             setObj[0].gameObject.SetActive(true);
             setObj[1].gameObject.SetActive(false);
         }
-        MainUI.instance.settingNumber = 0;
+        MainUICon.instance.settingNumber = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        //  Debug.Log($"ナンバー{MainUI.instance.settingNumber}");
-      //  Debug.Log($"選択ボタン{MainUI.instance.eventSystem.currentSelectedGameObject.transform.root.gameObject.name}");
+        //  Debug.Log($"ナンバー{MainUICon.instance.settingNumber}");
+      //  Debug.Log($"選択ボタン{MainUICon.instance.eventSystem.currentSelectedGameObject.transform.root.gameObject.name}");
         /// 
         if (!next) {
 
-            if (MainUI.instance.eventSystem.currentSelectedGameObject == myButton[6].gameObject)
+            if (MainUICon.instance.eventSystem.currentSelectedGameObject == myButton[6].gameObject)
             {
                 if (setObj[0].gameObject.activeSelf == false)
                 {
                     setObj[0].gameObject.SetActive(true);
                     setObj[1].gameObject.SetActive(false);
                 }
-                MainUI.instance.settingNumber = 0;
+                MainUICon.instance.settingNumber = 0;
             }
             else
             {
 
 
-                if (MainUI.instance.eventSystem.currentSelectedGameObject == myButton[1].gameObject)
+                if (MainUICon.instance.eventSystem.currentSelectedGameObject == myButton[1].gameObject)
                 {
                     if (setObj[1].gameObject.activeSelf == false)
                     {
@@ -85,10 +85,10 @@ public class OperationGeneral : MonoBehaviour
                         setObj[0].gameObject.SetActive(false);
                     }
                     // winName.text = "攻撃条件設定";
-                    MainUI.instance.settingNumber = 1;
+                    MainUICon.instance.settingNumber = 1;
 
                 }
-                else if (MainUI.instance.eventSystem.currentSelectedGameObject == myButton[2].gameObject)
+                else if (MainUICon.instance.eventSystem.currentSelectedGameObject == myButton[2].gameObject)
                 {
                     if (setObj[1].gameObject.activeSelf == false)
                     {
@@ -96,9 +96,9 @@ public class OperationGeneral : MonoBehaviour
                         setObj[0].gameObject.SetActive(false);
                     }
                     // winName.text = "支援条件設定";
-                    MainUI.instance.settingNumber = 3;
+                    MainUICon.instance.settingNumber = 3;
                 }
-                else if (MainUI.instance.eventSystem.currentSelectedGameObject == myButton[3].gameObject)
+                else if (MainUICon.instance.eventSystem.currentSelectedGameObject == myButton[3].gameObject)
                 {
                     if (setObj[1].gameObject.activeSelf == false)
                     {
@@ -106,33 +106,33 @@ public class OperationGeneral : MonoBehaviour
                         setObj[0].gameObject.SetActive(false);
                     }
                     // winName.text = "回復条件設定";
-                    MainUI.instance.settingNumber = 5;
+                    MainUICon.instance.settingNumber = 5;
                 }
-                if (bNumber != MainUI.instance.settingNumber)
+                if (bNumber != MainUICon.instance.settingNumber)
                 {
-                    if (MainUI.instance.settingNumber == 1)
+                    if (MainUICon.instance.settingNumber == 1)
                     {
                         winName.text = "攻撃条件設定";
                     }
-                    else if (MainUI.instance.settingNumber == 3)
+                    else if (MainUICon.instance.settingNumber == 3)
                     {
                         winName.text = "支援条件設定";
                     }
-                    else if (MainUI.instance.settingNumber == 5)
+                    else if (MainUICon.instance.settingNumber == 5)
                     {
                         winName.text = "回復条件設定";
 
                     }
                     setWin.ButtonSet();
-                    bNumber = MainUI.instance.settingNumber;
+                    bNumber = MainUICon.instance.settingNumber;
                 }
             }
 
-            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
             {
-                if(MainUI.instance.settingNumber == 0)
+                if(MainUICon.instance.settingNumber == 0)
                 {
-                    MainUI.instance.settingNumber = 100;
+                    MainUICon.instance.settingNumber = 100;
                 }
                 
                 EditEnd();
@@ -148,9 +148,9 @@ public class OperationGeneral : MonoBehaviour
     /// </summary>
     public void SelectReset()
     {
-        int s = MainUI.instance.settingNumber;
+        int s = MainUICon.instance.settingNumber;
 
-        if (!MainUI.instance.isAH)
+        if (!MainUICon.instance.isAH)
         {
             if (s == 1)
             {
@@ -174,7 +174,7 @@ public class OperationGeneral : MonoBehaviour
         else
         {
             myButton[5].Select();
-            MainUI.instance.isAH = false;
+            MainUICon.instance.isAH = false;
             next = true;
         }
     }
@@ -182,9 +182,9 @@ public class OperationGeneral : MonoBehaviour
     public void EditEnd(bool d = false)
     {
         //要編集。セーブ窓から戻る方法がない
-        if (MainUI.instance.isSave)
+        if (MainUICon.instance.isSave)
         {
-            MainUI.instance.isSave = false;
+            MainUICon.instance.isSave = false;
             myButton[4].transform.root.gameObject.SetActive(true);
             myButton[4].Select();
             this.gameObject.SetActive(false);
@@ -192,14 +192,14 @@ public class OperationGeneral : MonoBehaviour
          //    Debug.Log("sssssssss");
             if (d)
             {
-                OparationCopy(MainUI.instance.editParameter, SManager.instance.Sister.GetComponent<SisterFire>().sister);
+                OparationCopy(MainUICon.instance.editParameter, SManager.instance.Sister.GetComponent<SisterFire>().sister);
             }
         }
         else
         {
             //本当に終了してもよろしいですか。
-            MainUI.instance.saveWin.gameObject.SetActive(true);
-            MainUI.instance.saveWin.WindowSet(0);
+            MainUICon.instance.saveWin.gameObject.SetActive(true);
+            MainUICon.instance.saveWin.WindowSet(0);
         }
     }
 
@@ -499,8 +499,8 @@ public class OperationGeneral : MonoBehaviour
 
     public void SaveData()
     {
-        OparationCopy(SManager.instance.Sister.GetComponent<SisterFire>().sister, MainUI.instance.editParameter,true);
-        MainUI.instance.isSave = true;
+        OparationCopy(SManager.instance.Sister.GetComponent<SisterFire>().sister, MainUICon.instance.editParameter,true);
+        MainUICon.instance.isSave = true;
         next = false;
     }
 

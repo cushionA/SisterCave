@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using MyCode;
+using MoreMountains.Tools;
+using MoreMountains.CorgiEngine;
 
 public class GManager : MonoBehaviour
 {
@@ -29,7 +31,7 @@ public class GManager : MonoBehaviour
     public Slider sisMpSlider;
     //MPスライダー
 
-
+    
 
     /// <summary>
     /// ステータス関連
@@ -99,46 +101,88 @@ public class GManager : MonoBehaviour
     public float attackBuff = 1.0f;
     //攻撃バフ値
 
-    public Weapon equipWeapon;
+    public MyCode.Weapon equipWeapon;
     public Shield equipShield;
     public CoreItem equipCore;
     //　装備している
     public List<PlayerMagic> equipMagic = null;
     [HideInInspector] public PlayerMagic useMagic;
 
+    #endregion
+
     /// <summary>
     /// 装備重量で変化する要素
     /// </summary>
+    #region
+    [SerializeField] float lightSpeed;
+    [SerializeField] float middleSpeed;
+    [SerializeField] float heavySpeed;
+    [SerializeField] float overSpeed;
 
-    public float lightSpeed;
-    public float middleSpeed;
-    public float heavySpeed;
-    public float overSpeed;
+    [SerializeField] float lightDash;
+    [SerializeField] float middleDash;
+    [SerializeField] float heavyDash;
+    [SerializeField] float overDash;
 
-    public float lightDash;
-    public float middleDash;
-    public float heavyDash;
-    public float overDash;
+    [SerializeField] float lightAvoid;
+    [SerializeField] float middleAvoid;
+    [SerializeField] float heavyAvoid;
+    [SerializeField] float overAvoid;
 
-    public float lightAvoid;
-    public float middleAvoid;
-    public float heavyAvoid;
-    public float overAvoid;
 
-    public float lightStRecover;
-    public float middleStRecover;
-    public float heavyStRecover;
-    public float overStRecover;
 
+    [SerializeField] float lightStRecover;
+    [SerializeField] float middleStRecover;
+    [SerializeField] float heavyStRecover;
+    [SerializeField] float overStRecover;
+
+    /// <summary>
+    /// 以下は装備重量によるスタミナ使用量の倍率
+    /// </summary>
+    [SerializeField] float lightStRatio;
+    [SerializeField] float middleStRatio;
+    [SerializeField] float heavyStRatio;
+    [SerializeField] float overStRatio;
+
+    /// <summary>
+    /// スタミナの使用倍率
+    /// </summary>
+    [HideInInspector]
+    public float stRatio;
+
+    /// <summary>
+    /// 各共通アクションで使うスタミナ
+    /// </summary>
+    public float dashSt;
+    public float rollSt;
+    public float jumpSt;
+   // public float 
     #endregion
 
     [HideInInspector]
     public AttackValue useAtValue;
 
+    /// <summary>
+    /// 装備とアニメーション管理関連
+    /// </summary>
+    #region
 
-    public ToolItem[] useList = new ToolItem[7];
-    public Weapon[] setWeapon = new Weapon[2];
+    public MyCode.Weapon[] setWeapon = new MyCode.Weapon[2];
     public Shield[] setShield = new Shield[2];
+
+    /// <summary>
+    /// 使用しているのはどちらの武器か
+    /// </summary>
+    int weaponNum = 1;
+
+    /// <summary>
+    /// 使用しているのはどちらの盾か
+    /// </summary>
+    int shieldNum = 1;
+
+    #endregion
+    public ToolItem[] useList = new ToolItem[7];
+
 
     public float initialHpSl;
     public float initialMpSl;
@@ -150,12 +194,22 @@ public class GManager : MonoBehaviour
     [HideInInspector] public Player InputR;
     [HideInInspector] public Rigidbody2D rb;
 
+    /// <summary>
+    /// 状態管理用のフラグ
+    /// </summary>
+    #region
+
     RectTransform hpSl;
     RectTransform mpSl;
     RectTransform staminaSl;
 
+    /// <summary>
+    /// スタミナが回復するかどうか
+    /// これが不能ならスタミナゼロ以下
+    /// なのでこれが真ならアビリティ有効に
+    /// </summary>
     [HideInInspector] public bool isEnable;
-    //スタミナが回復するかどうか
+    
     [HideInInspector] public bool isAttack;
     [HideInInspector] public bool airAttack;
     //攻撃中か否か
@@ -181,6 +235,28 @@ public class GManager : MonoBehaviour
     [HideInInspector] public bool isShieldAttack;
     [HideInInspector] public float nockBack;//ガードした時に下がる数値
     [HideInInspector] public bool  twinHand;//片手かどうか。真なら両手
+
+    //スタミナが回復する間隔の時間が経過したかどうか
+    float disEnaTime;
+    //スタミナ回復不能時間
+    [HideInInspector] public bool blocking;//ブロッキング
+    
+    /// <summary>
+    /// stBreakはスタミナが一回切れたらしばらくゼロのままのコードから脱出するためのフラグ。
+    /// </summary>
+    bool stBreake;
+    //スタミナ回復不能状態終わりフラグ
+    public bool isArmor;//強靭ついてるかどうか
+    float stTime;
+
+
+    /// <summary>
+    /// 真ならスタミナ使用中
+    /// </summary>
+    [HideInInspector]
+    public bool isStUse;
+
+    #endregion
 
 
     /// <summary>
@@ -211,20 +287,16 @@ public class GManager : MonoBehaviour
 
     [HideInInspector] public Vector2 blowVector;
 
-    float stTime;
-    //スタミナが回復する間隔の時間が経過したかどうか
-    float disEnaTime;
-    //スタミナ回復不能時間
-    [HideInInspector] public bool blocking;//ブロッキング
+    /// <summary>
+    /// 外部コンポーネント
+    /// </summary>
+    #region
     public AttackM at;
     public PlayerMove pm;
-    /// <summary>
-    /// stBreakはスタミナが一回切れたらしばらくゼロのままのコードから脱出するためのフラグ。
-    /// </summary>
-    bool stBreake;
-    //スタミナ回復不能状態終わりフラグ
-    public bool isArmor;//強靭ついてるかどうか
-    float avoidTime;
+    public PlyerController pc;
+    #endregion
+
+
 
     //プレイヤーがレベルアップしたらHPとスタミナのスライダーの長さをチェックして伸ばす。
     //あとステータス画面に格納する値のチェックも
@@ -233,8 +305,6 @@ public class GManager : MonoBehaviour
 
     #region//ダウン関連の奴
 
-    float recoverTime;
-    float lastArmor;
     bool isAnimeStart;
     [HideInInspector] public float blowTime;
     //  [HideInInspector]public bool isWakeUp;
@@ -246,6 +316,8 @@ public class GManager : MonoBehaviour
     public int avoidLayer;
 
     #endregion
+
+    
 
 
     private void Awake()
@@ -259,7 +331,7 @@ public class GManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        InputR = ReInput.players.GetPlayer(0);
+        
 
     }
 
@@ -271,7 +343,7 @@ public class GManager : MonoBehaviour
         //スライダーを満タンに
         //HPなどを最大と同じに
 
-        
+        InputR = ReInput.players.GetPlayer(0);
 
         // SetSlider();
         initialSetting();
@@ -295,7 +367,7 @@ public class GManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       // Debug.Log($"フラグの効果{pm.isAvoid}");
+       // Debug.Log($"フラグの効果{pc.isAvoid}");
         // DamageAvoid();
         if (statusChange)
         {
@@ -303,8 +375,7 @@ public class GManager : MonoBehaviour
             statusChange = false;
         }
 
-        stTime += Time.deltaTime;
-
+        //状態異常
         if (pStatus.isParalyze || pStatus.isPoison)
         {
             badCondition = true;
@@ -314,68 +385,307 @@ public class GManager : MonoBehaviour
             badCondition = false;
         }
 
-        if (stTime >= 0.1f && !pm.isStUse && isEnable && !isDown)
-        {
-            //前回のスタミナ回復から0.1秒経っててスタミナ使ってなくてスタミナ回復できるフラグあるなら
-            disEnaTime = 0.0f;
-
-            stamina += stRecover + additionalStRecover;
-            stTime = 0.0f;
-            if (stBreake)
-            {
-                stBreake = false;
-            }
-           
-        }
-
-
-
-
-        if (stamina >= maxStamina)
-        {
-
-            stamina = maxStamina;
-            isEnable = true;
-        }
-
-        else if (stamina <= 0 && !stBreake)
-        {
-
-            disEnaTime += Time.deltaTime;
-
-            isEnable = false;
-            //スタミナ回復できなくなった。
-
-            if (disEnaTime < 1.5f || pm.isStUse)
-            {
-                //一定時間0のままかつスタミナ使用状態にしても0のまま。
-                stamina = 0;
-                //ここ
-            }
-            else
-            {
-                stBreake = true;
-
-            }
-
-        }
-        else
-        {
-            isEnable = true;
-        }
+        StaminaRecover();
 
         stSlider.value = stamina / maxStamina;
         HpSlider.value = hp / maxHp;
         MpSlider.value = mp / maxMp;
-        sisMpSlider.value = SManager.instance.sisStatus.mp / SManager.instance.sisStatus.maxMp;
+      //そのうちエンジンに適合させる
+        //  sisMpSlider.value =  / SManager.instance.sisStatus.maxMp;
     }
 
+    ///<summary>
+    ///　ステータス設定関連のメソッド
+    /// </summary>
+    #region
+
+    /// <summary>
+    /// 開始時に行う設定
+    /// </summary>
+    public void initialSetting()
+    {
+
+        hp = maxHp;
+        mp = maxMp;
+        stamina = maxStamina;
+    }
+    /// <summary>
+    /// ステータスと魔法の記憶数をセット
+    /// </summary>
+    public void SetParameter()
+    {
+
+      Vitality = pStatus.Vitality + equipCore.additionalVitality;
+    //持久力
+      Endurance = pStatus.Endurance + equipCore.additionalEndurance;
+  
+    //　力
+      power = pStatus.power + equipCore.additionalPower;
+    //技量
+      skill = pStatus.skill + equipCore.additionalSkill;
+    //　魔法力。賢さ
+      _int = pStatus._int + equipCore.additionalInt;
+    capacityWeight = pStatus.initialWeight + pStatus.weightCurve.Evaluate(Endurance + power/2) + equipCore.additionalWeight;
+        Armor = equipCore.additionalArmor;
+        maxHp = pStatus.initialHp + pStatus.HpCurve.Evaluate(Vitality) + equipCore.additionalHp;
+        maxMp = pStatus.initialMp + pStatus.MpCurve.Evaluate(pStatus.capacity) + equipCore.additionalMp;
+        maxStamina = pStatus.initialStamina + pStatus.StaminaCurve.Evaluate(Endurance) + equipCore.additionalStamina;
+        //  ////Debug.log($"テスト数値{pStatus.StaminaCurve.Evaluate(Endurance)}");
+
+        if (pStatus.capacity >= 0 && pStatus.capacity < 7)
+        {
+            magicNumber = 1;
+        }
+        else if (pStatus.capacity >= 7)
+        {
+            magicNumber = 2;
+        }
+        else if (pStatus.capacity >= 15)
+        {
+            magicNumber = 3;
+        }
+        else if (pStatus.capacity >= 20)
+        {
+            magicNumber = 4;
+        }
+        else if (pStatus.capacity >= 30)
+        {
+            magicNumber = 5;
+        }
+        else if (pStatus.capacity >= 38)
+        {
+            magicNumber = 6;
+        }
+        else if (pStatus.capacity >= 45)
+        {
+            magicNumber = 7;
+        }
+        if (equipMagic.Count > magicNumber)
+        {
+            equipMagic.RemoveRange(magicNumber, equipMagic.Count - magicNumber);
+
+        }
+        //リストの要素数を再設定
+        equipMagic.Capacity = (magicNumber);
+
+    }
+
+    /// <summary>
+    /// プレイヤーと武器のステータスをセットする
+    /// コアと装備の合致も確認？
+    /// </summary>
+    public void StatusSetting()
+    {
+        //すべて変更された時
+        //最初にやるやつ
+
+        SetParameter();
+        ActionSet();
+        if (setWeapon[0] != null)
+        {
+            SetAtk(setWeapon[0]);
+            SetGuard(setWeapon[0]);
+        }
+        if (setWeapon[1] != null)
+        {
+            SetAtk(setWeapon[1]);
+            SetGuard(setWeapon[1]);
+        }
+        if (setShield[0] != null)
+        {
+            SetAtk(setShield[0]);
+            SetGuard(setShield[0]);
+        }
+        if (setShield[1] != null)
+        {
+            SetAtk(setShield[1]);
+            SetGuard(setShield[1]);
+        }
+
+        SetMagicAssist();
+        SetMagicAtk();
+
+    }
+
+    /// <summary>
+    /// 引数の装備の攻撃性能を設定する。
+    /// このメソッドは装備が変更された時と武器レベル上がった時以外も呼ぶ。
+    /// コアや魔法やアイテムでステータスが上がったりするから。
+    /// </summary>
+    /// <param name="equip"></param>
+    public void SetAtk(Equip equip)
+    {
+
+        int n = equip.wLevel;
+
+        if (equip.phyBase[n] >= 1)
+        {
+            equip.phyAtk = equip.phyBase[n] + (equip.powerCurve[n].Evaluate(power)) +
+                               equip.skillCurve[n].Evaluate(skill);
+            equip.Atk += equip.phyAtk;
+        }
+        if (equip.holyBase[n] >= 1)
+        {
+            equip.holyAtk = equip.holyBase[n] + (equip.powerCurve[n].Evaluate(power)) +
+                               equip.intCurve[n].Evaluate(_int);
+            equip.Atk += equip.holyAtk;
+        }
+        if (equip.darkBase[n] >= 1)
+        {
+            equip.darkAtk = equip.darkBase[n] + (equip.intCurve[n].Evaluate(_int)) +
+                               equip.skillCurve[n].Evaluate(skill);
+            equip.Atk += equip.darkAtk;
+        }
+        if (equip.fireBase[n] >= 1)
+        {
+            equip.fireAtk = equip.fireBase[n] + equip.intCurve[n].Evaluate(_int);
+            equip.Atk += equip.fireAtk;
+        }
+        if (equip.thunderBase[n] >= 1)
+        {
+            equip.thunderAtk = equip.thunderBase[n] + equip.intCurve[n].Evaluate(_int);
+            equip.Atk += equip.thunderAtk;
+        }
+
+
+    }//攻撃力設定
+
+
+    //攻撃力や防御力に倍率かけるメソッドがあっていい。
+
+
+    /// <summary>
+    /// 引数の装備のガード時の性能を設定する。
+    /// このメソッドは装備が変更された時と武器レベル上がった時だけでいい。
+    /// </summary>
+    /// <param name="equip"></param>
+    public void SetGuard(Equip equip)
+    {
+        equip.phyCut = equip.phyCutSet[equip.wLevel];//カット率
+        equip.holyCut = equip.holyCutSet[equip.wLevel];//光。
+        equip.darkCut = equip.darkCutSet[equip.wLevel];//闇。
+        equip.fireCut = equip.fireCutSet[equip.wLevel];//魔力
+        equip.thunderCut = equip.thunderCutSet[equip.wLevel];//魔力
+        equip.guardPower = equip.guardPowerSet[equip.wLevel];//受け値
+                                                             //nullの時は素手を装備させる
+
+    }
+
+
+
+    /// <summary>
+    /// 装備重量確認と重量状態による変更
+    /// </summary>
+    public void ActionSet()
+    {
+        equipWeight = 0;
+        equipWeight += equipWeapon._weight;
+        equipWeight += equipShield._weight;
+
+
+        float weightState = equipWeight / capacityWeight;
+        if (weightState <= 0.3 && weightState >= 0)
+        {
+            pStatus.moveSpeed = lightSpeed;
+            pStatus.dashSpeed = lightDash;
+            pStatus.avoidRes = lightAvoid;
+            stRecover = lightStRecover;
+            stRatio = lightStRatio;
+            pStatus._weightState = PlayerStatus.PlayerWeightState.軽装備;
+        }
+        else if (weightState > 0.3 && weightState <= 0.7)
+        {
+            
+            pStatus.moveSpeed = middleSpeed;
+            pStatus.dashSpeed = middleDash;
+            pStatus.avoidRes = middleAvoid;
+            stRecover = middleStRecover;
+            stRatio = middleStRatio;
+            pStatus._weightState = PlayerStatus.PlayerWeightState.通常装備;
+        }
+        else if (weightState > 0.7 && weightState <= 1)
+        {
+
+            pStatus.moveSpeed = heavySpeed;
+            pStatus.dashSpeed = heavyDash;
+            pStatus.avoidRes = heavyAvoid;
+            stRecover = heavyStRecover;
+            stRatio = heavyStRatio;
+            pStatus._weightState = PlayerStatus.PlayerWeightState.重装備;
+        }
+        else if (weightState > 1)
+        {
+
+            pStatus.moveSpeed = overSpeed;
+            pStatus.dashSpeed = overDash;
+            pStatus.avoidRes = overAvoid;
+            stRecover = overStRecover;
+            stRatio = overStRatio;
+            pStatus._weightState = PlayerStatus.PlayerWeightState.重量オーバー;
+        }
+    }
+
+
+    //魔法威力修正の設定
+    public void SetMagicAssist()
+    {
+        int n = equipWeapon.wLevel;
+        equipWeapon.MagicAssist = equipWeapon.MagicAssistBase + equipWeapon.MAssistCurve[n].Evaluate(_int);
+
+        equipWeapon.castSkill = 1;
+        equipWeapon.castSkill -= equipWeapon.CastCurve.Evaluate(skill) / 100;
+    }
+
+    /// <summary>
+    /// 魔法関連の設定
+    /// 魔法そのものの攻撃力か
+    /// </summary>
+    public void SetMagicAtk()
+    {
+        if (useMagic == null)
+        {
+            return;
+        }
+        if (useMagic.phyBase >= 1)
+        {
+            useMagic.phyAtk = useMagic.phyBase + (useMagic.powerCurve.Evaluate(power)) +
+                               useMagic.skillCurve.Evaluate(skill);
+        }
+        if (useMagic.holyBase >= 1)
+        {
+            useMagic.holyAtk = useMagic.holyBase + (useMagic.powerCurve.Evaluate(power)) +
+                               useMagic.intCurve.Evaluate(_int);
+        }
+        if (useMagic.darkBase >= 1)
+        {
+            useMagic.darkAtk = useMagic.darkBase + (useMagic.intCurve.Evaluate(_int)) +
+                               useMagic.skillCurve.Evaluate(skill);
+        }
+        if (useMagic.fireBase >= 1)
+        {
+            useMagic.fireAtk = useMagic.fireBase + useMagic.intCurve.Evaluate(_int);
+        }
+        if (useMagic.thunderBase >= 1)
+        {
+            useMagic.thunderAtk = useMagic.thunderBase + useMagic.intCurve.Evaluate(_int);
+
+        }
+    }
+
+
+    #endregion
+
+    ///<summary>
+    ///　HPなどのパラメータ変更関連のメソッド
+    /// </summary>
+    #region
     /// <summary>
     /// スタミナ使用
     /// </summary>
     /// <param name="useStamina"></param>
     public void StaminaUse(int useStamina)
     {
+
         if (stamina >= useStamina)
         {
             stamina -= useStamina;
@@ -428,240 +738,356 @@ public class GManager : MonoBehaviour
         }
     }
 
-
-
-
-    public void SetAtk(Equip equip)
+    public void StaminaRecover()
     {
+        //スタミナの回復の基準になる時間測定
+        stTime += Time.deltaTime;
 
-        int n = equip.wLevel;
 
-        if (equip.phyBase[n] >= 1)
+
+        if (stTime >= 0.1f && !isStUse && isEnable)
         {
-            equip.phyAtk = equip.phyBase[n] + (equip.powerCurve[n].Evaluate(power)) +
-                               equip.skillCurve[n].Evaluate(skill);
-            equip.Atk += equip.phyAtk;
-        }
-        if (equip.holyBase[n] >= 1)
-        {
-            equip.holyAtk = equip.holyBase[n] + (equip.powerCurve[n].Evaluate(power)) +
-                               equip.intCurve[n].Evaluate(_int);
-            equip.Atk += equip.holyAtk;
-        }
-        if (equip.darkBase[n] >= 1)
-        {
-            equip.darkAtk = equip.darkBase[n] + (equip.intCurve[n].Evaluate(_int)) +
-                               equip.skillCurve[n].Evaluate(skill);
-            equip.Atk += equip.darkAtk;
-        }
-        if (equip.fireBase[n] >= 1)
-        {
-            equip.fireAtk = equip.fireBase[n] + equip.intCurve[n].Evaluate(_int);
-            equip.Atk += equip.fireAtk;
-        }
-        if (equip.thunderBase[n] >= 1)
-        {
-            equip.thunderAtk = equip.thunderBase[n] + equip.intCurve[n].Evaluate(_int);
-            equip.Atk += equip.thunderAtk;
+            //前回のスタミナ回復から0.1秒経ってて、スタミナ使用中ではなく、ダウンもしてなくてスタミナ回復できるフラグあるなら
+
+            //スタミナ回復不能時間を計測する変数を０にリセット
+            disEnaTime = 0.0f;
+            //ガード時以外のスタミナ管理
+            if (!isGuard)
+            {
+                stamina += stRecover + additionalStRecover;
+            }
+
+            //ガード中は回復量半減。盾の種類で変えていいかも
+            else
+            {
+                stamina += Mathf.Ceil(stRecover + additionalStRecover) / 2;
+            }
+
+            //スタミナ回復時間をリセットして再び時間計測
+            stTime = 0.0f;
+
+            //スタミナ０でスタミナ破壊状態を解除
+            if (stBreake)
+            {
+                stBreake = false;
+            }
+
         }
 
 
-    }//攻撃力設定
 
-    //攻撃力や防御力に倍率かけるメソッドがあっていい。
-    //上の設定メソッドは装備が変更された時とレベル上がった時だけでいい。
+        //スタミナが上限超えたら上限に戻す
+        if (stamina >= maxStamina)
+        {
 
-    public void SetGuard(Equip equip)
+            stamina = maxStamina;
+            isEnable = true;
+        }
+
+        //スタミナがゼロ、かつスタミナ破壊されてないなら
+        //スタミナ破壊の処理をする
+        else if (stamina <= 0 && !stBreake)
+        {
+            //スタミナ機能不全の時間計測
+            disEnaTime += Time.deltaTime;
+
+            //スタミナ回復できなくなる。
+            isEnable = false;
+
+            //スタミナ
+            if (disEnaTime < 1.5f || isStUse)
+            {
+                //一定時間0のままかつスタミナ使用状態にしても0のまま。
+                stamina = 0;
+                //ここ
+            }
+            else
+            {
+                stBreake = true;
+
+            }
+
+        }
+        else
+        {
+            isEnable = true;
+        }
+    }
+
+
+#endregion
+
+
+
+    
+    ///<summary>
+    ///　装備変更関連のメソッド
+    /// </summary>
+    #region
+
+    /// <summary>
+    /// 装備交換時のアニメーション管理とEquipWeapon入れ替えとステータス変更
+    /// </summary>
+    /// <param name="setNumber"></param>
+    public void EquipSwap(int setNumber)
     {
-        equip.phyCut = equip.phyCutSet[equip.wLevel];//カット率
-        equip.holyCut = equip.holyCutSet[equip.wLevel];//光。
-        equip.darkCut = equip.darkCutSet[equip.wLevel];//闇。
-        equip.fireCut = equip.fireCutSet[equip.wLevel];//魔力
-        equip.thunderCut = equip.thunderCutSet[equip.wLevel];//魔力
-        equip.guardPower = equip.guardPowerSet[equip.wLevel];//受け値
-                                                             //nullの時は素手を装備させる
-        /*      if (!equipWeapon.twinHand && equipShield != null)
-              {
-                  pStatus.phyCut = equipShield.phyCut[equip.wLevel];//カット率
-                  pStatus.holyCut = equipShield.holyCut[equip.wLevel];//光。
-                  pStatus.darkCut = equipShield.darkCut[equip.wLevel];//闇。
-                  pStatus.fireCut = equipShield.fireCut[equip.wLevel];//魔力
-                  pStatus.thunderCut = equipShield.thunderCut[equip.wLevel];//魔力
-                  pStatus.guardPower = equipShield.guardPower[equip.wLevel];//受け値
-                 // guardEnable = true;
-              }
-              else if (equipWeapon.twinHand && equipShield == null)
-              {
+        //両手/片手持ち変更
+        //装備自体は変わらない
+        if (setNumber == 0)
+        {
+            //両手持ちに
+            if (!twinHand)
+            {
+                twinHand = true;
+                pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[1];
+            }
+            //片手持ちに
+            else
+            {
+                twinHand = false;
+                pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+            }
+        }
 
-                  //guardEnable = true;
-              }*/
-        //    else if(equipWeapon.twinHand && !equipWeapon.shieldAct)
-        //   {
-        //        guardEnable = false;
-        // }
+        //武器のスロット間での装備入れ替え
+        else if (setNumber == 1)
+        {
+            if (weaponNum == 1)
+            {
+                weaponNum = 2;
+                equipWeapon = setWeapon[1];
+            }
+            else
+            {
+                weaponNum = 1;
+                equipWeapon = setWeapon[0];
+            }
+            pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+            twinHand = false;
+            EquipChangedSetting();
+        }
+        //盾のスロット間での装備入れ替え
+        else if (setNumber == 2)
+        {
+            if (weaponNum == 1)
+            {
+                shieldNum = 2;
+                equipShield = setShield[1];
+            }
+            else
+            {
+                shieldNum = 1;
+                equipShield = setShield[0];
+            }
+            //武器を片手持ちに
+            pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+            twinHand = false;
+            EquipChangedSetting();
+        }
+    }
+
+    /// <summary>
+    /// 武器と盾の変更メソッド
+    /// 武器を変えた後はまずコアと武器の相性チェック、アニメーションコントローラーを入れ替えて
+    /// アニメーションをセットしたあとステータスを設定
+    /// </summary>
+    /// <param name="setNumber"></param>
+    /// <param name="slotNumber"></param>
+    /// <param name="_equip"></param>
+    public void EquipChange(int setNumber, int slotNumber, Equip _equip)
+    {
+           //普通に装備変更、武器
+        if (setNumber == 1)
+        {
+            //引数の装備を武器として格納
+            MyCode.Weapon _weapon = (MyCode.Weapon)_equip;
+
+            //一つ目のスロットに新しい武器を詰める
+            if (slotNumber == 1)
+            {
+                setWeapon[0] = _weapon;
+
+                //そして現在装備中の武器が第一スロットにあるものなら装備武器も変更
+                // 武器も片手持ちにしてアニメーションの設定も変える
+                if (weaponNum == 1)
+                {
+                    equipWeapon = setWeapon[0];
+                    //コア確認
+                    CoreConfirm();
+                    
+                    twinHand = false;
+                    pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+                    AnimationSetting();
+                    EquipChangedSetting();
+
+                }
+                //変更した武器の分だけステータス設定
+                else
+                {
+                    SetAtk(setWeapon[0]);
+                    SetGuard(setWeapon[0]);
+                }
+            }
+            else
+            {
+                setWeapon[1] = _weapon;
+
+                //そして現在装備中の武器が第二スロットにあるものなら装備武器も変更
+                // 武器も片手持ちにしてアニメーションの設定も変える
+                if (weaponNum == 2)
+                {
+                    equipWeapon = setWeapon[1];
+                    //コア確認
+                    CoreConfirm();
+                    twinHand = false;
+                    pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+                    AnimationSetting();
+                    EquipChangedSetting();
+                }
+                //変更した武器の分だけステータス設定
+                else
+                {
+
+                    SetAtk(setWeapon[1]);
+                    SetGuard(setWeapon[1]);
+                }
+            }
+        }
+        //盾変更
+        else if (setNumber == 2)
+        {
+            //引数の装備を盾として格納
+            Shield _shield = (Shield)_equip;
+
+            //一つ目のスロットに新しい武器を詰める
+            if (slotNumber == 1)
+            {
+                setShield[0] = _shield;
+
+                //そして現在装備中の盾が第一スロットにあるものなら装備も変更
+                // 武器も片手持ちにしてアニメーションの設定も変える
+                if (shieldNum == 1)
+                {
+                    equipShield = setShield[0];
+                    twinHand = false;
+                    pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+                }
+                else
+                {
+
+                    SetAtk(setShield[0]);
+                    SetGuard(setShield[0]);
+                }
+            }
+            else
+            {
+                setShield[1] = _shield;
+
+                //そして現在装備中の盾が第一スロットにあるものなら装備も変更
+                // 武器も片手持ちにしてアニメーションの設定も変える
+                if (shieldNum == 2)
+                {
+                    equipShield = setShield[1];
+                    twinHand = false;
+                    pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+                }
+                else
+                {
+
+                    SetAtk(setShield[1]);
+                    SetGuard(setShield[1]);
+                }
+            }
+        }
 
     }
+
     /// <summary>
-    /// 持久力と
+    /// コアの変更メソッド
+    /// コアを変えた後はまずコアと武器の相性チェック、アニメーションコントローラーを入れ替えて
+    /// アニメーションをセットしたあとステータスを設定
     /// </summary>
-    public void SetParameter()
+    /// <param name="_core"></param>
+    public void CoreChange(CoreItem _core)
     {
+        equipCore = _core;
+        if (CoreConfirm())
+        {
+            pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+            AnimationSetting();
+        }
+        EquipChangedSetting();
+    }
 
-      Vitality = pStatus.Vitality + equipCore.additionalVitality;
-    //持久力
-      Endurance = pStatus.Endurance + equipCore.additionalEndurance;
-  
-    //　力
-      power = pStatus.power + equipCore.additionalPower;
-    //技量
-      skill = pStatus.skill + equipCore.additionalSkill;
-    //　魔法力。賢さ
-      _int = pStatus._int + equipCore.additionalInt;
-    capacityWeight = pStatus.initialWeight + pStatus.weightCurve.Evaluate(Endurance + power/2) + equipCore.additionalWeight;
-        Armor = equipCore.additionalArmor;
-        maxHp = pStatus.initialHp + pStatus.HpCurve.Evaluate(Vitality) + equipCore.additionalHp;
-        maxMp = pStatus.initialMp + pStatus.MpCurve.Evaluate(pStatus.capacity) + equipCore.additionalMp;
-        maxStamina = pStatus.initialStamina + pStatus.StaminaCurve.Evaluate(Endurance) + equipCore.additionalStamina;
-        //  ////Debug.log($"テスト数値{pStatus.StaminaCurve.Evaluate(Endurance)}");
+    /// <summary>
+    /// コアと装備の特殊相性を確認
+    /// </summary>
+    public bool CoreConfirm()
+    {
+        if (equipWeapon.ExCore == equipCore)
+        {
+            equipWeapon = equipWeapon._alterWeapon;
+            //コア合致によりもたらされる効果を記述
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 
+    /// <summary>
+    /// 装備変更時の処理
+    /// 盾戦技のアニメの入れ替えやステータスの再設定、コアの合致確認まで
+    /// </summary>
+    public void EquipChangedSetting()
+    {
+        //まずステータスを再セッティングする
+        StatusSetting();
 
+    }
 
+    /// <summary>
+    /// 片手アニメのコントローラーにアニメーションを装備変更に合わせてセットする
+    /// AnimatorOverrideControllerはAnimatorと基本的に同じ
+    /// RuntimeAnimatorControllerを武器のモノ（片手）に差し替える
+    /// そしてその中に盾の戦技を仕込む
+    /// 戦技はクリップの最初の五つとか(配列の0～4)、それか.animationClips[n].nameでArts0とかで照会して特定
+    /// 余りが出てもいいからアニメステートは多めにする
+    /// 空っぽのステートが増えても、アニメーション遷移はコード側でやるのでNullを引かない
+    /// ステートはとにかく多く
+    /// もし盾の戦技が武器戦技なら武器の戦技を詰めていく
+    /// アニメーターはベースのモノを一つ作り、以後は武器ごとにオーバーライド
+    /// オーバーライドコントローラーの仕様を調べる
+    /// </summary>
+    public void AnimationSetting()
+    {
+        //盾の戦技ナシなら
+        if(equipShield.artsAnime == null)
+        {
+            //equipShield.artsAnimeの数だけ片手アニメーターに両手のアニメーターから戦技のアニメを仕込んでいく
+            for (int i = 0; i < equipWeapon.artsValue.Count; i++)
+            {
+                equipWeapon._useContoroller[0].animationClips[i] = equipWeapon._useContoroller[1].animationClips[i];
+            }
+        }
+        //盾の戦技ありなら
+        else
+        {
+            //equipShield.artsAnimeの数だけ片手のアニメコントローラーに戦技のアニメを仕込んでいく
+            for (int i = 0; i < equipShield.artsAnime.Length; i++)
+            {
+                equipWeapon._useContoroller[0].animationClips[i] = equipShield.artsAnime[i];
+            }
+        }
         
 
-
-
-
-
-        if (pStatus.capacity >= 0 && pStatus.capacity < 7)
-        {
-            magicNumber = 1;
-        }
-        else if (pStatus.capacity >= 7)
-        {
-            magicNumber = 2;
-        }
-        else if (pStatus.capacity >= 15)
-        {
-            magicNumber = 3;
-        }
-        else if (pStatus.capacity >= 20)
-        {
-            magicNumber = 4;
-        }
-        else if (pStatus.capacity >= 30)
-        {
-            magicNumber = 5;
-        }
-        else if (pStatus.capacity >= 38)
-        {
-            magicNumber = 6;
-        }
-        else if (pStatus.capacity >= 45)
-        {
-            magicNumber = 7;
-        }
-        if (equipMagic.Count > magicNumber)
-        {
-            equipMagic.RemoveRange(magicNumber, equipMagic.Count - magicNumber);
-
-        }
-        //リストの要素数を再設定
-        equipMagic.Capacity = (magicNumber);
-
-    }
-    /// <summary>
-    /// 装備重量確認と重量状態による変更
-    /// </summary>
-    public void ActionSet()
-    {
-        equipWeight = 0;
-        equipWeight += equipWeapon._weight;
-        equipWeight += equipShield._weight;
-
-
-        float weightState = equipWeight / capacityWeight;
-        if (weightState <= 0.3 && weightState >= 0)
-        {
-            pStatus.moveSpeed = lightSpeed;
-            pStatus.dashSpeed = lightDash;
-            pStatus.avoidRes = lightAvoid;
-            stRecover = lightStRecover;
-            pStatus._weightState = PlayerStatus.PlayerWeightState.軽装備;
-        }
-        else if (weightState > 0.3 && weightState <= 0.7)
-        {
-
-            pStatus.moveSpeed = middleSpeed;
-            pStatus.dashSpeed = middleDash;
-            pStatus.avoidRes = middleAvoid;
-            stRecover = middleStRecover;
-            pStatus._weightState = PlayerStatus.PlayerWeightState.通常装備;
-        }
-        else if (weightState > 0.7 && weightState <= 1)
-        {
-
-            pStatus.moveSpeed = heavySpeed;
-            pStatus.dashSpeed = heavyDash;
-            pStatus.avoidRes = heavyAvoid;
-            stRecover = heavyStRecover;
-            pStatus._weightState = PlayerStatus.PlayerWeightState.重装備;
-        }
-        else if (weightState > 1)
-        {
-
-            pStatus.moveSpeed = overSpeed;
-            pStatus.dashSpeed = overDash;
-            pStatus.avoidRes = overAvoid;
-            stRecover = overStRecover;
-            pStatus._weightState = PlayerStatus.PlayerWeightState.重量オーバー;
-        }
-    }
-    public void SetMagicAssist()
-    {
-        int n = equipWeapon.wLevel;
-        equipWeapon.MagicAssist = equipWeapon.MagicAssistBase + equipWeapon.MAssistCurve[n].Evaluate(_int);
-
-        equipWeapon.castSkill = 1;
-        equipWeapon.castSkill -= equipWeapon.CastCurve.Evaluate(skill) / 100;
     }
 
 
-    public void SetMagicAtk()
-    {
-        if (useMagic == null)
-        {
-            return;
-        }
-        if (useMagic.phyBase >= 1)
-        {
-            useMagic.phyAtk = useMagic.phyBase + (useMagic.powerCurve.Evaluate(power)) +
-                               useMagic.skillCurve.Evaluate(skill);
-        }
-        if (useMagic.holyBase >= 1)
-        {
-            useMagic.holyAtk = useMagic.holyBase + (useMagic.powerCurve.Evaluate(power)) +
-                               useMagic.intCurve.Evaluate(_int);
-        }
-        if (useMagic.darkBase >= 1)
-        {
-            useMagic.darkAtk = useMagic.darkBase + (useMagic.intCurve.Evaluate(_int)) +
-                               useMagic.skillCurve.Evaluate(skill);
-        }
-        if (useMagic.fireBase >= 1)
-        {
-            useMagic.fireAtk = useMagic.fireBase + useMagic.intCurve.Evaluate(_int);
-        }
-        if (useMagic.thunderBase >= 1)
-        {
-            useMagic.thunderAtk = useMagic.thunderBase + useMagic.intCurve.Evaluate(_int);
-
-        }
-    }
-
-
-
-
+    #endregion
 
     public void SetSlider()
     {
@@ -677,6 +1103,16 @@ public class GManager : MonoBehaviour
         mpSl.offsetMax = sliderRength;
     }
 
+
+
+    public void HPReset()
+    {
+        hp = pStatus.maxHp;
+    }
+
+    //いらないやつ
+    #region
+    /*
     /// <summary>
     /// 何度も当たり判定が検出されるのを防ぐためのもの
     /// </summary>
@@ -685,37 +1121,15 @@ public class GManager : MonoBehaviour
         if (isDamage)
         {
             avoidTime += Time.fixedDeltaTime;
-            pm.SetLayer(10);
+            pc.SetLayer(10);
             if (avoidTime >= 0.1)
             {
                 isDamage = false;
                 avoidTime = 0;
-                pm.SetLayer(11);
+                pc.SetLayer(11);
             }
         }
     }
-
-    public void HPReset()
-    {
-        hp = pStatus.maxHp;
-    }
-
-
-
-
-
-    /*	public void EnemyArmorControll()
-        {
-            if (GManager.instance.nowArmor <= 0 && pStatus.isBlow)
-            {
-                GManager.instance.isDown = true;
-                GManager.instance.blowDown = true;
-            }
-            else
-            {
-                GManager.instance.isDown = false;
-            }
-        }*/
 
     /// <summary>
     /// ノックバックする。
@@ -733,7 +1147,7 @@ public class GManager : MonoBehaviour
             {
                 //isFalter = true;
                 isAnimeStart = true;
-                pm.anim.Play("TLongSwordFalter");
+                pc.anim.Play("TLongSwordFalter");
             }
             else if (!CheckEnd("TLongSwordFalter"))
             {
@@ -768,7 +1182,7 @@ public class GManager : MonoBehaviour
                 isDown = true;
                 //isFalter = true;
                 isAnimeStart = true;
-                pm.anim.Play("Bounce");
+                pc.anim.Play("Bounce");
                 //Debug.Log("弾かれ");
             }
             else if (!CheckEnd("Bounce"))
@@ -779,167 +1193,17 @@ public class GManager : MonoBehaviour
             }
         }
     }
-    public void Blow()
-    {
 
-        if (blowDown && isDown)
-        {
-            //  pm.rb.gravityScale = 20;
-            blowTime += Time.fixedDeltaTime;
-            if (blowTime <= 0.2)
-            {
-                pm.rb.gravityScale = 40;
-                // Debug.Log($"{blowTime}");
-                if (blowTime <= 0.1)
-                {
-                    pm.isGround = false;
-                }
-                pm.rb.AddForce(blowVector, ForceMode2D.Impulse);
-            }
-            else if (blowTime <= 1.5)// || !isGround)
-            {
-                //こいつ重力ないわ
-                //Debug.Log($"速度{blowVector.y}");
-                blowVector.Set(blowVector.x, 0);
-                pm.rb.AddForce(blowVector, ForceMode2D.Impulse);
+    */
 
-            }
 
-        }
-    }
+    #endregion
+
 
     ///<summary>
-    ///ダウン解除
-    ///</summary>
-    public void DownDel()
-    {
-        if (GManager.instance.blowDown)
-        {
-
-            GManager.instance.blowDown = false;
-            GManager.instance.isDown = false;
-            pm.SetLayer(11);
-            //	isAnimeStart = false;
-            pm.isStop = false;
-            pm.isWakeUp = false;
-            GManager.instance.blowTime = 0;
-            isAnimeStart = false;
-        }
-    }
-
-    /// <sammary>
-    /// ダウン状態のメソッド
-    /// </sammary>
-    public void Down()
-    {
-        //////Debug.log("吹き飛ぶ");
-
-        if (blowDown && isDown)
-        {
-            if (!pm.isWakeUp)
-            {
-                if (!pm.isGround)
-                {
-                    pm.anim.Play("TLongSwordBlow");
-                    //SetLayer(17);//回避レイヤーの場所変わってるかもな。追加や削除で
-                    //GravitySet(15);
-
-                }
-                else if (pm.isGround)
-                {
-                    pm.rb.gravityScale = 0;
-                    pm.rb.velocity = Vector2.zero;
-                    if (!isAnimeStart)
-                    {
-                            GManager.instance.PlaySound(SoundManager.instance.downSound[0], transform.position);
-
-                        pm.anim.Play("TLongSwordDown");
-
-                        isAnimeStart = true;
-                    }
-                    //GravitySet(pStatus.firstGravity);
-                    else if (!CheckEnd("TLongSwordDown"))
-                    {
-                        if (isDie)
-                        {
-                            isDown = false;
-                            isAnimeStart = false;
-                            return;
-                        }
-                        pm.AllStop(0.7f,true);
-                        //Debug.Log("醤油");
-
-                    }
-
-                    //isDown = false;
-                    //ダウンアニメ
-                }
-            }
-            else if (isDown && pm.isGround && pm.isWakeUp)
-            {
-                //前のでisAnimeStartが真のままだから
-                if (isAnimeStart)
-                {
-                    isAnimeStart = false;
-                    pm.anim.Play("TLongSwordWakeup");
-                }
-                else if (!CheckEnd("TLongSwordWakeup"))
-                {
-                    pm.SetLayer(11);
-                    //	isAnimeStart = false;
-                    isDown = false;
-                    pm.isWakeUp = false;
-                    blowDown = false;
-                    blowTime = 0;
-                    
-                }
-
-            }
-
-        }
-    }
-    /*    /// <summary>
-        /// 改修しようね
-        /// 全部まとめるか否か
-        /// </summary>
-        /// <returns></returns>
-        async UniTaskVoid SetPlayerData()
-        {
-            //仮の姿
-            await UniTask.RunOnThreadPool(()=> SetAtk());
-
-        }*/
-
-    /*       /// <summary>
-           /// 音声再生。音源に追随しない
-           /// 普通は再生する音声と
-           /// </summary>
-           /// <param name="sType">再生する音の名前。バリエーションありのやつ。
-           /// <param name="sourcePosition">音を鳴らしたい位置。必須です。 </param>
-           /// <param name="volumePercentage"><b>Optional</b> - 音量を下げて再生したい場合に使用します（0～1の間）。
-           /// <param name="pitch"><b>Optional</b> - 特定のピッチで音を再生したい場合に使用します。</param> <param name="pitch"><b>Optional</b> - 特定の音程で再生したい場合に使用します。そうすると、バリエーションの中のpichとrandom pitchを上書きします。
-           /// <param name="delaySoundTime"><b>Optional</b> - すぐにではなく、X秒後に音を鳴らしたい場合に使用します。
-           /// <param name="variationName"><b>Optional</b> - 特定のバリエーション（またはクリップID）の名前で再生したい場合に使用します。それ以外の場合は、ランダムなバリエーションが再生されます。
-           /// <param name="timeToSchedulePlay"><b>Optional</b> - サウンドを再生するためのDSP時間を渡すために使用します。通常はこれを使用せず、代わりにdelaySoundTimeパラメータを使用します。
-           /// <param name="isRemember"><b>Optional</b> - PlaySoundResultを取得するかどうか。
-           /// <returns>PlaySoundResult - このオブジェクトは、サウンドが再生されたかどうかを読み取るために使用され、使用されたVariationオブジェクトへのアクセスも可能です。
-
-           public async UniTaskVoid PlaySoundAsync(string sType, Vector3 sourceTrans, float volumePercentage= 1f, float? pitch= null, float delaySoundTime= 0f, string variationName = null, double? timeToSchedulePlay = null,bool isRemember = false)
-           {
-
-               if (isRemember)
-               {
-                   MasterAudio.PlaySound3DAtVector3(sType, sourceTrans, volumePercentage, pitch, delaySoundTime, variationName, timeToSchedulePlay);
-               }
-               else
-               {
-                   MasterAudio.PlaySound3DAtVector3AndForget(sType, sourceTrans, volumePercentage, pitch, delaySoundTime, variationName, timeToSchedulePlay);
-
-               }
-
-           }*/
-
-
+    ///　音声制御関連のメソッド
+    /// </summary>
+    #region
     /// <summary>
     /// 音声再生。音源に追随しない
     /// 普通は再生する音声と
@@ -992,31 +1256,6 @@ public class GManager : MonoBehaviour
         }
     }
 
-    /*   /// <summary>
-       /// 音声再生。音源に追随する
-       /// </summary>
-       /// <param name="sType">再生する音の名前。バリエーションありのやつ。
-       /// <param name="sourcePosition">音を鳴らしたい位置。必須です。 </param>
-       /// <param name="volumePercentage"><b>Optional</b> - 音量を下げて再生したい場合に使用します（0～1の間）。
-       /// <param name="pitch"><b>Optional</b> - 特定のピッチで音を再生したい場合に使用します。</param> <param name="pitch"><b>Optional</b> - 特定の音程で再生したい場合に使用します。そうすると、バリエーションの中のpichとrandom pitchを上書きします。
-       /// <param name="delaySoundTime"><b>Optional</b> - すぐにではなく、X秒後に音を鳴らしたい場合に使用します。
-       /// <param name="variationName"><b>Optional</b> - 特定のバリエーション（またはクリップID）の名前で再生したい場合に使用します。それ以外の場合は、ランダムなバリエーションが再生されます。
-       /// <param name="timeToSchedulePlay"><b>Optional</b> - サウンドを再生するためのDSP時間を渡すために使用します。通常はこれを使用せず、代わりにdelaySoundTimeパラメータを使用します。
-       ///     /// <param name="isRemember"><b>Optional</b> - PlaySoundResultを取得するかどうか。
-       /// <returns>PlaySoundResult - このオブジェクトは、サウンドが再生されたかどうかを読み取るために使用され、使用されたVariationオブジェクトへのアクセスも可能です。
-       public async UniTaskVoid FollowSoundAsync(string sType, Transform sourceTrans, float volumePercentage, float? pitch, float delaySoundTime, string variationName, bool isRemember = false)
-       {
-
-           if (isRemember)
-           {
-               await UniTask.RunOnThreadPool(() => MasterAudio.PlaySound3DFollowTransform(sType, sourceTrans, volumePercentage, pitch, delaySoundTime, variationName));
-           }
-           else
-           {
-               await UniTask.RunOnThreadPool(() => MasterAudio.PlaySound3DFollowTransformAndForget(sType, sourceTrans, volumePercentage, pitch, delaySoundTime, variationName));
-           }
-       }*/
-
 
     /// <summary>
     /// 最後のtrueにしないならフェードが基本
@@ -1036,18 +1275,7 @@ public class GManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 体力やMP設定
-    /// </summary>
-    public void initialSetting()
-    {
 
-        hp = maxHp;
-        mp = maxMp;
-        stamina = maxStamina;
-    }
-
-    // public
     /// <summary>
     /// エンチャ時はエンチャントタイプを参照
     /// </summary>
@@ -1092,6 +1320,12 @@ public class GManager : MonoBehaviour
             GManager.instance.PlaySound("ThunderDamage", transform.position);
         }
     }
+
+#endregion
+
+
+
+
     /// <summary>
     /// アニメが終了したかどうか
     /// </summary>
@@ -1100,18 +1334,18 @@ public class GManager : MonoBehaviour
     bool CheckEnd(string Name)
     {
 
-        if (!pm.anim.GetCurrentAnimatorStateInfo(0).IsName(Name))// || sAni.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
+        if (!pc.anim.GetCurrentAnimatorStateInfo(0).IsName(Name))// || sAni.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
         {   // ここに到達直後はnormalizedTimeが"Default"の経過時間を拾ってしまうので、Resultに遷移完了するまではreturnする。
             return true;
         }
-        if (pm.anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        if (pc.anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
         {   // 待機時間を作りたいならば、ここの値を大きくする。
             return true;
         }
         //AnimatorClipInfo[] clipInfo = sAni.GetCurrentAnimatorClipInfo(0);
 
         ////Debug.Log($"アニメ終了");
-
+        
         return false;
 
         // return !(sAni.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);

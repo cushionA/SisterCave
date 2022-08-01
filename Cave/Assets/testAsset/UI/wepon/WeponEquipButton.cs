@@ -19,21 +19,21 @@ public class WeaponEquipButton : MonoBehaviour
     {
         if (GManager.instance.setWeapon[setNumber] != null)
         {
-            this.contentIcon.sprite = GManager.instance.setWeapon[setNumber].icon;
+         //   //this.contentIcon.sprite = GManager.instance.setWeapon[setNumber].icon;
         }
     }
 
 
     public void WeaponEquip()
     {
-        // MainUI.instance.isReBuild = true;
-        MainUI.instance.wec.isEver = false;
-        MainUI.instance.wec.isIniti = false;
-        MainUI.instance.weaponWindow.SetActive(true);
+        // MainUICon.instance.isReBuild = true;
+   //     MainUICon.instance.wec.isEver = false;
+      //  MainUICon.instance.wec.isIniti = false;
+     //   MainUICon.instance.weaponWindow.SetActive(true);
         EquipmentManager.instance.InitialButton.Select();
         EquipManager.instance.setNumber = setNumber;
         EquipManager.instance.isWeaponM = true;
-        MainUI.instance.eqWindow.SetActive(false);
+    //    MainUICon.instance.eqWindow.SetActive(false);
 
 
     }

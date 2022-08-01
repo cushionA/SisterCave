@@ -20,7 +20,7 @@ public class ToolCellView : EnhancedScrollerCellView
         {
             //this.contentTexts[i].text = data.Contents[i].itemName;
             //For文でデータの数だけテキストにデータをぶち込む。そしてテキストの数＝ボタンの数になってる。
-            this.contentIcon[i].sprite = data.Contents[i].icon;
+            //this.contentIcon[i].sprite = data.Contents[i].icon;
             ub[i].item = data.Contents[i];//そのボタンのアイテムに設定
         }
     }

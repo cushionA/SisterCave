@@ -44,6 +44,17 @@ public class SisterCombination : Magic
     [Header("いろんなことに使う真偽")]
     bool isUtility;
 
+    [Header("始動タイプ")]
+    public ActType _combiType;
+
+    public enum ActType
+    {
+        soon = 1,
+        cast = 2,
+        longPress = 3,
+        castAndPress = 4
+    }
+
     //条件としては強敵、飛行タイプの敵…いやクールタイムあるし攻撃並みに細かくてもいいよ
     //同等の細かさで設定
     //ワープは壁に埋まらないように気を付けたい

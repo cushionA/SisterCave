@@ -45,8 +45,8 @@ public class OperationButton : MonoBehaviour
         else if (type == 2)
         {
             transform.root.gameObject.GetComponent<OperationGeneral>().next = true;
-            MainUI.instance.saveWin.gameObject.SetActive(true);
-            MainUI.instance.saveWin.WindowSet(1);
+            MainUICon.instance.saveWin.gameObject.SetActive(true);
+            MainUICon.instance.saveWin.WindowSet(1);
            // transform.root.gameObject.GetComponent<OperationGeneral>().SaveData();
             //セーブしますかの窓出すだけでいい
         }

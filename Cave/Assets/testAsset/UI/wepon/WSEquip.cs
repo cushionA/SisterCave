@@ -11,7 +11,7 @@ public class WSEquip : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ub = MainUI.instance.selectButton.GetComponent<EquipButton>();
+        ub = MainUICon.instance.selectButton.GetComponent<EquipButton>();
     }
 
     // Update is called once per frame
@@ -23,7 +23,7 @@ public class WSEquip : MonoBehaviour
             isFirst = true;
         }
 
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
         {
 
             EquipManager.instance.isUseMenu = false;
@@ -31,7 +31,7 @@ public class WSEquip : MonoBehaviour
         }
 
 
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
+        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14))
         {
             ResetWindow();
         }
@@ -42,9 +42,9 @@ public class WSEquip : MonoBehaviour
     {
         EquipManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
-        MainUI.instance.MenuCancel();
-        MainUI.instance.weaponWindow.SetActive(false);
-        MainUI.instance.eqWindow.SetActive(true);
+        MainUICon.instance.MenuCancel();
+     //   MainUICon.instance.weaponWindow.SetActive(false);
+     //   MainUICon.instance.eqWindow.SetActive(true);
         if (EquipManager.instance.isWeaponM)
         {
             GManager.instance.setWeapon[EquipManager.instance.setNumber] = EquipManager.instance.selectItem as MyCode.Weapon;
@@ -58,17 +58,17 @@ public class WSEquip : MonoBehaviour
         EquipManager.instance.isWeaponM = false;
         EquipManager.instance.isShieldM = false;
         isFirst = false;
-        MainUI.instance.ButtonOn();
-        //  MainUI.instance.eqButton.SetActive(true);
+        MainUICon.instance.ButtonOn();
+        //  MainUICon.instance.eqButton.SetActive(true);
     }
     public void ResetWindow()
     {
         isFirst = false;
         EquipManager.instance.isUseMenu = false;
         this.gameObject.SetActive(false);
-        MainUI.instance.MenuCancel();
-        MainUI.instance.ButtonOn();
-        //  MainUI.instance.selectButton = null;
+        MainUICon.instance.MenuCancel();
+        MainUICon.instance.ButtonOn();
+        //  MainUICon.instance.selectButton = null;
         //    EquipManager.instance.selectItem = null;
     }
 }

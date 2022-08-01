@@ -32,7 +32,7 @@ public class SliderWindow : ValueChangeBase
     void Update()
     {
 
-        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
+        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15);
 
 
         if (!isFirst)
@@ -47,7 +47,7 @@ public class SliderWindow : ValueChangeBase
        if (isChange)
         {
             ////Debug.log("äJén");
-            if (bgmSlider.gameObject == MainUI.instance.eventSystem.currentSelectedGameObject)
+            if (bgmSlider.gameObject == MainUICon.instance.eventSystem.currentSelectedGameObject)
             {
                 ////Debug.log("bgmí≤êÆíÜ");
 

@@ -17,14 +17,6 @@ MonoBehaviour:
   level: 1
   maxHp: 481
   maxMp: 31
-  maxStamina: 105
-  stamina: 105
-  Vitality: 9
-  Endurance: 19
-  capacity: 800
-  power: 5
-  skill: 8
-  _int: 1
   Def: 70
   pierDef: 70
   strDef: 70
@@ -42,6 +34,14 @@ MonoBehaviour:
   initialStamina: 60
   initialWeight: 0
   earnedSoul: 0
+  maxStamina: 105
+  stamina: 105
+  Vitality: 9
+  Endurance: 19
+  capacity: 800
+  power: 5
+  skill: 8
+  _int: 1
   equipCore: {fileID: 11400000, guid: 7ca4f5657ac8d5440a0b0fdb9c5c4122, type: 2}
   HpCurve:
     serializedVersion: 2
@@ -144,16 +144,18 @@ MonoBehaviour:
   itemDictionary:
     m_keys: []
     m_values: 
-  guardSpeed: 0
-  lightSpeed: 70
-  middleSpeed: 55
-  heavySpeed: 40
-  overSpeed: 8
-  lightDash: 90
-  middleDash: 75
-  heavyDash: 60
-  overDash: 6
-  lightAvoid: 0.7
-  middleAvoid: 0.5
-  heavyAvoid: 0.3
-  overAvoid: 0.1
+  guardSpeed: 180
+  moveSpeed: 0
+  dashSpeed: 0
+  avoidRes: 0
+  avoidSpeed: 500
+  addSpeed: {x: 0, y: 0}
+  jumpMove: 0
+  jumpPower: 0
+  jumpRes: 12
+  jumpCool: 0.4
+  jumpLimit: 1
+  avoidCool: 0.2
+  firstGravity: 18
+  downRes: 1
+  _weightState: 0

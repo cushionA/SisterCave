@@ -83,14 +83,14 @@ public class SelectControll : MonoBehaviour
         /*     if (done)
              {
                  done = false;
-                 MainUI.instance.selectList.Add(me);
+                 MainUICon.instance.selectList.Add(me);
              }*/
         //基本的に値設定窓は一つなのでisChangeが他にいじられない
 
-        if (MainUI.instance.isChange > 0) 
+        if (MainUICon.instance.isChange > 0) 
         {
-            int s = MainUI.instance.settingNumber;
-            //int e = MainUI.instance.editNumber;
+            int s = MainUICon.instance.settingNumber;
+            //int e = MainUICon.instance.editNumber;
             Selectable sl;
             int num;
 
@@ -117,21 +117,21 @@ public class SelectControll : MonoBehaviour
             }
             #endregion
 
-            if (MainUI.instance.isChange == 1)
+            if (MainUICon.instance.isChange == 1)
             {
-                 sl = MainUI.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                 sl = MainUICon.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
                     UpSet(sl);
-               MainUI.instance.isChange = 2;
+               MainUICon.instance.isChange = 2;
             }
             else
             {
                     if (s == 1)
                     {
-                        sl = MainUI.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                        sl = MainUICon.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
                     }
                     else
                     {
-                        sl = MainUI.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                        sl = MainUICon.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
                     }
                 if (!isValue)
                 {
@@ -142,7 +142,7 @@ public class SelectControll : MonoBehaviour
                     AnotherSet(sl);
                 }
 
-                MainUI.instance.isChange = 0;
+                MainUICon.instance.isChange = 0;
             }
         }
     }
@@ -217,25 +217,25 @@ public class SelectControll : MonoBehaviour
     /*   public void SelectReset(Selectable change)
        {
 
-           MainUI.instance.changeTarget = me;
+           MainUICon.instance.changeTarget = me;
             me.navigation = mine;
        }*/
 
     /*  public void ChangeItem()
       {
-          if (MainUI.instance.isChange && isMaster && mine.selectOnUp == null)
+          if (MainUICon.instance.isChange && isMaster && mine.selectOnUp == null)
           {
-              for (int i = 0; i >= MainUI.instance.selectList.Count; i++)
+              for (int i = 0; i >= MainUICon.instance.selectList.Count; i++)
               {
                   //新しいやつと入れ替え。
-                  if (MainUI.instance.selectList[i] == MainUI.instance.changeTarget)
+                  if (MainUICon.instance.selectList[i] == MainUICon.instance.changeTarget)
                   {
-                      MainUI.instance.selectList[i] = me;
+                      MainUICon.instance.selectList[i] = me;
                       i = 100;
                   }
 
               }
-              MainUI.instance.isChange = false;
+              MainUICon.instance.isChange = false;
           }
       }*/
 

@@ -31,7 +31,7 @@ public class GenerarlSlider : GeneralValueChange
     void Update()
     {
 
-        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
+        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15);
 
 
         if (!isFirst)
@@ -45,7 +45,7 @@ public class GenerarlSlider : GeneralValueChange
         if (isChange)
         {
             ////Debug.log("äJén");
-            if (bgmSlider.gameObject == MainUI.instance.eventSystem.currentSelectedGameObject)
+            if (bgmSlider.gameObject == MainUICon.instance.eventSystem.currentSelectedGameObject)
             {
                 ////Debug.log("bgmí≤êÆíÜ");
 
@@ -164,7 +164,7 @@ public class GenerarlSlider : GeneralValueChange
         //     bgmButton.enabled = false;
         bgmSlider.Select();
         isChange = true;
-        MainUI.instance.settingNumber = 99;
+        MainUICon.instance.settingNumber = 99;
     }
 
     public void txChange()
@@ -174,7 +174,7 @@ public class GenerarlSlider : GeneralValueChange
 
     private void ResetNum()
     {
-        MainUI.instance.settingNumber = 0;
+        MainUICon.instance.settingNumber = 0;
     }
 }
 

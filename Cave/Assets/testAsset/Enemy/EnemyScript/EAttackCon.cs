@@ -13,7 +13,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
     /// TODO_DESCRIPTION
     /// </summary>
     [AddComponentMenu("Corgi Engine/Character/Abilities/TODO_REPLACE_WITH_ABILITY_NAME")]
-    public class EAttackCon : CharacterAbility
+    public class EAttackCon : MyAbillityBase
     {
         /// このメソッドは、ヘルプボックスのテキストを表示するためにのみ使用されます。
         /// 能力のインスペクタの冒頭にある
@@ -30,7 +30,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected const string _numParameterName = "AttackNumber";
         protected int _numAnimationParameter;
 
-        protected RewiredCorgiEngineInputManager ReIManager;
+
 
         int motionNum;
 
@@ -42,7 +42,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             base.Initialization();
             // randomBool = false;
-            ReIManager = (RewiredCorgiEngineInputManager)_inputManager;
         }
 
         /// <summary>

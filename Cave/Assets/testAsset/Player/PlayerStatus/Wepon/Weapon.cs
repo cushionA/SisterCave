@@ -245,5 +245,21 @@ namespace MyCode
 
         public float guardSpeed;//ガード中の移動速度
 
+        /// <summary>
+        /// この武器で使うアニメーターコントローラー
+        /// 0が片手持ち、1が両手持ち
+        /// なので片手持ちの0の方に盾のアニメを入れる
+        /// </summary>
+        public RuntimeAnimatorController[] _useContoroller;
+
+        /// <summary>
+        /// コアが合致した場合などに入れる武器
+        /// </summary>
+        public Weapon _alterWeapon;
+
+        /// <summary>
+        /// 特殊相性のコア
+        /// </summary>
+        public CoreItem ExCore;
     }
 }

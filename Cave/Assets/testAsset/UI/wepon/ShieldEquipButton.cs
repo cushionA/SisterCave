@@ -19,20 +19,20 @@ public class ShieldEquipButton : MonoBehaviour
     {
         if (GManager.instance.setShield[setNumber] != null)
         {
-            this.contentIcon.sprite = GManager.instance.setShield[setNumber].icon;
+            //this.contentIcon.sprite = GManager.instance.setShield[setNumber].icon;
         }
     }
 
 
     public void ShieldEquip()
     {
-        // MainUI.instance.isReBuild = true;
-        MainUI.instance.wec.isEver = false;
-        MainUI.instance.weaponWindow.SetActive(true);
+        // MainUICon.instance.isReBuild = true;
+     //   MainUICon.instance.wec.isEver = false;
+  //      MainUICon.instance.weaponWindow.SetActive(true);
         EquipmentManager.instance.InitialButton.Select();
         EquipManager.instance.setNumber = setNumber;
         EquipManager.instance.isShieldM = true;
-        MainUI.instance.eqWindow.SetActive(false);
+       // MainUICon.instance.eqWindow.SetActive(false);
 
 
     }

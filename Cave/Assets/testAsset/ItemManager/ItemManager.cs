@@ -27,9 +27,6 @@ public class ItemManager : MonoBehaviour
 		//Debug.log(numOfItem[GetItem("Fire")]);
 	}
 
-	//　名前でアイテムを取得
-	public Item GetItem(string searchName)
-	{
-		return itemDataBase.GetItemLists().Find(itemName => itemName.itemName == searchName);
-	}
+
+
 }
