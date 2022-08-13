@@ -61,7 +61,12 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected override void HandleInput()
 		{
-			//こっちはスタン中利用できないように
+            //こっちはスタン中利用できないように
+
+            if (isDisenable)
+            {
+				return;
+            }
 
 			#region
 			/*
@@ -84,11 +89,12 @@ namespace MoreMountains.CorgiEngine
 			if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.RunButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
 			{
 				RunStart();
-				pressTime += _controller.DeltaTime;
+				
 			}
 			if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
 			{
 				RunStop();
+			//	Debug.Log($"{pressTime}秒");
 				//指定した時間以内にボタンが離されていたら回避
 				if(pressTime < avoidBuffer)
                 {
@@ -121,8 +127,8 @@ namespace MoreMountains.CorgiEngine
 			//スタミナ減らしたりできるよぉ？
 			if(_movement.CurrentState == CharacterStates.MovementStates.Running)
             {
-
-            }
+				pressTime += _controller.DeltaTime;
+			}
 		}
 
 		/// <summary>
@@ -163,7 +169,7 @@ namespace MoreMountains.CorgiEngine
 			if (!AbilityAuthorized // if the ability is not permitted
 				|| (!_controller.State.IsGrounded) // or if we're not grounded
 				|| (_condition.CurrentState != CharacterStates.CharacterConditions.Normal) // or if we're not in normal conditions
-				|| (_movement.CurrentState != CharacterStates.MovementStates.Walking)) // or if we're not walking
+				|| (_movement.CurrentState != CharacterStates.MovementStates.moving)) // or if we're not walking
 			{
 				// we do nothing and exit
 				return;

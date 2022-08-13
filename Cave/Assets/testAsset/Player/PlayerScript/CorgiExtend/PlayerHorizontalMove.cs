@@ -43,7 +43,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		[Tooltip("the multiplier that gets set and applied by CharacterSpeed")]
 		public float StateSpeedMultiplier = 1f;
 		/// if this is true, the character will automatically flip to face its movement direction
-		[Tooltip("if this is true, the character will automatically flip to face its movement direction")]
+		[Tooltip("これが true の場合、キャラクターは自動的にその移動方向に反転します。")]
 		public bool FlipCharacterToFaceDirection = true;
 
 
@@ -102,9 +102,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		// animation parameters
 		protected const string _speedAnimationParameterName = "Speed";
-		protected const string _walkingAnimationParameterName = "Walking";
+		protected const string _movingAnimationParameterName = "Moving";
 		protected int _speedAnimationParameter;
-		protected int _walkingAnimationParameter;
+		protected int _movingAnimationParameter;
 
 		/// <summary>
 		/// On Initialization, we set our movement speed to WalkSpeed.
@@ -150,7 +150,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 			_horizontalMovement = _horizontalInput;
-Debug.Log($"はろー{_horizontalInput}");
+//Debug.Log($"はろー{_horizontalInput}");
 			if ((AirControl < 1f) && !_controller.State.IsGrounded)
 			{
 			
@@ -187,7 +187,7 @@ Debug.Log($"はろー{_horizontalInput}");
 		protected virtual void HandleHorizontalMovement()
 		{
 			// if we're not walking anymore, we stop our walking sound
-			if ((_movement.CurrentState != CharacterStates.MovementStates.Walking) && _startFeedbackIsPlaying)
+			if ((_movement.CurrentState != CharacterStates.MovementStates.moving) && _startFeedbackIsPlaying)
 			{
 				StopStartFeedbacks();
 			}
@@ -220,13 +220,16 @@ Debug.Log($"はろー{_horizontalInput}");
 			{
 				canFlip = false;
 			}
-
+           //           Debug.Log($"あいら{_character.IsFacingRight}え{canFlip}あ{FlipCharacterToFaceDirection}で{_horizontalMovement}");
 			// If the value of the horizontal axis is positive, the character must face right.
 			if (_horizontalMovement > InputThreshold)
 			{
 				_normalizedHorizontalSpeed = _horizontalMovement;
+
+				//左向いてて振り向けて振り向く設定になってるなら
 				if (!_character.IsFacingRight && canFlip && FlipCharacterToFaceDirection)
 				{
+					
 					_character.Flip();
 				}
 			}
@@ -257,7 +260,7 @@ Debug.Log($"はろー{_horizontalInput}");
 					|| (_movement.CurrentState == CharacterStates.MovementStates.Dangling)
 					|| (_movement.CurrentState == CharacterStates.MovementStates.Falling)))
 			{
-				_movement.ChangeState(CharacterStates.MovementStates.Walking);
+				_movement.ChangeState(CharacterStates.MovementStates.moving);
 				PlayAbilityStartFeedbacks();
 			}
 
@@ -270,7 +273,7 @@ Debug.Log($"はろー{_horizontalInput}");
 			}
 
 			// if we're walking and not moving anymore, we go back to the Idle state
-			if ((_movement.CurrentState == CharacterStates.MovementStates.Walking)
+			if ((_movement.CurrentState == CharacterStates.MovementStates.moving)
 			&& (_normalizedHorizontalSpeed == 0))
 			{
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
@@ -280,7 +283,7 @@ Debug.Log($"はろー{_horizontalInput}");
 			// if the character is not grounded, but currently idle or walking, we change its state to Falling
 			if (!_controller.State.IsGrounded
 				&& (
-					(_movement.CurrentState == CharacterStates.MovementStates.Walking)
+					(_movement.CurrentState == CharacterStates.MovementStates.moving)
 					 || (_movement.CurrentState == CharacterStates.MovementStates.Idle)
 					))
 			{
@@ -347,7 +350,7 @@ Debug.Log($"はろー{_horizontalInput}");
 				return;
 			}
 
-			if ((_movement.CurrentState == CharacterStates.MovementStates.Walking) || (_movement.CurrentState == CharacterStates.MovementStates.Running))
+			if ((_movement.CurrentState == CharacterStates.MovementStates.moving) || (_movement.CurrentState == CharacterStates.MovementStates.Running))
 			{
 				if ((_controller.State.IsCollidingLeft) || (_controller.State.IsCollidingRight))
 				{
@@ -443,7 +446,7 @@ Debug.Log($"はろー{_horizontalInput}");
 		protected override void InitializeAnimatorParameters()
 		{
 			RegisterAnimatorParameter(_speedAnimationParameterName, AnimatorControllerParameterType.Float, out _speedAnimationParameter);
-			RegisterAnimatorParameter(_walkingAnimationParameterName, AnimatorControllerParameterType.Bool, out _walkingAnimationParameter);
+			RegisterAnimatorParameter(_movingAnimationParameterName, AnimatorControllerParameterType.Bool, out _movingAnimationParameter);
 		}
 
 		/// <summary>
@@ -452,7 +455,7 @@ Debug.Log($"はろー{_horizontalInput}");
 		public override void UpdateAnimator()
 		{
 			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _speedAnimationParameter, Mathf.Abs(_normalizedHorizontalSpeed), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
-			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _walkingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Walking), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
+			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _movingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.moving), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
 		}
 
 		/// <summary>

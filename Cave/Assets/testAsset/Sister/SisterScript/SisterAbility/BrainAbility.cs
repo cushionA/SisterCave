@@ -190,7 +190,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		protected SensorAbility _sensor;
 		//	protected Hittable _hitInfo;
 
-		protected RewiredCorgiEngineInputManager ReInput;
+		//protected RewiredCorgiEngineInputManager _inputManager;
 
 
 		// アニメーションパラメーター
@@ -239,10 +239,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             base.Initialization();
             // randomBool = false;
-            ReInput = (RewiredCorgiEngineInputManager)_inputManager;
+            
 			//センサーアビリティの切り替え動作に変更
 			_sensor.RangeChange();
-			_characterHorizontalMovement.FlipCharacterToFaceDirection = false;
+			//_characterHorizontalMovement.FlipCharacterToFaceDirection = false;
 			GravitySet(status.firstGravity);
 		}
 
@@ -362,7 +362,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             // here as an example we check if we're pressing down
             // on our main stick/direction pad/keyboard
-            if (ReInput.CombinationButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+            if (_inputManager.CombinationButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
             {
 				//ワープとかの連携を置く
             }
@@ -514,10 +514,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public void Flip(float direction)
 		{
-			if (!isStop && disEnable)
+			if (!isStop && disEnable )
 			{
-
-				Vector3 theScale = transform.localScale;
+				//飛行中か高速飛行中でない限りは空中で反転はやめてね
+				if (!_controller.State.IsGrounded && !(_movement.CurrentState == CharacterStates.MovementStates.Flying || _movement.CurrentState == CharacterStates.MovementStates.FastFlying))
+                {
+					return;
+                }
+					Vector3 theScale = transform.localScale;
 				theScale.x *= direction;
 				transform.localScale = theScale;
 

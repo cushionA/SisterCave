@@ -211,7 +211,7 @@ public class GManager : MonoBehaviour
     [HideInInspector] public bool isEnable;
     
     [HideInInspector] public bool isAttack;
-    [HideInInspector] public bool airAttack;
+
     //攻撃中か否か
     [HideInInspector] public bool isDown;
     //ダウン中
@@ -248,7 +248,10 @@ public class GManager : MonoBehaviour
     //スタミナ回復不能状態終わりフラグ
     public bool isArmor;//強靭ついてるかどうか
     float stTime;
-
+    /// <summary>
+    /// アニメーター編集用の器
+    /// </summary>
+    private AnimatorOverrideController overrideController;
 
     /// <summary>
     /// 真ならスタミナ使用中
@@ -347,7 +350,11 @@ public class GManager : MonoBehaviour
 
         // SetSlider();
         initialSetting();
-        
+
+        overrideController = new AnimatorOverrideController();//////////////////////
+        overrideController.runtimeAnimatorController = pc.anim.runtimeAnimatorController;
+        pc.anim.runtimeAnimatorController = overrideController;
+
         hpSl = HpSlider.GetComponent<RectTransform>();
         mpSl = MpSlider.GetComponent<RectTransform>();
         staminaSl = stSlider.GetComponent<RectTransform>();
@@ -827,6 +834,7 @@ public class GManager : MonoBehaviour
 
     /// <summary>
     /// 装備交換時のアニメーション管理とEquipWeapon入れ替えとステータス変更
+    /// スロット空の場合は素手になる
     /// </summary>
     /// <param name="setNumber"></param>
     public void EquipSwap(int setNumber)
@@ -839,6 +847,7 @@ public class GManager : MonoBehaviour
             if (!twinHand)
             {
                 twinHand = true;
+                Debug.Log($"asidk{pc.anim.runtimeAnimatorController.name}");
                 pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[1];
             }
             //片手持ちに
@@ -846,6 +855,7 @@ public class GManager : MonoBehaviour
             {
                 twinHand = false;
                 pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+                AnimationSetting();
             }
         }
 
@@ -865,6 +875,7 @@ public class GManager : MonoBehaviour
             pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
             twinHand = false;
             EquipChangedSetting();
+            AnimationSetting();
         }
         //盾のスロット間での装備入れ替え
         else if (setNumber == 2)
@@ -878,11 +889,13 @@ public class GManager : MonoBehaviour
             {
                 shieldNum = 1;
                 equipShield = setShield[0];
+
             }
             //武器を片手持ちに
             pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
             twinHand = false;
             EquipChangedSetting();
+            AnimationSetting();
         }
     }
 
@@ -1046,7 +1059,7 @@ public class GManager : MonoBehaviour
     {
         //まずステータスを再セッティングする
         StatusSetting();
-
+        pc.ParameterSet(pStatus);
     }
 
     /// <summary>
@@ -1068,9 +1081,10 @@ public class GManager : MonoBehaviour
         if(equipShield.artsAnime == null)
         {
             //equipShield.artsAnimeの数だけ片手アニメーターに両手のアニメーターから戦技のアニメを仕込んでいく
-            for (int i = 0; i < equipWeapon.artsValue.Count; i++)
+            for (int i = 0; i < equipWeapon.artsAnime.Length; i++)
             {
-                equipWeapon._useContoroller[0].animationClips[i] = equipWeapon._useContoroller[1].animationClips[i];
+                //     pc.anim.runtimeAnimatorController.animationClips[i] = equipWeapon._useContoroller[1].animationClips[i];
+                ChangeClip($"Arts{i + 1}", equipWeapon.artsAnime[i]);
             }
         }
         //盾の戦技ありなら
@@ -1079,12 +1093,45 @@ public class GManager : MonoBehaviour
             //equipShield.artsAnimeの数だけ片手のアニメコントローラーに戦技のアニメを仕込んでいく
             for (int i = 0; i < equipShield.artsAnime.Length; i++)
             {
-                equipWeapon._useContoroller[0].animationClips[i] = equipShield.artsAnime[i];
+                ChangeClip($"Arts{i + 1}", equipShield.artsAnime[i]);
+                //   pc.anim.runtimeAnimatorController.animationClips[i] = equipShield.artsAnime[i];
+                //  Debug.Log($"さいあく{equipWeapon._useContoroller[0].animationClips[i].name}ですよ{equipShield.artsAnime[i].name}");
+
             }
         }
         
 
     }
+
+    /// <summary>
+    /// アニメーションクリップを変える処理
+    /// </summary>
+    /// <param name="clip"></param>
+    public void ChangeClip(string overrideClipName, AnimationClip clip)
+    {
+        // ステートをキャッシュ
+        AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[pc.anim.layerCount];
+        for (int i = 0; i < pc.anim.layerCount; i++)
+        {
+            layerInfo[i] = pc.anim.GetCurrentAnimatorStateInfo(i);
+        }
+
+        // AnimationClipを差し替えて、強制的にアップデート
+        // ステートがリセットされる
+        overrideController[overrideClipName] = clip;
+        pc.anim.Update(0.0f);
+
+        // ステートを戻す
+   /*     for (int i = 0; i < pc.anim.layerCount; i++)
+        {
+            pc.anim.Play(layerInfo[i].shortNameHash, i, layerInfo[i].normalizedTime);
+        }*/
+    }
+
+
+    /// <summary>
+    /// コンボ制限をセットする。
+    /// </summary>
 
 
     #endregion

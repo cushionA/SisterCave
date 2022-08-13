@@ -91,11 +91,11 @@ protected string SiteHorizontal;
         ButtonList.Add(GrabButton = new MMInput.IMButton(null, "Grab", GrabButtonDown, GrabButtonPressed, GrabButtonUp));
         ButtonList.Add(ThrowButton = new MMInput.IMButton(null, "Throw", ThrowButtonDown, ThrowButtonPressed, ThrowButtonUp));
         ButtonList.Add(CombinationButton = new MMInput.IMButton(null, "Combination", CombinationButtonDown, CombinationButtonPressed, CombinationButtonUp));
-        ButtonList.Add(sAttackButton = new MMInput.IMButton(null, "sAttack", sAttackButtonDown, sAttackButtonPressed, sAttackButtonUp));
-        ButtonList.Add(bAttackButton = new MMInput.IMButton(null, "bAttack", bAttackButtonDown, bAttackButtonPressed, bAttackButtonUp));
+        ButtonList.Add(sAttackButton = new MMInput.IMButton(null, "Fire1", sAttackButtonDown, sAttackButtonPressed, sAttackButtonUp));
+        ButtonList.Add(bAttackButton = new MMInput.IMButton(null, "Fire2", bAttackButtonDown, bAttackButtonPressed, bAttackButtonUp));
         ButtonList.Add(ArtsButton = new MMInput.IMButton(null, "Arts", ArtsButtonDown, ArtsButtonPressed, ArtsButtonUp));
         ButtonList.Add(AvoidButton = new MMInput.IMButton(null, "Avoid", AvoidButtonDown, AvoidButtonPressed, AvoidButtonUp));
-        ButtonList.Add(WeaponChangeButton = new MMInput.IMButton(null, "WeaponChange", WeaponChangeButtonDown, WeaponChangeButtonPressed, WeaponChangeButtonUp));
+        ButtonList.Add(WeaponChangeButton = new MMInput.IMButton(null, "WeponHandChange", WeaponChangeButtonDown, WeaponChangeButtonPressed, WeaponChangeButtonUp));
         ButtonList.Add(GuardButton = new MMInput.IMButton(null, "Guard", GuardButtonDown, GuardButtonPressed, GuardButtonUp));
 
     }

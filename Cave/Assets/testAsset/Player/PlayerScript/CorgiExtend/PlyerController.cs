@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using MoreMountains.CorgiEngine;
 using Guirao.UltimateTextDamage;
+using MoreMountains.Tools;
+
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
 	public class PlyerController : MyAbillityBase
@@ -15,9 +17,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
     //ステータス設定とかダメージ倍率などの管理、被弾時攻撃時のCalc系の処理
     //あと会話あたりの処理？
 	protected UltimateTextDamageManager um;
-
+		[HideInInspector]
 		public Animator anim;
-
         /// <summary>
         /// 攻撃倍率
         /// </summary>
@@ -64,21 +65,25 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		//プレイヤーのアビリティ管理に使う
 		#region
+		[SerializeField]
 		protected PlayerRoll _rolling;
-
+		[SerializeField]
 		protected PlayerRunning _running;
-
+		[SerializeField]
 		protected GuardAbillity _guard;
-
+		[SerializeField]
 		protected PlayerJump _jump;
-
+		[SerializeField]
 		protected WeaponAbillity _weapon;
-
+		[SerializeField]
 		protected MyWakeUp _wakeup;
-
+		[SerializeField]
 		protected WeaponAbillity _attack;
-
+		[SerializeField]
 		protected MyDamageOntouch _damage;
+
+		[SerializeField]
+		protected PlayerCrouch _squat;
 
 		protected new MyHealth _health;
         #endregion
@@ -88,24 +93,35 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected override void Initialization()
 		{
 			base.Initialization();
+			anim = _animator;
 			ParameterSet(GManager.instance.pStatus);
+			GManager.instance.ActionSet();
+		//	SetComponennt();
+			GManager.instance.StatusSetting();
+            if (!GManager.instance.twinHand)
+            {
+				GManager.instance.AnimationSetting();
+				Debug.Log($"asidk");
+			}
 			ArmorReset();
 			_health = (MyHealth)base._health;
 
 			//	rb = this.gameObject.GetComponent<Rigidbody2D>();
 			GManager.instance.HPReset();
 
-			_characterHorizontalMovement.FlipCharacterToFaceDirection = false;
+			//_characterHorizontalMovement.FlipCharacterToFaceDirection = false;
 			//parentMatt = GetComponent<SpriteRenderer>().material;
 			//td = GetComponent<TargetDisplay>();
 
-			GManager.instance.StatusSetting();
-			anim = _character._animator;
+			
+			
 		}
 
 
-		protected void ParameterSet(PlayerStatus status)
+		public void ParameterSet(PlayerStatus status)
 	{
+
+			
 			if(status == null)
             {
 				Debug.Log("ｓｆｆｇ");
@@ -133,6 +149,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			#endregion
 
 			GravitySet(status.firstGravity);
+			_characterHorizontalMovement.MovementSpeed = status.moveSpeed;
 			#region
 			/*
 					/// the speed of the character when it's walking
@@ -386,22 +403,53 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 
 
-		/// <summary>
-		/// 重力設定
-		/// </summary>
-		/// <param name="gravity"></param>
-		public void GravitySet(float gravity)
+
+
+		//汎用行動の判断
+		protected override void HandleInput()
+		{
+			if(_movement.CurrentState == CharacterStates.MovementStates.Attack ||
+				_movement.CurrentState == CharacterStates.MovementStates.Rolling ||
+				_movement.CurrentState == CharacterStates.MovementStates.Guard ||
+				_movement.CurrentState == CharacterStates.MovementStates.GuardMove ||
+				_movement.CurrentState == CharacterStates.MovementStates.Warp ||
+				_condition.CurrentState == CharacterStates.CharacterConditions.Stunned||
+				_condition.CurrentState == CharacterStates.CharacterConditions.Dead)
+            {
+				return;
+            }
+			WeaponChange();
+        }
+
+
+
+
+        public override void ProcessAbility()
+        {
+            base.ProcessAbility();
+			DisenableController();
+
+		}
+
+        /// <summary>
+        /// 重力設定
+        /// </summary>
+        /// <param name="gravity"></param>
+        public void GravitySet(float gravity)
 		{
 			//rb.gravityScale = gravity;
 			_controller.DefaultParameters.Gravity = -gravity;
 		}
 
+		///ダメージ計算関連
+        #region
 
-		/// <summary>
-		/// ダメージ計算
-		/// </summary>
-		/// <param name="isFriend">真なら味方</param>
-		public void DamageCalc(bool isShield)
+
+        /// <summary>
+        /// ダメージ計算
+        /// </summary>
+        /// <param name="isFriend">真なら味方</param>
+        public void DamageCalc(bool isShield)
 	{
 		//GManager.instance.isDamage = true;
 		//useEquip.hitLimmit--;
@@ -701,6 +749,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 		}
 
+		#endregion
+
+		//ステータス関連
+		#region
 		/// <summary>
 		/// バフの数値を与える
 		/// 弾丸から呼ぶ
@@ -750,5 +802,87 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
         }
 
-	}
+        #endregion
+
+
+        public void SetComponennt()
+        {
+			_jump = GetComponent<PlayerJump>();
+			_running = GetComponent<PlayerRunning>();
+			_rolling  = GetComponent<PlayerRoll>();
+			_attack = GetComponent<WeaponAbillity>();
+			_guard = GetComponent<GuardAbillity>();
+			_wakeup = GetComponent<MyWakeUp>();
+			_damage = GetComponentInParent<MyDamageOntouch>();
+
+		}
+
+	　　public void DisenableController()
+        {
+            if (_movement.CurrentState == CharacterStates.MovementStates.Rolling || _movement.CurrentState == CharacterStates.MovementStates.Attack)
+            {
+				_running.isDisenable = true;
+				_jump.isDisenable = true;
+				_squat.isDisenable = true;
+				_guard.isDisenable = true;
+            }
+            else
+            {
+				_running.isDisenable = false;
+				_jump.isDisenable = false;
+				_squat.isDisenable = false;
+				_guard.isDisenable = false;
+			}
+        }
+
+
+		public void WeaponChange()
+		{
+
+			if (_inputManager.WeaponChangeButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			{
+				_weapon.AttackEnd();
+				_weapon.isDisenable = true;
+				//このフラグは武器切り替えか両手持ち切り替えかで区別するもの
+				//武器切り替え後は一回だけボタン離しても持ち手変更が反応しないようにする
+				Debug.Log("あいｓｄｋｆｒねお");
+			}
+            else
+            {
+				Debug.Log("あｙｔｙｙ");
+				return;
+            }
+
+			//武器入れ替え
+			if (_inputManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
+			{
+				GManager.instance.EquipSwap(1);
+			}
+			//盾入れ替え
+			else if (_inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
+			{
+				GManager.instance.EquipSwap(2);
+			}
+			//両手持ち切り替え
+            else
+            {
+				GManager.instance.EquipSwap(0);
+            }
+			_weapon.isDisenable = false;
+		}
+
+
+
+		//アニメーションイベント
+		#region
+		public void AtackContinue()
+        {
+
+			_weapon.Continue();
+
+        }
+        #endregion
+
+
+    }
 }

@@ -306,6 +306,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			ParameterSet(status);
 		ArmorReset();
 			_health = (MyHealth)base._health;
+			//‚ ‚Æ‚¸‚³‚è‚Æ‚©‚à‚ ‚é‚µU‚èŒü‚«‚Í‚±‚Á‚¿‚ÅŠÇ—
 			_characterHorizontalMovement.FlipCharacterToFaceDirection = false;
 			if (status.kind != EnemyStatus.KindofEnemy.Fly)
 		{

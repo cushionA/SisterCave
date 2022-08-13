@@ -1,0 +1,518 @@
+Using pre-set license
+Built from '2021.3/staging' branch; Version is '2021.3.1f1 (3b70a0754835) revision 3895456'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19043) 64bit Professional' Language: 'ja' Physical Memory: 16222 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2021.3.1f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker5
+-projectPath
+C:/Users/tatuk/Documents/SisterCave/Cave
+-logFile
+Logs/AssetImportWorker5.log
+-srvPort
+54753
+Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
+C:/Users/tatuk/Documents/SisterCave/Cave
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Refreshing native plugins compatible for Editor in 740.17 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.3.1f1 (3b70a0754835)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/tatuk/Documents/SisterCave/Cave/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2070 Super (ID=0x1ed1)
+    Vendor:   NVIDIA
+    VRAM:     8012 MB
+    Driver:   30.0.15.1278
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56876
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.1f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
+Registered in 0.016367 seconds.
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 705.32 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.533 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1533ms)
+		BeginReloadAssembly (126ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (1262ms)
+			LoadAssemblies (124ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (133ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (34ms)
+			SetupLoadedEditorAssemblies (1010ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (55ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (705ms)
+				BeforeProcessingInitializeOnLoad (5ms)
+				ProcessInitializeOnLoadAttributes (161ms)
+				ProcessInitializeOnLoadMethodAttributes (84ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.019774 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 789.61 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  4.594 seconds
+Domain Reload Profiling:
+	ReloadAssembly (4596ms)
+		BeginReloadAssembly (197ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (11ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (36ms)
+		EndReloadAssembly (4234ms)
+			LoadAssemblies (465ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (933ms)
+			ReleaseScriptCaches (5ms)
+			RebuildScriptCaches (311ms)
+			SetupLoadedEditorAssemblies (2379ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (27ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (790ms)
+				BeforeProcessingInitializeOnLoad (220ms)
+				ProcessInitializeOnLoadAttributes (1178ms)
+				ProcessInitializeOnLoadMethodAttributes (154ms)
+				AfterProcessingInitializeOnLoad (8ms)
+				EditorAssembliesLoaded (1ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (7ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Refreshing native plugins compatible for Editor in 6.02 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 10256 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 140 unused Assets / (8.2 MB). Loaded Objects now: 10752.
+Memory consumption went from 0.65 GB to 0.64 GB.
+Total: 11.543000 ms (FindLiveObjects: 1.517200 ms CreateObjectMapping: 1.475000 ms MarkObjects: 5.978600 ms  DeleteObjects: 2.570900 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 218451.803218 seconds.
+  path: Assets/testAsset/Player/PlayerStatus/Shield/KaitShield.asset
+  artifactKey: Guid(9bf3a5a6d0464f546ad02ee6d2e364f3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerStatus/Shield/KaitShield.asset using Guid(9bf3a5a6d0464f546ad02ee6d2e364f3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c93382b56efb8f66b0a17887ec1d147f') in 0.099212 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/testAsset/Player/PlayerStatus/Shield
+  artifactKey: Guid(cca79eeb28b4a224b923079f4ce8e740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerStatus/Shield using Guid(cca79eeb28b4a224b923079f4ce8e740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0cfbeef3086d487be2843797a2431807') in 0.005231 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordArts1.anim
+  artifactKey: Guid(e6a62f903a042874ba6d2b1b70f5361c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordArts1.anim using Guid(e6a62f903a042874ba6d2b1b70f5361c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bffa69632c5ee6e965659736179a4c18') in 0.015420 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.637431 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Models/BeamMesh.fbx
+  artifactKey: Guid(be6a3d2471646a348914698de60b3306) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Models/BeamMesh.fbx using Guid(be6a3d2471646a348914698de60b3306) Importer(815301076,1909f56bfc062723c751e8b465ee728b) Attempting to get Camera relative temporary RenderTexture (width || height <= 0) via a CommandBuffer  in a Sriptable Render Pipeline.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.Rendering.ScriptableRenderContext:ExecuteCommandBuffer_Internal (UnityEngine.Rendering.CommandBuffer)
+UnityEngine.Rendering.ScriptableRenderContext:ExecuteCommandBuffer (UnityEngine.Rendering.CommandBuffer)
+UnityEngine.Rendering.Universal.Internal.CopyColorPass:Execute (UnityEngine.Rendering.ScriptableRenderContext,UnityEngine.Rendering.Universal.RenderingData&) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/Passes/CopyColorPass.cs:111)
+UnityEngine.Rendering.Universal.ScriptableRenderer:ExecuteRenderPass (UnityEngine.Rendering.ScriptableRenderContext,UnityEngine.Rendering.Universal.ScriptableRenderPass,UnityEngine.Rendering.Universal.RenderingData&) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/ScriptableRenderer.cs:1003)
+UnityEngine.Rendering.Universal.ScriptableRenderer:ExecuteBlock (int,UnityEngine.Rendering.Universal.ScriptableRenderer/RenderBlocks&,UnityEngine.Rendering.ScriptableRenderContext,UnityEngine.Rendering.Universal.RenderingData&,bool) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/ScriptableRenderer.cs:962)
+UnityEngine.Rendering.Universal.ScriptableRenderer:Execute (UnityEngine.Rendering.ScriptableRenderContext,UnityEngine.Rendering.Universal.RenderingData&) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/ScriptableRenderer.cs:758)
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:RenderSingleCamera (UnityEngine.Rendering.ScriptableRenderContext,UnityEngine.Rendering.Universal.CameraData,bool) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/UniversalRenderPipeline.cs:415)
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:RenderSingleCamera (UnityEngine.Rendering.ScriptableRenderContext,UnityEngine.Camera) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/UniversalRenderPipeline.cs:324)
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:Render (UnityEngine.Rendering.ScriptableRenderContext,System.Collections.Generic.List`1<UnityEngine.Camera>) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/UniversalRenderPipeline.cs:279)
+UnityEngine.Rendering.RenderPipeline:InternalRender (UnityEngine.Rendering.ScriptableRenderContext,System.Collections.Generic.List`1<UnityEngine.Camera>)
+UnityEngine.Rendering.RenderPipelineManager:DoRenderLoop_Internal (UnityEngine.Rendering.RenderPipelineAsset,intptr,System.Collections.Generic.List`1<UnityEngine.Camera/RenderRequest>,Unity.Collections.LowLevel.Unsafe.AtomicSafetyHandle)
+UnityEditor.PreviewRenderUtility:Render (bool,bool)
+UnityEditor.GameObjectInspector:DoRenderPreview ()
+UnityEditor.GameObjectInspector:RenderStaticPreview (string,UnityEngine.Object[],int,int)
+UnityEditor.AssetPreviewUpdater:CreatePreview (UnityEngine.Object,UnityEngine.Object[],string,int,int)
+UnityEditor.AssetPreviewUpdater:CreatePreviewForAsset (UnityEngine.Object,UnityEngine.Object[],string)
+
+[ line 0]
+
+Trying to get RenderBuffer with invalid antiAliasing (must be at least 1)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.Rendering.ScriptableRenderContext:Submit_Internal ()
+UnityEngine.Rendering.ScriptableRenderContext:Submit ()
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:RenderSingleCamera (UnityEngine.Rendering.ScriptableRenderContext,UnityEngine.Rendering.Universal.CameraData,bool) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/UniversalRenderPipeline.cs:431)
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:RenderSingleCamera (UnityEngine.Rendering.ScriptableRenderContext,UnityEngine.Camera) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/UniversalRenderPipeline.cs:324)
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:Render (UnityEngine.Rendering.ScriptableRenderContext,System.Collections.Generic.List`1<UnityEngine.Camera>) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/UniversalRenderPipeline.cs:279)
+UnityEngine.Rendering.RenderPipeline:InternalRender (UnityEngine.Rendering.ScriptableRenderContext,System.Collections.Generic.List`1<UnityEngine.Camera>)
+UnityEngine.Rendering.RenderPipelineManager:DoRenderLoop_Internal (UnityEngine.Rendering.RenderPipelineAsset,intptr,System.Collections.Generic.List`1<UnityEngine.Camera/RenderRequest>,Unity.Collections.LowLevel.Unsafe.AtomicSafetyHandle)
+UnityEditor.PreviewRenderUtility:Render (bool,bool)
+UnityEditor.GameObjectInspector:DoRenderPreview ()
+UnityEditor.GameObjectInspector:RenderStaticPreview (string,UnityEngine.Object[],int,int)
+UnityEditor.AssetPreviewUpdater:CreatePreview (UnityEngine.Object,UnityEngine.Object[],string,int,int)
+UnityEditor.AssetPreviewUpdater:CreatePreviewForAsset (UnityEngine.Object,UnityEngine.Object[],string)
+
+[C:\buildslave\unity\build\Runtime\Graphics\RenderBufferManager.cpp line 180]
+
+Trying to get RenderBuffer with invalid antiAliasing (must be at least 1)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.Rendering.ScriptableRenderContext:Submit_Internal ()
+UnityEngine.Rendering.ScriptableRenderContext:Submit ()
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:RenderSingleCamera (UnityEngine.Rendering.ScriptableRenderContext,UnityEngine.Rendering.Universal.CameraData,bool) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/UniversalRenderPipeline.cs:431)
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:RenderSingleCamera (UnityEngine.Rendering.ScriptableRenderContext,UnityEngine.Camera) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/UniversalRenderPipeline.cs:324)
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:Render (UnityEngine.Rendering.ScriptableRenderContext,System.Collections.Generic.List`1<UnityEngine.Camera>) (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.6/Runtime/UniversalRenderPipeline.cs:279)
+UnityEngine.Rendering.RenderPipeline:InternalRender (UnityEngine.Rendering.ScriptableRenderContext,System.Collections.Generic.List`1<UnityEngine.Camera>)
+UnityEngine.Rendering.RenderPipelineManager:DoRenderLoop_Internal (UnityEngine.Rendering.RenderPipelineAsset,intptr,System.Collections.Generic.List`1<UnityEngine.Camera/RenderRequest>,Unity.Collections.LowLevel.Unsafe.AtomicSafetyHandle)
+UnityEditor.PreviewRenderUtility:Render (bool,bool)
+UnityEditor.GameObjectInspector:DoRenderPreview ()
+UnityEditor.GameObjectInspector:RenderStaticPreview (string,UnityEngine.Object[],int,int)
+UnityEditor.AssetPreviewUpdater:CreatePreview (UnityEngine.Object,UnityEngine.Object[],string,int,int)
+UnityEditor.AssetPreviewUpdater:CreatePreviewForAsset (UnityEngine.Object,UnityEngine.Object[],string)
+
+[C:\buildslave\unity\build\Runtime\Graphics\RenderBufferManager.cpp line 180]
+
+ -> (artifact id: '1c58b9aa9940f648b43bceef2c336da3') in 0.471613 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/SpecialSkillsEffectsPack/AllEffects/EffectsSet_2(ScriptBased)/Materials/Effect_43_Materials/Effect_43_Plane_2.mat
+  artifactKey: Guid(54c27dcec8d66954086142447de42bfa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SpecialSkillsEffectsPack/AllEffects/EffectsSet_2(ScriptBased)/Materials/Effect_43_Materials/Effect_43_Plane_2.mat using Guid(54c27dcec8d66954086142447de42bfa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0ebaff6223632ac75e90b003cd6a2006') in 0.201876 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000040 seconds.
+  path: Assets/SpecialSkillsEffectsPack/AllEffects/EffectsSet_1(NotScriptBased)/Effects/Effect_34_WindTurbulance/Effect_34_WindTurbulance.prefab
+  artifactKey: Guid(9a504412f1061444bb18de98ad4be8d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SpecialSkillsEffectsPack/AllEffects/EffectsSet_1(NotScriptBased)/Effects/Effect_34_WindTurbulance/Effect_34_WindTurbulance.prefab using Guid(9a504412f1061444bb18de98ad4be8d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '96a322722c0177e30422bfbb2f3fb83a') in 0.225184 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/SpecialSkillsEffectsPack/AllEffects/EffectsSet_1(NotScriptBased)/Effects/Effect_55_StarPlanet/Effect_55_StarPlanet.prefab
+  artifactKey: Guid(df62ce273c9c4a14485c6110026a7500) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SpecialSkillsEffectsPack/AllEffects/EffectsSet_1(NotScriptBased)/Effects/Effect_55_StarPlanet/Effect_55_StarPlanet.prefab using Guid(df62ce273c9c4a14485c6110026a7500) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd6a6cf52d585f4038642c7ed1304460d') in 0.249736 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Survival Sounds Pro/Gathering Plants/Gathering Plants 3.wav
+  artifactKey: Guid(277377138a1f0294d84b5b99d4cf8365) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Survival Sounds Pro/Gathering Plants/Gathering Plants 3.wav using Guid(277377138a1f0294d84b5b99d4cf8365) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '229c2549cb595da46265a9dc8441835f') in 0.093695 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/CorgiEngine/Demos/SuperHipsterBros/Prefabs/Environment/HipsterPlant4.prefab
+  artifactKey: Guid(7d8feb7ee5dce5a46ad3d1c53564fbc1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/SuperHipsterBros/Prefabs/Environment/HipsterPlant4.prefab using Guid(7d8feb7ee5dce5a46ad3d1c53564fbc1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0e379010d9401bb24c004a252fcb9aa7') in 0.040509 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Dragon Sounds Pro/DRAGONS/DRAGON LANDING/LANDING 1.wav
+  artifactKey: Guid(b49b25b14bef3024996adf454139c3f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Dragon Sounds Pro/DRAGONS/DRAGON LANDING/LANDING 1.wav using Guid(b49b25b14bef3024996adf454139c3f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '42ee07761d7bf741bc21f78c22c9b08c') in 0.029540 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Survival Sound Kit - HD Remake/Gathering Plants 7.wav
+  artifactKey: Guid(55afbf014aacb1846a939159eaffbe68) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Survival Sound Kit - HD Remake/Gathering Plants 7.wav using Guid(55afbf014aacb1846a939159eaffbe68) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '26bad917afc466c09a37a49f0bc59635') in 0.024392 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000049 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 2.wav
+  artifactKey: Guid(edefe39e9ed1859419002c8c6da7438a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 2.wav using Guid(edefe39e9ed1859419002c8c6da7438a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '812709334a0ba9d05722b60df4bad828') in 0.025424 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 5.wav
+  artifactKey: Guid(2a5f3ddaf8d6d084385d94aaeb96650e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 5.wav using Guid(2a5f3ddaf8d6d084385d94aaeb96650e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8ae5bfb23bb396ad6ab16e938f739219') in 0.023958 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Survival Sound Kit - HD Remake/Gathering Plants 2.wav
+  artifactKey: Guid(32a99ee453e55b14393d2816758fed5e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Survival Sound Kit - HD Remake/Gathering Plants 2.wav using Guid(32a99ee453e55b14393d2816758fed5e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ee008cd6794e31d320af99d040277391') in 0.021330 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Survival Sound Kit - HD Remake/Gathering Plants 3.wav
+  artifactKey: Guid(eab6528469949f44a885ae5ada8775f3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Survival Sound Kit - HD Remake/Gathering Plants 3.wav using Guid(eab6528469949f44a885ae5ada8775f3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bcad7eb7ee0306d0f43119ca9566afce') in 0.019451 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Survival Sounds Pro/Gathering Plants/Gathering Plants 7.wav
+  artifactKey: Guid(8e5e3733d31cd9b4295fe882de38d257) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Survival Sounds Pro/Gathering Plants/Gathering Plants 7.wav using Guid(8e5e3733d31cd9b4295fe882de38d257) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '31563a07ade86641ab685485adddc721') in 0.020385 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Survival Sounds Pro/Gathering Plants/Gathering Plants 5.wav
+  artifactKey: Guid(561d5963c7895634fb42f70ca3d154df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Survival Sounds Pro/Gathering Plants/Gathering Plants 5.wav using Guid(561d5963c7895634fb42f70ca3d154df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'afb7c61a55f4d1372d84152d2c370ec5') in 0.024706 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 7.wav
+  artifactKey: Guid(7277e94ddf7bc0940b0b7ec30818d245) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 7.wav using Guid(7277e94ddf7bc0940b0b7ec30818d245) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b63e2e677bead524a91facb2a892f59a') in 0.021423 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Dragon Sounds Pro/DRAGONS/DRAGON LANDING/LANDING 3.wav
+  artifactKey: Guid(b9acee408fbe74e4db192d878540d698) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Dragon Sounds Pro/DRAGONS/DRAGON LANDING/LANDING 3.wav using Guid(b9acee408fbe74e4db192d878540d698) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6b6f18df2c54819bba1dfe6bfe5ee9ee') in 0.025574 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Survival Sounds Pro/Gathering Plants/Gathering Plants 4.wav
+  artifactKey: Guid(8d2bc5d53adb1464899e7997a07bc676) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Survival Sounds Pro/Gathering Plants/Gathering Plants 4.wav using Guid(8d2bc5d53adb1464899e7997a07bc676) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '45545a3398d70792ad7e27ca78e0cd40') in 0.029012 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 8.wav
+  artifactKey: Guid(192ca87a4f29d2844825bcda2d6b679f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 8.wav using Guid(192ca87a4f29d2844825bcda2d6b679f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '314b033572f9f3fa5c7643115ff25c9a') in 0.025544 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 6.wav
+  artifactKey: Guid(c34e5c5fdbc8b2448922075444d57393) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 6.wav using Guid(c34e5c5fdbc8b2448922075444d57393) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '71e8edf78f64af1e26c2f29ac0a6d7d7') in 0.021855 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/EffectExamples/Magic Effects/Prefabs/IceLance.prefab
+  artifactKey: Guid(1a1c02facd51d87458dcaa3a761e2c03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/EffectExamples/Magic Effects/Prefabs/IceLance.prefab using Guid(1a1c02facd51d87458dcaa3a761e2c03) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3f2a2a274b90fd10f09358ec574f5ba7') in 0.769556 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Dragon Sounds Pro/DRAGONS/DRAGON LANDING/LANDING 2.wav
+  artifactKey: Guid(db91722a1190eff469a60777b5f7a3c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Dragon Sounds Pro/DRAGONS/DRAGON LANDING/LANDING 2.wav using Guid(db91722a1190eff469a60777b5f7a3c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dc6325331d975f9b066c1c50bfc1e15d') in 0.022746 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000037 seconds.
+  path: Assets/SpecialSkillsEffectsPack/AllEffects/EffectsSet_2(ScriptBased)/Effects/Effect_44_PlanetCrash/Effect_44_PlanetCrash.prefab
+  artifactKey: Guid(d5b071eb3da8b3548abea1a6a2ba5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SpecialSkillsEffectsPack/AllEffects/EffectsSet_2(ScriptBased)/Effects/Effect_44_PlanetCrash/Effect_44_PlanetCrash.prefab using Guid(d5b071eb3da8b3548abea1a6a2ba5125) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '82eb554969f31dd1398da599e7ebfea5') in 0.174005 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Survival Sound Kit - HD Remake/Gathering Plants 5.wav
+  artifactKey: Guid(9eeef5f35e21a96479d00e707e437038) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Survival Sound Kit - HD Remake/Gathering Plants 5.wav using Guid(9eeef5f35e21a96479d00e707e437038) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '377a718a43a05abc9e12f81d02acdf60') in 0.020211 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Dragon Sounds Pro/DRAGONS/DRAGON LANDING/LANDING 3.wav
+  artifactKey: Guid(fc5f031d6c0030d489abd0cfbee5549e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Dragon Sounds Pro/DRAGONS/DRAGON LANDING/LANDING 3.wav using Guid(fc5f031d6c0030d489abd0cfbee5549e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1580c32285cb6e661d9bbffd3e422468') in 0.015267 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000045 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 10.wav
+  artifactKey: Guid(69be24d59d679954fabe9dbe6e0d5e8e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Water Sounds/Human Water Land 10.wav using Guid(69be24d59d679954fabe9dbe6e0d5e8e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '60dfb5235d0098b52efbc22f6d2a6e49') in 0.023923 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Survival Sound Kit - HD Remake/Gathering Plants 4.wav
+  artifactKey: Guid(e9cf820d3bf8cf045a87d55011ab59d4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Survival Sound Kit - HD Remake/Gathering Plants 4.wav using Guid(e9cf820d3bf8cf045a87d55011ab59d4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3544f4eb1e03e4ae04dface4ef52f2c2') in 0.019895 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/CorgiEngine/Demos/SuperHipsterBros/Prefabs/Environment/HipsterPlant5.prefab
+  artifactKey: Guid(68685a2f06bb3cd4c82992a80e8e221f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/SuperHipsterBros/Prefabs/Environment/HipsterPlant5.prefab using Guid(68685a2f06bb3cd4c82992a80e8e221f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4ec53a39e8f2147c2044f869acfc6e9d') in 0.025124 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/SpecialSkillsEffectsPack/AllEffects/EffectsSet_1(NotScriptBased)/Effects/Effect_37_PlanetStone/Effect_37_PlanetStone.prefab
+  artifactKey: Guid(46990d8507eeec34abcca3bb9c560342) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SpecialSkillsEffectsPack/AllEffects/EffectsSet_1(NotScriptBased)/Effects/Effect_37_PlanetStone/Effect_37_PlanetStone.prefab using Guid(46990d8507eeec34abcca3bb9c560342) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b25cb5b269e0713a93549148d2a2cf00') in 0.135469 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 49.709230 seconds.
+  path: Assets/AnyPortrait/Demo/AP_SampleCharacter_PeacockTheAria.psd
+  artifactKey: Guid(ee4c0a987b8c00047a8d8510bda35680) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Demo/AP_SampleCharacter_PeacockTheAria.psd using Guid(ee4c0a987b8c00047a8d8510bda35680) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0de494d3eb449abb559fd2ee05308c5c') in 0.086843 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/AnyPortrait/Demo/SDCharacter/AP_SampleCharacter_PeacockTheAria_0.png
+  artifactKey: Guid(3bf5d76d1d8020945a2d70bfd61dc5c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Demo/SDCharacter/AP_SampleCharacter_PeacockTheAria_0.png using Guid(3bf5d76d1d8020945a2d70bfd61dc5c5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '39bb2b8e42b5019f06087f8c9baf1236') in 0.043832 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 23.543005 seconds.
+  path: Assets/VFX_Klaus/Timeline/Explosion_set.playable
+  artifactKey: Guid(b618ed7818cf34647bd49ce9578ffb88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/VFX_Klaus/Timeline/Explosion_set.playable using Guid(b618ed7818cf34647bd49ce9578ffb88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d791014a8022401da99b5935626e0bb') in 0.051508 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/VFX_Klaus/Timeline/Stylized_Element_Splash_vol.2.playable
+  artifactKey: Guid(05e16c2c821db6347b535ec9a363cf34) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/VFX_Klaus/Timeline/Stylized_Element_Splash_vol.2.playable using Guid(05e16c2c821db6347b535ec9a363cf34) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f546c547aac0f702932d803777d4416b') in 0.022478 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.013126 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for Android target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 11.23 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  3.018 seconds
+Domain Reload Profiling:
+	ReloadAssembly (3019ms)
+		BeginReloadAssembly (237ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (11ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (81ms)
+		EndReloadAssembly (2650ms)
+			LoadAssemblies (304ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (602ms)
+			ReleaseScriptCaches (11ms)
+			RebuildScriptCaches (216ms)
+			SetupLoadedEditorAssemblies (1370ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (36ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (11ms)
+				BeforeProcessingInitializeOnLoad (201ms)
+				ProcessInitializeOnLoadAttributes (989ms)
+				ProcessInitializeOnLoadMethodAttributes (123ms)
+				AfterProcessingInitializeOnLoad (9ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (60ms)
+Platform modules already initialized, skipping
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Refreshing native plugins compatible for Editor in 16.89 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 9813 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 116 unused Assets / (8.2 MB). Loaded Objects now: 10861.
+Memory consumption went from 0.64 GB to 0.63 GB.
+Total: 7.572500 ms (FindLiveObjects: 0.835500 ms CreateObjectMapping: 0.633100 ms MarkObjects: 4.334800 ms  DeleteObjects: 1.767900 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0

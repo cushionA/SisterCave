@@ -145,17 +145,17 @@ MonoBehaviour:
     m_keys: []
     m_values: 
   guardSpeed: 180
-  moveSpeed: 0
-  dashSpeed: 0
-  avoidRes: 0
+  moveSpeed: 250
+  dashSpeed: 300
+  avoidRes: 0.5
   avoidSpeed: 500
   addSpeed: {x: 0, y: 0}
   jumpMove: 0
   jumpPower: 0
-  jumpRes: 12
+  jumpRes: 60
   jumpCool: 0.4
   jumpLimit: 1
   avoidCool: 0.2
-  firstGravity: 18
+  firstGravity: 120
   downRes: 1
   _weightState: 0

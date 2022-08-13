@@ -25,24 +25,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
         // Animation parameters
-        protected const string _BlowParameterName = "Blow";
-        protected int _BlowAnimationParameter;
-        protected const string _DownParameterName = "Down";
-        protected int _DownAnimationParameter;
-        protected const string _WakeParameterName = "Wakeup";
-        protected int _WakeAnimationParameter;
+
+
+        //ダウンが今どの状態か、起き上がり中とか
+        //吹っ飛び、倒れた、起き上がり中の三段階
+       // protected const string _downStateParameterName = "BlowNow";
+      //  protected int _downStateAnimationParameter;
+
 
         //よろめき
-        protected const string _FalterParameterName = "Falter";
-        protected int _FalterAnimationParameter;
-
-        //パリィ
-        protected const string _ParriedParameterName = "Parried";
-        protected int _ParriedAnimationParameter;
-
-        //ガードブレイク
-        protected const string _GBreakeParameterName = "GBreake";
-        protected int _GBreakeAnimationParameter;
+        protected const string _stunTypeParameterName = "StunState";
+        protected int _stunTypeAnimationParameter;
 
 
         /// <summary>
@@ -61,11 +54,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         public enum StunnType
         {
-            Falter,
-            Parried,
-            GuardBreake,
-            Down,
-            notStunned
+            Falter = 1,
+            Parried = 2,
+            GuardBreake = 3,
+            Down = 4,
+            notStunned = 0
 
         }
 
@@ -87,6 +80,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             base.ProcessAbility();
             //ここで起き上がりアニメーション、またはよろめきモーションが終了したか、そして終了したならスタンが解除される
+            DoSomething();
         }
 
         /// <summary>
@@ -123,9 +117,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 || (_condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
 
                 // or if we're grounded
-                || (!_controller.State.IsGrounded)
-                // or if we're gripping
-                || (_movement.CurrentState == CharacterStates.MovementStates.Gripping))
+                || (!_controller.State.IsGrounded))
             {
                 // we do nothing and exit
                 return;
@@ -196,7 +188,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (_character.CharacterHealth.CurrentHealth > 0 && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
             {
                 _condition.ChangeState(CharacterStates.CharacterConditions.Stunned);
-
+                _characterHorizontalMovement.MovementForbidden = true;
                 if (type == StunnType.Falter)
                 {
                     nowType = 1;
@@ -231,12 +223,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         protected override void InitializeAnimatorParameters()
         {
-            RegisterAnimatorParameter(_FalterParameterName, AnimatorControllerParameterType.Bool, out _FalterAnimationParameter);
-            RegisterAnimatorParameter(_ParriedParameterName, AnimatorControllerParameterType.Bool, out _ParriedAnimationParameter);
-            RegisterAnimatorParameter(_GBreakeParameterName, AnimatorControllerParameterType.Bool, out _GBreakeAnimationParameter);
-            RegisterAnimatorParameter(_BlowParameterName, AnimatorControllerParameterType.Bool, out _BlowAnimationParameter);
-            RegisterAnimatorParameter(_DownParameterName, AnimatorControllerParameterType.Bool, out _DownAnimationParameter);
-            RegisterAnimatorParameter(_WakeParameterName, AnimatorControllerParameterType.Bool, out _WakeAnimationParameter);
+
+           // RegisterAnimatorParameter(_downStateParameterName, AnimatorControllerParameterType.Bool, out _downStateAnimationParameter);
+            RegisterAnimatorParameter(_stunTypeParameterName, AnimatorControllerParameterType.Int, out _stunTypeAnimationParameter);
         }
 
         /// <summary>
@@ -245,14 +234,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         public override void UpdateAnimator()
         {
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _FalterAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned && nowType == 1), _character._animatorParameters);
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _ParriedAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned && nowType == 2), _character._animatorParameters);
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _GBreakeAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned && nowType == 3), _character._animatorParameters);
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _DownAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned && nowType == 4), _character._animatorParameters);
 
-            //ダウンのアニメーター
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _BlowAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned && blowNow), _character._animatorParameters);
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _WakeAnimationParameter, (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned && !blowNow), _character._animatorParameters);
+            MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _stunTypeAnimationParameter, (nowType), _character._animatorParameters);
+        //    if()
+
+ //           MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _downStateAnimationParameter, (), _character._animatorParameters);
+
+            //ダウンのアニメーター 
         }
 
         bool CheckEnd(string Name)
@@ -280,7 +268,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
             nowType = 0;
-
+            _characterHorizontalMovement.MovementForbidden = false;
         }
 
     }

@@ -55,7 +55,7 @@ namespace MoreMountains.CorgiEngine
 		[Tooltip("trueの場合、ジャンプの長さと高さはボタンが押された長さに比例します。")]
 		public bool JumpIsProportionalToThePressTime = true;
 		/// the minimum time in the air allowed when jumping - this is used for pressure controlled jumps
-		[Tooltip("the minimum time in the air allowed when jumping - this is used for pressure controlled jumps")]
+		[Tooltip("ジャンプ時に許される空中の最小時間-（ボタン？）圧力制御ジャンプに使用されます。最低これだけの時間上昇するよということ？")]
 		public float JumpMinimumAirTime = 0.1f;
 		/// the amount by which we'll modify the current speed when the jump button gets released
 		[Tooltip("ジャンプボタンが離されたときに、現在の速度を変更する量です。")]
@@ -110,6 +110,12 @@ namespace MoreMountains.CorgiEngine
 		protected float _lastInputBufferJumpAt = 0f;
 		protected bool _coyoteTime = false;
 		protected bool _inputBuffer = false;
+        
+		/// <summary>
+		/// ジャンプ開始した時にx軸で入力してる方向
+		/// </summary>
+		protected float _startInput;
+
 
 		// animation parameters
 		protected const string _jumpingAnimationParameterName = "Jumping";
@@ -119,7 +125,7 @@ namespace MoreMountains.CorgiEngine
 		protected int _doubleJumpingAnimationParameter;
 		protected int _hitTheGroundAnimationParameter;
 
-		protected RewiredCorgiEngineInputManager ReInput;
+		
 		//ジャンプ開始してるかどうか
 		bool isFirst;
 		//最後にボタンが押された時の時間
@@ -132,7 +138,7 @@ namespace MoreMountains.CorgiEngine
 		protected override void Initialization()
 		{
 			base.Initialization();
-			ReInput = (RewiredCorgiEngineInputManager)_inputManager;
+		//	_inputManager = (RewiredCorgiEngineInputManager)_inputManager;
 			ResetNumberOfJumps();
 			_characterWallJump = _character?.FindAbility<CharacterWalljump>();
 			_characterCrouch = _character?.FindAbility<CharacterCrouch>();
@@ -208,18 +214,35 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected override void HandleInput()
 		{
-			// we handle regular button presses
-			//ボタンの状態で判断してるね
-			//キャラクターステートにAttackを追加して攻撃すると入力が途切れるように
+            // we handle regular button presses
+            //ボタンの状態で判断してるね
+            //キャラクターステートにAttackを追加して攻撃すると入力が途切れるように
+
+            if (!isPlayer)
+            {
+				return;
+            }
+
+			if(isDisenable)
+            {
+				JumpATStop();
+				return;
+            }
+
+			//上押してて、かつスタミナ使用可能なら
 			if (_verticalInput > 0 && GManager.instance.isEnable)
 			{
+				//ジャンプ開始前なら開始して開始前フラグを消す
 				if (!isFirst)
 				{
-					JumpStart();
+					JumpStart(_horizontalInput);
 					isFirst = true;
 				}
+
+
 				else
 				{
+					//よくわからないけどいらない、で覚えてください
 					if ((InputBufferDuration > 0f) && (_controller.State.JustGotGrounded))
 					{
 						if ((Time.time - lastPress < InputBufferDuration) && (Time.time - _lastJumpAt > InputBufferDuration))
@@ -227,33 +250,39 @@ namespace MoreMountains.CorgiEngine
 							NumberOfJumpsLeft = NumberOfJumps;
 							_doubleJumping = false;
 							_inputBuffer = true;
-							_jumpButtonPressed = (ReInput.JumpButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed);
+							_jumpButtonPressed = (_inputManager.JumpButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed);
 							_jumpButtonPressTime = Time.time;
-							_jumpButtonReleased = (ReInput.JumpButton.State.CurrentState != MMInput.ButtonStates.ButtonPressed);
+							_jumpButtonReleased = (_inputManager.JumpButton.State.CurrentState != MMInput.ButtonStates.ButtonPressed);
 							_lastInputBufferJumpAt = Time.time;
-							JumpStart();
+							JumpStart(_horizontalInput);
 						}
 					}
 				}
 			}
-			else
+			//ジャンプボタン押してない
+			else if(_verticalInput == 0f)
 			{
 				if (isFirst)
                 {
 					isFirst = false;
 					lastPress = Time.time;
-                }
+					JumpStop();
+				}
+				
             }
 
-			// we handle button release
-			if (ReInput.JumpButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+
+
+		/*	// we handle button release
+			if (_inputManager.JumpButton.State.CurrentState == MMInput.ButtonStates.ButtonUp || (_controller.State.JustGotGrounded))
 			{
 				JumpStop();
-			}
+			}*/
+			JumpDirectionController();
 		}
 
 		/// <summary>
-		/// Every frame we perform a number of checks related to jump
+		///ジャンプの中身
 		/// </summary>
 		public override void ProcessAbility()
 		{
@@ -262,7 +291,7 @@ namespace MoreMountains.CorgiEngine
 
 			if (!AbilityAuthorized) { return; }
 
-			// if we just got grounded, we reset our number of jumps
+			// 着地するとジャンプの回数はリセットされます。
 			if (_controller.State.JustGotGrounded && !_inputBuffer)
 			{
 				//着地した時
@@ -271,6 +300,7 @@ namespace MoreMountains.CorgiEngine
 			}
 
 			// if we're grounded, and have jumped a while back but still haven't gotten our jumps back, we reset them
+			//地上にいて、しばらく前にジャンプして、まだジャンプが戻っていない場合は、リセットする。
 			if ((_controller.State.IsGrounded) && (Time.time - _lastJumpAt > JumpMinimumAirTime) && (NumberOfJumpsLeft < NumberOfJumps) && !_inputBuffer)
 			{
 				ResetNumberOfJumps();
@@ -292,7 +322,7 @@ namespace MoreMountains.CorgiEngine
                 }
             }
 
-			// If the user releases the jump button and the character is jumping up and enough time since the initial jump has passed, then we make it stop jumping by applying a force down.
+			// ユーザーがジャンプボタンを離したときに、キャラクターが上にジャンプしていて、最初のジャンプから十分な時間が経過していれば、下に力を加えてジャンプをやめさせます。
 			if ((_jumpButtonPressTime != 0)
 				&& (Time.time - _jumpButtonPressTime >= JumpMinimumAirTime)
 				&& (_controller.Speed.y > Mathf.Sqrt(Mathf.Abs(_controller.Parameters.Gravity)))
@@ -347,7 +377,7 @@ namespace MoreMountains.CorgiEngine
 		}
 
 		/// <summary>
-		/// Evaluates the jump conditions to determine whether or not a jump can occur
+		/// ジャンプ条件を評価し、ジャンプが可能かどうかを判断します。
 		/// </summary>
 		/// <returns><c>true</c>, if jump conditions was evaluated, <c>false</c> otherwise.</returns>
 		protected virtual bool EvaluateJumpConditions()
@@ -394,7 +424,7 @@ namespace MoreMountains.CorgiEngine
 			{
 				if (_characterCrouch != null)
 				{
-					if (_characterCrouch.InATunnel && (_verticalInput >= -ReInput.Threshold.y))
+					if (_characterCrouch.InATunnel && (_verticalInput >= -_inputManager.Threshold.y))
 					{
 						return false;
 					}
@@ -417,10 +447,10 @@ namespace MoreMountains.CorgiEngine
 				return false;
 			}
 
-			if (ReInput != null)
+			if (_inputManager != null)
 			{
 				// if the character is standing on a one way platform and is also pressing the down button,
-				if (_verticalInput < -ReInput.Threshold.y && _controller.State.IsGrounded)
+				if (_verticalInput < -_inputManager.Threshold.y && _controller.State.IsGrounded)
 				{
 					if (JumpDownFromOneWayPlatform())
 					{
@@ -439,16 +469,16 @@ namespace MoreMountains.CorgiEngine
 		}
 
 		/// <summary>
-		/// Causes the character to start jumping.
+		/// キャラクターがジャンプを開始します。
 		/// </summary>
-		public virtual void JumpStart()
+		public virtual void JumpStart(float direction = 0)
 		{
 			if (!EvaluateJumpConditions())
 			{
 				return;
 			}
 
-			// we reset our walking speed
+			// 歩く速さをリセットする
 			if ((_movement.CurrentState == CharacterStates.MovementStates.Crawling)
 				|| (_movement.CurrentState == CharacterStates.MovementStates.Crouching)
 				|| (_movement.CurrentState == CharacterStates.MovementStates.LadderClimbing))
@@ -510,10 +540,64 @@ namespace MoreMountains.CorgiEngine
 			_controller.SetVerticalForce(Mathf.Sqrt(2f * JumpHeight * Mathf.Abs(_controller.Parameters.Gravity)));
 
 			JumpHappenedThisFrame = true;
+
+            if (isPlayer)
+            {
+				_startInput = direction;
+            }
+            else
+            {
+				_startInput = _characterHorizontalMovement.GetHorizontal();
+            }
 		}
+
+
+		public virtual void JumpDirectionController()
+        {
+			//ジャンプ中は
+			if(_movement.CurrentState == CharacterStates.MovementStates.Jumping || _movement.CurrentState == CharacterStates.MovementStates.DoubleJumping)
+            {
+				if (isPlayer)
+				{
+					//ジャンプの横入力が0じゃなくて入力が続いてるなら
+					if (_startInput != 0 && Mathf.Sign(_startInput) == Mathf.Sign(_horizontalInput))
+					{
+						_characterHorizontalMovement.SetHorizontalMove(_startInput);
+					}
+					else
+					{
+						if (_startInput == 0)
+						{
+							_characterHorizontalMovement.SetHorizontalMove(0);
+						}
+						else
+						{
+							_startInput = Mathf.Lerp(_startInput, 0, _controller.DeltaTime);
+							_characterHorizontalMovement.SetHorizontalMove(_startInput);
+						}
+
+					}
+				}
+                else
+                {
+					_characterHorizontalMovement.SetHorizontalMove(_startInput);
+
+				}
+
+				//落下し始めたら
+				if(_controller.Speed.y <= 0)
+                {
+					JumpStop();
+				}
+            }
+
+        }
+
+
 
 		/// <summary>
 		/// Use this method, from any class, to prevent the current jump from being proportional (releasing won't cancel the jump/current momentum)
+		/// ボタンを離してもジャンプが止まらなくなる
 		/// </summary>
 		/// <param name="status"></param>
 		public virtual void SetCanJumpStop(bool status)
@@ -522,7 +606,7 @@ namespace MoreMountains.CorgiEngine
 		}
 
 		/// <summary>
-		/// Handles jumping down from a one way platform.
+		/// 一方通行のプラットフォームからの飛び降りを処理します。
 		/// </summary>
 		protected virtual bool JumpDownFromOneWayPlatform()
 		{
@@ -572,6 +656,16 @@ namespace MoreMountains.CorgiEngine
 			}
 			_jumpButtonPressed = false;
 			_jumpButtonReleased = true;
+			_movement.ChangeState(CharacterStates.MovementStates.Idle);
+		}
+		/// <summary>
+		/// Causes the character to stop jumping.
+		/// </summary>
+		public virtual void JumpATStop()
+		{
+			_jumpButtonPressed = false;
+			_jumpButtonReleased = true;
+
 		}
 
 		/// <summary>
@@ -641,6 +735,8 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public override void UpdateAnimator()
 		{
+
+				
 			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _jumpingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Jumping), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
 			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _doubleJumpingAnimationParameter, _doubleJumping, _character._animatorParameters, _character.PerformAnimatorSanityChecks);
 			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _hitTheGroundAnimationParameter, _controller.State.JustGotGrounded, _character._animatorParameters, _character.PerformAnimatorSanityChecks);

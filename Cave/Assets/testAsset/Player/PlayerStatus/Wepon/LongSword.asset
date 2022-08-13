@@ -1044,7 +1044,10 @@ MonoBehaviour:
   blowPower: {x: 1000, y: 100}
   guardSpeed: 0
   _useContoroller:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 22100000, guid: 78097b11b1d9cf645a57cafe12dd669f, type: 2}
+  - {fileID: 22100000, guid: 02093cf5a372a854bb0e17eb2aaf36e8, type: 2}
   _alterWeapon: {fileID: 0}
   ExCore: {fileID: 0}
+  artsAnime:
+  - {fileID: 7400000, guid: cb6a0e7edea7fb34cad4b2c545bb23c4, type: 2}
+  - {fileID: 7400000, guid: 77cc866d476c5d44a85850469a13fef7, type: 2}

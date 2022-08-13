@@ -261,5 +261,11 @@ namespace MyCode
         /// 特殊相性のコア
         /// </summary>
         public CoreItem ExCore;
+
+        [Header("盾固有技のアニメーション")]
+        ///<summary>
+        ///盾固有技のアニメ
+        /// </summary>
+        public AnimationClip[] artsAnime;
     }
 }

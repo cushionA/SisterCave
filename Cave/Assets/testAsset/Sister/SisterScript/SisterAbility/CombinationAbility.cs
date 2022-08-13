@@ -36,7 +36,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected const string _combiParameterName = "CombinationNow";
         protected int _combiAnimationParameter;
 
-        protected RewiredCorgiEngineInputManager ReInput;
+        //protected RewiredCorgiEngineInputManager _inputManager;
 
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             base.Initialization();
             // randomBool = false;
-            ReInput = (RewiredCorgiEngineInputManager)_inputManager;
+            
             sb = GetComponent<BrainAbility>();
             sf = GetComponent<FireAbility>();
         }
@@ -102,7 +102,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (_combState == CombinationState.Act)
             {
                 //É{É^ÉìÇ©ÇÁéËÇ™ó£ÇÍÇƒÇ¢ÇÈÇ»ÇÁê^Ç…
-                needInput =  (ReInput.CombinationButton.State.CurrentState == MMInput.ButtonStates.Off);
+                needInput =  (_inputManager.CombinationButton.State.CurrentState == MMInput.ButtonStates.Off);
                 
             }
         }

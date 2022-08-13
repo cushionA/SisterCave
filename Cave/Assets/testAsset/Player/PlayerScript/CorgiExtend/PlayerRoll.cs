@@ -13,7 +13,7 @@ namespace MoreMountains.CorgiEngine
     /// ‚Ü‚º‚¸‚É‚â‚è‚Æ‚è‚Å
     /// </summary>
  //   [AddComponentMenu("Corgi Engine/Character/Abilities/Character Roll")]
-    public class PlayerRoll : CharacterAbility
+    public class PlayerRoll : MyAbillityBase
     {
         /// This method is only used to display a helpbox text at the beginning of the ability's inspector
         public override string HelpBoxText() { return "Add this class to a character and it'll be able to 'roll' along surfaces, with options to go through enemies, and keep controlling direction."; }

@@ -35,6 +35,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         protected new MyCharacter _character;
 
+        [HideInInspector]
+        ///真のとき入力不可
+        public bool isDisenable;
+
+
         /// <summary>
         /// Sets a new input manager for this ability to get input from
         /// </summary>
@@ -113,29 +118,43 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             HandleInput();
         }
 
+
+
         /// <summary>
-        /// 押し込んでいる場合は、いくつかの条件を満たしているかどうかをチェックして、アクションを実行できるかどうかを確認します。
+        /// Binds the animator from the character and initializes the animator parameters
+        /// MyCharacterに適合させるオーバーライド
         /// </summary>
-        protected virtual void DoSomething()
+        public override void BindAnimator()
         {
-            // if the ability is not permitted
-            if (!AbilityPermitted
-                // or if we're not in our normal stance
-                || (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
-                // or if we're grounded
-                || (!_controller.State.IsGrounded)
-                // or if we're gripping
-                || (_movement.CurrentState == CharacterStates.MovementStates.Gripping))
+            if (_character != null)
             {
-                // we do nothing and exit
+                _animator = _character._animator;
+            }
+            if (_animator != null)
+            {
+                InitializeAnimatorParameters();
+            }
+        }
+
+        /// <summary>
+        /// Registers a new animator parameter to the list
+        /// MyCharacterに適合させるオーバーライド
+        /// </summary>
+        /// <param name="parameterName">Parameter name.</param>
+        /// <param name="parameterType">Parameter type.</param>
+        public override void RegisterAnimatorParameter(string parameterName, AnimatorControllerParameterType parameterType, out int parameter)
+        {
+            parameter = Animator.StringToHash(parameterName);
+            if (_animator == null)
+            {
+
                 return;
             }
 
-            // if we're still here, we display a text log in the console
-            MMDebug.DebugLogTime("We're doing something yay!");
+            if (_animator.MMHasParameterOfType(parameterName, parameterType))
+            {
+                _character._animatorParameters.Add(parameter);
+            }
         }
-
-
-
     }
 }

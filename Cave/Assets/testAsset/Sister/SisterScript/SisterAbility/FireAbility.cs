@@ -159,7 +159,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		[HideInInspector]
 		public bool isStop;
 
-		protected RewiredCorgiEngineInputManager ReInput;
+		//protected RewiredCorgiEngineInputManager _inputManager;
 
 
 		//-------------------------------------------バフの数値
@@ -187,7 +187,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	{
 			base.Initialization();
 			sister.nowMove = sister.priority;
-			ReInput = (RewiredCorgiEngineInputManager)_inputManager;
+			
 			//Brainじゃないんですわ
 			sb = GetComponent<BrainAbility>();
 	}
@@ -262,7 +262,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		if (status.equipCombination != null && !GManager.instance.isDown && !GManager.instance.onGimmick)
 		{
-			if (status.equipCombination != null && ReInput.CombinationButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (status.equipCombination != null && _inputManager.CombinationButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
 			{
 				//条件の意図としてはコンビネーションが設定されてて地面にいてクールタイム中じゃなくて魔法発動中じゃない
 				//コンボ可能フラグはコンボ中は不可になってる。チェイン数見て最後に改めて戻される。

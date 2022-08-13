@@ -392,6 +392,7 @@ GameObject:
   - component: {fileID: 1470299677141004898}
   - component: {fileID: 8477158482042255610}
   - component: {fileID: 1357574120546342556}
+  - component: {fileID: 8241581805875267644}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -455,13 +456,13 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565067911019777824}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 0a1ae9298746d5c468794c1e033a08e4, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 0
@@ -474,7 +475,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565067911019777824}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 0a1ae9298746d5c468794c1e033a08e4, type: 2}
   m_IsTrigger: 0
@@ -493,7 +494,7 @@ Animator:
   m_GameObject: {fileID: 1565067911019777824}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f80cc58c8fbb67f4e9acabe22dc9fa83, type: 2}
+  m_Controller: {fileID: 22100000, guid: 78097b11b1d9cf645a57cafe12dd669f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -839,10 +840,10 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 1.1361809, y: 13.303155}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -853,7 +854,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.0001, y: 0.0001}
+  m_Size: {x: 8.485489, y: 28.188429}
   m_EdgeRadius: 0
 --- !u!114 &1565067911019777808
 MonoBehaviour:
@@ -913,7 +914,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    Physics2DInteraction: 1
+    Physics2DInteraction: 0
     Physics2DPushForce: 2
     DrawRaycastsGizmos: 1
     DisplayWarnings: 1
@@ -962,7 +963,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565067911019777824}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e514a2b7cbba3c94fadd9e100df51189, type: 3}
   m_Name: 
@@ -978,7 +979,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565067911019777824}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46406e788b52547b6b352456466eb58b, type: 3}
   m_Name: 
@@ -1026,6 +1027,40 @@ MonoBehaviour:
   AirborneDistance: 0.5
   AirborneMinimumTime: 0.1
   CharacterBrain: {fileID: 0}
+--- !u!114 &8241581805875267644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565067911019777824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e24fcb0c440d5e74398a58bb70ff8071, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AbilityStartFeedbacks: {fileID: 0}
+  AbilityStopFeedbacks: {fileID: 0}
+  AbilityPermitted: 1
+  BlockingMovementStates: 
+  BlockingConditionStates: 
+  isPlayer: 1
+  isDisenable: 0
+  anim: {fileID: 1565067911019777825}
+  attackFactor: 1
+  fireATFactor: 1
+  thunderATFactor: 1
+  darkATFactor: 1
+  holyATFactor: 1
+  _rolling: {fileID: 8335462191413197723}
+  _running: {fileID: 6821314619290358520}
+  _guard: {fileID: 682430908044570997}
+  _jump: {fileID: 4955639175497762293}
+  _weapon: {fileID: 4509457437046055854}
+  _wakeup: {fileID: 1667048428648395497}
+  _attack: {fileID: 4509457437046055854}
+  _damage: {fileID: 3309811863094153579}
+  _squat: {fileID: 5119028168882433381}
 --- !u!1 &1565067911114424061
 GameObject:
   m_ObjectHideFlags: 0
@@ -2777,7 +2812,6 @@ GameObject:
   - component: {fileID: 6118081736343502050}
   - component: {fileID: 682430908044570997}
   - component: {fileID: 8886403436793392824}
-  - component: {fileID: 1430093446108099961}
   - component: {fileID: 4509457437046055854}
   - component: {fileID: 6821314619290358520}
   - component: {fileID: 8335462191413197723}
@@ -2785,6 +2819,7 @@ GameObject:
   - component: {fileID: 1667048428648395497}
   - component: {fileID: 6224939976815206566}
   - component: {fileID: 4955639175497762293}
+  - component: {fileID: 5119028168882433381}
   m_Layer: 0
   m_Name: AbillityStorage
   m_TagString: Untagged
@@ -2822,9 +2857,10 @@ MonoBehaviour:
   AbilityStartFeedbacks: {fileID: 0}
   AbilityStopFeedbacks: {fileID: 0}
   AbilityPermitted: 1
-  BlockingMovementStates: 
-  BlockingConditionStates: 
-  isPlayer: 0
+  BlockingMovementStates: 1a0000001b0000000e000000
+  BlockingConditionStates: 0400000005000000
+  isPlayer: 1
+  isDisenable: 0
   guardHit: 0
 --- !u!114 &8886403436793392824
 MonoBehaviour:
@@ -2843,31 +2879,8 @@ MonoBehaviour:
   AbilityPermitted: 1
   BlockingMovementStates: 
   BlockingConditionStates: 
-  isPlayer: 0
---- !u!114 &1430093446108099961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8653742047863948500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e24fcb0c440d5e74398a58bb70ff8071, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AbilityStartFeedbacks: {fileID: 0}
-  AbilityStopFeedbacks: {fileID: 0}
-  AbilityPermitted: 1
-  BlockingMovementStates: 
-  BlockingConditionStates: 
-  isPlayer: 0
-  anim: {fileID: 0}
-  attackFactor: 1
-  fireATFactor: 1
-  thunderATFactor: 1
-  darkATFactor: 1
-  holyATFactor: 1
+  isPlayer: 1
+  isDisenable: 0
 --- !u!114 &4509457437046055854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2883,9 +2896,10 @@ MonoBehaviour:
   AbilityStartFeedbacks: {fileID: 0}
   AbilityStopFeedbacks: {fileID: 0}
   AbilityPermitted: 1
-  BlockingMovementStates: 
-  BlockingConditionStates: 
-  isPlayer: 0
+  BlockingMovementStates: 1a000000
+  BlockingConditionStates: 0500000004000000
+  isPlayer: 1
+  isDisenable: 0
   isAttackable: 0
   afterJudge: 0.35
 --- !u!114 &6821314619290358520
@@ -2903,9 +2917,10 @@ MonoBehaviour:
   AbilityStartFeedbacks: {fileID: 0}
   AbilityStopFeedbacks: {fileID: 0}
   AbilityPermitted: 1
-  BlockingMovementStates: 
-  BlockingConditionStates: 
-  isPlayer: 0
+  BlockingMovementStates: 1a0000001b000000
+  BlockingConditionStates: 0500000004000000
+  isPlayer: 1
+  isDisenable: 0
   RunSpeed: 16
   ReadInput: 1
   AutoRun: 0
@@ -2926,8 +2941,10 @@ MonoBehaviour:
   AbilityStartFeedbacks: {fileID: 0}
   AbilityStopFeedbacks: {fileID: 0}
   AbilityPermitted: 1
-  BlockingMovementStates: 
-  BlockingConditionStates: 
+  BlockingMovementStates: 1b000000
+  BlockingConditionStates: 0500000004000000
+  isPlayer: 0
+  isDisenable: 0
   RollDuration: 0.5
   RollSpeed: 3
   BlockHorizontalInput: 0
@@ -2940,7 +2957,7 @@ MonoBehaviour:
     CurrentAngle: 0
   MinimumInputThreshold: 0.1
   FlipCharacterIfNeeded: 1
-  RollCooldown: 1
+  RollCooldown: 0.2
   LimitedRolls: 0
   SuccessiveRollsAmount: 1
   SuccessiveRollsLeft: 1
@@ -2974,8 +2991,9 @@ MonoBehaviour:
   AbilityStopFeedbacks: {fileID: 0}
   AbilityPermitted: 1
   BlockingMovementStates: 
-  BlockingConditionStates: 
-  isPlayer: 0
+  BlockingConditionStates: 04000000
+  isPlayer: 1
+  isDisenable: 0
 --- !u!114 &6224939976815206566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2991,9 +3009,10 @@ MonoBehaviour:
   AbilityStartFeedbacks: {fileID: 0}
   AbilityStopFeedbacks: {fileID: 0}
   AbilityPermitted: 1
-  BlockingMovementStates: 
-  BlockingConditionStates: 
-  isPlayer: 0
+  BlockingMovementStates: 1a0000001b000000
+  BlockingConditionStates: 0400000005000000
+  isPlayer: 1
+  isDisenable: 0
   WalkSpeed: 6
   MovementSpeedMultiplier: 1
   AbilityMovementSpeedMultiplier: 1
@@ -3003,7 +3022,7 @@ MonoBehaviour:
   ReadInput: 1
   InstantAcceleration: 0
   InputThreshold: 0.1
-  AirControl: 1
+  AirControl: 0.67
   AllowFlipInTheAir: 1
   ActiveAfterDeath: 0
   TouchTheGroundFeedback: {fileID: 0}
@@ -3024,9 +3043,10 @@ MonoBehaviour:
   AbilityStartFeedbacks: {fileID: 0}
   AbilityStopFeedbacks: {fileID: 0}
   AbilityPermitted: 1
-  BlockingMovementStates: 
-  BlockingConditionStates: 
-  isPlayer: 0
+  BlockingMovementStates: 1a0000001b000000
+  BlockingConditionStates: 0400000005000000
+  isPlayer: 1
+  isDisenable: 0
   NumberOfJumps: 2
   JumpHeight: 3.025
   JumpRestrictions: 2
@@ -3041,6 +3061,33 @@ MonoBehaviour:
   MovingPlatformsJumpCollisionOffDuration: 0.05
   AirJumpFeedbacks: {fileID: 0}
   NumberOfJumpsLeft: 0
+--- !u!114 &5119028168882433381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8653742047863948500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e942c3d66c232246a148712d8fc06bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AbilityStartFeedbacks: {fileID: 0}
+  AbilityStopFeedbacks: {fileID: 0}
+  AbilityPermitted: 1
+  BlockingMovementStates: 1a0000001b000000
+  BlockingConditionStates: 0400000005000000
+  isPlayer: 1
+  isDisenable: 0
+  CrawlAuthorized: 1
+  CrawlSpeed: 4
+  ResizeColliderWhenCrouched: 0
+  CrouchedBoxColliderSize: {x: 1, y: 1}
+  CanCrouchWhileMoving: 1
+  InATunnel: 0
+  MoveCameraTarget: 1
+  CameraTargetOffset: {x: 0, y: -3, z: 0}
 --- !u!1001 &1565067911293022532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3161,6 +3208,11 @@ PrefabInstance:
     - target: {fileID: -8914464542308587434, guid: cb910de58fe396045a62dbdf0713401d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8871433259466438919, guid: cb910de58fe396045a62dbdf0713401d,
+        type: 3}
+      propertyPath: m_SpriteKey
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8825026584453635160, guid: cb910de58fe396045a62dbdf0713401d,
@@ -3298,6 +3350,11 @@ PrefabInstance:
       propertyPath: m_labelHash
       value: 1.0244713e-15
       objectReference: {fileID: 0}
+    - target: {fileID: -8508618834159328070, guid: cb910de58fe396045a62dbdf0713401d,
+        type: 3}
+      propertyPath: m_SpriteKey
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -8495086189038551477, guid: cb910de58fe396045a62dbdf0713401d,
         type: 3}
       propertyPath: m_IsActive
@@ -3306,6 +3363,11 @@ PrefabInstance:
     - target: {fileID: -8452000647566286305, guid: cb910de58fe396045a62dbdf0713401d,
         type: 3}
       propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8451815124938705850, guid: cb910de58fe396045a62dbdf0713401d,
+        type: 3}
+      propertyPath: m_SpriteKey
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8243631534336163782, guid: cb910de58fe396045a62dbdf0713401d,
@@ -4247,6 +4309,11 @@ PrefabInstance:
     - target: {fileID: -3720516272449880309, guid: cb910de58fe396045a62dbdf0713401d,
         type: 3}
       propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3665486676432404564, guid: cb910de58fe396045a62dbdf0713401d,
+        type: 3}
+      propertyPath: m_SpriteKey
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3355969112450086662, guid: cb910de58fe396045a62dbdf0713401d,
@@ -6682,6 +6749,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Bounds.m_Extent.y
       value: 0.32894307
+      objectReference: {fileID: 0}
+    - target: {fileID: 8288820456408903542, guid: cb910de58fe396045a62dbdf0713401d,
+        type: 3}
+      propertyPath: m_SpriteKey
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8302885113376277979, guid: cb910de58fe396045a62dbdf0713401d,
         type: 3}
@@ -10347,6 +10419,11 @@ PrefabInstance:
       propertyPath: m_Bounds.m_Extent.y
       value: 0.49921995
       objectReference: {fileID: 0}
+    - target: {fileID: -8423692904873621213, guid: 1c003d6d35cfade4baaed1b2a8dbee23,
+        type: 3}
+      propertyPath: m_SpriteKey
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -8196055859360783178, guid: 1c003d6d35cfade4baaed1b2a8dbee23,
         type: 3}
       propertyPath: m_Bounds.m_Center.x
@@ -11814,6 +11891,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 24.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 2093209048119310695, guid: 1c003d6d35cfade4baaed1b2a8dbee23,
+        type: 3}
+      propertyPath: m_SpriteKey
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2451612608069387181, guid: 1c003d6d35cfade4baaed1b2a8dbee23,
         type: 3}

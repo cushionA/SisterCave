@@ -215,6 +215,118 @@ namespace MoreMountains.CorgiEngine
 			}
 		}
 
+		/// <summary>
+		/// We do this every frame. This is separate from Update for more flexibility.
+		/// </summary>
+		protected override void EveryFrame()
+		{
+			HandleCharacterStatus();
+
+			// we process our abilities
+			EarlyProcessAbilities();
+
+			if (Time.timeScale != 0f)
+			{
+				ProcessAbilities();
+				LateProcessAbilities();
+				HandleCameraTarget();
+			}
+
+			// we send our various states to the animator.		 
+			UpdateAnimators();
+			RotateModel();
+		}
+
+
+
+		/// <summary>
+		/// This is called at Update() and sets each of the animators parameters to their corresponding State values
+		/// </summary>
+		protected override void UpdateAnimators()
+		{
+			if ((UseDefaultMecanim) && (_animator != null))
+			{
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _groundedAnimationParameter, _controller.State.IsGrounded, _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _airborneSpeedAnimationParameter, Airborne, _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _aliveAnimationParameter, (ConditionState.CurrentState != CharacterStates.CharacterConditions.Dead), _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _xSpeedSpeedAnimationParameter, _controller.Speed.x, _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _ySpeedSpeedAnimationParameter, _controller.Speed.y, _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _worldXSpeedSpeedAnimationParameter, _controller.WorldSpeed.x, _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _worldYSpeedSpeedAnimationParameter, _controller.WorldSpeed.y, _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _collidingLeftAnimationParameter, _controller.State.IsCollidingLeft, _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _collidingRightAnimationParameter, _controller.State.IsCollidingRight, _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _collidingBelowAnimationParameter, _controller.State.IsCollidingBelow, _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _collidingAboveAnimationParameter, _controller.State.IsCollidingAbove, _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _idleSpeedAnimationParameter, (MovementState.CurrentState == CharacterStates.MovementStates.Idle), _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _facingRightAnimationParameter, IsFacingRight, _animatorParameters);
+
+				UpdateAnimationRandomNumber();
+				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _randomAnimationParameter, _animatorRandomNumber, _animatorParameters, PerformAnimatorSanityChecks);
+
+				foreach (MyAbillityBase ability in _myAbilities)
+				{
+					if (ability.enabled && ability.AbilityInitialized)
+					{
+						ability.UpdateAnimator();
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Flips the character and its dependencies (jetpack for example) horizontally
+		/// </summary>
+		public override void Flip(bool IgnoreFlipOnDirectionChange = false)
+		{
+		//	Debug.Log($"すし");
+			// if we don't want the character to flip, we do nothing and exit
+			if (!FlipModelOnDirectionChange && !RotateModelOnDirectionChange && !IgnoreFlipOnDirectionChange)
+			{
+				return;
+			}
+	//		Debug.Log($"し");
+			if (!CanFlip)
+			{
+				return;
+			}
+		//	Debug.Log($"お");
+			if (!FlipModelOnDirectionChange && !RotateModelOnDirectionChange && IgnoreFlipOnDirectionChange)
+			{
+				if (CharacterModel != null)
+				{
+					//
+					CharacterModel.transform.localScale = Vector3.Scale(CharacterModel.transform.localScale, ModelFlipValue);
+				}
+				else
+				{
+					// if we're sprite renderer based, we revert the flipX attribute
+					if (_spriteRenderer != null)
+					{
+						_spriteRenderer.flipX = !_spriteRenderer.flipX;
+					}
+				}
+			}
+			//Debug.Log($"おすし");
+			// Flips the character horizontally
+			FlipModel();
+
+			if (_animator != null)
+			{
+				MMAnimatorExtensions.SetAnimatorTrigger(_animator, _flipAnimationParameter, _animatorParameters, PerformAnimatorSanityChecks);
+			}
+			//右向いてるフラグを反転。
+			//右向いてるフラグは最初に右向いてるかどうかを検査して値を決めて以降は反転で処理する。
+			IsFacingRight = !IsFacingRight;
+
+			// we tell all our abilities we should flip
+			foreach (CharacterAbility ability in _myAbilities)
+			{
+				if (ability.enabled)
+				{
+					ability.Flip();
+				}
+			}
+		}
 
 
 	}
