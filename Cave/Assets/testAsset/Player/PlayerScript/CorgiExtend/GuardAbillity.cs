@@ -69,7 +69,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             // here as an example we check if we're pressing down
             // on our main stick/direction pad/keyboard
             // Debug.Log($"guibu{_horizontalInput}");
-            if (_controller.State.IsGrounded && !isDisenable)
+            if (_controller.State.IsGrounded)
                 {
                     if ((_inputManager.GuardButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed || guardHit) && GManager.instance.isEnable)
                     {
@@ -148,8 +148,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //ガードブレイクの処理まで入れるか
         void HitCheck()
         {
-            if (guardHit)
+            if (guardHit && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
             {
+                _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+                _movement.ChangeState(CharacterStates.MovementStates.Guard);
+
+
                 hitTime += _controller.DeltaTime;
                 if (isPlayer)
                 {
@@ -157,7 +161,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     //停止時間盾の受け値か種類で変えてもいいかも
                     //ガードヒット時動けないようにしないと
                     GManager.instance.isStUse = true;
-
+                    //ガード中に
+                    GManager.instance.isGuard = true;
                     //ガードでヒットした際は横移動とジャンプを封じる
                     //いやでも普通にガードヒットした状態にした方がよさそう
                     //スタンでいいか？
@@ -174,6 +179,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 //ヘルスの方で解除してもいいね
                 if (hitTime >= 0.1)
                 {
+                    _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
                     _characterHorizontalMovement.MovementForbidden = false;
                     guardHit = false;
                     hitTime = 0;

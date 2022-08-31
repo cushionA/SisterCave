@@ -32,6 +32,8 @@ public class EnemyValue
     public bool disParry;
     [Header("パリィ抵抗値")]
     public float parryResist;
+    [Header("落下攻撃")]
+    public int suppleNumber;
 
     [Header("戦闘時に攻撃後退く可能性")]
     [Tooltip("飛行タイプはこの数値が1ならダッシュで逃げる。2ならゆっくり。3なら上昇せずに走る。4なら上昇せずに歩く")]

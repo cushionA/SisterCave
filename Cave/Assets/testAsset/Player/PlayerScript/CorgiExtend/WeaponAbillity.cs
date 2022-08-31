@@ -4,8 +4,7 @@ using UnityEngine;
 using MoreMountains.Tools;
 using MoreMountains.Feedbacks;
 using UnityEngine.AddressableAssets;
-using Rewired.Integration.CorgiEngine;
-using DarkTonic.MasterAudio;
+using Cysharp.Threading.Tasks;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -35,6 +34,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected const string _numberParameterName = "AttackNumber";
         protected int _numberAnimationParameter;
 
+        [SerializeField]
+        //当たり判定が出るまでは振り返り可能にする
+        CircleCollider2D _attackCircle;
+
+        [SerializeField]
+        BoxCollider2D _attackBox;
+
         public enum ActType
         {
             noAttack,//なにもなし
@@ -50,7 +56,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
 
         ActType atType;
-
+        
 
         //内部パラメータ
         #region
@@ -58,10 +64,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-        /// <summary>
-        /// 武器の両手持ち切り替えがされてるかどうか
-        /// </summary>
-        bool changeKey;
+
 
 
         /// <summary>
@@ -89,12 +92,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-        //武器変更後の両手切り替え暴発予防
-        bool equipChange;
         //チャージ中
-        float horizontalKey;
+
         bool anyKey;
-        float attackDirection;
+
 
 
         /// <summary>
@@ -106,10 +107,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         int comboLimit;
 
 
-        /// <summary>
-        /// 横攻撃後に方向転換か移動か判断する
-        /// </summary>
-        float afterTime;
+
 
         float groundTime;
 
@@ -134,6 +132,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         bool fire1Key;
         bool fire2Key;
         bool artsKey;
+        bool chargeKey;
+
+        /// <summary>
+        /// 着地時とジャンプ時に初期化する
+        /// </summary>
+        bool isgroundReset;
+
+        /// <summary>
+        /// 真のとき振り返り可能
+        /// </summary>
+        bool _flipable;
 
         #endregion
 
@@ -147,14 +156,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             // randomBool = false;
         }
 
-
+        int test;
         /// <summary>
         /// 1フレームごとに、しゃがんでいるかどうか、まだしゃがんでいるべきかをチェックします
         /// </summary>
         public override void ProcessAbility()
         {
+
             base.ProcessAbility();
 
+ 
             //入力に基づいて動作
             InputReceiver();
 
@@ -170,10 +181,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     attackNumber = 0;
                     atType = ActType.noAttack;
                     startFall = false;
-                    isDisenable = false;
+                    
                     isComboEnd = false;
-                    isAttackable = false;Debug.Log("ここまで3");
+                    isAttackable = false; Debug.Log("ここまで3");
                 }
+
 
                 if (isAttackable)
                 {
@@ -182,18 +194,28 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                 }
 
-                    if (_controller.State.JustGotGrounded)
-                {
-                    isComboEnd = true;
-                }
             }
 
-         //   Debug.Log($"平常検査、ディスエナ{isDisenable}攻撃可能{isAttackable}、攻撃タイプ{atType}、移動可能{_characterHorizontalMovement.ReadInput}、攻撃番号{attackNumber}、空中許可{isAirEnd}");
+          //     Debug.Log($"平常検査、攻撃可能{isAttackable}、攻撃タイプ{_movement.CurrentState}、移動可能{_condition.CurrentState}、検査番号{test}、攻撃番号{attackNumber}");
 
 
         }
 
+        public override void EarlyProcessAbility()
+        {
+            if (_controller.State.IsGrounded && !isgroundReset)
+            {
+                attackNumber = 0;
+                isgroundReset = true;
+            }
+            else if (!_controller.State.IsGrounded && isgroundReset)
+            {
+                attackNumber = 0;
+                isgroundReset = false;
+            }
+            base.EarlyProcessAbility();
 
+        }
 
 
 
@@ -211,10 +233,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             // on our main stick/direction pad/keyboard
 
 
-            fire1Key = (_inputManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed);
-            fire2Key = (_inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed);
-            artsKey = (_inputManager.ArtsButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.ArtsButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed);
+            fire1Key = (_inputManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
+            fire2Key = (_inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
+            artsKey = (_inputManager.ArtsButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
 
+            if (isCharging)
+            {
+                chargeKey = _inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed;
+            }
 
             //    Debug.Log("アイイイ");
 
@@ -225,7 +251,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 anyKey = AnyKey();
 
             }
-            //  UpdateAnimator();
+
+            //攻撃判定出るまでは振り向ける
+            //移動系の技に入れないかもです
+            //それか攻撃判定出すだけ出すか
+            if (_flipable)
+            { 
+                if (_attackBox.enabled || _attackCircle.enabled)
+                {
+                    _flipable = false;
+                }
+                else if (-1 * _inputManager.PrimaryMovement.x == _character.CharacterModel.transform.localScale.x)
+                {
+                   
+                    _character.Flip();
+                    
+                }
+            }
 
         }
 
@@ -386,7 +428,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
 
             //スタミナ利用可能なら
-            if (GManager.instance.isEnable && !isDisenable && atType == ActType.noAttack && !GManager.instance.equipWeapon.isCombo && !isCharging)
+            if (GManager.instance.isEnable && atType == ActType.noAttack && _condition.CurrentState == CharacterStates.CharacterConditions.Normal && !GManager.instance.equipWeapon.isCombo && !isCharging)
             {
 
                 // 1通常攻撃、2は空中弱、3は強、4は空中強、5は戦技
@@ -403,14 +445,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         {
                             atType = ActType.aAttack;
                             //       
-                            isDisenable = true;
                             _controller.DefaultParameters.Gravity = -15f;
                         }
                     }
                     else
                     {
                         atType = ActType.sAttack;
-                        isDisenable = true;
                     }
                     
                 }
@@ -423,34 +463,34 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     {
                         isCharging = true;
                         atType = ActType.cCharge;
+                        chargeKey = true;
                     }
                     else
                     {
                         atType = ActType.fAttack;
                         Debug.Log($"1開始{attackNumber}");
                     }
-                    isDisenable = true;
                 }
                 else if (artsKey || artsTrigger)
                 {
                     atType = ActType.arts;
                     artsTrigger = false;
-                     isDisenable = true;
                 }
 
 
             }
             //攻撃中じゃなくてコンボ属性じゃないなら
-            if (GManager.instance.equipWeapon.isCombo && _movement.CurrentState != CharacterStates.MovementStates.Attack)
+            if (GManager.instance.equipWeapon.isCombo && _condition.CurrentState == CharacterStates.CharacterConditions.Normal)
             {
 
                 //コンボ入力
                 //artsトリガーとかを判断に使うか
+                //コンボになっててかつトリガーあるなら
             }
 
             if (isCharging)
             {
-                if (fire2Key)
+                if (chargeKey)
                 {
                    // Debug.Log("アイ矢―");
                     chargeTime += _controller.DeltaTime;
@@ -491,7 +531,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
 
             //攻撃中でなく攻撃状態にある時
-            if (atType != ActType.noAttack && _movement.CurrentState != CharacterStates.MovementStates.Attack && isDisenable)
+            if (atType != ActType.noAttack && _condition.CurrentState == CharacterStates.CharacterConditions.Normal)
             {
                 AttackAct();
             }
@@ -500,109 +540,72 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-        //アニメの終了探知
-        //終了時trueを返す
-        bool CheckEnd(string Name)
+        private async UniTask AttackEndWait()
         {
-            //      Debug.Log("ｄｄｆ");
-            if (!_animator.GetCurrentAnimatorStateInfo(0).IsName(Name))// || GManager.instance.pm.anim.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
-            {   // ここに到達直後はnormalizedTimeが"Default"の経過時間を拾ってしまうので、Resultに遷移完了するまではreturnする。
 
-                return false;
-            }
-            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-            {   // 待機時間を作りたいならば、ここの値を大きくする。
-                return false;
-            }
-            //      AnimatorClipInfo[] clipInfo = GManager.instance.pm.anim.GetCurrentAnimatorClipInfo(0);
+            // モーションを実行(実行後にAnimator更新のため1フレーム待つ)
+            await UniTask.DelayFrame(1);
 
-            ////Debug.Log($"アニメ終了");
-            //  Debug.Log("ｆ");
-            return true;
 
-            // return !(GManager.instance.pm.anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
-            //  (_currentStateName);
+
+            // モーション終了まで待機
+            await UniTask.WaitUntil(() => {
+                var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+                return 1.0f <= stateInfo.normalizedTime;
+            });
+
+            AttackEnd();
+
         }
+
+
 
         bool AnyKey()
         {
+           // Debug.Log($"あええええあ{_inputManager.CheckButtonUsing()}");
             //Anyは軸も行ける
             //キーコンフィグで反映されなかったりしたらInputRの参照そろえてないのを確認
-            if (GManager.instance.InputR.GetAnyButton() && !fire1Key && !fire2Key && !artsKey)
+            if (!fire1Key && !fire2Key && !artsKey)
             {
-                return true;
+                if (_inputManager.CheckButtonUsing() || _horizontalInput != 0 || _verticalInput != 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
+
                 return false;
             }
         }
 
-        void AnimationEndReserch()
+        async void AnimationEndReserch()
         {
 
             //モーション終了したかどうかの検査
 
 
                 #region//モーション終了検査
-
-                if (atType == ActType.sAttack)
-                {
-                    //     Debug.Log("アイイイ");
-                    if (CheckEnd($"SAttack{attackNumber}"))
-                    {
-                        //      Debug.Log("アイ");
-                       // Debug.Log($"4");
-                        AttackEnd();
-                    }
-                }
-                else if (atType == ActType.bAttack)
-                {
-                    if (CheckEnd($"BAttack{attackNumber}"))
-                    {
-                        AttackEnd();
-
-                    }
-                }
-                else if (atType == ActType.cAttack)
-                {
-                    if (CheckEnd($"CAttack{attackNumber}"))
-                    {
-
-                        AttackEnd();
-
-                    }
-                }
-                else if (atType == ActType.arts)
-                {
-                    if (CheckEnd($"Arts{attackNumber}"))
-                    {
-                        AttackEnd();
-                    }
-                }
-                else if (atType == ActType.aAttack)
-                {
-                 //   Debug.Log("あ");
-                    if (CheckEnd($"SAAttack{attackNumber}"))
-                    {
-                        AttackEnd();
-                    }
-
-                }
-                else if (atType == ActType.fAttack)
+                if (atType == ActType.fAttack)
                 {
                     //  Debug.Log($"sdfg");
                     //落下開始しててすでに着地してるなら
                     if (_controller.State.IsGrounded)
                     {
-                        Debug.Log($"pie");
-                        //着地アニメ終わってるなら解放
-                        if (CheckEnd($"Landing"))
-                        {
-                            Debug.Log("機能してます");
-                            AttackEnd();
-                        }
+                    // Debug.Log($"pie");
+                    //着地アニメ終わってるなら解放
+                  await  AttackEndWait();
                     }
+                }
+
+                else if (atType != ActType.cCharge && atType != ActType.noAttack)
+                {
+                //     Debug.Log("アイイイ");
+                    await AttackEndWait();
                 }
                 #endregion
 
@@ -617,9 +620,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         void GroundCheck()
         {
+            test = 5;
             //何かしらの入力があれば
             if (anyKey)
             {
+             //   Debug.Log("あああ");
                 AttackEnd();
             }
             //攻撃入力が続けばコンボに
@@ -667,21 +672,27 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
         void AirCheck()
         {
+            test = 9;
           //  Debug.Log("ああああ");
-            if (anyKey || _controller.State.IsGrounded)
+            if (anyKey || _controller.State.IsGrounded　)
             {
                 AttackEnd();
-
+                test = 40;
             }
             else if (fire1Key)
             {
-                if (atType == ActType.aAttack)
+                test = 20;
+                if (isAirEnd)
+                {
+                    AttackEnd();
+                }
+                else if (atType == ActType.aAttack)
                 {
                     AttackEnd(1, isComboEnd);
                 }
                 //他の攻撃の後小攻撃きたらattackNumberはリセット
             }
-            else if (_inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+            else if (fire2Key)
             {
 
                 AttackEnd(2, true);
@@ -711,14 +722,31 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="conti"></param>
        public void AttackEnd(int conti = 0, bool comboEnd = true)
         {
+            test = 0;
             GManager.instance.isAttack = false;
-            _movement.ChangeState(CharacterStates.MovementStates.Idle);
-             isDisenable = false;
+            if (_controller.State.IsGrounded)
+            {
+                _movement.ChangeState(CharacterStates.MovementStates.Idle);
+            }
+            else
+            {
+                _movement.ChangeState(CharacterStates.MovementStates.Falling);
+            }
          //   Debug.Log($"なんなに{isDisenable}");
-           
-            _characterHorizontalMovement.ReadInput = true;
+           if(_condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
+            {
+                _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+            }
+
             startFall = false;
             atType = ActType.noAttack;
+            if (comboEnd)
+            {
+
+
+                attackNumber = 0;isComboEnd = false;
+                // comboLimit = 0;
+            }
             if (conti == 1)
             {
                
@@ -734,13 +762,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             //もし連撃じゃないなら攻撃番号はリセット
 
-            if (comboEnd)
-            {
 
-
-                attackNumber = 0;isComboEnd = false;
-                // comboLimit = 0;
-            }
         }
 
         #endregion
@@ -749,15 +771,24 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //攻撃実行系
         #region
 
+
+        /// <summary>
+        /// 攻撃前の振り向き
+        /// </summary>
+        void AttackFlip()
+        {
+
+        }
+
+
         /// <summary>
         /// 攻撃の開始と
         /// </summary>
         void AttackAct()
         {
-            if (attackNumber ==1)
-            {
-          //      Debug.Log($"おわりっ");
-            }
+            _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+            test = 100;
+            _flipable = true;
             _characterHorizontalMovement.SetHorizontalMove(0);
             _movement.ChangeState(CharacterStates.MovementStates.Attack);
             //攻撃開始、アーマー発生
@@ -765,7 +796,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             GManager.instance.isAttack = true;
             isAttackable = false;
             //横移動不可
-            _characterHorizontalMovement.ReadInput = false;
+
             //isDisenable = true;
             //攻撃可能で弱攻撃ボタン押されてて攻撃してなくてスタミナが使えるなら以下の処理
             //delayTime = 0.0f;
@@ -802,9 +833,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 Debug.Log("つづくよ２");
             }
             #endregion
-           
+            attackNumber++;
          //   Debug.Log($"2sjf{comboLimit}{attackNumber}");
-            if (attackNumber >= comboLimit - 1 && comboLimit != 0)
+            if (attackNumber >= comboLimit && comboLimit != 0)
             {
                 
                 isComboEnd = true;
@@ -814,7 +845,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
           //  isAttackable = false;
             //攻撃番号加算
             //prepareで0から始まる番号使うので先に加算はダメです
-            attackNumber++;
+           
           //  Debug.Log($"3おおおおお{attackNumber}");
         }
 
@@ -845,7 +876,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             else if (!GManager.instance.blocking && isParring)
             {
                 // Debug.Log("sssssss");
-                if (!GManager.instance.twinHand && CheckEnd("OParry"))
+                if (!GManager.instance.twinHand)// && CheckEnd("OParry"))
                 {
                     // Debug.Log("sss");
                     isParring = false;
@@ -854,7 +885,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     GManager.instance.guardDisEnable = false;
                     // GManager.instance.isDown = false;
                 }
-                if (GManager.instance.twinHand && CheckEnd("TParry"))
+                if (GManager.instance.twinHand)// && CheckEnd("TParry"))
                 {
                     isParring = false;
                     GManager.instance.parrySuccess = false;
@@ -865,7 +896,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             else if (GManager.instance.blocking && isParring)
             {
-                if (!GManager.instance.twinHand && CheckEnd("OBlock"))
+                if (!GManager.instance.twinHand)// && CheckEnd("OBlock"))
                 {
                     isParring = false;
                     GManager.instance.parrySuccess = false;
@@ -873,7 +904,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     GManager.instance.guardDisEnable = false;
                     //GManager.instance.isDown = false;
                 }
-                if (GManager.instance.twinHand && CheckEnd("TBlock"))
+                if (GManager.instance.twinHand)// && CheckEnd("TBlock"))
                 {
                     isParring = false;
                     GManager.instance.parrySuccess = false;
@@ -898,12 +929,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //ガード中ならガード解除
             //ひよおおおおおおおおおおお
-            if (attackNumber != 0)
-            {
 
-             //   GManager.instance.pm.theScale.Set(attackDirection, transform.localScale.y, transform.localScale.z);
-            //    transform.localScale = GManager.instance.pm.theScale;
-            }
             if (!GManager.instance.twinHand)
             {
 
@@ -939,11 +965,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             GManager.instance.isShieldAttack = false;
 
 
-            if (attackNumber != 0)
-            {
-                GManager.instance.pm.theScale.Set(attackDirection, transform.localScale.y, transform.localScale.z);
-                transform.localScale = GManager.instance.pm.theScale;
-            }
             if (!GManager.instance.twinHand)
             {
 
@@ -979,11 +1000,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             GManager.instance.isShieldAttack = false;
 
 
-            if (attackNumber != 0)
-            {
-                //   GManager.instance.pm.theScale.Set(attackDirection, transform.localScale.y, transform.localScale.z);
-                //        transform.localScale = GManager.instance.pm.theScale;
-            }
             if (!GManager.instance.twinHand)
             {
 
@@ -1019,10 +1035,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             GManager.instance.isShieldAttack = false;
 
 
-            if (attackNumber != 0)
-            {
 
-            }
             if (!GManager.instance.twinHand)
             {
 
@@ -1058,11 +1071,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             GManager.instance.isShieldAttack = false;
 
 
-            if (attackNumber != 0)
-            {
-                GManager.instance.pm.theScale.Set(attackDirection, transform.localScale.y, transform.localScale.z);
-                transform.localScale = GManager.instance.pm.theScale;
-            }
+
             if (!GManager.instance.twinHand)
             {
 
@@ -1098,11 +1107,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
 
 
-            if (attackNumber != 0)
-            {
-                GManager.instance.pm.theScale.Set(attackDirection, transform.localScale.y, transform.localScale.z);
-                transform.localScale = GManager.instance.pm.theScale;
-            }
             if (!GManager.instance.twinHand && !GManager.instance.equipShield.weaponArts)
             {
 

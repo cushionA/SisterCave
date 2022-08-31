@@ -29,15 +29,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         protected new PlayerHorizontalMove _characterHorizontalMovement;
 
-        protected new MyHealth _health;
+        [HideInInspector]
+        public new MyHealth _health;
 
         protected new RewiredCorgiEngineInputManager _inputManager;
 
         protected new MyCharacter _character;
 
-        [HideInInspector]
-        ///^‚Ì‚Æ‚«“ü—Í•s‰Â
-        public bool isDisenable;
 
 
         /// <summary>

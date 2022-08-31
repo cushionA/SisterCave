@@ -28,6 +28,8 @@ protected string SiteHorizontal;
     protected Vector2 _siteMovement = Vector2.zero;
 
 
+
+
     /// <summary>
     /// ボタンを初期化します。ボタンを増やしたい場合は、必ずここで登録してください。
     /// </summary>
@@ -175,4 +177,27 @@ protected string SiteHorizontal;
             }
         }
     }
+
+
+
+    /// <summary>
+    /// At update, we check the various commands and update our values and states accordingly.
+    /// </summary>
+    protected override void Update()
+    {
+        if (!IsMobile && InputDetectionActive)
+        {
+            SetMovement();
+            SetSecondaryMovement();
+            SetShootAxis();
+            GetInputButtons();
+
+        }
+    }
+
+
+
+
+
+
 }

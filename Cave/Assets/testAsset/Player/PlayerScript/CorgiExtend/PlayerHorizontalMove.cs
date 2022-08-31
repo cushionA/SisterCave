@@ -103,8 +103,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		// animation parameters
 		protected const string _speedAnimationParameterName = "Speed";
 		protected const string _movingAnimationParameterName = "Moving";
+		protected const string _fallAnimationParameterName = "Falling";
 		protected int _speedAnimationParameter;
 		protected int _movingAnimationParameter;
+		protected int _fallAnimationParameter;
+
+
+		protected float fallTime;
 
 		/// <summary>
 		/// On Initialization, we set our movement speed to WalkSpeed.
@@ -144,7 +149,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//base.HandleInput();
 			if (!ReadInput)
 			{
-
+				//_horizontalMovement = 0;
 				return;
 			}
 
@@ -197,7 +202,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			if (!ActiveAfterDeath)
 			{
 				if (!AbilityAuthorized
-					|| (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+					|| !(_condition.CurrentState == CharacterStates.CharacterConditions.Normal || _condition.CurrentState == CharacterStates.CharacterConditions.Moving)
 					|| (_movement.CurrentState == CharacterStates.MovementStates.Gripping))
 				{
 					return;
@@ -229,7 +234,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				//¶Œü‚¢‚Ä‚ÄU‚èŒü‚¯‚ÄU‚èŒü‚­Ý’è‚É‚È‚Á‚Ä‚é‚È‚ç
 				if (!_character.IsFacingRight && canFlip && FlipCharacterToFaceDirection)
 				{
-					
+
 					_character.Flip();
 				}
 			}
@@ -239,6 +244,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				_normalizedHorizontalSpeed = _horizontalMovement;
 				if (_character.IsFacingRight && canFlip && FlipCharacterToFaceDirection)
 				{
+
 					_character.Flip();
 				}
 			}
@@ -282,12 +288,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			// if the character is not grounded, but currently idle or walking, we change its state to Falling
 			if (!_controller.State.IsGrounded
-				&& (
-					(_movement.CurrentState == CharacterStates.MovementStates.moving)
-					 || (_movement.CurrentState == CharacterStates.MovementStates.Idle)
-					))
+				&& 
+					(_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
+					 && (_movement.CurrentState != CharacterStates.MovementStates.Falling)
+					)
 			{
-				_movement.ChangeState(CharacterStates.MovementStates.Falling);
+				fallTime += _controller.DeltaTime;
+				if (fallTime > 0.05f) 
+				{
+					fallTime = 0;
+					_movement.ChangeState(CharacterStates.MovementStates.Falling);
+				}
 			}
 
 			// we apply instant acceleration if needed
@@ -379,8 +390,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						_movement.ChangeState(CharacterStates.MovementStates.Crouching);
 					}
-					else
+					else if(_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
 					{
+						//Debug.Log("‚í‚½‚µ‚ª‚í‚é‚¤‚²‚´‚¢‚Ü‚µ‚½");
 						_movement.ChangeState(CharacterStates.MovementStates.Idle);
 					}
 				}
@@ -447,6 +459,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			RegisterAnimatorParameter(_speedAnimationParameterName, AnimatorControllerParameterType.Float, out _speedAnimationParameter);
 			RegisterAnimatorParameter(_movingAnimationParameterName, AnimatorControllerParameterType.Bool, out _movingAnimationParameter);
+			RegisterAnimatorParameter(_fallAnimationParameterName, AnimatorControllerParameterType.Bool, out _fallAnimationParameter);
 		}
 
 		/// <summary>
@@ -456,6 +469,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _speedAnimationParameter, Mathf.Abs(_normalizedHorizontalSpeed), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
 			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _movingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.moving), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
+			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _fallAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Falling), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
+
 		}
 
 		/// <summary>

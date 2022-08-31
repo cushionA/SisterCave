@@ -24,7 +24,12 @@
         private int _rewiredActionId_siteVertical;
         private int[] _rewiredButtonIds;
         private int _rewiredSystemPauseButtonId;
-        
+
+        /// <summary>
+        /// これが真なら入力されてる。
+        /// </summary>
+        bool _inputCheck;
+
 
         /// <summary>
         /// スタート時に使用するモードを探し、軸とボタンを初期化します。
@@ -112,6 +117,15 @@
         }
 
         /// <summary>
+        /// _inputCheckを初期化する
+        /// </summary>
+        protected override void LateUpdate()
+        {
+            base.LateUpdate();
+            _inputCheck = false;
+        }
+
+        /// <summary>
         /// 入力の変化を監視し、それに応じてボタンの状態を更新する。
         /// </summary>
         protected override void GetInputButtons() 
@@ -125,10 +139,11 @@
             {
                 if(_rewiredPlayer.GetButton(_rewiredButtonIds[i])) {
                     ButtonList[i].TriggerButtonPressed();
-                    //
+                    _inputCheck = true;
                 }
                 if(_rewiredPlayer.GetButtonDown(_rewiredButtonIds[i])) {
                     ButtonList[i].TriggerButtonDown();
+                    _inputCheck = true;
                 }
                 if(_rewiredPlayer.GetButtonUp(_rewiredButtonIds[i])) {
                     ButtonList[i].TriggerButtonUp();
@@ -329,5 +344,16 @@
             if(id < 0 && warn) Debug.LogWarning("No Rewired Action found for Action name \"" + actionName + "\"");
             return id;
         }
+
+            /// <summary>
+    /// 何かボタンがいじられてるかどうか
+    /// </summary>
+    /// <returns></returns>
+    public bool CheckButtonUsing()
+    {
+        return (_inputCheck);
+    }
+
+
     }
 }

@@ -21,8 +21,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// declare your parameters here
         ///WeaponHandle参考にして 
 
-
-
+        
+        [SerializeField]
+        /// <summary>
+        /// 視界のコライダー
+        /// </summary>
+        PolygonCollider2D _sight;
 
         //--------------------------------------------------------------------------
         //フィールドサーチに必要なパラメーター
@@ -68,7 +72,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             base.Initialization();
             sister = GetComponent<BrainAbility>();
-            se = sister.Serch2.GetComponent<RangeSensor2D>();
+            se = GetComponent<RangeSensor2D>();
         }
 
         /// <summary>
@@ -111,6 +115,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         #region
         private void AggresiveSerch()
         {
+
             if (!SManager.instance.isSerch)
             {
                 pulseTime += _controller.DeltaTime;
@@ -145,6 +150,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         #region
         void FieldSerch()
         {
+
             if (!isSerch) 
             {
                 pulseTime += _controller.DeltaTime;
@@ -315,12 +321,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if(sister.nowState == BrainAbility.SisterState.戦い)
             {
                 se.SensorRange = aggresiveRange;
-                sister.Serch.SetActive(false);
+                _sight.enabled = false;
             }
             else
             {
                 se.SensorRange = fieldRange;
-                sister.Serch.SetActive(true);
+                _sight.enabled = true;
             }
 
         }
@@ -334,6 +340,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             SManager.instance.target = null;
             isSerch = false;
             pulseTime = 100;
+        }
+
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            SightSensor(collision.collider);
+        }
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            SightSensor(collision.collider);
         }
 
 

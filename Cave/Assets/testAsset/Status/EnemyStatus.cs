@@ -266,8 +266,7 @@ public class EnemyStatus : CharacterStatus
 	///</summary>
 	public Dictionary<string, string> motionIndex;
 
-	[Header("攻撃名")]
-	public List<string> attackName;
+
 	[Header("選択可能な番号")]
 	///<Summary>
 	///コンボの起点と非コンボの単発攻撃のみ

@@ -11,7 +11,7 @@ namespace MoreMountains.CorgiEngine
     public class MyHealth : Health
     {
         [HideInInspector]
-        public DefenseData _defData;
+        public DefenseData _defData = new DefenseData();
 
 
 
@@ -25,26 +25,25 @@ namespace MoreMountains.CorgiEngine
         [HideInInspector]
         public Vector2 blowVector;
 
+        protected new MyCharacter _character;
 
         protected UltimateTextDamageManager um;
 
-        protected void Awake()
+        protected  void StatusSet()
         {
-
-
+           
             if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
             {
                 
-
+            
                 eData = GetComponent<EnemyAIBase>();
-                //アタックデータをセットするメソッドとかほしい
-                //ヒット時ダメージ計算でヒット時やるか
-                eData.DefCalc();
+
                 um = EnemyManager.instance.um;
             }
             else if (_defender == MyDamageOntouch.TypeOfSubject.Player)
             {
-                pCon = GetComponent<PlyerController>();
+                pCon = GetComponent<PlyerController>(); 
+                um = EnemyManager.instance.um;
             }
             else if (_defender == MyDamageOntouch.TypeOfSubject.Magic)
             {
@@ -54,7 +53,71 @@ namespace MoreMountains.CorgiEngine
             {
                 //罠のダメージ
             }
+
         }
+
+        /// <summary>
+        /// 使用するコンポーネントを獲得しダメージを有効化し初期色を取得する。
+        /// </summary>
+        protected override void Initialization()
+        {
+            _character = this.gameObject.GetComponent<MyCharacter>();
+            _characterPersistence = this.gameObject.GetComponent<CharacterPersistence>();
+
+            if (this.gameObject.MMGetComponentNoAlloc<SpriteRenderer>() != null)
+            {
+                _renderer = this.gameObject.GetComponent<SpriteRenderer>();
+            }
+
+            if (_character != null)
+            {
+                if (_character.CharacterModel != null)
+                {
+                    if (_character.CharacterModel.GetComponentInChildren<Renderer>() != null)
+                    {
+                        _renderer = _character.CharacterModel.GetComponentInChildren<Renderer>();
+                    }
+                }
+            }
+
+            // アニメーターを獲得
+            if (_character != null)
+            {
+                if (_character.CharacterAnimator != null)
+                {
+                    _animator = _character.CharacterAnimator;
+                }
+                else
+                {
+                    _animator = this.gameObject.GetComponent<Animator>();
+                }
+            }
+            else
+            {
+                _animator = this.gameObject.GetComponent<Animator>();
+            }
+
+            if (_animator != null)
+            {
+                _animator.logWarnings = false;
+            }
+
+            _autoRespawn = this.gameObject.GetComponent<AutoRespawn>();
+            _controller = this.gameObject.GetComponent<CorgiController>();
+            _healthBar = this.gameObject.GetComponent<MMHealthBar>();
+            _collider2D = this.gameObject.GetComponent<Collider2D>();
+
+            StatusSet();
+
+            StoreInitialPosition();
+            _initialized = true;
+            //操作側でやる
+        //    CurrentHealth = InitialHealth;
+            DamageEnabled();
+            DisablePostDamageInvulnerability();
+            UpdateHealthBar(false);
+        }
+
 
 
         /// <summary>
@@ -68,7 +131,9 @@ namespace MoreMountains.CorgiEngine
             float invincibilityDuration, Vector3 damageDirection,bool back,MyWakeUp.StunnType stunnState)
         {
 
-                     // オブジェクトが無敵であれば、何もせずに終了します。
+         //   Debug.Log($"知りたいのだ");
+
+            // オブジェクトが無敵であれば、何もせずに終了します。
             if (TemporarilyInvulnerable || Invulnerable || ImmuneToDamage || PostDamageInvulnerable)
             {
                 OnHitZero?.Invoke();
@@ -102,14 +167,17 @@ namespace MoreMountains.CorgiEngine
 
             damage = (int)Calc(_damageData,back);
 
-            
-
+           Debug.Log($"おせーて{damage}と{CurrentHealth}");
+            if (um != null)
+            {
+                Debug.Log($"ｈｈｈｈｈ{um.name}");
+                um.AddStack(damage, this.gameObject.transform);
+            }
             if (damage <= 0)
             {
                 OnHitZero?.Invoke();
                 return;
             }
-            um.AddStack(damage, this.transform);
 
 
             if (!this.enabled)
@@ -171,18 +239,17 @@ namespace MoreMountains.CorgiEngine
 
             if (_defender != MyDamageOntouch.TypeOfSubject.Gimic && stunnState != MyWakeUp.StunnType.notStunned)
             {
-                if(!(stunnState != MyWakeUp.StunnType.Down && CurrentHealth <= 0))
-                {
-                    //吹き飛ばしじゃなくかつ命尽きてる時以外なら吹き飛ばしはする
-                    //スタン開始。
-                    //パリィと弾かれは処理を共通化する
-                    GetComponent<MyWakeUp>().StartStunn(stunnState);
-                }
+
+                //吹き飛ばしじゃなくかつ命尽きてる時以外なら吹き飛ばしはする
+                //スタン開始。
+                //パリィと弾かれは処理を共通化する
+                GetComponent<MyWakeUp>().StartStunn(stunnState);
 
             }
 
 
             // 体力ゼロの時
+            //死亡処理
             if (CurrentHealth <= 0)
             {
                 // ヘルスを0にします。（ヘルスバーに便利です。）
@@ -198,7 +265,7 @@ namespace MoreMountains.CorgiEngine
 
                 }
 
-                Kill();
+
             }
         }
 
@@ -217,7 +284,7 @@ namespace MoreMountains.CorgiEngine
 
 			//////Debug.log("終了");
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
-				float mValue = GManager.instance.equipWeapon.mValue;
+				float mValue = _damageData.mValue;
             //float damage;//バフデバフ処理用にdamageとして保持する
             if (_defData.isGuard && !back)
             {
@@ -233,7 +300,7 @@ namespace MoreMountains.CorgiEngine
                     }
                     else if (_damageData._attackType == 2)
                     {
-                        damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.pierDef) * ((100 - _defData.phyCut) / 100);
+                        damage += (Mathf.Pow(_damageData.phyAtk* mValue, 2) ) / (_damageData.phyAtk + _defData.pierDef) * ((100 - _defData.phyCut) / 100);
                         stab = true;
                         _attackType = 2;
                     }
@@ -311,14 +378,16 @@ namespace MoreMountains.CorgiEngine
                     mainDamage = _damageData.phyAtk;
                     //斬撃刺突打撃を管理
                     if (_damageData._attackType == 0)
-                    {
+                    { Debug.Log($"オオヌキフラッシュ{(Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def)}");
                         damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def);
 
                     }
                     else if (_damageData._attackType == 2)
                     {
-                        _damageData.phyAtk += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.pierDef);
+                       
+                        damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.pierDef);
                         stab = true;
+                        
                     }
                     else
                     {
@@ -432,7 +501,7 @@ namespace MoreMountains.CorgiEngine
 			}
 
 
-
+            Debug.Log($"ねええええ{damage}");
 
 			return Mathf.Floor(damage * GManager.instance.attackBuff);
 
@@ -468,7 +537,85 @@ namespace MoreMountains.CorgiEngine
             
         }
 
-
+        /// <summary>
+        /// 攻撃された時に空中にいたら特殊ダウンする
+        /// </summary>
+        /// <param name="stunnState"></param>
+        /// <returns></returns>
+        public bool AirDownJudge(MyWakeUp.StunnType stunnState)
+        {
+            //空中にいる時は少し浮かせてダウンに
+            //攻撃中はなんとか
+            if (!_controller.State.IsGrounded)
+            {
+                if (_defender == MyDamageOntouch.TypeOfSubject.Player)
+                {
+                    if (stunnState == MyWakeUp.StunnType.Falter)
+                    {
+                  //      stunnState = MyWakeUp.StunnType.Down;
+                        //吹き飛ばし処理
+                        return true;
+                    }
+                    else if (stunnState == MyWakeUp.StunnType.notStunned)
+                    {
+                        //攻撃中かどうか
+                        if (!pCon.AttackCheck())
+                        {
+                            return true;
+                            //吹き飛ばし処理
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
+                {
+                    if (eData.status.kind != EnemyStatus.KindofEnemy.Fly)
+                    {
+                        if (stunnState == MyWakeUp.StunnType.Falter)
+                        {
+                            return true;
+                            //吹き飛ばし処理
+                        }
+                        else if (stunnState == MyWakeUp.StunnType.notStunned)
+                        {
+                            //攻撃中かどうか
+                            if (!eData.AttackCheck())
+                            {
+                                return true;
+                                //吹き飛ばし処理
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
     }
 }

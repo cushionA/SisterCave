@@ -208,7 +208,7 @@ namespace MoreMountains.CorgiEngine
             // if the roll action is enabled in the permissions, we continue, if not we do nothing
             if (!AbilityAuthorized
                 || (!_controller.State.IsGrounded)
-                || (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+                || !(_condition.CurrentState == CharacterStates.CharacterConditions.Normal || _condition.CurrentState == CharacterStates.CharacterConditions.Moving)
                 || (_movement.CurrentState == CharacterStates.MovementStates.LedgeHanging)
                 || (_movement.CurrentState == CharacterStates.MovementStates.Gripping))
                 return false;
@@ -224,7 +224,7 @@ namespace MoreMountains.CorgiEngine
         {
             // we set its rolling state to true
             _movement.ChangeState(CharacterStates.MovementStates.Rolling);
-
+            _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
             // we start our sounds
             PlayAbilityStartFeedbacks();
 
@@ -309,7 +309,7 @@ namespace MoreMountains.CorgiEngine
         {
             // if the character is not in a position where it can move freely, we do nothing.
             if (!AbilityAuthorized
-                || (_condition.CurrentState != CharacterStates.CharacterConditions.Normal))
+                || !(_condition.CurrentState == CharacterStates.CharacterConditions.Normal || _condition.CurrentState == CharacterStates.CharacterConditions.Moving))
             {
                 yield break;
             }
@@ -398,6 +398,7 @@ namespace MoreMountains.CorgiEngine
                     _movement.RestorePreviousState();
                 }
             }
+            _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
         }
 
         /// <summary>

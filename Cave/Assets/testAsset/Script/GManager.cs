@@ -236,6 +236,9 @@ public class GManager : MonoBehaviour
     [HideInInspector] public float nockBack;//ガードした時に下がる数値
     [HideInInspector] public bool  twinHand;//片手かどうか。真なら両手
 
+
+    public int shit;
+
     //スタミナが回復する間隔の時間が経過したかどうか
     float disEnaTime;
     //スタミナ回復不能時間
@@ -248,10 +251,11 @@ public class GManager : MonoBehaviour
     //スタミナ回復不能状態終わりフラグ
     public bool isArmor;//強靭ついてるかどうか
     float stTime;
-    /// <summary>
-    /// アニメーター編集用の器
-    /// </summary>
-    private AnimatorOverrideController overrideController;
+
+/// <summary>
+/// アニメーター
+/// </summary>
+    Animator _anim;
 
     /// <summary>
     /// 真ならスタミナ使用中
@@ -351,9 +355,11 @@ public class GManager : MonoBehaviour
         // SetSlider();
         initialSetting();
 
-        overrideController = new AnimatorOverrideController();//////////////////////
-        overrideController.runtimeAnimatorController = pc.anim.runtimeAnimatorController;
-        pc.anim.runtimeAnimatorController = overrideController;
+        _anim = Player.GetComponent<Animator>();
+
+   //     myAnimatorOverride = new AnimatorOverrideController(_anim.runtimeAnimatorController);
+     //   _anim.runtimeAnimatorController = myAnimatorOverride.runtimeAnimatorController;
+
 
         hpSl = HpSlider.GetComponent<RectTransform>();
         mpSl = MpSlider.GetComponent<RectTransform>();
@@ -847,14 +853,14 @@ public class GManager : MonoBehaviour
             if (!twinHand)
             {
                 twinHand = true;
-                Debug.Log($"asidk{pc.anim.runtimeAnimatorController.name}");
-                pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[1];
+                Debug.Log($"asidk{_anim.runtimeAnimatorController.name}");
+                _anim.runtimeAnimatorController = equipWeapon._useContoroller[1];
             }
             //片手持ちに
             else
             {
                 twinHand = false;
-                pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+                _anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
                 AnimationSetting();
             }
         }
@@ -872,7 +878,7 @@ public class GManager : MonoBehaviour
                 weaponNum = 1;
                 equipWeapon = setWeapon[0];
             }
-            pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+            _anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
             twinHand = false;
             EquipChangedSetting();
             AnimationSetting();
@@ -892,7 +898,7 @@ public class GManager : MonoBehaviour
 
             }
             //武器を片手持ちに
-            pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+            _anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
             twinHand = false;
             EquipChangedSetting();
             AnimationSetting();
@@ -929,7 +935,7 @@ public class GManager : MonoBehaviour
                     CoreConfirm();
                     
                     twinHand = false;
-                    pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+                    _anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
                     AnimationSetting();
                     EquipChangedSetting();
 
@@ -953,7 +959,7 @@ public class GManager : MonoBehaviour
                     //コア確認
                     CoreConfirm();
                     twinHand = false;
-                    pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+                    _anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
                     AnimationSetting();
                     EquipChangedSetting();
                 }
@@ -983,7 +989,7 @@ public class GManager : MonoBehaviour
                 {
                     equipShield = setShield[0];
                     twinHand = false;
-                    pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+                    _anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
                 }
                 else
                 {
@@ -1002,7 +1008,7 @@ public class GManager : MonoBehaviour
                 {
                     equipShield = setShield[1];
                     twinHand = false;
-                    pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+                    _anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
                 }
                 else
                 {
@@ -1026,7 +1032,7 @@ public class GManager : MonoBehaviour
         equipCore = _core;
         if (CoreConfirm())
         {
-            pc.anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
+            _anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
             AnimationSetting();
         }
         EquipChangedSetting();
@@ -1083,7 +1089,7 @@ public class GManager : MonoBehaviour
             //equipShield.artsAnimeの数だけ片手アニメーターに両手のアニメーターから戦技のアニメを仕込んでいく
             for (int i = 0; i < equipWeapon.artsAnime.Length; i++)
             {
-                //     pc.anim.runtimeAnimatorController.animationClips[i] = equipWeapon._useContoroller[1].animationClips[i];
+                //     _anim.runtimeAnimatorController.animationClips[i] = equipWeapon._useContoroller[1].animationClips[i];
                 ChangeClip($"Arts{i + 1}", equipWeapon.artsAnime[i]);
             }
         }
@@ -1094,7 +1100,7 @@ public class GManager : MonoBehaviour
             for (int i = 0; i < equipShield.artsAnime.Length; i++)
             {
                 ChangeClip($"Arts{i + 1}", equipShield.artsAnime[i]);
-                //   pc.anim.runtimeAnimatorController.animationClips[i] = equipShield.artsAnime[i];
+                //   _anim.runtimeAnimatorController.animationClips[i] = equipShield.artsAnime[i];
                 //  Debug.Log($"さいあく{equipWeapon._useContoroller[0].animationClips[i].name}ですよ{equipShield.artsAnime[i].name}");
 
             }
@@ -1107,25 +1113,15 @@ public class GManager : MonoBehaviour
     /// アニメーションクリップを変える処理
     /// </summary>
     /// <param name="clip"></param>
-    public void ChangeClip(string overrideClipName, AnimationClip clip)
+    /// <summary>
+    /// Sub in real animations for stubs
+    /// </summary>
+    /// <param name="animator">Reference to animator</param>
+    public void ChangeClip(string overrideClipName, AnimationClip animClip)
     {
-        // ステートをキャッシュ
-        AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[pc.anim.layerCount];
-        for (int i = 0; i < pc.anim.layerCount; i++)
-        {
-            layerInfo[i] = pc.anim.GetCurrentAnimatorStateInfo(i);
-        }
+        AnimatorOverrideController test = (AnimatorOverrideController)_anim.runtimeAnimatorController;
 
-        // AnimationClipを差し替えて、強制的にアップデート
-        // ステートがリセットされる
-        overrideController[overrideClipName] = clip;
-        pc.anim.Update(0.0f);
-
-        // ステートを戻す
-   /*     for (int i = 0; i < pc.anim.layerCount; i++)
-        {
-            pc.anim.Play(layerInfo[i].shortNameHash, i, layerInfo[i].normalizedTime);
-        }*/
+        test[overrideClipName] = animClip;
     }
 
 
@@ -1194,7 +1190,7 @@ public class GManager : MonoBehaviour
             {
                 //isFalter = true;
                 isAnimeStart = true;
-                pc.anim.Play("TLongSwordFalter");
+                _anim.Play("TLongSwordFalter");
             }
             else if (!CheckEnd("TLongSwordFalter"))
             {
@@ -1229,7 +1225,7 @@ public class GManager : MonoBehaviour
                 isDown = true;
                 //isFalter = true;
                 isAnimeStart = true;
-                pc.anim.Play("Bounce");
+                _anim.Play("Bounce");
                 //Debug.Log("弾かれ");
             }
             else if (!CheckEnd("Bounce"))
@@ -1381,11 +1377,11 @@ public class GManager : MonoBehaviour
     bool CheckEnd(string Name)
     {
 
-        if (!pc.anim.GetCurrentAnimatorStateInfo(0).IsName(Name))// || sAni.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
+        if (!_anim.GetCurrentAnimatorStateInfo(0).IsName(Name))// || sAni.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
         {   // ここに到達直後はnormalizedTimeが"Default"の経過時間を拾ってしまうので、Resultに遷移完了するまではreturnする。
             return true;
         }
-        if (pc.anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        if (_anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
         {   // 待機時間を作りたいならば、ここの値を大きくする。
             return true;
         }

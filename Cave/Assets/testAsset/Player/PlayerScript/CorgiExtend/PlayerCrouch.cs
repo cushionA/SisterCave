@@ -85,7 +85,7 @@ namespace MoreMountains.CorgiEngine
 		{
 			// Crouch Detection : if the player is pressing "down" and if the character is grounded and the crouch action is enabled
 			//‰º“ü‚ê‚Ä‚½‚ç‚µ‚á‚ª‚Þ
-			if (_verticalInput < -_inputManager.Threshold.y && !isDisenable)
+			if (_verticalInput < -_inputManager.Threshold.y)
 			{
 				Crouch();
 			}
@@ -96,6 +96,11 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected virtual void Crouch()
 		{
+			if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+			{
+				return;
+			}
+
 			if (!AbilityAuthorized // if the ability is not permitted
 				|| (_condition.CurrentState != CharacterStates.CharacterConditions.Normal) // or if we're not in our normal stance
 				|| (!_controller.State.IsGrounded) // or if we're grounded

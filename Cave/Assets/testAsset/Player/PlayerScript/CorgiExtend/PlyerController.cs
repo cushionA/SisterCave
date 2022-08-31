@@ -85,7 +85,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		[SerializeField]
 		protected PlayerCrouch _squat;
 
-		protected new MyHealth _health;
+
         #endregion
 
 
@@ -101,10 +101,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (!GManager.instance.twinHand)
             {
 				GManager.instance.AnimationSetting();
-				Debug.Log($"asidk");
+				//Debug.Log($"asidk");
 			}
 			ArmorReset();
-			_health = (MyHealth)base._health;
 
 			//	rb = this.gameObject.GetComponent<Rigidbody2D>();
 			GManager.instance.HPReset();
@@ -230,11 +229,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				_running.RunSpeed = status.dashSpeed;
 			}
-            
 
-            {
-
-            }
 
 
 		if (_rolling != null)
@@ -427,7 +422,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public override void ProcessAbility()
         {
             base.ProcessAbility();
-			DisenableController();
 
 		}
 
@@ -471,7 +465,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			if (useEquip.phyAtk > 0)
 		{
-			_damage._attackData.phyAtk = (Mathf.Pow(useEquip.phyAtk, 2) * GManager.instance.useAtValue.x) * attackFactor;
+			_damage._attackData.phyAtk = useEquip.phyAtk* attackFactor;
 
                 //斬撃刺突打撃を管理
                 if (GManager.instance.useAtValue.type == Equip.AttackType.Slash)
@@ -502,34 +496,34 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //神聖
             if (useEquip.holyAtk > 0)
 		{
-			_damage._attackData.holyAtk = (Mathf.Pow(useEquip.holyAtk, 2) * GManager.instance.useAtValue.x) * holyATFactor;
+			_damage._attackData.holyAtk = useEquip.holyAtk * holyATFactor;
 
 		}
 		//闇
 		if (useEquip.darkAtk > 0)
 		{
-			_damage._attackData.darkAtk = (Mathf.Pow(useEquip.holyAtk, 2) * GManager.instance.useAtValue.x) * darkATFactor;
+			_damage._attackData.darkAtk = useEquip.darkAtk * darkATFactor;
 
 		}
 		//炎
 		if (useEquip.fireAtk > 0)
 		{
-			_damage._attackData.fireAtk = (Mathf.Pow(useEquip.holyAtk, 2) * GManager.instance.useAtValue.x) * fireATFactor;
+			_damage._attackData.fireAtk = useEquip.fireAtk * fireATFactor;
 
 		}
 		//雷
 		if (useEquip.thunderAtk > 0)
 		{
-			_damage._attackData.thunderAtk = (Mathf.Pow(useEquip.holyAtk, 2) * GManager.instance.useAtValue.x) * thunderATFactor;
+			_damage._attackData.thunderAtk = useEquip.thunderAtk * thunderATFactor;
 
 		}
 		_damage._attackData.shock = GManager.instance.useAtValue.z;
 
 
 		_damage._attackData.attackBuff = attackBuff;
-		//damage = Mathf.Floor(damage * attackBuff);
-
-		_damage._attackData.isBlow = GManager.instance.useAtValue.isBlow;
+			//damage = Mathf.Floor(damage * attackBuff);
+			_damage._attackData.mValue = GManager.instance.useAtValue.x;
+			_damage._attackData.isBlow = GManager.instance.useAtValue.isBlow;
 		_damage._attackData.isLight = GManager.instance.useAtValue.isLight;
 		_damage._attackData.blowPower.Set(GManager.instance.useAtValue.blowPower.x, GManager.instance.useAtValue.blowPower.y);
 	}
@@ -539,6 +533,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	/// </summary>
 	public void DefCalc(bool isTwinHand)
 	{
+		//	Debug.Log("あああああぢいいぢぢぢぢｄ");
 			Equip useEquip;
             if (isTwinHand)
 			{
@@ -550,7 +545,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 
 
-			_health._defData.maxHp = GManager.instance.maxHp;
+			_health.InitialHealth = (int)GManager.instance.maxHp;
 		_health._defData.Def = GManager.instance.Def;
 		_health._defData.pierDef = GManager.instance.pierDef;
 		_health._defData.strDef = GManager.instance.strDef;
@@ -654,7 +649,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				}
 				else
 				{
+					//攻撃アーマーの数値がアーマー削りより大きいならアーマーの数値は変わらない。
+					//攻撃アーマーの数値引いた分アーマー削りでアーマーを削る
 					nowArmor -= (shock - GManager.instance.useAtValue.y) < 0 ? 0 : (shock - GManager.instance.useAtValue.y);
+					//攻撃アーマーも一応削る
 					GManager.instance.useAtValue.y = (GManager.instance.useAtValue.y - shock) < 0 ? 0 : GManager.instance.useAtValue.y - shock;
 
 				}
@@ -817,39 +815,26 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		}
 
-	　　public void DisenableController()
+		//ヘルスのために攻撃状態か否かを返す
+		public bool AttackCheck()
         {
-            if (_movement.CurrentState == CharacterStates.MovementStates.Rolling || _movement.CurrentState == CharacterStates.MovementStates.Attack)
-            {
-				_running.isDisenable = true;
-				_jump.isDisenable = true;
-				_squat.isDisenable = true;
-				_guard.isDisenable = true;
-            }
-            else
-            {
-				_running.isDisenable = false;
-				_jump.isDisenable = false;
-				_squat.isDisenable = false;
-				_guard.isDisenable = false;
-			}
+			return _movement.CurrentState == CharacterStates.MovementStates.Attack;
         }
 
-
-		public void WeaponChange()
+        public void WeaponChange()
 		{
 
 			if (_inputManager.WeaponChangeButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
 			{
 				_weapon.AttackEnd();
-				_weapon.isDisenable = true;
+				_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
 				//このフラグは武器切り替えか両手持ち切り替えかで区別するもの
 				//武器切り替え後は一回だけボタン離しても持ち手変更が反応しないようにする
 				Debug.Log("あいｓｄｋｆｒねお");
 			}
             else
             {
-				Debug.Log("あｙｔｙｙ");
+
 				return;
             }
 
@@ -868,7 +853,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
 				GManager.instance.EquipSwap(0);
             }
-			_weapon.isDisenable = false;
+			if (_condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
+			{
+				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+			}
 		}
 
 

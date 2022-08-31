@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class DefenseData
 {
-    //　最大HP
-    public float maxHp = 100;
+
 
     public float phyCut;//カット率
 	public float holyCut;//光。

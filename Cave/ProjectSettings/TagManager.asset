@@ -11,6 +11,14 @@ TagManager:
   - PlayerSerch
   - Guard
   - Attack
+  - Dialog
+  - Ground
+  - ActiveZone
+  - ScrollContent
+  - JumpTrigger
+  - Enemy
+  - EnemyAttack
+  - SisAttack
   layers:
   - Default
   - TransparentFX
@@ -18,29 +26,29 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
   - Platforms
   - Player
   - Volumes
   - OneWayPlatforms
-  - Projectiles
   - Enemies
-  - 
-  - Ladders
-  - PlayerProjectiles
+  - Gimicks
   - MovingObjects
   - MovingPlatforms
-  - Foreground
   - MovingOneWayPlatforms
-  - NoCollision
-  - Background
+  - Avoid
   - Friendlies
   - Invulnerable
   - PlatformsPlayerOnly
   - MidHeightOneWayPlatforms
   - Pushables
   - Stairs
+  - PlayerAttack
+  - EnemyAttack
+  - Serch
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

@@ -18,6 +18,8 @@ public class AttackData
 	[HideInInspector]
 	public float thunderAtk;//–‚—Í
 
+	[HideInInspector]
+	public float mValue;
 
 	///<summary>
 	/// ÅI“I‚È‰ñ•œ—Ê

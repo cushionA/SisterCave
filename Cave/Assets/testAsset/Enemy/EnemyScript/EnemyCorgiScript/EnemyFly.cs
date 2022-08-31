@@ -233,7 +233,8 @@ namespace MoreMountains.CorgiEngine
             else if (_horizontalMovement < -0.1f)
             {
                 if (_character.IsFacingRight)
-                    _character.Flip();
+
+                _character.Flip();
             }
 
             if (_flying)

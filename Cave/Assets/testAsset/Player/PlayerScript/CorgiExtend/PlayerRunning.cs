@@ -63,7 +63,7 @@ namespace MoreMountains.CorgiEngine
 		{
             //‚±‚Á‚¿‚ÍƒXƒ^ƒ“’†—˜—p‚Å‚«‚È‚¢‚æ‚¤‚É
 
-            if (isDisenable)
+            if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
             {
 				return;
             }

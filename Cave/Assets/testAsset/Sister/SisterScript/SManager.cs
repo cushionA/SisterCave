@@ -35,6 +35,7 @@ public class SManager : MonoBehaviour
 
     /// <summary>
     /// 敵をサーチしたフラグ
+    /// サーチした後の状況で行動を変える
     /// </summary>
     [HideInInspector] public bool isSerch;
     /// <summary>

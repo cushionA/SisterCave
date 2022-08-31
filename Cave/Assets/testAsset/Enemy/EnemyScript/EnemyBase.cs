@@ -2894,6 +2894,8 @@ if (!isDamage)
 	/// <param name="number"></param>
 	public void SetAttackNumber(int number)
     {
+		number = number > status.serectableNumber.Count - 1 ? status.serectableNumber.Count - 1 : number;
+		number = number < 0 ? 0 : number;
 		attackNumber = status.serectableNumber[number];
     }
 
@@ -2969,7 +2971,7 @@ if (!isDamage)
     {
 		if (isAttack)
 		{
-			if (!CheckEnd(status.attackName[attackNumber]) || isDown)
+			if (isDown)//!CheckEnd(status.attackName[attackNumber]) || 
 			{
 				if (!isDown)
 				{

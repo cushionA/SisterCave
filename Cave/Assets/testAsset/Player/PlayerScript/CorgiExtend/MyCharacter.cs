@@ -35,6 +35,8 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public override void CacheAbilities()
         {
+
+
 			//‡@
 			// „‚½‚¿‚ÍA„‚½‚¿‚ÌƒŒƒxƒ‹‚Å‚·‚×‚Ä‚Ì”\—Í‚ğ‚Â‚©‚Ş
 			//CharacterAbility‚ğŒp³‚·‚é‚à‚Ì‚·‚×‚Ä‚ğGet
@@ -278,7 +280,7 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public override void Flip(bool IgnoreFlipOnDirectionChange = false)
 		{
-		//	Debug.Log($"‚·‚µ");
+		//	Debug.Log($"‚·‚µ{GManager.instance.shit}");
 			// if we don't want the character to flip, we do nothing and exit
 			if (!FlipModelOnDirectionChange && !RotateModelOnDirectionChange && !IgnoreFlipOnDirectionChange)
 			{

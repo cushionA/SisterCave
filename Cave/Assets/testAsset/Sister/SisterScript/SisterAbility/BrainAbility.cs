@@ -260,7 +260,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
 
 
-			if (_movement.CurrentState == CharacterStates.MovementStates.Warp || isStop || _movement.CurrentState != CharacterStates.MovementStates.Rolling || _condition.CurrentState == CharacterStates.CharacterConditions.Stunned || _movement.CurrentState == CharacterStates.MovementStates.Attack
+			if (_movement.CurrentState == CharacterStates.MovementStates.Warp || isStop || _condition.CurrentState == CharacterStates.CharacterConditions.Normal
 				||	_movement.CurrentState == CharacterStates.MovementStates.Falling)
 			{
 				disEnable = true;

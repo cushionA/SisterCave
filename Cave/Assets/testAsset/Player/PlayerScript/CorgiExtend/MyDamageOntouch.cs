@@ -19,7 +19,7 @@ namespace MoreMountains.CorgiEngine
 
         EnemyAIBase eData;
         protected PlyerController pCon;
-
+        [SerializeField]
         protected new MyHealth _health;
         protected new MyHealth _colliderHealth;
         /// <summary>
@@ -36,7 +36,7 @@ namespace MoreMountains.CorgiEngine
         protected override void Awake()
         {
             base.Awake();
-            _health = this.gameObject.GetComponent<MyHealth>();
+
             if (_attacker == TypeOfSubject.Enemy)
             {
                 Owner = transform.root.gameObject;
@@ -61,6 +61,8 @@ namespace MoreMountains.CorgiEngine
             DamageTakenInvincibilityDuration = 0.15f;
             DamageCausedKnockbackType = KnockbackStyles.AddForce;
             DamageCausedKnockbackDirection = CausedKnockbackDirections.BasedOnOwnerPosition;
+            _attackData = new AttackData(); 
+         //   _health = Owner.gameObject.GetComponent<MyHealth>();
         }
         protected override void OnCollideWithDamageable(Health health)
         {
@@ -93,15 +95,15 @@ namespace MoreMountains.CorgiEngine
             bool isRight = false; ;
 
             //ダメージ判定のxの中心と被弾した相手のローカルスケールの正負で確認
-            if ((basePosition < _health.transform.position.x && _health.transform.localScale.x > 0) ||
-                (basePosition > _health.transform.position.x && _health.transform.localScale.x < 0))
+            if ((basePosition < Owner.transform.position.x && Owner.transform.localScale.x > 0) ||
+                (basePosition > Owner.transform.position.x && Owner.transform.localScale.x < 0))
             {
                 back = true;
                 _attackData.shock *= 1.05f;
             }
             //アーマー削りを整数に
             _attackData.shock = Mathf.Floor(_attackData.shock);
-            isRight = (_health.transform.position.x <= transform.position.x) ? true : false;
+            isRight = (Owner.transform.position.x <= transform.position.x) ? true : false;
             // 衝突した相手が CorgiController の場合、ノックバック力を適用する
             _colliderCorgiController = health.gameObject.MMGetComponentNoAlloc<CorgiController>();
 
@@ -214,9 +216,26 @@ namespace MoreMountains.CorgiEngine
         {
             MyWakeUp.StunnType result = _health.ArmorCheck(_attackData.shock,_attackData.isBlow, isBack);
 
+            bool isAirDown = false;
+
+            //空中特殊ダウンが発生するなら
+            if (_colliderHealth.AirDownJudge(result))
+            {
+                isAirDown = true;
+                result = MyWakeUp.StunnType.Down;
+            }
+
             if (result == MyWakeUp.StunnType.Down)
             {
-                DamageCausedKnockbackForce.Set(_attackData.blowPower.x, _attackData.blowPower.y);
+                if (!isAirDown)
+                {
+                    DamageCausedKnockbackForce.Set(_attackData.blowPower.x, _attackData.blowPower.y);
+                }
+                else
+                {
+                        //少しだけ浮く
+                    DamageCausedKnockbackForce.Set(0, 30);
+                }
             }
             else if(result == MyWakeUp.StunnType.Falter)
             {

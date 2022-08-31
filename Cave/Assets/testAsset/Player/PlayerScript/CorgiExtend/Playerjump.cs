@@ -223,11 +223,11 @@ namespace MoreMountains.CorgiEngine
 				return;
             }
 
-			if(isDisenable)
-            {
+			if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+			{
 				JumpATStop();
 				return;
-            }
+			}
 
 			//上押してて、かつスタミナ使用可能なら
 			if (_verticalInput > 0 && GManager.instance.isEnable)
@@ -318,7 +318,7 @@ namespace MoreMountains.CorgiEngine
                 if (NumberOfJumps == NumberOfJumpsLeft && _movement.CurrentState != CharacterStates.MovementStates.Jumping && !_doubleJumping)
                 {
 					NumberOfJumpsLeft = NumberOfJumpsLeft - 1;
-					_doubleJumping = true;
+				//	_doubleJumping = true;
                 }
             }
 
@@ -755,9 +755,17 @@ namespace MoreMountains.CorgiEngine
 		public bool JumpEnableJudge()
         {
 			//ジャンプ中でなくジャンプ回数が残ってるなら
-			if(_movement.CurrentState != CharacterStates.MovementStates.Jumping && NumberOfJumpsLeft > 0)
+			if(_movement.CurrentState != CharacterStates.MovementStates.Jumping)
             {
-				return true;
+	//Debug.Log($"ああああああ{NumberOfJumps}{NumberOfJumpsLeft}");
+				//ジャンプを一回も消費してないのに空中で判断を行う時は一つ減らす
+				if (NumberOfJumpsLeft == NumberOfJumps && !_controller.State.IsGrounded)
+                {	
+					NumberOfJumpsLeft = NumberOfJumpsLeft - 1;
+                }
+			
+　　　　　　　　　return NumberOfJumpsLeft > 0;
+	
             }
             else
             {
