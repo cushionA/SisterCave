@@ -290,11 +290,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			if (!_controller.State.IsGrounded
 				&& 
 					(_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
-					 && (_movement.CurrentState != CharacterStates.MovementStates.Falling)
+					 && ((_movement.CurrentState == CharacterStates.MovementStates.moving)
+					 || (_movement.CurrentState == CharacterStates.MovementStates.Idle))
 					)
+					
 			{
 				fallTime += _controller.DeltaTime;
-				if (fallTime > 0.05f) 
+				if (fallTime > 0.0f) 
 				{
 					fallTime = 0;
 					_movement.ChangeState(CharacterStates.MovementStates.Falling);
