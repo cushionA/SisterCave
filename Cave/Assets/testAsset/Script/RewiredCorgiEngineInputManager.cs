@@ -66,6 +66,7 @@
                 string actionName = StripPlayerIdFromActionName(ButtonList[i].ButtonID); // ButtonId (PlayerID_ActionName) から PlayerId を除去して、アクション名を取得します。
                 if (string.IsNullOrEmpty(actionName)) continue;//その名前が空っぽかnullなら継続
                 _rewiredButtonIds[i] = ReInput.mapping.GetActionId(actionName);
+                
                 // Find the Shoot action so we can reuse it instead of ShootAxis
                 //ShootAxisの代わりにShootアクションを再利用できるように検索します。
                 if (actionName.Equals("Shoot", System.StringComparison.OrdinalIgnoreCase)) {
@@ -83,10 +84,10 @@
 
             _axisHorizontal = "MoveHorizontal";
             _axisVertical = "MoveVertical";
-            _axisSecondaryHorizontal = "_SecondaryHorizontal";
-            _axisSecondaryVertical = "_SecondaryVertical";
-            _axisShoot = "_ShootAxis";
-            _axisShootSecondary = "_SecondaryShootAxis";
+         //   _axisSecondaryHorizontal = "_SecondaryHorizontal";
+        //    _axisSecondaryVertical = "_SecondaryVertical";
+           // _axisShoot = "_ShootAxis";
+         //   _axisShootSecondary = "_SecondaryShootAxis";
             SiteVertical = "SiteVertical";
             SiteHorizontal = "SiteHorizontal";
 
@@ -96,8 +97,8 @@
             // Cache the Rewired Action Id integers instead of using strings for speed
             _rewiredActionId_horizontal = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(_axisHorizontal));
             _rewiredActionId_vertical = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(_axisVertical));
-            _rewiredActionId_secondaryHorizontal = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(_axisSecondaryHorizontal));
-            _rewiredActionId_secondaryVertical = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(_axisSecondaryVertical));
+            //_rewiredActionId_secondaryHorizontal = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(_axisSecondaryHorizontal));
+            //_rewiredActionId_secondaryVertical = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(_axisSecondaryVertical));
             _rewiredActionId_siteHorizontal = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(SiteHorizontal));
             _rewiredActionId_siteVertical = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(SiteVertical));
         }
@@ -114,6 +115,7 @@
             SetSecondaryMovement();
             SetShootAxis();
             GetInputButtons();
+          
         }
 
         /// <summary>
@@ -137,15 +139,21 @@
             //ボタンが一個ずつ押されてるか確認中
             for(int i = 0; i < _rewiredButtonIds.Length; i++) 
             {
-                if(_rewiredPlayer.GetButton(_rewiredButtonIds[i])) {
+                Debug.Log($"でえええ{_rewiredButtonIds[i]}");
+                if (_rewiredPlayer.GetButton(10)) {
+                    if (ButtonList[i] == sAttackButton)
+                    {
+                        Debug.Log("ｈｈｈｈ");
+                    }
+                    Debug.Log("push");
                     ButtonList[i].TriggerButtonPressed();
                     _inputCheck = true;
                 }
-                if(_rewiredPlayer.GetButtonDown(_rewiredButtonIds[i])) {
+                if(_rewiredPlayer.GetButtonDown(10)) {
                     ButtonList[i].TriggerButtonDown();
                     _inputCheck = true;
                 }
-                if(_rewiredPlayer.GetButtonUp(_rewiredButtonIds[i])) {
+                if(_rewiredPlayer.GetButtonUp(10)) {
                     ButtonList[i].TriggerButtonUp();
                 }
             }

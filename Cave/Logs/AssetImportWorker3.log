@@ -15,7 +15,7 @@ C:/Users/tatuk/Documents/SisterCave/Cave
 -logFile
 Logs/AssetImportWorker3.log
 -srvPort
-50363
+55954
 Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
 C:/Users/tatuk/Documents/SisterCave/Cave
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -47,7 +47,7 @@ C:/Users/tatuk/Documents/SisterCave/Cave
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Refreshing native plugins compatible for Editor in 696.69 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 610.17 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2021.3.8f1 (b30333d56e81)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/Resources/UnitySubsystems
@@ -69,7 +69,7 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56540
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56816
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
@@ -77,81 +77,81 @@ Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.8f1/E
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
-Registered in 0.012684 seconds.
+Registered in 0.012401 seconds.
 Native extension for UWP target not found
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 664.24 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 629.31 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.281 seconds
+- Completed reload, in  1.207 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1282ms)
-		BeginReloadAssembly (91ms)
+	ReloadAssembly (1208ms)
+		BeginReloadAssembly (72ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (1068ms)
-			LoadAssemblies (89ms)
+		EndReloadAssembly (1015ms)
+			LoadAssemblies (69ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (124ms)
+			SetupTypeCache (104ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (26ms)
-			SetupLoadedEditorAssemblies (851ms)
+			RebuildScriptCaches (28ms)
+			SetupLoadedEditorAssemblies (813ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (17ms)
+				InitializePlatformSupportModulesInManaged (18ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (664ms)
+				RefreshPlugins (629ms)
 				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (124ms)
-				ProcessInitializeOnLoadMethodAttributes (44ms)
+				ProcessInitializeOnLoadAttributes (119ms)
+				ProcessInitializeOnLoadMethodAttributes (45ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.014783 seconds.
+Registered in 0.014441 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for UWP target not found
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 703.61 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 727.42 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  3.606 seconds
+- Completed reload, in  4.065 seconds
 Domain Reload Profiling:
-	ReloadAssembly (3607ms)
-		BeginReloadAssembly (141ms)
+	ReloadAssembly (4066ms)
+		BeginReloadAssembly (113ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (6ms)
+			DisableScriptedObjects (5ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (21ms)
-		EndReloadAssembly (3329ms)
-			LoadAssemblies (322ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (598ms)
+			CreateAndSetChildDomain (17ms)
+		EndReloadAssembly (3816ms)
+			LoadAssemblies (327ms)
+			RebuildTransferFunctionScriptingTraits (1ms)
+			SetupTypeCache (865ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (229ms)
-			SetupLoadedEditorAssemblies (2119ms)
+			RebuildScriptCaches (222ms)
+			SetupLoadedEditorAssemblies (2235ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (16ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (704ms)
-				BeforeProcessingInitializeOnLoad (195ms)
-				ProcessInitializeOnLoadAttributes (1063ms)
-				ProcessInitializeOnLoadMethodAttributes (133ms)
-				AfterProcessingInitializeOnLoad (8ms)
+				RefreshPlugins (728ms)
+				BeforeProcessingInitializeOnLoad (157ms)
+				ProcessInitializeOnLoadAttributes (1206ms)
+				ProcessInitializeOnLoadMethodAttributes (121ms)
+				AfterProcessingInitializeOnLoad (7ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (4ms)
+			AwakeInstancesAfterBackupRestoration (5ms)
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
@@ -162,12 +162,12 @@ Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|light
 Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
 Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 5.69 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 29.65 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 10416 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 143 unused Assets / (8.1 MB). Loaded Objects now: 10908.
-Memory consumption went from 0.65 GB to 0.64 GB.
-Total: 16.702300 ms (FindLiveObjects: 2.579000 ms CreateObjectMapping: 1.553800 ms MarkObjects: 10.034300 ms  DeleteObjects: 2.533800 ms)
+Unloading 10622 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 143 unused Assets / (8.1 MB). Loaded Objects now: 11114.
+Memory consumption went from 0.66 GB to 0.65 GB.
+Total: 11.366800 ms (FindLiveObjects: 1.966300 ms CreateObjectMapping: 1.122600 ms MarkObjects: 5.431400 ms  DeleteObjects: 2.842800 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
@@ -182,773 +182,241 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 82271.374553 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/Corgi3DWhite.png
-  artifactKey: Guid(e7c22d3c4e4960d42b9041f42cc5f0e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/Corgi3DWhite.png using Guid(e7c22d3c4e4960d42b9041f42cc5f0e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bf2f7438983a98ad1528a1df9cbd04cd') in 0.189900 seconds 
+  Time since last request: 175957.641513 seconds.
+  path: Assets/testAsset/UI/Rewired Input Manager.prefab
+  artifactKey: Guid(e538db99ca5776842baaa2dbecd60175) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/UI/Rewired Input Manager.prefab using Guid(e538db99ca5776842baaa2dbecd60175) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1cce185a7becc5c5e09e561c0d49fd64') in 1.342779 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000041 seconds.
-  path: Assets/Particle Ingredient Pack/Particle-Ingredient/Weather/Ingredient-Weather-Cloud3.prefab
-  artifactKey: Guid(ab64afd057e714ccf9f0b370e10b5e6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Particle Ingredient Pack/Particle-Ingredient/Weather/Ingredient-Weather-Cloud3.prefab using Guid(ab64afd057e714ccf9f0b370e10b5e6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd6f59ef3febe733f4b175badc051d4f0') in 0.239349 seconds 
+  Time since last request: 242.373563 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/controlmapper_rewiredinputmanager_uiactions.png
+  artifactKey: Guid(17c631937a801b7408503508c2cf469c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/controlmapper_rewiredinputmanager_uiactions.png using Guid(17c631937a801b7408503508c2cf469c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a9b6589799c02c00ed23dd393384ec0e') in 0.164832 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000038 seconds.
-  path: Assets/CorgiEngine/Demos/SuperHipsterBros/Prefabs/Environment/HipsterGround3.prefab
-  artifactKey: Guid(7f6d482ad03b0d649b6080b59c3f0501) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/SuperHipsterBros/Prefabs/Environment/HipsterGround3.prefab using Guid(7f6d482ad03b0d649b6080b59c3f0501) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3ba40be73cb1bc503213fbb81213cc6f') in 0.025562 seconds 
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_customcontrollers.png
+  artifactKey: Guid(e28594b9e17a12943aea11516e5fdfa6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_customcontrollers.png using Guid(e28594b9e17a12943aea11516e5fdfa6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '98db5f930bcc1ecb11500cabfaa0d950') in 0.032956 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Particle Ingredient Pack/Particle-Material/Material-BattleGearBundle/Material-ShieldBundle/Material-Shield3.mat
-  artifactKey: Guid(7bff44d27b494e147a75dc380642ef40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Particle Ingredient Pack/Particle-Material/Material-BattleGearBundle/Material-ShieldBundle/Material-Shield3.mat using Guid(7bff44d27b494e147a75dc380642ef40) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '52cd85b204feb59424277bc9a7eba2a5') in 0.051659 seconds 
+  Time since last request: 0.000052 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_players_layoutmanagerrulesetoptions.png
+  artifactKey: Guid(8ba6a5669c3c11246852f2f7027ff3ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_players_layoutmanagerrulesetoptions.png using Guid(8ba6a5669c3c11246852f2f7027ff3ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aba6555d266488957a3bf7177c23295d') in 0.030853 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000035 seconds.
-  path: Assets/CorgiEngine/Demos/Retro/Sprites/RetroBackgrounds/RetroForestBackground3.png
-  artifactKey: Guid(c5994410ca3764ccca1b8ad03a333cd4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Retro/Sprites/RetroBackgrounds/RetroForestBackground3.png using Guid(c5994410ca3764ccca1b8ad03a333cd4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1a948fcc60d301a70c54ba4239bcf1e7') in 0.020924 seconds 
+  Time since last request: 0.000029 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_mapenablerrules.png
+  artifactKey: Guid(7819e8999be2f624182d48277b0b29b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_mapenablerrules.png using Guid(7819e8999be2f624182d48277b0b29b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9ed3505d4ed6b429c87e05fb20d4ccbc') in 0.085053 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000036 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Sprites/SpaceCorgi/spacecorgi_flat-dive.png
-  artifactKey: Guid(59d7d6dc491f44642840a375e499eafe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Sprites/SpaceCorgi/spacecorgi_flat-dive.png using Guid(59d7d6dc491f44642840a375e499eafe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd2e130e5b1f04681cf36b645c37f0c57') in 0.100645 seconds 
+  Time since last request: 0.000067 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_customcontrollermaps.png
+  artifactKey: Guid(d0d3ae52084f11740b3df28960485092) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_customcontrollermaps.png using Guid(d0d3ae52084f11740b3df28960485092) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9ee36abc81f932817b56d8f37b337934') in 0.025543 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Hovl Studio/Toon Projectiles 2/Materials/Quad3ts.mat
-  artifactKey: Guid(56ab5dfa1dcace74ab7f4623b9b865f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Hovl Studio/Toon Projectiles 2/Materials/Quad3ts.mat using Guid(56ab5dfa1dcace74ab7f4623b9b865f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a27bd6ff55fe59ed5a7146660f43ae9f') in 0.617239 seconds 
+  Time since last request: 0.000027 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewired-logo.png
+  artifactKey: Guid(e3b81589e5298644aaac87001cdd11ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewired-logo.png using Guid(e3b81589e5298644aaac87001cdd11ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e02b38d5e8835b6170e86b29dc7aebee') in 0.022967 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000033 seconds.
-  path: Assets/testAsset/Map/FirstMapTile/CaveRoad3.png
-  artifactKey: Guid(c313c242800b139469293ab2fa843ee7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Map/FirstMapTile/CaveRoad3.png using Guid(c313c242800b139469293ab2fa843ee7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dee51d95371282197adbcb9e85538f54') in 0.086902 seconds 
+  Time since last request: 0.000043 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_customcontrollers_buttonproperties.png
+  artifactKey: Guid(17b0cca6e417c0646b55b9cc04a87057) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_customcontrollers_buttonproperties.png using Guid(17b0cca6e417c0646b55b9cc04a87057) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9bc6a6b4e6806ab13fc27f33473f7598') in 0.025744 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000060 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Prefabs/Weapons/CorgiMachineGunProjectile.prefab
-  artifactKey: Guid(e2ca4f0ef708e4817b84379c9c010b3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Prefabs/Weapons/CorgiMachineGunProjectile.prefab using Guid(e2ca4f0ef708e4817b84379c9c010b3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6d8f30e581a3776f4b2f30fab9d37c90') in 0.058419 seconds 
+  Time since last request: 0.000022 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_players_customcontrollers.png
+  artifactKey: Guid(4872779d3c681e149bbd5aad47d6cfa2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_players_customcontrollers.png using Guid(4872779d3c681e149bbd5aad47d6cfa2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1e8105d22ea5673732ea3998b8ae8280') in 0.023833 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Spine/NativeSpineCorgi
-  artifactKey: Guid(03c18e11165ac2345935407490c9636b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Spine/NativeSpineCorgi using Guid(03c18e11165ac2345935407490c9636b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0fa852147beac9de82177ae6a6e3d3c1') in 0.006921 seconds 
+  Time since last request: 0.000068 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_joystickmaps_buttonproperties.png
+  artifactKey: Guid(c8d6c9b430ad2914e95473a1d8c0e0a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_joystickmaps_buttonproperties.png using Guid(c8d6c9b430ad2914e95473a1d8c0e0a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8ad302d7641189a545ea5329ea5f4444') in 0.027469 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000032 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/Corgi3DGround.png
-  artifactKey: Guid(0f0dce9410edff14cae12bede55a77cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/Corgi3DGround.png using Guid(0f0dce9410edff14cae12bede55a77cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5265607c89ad496cc61d12ef103637d6') in 0.080954 seconds 
+  Time since last request: 0.000041 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_keyboardmaps.png
+  artifactKey: Guid(ed766d4668458d04ea706295297ca231) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_keyboardmaps.png using Guid(ed766d4668458d04ea706295297ca231) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ec516c1f9adc2e9a42ebbc83026cf8f8') in 0.023100 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000040 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Prefabs/PlayableCharacters/Corgi3D.prefab
-  artifactKey: Guid(2c493c09d944f344fbe92cbabbc12f20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Prefabs/PlayableCharacters/Corgi3D.prefab using Guid(2c493c09d944f344fbe92cbabbc12f20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'da62f7ff1a3d4b6338a17e8c0d3f566f') in 0.178364 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Prefabs/Weapons/CorgiMachineGun.prefab
-  artifactKey: Guid(c061427043f064e3e8034c5f6499c9e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Prefabs/Weapons/CorgiMachineGun.prefab using Guid(c061427043f064e3e8034c5f6499c9e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4413ca861ac448fd06f65c7a379fbf5f') in 0.131933 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Prefabs/AI/Squid3D.prefab
-  artifactKey: Guid(050ae822a6bd330428d8dfe28802fafa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Prefabs/AI/Squid3D.prefab using Guid(050ae822a6bd330428d8dfe28802fafa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4bc95049f7f202d742d51db4ec12a51b') in 0.075375 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000034 seconds.
-  path: Assets/Particle Ingredient Pack/Particle-Material/Material-BattleGearBundle/Material-SwrodBundle/Material-Sword3(Frame).mat
-  artifactKey: Guid(7cfa230d59a42274b91e97210d1a66a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Particle Ingredient Pack/Particle-Material/Material-BattleGearBundle/Material-SwrodBundle/Material-Sword3(Frame).mat using Guid(7cfa230d59a42274b91e97210d1a66a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ee13e8f9531cbfa7b310224051211a26') in 0.017038 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000034 seconds.
-  path: Assets/CorgiEngine/Demos/Retro/Materials/RetroMountainsBackground3.mat
-  artifactKey: Guid(d4ef8abd3076b4113ac8ea65019accde) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Retro/Materials/RetroMountainsBackground3.mat using Guid(d4ef8abd3076b4113ac8ea65019accde) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '076492d5f9480e6ee6ea3c1fb7b36cbd') in 0.049526 seconds 
+  Time since last request: 0.000026 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_players.png
+  artifactKey: Guid(b8536120492ebb84e832b5924f1c6993) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_players.png using Guid(b8536120492ebb84e832b5924f1c6993) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1b3b017fdef7ce725ab45d8a3ca8509e') in 0.024135 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000030 seconds.
-  path: Assets/SineVFX/TopDownEffects/Resources/Meshes/ForVFX/VFXSphere_04add3.fbx
-  artifactKey: Guid(356cd4344f86d7c46be1492d5cd6fca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/SineVFX/TopDownEffects/Resources/Meshes/ForVFX/VFXSphere_04add3.fbx using Guid(356cd4344f86d7c46be1492d5cd6fca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bab3931b9a6f74508bb912e67ab9e008') in 0.571398 seconds 
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_players_joystickmaps.png
+  artifactKey: Guid(d2a7e37bd4f267a4aba14759098474c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_players_joystickmaps.png using Guid(d2a7e37bd4f267a4aba14759098474c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1cfb99d54b8871b46d9e4a3643cf3883') in 0.025050 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000036 seconds.
-  path: Assets/AnyPortrait/Editor/Images/ProSkin/ButtonIcon_OnionRecord.png
-  artifactKey: Guid(ab86dafa808faa046a9ab5e4a11d4ef5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AnyPortrait/Editor/Images/ProSkin/ButtonIcon_OnionRecord.png using Guid(ab86dafa808faa046a9ab5e4a11d4ef5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6a22282a8693b9963932f8f1907ae1d9') in 0.019431 seconds 
+  Time since last request: 0.000048 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_mousemaps.png
+  artifactKey: Guid(958ee19898f3535498ff8f3a7413c565) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_mousemaps.png using Guid(958ee19898f3535498ff8f3a7413c565) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '54fc560f90be8370bebeac38957b8441') in 0.027829 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000036 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Materials/Corgi3DSphereDustMaterial.mat
-  artifactKey: Guid(98496bca9ac122f40b2e848f3cb6e40c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Materials/Corgi3DSphereDustMaterial.mat using Guid(98496bca9ac122f40b2e848f3cb6e40c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c14eb88da95009c0d91951c3d2d534e5') in 0.016384 seconds 
+  Time since last request: 0.000020 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_players_layoutmanager.png
+  artifactKey: Guid(f27f18633d85a7945bad62aaadc396ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_players_layoutmanager.png using Guid(f27f18633d85a7945bad62aaadc396ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd3466eefb3cd081130fa1f12d09480d8') in 0.042516 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000030 seconds.
-  path: Assets/testAsset/Map/FirstMapTile/CaveRoad3.asset
-  artifactKey: Guid(b7368ef05f553174ba896daa80147d79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Map/FirstMapTile/CaveRoad3.asset using Guid(b7368ef05f553174ba896daa80147d79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3c6ca18c8acdafb36471444c36d1d700') in 0.028570 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000030 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Materials/Corgi3DJumper.mat
-  artifactKey: Guid(ba769282b6765f14a9780439425f0a46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Materials/Corgi3DJumper.mat using Guid(ba769282b6765f14a9780439425f0a46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ceb07dbb358d0548353abf3ad4405554') in 0.066753 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/Skybox/Corgi3DSkyboxLeft.png
-  artifactKey: Guid(e8cc0dd79f659f94899c92a22a6dee9c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/Skybox/Corgi3DSkyboxLeft.png using Guid(e8cc0dd79f659f94899c92a22a6dee9c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '372e80df879d26d0fbd10da8c1e7ff95') in 0.081435 seconds 
+  Time since last request: 0.000026 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_actioncategories.png
+  artifactKey: Guid(8e37248412152a64298886677afb3476) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_actioncategories.png using Guid(8e37248412152a64298886677afb3476) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '01011ca42a2cc149d7797db3b7a7d63d') in 0.023627 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000030 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Models/Materials/Corgi3DHillMaterial.mat
-  artifactKey: Guid(3ff0d46c87723ce4eac250ebd3ab78e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/Materials/Corgi3DHillMaterial.mat using Guid(3ff0d46c87723ce4eac250ebd3ab78e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5a51a3cdd69095c6d76267da60a8104f') in 0.021476 seconds 
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_mapcategories.png
+  artifactKey: Guid(7df2c606dcdd6a7499b56d2055903e74) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_mapcategories.png using Guid(7df2c606dcdd6a7499b56d2055903e74) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9cb575ebae41e28d5ee432ac09de7e82') in 0.027126 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000030 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi.fbx
-  artifactKey: Guid(abc61f0ba74b244409e45ac1951b7192) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi.fbx using Guid(abc61f0ba74b244409e45ac1951b7192) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6576c1b28571ab41f144874321b394cf') in 0.041486 seconds 
+  Time since last request: 0.000052 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_actions_exportactions.png
+  artifactKey: Guid(ff407878ef1205f469618303f6b03124) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_actions_exportactions.png using Guid(ff407878ef1205f469618303f6b03124) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '79c161941bb5caad7a8807efb11cdab6') in 0.027397 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_mapenablerrules_ruleoptions.png
+  artifactKey: Guid(887c797c70db2bb4884685fd25d3cb57) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_mapenablerrules_ruleoptions.png using Guid(887c797c70db2bb4884685fd25d3cb57) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b5892f7d296df28fd0cc4b04a00dc110') in 0.034413 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000075 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_customcontrollers_axisproperties.png
+  artifactKey: Guid(e5d1a4436783e15449895e411ec983a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_customcontrollers_axisproperties.png using Guid(e5d1a4436783e15449895e411ec983a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1228d12eddd477885146034d92434e06') in 0.023272 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000023 seconds.
-  path: Assets/CorgiEngine/Demos/Retro/Prefabs/VFX/RetroDustCloud3.prefab
-  artifactKey: Guid(2563229783ffcba4b88e111c965e3d7d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Retro/Prefabs/VFX/RetroDustCloud3.prefab using Guid(2563229783ffcba4b88e111c965e3d7d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1815e39711aa0849e394fe3633904e7d') in 0.099680 seconds 
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_mouselayouts.png
+  artifactKey: Guid(d4b2ff66fbe299a4aa5997a4ebe2049b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_mouselayouts.png using Guid(d4b2ff66fbe299a4aa5997a4ebe2049b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '249248224495c23d782364eb445bb5f0') in 0.025878 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/CorgiEngine/Demos/Retro/Sprites/RetroBackgrounds/RetroCloudBackground3.png
-  artifactKey: Guid(31a2d6137a4524e44ba52e0285d51ea8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Retro/Sprites/RetroBackgrounds/RetroCloudBackground3.png using Guid(31a2d6137a4524e44ba52e0285d51ea8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9aac2bc06b0d093d7be24ae3b93d3b75') in 0.019391 seconds 
+  Time since last request: 0.000029 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_joysticklayouts.png
+  artifactKey: Guid(fbb2760337597c34db89548123459c3c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_joysticklayouts.png using Guid(fbb2760337597c34db89548123459c3c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '79f40d50cc8895a09e95770af77b8b76') in 0.029647 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000032 seconds.
-  path: Assets/CorgiEngine/Demos/Retro/Sprites/RetroBackgrounds/RetroCloudBackground3Sprite.png
-  artifactKey: Guid(a8a0593c50c8eca4faff0664c3c6173a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Retro/Sprites/RetroBackgrounds/RetroCloudBackground3Sprite.png using Guid(a8a0593c50c8eca4faff0664c3c6173a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e0d26d51bdabc301baf00bf41cae45eb') in 0.046666 seconds 
+  path: Assets/Rewired/Documentation/Html/files/images/rewirededitor_layoutmanagerrules.png
+  artifactKey: Guid(cdccb9b270d635949be1264650cca7af) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/rewirededitor_layoutmanagerrules.png using Guid(cdccb9b270d635949be1264650cca7af) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6e5a3e61bed4f0c061cfd2b9d81d405b') in 0.060331 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 45.851230 seconds.
+  path: Assets/EffectExamples/Weapon Effects/Textures/BulletHoleMetalThroughNormal.tif
+  artifactKey: Guid(b284a0bea151ce444957bb92f6b50ac4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/EffectExamples/Weapon Effects/Textures/BulletHoleMetalThroughNormal.tif using Guid(b284a0bea151ce444957bb92f6b50ac4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd6c05c8358926a6091de58217025d08a') in 0.062091 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/DarkerGrey/ButtonAlt.prefab
+  artifactKey: Guid(fb812a2205d9b914eb071710eb0b5333) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/DarkerGrey/ButtonAlt.prefab using Guid(fb812a2205d9b914eb071710eb0b5333) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '82a18d97209040aaebbd01b010b5beef') in 0.024500 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Sci FI Sounds Pro/Health Pickup/Health Pickup 1.wav
+  artifactKey: Guid(b38795f8de7b02f4f98bbcac4a1fb64b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Sci FI Sounds Pro/Health Pickup/Health Pickup 1.wav using Guid(b38795f8de7b02f4f98bbcac4a1fb64b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd99f7fa44830eb5af814ee0b2eb99140') in 0.087514 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000048 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Horse/Horse Footseps Surfaces/Horse Footsteps asphalt 4.wav
+  artifactKey: Guid(679d250e058f2654bb378154cdb015f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Horse/Horse Footseps Surfaces/Horse Footsteps asphalt 4.wav using Guid(679d250e058f2654bb378154cdb015f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd00314d360cf9c9bb537bc56fdbbb7df') in 0.023173 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/ARPG Effects/Prefabs/Interactive/Shrines/HealthShrine.prefab
+  artifactKey: Guid(f75fb40e82fcdf947be8a9c29b6c3f98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ARPG Effects/Prefabs/Interactive/Shrines/HealthShrine.prefab using Guid(f75fb40e82fcdf947be8a9c29b6c3f98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c09b3db98bf2699a690d7fd9b8e188c9') in 0.781785 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMFeedbacks/Demos/MMFeedbacksDemo/Camera/MMFeedbacksDemo Alt Camera Profile.asset
+  artifactKey: Guid(9c0dc5f873bf5f0408db5b316cac722c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMFeedbacks/Demos/MMFeedbacksDemo/Camera/MMFeedbacksDemo Alt Camera Profile.asset using Guid(9c0dc5f873bf5f0408db5b316cac722c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '76cd84fe2a41749ea0e8a8dd08db68b3') in 0.029522 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000050 seconds.
+  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/Blue/ButtonAlt.prefab
+  artifactKey: Guid(b1245229341c634418562bc057c17cfc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/Blue/ButtonAlt.prefab using Guid(b1245229341c634418562bc057c17cfc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8b715d750182587c80827ffbb532ea8c') in 0.011087 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMTools/Tools/MMVFX/MMNoise/MMFireDirectionalAltNoise.png
+  artifactKey: Guid(5551f2320b5bfde4dbdbb0604036a53a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMTools/Tools/MMVFX/MMNoise/MMFireDirectionalAltNoise.png using Guid(5551f2320b5bfde4dbdbb0604036a53a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '716ffce0cf218e15ad5ce6a872453338') in 0.028072 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Horse/Horse Footseps Surfaces/Horse Footsteps asphalt 5.wav
+  artifactKey: Guid(09e9655b7e1ff674e90124595ec35058) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Ultimate Animal Sounds/Horse/Horse Footseps Surfaces/Horse Footsteps asphalt 5.wav using Guid(09e9655b7e1ff674e90124595ec35058) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '16bb40273abeffe0e5371e0704276f15') in 0.040430 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/VerticalGradientBlueToPurple/ButtonAlt.prefab
+  artifactKey: Guid(acdeb35f28e625b4eaff3dd9a9ada980) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/VerticalGradientBlueToPurple/ButtonAlt.prefab using Guid(acdeb35f28e625b4eaff3dd9a9ada980) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c95f10e66f926a158c005f217a346d84') in 0.020209 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000046 seconds.
-  path: Assets/AnyPortrait/Editor/Images/Controller_AddAndRecordKey.png
-  artifactKey: Guid(2e9f7c86da1918b45b61f0076f9076a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/AnyPortrait/Editor/Images/Controller_AddAndRecordKey.png using Guid(2e9f7c86da1918b45b61f0076f9076a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0e1d7ff9891a722c0eeb071dd2fb6146') in 0.023617 seconds 
+  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/Pink/ButtonAlt.prefab
+  artifactKey: Guid(e6575770b2d6772429a10e92cb1a12c7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/Pink/ButtonAlt.prefab using Guid(e6575770b2d6772429a10e92cb1a12c7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1ec642ddaa8f01c6f13d632404ec9c6b') in 0.012291 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000045 seconds.
+  path: Assets/Shared/Environment/Textures/MetalTrim_Normal.tif
+  artifactKey: Guid(2927ac255e81f184b8459509e4b3dce4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Shared/Environment/Textures/MetalTrim_Normal.tif using Guid(2927ac255e81f184b8459509e4b3dce4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c5514ffce0ded69b1875a4119406f25') in 0.028172 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000057 seconds.
+  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/VerticalGradientGreenToCyan/ButtonAlt.prefab
+  artifactKey: Guid(608f0d0c3e47a3746bc91232c7b44dc5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/VerticalGradientGreenToCyan/ButtonAlt.prefab using Guid(608f0d0c3e47a3746bc91232c7b44dc5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e388ec2f7d7b01c250bd0f23fa01ffd1') in 0.018146 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000040 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Animal Sounds - HD Remake/Horse Footsteps asphalt _1.wav
+  artifactKey: Guid(0f04ccc47349b4c4288852fd337c72ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Ultimate Animal Sounds - HD Remake/Horse Footsteps asphalt _1.wav using Guid(0f04ccc47349b4c4288852fd337c72ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '261b674f38d5f67fe9acc11b3d832b0c') in 0.022271 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000049 seconds.
+  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/LightGreen/ButtonAlt.prefab
+  artifactKey: Guid(3c312943bb1adb342b4fec621caf5207) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/LightGreen/ButtonAlt.prefab using Guid(3c312943bb1adb342b4fec621caf5207) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c888752d5d42878aeaf839662c11ef4') in 0.013255 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000039 seconds.
+  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/Yellow/ButtonAlt.prefab
+  artifactKey: Guid(dddb870645bdee94092fff3b5a85a34b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMInterface/Styles/Mini/Prefabs/Buttons/Yellow/ButtonAlt.prefab using Guid(dddb870645bdee94092fff3b5a85a34b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fb4b8412ee362a3f7caf90badf2dcb46') in 0.011576 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000028 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/Skybox/Corgi3DSkyboxRight.png
-  artifactKey: Guid(700c995183638224ca9a4cede16f68a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/Skybox/Corgi3DSkyboxRight.png using Guid(700c995183638224ca9a4cede16f68a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2e8dcbb43b707a0bc02c8b25c93786bd') in 0.073959 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000030 seconds.
-  path: Assets/Particle Ingredient Pack/Particle-Material/Material-BattleGearBundle/Material-SwrodBundle/Material-Sword3(Filled).mat
-  artifactKey: Guid(14fd074a3c0857444b44faacb68a3a50) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Particle Ingredient Pack/Particle-Material/Material-BattleGearBundle/Material-SwrodBundle/Material-Sword3(Filled).mat using Guid(14fd074a3c0857444b44faacb68a3a50) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3cb1deaebf48cf6736da57aaf233d74a') in 0.016991 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000047 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Sprites/SpaceCorgi/spacecorgi_flat-dash.png
-  artifactKey: Guid(8dc60e8d54cf3f447971fc3167bcad92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Sprites/SpaceCorgi/spacecorgi_flat-dash.png using Guid(8dc60e8d54cf3f447971fc3167bcad92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fdda1a3fcabba9f5f456df7821f8e33c') in 0.080597 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000026 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Sprites/SpaceCorgi/spacecorgi-melee.png
-  artifactKey: Guid(93575f0018eec4a4598176b823404918) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Sprites/SpaceCorgi/spacecorgi-melee.png using Guid(93575f0018eec4a4598176b823404918) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a5868d8de8a556c0858f45bb128fd2fd') in 0.614934 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 5.143448 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Materials/Bubble.mat
-  artifactKey: Guid(b9ff322989d8f0043b645ae70bd174e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Materials/Bubble.mat using Guid(b9ff322989d8f0043b645ae70bd174e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e201ccce611c4b58949dd1b37198e1d1') in 0.024494 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000026 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Materials/mistParticle.mat
-  artifactKey: Guid(b3968055fe10d1b488c6ee505c2269d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Materials/mistParticle.mat using Guid(b3968055fe10d1b488c6ee505c2269d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e6c32b11b1144684eb77594c2c25c413') in 0.030186 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000030 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Materials/urchinParticle.mat
-  artifactKey: Guid(aac1d5583065e884ba7da32c4e6144ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Materials/urchinParticle.mat using Guid(aac1d5583065e884ba7da32c4e6144ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '048dc824ad23da18c12f5090375a0234') in 0.030768 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000028 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Materials/lightRayParticle.mat
-  artifactKey: Guid(f781ff24d262146408360948ab4c6687) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Materials/lightRayParticle.mat using Guid(f781ff24d262146408360948ab4c6687) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '909458ad1fa78fca51b44527ea3d97b2') in 0.055851 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000035 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Materials/jetpackParticle.mat
-  artifactKey: Guid(1888fd7255deebd458cfba33e8407e1f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Materials/jetpackParticle.mat using Guid(1888fd7255deebd458cfba33e8407e1f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bc31994f871cf79da06b4fda16f17790') in 0.028396 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000028 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Materials/playerShell.mat
-  artifactKey: Guid(36059a6b5a5000a469004894f2d1d69e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Materials/playerShell.mat using Guid(36059a6b5a5000a469004894f2d1d69e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c812b5e803f087d3ae5354ff933e3361') in 0.017707 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000028 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Materials/LaserFireParticle.mat
-  artifactKey: Guid(92a98440106619d48bdbcb1ad0b8b781) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Materials/LaserFireParticle.mat using Guid(92a98440106619d48bdbcb1ad0b8b781) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b268f33f4c16b5877e06cc603064b8c8') in 0.027885 seconds 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.014233 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for UWP target not found
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 7.60 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  3.194 seconds
-Domain Reload Profiling:
-	ReloadAssembly (3195ms)
-		BeginReloadAssembly (430ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (15ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (287ms)
-		EndReloadAssembly (2620ms)
-			LoadAssemblies (142ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (642ms)
-			ReleaseScriptCaches (9ms)
-			RebuildScriptCaches (240ms)
-			SetupLoadedEditorAssemblies (1419ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (27ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (8ms)
-				BeforeProcessingInitializeOnLoad (193ms)
-				ProcessInitializeOnLoadAttributes (1044ms)
-				ProcessInitializeOnLoadMethodAttributes (135ms)
-				AfterProcessingInitializeOnLoad (11ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (64ms)
-Platform modules already initialized, skipping
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Refreshing native plugins compatible for Editor in 13.90 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 9974 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 118 unused Assets / (8.1 MB). Loaded Objects now: 11038.
-Memory consumption went from 0.64 GB to 0.63 GB.
-Total: 7.087700 ms (FindLiveObjects: 0.726800 ms CreateObjectMapping: 0.646800 ms MarkObjects: 3.670000 ms  DeleteObjects: 2.043000 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.012092 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for UWP target not found
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 7.60 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  2.466 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2467ms)
-		BeginReloadAssembly (172ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (10ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (62ms)
-		EndReloadAssembly (2178ms)
-			LoadAssemblies (128ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (486ms)
-			ReleaseScriptCaches (6ms)
-			RebuildScriptCaches (204ms)
-			SetupLoadedEditorAssemblies (1195ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (25ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (8ms)
-				BeforeProcessingInitializeOnLoad (174ms)
-				ProcessInitializeOnLoadAttributes (864ms)
-				ProcessInitializeOnLoadMethodAttributes (115ms)
-				AfterProcessingInitializeOnLoad (9ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (52ms)
-Platform modules already initialized, skipping
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Refreshing native plugins compatible for Editor in 12.86 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 9973 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 118 unused Assets / (8.1 MB). Loaded Objects now: 11045.
-Memory consumption went from 0.64 GB to 0.63 GB.
-Total: 6.985200 ms (FindLiveObjects: 0.703400 ms CreateObjectMapping: 0.736300 ms MarkObjects: 3.657100 ms  DeleteObjects: 1.887300 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 190.598428 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Spine/SpaceCorgi/space-corgi_Material.mat
-  artifactKey: Guid(2f355a1240f0b3e439311e6b3c939cfe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Spine/SpaceCorgi/space-corgi_Material.mat using Guid(2f355a1240f0b3e439311e6b3c939cfe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b7f6f09ac1beabb5259605bd1583cf74') in 0.209983 seconds 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.013027 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for UWP target not found
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 6.16 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  2.358 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2358ms)
-		BeginReloadAssembly (177ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (12ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (61ms)
-		EndReloadAssembly (2067ms)
-			LoadAssemblies (130ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (463ms)
-			ReleaseScriptCaches (6ms)
-			RebuildScriptCaches (199ms)
-			SetupLoadedEditorAssemblies (1135ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (23ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (6ms)
-				BeforeProcessingInitializeOnLoad (169ms)
-				ProcessInitializeOnLoadAttributes (819ms)
-				ProcessInitializeOnLoadMethodAttributes (109ms)
-				AfterProcessingInitializeOnLoad (9ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (52ms)
-Platform modules already initialized, skipping
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Refreshing native plugins compatible for Editor in 11.79 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 9973 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 118 unused Assets / (8.1 MB). Loaded Objects now: 11101.
-Memory consumption went from 0.64 GB to 0.63 GB.
-Total: 6.864500 ms (FindLiveObjects: 0.675400 ms CreateObjectMapping: 0.583500 ms MarkObjects: 3.665800 ms  DeleteObjects: 1.939100 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.012270 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for UWP target not found
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 5.95 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  2.350 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2350ms)
-		BeginReloadAssembly (164ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (11ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (58ms)
-		EndReloadAssembly (2068ms)
-			LoadAssemblies (114ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (450ms)
-			ReleaseScriptCaches (6ms)
-			RebuildScriptCaches (200ms)
-			SetupLoadedEditorAssemblies (1146ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (22ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (6ms)
-				BeforeProcessingInitializeOnLoad (170ms)
-				ProcessInitializeOnLoadAttributes (828ms)
-				ProcessInitializeOnLoadMethodAttributes (111ms)
-				AfterProcessingInitializeOnLoad (8ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (52ms)
-Platform modules already initialized, skipping
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Refreshing native plugins compatible for Editor in 13.69 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 9973 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 118 unused Assets / (8.1 MB). Loaded Objects now: 11108.
-Memory consumption went from 0.64 GB to 0.63 GB.
-Total: 7.705300 ms (FindLiveObjects: 0.741600 ms CreateObjectMapping: 0.707200 ms MarkObjects: 3.987200 ms  DeleteObjects: 2.268400 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 206.863426 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Spine/SpaceCorgi/Baked/spine-space-chicken.prefab
-  artifactKey: Guid(c28d11fc6e8dffb42a451628f09a57ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Spine/SpaceCorgi/Baked/spine-space-chicken.prefab using Guid(c28d11fc6e8dffb42a451628f09a57ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0da1c75e1f8845f3a4a1a3643cd46f60') in 0.505492 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi2D/Spine/SpaceCorgi/Baked/spine-space-pig.prefab
-  artifactKey: Guid(99209734ecb306b48a9a2abd68bbec26) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi2D/Spine/SpaceCorgi/Baked/spine-space-pig.prefab using Guid(99209734ecb306b48a9a2abd68bbec26) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2c6d8cac5847a35bc878aa47aec043bf') in 0.301198 seconds 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.014386 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for UWP target not found
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 6.88 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  2.229 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2230ms)
-		BeginReloadAssembly (160ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (12ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (61ms)
-		EndReloadAssembly (1957ms)
-			LoadAssemblies (114ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (420ms)
-			ReleaseScriptCaches (6ms)
-			RebuildScriptCaches (191ms)
-			SetupLoadedEditorAssemblies (1076ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (20ms)
-				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (7ms)
-				BeforeProcessingInitializeOnLoad (164ms)
-				ProcessInitializeOnLoadAttributes (766ms)
-				ProcessInitializeOnLoadMethodAttributes (110ms)
-				AfterProcessingInitializeOnLoad (8ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (58ms)
-Platform modules already initialized, skipping
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Refreshing native plugins compatible for Editor in 11.41 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 9973 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 118 unused Assets / (8.1 MB). Loaded Objects now: 11165.
-Memory consumption went from 0.65 GB to 0.64 GB.
-Total: 7.812200 ms (FindLiveObjects: 0.789800 ms CreateObjectMapping: 0.621000 ms MarkObjects: 4.589000 ms  DeleteObjects: 1.811300 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.015838 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for UWP target not found
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 6.17 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  2.325 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2326ms)
-		BeginReloadAssembly (168ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (10ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (59ms)
-		EndReloadAssembly (2042ms)
-			LoadAssemblies (109ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (450ms)
-			ReleaseScriptCaches (7ms)
-			RebuildScriptCaches (199ms)
-			SetupLoadedEditorAssemblies (1127ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (22ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (6ms)
-				BeforeProcessingInitializeOnLoad (170ms)
-				ProcessInitializeOnLoadAttributes (808ms)
-				ProcessInitializeOnLoadMethodAttributes (111ms)
-				AfterProcessingInitializeOnLoad (8ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (50ms)
-Platform modules already initialized, skipping
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Refreshing native plugins compatible for Editor in 14.38 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 9973 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 118 unused Assets / (8.1 MB). Loaded Objects now: 11172.
-Memory consumption went from 0.65 GB to 0.64 GB.
-Total: 8.940600 ms (FindLiveObjects: 0.818200 ms CreateObjectMapping: 0.946600 ms MarkObjects: 4.656900 ms  DeleteObjects: 2.517900 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.014813 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for UWP target not found
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 9.85 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  2.249 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2249ms)
-		BeginReloadAssembly (158ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (11ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (54ms)
-		EndReloadAssembly (1984ms)
-			LoadAssemblies (115ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (434ms)
-			ReleaseScriptCaches (6ms)
-			RebuildScriptCaches (191ms)
-			SetupLoadedEditorAssemblies (1098ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (26ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (10ms)
-				BeforeProcessingInitializeOnLoad (159ms)
-				ProcessInitializeOnLoadAttributes (785ms)
-				ProcessInitializeOnLoadMethodAttributes (109ms)
-				AfterProcessingInitializeOnLoad (8ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (51ms)
-Platform modules already initialized, skipping
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Refreshing native plugins compatible for Editor in 12.16 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 9973 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 118 unused Assets / (8.1 MB). Loaded Objects now: 11179.
-Memory consumption went from 0.65 GB to 0.64 GB.
-Total: 7.195300 ms (FindLiveObjects: 0.810100 ms CreateObjectMapping: 0.729200 ms MarkObjects: 3.486200 ms  DeleteObjects: 2.169000 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.012466 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for UWP target not found
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 6.00 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  2.320 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2321ms)
-		BeginReloadAssembly (159ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (11ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (53ms)
-		EndReloadAssembly (2049ms)
-			LoadAssemblies (116ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (456ms)
-			ReleaseScriptCaches (7ms)
-			RebuildScriptCaches (201ms)
-			SetupLoadedEditorAssemblies (1113ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (21ms)
-				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (6ms)
-				BeforeProcessingInitializeOnLoad (174ms)
-				ProcessInitializeOnLoadAttributes (793ms)
-				ProcessInitializeOnLoadMethodAttributes (110ms)
-				AfterProcessingInitializeOnLoad (8ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (54ms)
-Platform modules already initialized, skipping
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Refreshing native plugins compatible for Editor in 12.82 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 9973 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 118 unused Assets / (8.1 MB). Loaded Objects now: 11186.
-Memory consumption went from 0.65 GB to 0.64 GB.
-Total: 9.326300 ms (FindLiveObjects: 0.751800 ms CreateObjectMapping: 0.710200 ms MarkObjects: 4.945800 ms  DeleteObjects: 2.917200 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  path: Assets/ARPG Effects/Prefabs/Loot/Orbs/HealthOrb.prefab
+  artifactKey: Guid(282924e8ea21b584faa7ee9fdefaf65a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ARPG Effects/Prefabs/Loot/Orbs/HealthOrb.prefab using Guid(282924e8ea21b584faa7ee9fdefaf65a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9bd586b8f20aa44a9be40e30e44b27b5') in 0.798080 seconds 

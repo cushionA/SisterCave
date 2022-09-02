@@ -86,7 +86,7 @@ namespace MoreMountains.CorgiEngine
 			*/
 			#endregion
 
-			if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.RunButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
+			if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
 			{
 				RunStart();
 				

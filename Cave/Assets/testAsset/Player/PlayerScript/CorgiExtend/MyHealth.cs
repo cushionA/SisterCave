@@ -259,7 +259,7 @@ namespace MoreMountains.CorgiEngine
                 {
                     if (_character.CharacterType == Character.CharacterTypes.Player)
                     {
-                        LevelManager.Instance.KillPlayer(_character);
+                  //      LevelManager.Instance.KillPlayer(_character);
                         return;
                     }
 

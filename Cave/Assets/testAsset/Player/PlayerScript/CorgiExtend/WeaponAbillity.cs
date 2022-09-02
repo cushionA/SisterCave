@@ -237,6 +237,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             fire2Key = (_inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
             artsKey = (_inputManager.ArtsButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
 
+           // Debug.Log($"‚ ‚ ‚ ‚ {fire1Key}");
             if (isCharging)
             {
                 chargeKey = _inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed;
