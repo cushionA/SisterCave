@@ -225,7 +225,10 @@ namespace MoreMountains.CorgiEngine
 
 			if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
 			{
-				JumpATStop();
+				if (_movement.CurrentState == CharacterStates.MovementStates.Jumping || _movement.CurrentState == CharacterStates.MovementStates.DoubleJumping)
+				{
+					JumpATStop();
+				}
 				return;
 			}
 

@@ -320,7 +320,7 @@ public class GManager : MonoBehaviour
     [HideInInspector] public bool heavy;
     [HideInInspector] public byte attackType;
 
-    public int avoidLayer;
+    public int avoidLayer = 15;
 
     #endregion
 
@@ -353,13 +353,14 @@ public class GManager : MonoBehaviour
         InputR = ReInput.players.GetPlayer(0);
 
         // SetSlider();
-        initialSetting();
+       
 
         _anim = Player.GetComponent<Animator>();
 
-   //     myAnimatorOverride = new AnimatorOverrideController(_anim.runtimeAnimatorController);
-     //   _anim.runtimeAnimatorController = myAnimatorOverride.runtimeAnimatorController;
+        //     myAnimatorOverride = new AnimatorOverrideController(_anim.runtimeAnimatorController);
+        //   _anim.runtimeAnimatorController = myAnimatorOverride.runtimeAnimatorController;
 
+      //  hp = pc.ReturnHealth();
 
         hpSl = HpSlider.GetComponent<RectTransform>();
         mpSl = MpSlider.GetComponent<RectTransform>();
@@ -399,6 +400,7 @@ public class GManager : MonoBehaviour
         }
 
         StaminaRecover();
+        hp = pc.ReturnHealth();
 
         stSlider.value = stamina / maxStamina;
         HpSlider.value = hp / maxHp;
@@ -418,9 +420,7 @@ public class GManager : MonoBehaviour
     public void initialSetting()
     {
 
-        hp = maxHp;
-        mp = maxMp;
-        stamina = maxStamina;
+        StatusSetting();
     }
     /// <summary>
     /// ステータスと魔法の記憶数をセット
@@ -853,7 +853,7 @@ public class GManager : MonoBehaviour
             if (!twinHand)
             {
                 twinHand = true;
-                Debug.Log($"asidk{_anim.runtimeAnimatorController.name}");
+               // Debug.Log($"asidk{_anim.runtimeAnimatorController.name}");
                 _anim.runtimeAnimatorController = equipWeapon._useContoroller[1];
             }
             //片手持ちに

@@ -75,8 +75,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		protected PlayerJump _jump;
 		[SerializeField]
 		protected WeaponAbillity _weapon;
-		[SerializeField]
-		protected MyWakeUp _wakeup;
+		public MyWakeUp _wakeup;
 		[SerializeField]
 		protected WeaponAbillity _attack;
 		[SerializeField]
@@ -85,6 +84,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		[SerializeField]
 		protected PlayerCrouch _squat;
 
+		[SerializeField]
+		protected ParryAbility _parry;
 
         #endregion
 
@@ -94,8 +95,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			base.Initialization();
 			anim = _animator;
+           GManager.instance.initialSetting();
 			ParameterSet(GManager.instance.pStatus);
-			GManager.instance.ActionSet();
+			
 		//	SetComponennt();
 			GManager.instance.StatusSetting();
             if (!GManager.instance.twinHand)
@@ -130,6 +132,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
 				Debug.Log("ｈでｒｈふせｒｌｆｐ＠");
             }
+
+			_health.MaximumHealth = GManager.instance.maxHp;
+			_health.InitialHealth = _health.MaximumHealth;
+			_health.CurrentHealth = _health.MaximumHealth;
 
 			///<summary>
 			///　リスト
@@ -403,13 +409,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		//汎用行動の判断
 		protected override void HandleInput()
 		{
-			if(_movement.CurrentState == CharacterStates.MovementStates.Attack ||
-				_movement.CurrentState == CharacterStates.MovementStates.Rolling ||
+
+			//	Debug.Log($"ｄｄｋｄｌ{_inputManager.CombinationButton.State.CurrentState}");
+
+
+				if (
 				_movement.CurrentState == CharacterStates.MovementStates.Guard ||
 				_movement.CurrentState == CharacterStates.MovementStates.GuardMove ||
 				_movement.CurrentState == CharacterStates.MovementStates.Warp ||
-				_condition.CurrentState == CharacterStates.CharacterConditions.Stunned||
-				_condition.CurrentState == CharacterStates.CharacterConditions.Dead)
+				_condition.CurrentState != CharacterStates.CharacterConditions.Normal
+				)
             {
 				return;
             }
@@ -438,6 +447,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		///ダメージ計算関連
         #region
 
+		///現在の体力
+		public int ReturnHealth()
+        {
+			return (int)_health.CurrentHealth;
+        }
 
         /// <summary>
         /// ダメージ計算
@@ -465,7 +479,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			if (useEquip.phyAtk > 0)
 		{
-			_damage._attackData.phyAtk = useEquip.phyAtk* attackFactor;
+			_damage._attackData.phyAtk = useEquip.phyAtk * attackFactor;
 
                 //斬撃刺突打撃を管理
                 if (GManager.instance.useAtValue.type == Equip.AttackType.Slash)
@@ -568,8 +582,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		}
 			_health._defData.attackNow = _movement.CurrentState == CharacterStates.MovementStates.Attack ? true : false;
-			_health._defData.isGuard = _movement.CurrentState == CharacterStates.MovementStates.Guard ? true : false;
 
+		}
+
+		public void GuardReport()
+        {
+			_health._defData.isGuard = _movement.CurrentState == CharacterStates.MovementStates.Guard ? true : false;
 		}
 
 		public void ArmorRecover()
@@ -613,6 +631,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		/// <summary>
 		/// アーマー値に応じてイベントとばす
+		/// スタン攻撃中断もここで
 		/// </summary>
 		public MyWakeUp.StunnType ArmorControll(float shock, bool isDown, bool isBack,bool isShield)
 		{
@@ -630,8 +649,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				GManager.instance.useAtValue.y = 0;
 			}
+			if ((_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove) && isBack)
+			{
+				Debug.Log("ｄｄｄｓでｒ");
+				_guard.GuardEnd();
+			}
 
-			if (!isBack && _movement.CurrentState == CharacterStates.MovementStates.Guard)
+			if (!isBack && (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove))
 			{
 				_guard.GuardHit();
 				GManager.instance.stamina -= (shock * 3) * (1 - (useEquip.guardPower / 100));
@@ -667,14 +691,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				else
 				{
 
-					if (_guard.guardHit)
+					if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
 					{
 						result = MyWakeUp.StunnType.GuardBreake;
+					//	Debug.Log("dkdl");
 					}
 					//パリィは別発生
 					else
 					{
 						result = MyWakeUp.StunnType.Falter;
+					//	Debug.Log("ｓｄｊでｋｄ");
 					}
 
 				}
@@ -857,10 +883,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 			}
+
+
 		}
 
 
-
+		public void ParryStart(int num)
+		{
+			_parry.ParryStart(num);
+			_guard.GuardEnd();
+		}
 		//アニメーションイベント
 		#region
 		public void AtackContinue()
@@ -871,6 +903,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
         #endregion
 
+		//真なら停止中
+		public float NowSpeed()
+        {
+			return _controller.Speed.x;
+        }
+
+		/// <summary>
+		/// 外側から向きを変える。
+		/// コンビネーションなどに
+		/// </summary>
+		public void PlayerFlip()
+        {
+			_character.Flip();
+        }
 
     }
 }

@@ -203,7 +203,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public float thunderDef = 70;
 
 
-		protected float nowArmor;
+		[HideInInspector]
+		public float nowArmor;
 
 
 		//-------------------------------------------
@@ -293,7 +294,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public ESensorAbillity _sensor;
         private bool isVertical;
 
-
+		public ParryAbility _parry;
 
 		//	protected Hittable _hitInfo;
 
@@ -392,13 +393,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
                 else
                 {
-				Debug.Log($"あいい{_movement.CurrentState}");
+				
 					isMovable = true;
                 }
 			
 			//ドッグパイルありますか
 
-
+//Debug.Log($"あいい{_movement.CurrentState}");
 
 			//うごける時だけ
 			if (isMovable)
@@ -562,12 +563,25 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				atV.aditionalArmor = 0;
 			}
-
-			if (!isBack && _movement.CurrentState == CharacterStates.MovementStates.Guard)
+            if ((_movement.CurrentState == CharacterStates.MovementStates.GuardMove || _movement.CurrentState == CharacterStates.MovementStates.Guard) && isBack)
+            {
+				_guard.GuardEnd();
+            }
+			if (!isBack && (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove))
             {
 				_guard.GuardHit();
-				nowArmor -= (GManager.instance.equipWeapon.shock * 3f) * ((100 - status.guardPower) / 100);
+				if (isDown)
+				{
+					nowArmor -= ((SManager.instance.useMagic.shock * 2) * status.guardPower / 100) * 1.2f;
+
+				}
+				else
+				{
+					nowArmor -= (SManager.instance.useMagic.shock * 2) * ((100 - status.guardPower) / 100);
+				}
+
 			}
+
             else
             {
 				if (!isArmor || atV.aditionalArmor == 0)
@@ -585,6 +599,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		if (nowArmor <= 0)
 		{
+				if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
+				{
+					AttackEnd();
+                }
+
                 if (isDown)
                 {
 					result = (MyWakeUp.StunnType.Down);
@@ -592,8 +611,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			    else
                 {
 
-					if (guardHit)
-                    {
+					if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
+					{
 						result = MyWakeUp.StunnType.GuardBreake;
 					}
 					//パリィは別発生
@@ -615,14 +634,28 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 
 
+		/// <summary>
+		/// アーマー値に応じてイベントとばす
+		/// </summary>
+		public bool ParryArmorJudge()
+		{
 
-	/// <summary>
-	/// 攻撃をはじかれノックバックする。
-	/// </summary>
-	public void Parry()
-	{
-			_wakeup.StartStunn(MyWakeUp.StunnType.Parried);
+			nowArmor -= Mathf.Ceil(status.Armor * ((100 - atV.parryResist) / 100));
+			
+			if (nowArmor <= 0)
+			{
+				AttackEnd();
+			//	_wakeup.StartStunn(MyWakeUp.StunnType.Parried);
+				return true;
+			}
+			else
+			{Debug.Log($"あと{nowArmor}");
+				return false;
+			}
 		}
+
+
+
 
 
 
@@ -634,7 +667,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				if (isAggressive && collision.tag == EnemyManager.instance.JumpTag && _controller.State.IsGrounded)
 			{
 				//ジャンプ方向合ってるなら
-				if (collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+				if (collision.gameObject.MMGetComponentNoAlloc<JumpTrigger>().jumpDirection == transform.localScale.x)
 				{
 					JumpAct();
 					Debug.Log($"sss");
@@ -649,7 +682,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 				if (isAggressive && collision.tag == EnemyManager.instance.JumpTag && _controller.State.IsGrounded)
 				{
-					if (collision.gameObject.GetComponent<JumpTrigger>().jumpDirection == transform.localScale.x)
+					if (collision.gameObject.MMGetComponentNoAlloc<JumpTrigger>().jumpDirection == transform.localScale.x)
 					{
 						JumpAct();
 						Debug.Log($"dfggrferfer");
@@ -1077,7 +1110,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			_damage._attackData.attackBuff = attackBuff;
 			//damage = Mathf.Floor(damage * attackBuff);
-
+			_damage._attackData._parryResist = atV.parryResist;
 			_damage._attackData.isBlow = atV.isBlow;
 
 			_damage._attackData.isLight = atV.isLight;
@@ -1089,7 +1122,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		public void DefCalc()
 		{
-			Debug.Log("あいｓｊ");
+
 			if (!isAggressive)
 			{
 				StartCombat();
@@ -1117,6 +1150,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			}
 			_health._defData.attackNow = _movement.CurrentState == CharacterStates.MovementStates.Attack ? true : false;
+			
+		}
+
+		public void GuardReport()
+        {
 			_health._defData.isGuard = _movement.CurrentState == CharacterStates.MovementStates.Guard ? true : false;
 		}
 
@@ -1133,7 +1171,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			_fire.holyATFactor = holyATFactor;
 		}
 
-
+		public void ParryStart()
+        {
+			_parry.ParryStart();
+			_guard.GuardEnd();
+			nowArmor += 40;
+        }
 
 		#endregion
 
@@ -1206,14 +1249,122 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//go.GetComponent<EnemyFireBullet>().ownwer = transform;
 
 	}
+		//弾丸処理の例
+		//ロードして
+		#region
+		/*
+		 		/// <summary>
+		/// for文ではないが	bcountを超えるまでuseMagicが真なので発動し続ける
+		/// 弾丸を作るメソッド
+		/// </summary>
+		/// <param name="hRandom"></param>
+		/// <param name="vRandom"></param>
+		 void MagicUse(int hRandom, int vRandom)
+		{
 
-	/// <summary>
-	/// 攻撃
-	/// 改修要請
-	/// isShoot = trueの時の処理つくる？。いらない？つまりたまうちってこったな
-	/// リヴァースで逆向きで
-	/// </summary>
-	public void Attack(bool select = false, int number = 1, bool reverse = false)
+			if (!fireStart || delayNow)
+			{
+				return;
+			}
+			bCount += 1;
+			Debug.Log("きてる");
+			//	Debug.Log($"ハザード{SManager.instance.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
+			//魔法使用中MagicUseでかつ弾丸生成中でなければ
+
+			//弾の発射というか生成位置
+			Vector3 goFire = sb.firePosition.position;
+			//弾が一発目なら
+			if (bCount == 1)
+			{
+				//   MyInstantiate(SManager.instance.useMagic.fireEffect, goFire, Quaternion.identity).Forget();
+				//Addressables.InstantiateAsync(SManager.instance.useMagic.fireEffect, goFire, Quaternion.identity);
+				if (SManager.instance.useMagic.fireType == SisMagic.FIREBULLET.RAIN)
+				{
+					//山なりの弾道で打ちたいときとか射出角度決めれたらいいかも
+					//位置をランダムにすれば角度はどうでもいい説もある
+					SManager.instance.useMagic.angle = GetAim(sb.firePosition.position, SManager.instance.target.transform.position);
+
+				}
+				sb.mp -= SManager.instance.useMagic.useMP;
+			}
+
+			//敵の位置にサーチ攻撃するとき
+			if (SManager.instance.useMagic.isChaice)
+			{
+				goFire.Set(SManager.instance.target.transform.position.x, SManager.instance.target.transform.position.y, SManager.instance.target.transform.position.y);
+
+			}
+			//ランダムな位置に発生するとき
+			else if (hRandom != 0 || vRandom != 0)
+			{
+				//Transform goFire = firePosition;
+
+
+				float xRandom = 0;
+				float yRandom = 0;
+				if (hRandom != 0)
+				{
+
+					xRandom = RandomValue(-hRandom, hRandom);
+
+				}
+				if (vRandom != 0)
+				{
+					yRandom = RandomValue(-vRandom, vRandom);
+				}
+				//	xRandom = RandomValue(RandomValue(-random,0),RandomValue(0, random));
+				//	yRandom = RandomValue(RandomValue(-random, 0), RandomValue(0, random));
+
+				goFire = new Vector3(sb.firePosition.position.x + xRandom, sb.firePosition.position.y + yRandom, 0);//銃口から
+
+			}
+			//Debug.Log($"魔法の名前5{SManager.instance.useMagic.hiraganaName}");
+			//    MyInstantiate(SManager.instance.useMagic.effects, goFire, Quaternion.identity).Forget();//.Result;//発生位置をPlayer
+			//即座に発生する弾丸の一発目なら
+			if (SManager.instance.useMagic.delayTime == 0 || bCount == 1)
+			{
+				Debug.Log("aaa");
+                UnityEngine.Object h = Addressables.LoadAssetAsync<UnityEngine.Object>(SManager.instance.useMagic.effects).Result;
+				 GameObject t =  Instantiate(h, goFire, Quaternion.Euler(SManager.instance.useMagic.startRotation)) as GameObject;//.MMGetComponentNoAlloc<FireBullet>().InitializedBullet(this.gameObject, SManager.instance.target);
+				t.MMGetComponentNoAlloc<FireBullet>().InitializedBullet(this.gameObject,SManager.instance.target);
+			}
+			//2発目以降の弾で生成中じゃないなら
+			else if (bCount > 1 && !delayNow)
+			{
+				DelayInstantiate(SManager.instance.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.useMagic.startRotation)).Forget();
+			}
+			//弾丸を生成し終わったら
+			if (bCount >= SManager.instance.useMagic.bulletNumber)
+			{
+				//Debug.Log($"テンペスト{SManager.instance.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
+				_movement.ChangeState(CharacterStates.MovementStates.Idle);
+				//disEnable = true;
+				coolTime = SManager.instance.useMagic.coolTime;
+				bCount = 0;
+				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+
+				actionNum = 0;
+
+				SManager.instance.useMagic = null;
+				fireStart = false;
+				SManager.instance.target.GetComponent<EnemyAIBase>().TargetEffectCon(3);
+			}
+				
+		}
+
+
+		 */
+		#endregion
+
+
+
+		/// <summary>
+		/// 攻撃
+		/// 改修要請
+		/// isShoot = trueの時の処理つくる？。いらない？つまりたまうちってこったな
+		/// リヴァースで逆向きで
+		/// </summary>
+		public void Attack(bool select = false, int number = 1, bool reverse = false)
 	{
 
             if (!isAtEnable || !isMovable || number > status.atValue.Count || number <= 0)
@@ -1383,7 +1534,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			attackContinue = 0;
 			_attack.AttackEnd();
 			attackComp = false;
-			_controller.DefaultParameters.Gravity = -status.firstGravity;
+			//_controller.DefaultParameters.Gravity = -status.firstGravity;
 			isArmor = false;
 		}
 
@@ -1471,11 +1622,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				return 1.0f <= stateInfo.normalizedTime;
 			});
 			_attack.AttackEnd();
-			//Debug.Log("あああ");
+		//	Debug.Log("あああ");
 			NormalFlip(direction);
 			//	isAtEnable = true;これクールタイムで管理しようよ
-			_movement.ChangeState(CharacterStates.MovementStates.Idle);
-			_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+			//_movement.ChangeState(CharacterStates.MovementStates.Idle);
+		//	_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 			atV.aditionalArmor = 0;
 			isArmor = false;
 			_movement.RestorePreviousState();
@@ -1633,7 +1784,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			if (isMovable)
 			{
-				Debug.Log($"士官{isMovable}");
+			
 				// Switch the way the player is labelled as facing.
 
 				// Multiply the player's x local scale by -1.
@@ -2060,7 +2211,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				if(_movement.CurrentState == CharacterStates.MovementStates.Attack)
                 {
-					Debug.Log($"あｋっけｍ{isMovable}");
+					return;
                 }
 				if (ground == EnemyStatus.MoveState.stay || !flipComp)
 				{
@@ -2571,7 +2722,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			transforms.Add(child);
 			GetAllChildren(child, ref transforms, true);
-			Renderer sr = child.GetComponent<Renderer>();
+			Renderer sr = child.gameObject.MMGetComponentNoAlloc<Renderer>();
 			if (sr != null)
 			{
 				//Debug.Log(sr.name);

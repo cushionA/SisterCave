@@ -423,7 +423,7 @@ public class SisterFireBullet : MonoBehaviour
 		// オーナーチェック。あるかどうか、Nullなら戻る
 		if (ownwer == other.gameObject.transform || isAct)
 		{
-			Debug.Log($"衝突{gameObject.name}");
+		//	Debug.Log($"衝突{gameObject.name}");
 			return;
 		}
 		// 自分自身にヒットしないようにチェック

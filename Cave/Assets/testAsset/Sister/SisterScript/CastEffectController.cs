@@ -10,7 +10,7 @@ public class CastEffectController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!SManager.instance.castNow)
+        if (true)//!SManager.instance.castNow)
 
         {    
 

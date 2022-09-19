@@ -11,7 +11,7 @@ namespace MoreMountains.CorgiEngine
     public class MyDamageOntouch : DamageOnTouch
     {
         [HideInInspector]
-        public AttackData _attackData;
+        public AttackData _attackData = new AttackData();
 
         [SerializeField]
         [Header("このオブジェクトが魔法であるか")]
@@ -61,17 +61,18 @@ namespace MoreMountains.CorgiEngine
             DamageTakenInvincibilityDuration = 0.15f;
             DamageCausedKnockbackType = KnockbackStyles.AddForce;
             DamageCausedKnockbackDirection = CausedKnockbackDirections.BasedOnOwnerPosition;
-            _attackData = new AttackData(); 
+         //   _attackData
          //   _health = Owner.gameObject.GetComponent<MyHealth>();
         }
         protected override void OnCollideWithDamageable(Health health)
         {
             //背後に当たったかどうかを確認するためのアタリハンテイ検査座標
             float basePosition = 0;
-
+      //      Debug.Log($"asdf{_attacker}");
             //与えるダメージを計算
             if (_attacker == TypeOfSubject.Enemy)
             {
+              
                 eData.DamageCalc();
                 basePosition = transform.position.x;
             }
@@ -79,6 +80,7 @@ namespace MoreMountains.CorgiEngine
             {
                 pCon.DamageCalc(GManager.instance.useAtValue.isShield);
                 basePosition = transform.position.x;
+
             }
             else if (_attacker == TypeOfSubject.Magic)
             {
@@ -91,24 +93,60 @@ namespace MoreMountains.CorgiEngine
                 //罠のダメージ
             }
             bool back = false;
-            //右にいるかどうか
+            //当たったやつが右にいるかどうか
             bool isRight = false; ;
 
             //ダメージ判定のxの中心と被弾した相手のローカルスケールの正負で確認
-            if ((basePosition < Owner.transform.position.x && Owner.transform.localScale.x > 0) ||
-                (basePosition > Owner.transform.position.x && Owner.transform.localScale.x < 0))
+            //当たったやつが右で当てたやつが左
+            if ((basePosition <= _colliderHealth.transform.position.x && _colliderHealth.transform.localScale.x > 0) ||
+                //当たったやつが
+                (basePosition > _colliderHealth.transform.position.x && _colliderHealth.transform.localScale.x < 0))
             {
+                isRight = basePosition < _colliderHealth.transform.position.x;
+
                 back = true;
                 _attackData.shock *= 1.05f;
             }
+            else
+            {
+                isRight = basePosition < _colliderHealth.transform.position.x;
+                back = false;
+            }
             //アーマー削りを整数に
             _attackData.shock = Mathf.Floor(_attackData.shock);
-            isRight = (Owner.transform.position.x <= transform.position.x) ? true : false;
+            //isRight = (Owner.transform.position.x <= transform.position.x) ? true : false;
             // 衝突した相手が CorgiController の場合、ノックバック力を適用する
             _colliderCorgiController = health.gameObject.MMGetComponentNoAlloc<CorgiController>();
 
-            //吹き飛ばし判定
-            MyWakeUp.StunnType stunnState = ApplyDamageCausedKnockback(back);
+            _colliderHealth.GuardReport();
+
+            //パリィ発生するかどうか
+            if (!back && !_attackData.disParry && _colliderHealth._parryNow)
+            {
+
+                //パリィが発生したなら
+
+                bool ParryDown = false;
+                if(_attacker == TypeOfSubject.Enemy)
+                {
+                    //スタミナ回復
+
+                    //
+
+                    //敵がプレイヤーに攻撃した時、ダウンするかをはかる。
+                    ParryDown = _health.ParryArmorCheck();
+Debug.Log($"mae{ParryDown}");
+                }
+                //敵以外パリィされたらスタン
+ 　　　　　　　 ParryStunn(ParryDown);
+                //パリィした相手はボーナス
+                _colliderHealth.ParryStart(ParryDown);
+
+                return;
+            }
+            MyWakeUp.StunnType stunnState = ApplyDamageCausedKnockback(back,isRight);
+
+
 
             OnHitDamageable?.Invoke();
 
@@ -170,6 +208,7 @@ namespace MoreMountains.CorgiEngine
         /// <param name="collider"></param>
         protected override void Colliding(Collider2D collider)
         {
+          //  Debug.Log("最高");
             if (!this.isActiveAndEnabled)
             {
                 return;
@@ -199,12 +238,14 @@ namespace MoreMountains.CorgiEngine
             {
                 if (_colliderHealth.CurrentHealth > 0)
                 {
+                 
                     OnCollideWithDamageable(_colliderHealth);
                 }
             }
             // ぶつかるものが壊れないのであれば
             else
             {
+
                 OnCollideWithNonDamageable();
             }
         }
@@ -212,9 +253,9 @@ namespace MoreMountains.CorgiEngine
         /// <summary>
         /// 敵をノックバックさせるメソッド
         /// </summary>
-        protected virtual MyWakeUp.StunnType ApplyDamageCausedKnockback(bool isBack)
+        protected virtual MyWakeUp.StunnType ApplyDamageCausedKnockback(bool isBack,bool isRight)
         {
-            MyWakeUp.StunnType result = _health.ArmorCheck(_attackData.shock,_attackData.isBlow, isBack);
+            MyWakeUp.StunnType result = _colliderHealth.ArmorCheck(_attackData.shock,_attackData.isBlow, isBack);
 
             bool isAirDown = false;
 
@@ -223,13 +264,16 @@ namespace MoreMountains.CorgiEngine
             {
                 isAirDown = true;
                 result = MyWakeUp.StunnType.Down;
+                _colliderHealth.AirDown();
             }
 
             if (result == MyWakeUp.StunnType.Down)
             {
                 if (!isAirDown)
                 {
-                    DamageCausedKnockbackForce.Set(_attackData.blowPower.x, _attackData.blowPower.y);
+                    float blowDire = isRight ? _attackData.blowPower.x : _attackData.blowPower.x * -1;
+
+                    DamageCausedKnockbackForce.Set(blowDire, _attackData.blowPower.y);
                 }
                 else
                 {
@@ -239,23 +283,16 @@ namespace MoreMountains.CorgiEngine
             }
             else if(result == MyWakeUp.StunnType.Falter)
             {
+                //アニメで動かす
 
-                float fDire = 10;
+                //       float fDire = isRight ? 10 : -10;
 
                 //吹き飛ばさないときBlowPowerで怯み方向を確認
                 //基本的に0（初期値）なら普通に吹き飛ばす
-                if (_attackData.blowPower.x < 0)
-                {
-                    fDire *= -1;
-                }
-                if (isBack)
-                {
-                    fDire *= -1;
-
-                }
 
                 //怯む方向を大事ですよこいつ
-                DamageCausedKnockbackForce.Set(fDire, 0);
+                // DamageCausedKnockbackForce.Set(fDire, 0);
+                DamageCausedKnockbackForce.Set(0, 0);
             }
             else
             {
@@ -293,7 +330,30 @@ namespace MoreMountains.CorgiEngine
         }
 
 
+        public void ParryStunn(bool isDown = false)
+        {
 
+                if (_attacker == TypeOfSubject.Enemy)
+                {
+                    if (isDown)
+                    {
+                        eData._wakeup.StartStunn(MyWakeUp.StunnType.Parried);
+                    }
+                }
+                else if (_attacker == TypeOfSubject.Player)
+                {
+                    pCon._wakeup.StartStunn(MyWakeUp.StunnType.Parried);
+                }
+                else if (_attacker == TypeOfSubject.Magic)
+                {
+
+                }
+                else
+                {
+
+                }
+            
+        }
 
 
 

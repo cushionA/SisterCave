@@ -71,7 +71,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected override void Initialization()
         {
             base.Initialization();
-            sister = GetComponent<BrainAbility>();
+
             se = GetComponent<RangeSensor2D>();
         }
 
@@ -174,11 +174,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //敵タグがあるなら
             if (se.GetDetectedByTag(SManager.instance.enemyTag).Count >= 1)
             { 
-                sister.nowState = BrainAbility.SisterState.戦い;//この辺はまた後で設定できるようにしよう
+                
                 RangeChange();
                 se.Pulse();
-                SManager.instance.playObject = null;
-                sister.isPlay = false;
+                sister.StateChange(BrainAbility.SisterState.戦い);
                 SerchEnemy();
                 SManager.instance.GetClosestEnemyX();
 
@@ -191,8 +190,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 sister.nowState = BrainAbility.SisterState.警戒;
                 //この辺は移動条件の初期化
                 //ビフォーナンバー0で最初ってこと。ステートナンバー3で停止から始まる
-                sister.stateNumber = 3;
-                sister.beforeNumber = 0;
+
                 sister.reJudgeTime = 0;
                 sister.changeable = true;
                 SManager.instance.playObject = null;
@@ -276,19 +274,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             if (collision.tag == SManager.instance.enemyTag)
             {
-                if (CheckFoundObject(collision.gameObject) && !SManager.instance.isEscape && sister.nowState != BrainAbility.SisterState.戦い)
+                if (CheckFoundObject(collision.gameObject) && sister.nowState != BrainAbility.SisterState.戦い)
                 {
-                    SManager.instance.playObject = null;
-                    sister.isPlay = false;
+                    sister.StateChange(BrainAbility.SisterState.戦い);
                     RangeChange();
                     //即座にポジション判断できるように
-                    sister.reJudgeTime = 150;
+
                     //Debug.Log("機能してますよー");
                     se.Pulse();
                     SerchEnemy();
                     //isSerchがつくと勝手にSマネージャーが敵リストの面倒を見てくれる
                     pulseTime = 0;
-                    sister.nowState = BrainAbility.SisterState.戦い;//この辺はまた後で設定できるようにしよう
                     SManager.instance.GetClosestEnemyX();
 
                     //検索はAgrSerchに任せる。いや入れていい。最初に検知されるのは近いやつだしどうせすぐ更新される
@@ -301,9 +297,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 {
                     sister.nowState = BrainAbility.SisterState.警戒;
 
-                    sister.stateNumber = 3;
-                    sister.beforeNumber = 0;
-                    sister.reJudgeTime = 0;
+
                     sister.changeable = true;
                     SManager.instance.playObject = null;
                     sister.isPlay = false;

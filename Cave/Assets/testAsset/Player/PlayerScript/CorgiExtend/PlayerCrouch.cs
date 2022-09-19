@@ -94,7 +94,7 @@ namespace MoreMountains.CorgiEngine
 		/// <summary>
 		/// If we're pressing down, we check if we can crouch or crawl, and change states accordingly
 		/// </summary>
-		protected virtual void Crouch()
+		public virtual void Crouch()
 		{
 			if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
 			{
@@ -217,7 +217,7 @@ namespace MoreMountains.CorgiEngine
 		/// しゃがんだ状態から退出
 		/// 頭に障害物がないならね
 		/// </summary>
-		protected virtual void ExitCrouch()
+		public virtual void ExitCrouch()
 		{
 			// 通常のサイズに戻るだけの余裕があるかどうか、上のレイキャストを投影してみました。
 			InATunnel = !_controller.CanGoBackToOriginalSize();

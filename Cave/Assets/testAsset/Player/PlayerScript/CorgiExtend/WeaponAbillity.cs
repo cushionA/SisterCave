@@ -181,9 +181,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     attackNumber = 0;
                     atType = ActType.noAttack;
                     startFall = false;
-                    
+
+                    if (!_controller.State.IsGrounded)
+                    {
+                            _controller.DefaultParameters.Gravity = -GManager.instance.pStatus.firstGravity;
+
+                    }
+
                     isComboEnd = false;
-                    isAttackable = false; Debug.Log("ここまで3");
+                    //isAttackable = false; Debug.Log("ここまで3");
                 }
 
 
@@ -293,6 +299,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         public override void UpdateAnimator()
         {
+
             //今のステートがAttackであるかどうかでBool入れ替えてる
             // MMAnimatorExtensions.UpdateAnimatorBool(_animator, _attackAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Attack), _character._animatorParameters);
             MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _typeAnimationParameter, (int)atType, _character._animatorParameters);
@@ -308,7 +315,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             // GManager.instance.pm.anim.Play("OArts1");
 
-           Debug.Log("攻撃可能に");
+           //Debug.Log("攻撃可能に");
 
             GManager.instance.StaminaUse(GManager.instance.useAtValue.useStamina);
             if (atType == ActType.fAttack)

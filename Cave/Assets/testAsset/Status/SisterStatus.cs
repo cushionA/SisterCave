@@ -89,17 +89,15 @@ using UnityEngine.UI;
 	public Vector2 warpDistance;
 
 
-	[Header("加速速度")]
+	[Header("歩く速さ")]
 	///<summary>
-	///yこの値が大きいほど加速が早くなる
+	///歩き速度。歩いてる
 	///</summary>
-	public float addSpeed;
+	public float walkSpeed;
 
-	[Header("警戒中のスピード")]
-	///<summary>
-	///警戒中この速度でくっつく
-	///</summary>
-	public float patrolSpeed;
+	[Header("走る速度")]
+	public float dashSpeed;
+
 
 	[Header("警戒状態の維持距離")]
 	///<summary>
@@ -113,11 +111,7 @@ using UnityEngine.UI;
 	///</summary>
 	public float walkDistance;
 
-	[Header("歩く速さ")]
-	///<summary>
-	///歩き速度。歩いてる
-	///</summary>
-	public float walkSpeed;
+
 
 	[Header("のんびりの維持距離")]
 	///<summary>
@@ -132,8 +126,7 @@ using UnityEngine.UI;
 	///</summary>
 	public float waitRes;
 
-	[Header("走る速度")]
-	public float dashSpeed;
+
 
 	[Header("停止範囲")]
 	///<summary>

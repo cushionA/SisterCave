@@ -40,13 +40,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         public  void AttackEnd()
         {
-          Debug.Log("‚ ‚¶‚¥‚‹");
+         //
             motionNum = 0;
             _controller.DefaultParameters.Gravity = -_base.status.firstGravity;
             nowAttack = false;
             if(_condition.CurrentState == CharacterStates.CharacterConditions.Moving)
             {
                 _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+               // Debug.Log("‚ ‚¶‚¥‚‹");
             }
            // Debug.Log($"‚¢‚¢‚¢{motionNum}");
         }

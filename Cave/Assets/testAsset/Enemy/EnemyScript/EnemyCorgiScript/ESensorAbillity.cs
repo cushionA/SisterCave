@@ -213,7 +213,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void SightSensor(Collider2D collision)
         {
 
-                if (CheckFoundObject(collision.gameObject) && !SManager.instance.isEscape)
+                if (CheckFoundObject(collision.gameObject))
                 {
                 brain.StartCombat();
                     RangeChange();
@@ -250,17 +250,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
 
         }
-        /// <summary>
-        /// çƒíTím
-        /// </summary>
-        public void ReSerch()
-        {
-            SManager.instance.targetList = null;
-            SManager.instance.targetCondition = null;
-            SManager.instance.target = null;
 
-            pulseTime = 100;
-        }
 
 
 

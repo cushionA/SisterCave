@@ -25,8 +25,12 @@ namespace MoreMountains.CorgiEngine
 
 		protected  MyAbillityBase[] _myAbilities;
 
+		[HideInInspector]
+		//Idle状態になるのを禁止する
+		//Idleだけじゃなく放置したらなるやつ全般にいいかも
+		public bool banIdle = false;
 
-				/// <summary>
+		/// <summary>
 		/// アビリティを取得し、さらに使用するためにキャッシュする。
 		/// 実行時に能力を追加する場合は、必ずこれを呼び出します。
 		/// 理想的には、実行時にコンポーネントを追加するのは避けたいところです。
@@ -259,7 +263,7 @@ namespace MoreMountains.CorgiEngine
 				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _collidingRightAnimationParameter, _controller.State.IsCollidingRight, _animatorParameters, PerformAnimatorSanityChecks);
 				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _collidingBelowAnimationParameter, _controller.State.IsCollidingBelow, _animatorParameters, PerformAnimatorSanityChecks);
 				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _collidingAboveAnimationParameter, _controller.State.IsCollidingAbove, _animatorParameters, PerformAnimatorSanityChecks);
-				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _idleSpeedAnimationParameter, (MovementState.CurrentState == CharacterStates.MovementStates.Idle), _animatorParameters, PerformAnimatorSanityChecks);
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _idleSpeedAnimationParameter, (MovementState.CurrentState == CharacterStates.MovementStates.Idle && !banIdle), _animatorParameters, PerformAnimatorSanityChecks);
 				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _facingRightAnimationParameter, IsFacingRight, _animatorParameters);
 
 				UpdateAnimationRandomNumber();

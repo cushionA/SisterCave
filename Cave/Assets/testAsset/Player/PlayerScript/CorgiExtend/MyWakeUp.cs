@@ -43,13 +43,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         int nowType;
 
-        /// <summary>
-        /// 現在吹っ飛ばされてるかどうか
-        /// </summary>
-        bool blowNow;
+
 
         float blowTime;
-
+        [SerializeField]
         PlayerRoll pr;
 
         public enum StunnType
@@ -70,7 +67,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             base.Initialization();
             // randomBool = false;
-            pr = _controller.gameObject.GetComponent<PlayerRoll>();
+
         }
 
         /// <summary>
@@ -91,14 +88,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //ここで何ボタンが押されているかによって引数渡すか
 
-            // here as an example we check if we're pressing down
-            // on our main stick/direction pad/keyboard
-            if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+
+            if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown && isPlayer)
             {
-                if (nowType == 4 && !blowNow)
+                if (nowType == 5)
                 {
-                    Recover();
-                    pr.actRoll = true;
+                    //   _inputManager.AvoidButton.State.ChangeState(MMInput.ButtonStates.Off);
+                    if (Mathf.Sign(_horizontalInput) != Mathf.Sign(transform.root.localScale.x) && _horizontalInput != 0)
+                    {
+                        _character.Flip();
+                    }
+                       Recover(true);
+                    
                 }
             }
         }
@@ -123,7 +124,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 return;
             }
 
-            if(nowType == 1)
+         //   transform.root.gameObject.layer = 15;
+          //  _horizontalInput = 0;
+            if (nowType == 1)
             {
                 //アニメ終わったらスタン解除
                 //それか4以外全部まとめてアニメ松処理でもいいな
@@ -151,29 +154,26 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             else if (nowType == 4)
             {
-                if (blowNow)
-                {
+
                     blowTime += _controller.DeltaTime;
                     //0.1秒以上で地面についたら
-                    if (blowTime >= 0.1 && _controller.State.IsGrounded)
+                    if (blowTime >= 0.05 && _controller.State.IsGrounded)
                     {
-                        blowNow = false;
                         blowTime = 0;
-                    }
+                        nowType = 5;
+                    if (isPlayer)
+                        transform.root.gameObject.layer = 7;
                 }
-                else
-                {
-                    //こっから起き上がり処理ですね
-                    //起き上がりアニメが終わったらスタン解除
-                    //ローリングでスタン解除も可能に
-                    //Wakeupパラメーターオンでダウン（たたきつけられ）アニメ、そして起き上がりに派生するようにする。
+                
 
-                    if (CheckEnd("Wakeup"))
+            }
+            else if (nowType == 5)
+            {
+                
+                     if (CheckEnd("WakeUp"))
                     {
                         Recover();
                     }
-
-                }
             }
 
 
@@ -185,10 +185,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="type"></param>
         public void StartStunn(StunnType type)
         {
-            if (_character.CharacterHealth.CurrentHealth > 0 && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
+            if (_character.CharacterHealth.CurrentHealth > 0 && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned
+                && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
             {
                 _condition.ChangeState(CharacterStates.CharacterConditions.Stunned);
-                _characterHorizontalMovement.MovementForbidden = true;
+                _characterHorizontalMovement.SetHorizontalMove(0);
+               // _movement.ChangeState(CharacterStates.MovementStates.Idle);
+                _characterHorizontalMovement.ReadInput = false;
                 if (type == StunnType.Falter)
                 {
                     nowType = 1;
@@ -201,12 +204,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 {
                     nowType = 3;
                 }
-                else
+                else if(type == StunnType.Down)
                 {
                     //現在吹き飛ばされてます
                     nowType = 4;
-                    blowNow = true;
+                       if(isPlayer)
+                    transform.root.gameObject.layer = 15;
                 }
+
             }
         }
 
@@ -226,6 +231,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
            // RegisterAnimatorParameter(_downStateParameterName, AnimatorControllerParameterType.Bool, out _downStateAnimationParameter);
             RegisterAnimatorParameter(_stunTypeParameterName, AnimatorControllerParameterType.Int, out _stunTypeAnimationParameter);
+
+
         }
 
         /// <summary>
@@ -236,7 +243,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
 
             MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _stunTypeAnimationParameter, (nowType), _character._animatorParameters);
-        //    if()
+            //    if()
+
+           
 
  //           MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _downStateAnimationParameter, (), _character._animatorParameters);
 
@@ -246,11 +255,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         bool CheckEnd(string Name)
         {
             
-            if (!_character._animator.GetCurrentAnimatorStateInfo(0).IsName(Name))// || sAni.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
+            if (!_animator.GetCurrentAnimatorStateInfo(0).IsName(Name))// || sAni.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
             {   // ここに到達直後はnormalizedTimeが"Default"の経過時間を拾ってしまうので、Resultに遷移完了するまではreturnする。
                 return false;
             }
-            if (_character._animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
             {   // 待機時間を作りたいならば、ここの値を大きくする。
                 return false;
             }
@@ -264,11 +273,32 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //  (_currentStateName);
         }
 
-        void Recover()
+        void Recover(bool cancel = false)
         {
-            _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+
             nowType = 0;
-            _characterHorizontalMovement.MovementForbidden = false;
+            
+            //アーマーリセットしてな
+            _characterHorizontalMovement.ReadInput = true;
+           
+            if (!cancel)
+            { _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+                _movement.ChangeState(CharacterStates.MovementStates.Idle);
+             //  _characterHorizontalMovement.ReadInput = true;
+            }
+            else
+            {
+
+                _movement.ChangeState(CharacterStates.MovementStates.Nostate);
+                _character.banIdle = true;
+                _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+
+                pr.ForceRoll();
+
+                //Debug.Log($"tgr{pr == null}");
+
+            }
+            
         }
 
     }

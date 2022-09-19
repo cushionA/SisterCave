@@ -17,9 +17,7 @@
         private Rewired.Player _rewiredPlayer;
         private int _rewiredActionId_horizontal;
         private int _rewiredActionId_vertical;
-        private int _rewiredActionId_secondaryHorizontal;
-        private int _rewiredActionId_secondaryVertical;
-        private int _rewiredActionId_shoot;
+
         private int _rewiredActionId_siteHorizontal;
         private int _rewiredActionId_siteVertical;
         private int[] _rewiredButtonIds;
@@ -63,15 +61,13 @@
             _rewiredButtonIds = new int[ButtonList.Count];
             for(int i = 0; i < _rewiredButtonIds.Length; i++) _rewiredButtonIds[i] = -1; // init to invalid
             for(int i = 0; i < _rewiredButtonIds.Length; i++) {
-                string actionName = StripPlayerIdFromActionName(ButtonList[i].ButtonID); // ButtonId (PlayerID_ActionName) から PlayerId を除去して、アクション名を取得します。
-                if (string.IsNullOrEmpty(actionName)) continue;//その名前が空っぽかnullなら継続
+                string actionName = StripPlayerIdFromActionName(ButtonList[i].ButtonID); 
+                if (string.IsNullOrEmpty(actionName)) continue;
                 _rewiredButtonIds[i] = ReInput.mapping.GetActionId(actionName);
-                
+            //    Debug.Log($"test{actionName}{_rewiredButtonIds[i]}");
                 // Find the Shoot action so we can reuse it instead of ShootAxis
                 //ShootAxisの代わりにShootアクションを再利用できるように検索します。
-                if (actionName.Equals("Shoot", System.StringComparison.OrdinalIgnoreCase)) {
-                    _rewiredActionId_shoot = _rewiredButtonIds[i];
-                }
+
             }
             _rewiredSystemPauseButtonId = ReInput.mapping.GetActionId(rewiredSystemPauseActionName);
         }
@@ -83,7 +79,7 @@
 
 
             _axisHorizontal = "MoveHorizontal";
-            _axisVertical = "MoveVertical";
+             _axisVertical = "MoveVertical";
          //   _axisSecondaryHorizontal = "_SecondaryHorizontal";
         //    _axisSecondaryVertical = "_SecondaryVertical";
            // _axisShoot = "_ShootAxis";
@@ -112,8 +108,8 @@
                 return;
             }
             SetMovement();
-            SetSecondaryMovement();
-            SetShootAxis();
+          //  SetSecondaryMovement();
+          //  SetShootAxis();
             GetInputButtons();
           
         }
@@ -139,30 +135,22 @@
             //ボタンが一個ずつ押されてるか確認中
             for(int i = 0; i < _rewiredButtonIds.Length; i++) 
             {
-                Debug.Log($"でえええ{_rewiredButtonIds[i]}");
-                if (_rewiredPlayer.GetButton(10)) {
-                    if (ButtonList[i] == sAttackButton)
-                    {
-                        Debug.Log("ｈｈｈｈ");
-                    }
-                    Debug.Log("push");
+     //           Debug.Log($"でえええ{_rewiredButtonIds[i]}");
+                if (_rewiredPlayer.GetButton(_rewiredButtonIds[i])) {
+
+                    //Debug.Log("push");
                     ButtonList[i].TriggerButtonPressed();
                     _inputCheck = true;
                 }
-                if(_rewiredPlayer.GetButtonDown(10)) {
+                if(_rewiredPlayer.GetButtonDown(_rewiredButtonIds[i])) {
                     ButtonList[i].TriggerButtonDown();
                     _inputCheck = true;
                 }
-                if(_rewiredPlayer.GetButtonUp(10)) {
+                if(_rewiredPlayer.GetButtonUp(_rewiredButtonIds[i])) {
                     ButtonList[i].TriggerButtonUp();
                 }
             }
 
-            // Special handling for ShootAxis which no longer exists because Rewired doesn't need special handling for these.
-            if(_rewiredActionId_shoot >= 0)
-            {
-                ShootAxis = GetButtonState(_rewiredPlayer, _rewiredActionId_shoot);
-            }
 
             // Special handling for System Pause
             // Allow the System Player to trigger Pause on all players so the key
@@ -209,30 +197,15 @@
                 _primaryMovement.y = _rewiredPlayer.GetAxis(_rewiredActionId_vertical);
               //  Debug.Log($"あああ{_primaryMovement.x}");
             } else {
-              //  Debug.Log($"いいい{_primaryMovement.x}");
+               
                 _primaryMovement.x = _rewiredPlayer.GetAxisRaw(_rewiredActionId_horizontal);
-                _primaryMovement.y = _rewiredPlayer.GetAxisRaw(_rewiredActionId_vertical);
+                _primaryMovement.y = _rewiredPlayer.GetAxisRaw(_rewiredActionId_vertical); 
                 
             }
             //if(_primaryMovement)
         }
 
-        /// <summary>
-        /// Called every frame, gets secondary movement values from Rewired player
-        /// </summary>
-        public override void SetSecondaryMovement() {
-            if(!_initialized) {
-                base.SetSecondaryMovement();
-                return;
-            }
-            if(SmoothMovement) {
-                _secondaryMovement.x = _rewiredPlayer.GetAxis(_rewiredActionId_secondaryHorizontal);
-                _secondaryMovement.y = _rewiredPlayer.GetAxis(_rewiredActionId_secondaryVertical);
-            } else {
-                _secondaryMovement.x = _rewiredPlayer.GetAxisRaw(_rewiredActionId_secondaryHorizontal);
-                _secondaryMovement.y = _rewiredPlayer.GetAxisRaw(_rewiredActionId_secondaryVertical);
-            }
-        }
+
 
         /// <summary>
         /// Called every frame, gets secondary movement values from Rewired player
@@ -275,13 +248,7 @@
             if(!_initialized) base.SetMovement(movement);
         }
 
-        /// <summary>
-        /// This is not used.
-        /// </summary>
-        /// <param name="movement">Movement.</param>
-        public override void SetSecondaryMovement(Vector2 movement) {
-            if(!_initialized) base.SetSecondaryMovement(movement);
-        }
+
 
         /// <summary>
         /// This is not used.
@@ -299,21 +266,8 @@
             if(!_initialized) base.SetVerticalMovement(verticalInput);
         }
 
-        /// <summary>
-        /// This is not used.
-        /// </summary>
-        /// <param name="">.</param>
-        public override void SetSecondaryHorizontalMovement(float horizontalInput) {
-            if(!_initialized) base.SetSecondaryHorizontalMovement(horizontalInput);
-        }
 
-        /// <summary>
-        /// This is not used.
-        /// </summary>
-        /// <param name="">.</param>
-        public override void SetSecondaryVerticalMovement(float verticalInput) {
-            if(!_initialized) base.SetSecondaryVerticalMovement(verticalInput);
-        }
+
 
         /// <summary>
         /// PlayerIDとアクション名を組み合わせた文字列から、アクション名を取得する。

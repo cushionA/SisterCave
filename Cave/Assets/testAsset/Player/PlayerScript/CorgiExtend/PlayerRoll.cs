@@ -45,7 +45,7 @@ namespace MoreMountains.CorgiEngine
         public float MinimumInputThreshold = 0.1f;
         /// if this is true, the character will flip when rolling and facing the roll's opposite direction
         [Tooltip("これが真なら、キャラクターはロール時に反転し、ロールの反対側を向きます。")]
-        public bool FlipCharacterIfNeeded = true;
+        public bool FlipCharacterIfNeeded = false;
 
         //これコルーチンなんだ
         public enum SuccessiveRollsResetMethods { Grounded, Time }
@@ -107,7 +107,7 @@ namespace MoreMountains.CorgiEngine
             base.Initialization();
             Aim.Initialization();
             SuccessiveRollsLeft = SuccessiveRollsAmount;
-           
+            initialLayer = transform.root.gameObject.layer;
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace MoreMountains.CorgiEngine
         public override void ProcessAbility()
         {
             base.ProcessAbility();
-
+      //      Debug.Log($"アナル{_condition.CurrentState}ｔｔｔ{_movement.CurrentState}");
             HandleAmountOfRollsLeft();
         }
 
@@ -140,19 +140,30 @@ namespace MoreMountains.CorgiEngine
         /// </summary>
         public virtual void StartRoll()
         {
-            if (!RollAuthorized())
-            {
-                return;
-            }
 
-            if (!RollConditions())
-            {
-                return;
-            }
+                if (!RollAuthorized())
+                {
+                   
+                    return;
+                }
+
+                if (!RollConditions())
+                {
+                    return;
+                }
+            
             actRoll = false;
             InitiateRoll();
         }
 
+        /// <summary>
+        /// Causes the character to roll or dive (depending on the vertical movement at the start of the roll)
+        /// </summary>
+        public virtual void ForceRoll()
+        { //Debug.Log("tgr");
+            actRoll = false;
+            InitiateRoll();
+        }
         /// <summary>
         /// このメソッドは、ロールの内部条件（ロール間のクールダウン、ロールの残り量）を評価し、ロールが実行できる場合はtrueを、そうでない場合はfalseを返す
         /// </summary>
@@ -222,6 +233,7 @@ namespace MoreMountains.CorgiEngine
         /// </summary>
 		public virtual void InitiateRoll()
         {
+       //     Debug.Log("あいいいｓ");
             // we set its rolling state to true
             _movement.ChangeState(CharacterStates.MovementStates.Rolling);
             _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
@@ -268,7 +280,7 @@ namespace MoreMountains.CorgiEngine
             if (_character.LinkedInputManager != null)
             {
                 Aim.PrimaryMovement = _character.LinkedInputManager.PrimaryMovement;
-                Aim.SecondaryMovement = _character.LinkedInputManager.SecondaryMovement;
+               // Aim.SecondaryMovement = _character.LinkedInputManager.SecondaryMovement;
             }
 
             Aim.CurrentPosition = this.transform.position;
@@ -294,6 +306,7 @@ namespace MoreMountains.CorgiEngine
             // we flip the character if needed
             if (FlipCharacterIfNeeded && (Mathf.Abs(_rollDirection.x) > 0.05f))
             {
+
                 if (_character.IsFacingRight != (_rollDirection.x > 0f))
                 {
                     _character.Flip();
@@ -309,7 +322,7 @@ namespace MoreMountains.CorgiEngine
         {
             // if the character is not in a position where it can move freely, we do nothing.
             if (!AbilityAuthorized
-                || !(_condition.CurrentState == CharacterStates.CharacterConditions.Normal || _condition.CurrentState == CharacterStates.CharacterConditions.Moving))
+                ||( _condition.CurrentState == CharacterStates.CharacterConditions.Stunned))
             {
                 yield break;
             }
@@ -332,9 +345,11 @@ namespace MoreMountains.CorgiEngine
                 && !_controller.State.TouchingLevelBounds
                 && _movement.CurrentState == CharacterStates.MovementStates.Rolling)
             {
+
                 if (!BlockHorizontalInput)
                 {
                     _drivenInput = _horizontalInput;
+                   
                 }
 
                 bool gravityShouldReverseInput = false;
@@ -386,6 +401,7 @@ namespace MoreMountains.CorgiEngine
             StopStartFeedbacks();
             PlayAbilityStopFeedbacks();
 
+            _character.banIdle = false;
             // once the boost is complete, if we were rolling, we make it stop and start the roll cooldown
             if (_movement.CurrentState == CharacterStates.MovementStates.Rolling)
             {
@@ -395,7 +411,7 @@ namespace MoreMountains.CorgiEngine
                 }
                 else
                 {
-                    _movement.RestorePreviousState();
+                    _movement.ChangeState(CharacterStates.MovementStates.Falling);
                 }
             }
             _condition.ChangeState(CharacterStates.CharacterConditions.Normal);

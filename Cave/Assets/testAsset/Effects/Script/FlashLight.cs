@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using FunkyCode;
 
+/// <summary>
+/// 一瞬だけ光るスクリプト
+/// </summary>
 public class FlashLight : MonoBehaviour
 {
     [SerializeField]LightSprite2D sprite;

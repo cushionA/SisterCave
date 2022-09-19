@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.CorgiEngine;
-
+using MoreMountains.Tools;
 public class SManager : MonoBehaviour
 {
     public static SManager instance = null;
@@ -24,10 +24,7 @@ public class SManager : MonoBehaviour
     public List<EnemyAIBase> targetCondition;
     [HideInInspector]public float closestEnemy;
     [HideInInspector] public GameObject playObject;
-    /// <summary>
-    /// プレイヤーから離れたフラグ。
-    /// </summary>
-    [HideInInspector] public bool isEscape;
+
     /// <summary>
     /// 敵死んだフラグ。これが立つとパルス飛ばして敵検索
     /// </summary>
@@ -161,7 +158,7 @@ public class SManager : MonoBehaviour
                targetCondition.Clear();
                foreach (GameObject e in targetRecord)
                {
-                   targetCondition.Add(e.GetComponent<EnemyBase>());
+                   targetCondition.Add(e.MMGetComponentNoAlloc<EnemyBase>());
                }
            }
        }*/
@@ -203,7 +200,7 @@ public class SManager : MonoBehaviour
     public void EnemyDeath(GameObject enemy)
     {
         targetList.Remove(enemy);
-        targetCondition.Remove(enemy.GetComponent<EnemyAIBase>());
+        targetCondition.Remove(enemy.MMGetComponentNoAlloc<EnemyAIBase>());
         if (targetList.Count == 0)
         {
             isSerch = true;
@@ -218,7 +215,7 @@ public class SManager : MonoBehaviour
         if (!targetList.Contains(target))
         {
             targetList.Add(target);
-            targetCondition.Add(target.GetComponent<EnemyAIBase>());
+            targetCondition.Add(target.MMGetComponentNoAlloc<EnemyAIBase>());
             //認識した敵に黄色のマークをつける
             targetCondition[targetCondition.Count - 1].TargetEffectCon();
         }

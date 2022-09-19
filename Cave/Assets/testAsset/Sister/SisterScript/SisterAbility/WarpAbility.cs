@@ -10,11 +10,11 @@ using DarkTonic.MasterAudio;
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
     /// <summary>
-    /// シスターさんのワープ
+    /// シスターさんの自己移動ワープ
     /// isWarpでワープ開始してアニメーションイベントで遷移、終了
     /// </summary>
     [AddComponentMenu("Corgi Engine/Character/Abilities/WarpAbility")]
-    public class WarpAbillity : MyAbillityBase
+    public class WarpAbility : MyAbillityBase
     {
         /// このメソッドは、ヘルプボックスのテキストを表示するためにのみ使用されます。
         /// 能力のインスペクタの冒頭にある
@@ -32,13 +32,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //----------------------------------------------------------------------------
 
         [SerializeField]
-        private LayerMask layerMask;
-
-        bool isWarp;//ワープ中
-
         BrainAbility _sister;
-
-        Vector2 warpPoint;
 
         //----------------------------------------------------------------------------
 
@@ -58,35 +52,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public override void ProcessAbility()
         {
             base.ProcessAbility();
+            WarpEnd();
         }
 
 
 
 
-
-        //ワープ専用の地面探知
-        public float RayGroundCheck(Vector2 position)
-        {
-
-            //真下にレイを飛ばしましょう
-            RaycastHit2D onHitRay = Physics2D.Raycast(position, Vector2.down, Mathf.Infinity, layerMask.value);
-
-            //  ////Debug.log($"{onHitRay.transform.gameObject}");
-            ////Debug.DrawRay(i_fromPosition,i_toTargetDir * SerchRadius);
-
-            //Debug.Log($"当たったもの{onHitRay.transform.gameObject.name}");
-            return onHitRay.point.y;
-        }
-
-        public void WarpEffect()
-        {
-            Transform gofire = _sister.firePosition;
-
-            //Transform rotate = SManager.instance.useMagic.castEffect.LoadAssetAsync<Transform>().Result as Transform;
-
-            Addressables.InstantiateAsync("WarpCircle", gofire.position, gofire.rotation);//.Result;//発生位置をPlayer
-            GManager.instance.PlaySound("Warp", transform.position);
-        }
 
         /// <summary>
         /// 戦闘時に逃げるワープ
@@ -97,22 +68,47 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 _sister.mp -= 5;
             }
+            Debug.Log("ｓｓ");
             _movement.ChangeState(CharacterStates.MovementStates.Warp);
-            warpPoint.Set(point.x,point.y);
-        }
-        //アニメーションイベント
-        public void WarpAct()
-        {
-            transform.position = warpPoint;
-            WarpEffect();
+            _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+
         }
 
         //アニメーションイベント
         public void WarpEnd()
         {
-            _movement.ChangeState(CharacterStates.MovementStates.Idle);
-        }
+            if (_movement.CurrentState != CharacterStates.MovementStates.Warp)
+            {
+                return;
+            }
 
+            if (CheckEnd("Warp"))
+            {
+            _movement.ChangeState(CharacterStates.MovementStates.Idle);
+            _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+            }
+
+        }
+        bool CheckEnd(string Name)
+        {
+
+            if (!_animator.GetCurrentAnimatorStateInfo(0).IsName(Name))// || sAni.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
+            {   // ここに到達直後はnormalizedTimeが"Default"の経過時間を拾ってしまうので、Resultに遷移完了するまではreturnする。
+                return false;
+            }
+            if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            {   // 待機時間を作りたいならば、ここの値を大きくする。
+                return false;
+            }
+            //AnimatorClipInfo[] clipInfo = sAni.GetCurrentAnimatorClipInfo(0);
+
+            ////Debug.Log($"アニメ終了");
+
+            return true;
+
+            // return !(sAni.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+            //  (_currentStateName);
+        }
         /// <summary>
         ///  必要なアニメーターパラメーターがあれば、アニメーターパラメーターリストに追加します。
         /// </summary>

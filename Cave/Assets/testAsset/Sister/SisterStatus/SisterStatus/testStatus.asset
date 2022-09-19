@@ -12,9 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2533db84c0da7e4cb845d551c9ad813, type: 3}
   m_Name: testStatus
   m_EditorClassIdentifier: 
+  isPoison: 0
+  isParalyze: 0
   level: 1
+  maxHp: 100
   maxMp: 200
-  mp: 24
+  Def: 70
+  pierDef: 70
+  strDef: 70
+  holyDef: 70
+  darkDef: 70
+  fireDef: 70
+  thunderDef: 70
+  Armor: 1
+  useSound: []
+  footStepSound: 
+  walkSound: 
   Endurance: 1
   capacity: 1
   castSkill: 0
@@ -29,7 +42,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ce2ad0639a113fa48b1d116eebbfe137, type: 2}
   - {fileID: 11400000, guid: c2e81e9985be0824cade631e1c4c9b5a, type: 2}
   - {fileID: 11400000, guid: 37c6e5e57dfe6ed41a37f81dcf48bf9c, type: 2}
-  useMagic: {fileID: 11400000, guid: c2e81e9985be0824cade631e1c4c9b5a, type: 2}
   equipCombination: {fileID: 11400000, guid: 3fb36971383b2dc4e994b245d632b845, type: 2}
   magicPower: 100
   judgePace: 3
@@ -37,21 +49,18 @@ MonoBehaviour:
   escapeTime: 25
   escapeZone: 15
   warpDistance: {x: 250, y: 200}
-  addSpeed: 80
-  patrolSpeed: 25
-  patrolDistance: 20
-  walkDistance: 40
-  walkSpeed: 10
+  walkSpeed: 15
+  dashSpeed: 40
+  patrolDistance: 30
+  walkDistance: 50
   playDistance: 200
-  playSpeed: 30
   waitRes: 2
-  dashSpeed: 35
   adjust: 2
   jumpSpeed: 800
   jumpPower: 1600
   jumpRes: 0.4
   jumpCool: 2
-  firstGravity: 460
+  firstGravity: -30
   downRes: 0
   velocityMin: {x: -100, y: -100}
   velocityMax: {x: 100, y: 100}

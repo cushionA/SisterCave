@@ -3,6 +3,19 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using System;
 using MoreMountains.CorgiEngine;
+using MoreMountains.Tools;
+using System.Collections.Generic;
+
+/// <summary>
+/// 最初にDamageOnTouchと回復量を初期化する。
+/// タグ関連の仕様変更
+/// 
+/// まず攻撃者にかかってるバフを取得
+/// そして攻撃力などはステータスから獲得
+/// いつも通り飛んで当たるだけ
+/// あとは魔法にヒット後当たり判定を喪失する処理を入れる？
+/// </summary>
+
 public class FireBullet : MonoBehaviour
 {
 
@@ -15,14 +28,15 @@ public class FireBullet : MonoBehaviour
 	[SerializeField]
 	MasicUser _user;
 
-
+	[SerializeField]
 	MyDamageOntouch _damage;
 
 	public enum MasicUser
     {
 		Player,
 		Sister,
-		Others
+		Others,
+		Child//子どもの弾丸
     }
 
 	// === 外部パラメータ（インスペクタ表示） =====================
@@ -74,7 +88,8 @@ public class FireBullet : MonoBehaviour
 	/// </summary>
 	[HideInInspector] public int direction;
 	Vector2 bulletScale;//弾丸の拡大率
-	bool playerEffect;//サポートや回復が効果を及ぼす
+
+
 	float effectWait;//サポートや回復が再度効果を現すまで
 
 	/// <summary>
@@ -88,9 +103,16 @@ public class FireBullet : MonoBehaviour
 	/// </summary>
 	bool movable;
 
+	/// <summary>
+	/// 初期化されてますか？
+	/// </summary>
 	bool _initialized;
 
-	AttackData _atk;
+	/// <summary>
+	/// すでに衝突したもの
+	/// </summary>
+	List<Transform> collisionList = new List<Transform>();
+
 
 	/// <summary>
 	/// 攻撃倍率
@@ -108,8 +130,21 @@ public class FireBullet : MonoBehaviour
 
 	protected float attackBuff = 1;//攻撃倍率
 
-	// === コード（Monobehaviour基本機能の実装） ================
-	async UniTaskVoid Start()
+	string _healTag;
+
+
+
+    private void Awake()
+    {
+        if(_user == MasicUser.Player || _user == MasicUser.Sister)
+        {
+			InitializePlayerBullet();
+        }
+    }
+
+
+    // === コード（Monobehaviour基本機能の実装） ================
+    async UniTaskVoid Start()
 	{
 		Func<bool> s = () => 
 		{
@@ -125,7 +160,7 @@ public class FireBullet : MonoBehaviour
 		//ownnerは弾丸使用側で設定
 		fireTime = 0;
 
-		col = GetComponent<Collider2D>();
+		col = this.gameObject.MMGetComponentNoAlloc<Collider2D>();
 
 
 		//子供の弾丸は親のターゲット引き継ぐ
@@ -189,9 +224,11 @@ public class FireBullet : MonoBehaviour
 		if (em.isHit)
 		{
 			next = await LoadBullet();
-			sm = next.GetComponent<FireBullet>();
+			sm = next.MMGetComponentNoAlloc<FireBullet>();
+			//smが存在してるなら
 			//Debug.Log($"名前{target.name}");
-			sm.target = target;
+
+			
 		}
 
 
@@ -205,16 +242,20 @@ public class FireBullet : MonoBehaviour
 			transform.localScale = setScale;
 			//Debug.Log($"アリゲーター{target.name}");
 		}
+		DamageCalc();
 	}
 
 
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
+	//	Debug.Log($"sdddssdsdsd{other.gameObject.name}");
+		//Debug.Log("あたり");
 		BulletHit(other);
 	}
 	void OnTriggerStay2D(Collider2D other)
 	{
+	//	Debug.Log($"sdddssdsdsd{other.gameObject.name}");
 		BulletHit(other);
 	}
 
@@ -238,11 +279,30 @@ public class FireBullet : MonoBehaviour
         }
 
 		fireTime += Time.fixedDeltaTime;
-		if (playerEffect)
+		if (collisionList.Count > 0)
 		{
 			effectWait += Time.fixedDeltaTime;
-			//三秒以上ならプレイヤーエフェクトを再設定
-			playerEffect = effectWait >= 3.0f ? false : true;
+            //三秒以上ならプレイヤーエフェクトを再設定
+            if (em.mType == Magic.MagicType.Attack)
+            {
+				//貫通弾なら。速度0以上かつ弾丸も一秒以上生きるなら爆発とかではない
+                if (em.penetration && em.speedV > 0 && em.lifeTime > 1)
+                {
+                    if (effectWait >= 1.5f)
+                    {
+						collisionList = null;
+                    }
+                }
+
+            }
+			else if (effectWait >= 3)
+            {
+				collisionList = null;
+			}
+			if(collisionList == null)
+            {
+				collisionList = new List<Transform>();
+            }
 
 		}
 		//うるさい弾なら音を鳴らす
@@ -252,23 +312,22 @@ public class FireBullet : MonoBehaviour
 			loud = false;
 		}
 		//弾丸の生存時間終わりなら
+
 		if (fireTime >= em.lifeTime)
 		{
+
 			//   存在中の音声がなってるなら消す
 			if (isExPlay)
 			{
 				GManager.instance.StopSound(em.existSound, 1f);
 			}
-			//子弾丸であるなら消える
-			if (em.isChild)
-			{
+            //子弾丸であるなら消える
 
-				Destroy(this.gameObject);
-			}
-			else
-			{
+				
+
 				Addressables.ReleaseInstance(this.gameObject);
-			}
+				Destroy(this.gameObject);
+			
 		}
 
 		//弾丸を左右速度に応じて振り向かせる
@@ -436,26 +495,23 @@ public class FireBullet : MonoBehaviour
 	/// 使用者が呼び出す
 	/// 子弾のためにこのスクリプト内でも呼び出す
 	/// </summary>
-	public void InitializedBullet(GameObject _owner, GameObject _target)
+	public void InitializedBullet(GameObject _owner, GameObject _target,int _direction = 1)
     {
 		owner = _owner.transform;
 		target = _target;
 
 		//使用者に従って
-        if (_user == MasicUser.Player)
+        if (_user == MasicUser.Child)
         {
 			//武器の威力修正でやる？
-			_owner.GetComponent<PlyerController>().BuffCalc(this);
-
-		}
-		else if (_user == MasicUser.Sister)
-		{
-			_owner.GetComponent<FireAbility>().BuffCalc(this);
+			_owner.MMGetComponentNoAlloc<FireBullet>().BuffCalc(this);
+			direction = _direction;
 		}
         else
         {
 			//敵、その他の場合EnemyMagicのATKをそのままぶち込む
-			_owner.GetComponent<EnemyAIBase>().BuffCalc(this);
+			_owner.MMGetComponentNoAlloc<EnemyAIBase>().BuffCalc(this);
+			_healTag = "Enemy";
 
 		}
 
@@ -463,30 +519,31 @@ public class FireBullet : MonoBehaviour
 		_initialized = true;
 	}
 
+    void InitializePlayerBullet()
+    {
 
-	void Damage(EnemyBase enemy)
-	{
-		if (enemy.lastHit != null && !enemy.isHitable)
+		//使用者に従って
+		if (_user == MasicUser.Player)
 		{
-			enemy.isHitable = enemy.lastHit != this.gameObject ? true : false;
+			owner = GManager.instance.Player.transform;
+			//target = GManager.instance.;
+			//武器の威力修正でやる？
+			owner.gameObject.MMGetComponentNoAlloc<PlyerController>().BuffCalc(this);
 
 		}
-
-		if (enemy.isHitable)
+		else if (_user == MasicUser.Sister)
 		{
-
-			//EnemyBase enemy = other.GetComponent<EnemyBase>();
-			//enemy.sm = em;
-
-			//		Debug.Log($"お肉焼けたね{em.name}");
-
-
-			enemy.lastHit = this.gameObject;
-			enemy.bulletDirection = direction;
-			enemy.insert = true;
+			owner = SManager.instance.Sister.transform;
+			target = SManager.instance.target;
+			owner.gameObject.MMGetComponentNoAlloc<FireAbility>().BuffCalc(this);
+			_healTag = "Player";
 		}
 
+		//初期化完了
+		_initialized = true;
 	}
+
+
 	/// <summary>
 	/// //次のエフェクトをあらかじめロードしておく処理
 	/// </summary>
@@ -499,15 +556,11 @@ public class FireBullet : MonoBehaviour
 
 	}
 
-	void HealMagic()
+	void HealMagic(GameObject target)
 	{
-		if (!playerEffect)
-		{
-			//		Debug.Log("いああ");
-			GManager.instance.HpRecover(em.recoverAmount);
-			playerEffect = true;
-			effectWait = 0;
-		}
+		target.MMGetComponentNoAlloc<MyHealth>().Heal(em.recoverAmount);
+		effectWait = 0;
+
 	}
 
 	/// <summary>
@@ -515,23 +568,29 @@ public class FireBullet : MonoBehaviour
 	/// </summary>
 	void BulletHit(Collider2D other)
 	{
-		//	Debug.Log("あるの");
+
 
 		// オーナーチェック。あるかどうか、Nullなら戻る
-		if (owner == other.gameObject.transform || isAct)
+		if (owner == other.gameObject.transform || isAct || other == null)
 		{
-			Debug.Log($"衝突{gameObject.name}");
+			//Debug.Log($"衝突{owner == other.gameObject.transform}{isAct}{other != null}");// {gameObject.name}");
 			return;
 		}
 		// 自分自身にヒットしないようにチェック
 
-		// 壁アタリをチェック
+
+		/// <summary>
+		/// すでに効果しているので無効
+		/// </summary>
+		bool alreadyEffect = false;//サポートや回復が効果を及ぼす。原則一回だけ
+						   // 壁アタリをチェック
 
 		isAct = true;
 
+		//子弾あるなら発射
 		if (em.isHit)
 		{
-
+			bool needInitialize = sm == null ? false :true;
 			sm.direction = direction;
 
 			//next.transform.localScale.Set(0, 0,0);
@@ -546,79 +605,95 @@ public class FireBullet : MonoBehaviour
 						goFire.position = new Vector3(this.gameObject.transform.position.x + RandomValue(-sm.em.HRandom, sm.em.HRandom), this.gameObject.transform.position.y + RandomValue(-sm.em.VRandom, sm.em.VRandom), this.gameObject.transform.position.z);
 					}
 
-					//GameObject add = Addressables.
-					Instantiate(next, goFire.position, goFire.rotation);//次のエフェクトを
-																		//add.GetComponent<SisterFireBullet>().target = target;
-					if (x == sm.em.bulletNumber - 2)
+					if (needInitialize)
 					{
-						Addressables.Release(next);
-
+						Instantiate(next, goFire.position, goFire.rotation).MMGetComponentNoAlloc<FireBullet>().InitializedBullet(this.gameObject,target,direction);
+					}
+					//GameObject add = Addressables.
+					else
+					{
+						Instantiate(next, goFire.position, goFire.rotation);//次のエフェクトを
+																			//add.MMGetComponentNoAlloc<SisterFireBullet>().target = target;
 					}
 				}
 			}
 			else
 			{
 				//Addressables.
-				Instantiate(next, this.gameObject.transform.position, next.transform.rotation);
-				Addressables.Release(next);
-			}
-		}
-		if (other.gameObject.tag == SManager.instance.enemyTag)
-		{
 
-			direction = other.transform.position.x >= transform.position.x ? 1 : -1;
-
-			if (em.hitSound != null)
-			{
-				GManager.instance.PlaySound(em.hitSound, transform.position);
-			}
-			if (!em.penetration && other != null)
-			{
-
-				Damage(other.GetComponent<EnemyBase>());
-				if (isExPlay)
+				if (needInitialize)
 				{
-					GManager.instance.StopSound(em.existSound, 1f);
+					Instantiate(next, this.gameObject.transform.position, next.transform.rotation).MMGetComponentNoAlloc<FireBullet>().InitializedBullet(this.gameObject, target, direction);
 				}
-				Addressables.ReleaseInstance(this.gameObject);
-
-				//sm.em
-				//next.transform.localScale = em.hitEffectScale;
-			}
-			else
-			{
-
-				//何回貫通できるかみたいな数値入れてもいいかも
-				Damage(other.GetComponent<EnemyBase>());
-				//他のとこでは衝突で消えるでしょ
-				isAct = false;
-				//	Addressables.ReleaseInstance(this.gameObject);
-			}
-		}
-		else if (other.gameObject.tag == GManager.instance.playerTag)
-		{
-			if (Magic.MagicType.Recover == em.mType)
-			{
-				HealMagic();
-			}
-		}
-		else
-		{
-
-			if (em.fireType != Magic.FIREBULLET.STOP)
-			{
-				GManager.instance.PlaySound(em.hitSound, transform.position);
-			}
-			if (!em.penetration)
-			{
-				Addressables.ReleaseInstance(this.gameObject);
-
-				if (isExPlay)
+				else
 				{
-					GManager.instance.StopSound(em.existSound, 1f);
+					Instantiate(next, this.gameObject.transform.position, next.transform.rotation);
 				}
 			}
-			isAct = false;
+		}
+        //Debug.Log("ssssdf");
+
+		
+		//いろんなものと衝突してるなら
+        if (collisionList.Count > 0)
+        {
+			for (int i = 0; i < collisionList.Count;i++)
+            {
+				//もしすでにぶつかったものと一致したら
+				if(other.transform == collisionList[i])
+                {
+					alreadyEffect = true;
+					break;
+                }
+            }
+
+        }
+		if (!alreadyEffect)
+		{
+			collisionList.Add(other.transform);
+			if (Magic.MagicType.Attack == em.mType)
+			{
+
+				direction = other.transform.position.x >= transform.position.x ? 1 : -1;
+
+				if (em.hitSound != null)
+				{
+					GManager.instance.PlaySound(em.hitSound, transform.position);
+				}
+				if (!em.penetration)
+				{
+					if (isExPlay)
+					{
+						GManager.instance.StopSound(em.existSound, 1f);
+					}
+					Addressables.ReleaseInstance(this.gameObject);
+					Destroy(this.gameObject);
+					//		Debug.Log("あたり");
+					//sm.em
+					//next.transform.localScale = em.hitEffectScale;
+				}
+				else
+				{
+
+					//何回貫通できるかみたいな数値入れてもいいかも
+
+					//他のとこでは衝突で消えるでしょ
+					isAct = false;
+					//	Addressables.ReleaseInstance(this.gameObject);
+				}
+			}
+			else if (other.gameObject.tag == _healTag)
+			{
+				if (Magic.MagicType.Recover == em.mType)
+				{
+					Debug.Log("あ");
+					HealMagic(other.gameObject);
+				}
+				else if (Magic.MagicType.Support == em.mType)
+				{
+
+				}
+			}
 		}
 
 
@@ -640,31 +715,20 @@ public class FireBullet : MonoBehaviour
 
 	/// <summary>
 	/// ダメージ計算
+	/// ステータスとバフを親から取得してダメージ計算
 	/// </summary>
 	/// <param name="isFriend">真なら味方</param>
-	public void DamageCalc(bool isShield)
+	public void DamageCalc()
 	{
 		//GManager.instance.isDamage = true;
 		//useEquip.hitLimmit--;
 		//mValueはモーション値
 
-
-
-		Equip useEquip;
-
-		if (isShield)
+		#region
+		/*
+		if (em.phyAtk > 0)
 		{
-			useEquip = GManager.instance.equipShield;
-			GManager.instance.useAtValue.isShield = false;
-		}
-		else
-		{
-			useEquip = GManager.instance.equipWeapon;
-		}
-
-		if (useEquip.phyAtk > 0)
-		{
-			_damage._attackData.phyAtk = (Mathf.Pow(useEquip.phyAtk, 2) * GManager.instance.useAtValue.x) * attackFactor;
+			_damage._attackData.phyAtk = (Mathf.Pow(em.phyAtk, 2) * GManager.instance.useAtValue.x) * attackFactor;
 
 			//斬撃刺突打撃を管理
 			if (GManager.instance.useAtValue.type == Equip.AttackType.Slash)
@@ -693,41 +757,108 @@ public class FireBullet : MonoBehaviour
 			}
 		}
 		//神聖
-		if (useEquip.holyAtk > 0)
+		if (em.holyAtk > 0)
 		{
-			_damage._attackData.holyAtk = (Mathf.Pow(useEquip.holyAtk, 2) * GManager.instance.useAtValue.x) * holyATFactor;
+			_damage._attackData.holyAtk = (Mathf.Pow(em.holyAtk, 2) * GManager.instance.useAtValue.x) * holyATFactor;
 
 		}
 		//闇
-		if (useEquip.darkAtk > 0)
+		if (em.darkAtk > 0)
 		{
-			_damage._attackData.darkAtk = (Mathf.Pow(useEquip.holyAtk, 2) * GManager.instance.useAtValue.x) * darkATFactor;
+			_damage._attackData.darkAtk = (Mathf.Pow(em.darkAtk, 2) * GManager.instance.useAtValue.x) * darkATFactor;
 
 		}
 		//炎
-		if (useEquip.fireAtk > 0)
+		if (em.fireAtk > 0)
 		{
-			_damage._attackData.fireAtk = (Mathf.Pow(useEquip.holyAtk, 2) * GManager.instance.useAtValue.x) * fireATFactor;
+			_damage._attackData.fireAtk = (Mathf.Pow(em.fireAtk, 2) * GManager.instance.useAtValue.x) * fireATFactor;
 
 		}
 		//雷
-		if (useEquip.thunderAtk > 0)
+		if (em.thunderAtk > 0)
 		{
-			_damage._attackData.thunderAtk = (Mathf.Pow(useEquip.holyAtk, 2) * GManager.instance.useAtValue.x) * thunderATFactor;
+			_damage._attackData.thunderAtk = (Mathf.Pow(em.thunderAtk, 2) * GManager.instance.useAtValue.x) * thunderATFactor;
 
 		}
-		_damage._attackData.shock = GManager.instance.useAtValue.z;
+		*/
+		#endregion
+		if (em.phyAtk > 0)
+		{
+			_damage._attackData.phyAtk = em.phyAtk * attackFactor;
+
+			//斬撃刺突打撃を管理
+			if (GManager.instance.useAtValue.type == Equip.AttackType.Slash)
+			{
+				_damage._attackData._attackType = 0;
+			}
+			else if (GManager.instance.useAtValue.type == Equip.AttackType.Stab)
+			{
+				_damage._attackData._attackType = 2;
+			}
+			else if (GManager.instance.useAtValue.type == Equip.AttackType.Strike)
+			{
 
 
+				_damage._attackData._attackType = 4;
+
+				//						Debug.Log("皿だ");
+				if (GManager.instance.useAtValue.z >= 40)
+				{
+					_damage._attackData.isHeavy = true;
+				}
+				else
+				{
+					_damage._attackData.isHeavy = false;
+				}
+			}
+		}
+		//神聖
+		if (em.holyAtk > 0)
+		{
+			_damage._attackData.holyAtk = em.holyAtk * holyATFactor;
+
+		}
+		//闇
+		if (em.darkAtk > 0)
+		{
+			_damage._attackData.darkAtk = em.darkAtk * darkATFactor;
+
+		}
+		//炎
+		if (em.fireAtk > 0)
+		{
+			_damage._attackData.fireAtk = em.fireAtk * fireATFactor;
+
+		}
+		//雷
+		if (em.thunderAtk > 0)
+		{
+			_damage._attackData.thunderAtk = em.thunderAtk * thunderATFactor;
+
+		}
+		_damage._attackData.shock = em.shock;
+
+		_damage._attackData.mValue = em.mValue;
 		_damage._attackData.attackBuff = attackBuff;
 		//damage = Mathf.Floor(damage * attackBuff);
 
-		_damage._attackData.isBlow = GManager.instance.useAtValue.isBlow;
-		_damage._attackData.isLight = GManager.instance.useAtValue.isLight;
-		_damage._attackData.blowPower.Set(GManager.instance.useAtValue.blowPower.x, GManager.instance.useAtValue.blowPower.y);
+		_damage._attackData.isBlow = em.isBlow;
+
+		_damage._attackData.blowPower.Set(em.blowPower.x, em.blowPower.y);
 	}
 
-
+	/// <summary>
+	/// バフの数値を与える
+	/// 弾丸から呼ぶ
+	/// </summary>
+	public void BuffCalc(FireBullet _fire)
+	{
+		_fire.attackFactor = attackFactor;
+		_fire.fireATFactor = fireATFactor;
+		_fire.thunderATFactor = thunderATFactor;
+		_fire.darkATFactor = darkATFactor;
+		_fire.holyATFactor = holyATFactor;
+	}
 
 
 }

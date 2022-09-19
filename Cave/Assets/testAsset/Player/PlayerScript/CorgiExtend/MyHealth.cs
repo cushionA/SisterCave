@@ -3,7 +3,7 @@ using System.Collections;
 using MoreMountains.Tools;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
-using UnityEngine.Serialization;
+using Cysharp.Threading.Tasks;
 using Guirao.UltimateTextDamage;
 
 namespace MoreMountains.CorgiEngine
@@ -24,6 +24,9 @@ namespace MoreMountains.CorgiEngine
 
         [HideInInspector]
         public Vector2 blowVector;
+
+        [HideInInspector]
+        public bool _parryNow;
 
         protected new MyCharacter _character;
 
@@ -131,7 +134,7 @@ namespace MoreMountains.CorgiEngine
             float invincibilityDuration, Vector3 damageDirection,bool back,MyWakeUp.StunnType stunnState)
         {
 
-         //   Debug.Log($"知りたいのだ");
+          // Debug.Log($"知りたいのだ");
 
             // オブジェクトが無敵であれば、何もせずに終了します。
             if (TemporarilyInvulnerable || Invulnerable || ImmuneToDamage || PostDamageInvulnerable)
@@ -167,10 +170,10 @@ namespace MoreMountains.CorgiEngine
 
             damage = (int)Calc(_damageData,back);
 
-           Debug.Log($"おせーて{damage}と{CurrentHealth}");
+    //       Debug.Log($"おせーて{damage}と{CurrentHealth}{stunnState}");
             if (um != null)
             {
-                Debug.Log($"ｈｈｈｈｈ{um.name}");
+              //  Debug.Log($"ｈｈｈｈｈ{um.name}");
                 um.AddStack(damage, this.gameObject.transform);
             }
             if (damage <= 0)
@@ -200,11 +203,11 @@ namespace MoreMountains.CorgiEngine
                 CurrentHealth = 0;
             }
 
-            // Projectile、Player、Enemiesとの衝突を防ぐことができます。
+            // 少しの間無敵に
             if (invincibilityDuration > 0)
             {
                 EnablePostDamageInvulnerability();
-                StartCoroutine(DisablePostDamageInvulnerability(invincibilityDuration));
+                DisablePostDamageInvulnerabilityTasks(invincibilityDuration).Forget();
             }
 
             // ダメージが引き金になるイベント
@@ -243,8 +246,16 @@ namespace MoreMountains.CorgiEngine
                 //吹き飛ばしじゃなくかつ命尽きてる時以外なら吹き飛ばしはする
                 //スタン開始。
                 //パリィと弾かれは処理を共通化する
-                GetComponent<MyWakeUp>().StartStunn(stunnState);
-
+                
+                if(_defender == MyDamageOntouch.TypeOfSubject.Player)
+                {
+                    pCon._wakeup.StartStunn(stunnState);
+                }
+                else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
+                {
+                 //   Debug.Log($"だの{stunnState}");
+                    eData._wakeup.StartStunn(stunnState);
+                }
             }
 
 
@@ -286,8 +297,10 @@ namespace MoreMountains.CorgiEngine
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 				float mValue = _damageData.mValue;
             //float damage;//バフデバフ処理用にdamageとして保持する
+       
+            //ガード時
             if (_defData.isGuard && !back)
-            {
+            {  //   Debug.Log($"あいいいｓ{_defData.isGuard}ｄ{!back}");
                 //ガード時
                 if (_damageData.phyAtk > 0)
                 {
@@ -309,7 +322,7 @@ namespace MoreMountains.CorgiEngine
                         damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.strDef) * ((100 - _defData.phyCut) / 100);
                         //	_damageData.phyType = 4;
                         //						Debug.Log("皿だ");
-                        if (GManager.instance.equipWeapon.shock >= 40)
+                        if (_damageData.shock >= 40)
                         {
                             _damageData.isHeavy = true;
                         }
@@ -364,6 +377,7 @@ namespace MoreMountains.CorgiEngine
                 if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
                 {
 
+
                 }
                 else if (_defender == MyDamageOntouch.TypeOfSubject.Player)
                 {
@@ -378,7 +392,7 @@ namespace MoreMountains.CorgiEngine
                     mainDamage = _damageData.phyAtk;
                     //斬撃刺突打撃を管理
                     if (_damageData._attackType == 0)
-                    { Debug.Log($"オオヌキフラッシュ{(Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def)}");
+                    {// Debug.Log($"オオヌキフラッシュ{(Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def)}");
                         damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def);
 
                     }
@@ -501,7 +515,7 @@ namespace MoreMountains.CorgiEngine
 			}
 
 
-            Debug.Log($"ねええええ{damage}");
+        //    Debug.Log($"ねええええ{damage}");
 
 			return Mathf.Floor(damage * GManager.instance.attackBuff);
 
@@ -535,6 +549,24 @@ namespace MoreMountains.CorgiEngine
             //バグ消しのリターン
             return MyWakeUp.StunnType.Falter;
             
+        }
+
+        /// <summary>
+        /// 自分がプレイヤーに攻撃した時にパリィ演出はいるかをはかる
+        /// 攻撃側のヘルスで出る
+        /// </summary>
+        /// <returns></returns>
+        public bool ParryArmorCheck()
+        {
+            if(_defender == MyDamageOntouch.TypeOfSubject.Enemy)
+            {
+               return eData.ParryArmorJudge();
+            }
+            else
+            {
+               return false;
+            }
+
         }
 
         /// <summary>
@@ -617,5 +649,87 @@ namespace MoreMountains.CorgiEngine
             }
         }
 
+        public void AirDown()
+        {
+            _controller.SetHorizontalForce(0);
+            
+        }
+
+
+        public void Heal(float recoverAmount)
+        {
+            CurrentHealth += recoverAmount;
+
+            if (CurrentHealth > MaximumHealth)
+            {
+                CurrentHealth = MaximumHealth;
+            }
+        }
+
+
+        /// <summary>
+        /// 攻撃された側のヘルスで呼ぶ
+        /// パリィモーション
+        /// </summary>
+        /// <param name="isArmorBreak"></param>
+        public void ParryStart(bool isArmorBreak = false)
+        {
+
+            if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
+            {
+                eData.ParryStart();
+            }
+            else if (_defender == MyDamageOntouch.TypeOfSubject.Player)
+            {
+
+                if (!GManager.instance.equipWeapon.twinHand)
+                {
+                    GManager.instance.stamina += GManager.instance.equipShield.parryRecover;
+                }
+                else
+                {
+                    GManager.instance.stamina += GManager.instance.equipWeapon.parryRecover;
+                }
+
+                if (isArmorBreak)
+                {
+                    pCon.ParryStart(2);
+                }
+                else
+                {
+                    pCon.ParryStart(1);
+                }
+            }
+            else if (_defender == MyDamageOntouch.TypeOfSubject.Magic)
+            {
+
+            }
+            else
+            {
+                //オブジェクトがダメージ受ける
+            }
+            
+
+        }
+
+        public void GuardReport()
+        {
+            if(_defender == MyDamageOntouch.TypeOfSubject.Player)
+            {
+                pCon.GuardReport();
+            }
+            else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
+            {
+                eData.GuardReport();
+            }
+        }
+        /// <summary>
+        /// Allows the character to take damage
+        /// </summary>
+        public async  UniTaskVoid DisablePostDamageInvulnerabilityTasks(float delay)
+        {
+            await MMCoroutine.WaitFor(delay);
+            PostDamageInvulnerable = false;
+        }
     }
 }

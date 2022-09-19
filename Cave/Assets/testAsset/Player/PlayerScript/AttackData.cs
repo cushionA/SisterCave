@@ -51,6 +51,9 @@ public class AttackData
 	[HideInInspector]
 	public byte _phyType;//アーマー削り
 
+
+
+
 	/// <summary>
 	/// 与えるダメージ全体のバフ
 	/// </summary>
@@ -72,4 +75,9 @@ public class AttackData
 	//true.パリィ不可
 	[HideInInspector]
 	public bool disParry;
+	/// <summary>
+	/// パリィのアーマー削りに対する抵抗
+	/// </summary>
+	[HideInInspector]
+	public float _parryResist;
 }

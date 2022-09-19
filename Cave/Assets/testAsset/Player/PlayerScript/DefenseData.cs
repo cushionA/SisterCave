@@ -44,4 +44,5 @@ public class DefenseData
 
     public bool attackNow;
 
+    public float nowArmor;
 }

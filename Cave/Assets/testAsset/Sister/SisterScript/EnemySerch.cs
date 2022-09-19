@@ -25,7 +25,7 @@ public class EnemySerch : MonoBehaviour
     {
         if (collision.tag == SManager.instance.enemyTag)
         {
-            if (CheckFoundObject(collision.gameObject) && !SManager.instance.isEscape && sister.nowState != SisterBrain.SisterState.戦い)
+            if (CheckFoundObject(collision.gameObject) && sister.nowState != SisterBrain.SisterState.戦い)
             {
                 SManager.instance.playObject = null;
                 sister.isPlay = false;
@@ -70,7 +70,7 @@ public class EnemySerch : MonoBehaviour
     {
         if (collision.tag == SManager.instance.enemyTag)
         {
-            if (CheckFoundObject(collision.gameObject) && !SManager.instance.isEscape && sister.nowState != SisterBrain.SisterState.戦い)
+            if (CheckFoundObject(collision.gameObject)&& sister.nowState != SisterBrain.SisterState.戦い)
             {
                 SManager.instance.playObject = null;
                 sister.isPlay = false;

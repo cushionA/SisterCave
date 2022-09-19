@@ -111,6 +111,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		protected float fallTime;
 
+
 		/// <summary>
 		/// On Initialization, we set our movement speed to WalkSpeed.
 		/// Å‰‚Éƒpƒ‰ƒ[ƒ^‚ð“ü‚ê‚é
@@ -147,7 +148,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 
 			//base.HandleInput();
-			if (!ReadInput)
+			if (!ReadInput || _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
 			{
 				//_horizontalMovement = 0;
 				return;
@@ -273,6 +274,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			// if we're grounded, jumping but not moving up, we become idle
 			if ((_controller.State.IsGrounded)
 				&& (_movement.CurrentState == CharacterStates.MovementStates.Jumping)
+				&&(_movement.CurrentState != CharacterStates.MovementStates.Nostate)
 				&& (_controller.TimeAirborne >= _character.AirborneMinimumTime))
 			{
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
@@ -392,7 +394,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						_movement.ChangeState(CharacterStates.MovementStates.Crouching);
 					}
-					else if(_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
+					else if(_condition.CurrentState == CharacterStates.CharacterConditions.Normal && (_movement.CurrentState != CharacterStates.MovementStates.Nostate))
 					{
 						//Debug.Log("‚í‚½‚µ‚ª‚í‚é‚¤‚²‚´‚¢‚Ü‚µ‚½");
 						_movement.ChangeState(CharacterStates.MovementStates.Idle);

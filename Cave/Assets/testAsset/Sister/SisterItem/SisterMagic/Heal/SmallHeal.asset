@@ -12,15 +12,83 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ed277e88186ad48b672dd0a5a3ccdc, type: 3}
   m_Name: SmallHeal
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  itemName: 
-  hiraganaName: 
-  information: 
-  number: 0
-  holdLimmit: 0
-  isDrop: 0
-  inventoryNum: 0
+  ItemID: 
+  TargetInventoryName: MainInventory
+  ForceSlotIndex: 0
+  TargetIndex: 0
+  Usable: 0
+  Consumable: 1
+  ConsumeQuantity: 1
+  Equippable: 0
+  MoveWhenEquipped: 1
+  Droppable: 1
+  CanMoveObject: 1
+  CanSwapObject: 1
+  DisplayProperties:
+    DisplayEquipUseButton: 1
+    DisplayMoveButton: 1
+    DisplayDropButton: 1
+    DisplayEquipButton: 1
+    DisplayUseButton: 1
+    DisplayUnequipButton: 1
+  Quantity: 1
+  ItemName: 
+  ShortDescription: 
+  Description: 
+  Icon: {fileID: 0}
+  Prefab: {fileID: 0}
+  DropProperties:
+    Shape: 0
+    NormalToSpawnPlane: {x: 0, y: 1, z: 0}
+    MinimumSphereRadius: 1
+    MaximumSphereRadius: 2
+    MinimumCubeBaseSize: {x: 1, y: 1, z: 1}
+    MaximumCubeBaseSize: {x: 2, y: 2, z: 2}
+    MinimumNormalAxisOffset: 0
+    MaximumNormalAxisOffset: 0
+    UseNormalAxisOffsetCurve: 0
+    NormalOffsetCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    NormalOffsetCurveRemapZero: 0
+    NormalOffsetCurveRemapOne: 1
+    InvertNormalOffsetCurve: 0
+    MinimumRotation: {x: 0, y: 0, z: 0}
+    MaximumRotation: {x: 0, y: 0, z: 0}
+    MinimumScale: {x: 1, y: 1, z: 1}
+    MaximumScale: {x: 1, y: 1, z: 1}
+  MaximumStack: 1
+  ItemClass: 0
+  TargetEquipmentInventoryName: 
+  EquippedSound: {fileID: 0}
+  UsedSound: {fileID: 0}
+  MovedSound: {fileID: 0}
+  DroppedSound: {fileID: 0}
+  UseDefaultSoundsIfNull: 1
+  _sortNumber: 0
   selectable: 1
+  mType: 1
   atType: 0
   magicLevel: 0
   phyBase: 0
@@ -44,6 +112,7 @@ MonoBehaviour:
     m_AssetGUID: 566b689ca17ec49468e42d895239a5e9
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   powerCurve:
     serializedVersion: 2
     m_Curve: []
@@ -91,12 +160,15 @@ MonoBehaviour:
   homingTime: 0
   homingAngleV: 0
   homingAngleA: 0
+  waitTime: 0
+  delayTime: 0
   isChild: 0
   rotateVt: 0
   isRotate: 0
   bulletScaleV: {x: 0, y: 0}
   bulletScaleA: {x: 0, y: 0}
   isBlow: 0
+  cBlow: 0
   isChaice: 1
   blowPower: {x: 0, y: 0}
   bulletNumber: 0
@@ -106,19 +178,21 @@ MonoBehaviour:
     m_AssetGUID: df5eeaefb9c8168468981f3f8a76febb
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   fireSound: HealStart
+  moveSound: 
   existSound: 
   hitSound: HealHit
-  FireAnime: Fire2
-  castAnime: StandPray
+  FireType: 3
+  castType: 3
   hitEffect:
     m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
+    m_EditorAssetChanged: 0
   isHit: 0
   attackType: 0
   startRotation: {x: -94, y: 0, z: 0}
-  mType: 1
   sType: 6
   isExprode: 0
   isSlip: 0

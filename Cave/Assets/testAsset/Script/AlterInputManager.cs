@@ -188,8 +188,8 @@ protected string SiteHorizontal;
         if (!IsMobile && InputDetectionActive)
         {
             SetMovement();
-            SetSecondaryMovement();
-            SetShootAxis();
+          //  SetSecondaryMovement();
+       //     SetShootAxis();
             GetInputButtons();
 
         }

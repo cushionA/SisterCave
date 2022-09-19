@@ -101,6 +101,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 || (_condition.CurrentState != CharacterStates.CharacterConditions.Normal))
             {
                 // we do nothing and exit
+                GuardEnd();
                 return;
             }
 
@@ -223,6 +224,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (!guardHit)
             {
                 guardHit = true;
+                
             }
             else
             {

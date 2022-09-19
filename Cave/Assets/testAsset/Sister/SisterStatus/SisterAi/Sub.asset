@@ -85,7 +85,7 @@ MonoBehaviour:
     nextCondition: 5
     upDown: 0
   secondAttack:
-    UseMagic: {fileID: 0}
+    UseMagic: {fileID: 11400000, guid: 37c6e5e57dfe6ed41a37f81dcf48bf9c, type: 2}
     AutoWait: 0
     CoolTime: 0
     condition: 5
@@ -93,7 +93,7 @@ MonoBehaviour:
     nextCondition: 0
     upDown: 0
   thirdAttack:
-    UseMagic: {fileID: 0}
+    UseMagic: {fileID: 11400000, guid: ce2ad0639a113fa48b1d116eebbfe137, type: 2}
     AutoWait: 0
     CoolTime: 0
     condition: 6

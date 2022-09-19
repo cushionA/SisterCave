@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 581b3e3c96df0ef42aef16b63b27b87f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dontDestroyOnLoad: 1
+  _dontDestroyOnLoad: 0
   _userData:
     configVars:
       updateLoop: 1
@@ -74,72 +74,76 @@ MonoBehaviour:
       allowInputInEditorSceneView: 0
       platformVars_windowsStandalone:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
         useNativeKeyboard: 1
         joystickRefreshRate: 240
       platformVars_linuxStandalone:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
       platformVars_osxStandalone:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
-      platformVars_windows8Store:
-        disableKeyboard: 0
-        ignoreInputWhenAppNotInFocus: 1
+        useAppleGameController: 0
+        assignJoysticksByUserId: 0
       platformVars_windowsUWP:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
         useGamepadAPI: 1
         useHIDAPI: 1
       platformVars_iOS:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
       platformVars_tvOS:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
       platformVars_android:
         disableKeyboard: 0
-        ignoreInputWhenAppNotInFocus: 1
-      platformVars_ps3:
-        disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
       platformVars_ps4:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
       platformVars_ps5:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
+        assignJoysticksByPS5JoyId: 1
       platformVars_psVita:
         disableKeyboard: 0
-        ignoreInputWhenAppNotInFocus: 1
-      platformVars_xbox360:
-        disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
       platformVars_xboxOne:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
       platformVars_gameCoreXboxOne:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
         assignJoysticksByUserId: 0
       platformVars_gameCoreScarlett:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
         assignJoysticksByUserId: 0
-      platformVars_wii:
-        disableKeyboard: 0
-        ignoreInputWhenAppNotInFocus: 1
-      platformVars_wiiu:
-        disableKeyboard: 0
-        ignoreInputWhenAppNotInFocus: 1
       platformVars_switch:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
       platformVars_webGL:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
       platformVars_stadia:
         disableKeyboard: 0
+        disableMouse: 0
         ignoreInputWhenAppNotInFocus: 1
         useNativeKeyboard: 1
         useNativeMouse: 1
@@ -277,7 +281,7 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 2
-      _name: Avoid
+      _name: _Avoid
       _type: 1
       _descriptiveName: "\u56DE\u907F\u30FB\u30C0\u30C3\u30B7\u30E5"
       _positiveDescriptiveName: 
@@ -286,7 +290,7 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 3
-      _name: Interact
+      _name: _Interact
       _type: 1
       _descriptiveName: "\u30A2\u30AF\u30B7\u30E7\u30F3\u30DC\u30BF\u30F3"
       _positiveDescriptiveName: 
@@ -295,7 +299,7 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 4
-      _name: Menu
+      _name: _Menu
       _type: 1
       _descriptiveName: "\u30E1\u30CB\u30E5\u30FC"
       _positiveDescriptiveName: 
@@ -322,7 +326,7 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 9
-      _name: ItemUse
+      _name: _ItemUse
       _type: 1
       _descriptiveName: "\u30A2\u30A4\u30C6\u30E0\u4F7F\u7528"
       _positiveDescriptiveName: 
@@ -331,7 +335,7 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 10
-      _name: Fire1
+      _name: _Fire1
       _type: 1
       _descriptiveName: "\u5F31\u653B\u6483"
       _positiveDescriptiveName: 
@@ -340,7 +344,7 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 11
-      _name: Fire2
+      _name: _Fire2
       _type: 1
       _descriptiveName: "\u5F37\u653B\u6483"
       _positiveDescriptiveName: 
@@ -349,7 +353,7 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 12
-      _name: Arts
+      _name: _Arts
       _type: 1
       _descriptiveName: "\u7279\u6B8A\u884C\u52D5"
       _positiveDescriptiveName: 
@@ -358,7 +362,7 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 13
-      _name: Guard
+      _name: _Guard
       _type: 1
       _descriptiveName: "\u30AC\u30FC\u30C9"
       _positiveDescriptiveName: 
@@ -367,7 +371,7 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 14
-      _name: WeponHandChange
+      _name: _WeponHandChange
       _type: 1
       _descriptiveName: "\u6B66\u5668\u6301\u3061\u624B\u5909\u66F4"
       _positiveDescriptiveName: 
@@ -376,7 +380,7 @@ MonoBehaviour:
       _userAssignable: 1
       _categoryId: 0
     - _id: 22
-      _name: Combination
+      _name: _Combination
       _type: 1
       _descriptiveName: "\u9023\u643A\u30DC\u30BF\u30F3"
       _positiveDescriptiveName: 
@@ -2826,7 +2830,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 2
-    actionIdCounter: 45
+    actionIdCounter: 46
     actionCategoryIdCounter: 2
     inputBehaviorIdCounter: 3
     mapCategoryIdCounter: 2

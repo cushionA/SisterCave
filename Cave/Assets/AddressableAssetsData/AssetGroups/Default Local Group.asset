@@ -786,9 +786,10 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 5733a1a46de084f45959a76e823de58a
-    m_Address: Assets/testAsset/Effects/Effect/Magic/Bullet/Lightning/LightningTinyBullet.prefab
+    m_Address: LightningTinyBullet
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Bullet
   - m_GUID: 40128680efcfb894a908bfd3d7138a0e
     m_Address: Assets/MagicArsenal/Effects/Materials/Missiles/Lightning/LightningBall
       1.mat
@@ -859,8 +860,7 @@ MonoBehaviour:
   - m_GUID: 7f9db16e38fbd114fa303102028b4e92
     m_Address: Assets/testAsset/Effects/Effect/AttackEffect/Special/ForceSlash/ForceNSlash.prefab
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - AttackEffect
+    m_SerializedLabels: []
   - m_GUID: 2dd5e642c1aeda842bf7ff1b80deead5
     m_Address: Assets/testAsset/Effects/Effect/AttackEffect/Special/ForceStab/ForceNStab.prefab
     m_ReadOnly: 0

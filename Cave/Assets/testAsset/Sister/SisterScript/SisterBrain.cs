@@ -361,14 +361,14 @@ public class SisterBrain : MonoBehaviour
 								else if (myPosition.x > basePosition.x - status.battleDis)
 								{
 									Flip(-1);
-									move.Set(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0);
+									//move.Set(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0);
 									rb.AddForce(move);
 									//("Dash");
 								}
 								else if (myPosition.x < basePosition.x - status.battleDis * 2)
 								{
 									Flip(1);
-									move.Set(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0);
+									//move.Set(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0);
 									rb.AddForce(move);
 									//("Dash");
 								}*/
@@ -405,7 +405,7 @@ public class SisterBrain : MonoBehaviour
 					{
 					//	Debug.Log($"逃げる{mDirection}");
 						Flip(-mDirection);
-						move.Set(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0);
+						//move.Set(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0);
 						rb.AddForce(move);
 						//("Dash");
 					}
@@ -430,14 +430,14 @@ public class SisterBrain : MonoBehaviour
 					else if (myPosition.x < basePosition.x + status.battleDis)
 					{
 						Flip(1);
-						move.Set(status.addSpeed * (status.dashSpeed + rb.velocity.x), 0);
+						//move.Set(status.addSpeed * (status.dashSpeed + rb.velocity.x), 0);
 						rb.AddForce(move);
 						//("Dash");
 					}
 					else if (myPosition.x > basePosition.x + status.battleDis * 2)
 					{
 						Flip(-1);
-						move.Set(status.addSpeed * (-status.dashSpeed + rb.velocity.x), 0);
+						//move.Set(status.addSpeed * (-status.dashSpeed + rb.velocity.x), 0);
 						rb.AddForce(move);
 						//("Dash");
 					}
@@ -473,7 +473,7 @@ public class SisterBrain : MonoBehaviour
 					{
 						Flip(-mDirection);
 
-						move.Set(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0);
+						//move.Set(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0);
 						rb.AddForce(move);
 						//("Dash");
 					}
@@ -648,7 +648,7 @@ public class SisterBrain : MonoBehaviour
 			{
 				
 				Flip(direction);
-				move.Set(status.addSpeed * (status.patrolSpeed * direction - rb.velocity.x), 0);
+				//move.Set(status.addSpeed * (status.patrolSpeed * direction - rb.velocity.x), 0);
 				rb.AddForce(move);
 				isWait = false;
 				//("Move");
@@ -657,7 +657,7 @@ public class SisterBrain : MonoBehaviour
 			{
 			//Debug.Log("でそ");
 				Flip(direction);
-				move.Set(status.addSpeed * (status.walkSpeed * direction - rb.velocity.x), 0);
+				//move.Set(status.addSpeed * (status.walkSpeed * direction - rb.velocity.x), 0);
 				rb.AddForce(move);
 				isWait = false;
 				//("Walk");
@@ -785,7 +785,7 @@ public class SisterBrain : MonoBehaviour
 				//isCloseは接近しなければならないというフラグ
 				//いったんすぐ近くまで来よう
 				Flip(direction);
-				move.Set(status.addSpeed * (status.dashSpeed * direction - rb.velocity.x), 0);
+				//move.Set(status.addSpeed * (status.dashSpeed * direction - rb.velocity.x), 0);
 				rb.AddForce(move);
 				//	isWait = false;//立ち止まってる。
 
@@ -804,7 +804,7 @@ public class SisterBrain : MonoBehaviour
 					{
 						Flip(1);
 				//環境物より後ろにいるとき
-				        move.Set(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0);
+				        //move.Set(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0);
 						rb.AddForce(move);
 						//("Move");
 					}
@@ -812,7 +812,7 @@ public class SisterBrain : MonoBehaviour
 					{
 						Flip(-1);
 				//環境物より前にいるとき
-				        move.Set(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0);
+				        //move.Set(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0);
 						rb.AddForce(move);
 						//("Move");
 					}
@@ -823,7 +823,7 @@ public class SisterBrain : MonoBehaviour
 					//警戒距離まで来る
 					//isWait = true;
 					Flip(direction);
-				    move.Set(status.addSpeed * (status.dashSpeed * direction - rb.velocity.x), 0);
+				    //move.Set(status.addSpeed * (status.dashSpeed * direction - rb.velocity.x), 0);
 					rb.AddForce(move);
 					//isWait = false;//立ち止まってる。
 					//("Move");
@@ -834,7 +834,7 @@ public class SisterBrain : MonoBehaviour
 					//("Walk");
 					//waitTime = 0.0f;
 					Flip(direction);
-				move.Set(status.addSpeed * (direction * status.walkSpeed - rb.velocity.x), 0);
+				//move.Set(status.addSpeed * (direction * status.walkSpeed - rb.velocity.x), 0);
 					rb.AddForce(move);
 				}
 
@@ -856,7 +856,7 @@ public class SisterBrain : MonoBehaviour
 					{
 						Flip(1);
 				//環境物より後ろにいるとき
-				move.Set(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0);
+				//move.Set(status.addSpeed * (status.dashSpeed - rb.velocity.x), 0);
 						rb.AddForce(move);
 						//("Move");
 					}
@@ -864,7 +864,7 @@ public class SisterBrain : MonoBehaviour
 					{
 						Flip(-1);
 				//環境物より前にいるとき
-				        move.Set(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0);
+				        //move.Set(status.addSpeed * (-status.dashSpeed - rb.velocity.x), 0);
 						rb.AddForce(move);
 						//("Move");
 					}
@@ -888,7 +888,7 @@ public class SisterBrain : MonoBehaviour
 					//("Walk");
 					waitTime = 0.0f;
 					Flip(direction);
-     				move.Set(status.addSpeed * (direction * status.walkSpeed - rb.velocity.x), 0);
+     				//move.Set(status.addSpeed * (direction * status.walkSpeed - rb.velocity.x), 0);
 					rb.AddForce(move);
 				}
 
@@ -1343,7 +1343,7 @@ public class SisterBrain : MonoBehaviour
 			moveDirectionY = RandomValue(0, 100) >= 50 ? -1 : 1;
 			randomTime = 0.0f;
 		}
-		move.Set(SManager.instance.sisStatus.addSpeed * (-SManager.instance.sisStatus.walkSpeed - rb.velocity.x) * moveDirectionX,0);
+		//move.Set(SManager.instance.sisStatus.addSpeed * (-SManager.instance.sisStatus.walkSpeed - rb.velocity.x) * moveDirectionX,0);
 		rb.AddForce(move);
 
 	}
@@ -1383,7 +1383,7 @@ public class SisterBrain : MonoBehaviour
 
 					nowPosition = false;
 					isPosition = false;
-					SManager.instance.isEscape = true;
+				//	SManager.instance.isEscape = true;
 					//escapeがtrueの時警戒から戦闘にならない
 					stateNumber = 0;
 					beforeNumber = 0;
@@ -1446,7 +1446,7 @@ public class SisterBrain : MonoBehaviour
 			//六秒以上敵検知せんずれば警戒フェイズへ
 			nowPosition = false;
 			isPosition = false;
-			SManager.instance.isEscape = true;
+		//	SManager.instance.isEscape = true;
 			nowState = SisterState.警戒;
 			//escapeがtrueの時警戒から戦闘にならない
 			stateNumber = 3;

@@ -63,11 +63,11 @@ namespace MoreMountains.CorgiEngine
 		{
             //‚±‚Á‚¿‚ÍƒXƒ^ƒ“’†—˜—p‚Å‚«‚È‚¢‚æ‚¤‚É
 
-            if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+            if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal || !_controller.State.IsGrounded || _movement.CurrentState == CharacterStates.MovementStates.Nostate)
             {
+				pressTime = 0;
 				return;
             }
-
 			#region
 			/*
 			if (!ReadInput)
@@ -136,6 +136,8 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected virtual void HandleRunningExit()
 		{
+
+
 			// if we're running and not grounded, we change our state to Falling
 			if (!_controller.State.IsGrounded && (_movement.CurrentState == CharacterStates.MovementStates.Running) && _startFeedbackIsPlaying)
 			{
@@ -168,9 +170,9 @@ namespace MoreMountains.CorgiEngine
 		{
 			if (!AbilityAuthorized // if the ability is not permitted
 				|| (!_controller.State.IsGrounded) // or if we're not grounded
-				|| (_condition.CurrentState != CharacterStates.CharacterConditions.Normal) // or if we're not in normal conditions
-				|| (_movement.CurrentState != CharacterStates.MovementStates.moving)) // or if we're not walking
+				|| (_condition.CurrentState != CharacterStates.CharacterConditions.Normal) || _movement.CurrentState == CharacterStates.MovementStates.Nostate) // or if we're not walking
 			{
+				Debug.Log("‚ ");
 				// we do nothing and exit
 				return;
 			}
@@ -243,6 +245,10 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public override void UpdateAnimator()
 		{
+			if (isPlayer)
+			{
+			//	Debug.Log($"‚È‚ñ‚È‚Ì{_animator.GetParameter(_runningAnimationParameter)}");
+			}
 			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _runningAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Running), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
 		}
 

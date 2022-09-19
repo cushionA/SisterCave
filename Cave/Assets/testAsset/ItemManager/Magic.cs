@@ -283,17 +283,41 @@ public class Magic : Item
 	/// </summary>
 	public string hitSound;
 
+	[HideInInspector]
+	public enum FIRETYPE
+	{
+		NoCast,
+		Short,
+		Normal,
+		Long,
+		Rain,
+		Set,//置く
+		Special
+	}
+	[HideInInspector]
+	public enum CASTTYPE
+	{
+		NoCast,
+		Short,
+		Normal,
+		Long,
+		Rain,
+		Set,
+		Special
+	}
+
+
 	[Header("発動モーション名")]
 	/// <summary>
 	// 発動のアニメ
 	/// </summary>
-	public string FireAnime;
+	public FIRETYPE FireType;
 
 	[Header("詠唱モーション名")]
 	/// <summary>
 	// 詠唱のアニメ
 	/// </summary>
-	public string castAnime;
+	public CASTTYPE castType;
 
 	[Header("ヒット時のエフェクト")]
 	/// <summary>

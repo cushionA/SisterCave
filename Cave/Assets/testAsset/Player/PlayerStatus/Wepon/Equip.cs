@@ -53,7 +53,7 @@ public class Equip : Item
     public List<float> darkCutSet;//闇。
     public List<float> fireCutSet;//魔力
     public List<float> thunderCutSet;//魔力
-
+    
     public List<AnimationCurve> powerCurve;
     public List<AnimationCurve> skillCurve;
     public List<AnimationCurve> intCurve;
