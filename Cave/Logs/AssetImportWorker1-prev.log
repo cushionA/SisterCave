@@ -15,7 +15,7 @@ C:/Users/tatuk/Documents/SisterCave/Cave
 -logFile
 Logs/AssetImportWorker1.log
 -srvPort
-54720
+62194
 Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
 C:/Users/tatuk/Documents/SisterCave/Cave
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -47,7 +47,7 @@ C:/Users/tatuk/Documents/SisterCave/Cave
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Refreshing native plugins compatible for Editor in 640.76 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 683.96 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2021.3.8f1 (b30333d56e81)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/Resources/UnitySubsystems
@@ -69,7 +69,7 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56736
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56348
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
@@ -77,385 +77,42 @@ Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.8f1/E
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.8f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
-Registered in 0.013358 seconds.
+Registered in 0.011136 seconds.
 Native extension for UWP target not found
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
 Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 669.12 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 723.26 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.261 seconds
+- Completed reload, in  1.378 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1261ms)
-		BeginReloadAssembly (81ms)
+	ReloadAssembly (1379ms)
+		BeginReloadAssembly (119ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (1051ms)
-			LoadAssemblies (78ms)
+		EndReloadAssembly (1139ms)
+			LoadAssemblies (116ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (115ms)
+			SetupTypeCache (106ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (27ms)
-			SetupLoadedEditorAssemblies (846ms)
+			RebuildScriptCaches (30ms)
+			SetupLoadedEditorAssemblies (940ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (16ms)
+				InitializePlatformSupportModulesInManaged (19ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (669ms)
+				RefreshPlugins (723ms)
 				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (117ms)
-				ProcessInitializeOnLoadMethodAttributes (43ms)
+				ProcessInitializeOnLoadAttributes (137ms)
+				ProcessInitializeOnLoadMethodAttributes (59ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.017601 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for UWP target not found
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 667.90 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  3.090 seconds
-Domain Reload Profiling:
-	ReloadAssembly (3092ms)
-		BeginReloadAssembly (110ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (7ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (19ms)
-		EndReloadAssembly (2847ms)
-			LoadAssemblies (121ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (485ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (202ms)
-			SetupLoadedEditorAssemblies (1977ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (13ms)
-				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (668ms)
-				BeforeProcessingInitializeOnLoad (168ms)
-				ProcessInitializeOnLoadAttributes (994ms)
-				ProcessInitializeOnLoadMethodAttributes (124ms)
-				AfterProcessingInitializeOnLoad (9ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (4ms)
-Platform modules already initialized, skipping
-========================================================================
-Worker process is ready to serve import requests
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 8.34 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 10639 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 143 unused Assets / (8.2 MB). Loaded Objects now: 11131.
-Memory consumption went from 0.67 GB to 0.66 GB.
-Total: 7.577900 ms (FindLiveObjects: 0.852700 ms CreateObjectMapping: 0.979300 ms MarkObjects: 4.050400 ms  DeleteObjects: 1.694700 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 286481.639434 seconds.
-  path: Assets/Medieval Combat Sounds/Magic
-  artifactKey: Guid(bec1fd044857bf3438f73583b375122c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Medieval Combat Sounds/Magic using Guid(bec1fd044857bf3438f73583b375122c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cc35cd45f0631f49357e4dc26aa8d5a4') in 0.020579 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 2736.454025 seconds.
-  path: Assets/SineVFX/TopDownEffects/Resources/Meshes/RegularAnimated/Hammer/HammerAnimated.fbx
-  artifactKey: Guid(ed88e490e5119ef45b0e8920c116b7db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/SineVFX/TopDownEffects/Resources/Meshes/RegularAnimated/Hammer/HammerAnimated.fbx using Guid(ed88e490e5119ef45b0e8920c116b7db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f08a26d3892162ff94984368f55cb08f') in 0.440220 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000030 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Hit.fbx
-  artifactKey: Guid(14f4b1a391cb57442ac7e11f94add395) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Hit.fbx using Guid(14f4b1a391cb57442ac7e11f94add395) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '337d57107d6b1a995feb3e8da1e79964') in 0.030126 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000035 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@CrouchedIdle.fbx
-  artifactKey: Guid(07c86412e66f3884ba87bec4bf7880a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@CrouchedIdle.fbx using Guid(07c86412e66f3884ba87bec4bf7880a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e0c5856e7d6bc3c1ec24cdddf6e7eda3') in 0.030389 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000029 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Fall.fbx
-  artifactKey: Guid(38e238712b39bc94b8c6392ce9f1be0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Fall.fbx using Guid(38e238712b39bc94b8c6392ce9f1be0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6792832c74cc109266c611eb49381a92') in 0.029898 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000027 seconds.
-  path: Assets/CorgiEngine/Demos/TheHunt/Models/Soldier/Red@Fall2.fbx
-  artifactKey: Guid(51748e342d6851447999c2938d25fe0c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/TheHunt/Models/Soldier/Red@Fall2.fbx using Guid(51748e342d6851447999c2938d25fe0c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '82574a4ca6d30d3c0fcfc4141657faca') in 0.023051 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000031 seconds.
-  path: Assets/CorgiEngine/Demos/TheHunt/Models/Soldier/Red@Hang.fbx
-  artifactKey: Guid(63b378d9249de5d4187cbd9f0dca697a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/TheHunt/Models/Soldier/Red@Hang.fbx using Guid(63b378d9249de5d4187cbd9f0dca697a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1324ba8ef0ed14f8901879039c499dc9') in 0.023160 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMFeedbacks/Demos/MMFeedbacksDemo/Models/Dude/MMFeedbackDemoDude@Idle.fbx
-  artifactKey: Guid(b2fccabcb9892894a8720b37575d77ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMFeedbacks/Demos/MMFeedbacksDemo/Models/Dude/MMFeedbackDemoDude@Idle.fbx using Guid(b2fccabcb9892894a8720b37575d77ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '636085a8ff327554c8c6b6418e04d68d') in 0.025243 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000037 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Running.fbx
-  artifactKey: Guid(df02f74aac203b1429bd17a0e3459831) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Running.fbx using Guid(df02f74aac203b1429bd17a0e3459831) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3c485b24b6d2fa33f8d4a9d09b057837') in 0.030127 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000029 seconds.
-  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMFeedbacks/Demos/MMFeedbacksDemo/Models/Dude/MMFeedbackDemoDude@Jump.fbx
-  artifactKey: Guid(14309b80c23b62044b2e4d8e4017ed68) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMFeedbacks/Demos/MMFeedbacksDemo/Models/Dude/MMFeedbackDemoDude@Jump.fbx using Guid(14309b80c23b62044b2e4d8e4017ed68) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9d9a4bf178eadc6b6831b5514b6e0beb') in 0.022593 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000027 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@CrouchedWalking.fbx
-  artifactKey: Guid(e298460755bc9c645a9a61f805608aee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@CrouchedWalking.fbx using Guid(e298460755bc9c645a9a61f805608aee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ede30fce1c56ad8a45b1f1ef3f27cf43') in 0.030633 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000028 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Jumping.fbx
-  artifactKey: Guid(bb2b27a53f24a77489e537c06b4c2567) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Jumping.fbx using Guid(bb2b27a53f24a77489e537c06b4c2567) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '491e58769ccbd2f147b9d193adbca829') in 0.033132 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000042 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Death.fbx
-  artifactKey: Guid(f1711d9cea0c22d46987e05a4308acb2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Death.fbx using Guid(f1711d9cea0c22d46987e05a4308acb2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0c0a6c41fbb00edab8e73440b2d08ca9') in 0.031608 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000026 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@LookShoulder.fbx
-  artifactKey: Guid(fc2ed0e2f6e67d8449c20e98ace0d441) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@LookShoulder.fbx using Guid(fc2ed0e2f6e67d8449c20e98ace0d441) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3f6c8d1ceee3cc589c989c970ccf0feb') in 0.027744 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000038 seconds.
-  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Idle.fbx
-  artifactKey: Guid(c0d05ce750935d145b12ecdfd7af5220) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Idle.fbx using Guid(c0d05ce750935d145b12ecdfd7af5220) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9e69fb2ba5dfb34c686249f16a9d42ec') in 0.030745 seconds 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.011251 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for UWP target not found
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Native extension for WebGL target not found
-Refreshing native plugins compatible for Editor in 6.40 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  2.428 seconds
-Domain Reload Profiling:
-	ReloadAssembly (2428ms)
-		BeginReloadAssembly (170ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (9ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (60ms)
-		EndReloadAssembly (2139ms)
-			LoadAssemblies (121ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (453ms)
-			ReleaseScriptCaches (7ms)
-			RebuildScriptCaches (210ms)
-			SetupLoadedEditorAssemblies (1201ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (24ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (6ms)
-				BeforeProcessingInitializeOnLoad (174ms)
-				ProcessInitializeOnLoadAttributes (873ms)
-				ProcessInitializeOnLoadMethodAttributes (114ms)
-				AfterProcessingInitializeOnLoad (8ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (52ms)
-Platform modules already initialized, skipping
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
-Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Refreshing native plugins compatible for Editor in 12.57 ms, found 5 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 10183 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 118 unused Assets / (8.1 MB). Loaded Objects now: 11239.
-Memory consumption went from 0.67 GB to 0.66 GB.
-Total: 8.472400 ms (FindLiveObjects: 0.788200 ms CreateObjectMapping: 0.710500 ms MarkObjects: 5.130400 ms  DeleteObjects: 1.842600 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 1444.930637 seconds.
-  path: Assets/testAsset/Sound/Magic/Holy/Hit/HealHit.wav
-  artifactKey: Guid(eabd15522e58e974caae5d27930c7728) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Sound/Magic/Holy/Hit/HealHit.wav using Guid(eabd15522e58e974caae5d27930c7728) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a57dc9b2b31e117a477d600e7d71b4fa') in 0.112294 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000051 seconds.
-  path: Assets/Medieval Combat Sounds/Magic/Magic Heal 07.wav
-  artifactKey: Guid(115a2ce815edee94982e0de168f35412) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Medieval Combat Sounds/Magic/Magic Heal 07.wav using Guid(115a2ce815edee94982e0de168f35412) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd2e0bd87bc8851c01fa88cc9701a95f9') in 0.025421 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000072 seconds.
-  path: Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 23.wav
-  artifactKey: Guid(be2160c66e54ba349a7353932f8fe8ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 23.wav using Guid(be2160c66e54ba349a7353932f8fe8ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '28117828d543813e869199a6a3e43ea1') in 0.024546 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000045 seconds.
-  path: Assets/Medieval Combat Sounds/Magic/Magic Heal 09.wav
-  artifactKey: Guid(78a31c952d9834e48887cbb9bddc9f43) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Medieval Combat Sounds/Magic/Magic Heal 09.wav using Guid(78a31c952d9834e48887cbb9bddc9f43) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '99c6f27650049c060e32a1e5ff627a61') in 0.022085 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000063 seconds.
-  path: Assets/Medieval Combat Sounds/Magic/Magic Heal 03.wav
-  artifactKey: Guid(8bf7b2fe1e29bb544a619e52225c0b2a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Medieval Combat Sounds/Magic/Magic Heal 03.wav using Guid(8bf7b2fe1e29bb544a619e52225c0b2a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'da48e5b4960ba50fc37af7aba9bd523e') in 0.025971 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 10.wav
-  artifactKey: Guid(f4d534e3c0425364a9cea4a44fe41ae9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 10.wav using Guid(f4d534e3c0425364a9cea4a44fe41ae9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1542a7a247ede01d89cba0c712b63827') in 0.024749 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 11.wav
-  artifactKey: Guid(57c3cc3e1f44d544bbc07f59e40d1c86) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 11.wav using Guid(57c3cc3e1f44d544bbc07f59e40d1c86) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7f7796790fbc882158b59a8d30c56dd5') in 0.025846 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000044 seconds.
-  path: Assets/SineVFX/TopDownEffects/CompleteEffects/HealingSeal.prefab
-  artifactKey: Guid(6545dfcafa624a34a511dbe92f2159ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/SineVFX/TopDownEffects/CompleteEffects/HealingSeal.prefab using Guid(6545dfcafa624a34a511dbe92f2159ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ec53b7d3c2746c85d79d1dcd238a4873') in 0.343372 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000033 seconds.
-  path: Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 19.wav
-  artifactKey: Guid(f2a722a2a85f1f24f8e79c08facdf67b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 19.wav using Guid(f2a722a2a85f1f24f8e79c08facdf67b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5de834b0b4d11a8398523d069193d038') in 0.025427 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 16.wav
-  artifactKey: Guid(db7b64e5e7304034c90de144cf46fb0f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 16.wav using Guid(db7b64e5e7304034c90de144cf46fb0f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4bbd9e1c83dfe3c4f57d18a1c4fb0f7e') in 0.023064 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000030 seconds.
-  path: Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 20.wav
-  artifactKey: Guid(35ad0170da7795645bbd4be1dd14db25) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 20.wav using Guid(35ad0170da7795645bbd4be1dd14db25) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f96960674f9f4af2405c22e8e184f8f2') in 0.021639 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000028 seconds.
-  path: Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 12.wav
-  artifactKey: Guid(4f70b7510f16d634181315a874fe5c42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 12.wav using Guid(4f70b7510f16d634181315a874fe5c42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cbc1ebd1aaadc42331d89cd192386057') in 0.024905 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000027 seconds.
-  path: Assets/Medieval Combat Sounds/Magic/Magic Heal 01.wav
-  artifactKey: Guid(20fed6d0753dd2b40a01f2f0f3d95665) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Medieval Combat Sounds/Magic/Magic Heal 01.wav using Guid(20fed6d0753dd2b40a01f2f0f3d95665) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd2867539994df89081356156ab94e237') in 0.024958 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000034 seconds.
-  path: Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 22.wav
-  artifactKey: Guid(0509d2d290e3e154bb5420bb02e08401) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 22.wav using Guid(0509d2d290e3e154bb5420bb02e08401) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '61a9e29ef522566e64eb0a8279f316d4') in 0.025789 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000029 seconds.
-  path: Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 08.wav
-  artifactKey: Guid(65078c63d432dc04ab6f38753a882c63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 08.wav using Guid(65078c63d432dc04ab6f38753a882c63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fcca430fde3795182e4c2d73ef8508cb') in 0.035762 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000030 seconds.
-  path: Assets/SineVFX/TopDownEffects/Resources/Materials/MainEffects/HealingSeal/HealingSeal_Indicator_Emissive_02.mat
-  artifactKey: Guid(6043920d0b8c4dc5ab44a529f71878f6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/SineVFX/TopDownEffects/Resources/Materials/MainEffects/HealingSeal/HealingSeal_Indicator_Emissive_02.mat using Guid(6043920d0b8c4dc5ab44a529f71878f6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ab57f09fe1bd9e797ce88301ee442a24') in 0.061488 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000032 seconds.
-  path: Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 07.wav
-  artifactKey: Guid(db863d730dad4f74f8e68388d3a95209) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Magic Spells Sound Effects V2.0/General Spell/Healing 07.wav using Guid(db863d730dad4f74f8e68388d3a95209) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f3da20734591e169e21a4f475e7ace6') in 0.026786 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000067 seconds.
-  path: Assets/Medieval Combat Sounds/Magic/Magic Heal 04.wav
-  artifactKey: Guid(124219dc29ccb79469815c77ebf13bab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Medieval Combat Sounds/Magic/Magic Heal 04.wav using Guid(124219dc29ccb79469815c77ebf13bab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a3d8b079616a9a101d8227b3f750afb8') in 0.020021 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000027 seconds.
-  path: Assets/Medieval Combat Sounds/Magic/Magic Heal 08.wav
-  artifactKey: Guid(2bbb0696eb9ba3049ac8b8d075d8b0fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Medieval Combat Sounds/Magic/Magic Heal 08.wav using Guid(2bbb0696eb9ba3049ac8b8d075d8b0fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fff680e686d942f2c21d6dc11f85a32c') in 0.026077 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000032 seconds.
-  path: Assets/Medieval Combat Sounds/Magic/Magic Heal 02.wav
-  artifactKey: Guid(7b048cfb901806542af87d22b46384ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Medieval Combat Sounds/Magic/Magic Heal 02.wav using Guid(7b048cfb901806542af87d22b46384ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '077f2a3b0adcc7a5fc96078e29cafbe8') in 0.024576 seconds 
-Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
-AssetImportWorker is now disconnected from the server
-Process exiting
-Exiting without the bug reporter. Application will terminate with return code 0
+Registered in 0.160939 seconds.
