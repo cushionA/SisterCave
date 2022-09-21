@@ -55,6 +55,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             Parried = 2,
             GuardBreake = 3,
             Down = 4,
+            NDie = 6,//普通の死
+            BlowDie = 7,//吹き飛び死
             notStunned = 0
 
         }
@@ -115,10 +117,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             // if the ability is not permitted
             if (!AbilityPermitted
                 // スタンしてないなら帰れ
-                || (_condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
-
-                // or if we're grounded
-                || (!_controller.State.IsGrounded))
+                || (_condition.CurrentState != CharacterStates.CharacterConditions.Stunned))
             {
                 // we do nothing and exit
                 return;
@@ -152,28 +151,53 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     Recover();
                 }
             }
-            else if (nowType == 4)
+            else if (nowType == 6)
+            {
+                Debug.Log("ddsd");
+                if (CheckEnd("NDie"))
+                {
+                    Die();
+                }
+            }
+            else if (nowType == 4 || nowType == 7)
             {
 
                     blowTime += _controller.DeltaTime;
                     //0.1秒以上で地面についたら
                     if (blowTime >= 0.05 && _controller.State.IsGrounded)
                     {
-                        blowTime = 0;
+                    blowTime = 0;
+                     _controller.SetForce(Vector2.zero);
+                    if (nowType == 4)
+                    {
                         nowType = 5;
-                    if (isPlayer)
-                        transform.root.gameObject.layer = 7;
+                        if (isPlayer)
+                            transform.root.gameObject.layer = 7;
+                    }
+                    else
+                    {
+                        nowType = 8;
+
+                    }
                 }
                 
 
             }
             else if (nowType == 5)
             {
-                
-                     if (CheckEnd("WakeUp"))
+                _controller.SetForce(Vector2.zero);
+                if (CheckEnd("WakeUp"))
                     {
                         Recover();
                     }
+            }
+            else if (nowType == 8)
+            {
+                _controller.SetForce(Vector2.zero);
+                if (CheckEnd("DDie"))
+                {
+                    Die();
+                }
             }
 
 
@@ -185,9 +209,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="type"></param>
         public void StartStunn(StunnType type)
         {
-            if (_character.CharacterHealth.CurrentHealth > 0 && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned
-                && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
-            {
+
+
                 _condition.ChangeState(CharacterStates.CharacterConditions.Stunned);
                 _characterHorizontalMovement.SetHorizontalMove(0);
                // _movement.ChangeState(CharacterStates.MovementStates.Idle);
@@ -195,14 +218,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 if (type == StunnType.Falter)
                 {
                     nowType = 1;
+                    _controller.SetForce(Vector2.zero);
                 }
                 else if (type == StunnType.Parried)
                 {
                     nowType = 2;
+                    _controller.SetForce(Vector2.zero);
                 }
                 else if (type == StunnType.GuardBreake)
                 {
                     nowType = 3;
+                    _controller.SetForce(Vector2.zero);
                 }
                 else if(type == StunnType.Down)
                 {
@@ -211,14 +237,36 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                        if(isPlayer)
                     transform.root.gameObject.layer = 15;
                 }
-
-            }
+                else if (type == StunnType.NDie)
+                {
+                    Debug.Log($"だの");
+                    _controller.SetForce(Vector2.zero);
+                    nowType = 6;
+                }
+                else if (type == StunnType.BlowDie)
+                {
+                    //現在吹き飛ばされてます
+                    nowType = 7;
+                    transform.root.gameObject.layer = 15;
+                }
+            
         }
 
 
 
 
+        public void Die()
+        {
+            if (isPlayer)
+            {
+                Recover();
+            }
+            else
+            {
+                Destroy(_character.gameObject);
+            }
 
+        }
 
 
 
