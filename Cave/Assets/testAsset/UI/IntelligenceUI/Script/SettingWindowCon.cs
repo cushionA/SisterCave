@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,7 +38,7 @@ public class SettingWindowCon : MonoBehaviour
     {
         if (!enable && o.next)
         {
-            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+            if (MainUICon.instance._reInput.CancelButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown)
             {
                 if (isAH)
                 {
@@ -105,14 +104,14 @@ public class SettingWindowCon : MonoBehaviour
         {
             for (int i = 0; i <= myButton.Length - 1; i++)
             {
-                myButton[i].GetComponent<EditButton>().ChangeString();
+                myButton[i].gameObject.MMGetComponentNoAlloc<EditButton>().ChangeString();
             }
         }
         else
         {
             for (int i = 0; i <= myButton.Length - 1; i++)
             {
-                myButton[i].GetComponent<AHSetButton>().ValueApply();
+                myButton[i].gameObject.MMGetComponentNoAlloc<AHSetButton>().ValueApply();
             }
         }
     }

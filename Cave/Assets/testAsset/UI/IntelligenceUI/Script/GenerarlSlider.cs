@@ -21,7 +21,7 @@ public class GenerarlSlider : GeneralValueChange
     bool wait;
     bool charge;//’·‰Ÿ‚µŠ®—¹‚µ‚Ä‚é‚©‚Ç‚¤‚©BŠ®—¹‚µ‚Ä‚½‚ç‚Ï‚Á‚Ï‚Æ•Ï‚í‚é
     bool isUp;
-    float verticalKey;
+
     float changeTime;
 
     bool isFirst;
@@ -31,7 +31,6 @@ public class GenerarlSlider : GeneralValueChange
     void Update()
     {
 
-        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15);
 
 
         if (!isFirst)
@@ -50,7 +49,7 @@ public class GenerarlSlider : GeneralValueChange
                 ////Debug.log("bgm’²®’†");
 
                 //Œˆ’èƒ{ƒ^ƒ“
-                if (verticalKey > 0 && !isUp)
+                if (MainUICon.instance._reInput.UIMovement.y > 0 && !isUp)
                 {
                     ////Debug.log("a");
                     bgmSlider.value += 10;
@@ -58,7 +57,7 @@ public class GenerarlSlider : GeneralValueChange
                     isDown = false;
                     //tx.text = bgmSlider.value.ToString();
                 }
-                else if (verticalKey < 0 && !isDown)
+                else if (MainUICon.instance._reInput.UIMovement.y < 0 && !isDown)
                 {
                     bgmSlider.value -= 10;
                     // tx.text = bgmSlider.value.ToString();
@@ -66,7 +65,7 @@ public class GenerarlSlider : GeneralValueChange
                     isDown = true;
                 }
             }
-            if (verticalKey != 0)
+            if (MainUICon.instance._reInput.UIMovement.y != 0)
             {
                 //    ////Debug.log("‚µ‚Ì‚Ì‚ß‚Ì");
                 //changeTime += Time.realtimeSinceStartup;
@@ -112,7 +111,7 @@ public class GenerarlSlider : GeneralValueChange
                     }
                 }
             }
-            else if (verticalKey == 0)
+            else if (MainUICon.instance._reInput.UIMovement.y == 0)
             {
                 isUp = false;
                 isDown = false;

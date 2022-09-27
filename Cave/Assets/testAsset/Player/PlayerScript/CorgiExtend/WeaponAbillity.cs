@@ -484,8 +484,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             //       
                             _controller.DefaultParameters.Gravity = -15f;
                         }
+                        else
+                        {
+                            return;
+                        }
                     }
-                    else
+                    else if(_controller.State.IsGrounded)
                     {
                         atType = ActType.sAttack;
                     }
@@ -613,13 +617,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //キーコンフィグで反映されなかったりしたらInputRの参照そろえてないのを確認
             if (!fire1Key && !fire2Key && !artsKey)
             {
-                if (_inputManager.CheckButtonUsing() || _horizontalInput != 0 || _verticalInput != 0)
+                if (_inputManager.CheckButtonUsing())
                 {
                     return true;
                 }
                 else
                 {
-                    return false;
+                    if (_controller.State.IsGrounded && (_horizontalInput != 0 || _verticalInput != 0))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             else
@@ -670,7 +681,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //何かしらの入力があれば
             if (anyKey && _preInput == 0)
             {
-             //   Debug.Log("あああ");
+               Debug.Log("あああ");
                 AttackEnd();
             }
             //攻撃入力が続けばコンボに
@@ -718,16 +729,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
         void AirCheck()
         {
-            test = 9;
-          //  Debug.Log("ああああ");
+         
             if ((anyKey && _preInput == 0) || _controller.State.IsGrounded)
             {
                 AttackEnd();
-                test = 40;
+  Debug.Log("hhhhhh");
             }
             else if (_preInput == 1)
             {
-                test = 20;
+
                 if (isAirEnd)
                 {
                     AttackEnd();
@@ -889,7 +899,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             #endregion
             attackNumber++;
-       //    Debug.Log($"sjf{comboLimit}{attackNumber}{atType}{osixtuko}");
+         //  Debug.Log($"sjf{comboLimit}{attackNumber}{atType}{_controller.State.IsGrounded}");
             if (attackNumber >= comboLimit && comboLimit != 0)
             {
                 

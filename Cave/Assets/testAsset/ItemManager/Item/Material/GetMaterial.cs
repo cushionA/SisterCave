@@ -23,7 +23,7 @@ public class GetMaterial : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction18) && !isFirst)
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18) && !isFirst)
         {
             // MagicManager.instance.takeItem = addTool;
             //  MagicManager.instance.changeNum = addNum;

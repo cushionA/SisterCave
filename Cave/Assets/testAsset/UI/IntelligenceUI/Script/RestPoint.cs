@@ -21,6 +21,8 @@ public class RestPoint : MonoBehaviour
     [HideInInspector]
     public bool isFirst;
 
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +33,7 @@ public class RestPoint : MonoBehaviour
     void Update()
     {
 //Debug.Log($"s{c.enabled}s");
-        if (isCallable && GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction5))
+        if (isCallable && MainUICon.instance._reInput.SubmitButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown && GManager.instance.PlayerStateCheck())
         {
             WindowSet();
             isCallable = false;
@@ -46,20 +48,10 @@ public class RestPoint : MonoBehaviour
             }
            // Debug.Log("ssssssssseerf");
             GManager.instance.onGimmick = true;
-            if (!GManager.instance.equipWeapon.twinHand)
-            {
-
-                GManager.instance.pm.anim.Play("OStand");
-
-            }
-            else
-            {
-                GManager.instance.pm.anim.Play("TStand");
-
-            }
-            MainUICon.instance.isConversation = true;
+            MainUICon.instance.UIOn = true;
+            GManager.instance.PlayerEventLock(true);
         }
-        else if (isFirst && !isCallable && GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17) && window.activeSelf)
+        else if (isFirst && !isCallable && MainUICon.instance._reInput.CancelButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown && window.activeSelf)
         {
             //Ç±Ç±å¥àˆ
             WindowCansel();
@@ -68,35 +60,15 @@ public class RestPoint : MonoBehaviour
             isFirst = false;
             GManager.instance.onGimmick = false;
             MainUICon.instance.tipNeed = false;
-            MainUICon.instance.isConversation = false;
+            MainUICon.instance.UIOn = false;
             MainUICon.instance.isSave = false;
+            GManager.instance.PlayerEventLock(false);
         }
 
     }
 
 
 
-    ///<summary>
-    ///ëãÇèâä˙âªÇ∑ÇÈÇ‚Ç¬
-    /// </summary>
-    void WindowChange()
-    {
-
-
-     /*   for(int i = 0;i >= buttonList.Length; i++)
-        {
-
-            if(MainUICon.instance.selectButton == buttonList[i])
-            {
-                windowList[i].SetActive(true);
-            }
-            else
-            {
-                windowList[i].SetActive(false);
-            }
-        }*/
-
-    }
 
     public void WindowSet()
     {

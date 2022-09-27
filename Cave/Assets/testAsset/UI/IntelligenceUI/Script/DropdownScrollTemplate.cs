@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using MoreMountains.Tools;
 public class DropdownScrollTemplate : MonoBehaviour
 {
 	private ScrollRect sr;
@@ -12,17 +12,17 @@ public class DropdownScrollTemplate : MonoBehaviour
 	bool putable;
 	public void Awake()
 	{
-		sr = this.gameObject.GetComponent<ScrollRect>();
+		sr = this.gameObject.MMGetComponentNoAlloc<ScrollRect>();
 	}
 
 	public void Start()
 	{
-		 drop = GetComponentInParent<Dropdown>();
+		 drop = transform.parent.gameObject.MMGetComponentNoAlloc<Dropdown>();
 		if (drop != null)
 		{
-			var viewport = this.transform.Find("Viewport").GetComponent<RectTransform>();
-			var contentArea = this.transform.Find("Viewport/Content").GetComponent<RectTransform>();
-			var contentItem = this.transform.Find("Viewport/Content/Item").GetComponent<RectTransform>();
+			var viewport = this.transform.Find("Viewport").gameObject.MMGetComponentNoAlloc<RectTransform>();
+			var contentArea = this.transform.Find("Viewport/Content").gameObject.MMGetComponentNoAlloc<RectTransform>();
+			var contentItem = this.transform.Find("Viewport/Content/Item").gameObject.MMGetComponentNoAlloc<RectTransform>();
 
 			// Viewportに対するContentのスクロール位置を求める
 			var areaHeight = contentArea.rect.height - viewport.rect.height;
@@ -39,7 +39,7 @@ public class DropdownScrollTemplate : MonoBehaviour
     private void Update()
     {
 
-		move = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15);
+		move = MainUICon.instance._reInput.UIMovement.y;
 
 		float d = 0;
 		if(move > 0)
@@ -63,9 +63,9 @@ public class DropdownScrollTemplate : MonoBehaviour
 			//sr.verticalNormalizedPosition = 1.0f + Mathf.Clamp(ratio * cValue, 0.0f, 1.0f);
 		//	Debug.Log($"前の数値{sr.verticalNormalizedPosition}");
 			sr.verticalNormalizedPosition += d * Mathf.Clamp(ratio, 0.0f, 1.0f);
-			/*	var viewport = this.transform.Find("Viewport").GetComponent<RectTransform>();
-				var contentArea = this.transform.Find("Viewport/Content").GetComponent<RectTransform>();
-				var contentItem = this.transform.Find("Viewport/Content/Item").GetComponent<RectTransform>();
+			/*	var viewport = this.transform.Find("Viewport").MMGetComponentNoAlloc<RectTransform>();
+				var contentArea = this.transform.Find("Viewport/Content").MMGetComponentNoAlloc<RectTransform>();
+				var contentItem = this.transform.Find("Viewport/Content/Item").MMGetComponentNoAlloc<RectTransform>();
 
 				// Viewportに対するContentのスクロール位置を求める
 				var areaHeight = contentArea.rect.height - viewport.rect.height;

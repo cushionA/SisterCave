@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using MoreMountains.Tools;
+using MoreMountains.CorgiEngine;
 /// <summary>
 /// これは作戦窓を出る時にEditパラメータを現在のに上書きしたり、Editを新しい保存用パラメーターに保存したり逆のことしたり
 /// あと最初に選択したり
@@ -45,7 +47,7 @@ public class OperationGeneral : MonoBehaviour
     {
        // Debug.Log("sss");
         //最初にエディットに反映。
-        OparationCopy(MainUICon.instance.editParameter, SManager.instance.Sister.GetComponent<SisterFire>().sister);
+        OparationCopy(MainUICon.instance.editParameter, SManager.instance.Sister.MMGetComponentNoAlloc<FireAbility>().sister);
         myButton[0].Select();
         if (setObj[0].gameObject.activeSelf == false)
         {
@@ -60,11 +62,11 @@ public class OperationGeneral : MonoBehaviour
     {
 
         //  Debug.Log($"ナンバー{MainUICon.instance.settingNumber}");
-      //  Debug.Log($"選択ボタン{MainUICon.instance.eventSystem.currentSelectedGameObject.transform.root.gameObject.name}");
+      //  Debug.Log($"選択ボタン{MainUICon.instance.selectButton.transform.root.gameObject.name}");
         /// 
         if (!next) {
 
-            if (MainUICon.instance.eventSystem.currentSelectedGameObject == myButton[6].gameObject)
+            if (MainUICon.instance.selectButton == myButton[6].gameObject)
             {
                 if (setObj[0].gameObject.activeSelf == false)
                 {
@@ -75,10 +77,10 @@ public class OperationGeneral : MonoBehaviour
             }
             else
             {
+                Debug.Log($"ｒｒ{MainUICon.instance.selectButton}{myButton[1].gameObject}");
 
-
-                if (MainUICon.instance.eventSystem.currentSelectedGameObject == myButton[1].gameObject)
-                {
+                if (MainUICon.instance.selectButton == myButton[1].gameObject)
+                {Debug.Log("ほね");
                     if (setObj[1].gameObject.activeSelf == false)
                     {
                         setObj[1].gameObject.SetActive(true);
@@ -86,9 +88,9 @@ public class OperationGeneral : MonoBehaviour
                     }
                     // winName.text = "攻撃条件設定";
                     MainUICon.instance.settingNumber = 1;
-
+                    
                 }
-                else if (MainUICon.instance.eventSystem.currentSelectedGameObject == myButton[2].gameObject)
+                else if (MainUICon.instance.selectButton == myButton[2].gameObject)
                 {
                     if (setObj[1].gameObject.activeSelf == false)
                     {
@@ -98,7 +100,7 @@ public class OperationGeneral : MonoBehaviour
                     // winName.text = "支援条件設定";
                     MainUICon.instance.settingNumber = 3;
                 }
-                else if (MainUICon.instance.eventSystem.currentSelectedGameObject == myButton[3].gameObject)
+                else if (MainUICon.instance.selectButton == myButton[3].gameObject)
                 {
                     if (setObj[1].gameObject.activeSelf == false)
                     {
@@ -128,7 +130,7 @@ public class OperationGeneral : MonoBehaviour
                 }
             }
 
-            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+            if (MainUICon.instance._reInput.CancelButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown)
             {
                 if(MainUICon.instance.settingNumber == 0)
                 {

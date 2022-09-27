@@ -309,7 +309,7 @@ public class MainUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //   if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction5))
+        //   if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5))
         //    {
         //      ////Debug.log("unnchi");
         //    }
@@ -325,7 +325,7 @@ public class MainUI : MonoBehaviour
             isTips = false;
 
         }
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction20) && eventSystem.currentSelectedGameObject != null)
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction20) && eventSystem.currentSelectedGameObject != null)
         {
             tipNeed = !tipNeed;
         }
@@ -359,7 +359,7 @@ public class MainUI : MonoBehaviour
 
         if (!sis.sisMenu)
         {
-            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14) && !isConversation)
+            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14) && !isConversation)
             {
                 //メニュー展開ボタンを押すとメニューの表示非表示を切り替え
                 if (isMenu && !selectWindow && !openWindow)

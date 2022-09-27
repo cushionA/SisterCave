@@ -50,7 +50,7 @@ public class MagicButton : MonoBehaviour
             if (MagicManager.instance.isSisterM || MagicManager.instance.isSisterM)
             {
                 //  ////Debug.log("サイパン");
-                if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+                if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
                   //  MainUICon.instance.magicWindow.SetActive(false);
                   //  MainUICon.instance.eqWindow.SetActive(true);

@@ -20,7 +20,7 @@ public class CoreNumberChange : MonoBehaviour
         if (isDump)
         {
 
-            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+            if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
             {
                 isDump = false;
                 uw.isDump = false;
@@ -30,7 +30,7 @@ public class CoreNumberChange : MonoBehaviour
         }
 
 
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
         {
             ResetFlag();
             uw.ResetWindow();

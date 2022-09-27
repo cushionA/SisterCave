@@ -353,7 +353,7 @@ public class GManager : MonoBehaviour
         InputR = ReInput.players.GetPlayer(0);
 
         // SetSlider();
-       
+        initialSetting();
 
         _anim = Player.GetComponent<Animator>();
 
@@ -1364,34 +1364,35 @@ public class GManager : MonoBehaviour
         }
     }
 
-#endregion
+    #endregion
 
 
-
+    //状態確認
+    #region
 
     /// <summary>
-    /// アニメが終了したかどうか
+    /// プレイヤーが通常状態でいるかどうか。
+    /// イベントを引き起こせる状態であるかどうか
     /// </summary>
-    /// <param name="Name"></param>
-    /// <returns></returns>
-    bool CheckEnd(string Name)
+    public bool PlayerStateCheck()
     {
-
-        if (!_anim.GetCurrentAnimatorStateInfo(0).IsName(Name))// || sAni.GetCurrentAnimatorStateInfo(0).IsName("OStand"))
-        {   // ここに到達直後はnormalizedTimeが"Default"の経過時間を拾ってしまうので、Resultに遷移完了するまではreturnする。
-            return true;
-        }
-        if (_anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-        {   // 待機時間を作りたいならば、ここの値を大きくする。
-            return true;
-        }
-        //AnimatorClipInfo[] clipInfo = sAni.GetCurrentAnimatorClipInfo(0);
-
-        ////Debug.Log($"アニメ終了");
-        
-        return false;
-
-        // return !(sAni.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
-        //  (_currentStateName);
+        return pc.CheckPLayerNeutral();
     }
+
+    #endregion
+
+    //プレイヤー制御
+    #region
+
+    /// <summary>
+    /// trueでロック、falseで解除
+    /// </summary>
+    public void PlayerEventLock(bool Lock)
+    {
+        pc.EventLock(Lock);
+    }
+
+    #endregion
+
+
 }

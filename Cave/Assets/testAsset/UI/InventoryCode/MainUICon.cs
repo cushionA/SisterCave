@@ -8,14 +8,19 @@ using UnityEngine.UI;
 using Rewired.Integration.CorgiEngine;
 using Rewired;
 using Rewired.Integration.UnityUI;
+using TMPro;
+using MoreMountains.Feedbacks;
 
 public class MainUICon : MonoBehaviour
 {
     public static MainUICon instance = null;
 
     [HideInInspector] public bool selectWindow;
-    [HideInInspector] public bool openWindow;
+
     [HideInInspector] public bool menuButtonOff;
+
+    [HideInInspector]
+    public bool UIOn;
 
     [HideInInspector]
     public bool isMenu;
@@ -23,16 +28,10 @@ public class MainUICon : MonoBehaviour
 
     [HideInInspector] public GameObject selectButton;//各UIの選択用
 
-
-    public Button eqB;
-    public Button useB;
-    public Button weaponB;
-    public Button magicB;
-    public Button coreB;
-    public Button keyB;
-    public Button materialB;
-    public Button libraryB;
-    public Button systemB;
+    /// <summary>
+    ///     表示するウィンドウを切り替える
+    /// </summary>
+    public TMP_Dropdown _windowSelecter;
 
     //装備画面、インベントリ、システム設定
 
@@ -47,87 +46,21 @@ public class MainUICon : MonoBehaviour
     [HideInInspector]
     public bool tipNeed;
 
-    public bool isReBuild;
-    public GameObject Scon;
+
+
     public SaveWinCon saveWin;
 
     public RewiredEventSystem eventSystem;
     public RewiredStandaloneInputModule stIn;
 
-    /// <summary>
-    /// 入力一覧
-    /// </summary>
-    #region
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction0;
 
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction1;
+    public RewiredCorgiEngineInputManager _reInput;
 
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction2;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction3;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction4;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction5;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction6;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction7;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction8;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction9;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction10;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction11;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction12;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction13;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction14;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction15;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction16;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction17;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction18;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction19;
-
-    [ActionIdProperty(typeof(RewiredConsts.Action))]
-    public int rewiredAction20;
-
-    #endregion
     //  Button eq;
     SisUI sis;
 
 
-
-    bool isFirst;
+    //最初の処理を行ったかのフラグ
     bool isInitial;
 
     /// <summary>
@@ -143,20 +76,16 @@ public class MainUICon : MonoBehaviour
     /// </summary>
     #region
 
-    [SerializeField] Scrollbar useBar;
 
 
 
 
-    //一回のスクロールで動かす距離
-    float pos;
 
 
     //UIでの入力が長押し判定になるまでの時間
-    float repeatDelay;
 
-    //長押しリピート時に何秒ごとでUIの入力が行われるか
-    float _actCool;
+
+
 
     //長押し計測用
     float pressTime;
@@ -164,8 +93,6 @@ public class MainUICon : MonoBehaviour
     //長押しリピート時に次に動く時間
     float nextTime;
 
-    //現在インベントリを開いているか
-    bool _inventoryNow;
 
     //現在スクロールするか
     bool _scrollEnable;
@@ -243,7 +170,7 @@ public class MainUICon : MonoBehaviour
     Transform TipsWindow;
 
     [SerializeField]
-    MainInventoryCon _inventoryCon;
+    MainInventryCon _inventoryCon;
 
     //求められる機能
     //
@@ -302,8 +229,37 @@ public class MainUICon : MonoBehaviour
     //上と下、どちらも設定するかしないかを選べる。
 
 
-    #endregion
+    /// <summary>
+    /// 先ほどまでの入力
+    /// </summary>
+    int lastDirection;
 
+    /// <summary>
+    /// 先ほどまで選択していた窓
+    /// </summary>
+    int lastNumber = 100;
+
+    #endregion
+    [SerializeField]
+    MyScroll _scroll;
+    [SerializeField]
+    MyInventoryDisplay[] _useInventory;
+    bool _slotNow = true;
+
+    [SerializeField]
+    Selectable[] startButton;
+
+
+    /// <summary>
+    /// みんなが使えるフィードバック
+    /// </summary>
+    #region
+
+    public MMFeedbacks _TimeStop;
+
+    public MMFeedbacks _TimeStart;
+
+    #endregion
 
     private void Awake()
     {
@@ -327,18 +283,25 @@ public class MainUICon : MonoBehaviour
         // 自分を選択状態にする
         // eq = equip.GetComponent<Button>();
 
-        _actCool = (1 / stIn.inputActionsPerSecond);
-        repeatDelay = stIn.repeatDelay;
-        nextTime = repeatDelay;
+
+
+        nextTime = stIn.repeatDelay;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //   if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction5))
+        //   if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction5))
         //    {
-        //      ////Debug.log("unnchi");
+        //      ////
         //    }
+        if (eventSystem.currentSelectedGameObject != null)
+        {
+           Debug.Log($"ね{eventSystem.currentSelectedGameObject}{selectButton}");
+        }else
+Debug.Log($"unnchi");
+
+   //     Debug.Log($"ね{stIn.RewiredInputManager.get(stIn.verticalAxis)}");
 
 
         if (tipNeed && isTips)
@@ -351,232 +314,242 @@ public class MainUICon : MonoBehaviour
             isTips = false;
 
         }
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction20) && eventSystem.currentSelectedGameObject != null)
+        if (_reInput.TipsButton.State.CurrentState == MMInput.ButtonStates.ButtonDown && eventSystem.currentSelectedGameObject != null)
         {
             tipNeed = !tipNeed;
         }
 
-        /*    if (isConversation)
+        if (UIOn)
+        {
+            if (selectButton != eventSystem.currentSelectedGameObject)
             {
-                Time.timeScale = 0;
+                selectButton = eventSystem.currentSelectedGameObject;
+                if (selectButton == _windowSelecter.gameObject)
+                {
+                    Debug.Log($"hh");
+                    _scroll.ResetPoss();
+                }
             }
-            else
-            {
-                Time.timeScale = 1;
-            }
-        */
-
-        //  //Debug.Log($"時間{Time.timeScale}");
-  /*      if (MaterialManager.instance.isUseMenu || ToolManager.instance.isUseMenu || EquipManager.instance.isUseMenu
-            || EnemyDataManager.instance.isUseMenu || CoreManager.instance.isUseMenu || ToolManager.instance.isUseMenu || KeyManager.instance.isUseMenu)
-        {
-            openWindow = true;
-
         }
-        else
+
+        //UIついてるのにisMenuじゃないとき
+        if (!(UIOn && !isMenu))
         {
-            openWindow = false;
-        }
-        // ////Debug.log($"さぁて真になれ{openWindow}");
-  */
 
-
-        // ////Debug.log($"装備窓確認trueになれ{isInitial}");
-
-        if (!sis.sisMenu)
-        {
-            if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14) && !isConversation)
+            if (_reInput.MenuCallButton.State.CurrentState == MMInput.ButtonStates.ButtonDown && !isConversation)
             {
                 //メニュー展開ボタンを押すとメニューの表示非表示を切り替え
-                if (isMenu && !selectWindow && !openWindow)
+                if (isMenu && !selectWindow)
                 {
-                    isFirst = false;
+
                     isMenu = false;
-                    isReBuild = false;
-                    Scon.SetActive(false);
+                    masterUI.SetActive(false);
+                    UIOn = false;
+                    _TimeStart?.PlayFeedbacks();
 
-
-                    //////Debug.log($"qawsedfrgjui,lo{usec.isEver}");
                     isInitial = false;
                     ButtonOn();
-                    GManager.instance.InputR.controllers.maps.SetMapsEnabled(true, "Default");
-                    GManager.instance.InputR.controllers.maps.SetMapsEnabled(false, "UI");
-                    _inventoryNow = false;
+
                     _scrollEnable = false;
                 }
 
                 else if (!isMenu)
                 {
-                    isFirst = false;
-                    GManager.instance.InputR.controllers.maps.SetMapsEnabled(false, "Default");
-                    GManager.instance.InputR.controllers.maps.SetMapsEnabled(true, "UI");
-                    // isFirst = true;
+                    
+
+                    _TimeStop?.PlayFeedbacks();
+
                     isMenu = true;
-                    isReBuild = true;
-                    Scon.SetActive(true);
-                }
-            }
-
-            //メニュー非展開
-            if (!isMenu && !isConversation)
-            {
-                // //Debug.Log("野菜くえ");
-                Time.timeScale = 1.0f;
-                if (!isFirst)
-                {
-                    masterUI.SetActive(false);
-                    isFirst = true;
-                }
-            }
-            //メニュー展開中
-            else if (isMenu)
-            {
-                bool change = false;
-
-                if (selectButton != eventSystem.currentSelectedGameObject)
-                {
-                    selectButton = eventSystem.currentSelectedGameObject;
-                    change = true;
-                }
-
-                Time.timeScale = 0;
-                
-                if (!isFirst)
-                {
-                    eqB.Select();
-                    eqB.onClick.Invoke();
-                    isFirst = true;
+                    UIOn = true;
                     masterUI.SetActive(true);
+
+                }
+            }
+
+           if (isMenu)
+            {
+
+
+
+ 
+
+                if (!isInitial)
+                {
+                    
+
+                    _windowSelecter.Select();
+                    _windowSelecter.value = 0;
+
+                }
+                //ドロップダウンの数値を入力で変えるやつ
+                else if(selectButton == _windowSelecter.gameObject)
+                {
+                   
+                    //右入力
+                    if (_reInput.UIMovement.x > 0)
+                    {
+
+                        //前のフレームのRaw入力（0か1か‐1）から今の入力を引いて0以下なら
+                        //これをやると長押し時の高速カーソル移動に上から下にいきなり変えたりの時上から下に急反転しない
+                        //これは前の入力が-1か0の時に上を押したときとなる。ニュートラルか下入力から上に切り替えた時
+                        if (lastDirection <= 0)
+                        {
+                            pressTime = 0;
+                            nextTime = stIn.repeatDelay;
+                        }
+
+                        if (pressTime == 0 || pressTime > nextTime)
+                        {
+                            if (pressTime > stIn.repeatDelay)
+                            {
+                                //次に動くのはactcool秒後
+                                nextTime += stIn.repeatDelay;
+                            }
+                            if (_windowSelecter.value != _windowSelecter.options.Count - 1)
+                            {
+                                _windowSelecter.value++;
+                            }
+                            else
+                            {
+                                _windowSelecter.value = 0;
+                            }
+
+                        }
+                        pressTime += Time.unscaledDeltaTime;
+
+                    }
+                    //左入力
+                    else if (_reInput.UIMovement.x < 0)
+                    {
+                        //前のフレームのRaw入力（0か1か‐1）から今の入力を引いて0以下なら
+                        //これをやると長押し時の高速カーソル移動に上から下にいきなり変えたりの時上から下に急反転しない
+                        //これは前の入力が1か0の時に下を押したときとなる。ニュートラルか上入力から下に切り替えた時
+                        if (lastDirection >= 0)
+                        {
+                            pressTime = 0;
+                            nextTime = stIn.repeatDelay;
+                        }
+
+                        if (pressTime == 0 || pressTime > nextTime)
+                        {
+                            if (pressTime > stIn.repeatDelay)
+                            {
+                                //次に動くのはactcool秒後
+                                nextTime += stIn.repeatDelay;
+                            }
+                            if (_windowSelecter.value != 0)
+                            {
+                                _windowSelecter.value--;
+                            }
+                            else
+                            {
+                                _windowSelecter.value = _windowSelecter.options.Count - 1;
+                            }
+                        }
+                        pressTime += Time.unscaledDeltaTime;
+                    }
+                    else
+                    {
+                        pressTime = 0;
+                    }
+                    lastDirection = (int)_reInput.UIMovement.x;
+                }
+                // Debug.Log($"value{_windowSelecter.value}to{lastNumber}");
+                if (_slotNow && selectButton != _windowSelecter.gameObject)
+                {
+                    if (_scrollEnable == false)
+                    {
+                        pressTime = 0;
+                    }
+                    _scrollEnable = true;
+                }
+                else
+                {
+                    //カーソルが上のボタンに戻ったら一番上にスクロールする
+                    //           useBar.value = 1;
+                    _scrollEnable = false;
                 }
 
                 //切り替わってるなら
-                if (change)
+                if (_windowSelecter.value != lastNumber || !isInitial)
                 {
 
                     //windowのSetActiveのかわりにインベントリの描画対象を変える
                     //システム設定だけは他の窓
 
                     //スロットにカーソルあるか
-                    bool _slotNow = true;
+                    
 
                     //イベントトリガーで
-                    if (selectButton == eqB.gameObject && !isInitial)
+                    if (_windowSelecter.value == 0 || !isInitial)
                     {//セレクトしているボタンが左端のボタンの時
 
-
-
-
                         equipWindow.SetActive(true);
-                        systemWindow.SetActive(false);
-                        inventoryWindow.SetActive(false);
-
-
-                        _inventoryNow = false;
-
+                        
+                        
+                        if (lastNumber != 0 && !(lastNumber >= _windowSelecter.options.Count - 1))
+                        {
+                            _useInventory[lastNumber - 1].gameObject.SetActive(false);
+                            inventoryWindow.SetActive(false);
+                        }
+                        else
+                        {
+                            systemWindow.SetActive(false);
+                        }
+                        lastNumber = 0;
                         //表示するUIの選択
                         isInitial = true;
                         _slotNow = false;
+                        NavigationSetting(0);
+
                     }
-                    else if (selectButton == useB.gameObject)
+                    //最初と最後以外なら
+                    else if (_windowSelecter.value != 0 && !(lastNumber >= _windowSelecter.options.Count - 1))
                     {
-                        inventoryWindow.SetActive(true);
-                        systemWindow.SetActive(false);
-                        equipWindow.SetActive(false);
-                        _inventoryCon.MenuReset(0);
-                        _inventoryNow = true;
-                        isInitial = false;
-                        _slotNow = false;
+ 　　　　　　　　　　　
+
+                        if (lastNumber != 0 && !(lastNumber >= _windowSelecter.options.Count - 1))
+                        {
+                            Debug.Log($"ddddddd{lastNumber -1}{_windowSelecter.value - 1}");
+                            _useInventory[lastNumber - 1].gameObject.SetActive(false);
+                        }
+                        else
+                        {
+                            inventoryWindow.SetActive(true);
+                            systemWindow.SetActive(false);
+                            equipWindow.SetActive(false);
+                        }
+                        _useInventory[_windowSelecter.value - 1].gameObject.SetActive(true);
+                        _inventoryCon.MenuReset(_useInventory[_windowSelecter.value -1]);
+                        lastNumber = _windowSelecter.value;
+                       
+                        _slotNow = true;
                     }
-                    else if (selectButton == weaponB.gameObject)
+                    else
                     {
 
-                        inventoryWindow.SetActive(true);
-                        systemWindow.SetActive(false);
-                        equipWindow.SetActive(false);
-                        isInitial = false;
-                        _inventoryNow = true;
-                        _inventoryCon.MenuReset(1);
-                        _slotNow = false;
-                    }
-                    else if (selectButton == coreB.gameObject)
-                    {
-
-                        inventoryWindow.SetActive(true);
-                        systemWindow.SetActive(false);
-                        isInitial = false;
-                        equipWindow.SetActive(false);
-                        _inventoryCon.MenuReset(2);
-                        _inventoryNow = true;
-                        _slotNow = false;
-                    }
-                    else if (selectButton == keyB.gameObject)
-                    {
-
-                        inventoryWindow.SetActive(true);
-                        systemWindow.SetActive(false);
-                        isInitial = false;
-                        equipWindow.SetActive(false);
-                        _inventoryCon.MenuReset(3);
-                        _inventoryNow = true;
-                        _slotNow = false;
-                    }
-                    else if (selectButton == magicB.gameObject)
-                    {
-
-                        inventoryWindow.SetActive(true);
-                        systemWindow.SetActive(false);
-                        equipWindow.SetActive(false);
-                        isInitial = false;
-                        _inventoryNow = true;
-                        _inventoryCon.MenuReset(4);
-                        _slotNow = false;
-                    }
-                    else if (selectButton == materialB.gameObject)
-                    {
-
-                        inventoryWindow.SetActive(true);
-                        systemWindow.SetActive(false);
-                        equipWindow.SetActive(false);
-                        isInitial = false;
-                        _inventoryNow = true;
-                        _inventoryCon.MenuReset(5);
-                        _slotNow = false;
-                    }
-                    else if (selectButton == libraryB.gameObject)
-                    {
-
-                        inventoryWindow.SetActive(true);
-                        systemWindow.SetActive(false);
-                        equipWindow.SetActive(false);
-                        isInitial = false;
-                        _inventoryNow = true;
-                        _inventoryCon.MenuReset(6);
-                        _slotNow = false;
-                    }
-                    else if (selectButton == systemB.gameObject)
-                    {
-
-                        equipWindow.SetActive(false);
+                        if (lastNumber != 0 && !(lastNumber >= _windowSelecter.options.Count - 1))
+                        {
+                            _useInventory[lastNumber - 1].gameObject.SetActive(false);
+                            equipWindow.SetActive(false);
+                        }
+                        else
+                        {
+                             inventoryWindow.SetActive(false);
+                        }
                         systemWindow.SetActive(true);
-                        inventoryWindow.SetActive(false);
-                        isInitial = false;
-                        _inventoryNow = false;
+
+                        NavigationSetting(1);
+                        lastNumber = _windowSelecter.value;
                         _slotNow = false;
                     }
-                    if(_slotNow && _inventoryNow)
-                    {
-                        _scrollEnable = true;
-                    }
-                    else if (!_slotNow && _inventoryNow)
-                    {
-                        //カーソルが上のボタンに戻ったら一番上にスクロールする
-                        useBar.value = 0;
-                        _scrollEnable = false;
-                    }
 
+                   
 
                 }
-            }
+
+                JButton();
+            } 
         }
     }
 
@@ -586,10 +559,9 @@ public class MainUICon : MonoBehaviour
         GManager.instance.InputR.controllers.maps.SetMapsEnabled(true, "Default");
         GManager.instance.InputR.controllers.maps.SetMapsEnabled(false, "UI");
         selectWindow = false;
-        isFirst = false;
+
         isMenu = false;
-        isReBuild = false;
-        Scon.SetActive(false);
+
 
         selectButton = null;
         ButtonOn();
@@ -598,42 +570,15 @@ public class MainUICon : MonoBehaviour
         isInitial = false;
     }
 
-    void EquipMenuReset()
-    {
 
-       // ToolManager.instance.isEquipMenu = false;
-    }
-
-    //   public void UseReBuild()
-    //    {
-    //      isReBuild = true;
-    //      usec.isEver = false;
-    //   }
 
     public void ButtonOff()
     {
-        weaponB.enabled = false;
-        useB.enabled = false;
-        coreB.enabled = false;
-        magicB.enabled = false;
-        keyB.enabled = false;
-        useB.enabled = false;
-        systemB.enabled = false;
-        libraryB.enabled = false;
-        menuButtonOff = true;
-        selectButton = null;
+
     }
+
     public void ButtonOn()
     {
-        weaponB.enabled = true;
-        useB.enabled = true;
-        coreB.enabled = true;
-        magicB.enabled = true;
-        keyB.enabled = true;
-        useB.enabled = true;
-        systemB.enabled = true;
-        libraryB.enabled = true;
-        menuButtonOff = false;
     }
 
     public void ConversationStart()
@@ -654,74 +599,34 @@ public class MainUICon : MonoBehaviour
         //インベントリ内のアイテムの数がdata.count
 
         //これ重要ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-       //　 pos = 1f / ((float)data.Count - 4.0f);
+        //　 pos = 1f / ((float)data.Count - 4.0f);
         //MyItem.rowLengthが20にあたります、intで宣言しているので、floatに置換しています。
         //公式は　ScrollBarのValueの上限、セルの数、表示可能なセルの数。
-
-
-
-        if (GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) > 0)
+        if (!_scrollEnable)
         {
-
-            //前のフレームのRaw入力（0か1か‐1）から今の入力を引いて0以下なら
-            //これをやると長押し時の高速カーソル移動に上から下にいきなり変えたりの時上から下に急反転しない
-            //これは前の入力が-1か0の時に上を押したときとなる。ニュートラルか下入力から上に切り替えた時
-            if (GManager.instance.InputR.GetAxisPrev(MainUICon.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) < 0)
-            {
-                pressTime = 0;
-                nextTime = repeatDelay;
-            }
-            
-            if(pressTime == 0 ||  pressTime > nextTime)
-            {
-                if (pressTime > repeatDelay)
-                {
-                    //次に動くのはactcool秒後
-                    nextTime += _actCool;
-                }
-                useBar.value += pos;
-            }
-            pressTime += Time.deltaTime;
-
+            _scroll._inputRead = false;
+            return;
         }
-        else if (GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) < 0)
-        {
-            //前のフレームのRaw入力（0か1か‐1）から今の入力を引いて0以下なら
-            //これをやると長押し時の高速カーソル移動に上から下にいきなり変えたりの時上から下に急反転しない
-            //これは前の入力が1か0の時に下を押したときとなる。ニュートラルか上入力から下に切り替えた時
-            if (GManager.instance.InputR.GetAxisPrev(MainUICon.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) > 0)
-            {
-                pressTime = 0;
-                nextTime = repeatDelay;
-            }
-
-            if (pressTime == 0 || pressTime > nextTime)
-            {
-                if (pressTime > repeatDelay)
-                {
-                    //次に動くのはactcool秒後
-                    nextTime += _actCool;
-                }
-                useBar.value -= pos;
-            }
-            pressTime += Time.deltaTime;
-        }
-
-        //マイナスとかにならないように調整
-        if (useBar.value > 1)
-        {
-            useBar.value = 1;
-
-        }
-        else if (useBar.value < 0)
-        {
-            useBar.value = 0.01f;
-        }
-
-
+        //   Debug.Log($"ad{_reInput.UIMovement.y}");
+        //なんなら四段目までは動かないようにしてもいいね
+        _scroll._inputRead = true;
 
     }
 
+    /// <summary>
+    /// 窓切り替えと最初のボタンの間でナビゲーションを設定する
+    /// </summary>
+    /// <param name="i"></param>
+    public void NavigationSetting(int i)
+    {
+        Navigation startPoint = _windowSelecter.navigation;
+        startPoint.selectOnDown = startButton[i];
+        _windowSelecter.navigation = startPoint;
+
+        startPoint = startButton[i].navigation;
+        startPoint.selectOnUp = _windowSelecter;
+        startButton[i].navigation = startPoint;
+    }
 
 }
 

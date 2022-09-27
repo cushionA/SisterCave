@@ -23,7 +23,7 @@ public class WSEquip : MonoBehaviour
             isFirst = true;
         }
 
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
         {
 
             EquipManager.instance.isUseMenu = false;
@@ -31,7 +31,7 @@ public class WSEquip : MonoBehaviour
         }
 
 
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
         {
             ResetWindow();
         }

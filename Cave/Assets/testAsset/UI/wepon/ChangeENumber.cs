@@ -28,8 +28,8 @@ public class ChangeENumber : MonoBehaviour
       //  //Debug.log($"変更数{EquipManager.instance.changeNum}");
       //  //Debug.log($"所持数{5}");
       //  //Debug.log($"偽なら変更可能{isChange}");
-        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15);
-                horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction16);
+        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15);
+                horizontalKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction16);
     //    //Debug.log($"上キー{verticalKey}");
       //  //Debug.log($"横キー{horizontalKey}");
         if (!isChange)

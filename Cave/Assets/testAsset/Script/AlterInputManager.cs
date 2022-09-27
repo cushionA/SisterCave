@@ -20,14 +20,25 @@ public class AlterInputManager : InputManager
 
     public MMInput.IMButton WeaponChangeButton{ get; protected set; }
 
-//’Ç‰ÁŽ²
+    public MMInput.IMButton MenuCallButton { get; protected set; }
 
-protected string SiteHorizontal;
+    public MMInput.IMButton TipsButton { get; protected set; }
+
+    public MMInput.IMButton SubmitButton { get; protected set; }
+    public MMInput.IMButton CancelButton { get; protected set; }
+
+    //’Ç‰ÁŽ²
+
+    protected string SiteHorizontal;
     protected string SiteVertical;
+
+    protected string UIHorizontal;
+    protected string UIVertical;
 
     protected Vector2 _siteMovement = Vector2.zero;
 
 
+    protected Vector2 _UIMovement = Vector2.zero;
 
 
     /// <summary>
@@ -53,9 +64,9 @@ protected string SiteHorizontal;
         ButtonList.Add(ReloadButton = new MMInput.IMButton(PlayerID, "Reload", ReloadButtonDown, ReloadButtonPressed, ReloadButtonUp));
        // ButtonList.Add(SwitchWeaponButton = new MMInput.IMButton(PlayerID, "SwitchWeapon", SwitchWeaponButtonDown, SwitchWeaponButtonPressed, SwitchWeaponButtonUp));
         ButtonList.Add(PauseButton = new MMInput.IMButton(PlayerID, "Pause", PauseButtonDown, PauseButtonPressed, PauseButtonUp));
-        ButtonList.Add(PushButton = new MMInput.IMButton(PlayerID, "Push", PushButtonDown, PushButtonPressed, PushButtonUp));
+        ButtonList.Add(CancelButton = new MMInput.IMButton(PlayerID, "Cancel", CancelButtonDown, CancelButtonPressed, CancelButtonUp));
         ButtonList.Add(SwitchCharacterButton = new MMInput.IMButton(PlayerID, "SwitchCharacter", SwitchCharacterButtonDown, SwitchCharacterButtonPressed, SwitchCharacterButtonUp));
-        ButtonList.Add(TimeControlButton = new MMInput.IMButton(PlayerID, "TimeControl", TimeControlButtonDown, TimeControlButtonPressed, TimeControlButtonUp));
+        ButtonList.Add(SubmitButton = new MMInput.IMButton(PlayerID, "Submit", SubmitButtonDown, SubmitButtonPressed, SubmitButtonUp));
         ButtonList.Add(GrabButton = new MMInput.IMButton(PlayerID, "Grab", GrabButtonDown, GrabButtonPressed, GrabButtonUp));
         ButtonList.Add(ThrowButton = new MMInput.IMButton(PlayerID, "Throw", ThrowButtonDown, ThrowButtonPressed, ThrowButtonUp));
         ButtonList.Add(CombinationButton = new MMInput.IMButton(PlayerID, "Combination", CombinationButtonDown, CombinationButtonPressed, CombinationButtonUp));
@@ -87,11 +98,10 @@ protected string SiteHorizontal;
      //   ButtonList.Add(ReloadButton = new MMInput.IMButton(null, "Reload", ReloadButtonDown, ReloadButtonPressed, ReloadButtonUp));
         // ButtonList.Add(SwitchWeaponButton = new MMInput.IMButton(null, "SwitchWeapon", SwitchWeaponButtonDown, SwitchWeaponButtonPressed, SwitchWeaponButtonUp));
        // ButtonList.Add(PauseButton = new MMInput.IMButton(null, "Pause", PauseButtonDown, PauseButtonPressed, PauseButtonUp));
-       // ButtonList.Add(PushButton = new MMInput.IMButton(null, "Push", PushButtonDown, PushButtonPressed, PushButtonUp));
-      //  ButtonList.Add(SwitchCharacterButton = new MMInput.IMButton(null, "SwitchCharacter", SwitchCharacterButtonDown, SwitchCharacterButtonPressed, SwitchCharacterButtonUp));
-   //     ButtonList.Add(TimeControlButton = new MMInput.IMButton(null, "TimeControl", TimeControlButtonDown, TimeControlButtonPressed, TimeControlButtonUp));
-     //   ButtonList.Add(GrabButton = new MMInput.IMButton(null, "Grab", GrabButtonDown, GrabButtonPressed, GrabButtonUp));
-     //   ButtonList.Add(ThrowButton = new MMInput.IMButton(null, "Throw", ThrowButtonDown, ThrowButtonPressed, ThrowButtonUp));
+        ButtonList.Add(CancelButton = new MMInput.IMButton(null, "Cancel", CancelButtonDown, CancelButtonPressed, CancelButtonUp));
+        ButtonList.Add(SubmitButton = new MMInput.IMButton(null, "Submit", SubmitButtonDown, SubmitButtonPressed, SubmitButtonUp));
+        ButtonList.Add(TipsButton = new MMInput.IMButton(null, "TipsOn", TipsButtonDown, TipsButtonPressed, TipsButtonUp));
+        ButtonList.Add(MenuCallButton = new MMInput.IMButton(null, "_Menu", MenuCallButtonDown, MenuCallButtonPressed, MenuCallButtonUp));
         ButtonList.Add(CombinationButton = new MMInput.IMButton(null, "Combination", CombinationButtonDown, CombinationButtonPressed, CombinationButtonUp));
         ButtonList.Add(sAttackButton = new MMInput.IMButton(null, "Fire1", sAttackButtonDown, sAttackButtonPressed, sAttackButtonUp));
         ButtonList.Add(bAttackButton = new MMInput.IMButton(null, "Fire2", bAttackButtonDown, bAttackButtonPressed, bAttackButtonUp));
@@ -141,6 +151,24 @@ protected string SiteHorizontal;
     public virtual void WeaponChangeButtonPressed() { WeaponChangeButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed); }
     public virtual void WeaponChangeButtonUp() { WeaponChangeButton.State.ChangeState(MMInput.ButtonStates.ButtonUp); }
 
+
+    public virtual void MenuCallButtonDown() { MenuCallButton.State.ChangeState(MMInput.ButtonStates.ButtonDown); }
+    public virtual void MenuCallButtonPressed() { MenuCallButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed); }
+    public virtual void MenuCallButtonUp() { MenuCallButton.State.ChangeState(MMInput.ButtonStates.ButtonUp); }
+
+
+    public virtual void TipsButtonDown() { TipsButton.State.ChangeState(MMInput.ButtonStates.ButtonDown); }
+    public virtual void TipsButtonPressed() { TipsButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed); }
+    public virtual void TipsButtonUp() { TipsButton.State.ChangeState(MMInput.ButtonStates.ButtonUp); }
+
+    public virtual void SubmitButtonDown() { SubmitButton.State.ChangeState(MMInput.ButtonStates.ButtonDown); }
+    public virtual void SubmitButtonPressed() { SubmitButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed); }
+    public virtual void SubmitButtonUp() { SubmitButton.State.ChangeState(MMInput.ButtonStates.ButtonUp); }
+
+    public virtual void CancelButtonDown() { CancelButton.State.ChangeState(MMInput.ButtonStates.ButtonDown); }
+    public virtual void CancelButtonPressed() { CancelButton.State.ChangeState(MMInput.ButtonStates.ButtonPressed); }
+    public virtual void CancelButtonUp() { CancelButton.State.ChangeState(MMInput.ButtonStates.ButtonUp); }
+
     //Ž²‚Ì“ü—Í‰ü‘¢
 
     /// <summary>
@@ -150,12 +178,12 @@ protected string SiteHorizontal;
     {
         _axisHorizontal = PlayerID + "_Horizontal";
         _axisVertical = PlayerID + "_Vertical";
-     //   _axisSecondaryHorizontal = PlayerID + "_SecondaryHorizontal";
-     //   _axisSecondaryVertical = PlayerID + "_SecondaryVertical";
-      //  _axisShoot = PlayerID + "_ShootAxis";
-     //   _axisShootSecondary = PlayerID + "_SecondaryShootAxis";
+
         SiteVertical = PlayerID + "SiteVertical";
         SiteHorizontal = PlayerID + "SiteHorizontal";
+
+        UIVertical = PlayerID + "UIVertical";
+        UIHorizontal = PlayerID + "UIHorizontal";
     }
 
     /// <summary>
@@ -178,7 +206,25 @@ protected string SiteHorizontal;
         }
     }
 
-
+    /// <summary>
+    /// Called every frame, if not on mobile, gets primary movement values from input
+    /// </summary>
+    public virtual void SetUIMovement()
+    {
+        if (!IsMobile && InputDetectionActive)
+        {
+            if (SmoothMovement)
+            {
+                _UIMovement.x = Input.GetAxis(UIHorizontal);
+                _UIMovement.y = Input.GetAxis(UIVertical);
+            }
+            else
+            {
+                _UIMovement.x = Input.GetAxisRaw(UIHorizontal);
+                _UIMovement.y = Input.GetAxisRaw(UIVertical);
+            }
+        }
+    }
 
     /// <summary>
     /// At update, we check the various commands and update our values and states accordingly.

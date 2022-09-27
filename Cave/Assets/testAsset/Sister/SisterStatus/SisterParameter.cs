@@ -179,6 +179,9 @@ public class SisterParameter : ScriptableObject
     public FireCondition fourthAttack;
     public FireCondition fiveAttack;
     public FireCondition nonAttack;//なにも当てはまらないとき
+
+    public 
+
     #endregion
 
     #region//nowStateが支援の時

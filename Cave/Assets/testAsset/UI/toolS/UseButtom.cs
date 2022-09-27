@@ -57,7 +57,7 @@ public class UseButtom : MonoBehaviour
             }
             if (ToolManager.instance.isEquipMenu)
             {
-                if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+                if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
                     ////Debug.log("サイパン");
              //       MainUICon.instance.useWindow.SetActive(false);

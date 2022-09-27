@@ -461,7 +461,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			if (!changeable)
 			{
 				reJudgeTime += _controller.DeltaTime;
-				if (reJudgeTime >= 0.5)
+				if (reJudgeTime >= 1f)
 				{
 					changeable = true;
 					reJudgeTime = 0;
@@ -530,7 +530,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					//近くにいる時
 					else if (Mathf.Abs(distance.x) < status.patrolDistance)
 					{
-                        if (Mathf.Sign(GManager.instance.Player.transform.localScale.x) == Mathf.Sign(transform.localScale.x) && Mathf.Abs(GManager.instance.pc.NowSpeed()) > Mathf.Abs(_controller.Speed.x))
+                        if (Mathf.Sign(GManager.instance.Player.transform.localScale.x) == Mathf.Sign(transform.localScale.x) && GManager.instance.pc.NowSpeed() >= 100)
                         {
 							nowMove = MoveState.走り;
                         }
@@ -552,6 +552,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{//のんびり
 			if (_controller.State.IsGrounded && !disEnable)
 			{
+			//	Debug.Log($"ｓｄｓｄｄｓ{GManager.instance.pc.NowSpeed()}");
 				//イベントオブジェクトは動かないので常に判断
 				if (isPlay)
 				{
@@ -605,7 +606,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				{
 
 					//プレイヤーが止まってる時は停止
-					if (GManager.instance.pc.NowSpeed() == 0f)
+					if (GManager.instance.pc.NowSpeed() <= 100)
 					{
 						nowMove = MoveState.停止;
 						isWait = true;
@@ -615,7 +616,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					else
 					{
 						nowMove = MoveState.歩き;
-						//Debug.Log($"ｓｄｓｄｄｓ{GManager.instance.pc.NowSpeed()}");
+						
 
 					}
 

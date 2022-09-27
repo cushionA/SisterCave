@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using MoreMountains.Tools;
 public class MasterDrop : MonoBehaviour
 {
 
@@ -22,13 +22,13 @@ public class MasterDrop : MonoBehaviour
     void Update()
     {
 
-            if (!MainUICon.instance.editNow && (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17)))
+            if (!MainUICon.instance.editNow && MainUICon.instance._reInput.CancelButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown)
             {
             int i = MainUICon.instance.isAH ? 3 : 2;
 
          //   Debug.Log($"Ç¢Ç¬Ç‡{MainUICon.instance.editNow}");
                 UIEnd();
-                value[i].GetComponent<SettingWindowCon>().CancelWindow();
+                value[i].gameObject.MMGetComponentNoAlloc<SettingWindowCon>().CancelWindow();
             }
 
 
@@ -141,15 +141,15 @@ public class MasterDrop : MonoBehaviour
             num = 3;
         }
         #endregion
-        sl = this.gameObject.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
-        sl2 = MainUICon.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+        sl = this.gameObject.MMGetComponentNoAlloc<ChildWindow>().objList[num].MMGetComponentNoAlloc<Selectable>();
+        sl2 = MainUICon.instance.secondDrop.MMGetComponentNoAlloc<ChildWindow>().objList[num].MMGetComponentNoAlloc<Selectable>();
 
         //è„â∫ÇÃëIëèâä˙âªÅAé∏îsÇµÇƒÇ»Ç¢Ç©íçà”
         UnderSet(sl, null);
         UpSet(sl2, null);
         //Ç‹Ç∏ÉZÉåÉNÉgèâä˙âª
         MainUICon.instance.beforeSet = null;
-        this.gameObject.GetComponent<UIPlaceSet>().PlaceSet();
+        this.gameObject.MMGetComponentNoAlloc<UIPlaceSet>().PlaceSet();
         if (s == 1)
         {
             AttackJudge editJudge = new AttackJudge();
@@ -202,10 +202,10 @@ public class MasterDrop : MonoBehaviour
                 MainUICon.instance.isChange = 1;
                 MainUICon.instance.valueWindow.SetActive(true);
                 valueCheck = true;
-                MainUICon.instance.valueWindow.GetComponent<UIPlaceSet>().PlaceSet();
+                MainUICon.instance.valueWindow.MMGetComponentNoAlloc<UIPlaceSet>().PlaceSet();
             }
                 MainUICon.instance.secondDrop.SetActive(true);
-                MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                MainUICon.instance.secondDrop.MMGetComponentNoAlloc<UIPlaceSet>().PlaceSet();
         }
         else if(s == 2)
         {
@@ -247,7 +247,7 @@ public class MasterDrop : MonoBehaviour
             else
             {
                 MainUICon.instance.secondDrop.SetActive(true);
-                MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                MainUICon.instance.secondDrop.MMGetComponentNoAlloc<UIPlaceSet>().PlaceSet();
             }
         }
         else if (s == 3 || s == 4)
@@ -292,7 +292,7 @@ public class MasterDrop : MonoBehaviour
                     if (editSP.sCondition == SupportCondition.SupportStatus.îCà”ÇÃéxâáÇ™êÿÇÍÇƒÇ¢ÇÈÇ∆Ç´)
                     {
                         MainUICon.instance.secondDrop.SetActive(true);
-                        MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                        MainUICon.instance.secondDrop.MMGetComponentNoAlloc<UIPlaceSet>().PlaceSet();
                     }
                 }
                 else
@@ -310,7 +310,7 @@ public class MasterDrop : MonoBehaviour
                     MainUICon.instance.valueWindow.SetActive(true);
                     MainUICon.instance.isChange = 1;
                     valueCheck = true;
-                    MainUICon.instance.valueWindow.GetComponent<UIPlaceSet>().PlaceSet();
+                    MainUICon.instance.valueWindow.MMGetComponentNoAlloc<UIPlaceSet>().PlaceSet();
                 }
             }
             else
@@ -322,7 +322,7 @@ public class MasterDrop : MonoBehaviour
                 else
                 {
                     MainUICon.instance.secondDrop.SetActive(true);
-                    MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                    MainUICon.instance.secondDrop.MMGetComponentNoAlloc<UIPlaceSet>().PlaceSet();
             }
             }
 
@@ -391,7 +391,7 @@ public class MasterDrop : MonoBehaviour
                     if (editRC.condition == RecoverCondition.RecoverStatus.îCà”ÇÃéxâáÇ™êÿÇÍÇƒÇ¢ÇÈÇ∆Ç´)
                     {
                         MainUICon.instance.secondDrop.SetActive(true);
-                        MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                        MainUICon.instance.secondDrop.MMGetComponentNoAlloc<UIPlaceSet>().PlaceSet();
 
                     }
                 }
@@ -410,7 +410,7 @@ public class MasterDrop : MonoBehaviour
                         MainUICon.instance.valueWindow.SetActive(true);
                         MainUICon.instance.isChange = 1;
                         valueCheck = true;
-                        MainUICon.instance.valueWindow.GetComponent<UIPlaceSet>().PlaceSet();
+                        MainUICon.instance.valueWindow.MMGetComponentNoAlloc<UIPlaceSet>().PlaceSet();
             }
             }
             else
@@ -422,15 +422,15 @@ public class MasterDrop : MonoBehaviour
                 else
                 {
                     MainUICon.instance.secondDrop.SetActive(true);
-                    MainUICon.instance.secondDrop.GetComponent<UIPlaceSet>().PlaceSet();
+                    MainUICon.instance.secondDrop.MMGetComponentNoAlloc<UIPlaceSet>().PlaceSet();
                 }
             }
         }
 
         if (!valueCheck && MainUICon.instance.secondDrop.activeSelf)
         {
-            sl = this.gameObject.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
-            sl2 = MainUICon.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+            sl = this.gameObject.MMGetComponentNoAlloc<ChildWindow>().objList[num].MMGetComponentNoAlloc<Selectable>();
+            sl2 = MainUICon.instance.secondDrop.MMGetComponentNoAlloc<ChildWindow>().objList[num].MMGetComponentNoAlloc<Selectable>();
 
             //ílëãÇ»Ç≠ÇƒìÒî‘ñ⁄Ç†ÇÈéûìÒî‘ñ⁄Ç∆àÍî‘ñ⁄ÇÃè„â∫ÇÇ¬Ç»Ç∞ÇÈÅB
             UnderSet(sl, sl2);

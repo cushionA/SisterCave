@@ -164,7 +164,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                     blowTime += _controller.DeltaTime;
                     //0.1•bˆÈã‚Å’n–Ê‚É‚Â‚¢‚½‚ç
-                    if (blowTime >= 0.05 && _controller.State.IsGrounded)
+                    if (blowTime >= 0.08 && _controller.State.IsGrounded)
                     {
                     blowTime = 0;
                      _controller.SetForce(Vector2.zero);

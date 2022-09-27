@@ -50,7 +50,7 @@ public class EquipButton : MonoBehaviour
             if (EquipManager.instance.isWeaponM || EquipManager.instance.isShieldM)
             {
               //  ////Debug.log("サイパン");
-                if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+                if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
                 {
                  //   MainUICon.instance.weaponWindow.SetActive(false);
                 //    MainUICon.instance.eqWindow.SetActive(true);

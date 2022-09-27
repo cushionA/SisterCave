@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using MoreMountains.Tools;
 public class OperationButton : MonoBehaviour
 {
 
@@ -21,7 +21,7 @@ public class OperationButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        my = GetComponent<Selectable>();
+        my = this.gameObject.MMGetComponentNoAlloc<Selectable>();
     }
 
     // Update is called once per frame
@@ -35,7 +35,7 @@ public class OperationButton : MonoBehaviour
         if(type == 0)
         {
             next.Select();
-            transform.root.gameObject.GetComponent<OperationGeneral>().next = true;
+            transform.root.gameObject.MMGetComponentNoAlloc<OperationGeneral>().next = true;
         }
         else if(type == 1)
         {
@@ -44,10 +44,10 @@ public class OperationButton : MonoBehaviour
         }
         else if (type == 2)
         {
-            transform.root.gameObject.GetComponent<OperationGeneral>().next = true;
+            transform.root.gameObject.MMGetComponentNoAlloc<OperationGeneral>().next = true;
             MainUICon.instance.saveWin.gameObject.SetActive(true);
             MainUICon.instance.saveWin.WindowSet(1);
-           // transform.root.gameObject.GetComponent<OperationGeneral>().SaveData();
+           // transform.root.gameObject.MMGetComponentNoAlloc<OperationGeneral>().SaveData();
             //セーブしますかの窓出すだけでいい
         }
     }

@@ -23,7 +23,7 @@ public class CoreEquipWindow : MonoBehaviour
             isFirst = true;
         }
 
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
         {
 
             CoreManager.instance.isUseMenu = false;
@@ -31,7 +31,7 @@ public class CoreEquipWindow : MonoBehaviour
         }
 
 
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
         {
             ResetWindow();
         }

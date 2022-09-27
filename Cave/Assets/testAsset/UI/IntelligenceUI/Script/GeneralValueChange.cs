@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using MoreMountains.Tools;
 
 public class GeneralValueChange : MonoBehaviour
 {
@@ -37,10 +38,10 @@ public class GeneralValueChange : MonoBehaviour
 
         if(Type == 4)
         { 
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17) && MainUICon.instance.settingNumber != 100 && !MainUICon.instance.isAH)
+        if (MainUICon.instance._reInput.CancelButton.State.CurrentState == MMInput.ButtonStates.ButtonDown && MainUICon.instance.settingNumber != 100 && !MainUICon.instance.isAH)
         {
                 // back.Select();
-                transform.root.GetComponent<OperationGeneral>().SelectReset();
+                transform.root.gameObject.MMGetComponentNoAlloc<OperationGeneral>().SelectReset();
 
               //  Debug.Log("ssss2");
             }
@@ -56,7 +57,7 @@ public class GeneralValueChange : MonoBehaviour
     {
         if(Type == 0)
         {
-            int d = GetComponent<Dropdown>().value;
+            int d = this.gameObject.MMGetComponentNoAlloc<Dropdown>().value;
 
             if (d == 0)
             {
@@ -73,15 +74,15 @@ public class GeneralValueChange : MonoBehaviour
         }
         else if(Type == 1)
         {
-            MainUICon.instance.editParameter.stateResetRes = GetComponent<Slider>().value;
+            MainUICon.instance.editParameter.stateResetRes = this.gameObject.MMGetComponentNoAlloc<Slider>().value;
         }
         else if (Type == 2)
         {
-            MainUICon.instance.editParameter.targetResetRes = GetComponent<Slider>().value;
+            MainUICon.instance.editParameter.targetResetRes = this.gameObject.MMGetComponentNoAlloc<Slider>().value;
         }
         else if(Type == 3)
         {
-            int d = GetComponent<Dropdown>().value;
+            int d = this.gameObject.MMGetComponentNoAlloc<Dropdown>().value;
 
             if (d == 0)
             {
@@ -109,7 +110,7 @@ public class GeneralValueChange : MonoBehaviour
     {
         if (Type == 0)
         {
-            Dropdown d = GetComponent<Dropdown>();
+            Dropdown d = this.gameObject.MMGetComponentNoAlloc<Dropdown>();
 
             //Debug.Log($"{MainUICon.instance.editParameter.priority}");
            if(MainUI.instance == null)
@@ -131,15 +132,15 @@ public class GeneralValueChange : MonoBehaviour
         }
         else if (Type == 1)
         {
-            GetComponent<Slider>().value = MainUICon.instance.editParameter.stateResetRes;
+            this.gameObject.MMGetComponentNoAlloc<Slider>().value = MainUICon.instance.editParameter.stateResetRes;
         }
         else if (Type == 2)
         {
-            GetComponent<Slider>().value = MainUICon.instance.editParameter.targetResetRes;
+            this.gameObject.MMGetComponentNoAlloc<Slider>().value = MainUICon.instance.editParameter.targetResetRes;
         }
         else if(Type == 3)
         {
-            Dropdown d = GetComponent<Dropdown>();
+            Dropdown d = this.gameObject.MMGetComponentNoAlloc<Dropdown>();
 
             if (MainUICon.instance.editParameter.autoHeal == true)
             {

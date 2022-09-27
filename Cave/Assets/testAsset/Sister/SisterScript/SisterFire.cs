@@ -167,7 +167,7 @@ public class SisterFire : MonoBehaviour
 
 		if (status.equipCombination != null && !GManager.instance.isDown && !GManager.instance.onGimmick)
 		{
-			if (status.equipCombination != null && GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction19))
+			if (status.equipCombination != null && GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction19))
 			{
 				//条件の意図としてはコンビネーションが設定されてて地面にいてクールタイム中じゃなくて魔法発動中じゃない
 				//コンボ可能フラグはコンボ中は不可になってる。チェイン数見て最後に改めて戻される。

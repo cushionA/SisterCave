@@ -119,8 +119,8 @@ public class PlayerMove : MonoBehaviour
         {
             if(!GManager.instance.isAttack && !isStop)
             {
-                   horizontalkey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction0);
-                   verticalkey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction2);
+                   horizontalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
+                   verticalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction2);
             }
             else
             {
@@ -128,13 +128,13 @@ public class PlayerMove : MonoBehaviour
                 verticalkey = 0;
             }
 
-            guardButton = GManager.instance.InputR.GetButton(MainUICon.instance.rewiredAction11);
+            guardButton = GManager.instance.InputR.GetButton(MainUI.instance.rewiredAction11);
 
             if (!isAvoid && !GManager.instance.isFalter && !GManager.instance.isGBreak)
             {
                 if (isGround && !GManager.instance.isAttack && !GManager.instance.onGimmick)// && !isStop)
                 {
-                    avoidKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction4);
+                    avoidKey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction4);
                 }
                 else// if (isAvoid)
                 {
@@ -169,7 +169,7 @@ public class PlayerMove : MonoBehaviour
                         GManager.instance.PlaySound("NAAvoid", transform.position);
                         // GManager.instance.StaminaUse(18);
                         // MasterAudio.PlaySound("FireS");
-                        horizontalkey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction0);
+                        horizontalkey = GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction0);
                         if (horizontalkey != 0)
                         {
                             isRight = horizontalkey > 0 ? true : false;

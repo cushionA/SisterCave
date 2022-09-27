@@ -23,7 +23,7 @@ public class SaveWinBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
         {
             SaveEnd();
       //      Debug.Log("ssss");

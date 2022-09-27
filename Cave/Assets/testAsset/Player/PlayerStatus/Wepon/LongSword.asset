@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2942df316d830840abe5726a48337a5, type: 3}
   m_Name: LongSword
   m_EditorClassIdentifier: 
-  ItemID: 
-  TargetInventoryName: MainInventory
+  ItemID: 0
+  TargetInventoryName: REquipInventory
   ForceSlotIndex: 0
   TargetIndex: 0
   Usable: 0
@@ -24,11 +24,18 @@ MonoBehaviour:
   Droppable: 1
   CanMoveObject: 1
   CanSwapObject: 1
+  DisplayProperties:
+    DisplayEquipUseButton: 1
+    DisplayMoveButton: 1
+    DisplayDropButton: 1
+    DisplayEquipButton: 1
+    DisplayUseButton: 1
+    DisplayUnequipButton: 1
   Quantity: 1
   ItemName: 
   ShortDescription: 
   Description: 
-  Icon: {fileID: 0}
+  Icon: {fileID: 886107210055646909, guid: 76354687f293219479e71829882ea142, type: 3}
   Prefab: {fileID: 0}
   DropProperties:
     Shape: 0

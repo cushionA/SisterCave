@@ -23,7 +23,7 @@ public class ToolEquip : MonoBehaviour
             isFirst = true;
         }
 
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
         {
 
             ToolManager.instance.isUseMenu = false;
@@ -31,7 +31,7 @@ public class ToolEquip : MonoBehaviour
         }
 
 
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
         {
             ResetWindow();
         }

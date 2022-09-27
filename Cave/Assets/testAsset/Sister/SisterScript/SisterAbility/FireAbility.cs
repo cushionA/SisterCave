@@ -136,10 +136,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		bool delayNow;
 
-
-
-		//Å‰Š®—¹‰¹–Â‚ç‚³‚È‚¢
-		bool first;
+		[HideInInspector]
+		public bool[] skipCondition = new bool[5];
 
 
 		//protected RewiredCorgiEngineInputManager _inputManager;
@@ -160,6 +158,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public float darkATFactor = 1;
 		[HideInInspector]
 		public float holyATFactor = 1;
+
 
 
 

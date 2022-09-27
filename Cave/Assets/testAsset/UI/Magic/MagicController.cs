@@ -285,7 +285,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
         //MyItem.rowLengthが20にあたります、intで宣言しているので、floatに置換しています。
         //公式は　ScrollBarのValueの上限、セルの数、表示可能なセルの数。
 
-        if (GManager.instance.InputR.GetAxisPrev(MainUICon.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) < 0)
+        if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) < 0)
         {
             if (isReverse == true)
             {
@@ -322,7 +322,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
                 useBar.value += pos;
             }
         }
-        if (GManager.instance.InputR.GetAxisPrev(MainUICon.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) > 0 && isIniti)
+        if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) > 0 && isIniti)
         {
             if (!isFirstD)
             {
@@ -349,7 +349,7 @@ public class MagicController : MonoBehaviour, IEnhancedScrollerDelegate
                 useBar.value -= pos;
             }
         }
-        else if (GManager.instance.InputR.GetAxisPrev(MainUICon.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15) > 0 && !isIniti)
+        else if (GManager.instance.InputR.GetAxisPrev(MainUI.instance.rewiredAction15) - GManager.instance.InputR.GetAxisRaw(MainUI.instance.rewiredAction15) > 0 && !isIniti)
         {
 
             isIniti = true;

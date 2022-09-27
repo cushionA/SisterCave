@@ -20,7 +20,7 @@ namespace MoreMountains.InventoryEngine
     /// どのインベントリとか関係なく全てのインベントリの操作や表示をつかさどる
     /// インベントリパネル関連だねこれ
     /// </summary>
-    public class MainInventoryCon : MonoBehaviour, MMEventListener<MMInventoryEvent>
+    public class MainInventryCon : MonoBehaviour, MMEventListener<MMInventoryEvent>
     {
         [Header("Targets")]
         [MMInformation("インベントリ コンテナ（インベントリを開いたり閉じたりするときにオン/オフする CanvasGroup）、メインの InventoryDisplay、および InventoryDisplay を開いたときにその下に表示されるオーバーレイをここにバインドします。", MMInformationAttribute.InformationType.Info, false)]
@@ -32,14 +32,7 @@ namespace MoreMountains.InventoryEngine
         /// インベントリを開く/閉じるときにその下で使用されるフェーダー（？）
         public CanvasGroup Overlay;
 
-        /// <summary>
-        /// 閲覧対象を切り替えるためのインベントリの名称
-        /// InventoryDisplayのTargetInventoryNameに代入して使う
-        /// この名前変更した後はInventoryDisplayに再描画までがセット
-        ///   0 メイン1装備2コア3魔法4キーアイテム5敵図鑑　の順
-        /// </summary>
-        [SerializeField]
-        string[] InventoryNames;
+
 
         [Header("開始時の挙動")]
         [MMInformation("HideContainerOnStart を true に設定すると、このフィールドのすぐ上に定義されている TargetInventoryContainer は、Scene ビューで表示したままでも、開始時に自動的に非表示にされます。セットアップに便利です。", MMInformationAttribute.InformationType.Info, false)]
@@ -62,7 +55,7 @@ namespace MoreMountains.InventoryEngine
 
         protected RewiredCorgiEngineInputManager ReIManager;
 
-        //   /*
+          /*
         /// the key used to open/close the inventory
         public KeyCode ToggleInventoryKey = KeyCode.I;
         /// the alt key used to open/close the inventory
@@ -80,7 +73,8 @@ namespace MoreMountains.InventoryEngine
         public string PrevInvKey = "page up";
         /// the alt key used to go to the previous inventory
         public string PrevInvAltKey = "joystick button 5";
-    //  */
+      */
+
         [Header("Close Bindings")]
         /// このインベントリーがオープンしたら強制的に閉鎖されるはずの他のインベントリーのリスト
         public List<string> CloseList;
@@ -90,25 +84,25 @@ namespace MoreMountains.InventoryEngine
         [Header("Buttons")]
         /// これが true の場合、InputManager は現在選択されているスロットに基づいて、インベントリコントロールボタンのインタラクションの状態を変更します。
         public bool ManageButtons = false;
-        /// the selected mode to enable buttons with (interactable will change the button's interactable state, SetActive will enable/disable the button's game object
+        /// ボタンを有効にするための選択されたモード（interactableはボタンのinteractable状態を変更し、SetActiveはボタンのゲームオブジェクトを有効/無効にします。
         [MMCondition("ManageButtons", true)]
         public ManageButtonsModes ManageButtonsMode = ManageButtonsModes.SetActive;
-        /// the button used to equip or use an item
+        /// 使用や装備に使われるボタン
         [MMCondition("ManageButtons", true)]
         public Button EquipUseButton;
-        /// the button used to move an item
+        /// アイテムを移動させるためのボタンです。
         [MMCondition("ManageButtons", true)]
         public Button MoveButton;
-        /// the button used to drop an item
+        /// アイテムを捨てるためのボタンです。
         [MMCondition("ManageButtons", true)]
         public Button DropButton;
-        /// the button used to equip an item
+        /// アイテムを装備するためのボタンです。
         [MMCondition("ManageButtons", true)]
         public Button EquipButton;
-        /// the button used to use an item
+        /// アイテムを使用するためのボタンです。
         [MMCondition("ManageButtons", true)]
         public Button UseButton;
-        /// the button used to unequip an item
+        /// アイテムを装備解除するためのボタン
         [MMCondition("ManageButtons", true)]
         public Button UnEquipButton;
 
@@ -477,42 +471,15 @@ namespace MoreMountains.InventoryEngine
         /// インベントリディスプレイを切り替える
         /// 列挙型はゼロから
         /// </summary>
-        public void MenuReset(int request)
+        public void MenuReset(MyInventoryDisplay display)
         {
             //    useB,weaponB,magicB,coreB,keyB,materialB,libraryB;
 
-            if (request == (int)Inventory.InventoryTypes.Main)
-            {
-                TargetInventoryDisplay.TargetInventoryName = InventoryNames[0];
-                TargetInventoryDisplay._outerButton = MainUICon.instance.useB;
-            }
-            else if (request == (int)Inventory.InventoryTypes.Equipment)
-            {
-                TargetInventoryDisplay.TargetInventoryName = InventoryNames[1];
-                TargetInventoryDisplay._outerButton = MainUICon.instance.weaponB;
-            }
-            else if (request == (int)Inventory.InventoryTypes.Core)
-            {
-                TargetInventoryDisplay.TargetInventoryName = InventoryNames[2];
-                TargetInventoryDisplay._outerButton = MainUICon.instance.coreB;
-            }
-            else if (request == (int)Inventory.InventoryTypes.Magic)
-            {
-                TargetInventoryDisplay.TargetInventoryName = InventoryNames[3];
-                TargetInventoryDisplay._outerButton = MainUICon.instance.magicB;
-            }
-            else if (request == (int)Inventory.InventoryTypes.KeyItem)
-            {
-                TargetInventoryDisplay.TargetInventoryName = InventoryNames[4];
-                TargetInventoryDisplay._outerButton = MainUICon.instance.keyB;
-            }
-            else if (request == (int)Inventory.InventoryTypes.Library)
-            {
-                TargetInventoryDisplay.TargetInventoryName = InventoryNames[5];
-                TargetInventoryDisplay._outerButton = MainUICon.instance.libraryB;
-            }
+            TargetInventoryDisplay = display;
+
             //再描画
             　TargetInventoryDisplay.SetupInventoryDisplay();
+
 
         }
 

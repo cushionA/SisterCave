@@ -95,7 +95,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			base.Initialization();
 			anim = _animator;
-           GManager.instance.initialSetting();
+           
 			ParameterSet(GManager.instance.pStatus);
 			
 		//	SetComponennt();
@@ -113,9 +113,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//_characterHorizontalMovement.FlipCharacterToFaceDirection = false;
 			//parentMatt = GetComponent<SpriteRenderer>().material;
 			//td = GetComponent<TargetDisplay>();
-
-			
-			
 		}
 
 
@@ -629,6 +626,130 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			nowArmor = GManager.instance.Armor;
 		}
 
+
+
+
+		/// <summary>
+		/// エンチャ時はエンチャントタイプを参照
+		/// </summary>
+		/// <param name="damageType"></param>
+		public void DamageSound(byte damageType,bool heavy)
+		{
+			if (damageType == 1)
+			{
+				GManager.instance.PlaySound("SlashDamage", transform.position);
+			}
+			else if (damageType == 2)
+			{
+				GManager.instance.PlaySound("StabDamage", transform.position);
+			}
+			else if (damageType == 4)
+			{
+				if (!heavy)
+				{
+					//	Debug.Log("チキン");
+					GManager.instance.PlaySound("StrikeDamage", transform.position);
+				}
+				else
+				{
+					GManager.instance.PlaySound("HeavyStrikeDamage", transform.position);
+					heavy = false;
+				}
+			}
+			else if (damageType == 8)
+			{
+				GManager.instance.PlaySound("HolyDamage", transform.position);
+			}
+			else if (damageType == 16)
+			{
+				GManager.instance.PlaySound("DarkDamage", transform.position);
+			}
+			else if (damageType == 32)
+			{
+
+
+				GManager.instance.PlaySound("FireDamage", transform.position);
+			}
+			else if (damageType == 64)
+			{
+				Debug.Log("sdfgg");
+				GManager.instance.PlaySound("ThunderDamage", transform.position);
+			}
+		}
+
+		#endregion
+
+		//ステータス関連
+		#region
+
+
+		/// <summary>
+		/// バフの数値を与える
+		/// 弾丸から呼ぶ
+		/// </summary>
+		public void BuffCalc(FireBullet _fire)
+        {
+		  _fire.attackFactor = attackFactor;
+		  _fire.fireATFactor = fireATFactor;
+		  _fire.thunderATFactor = thunderATFactor;
+		  _fire.darkATFactor = darkATFactor;
+		  _fire.holyATFactor = holyATFactor;
+     	}
+
+		public void SetLayer(int layerNumber)
+		{
+
+			this.gameObject.layer = layerNumber;
+
+		}
+
+		/// <summary>
+		/// スタミナ切れた時のアビリティ無効化
+		/// </summary>
+		public void StaminaExhaust()
+        {
+            if (GManager.instance.isEnable)
+            {
+
+            }
+            else
+            {
+				_rolling.AbilityPermitted = false;
+
+				_running.AbilityPermitted = false;
+
+				//_flying.AbilityPermitted = false;
+
+				_guard.AbilityPermitted = false;
+
+				_jump.AbilityPermitted = false;
+
+				_weapon.AbilityPermitted = false;
+
+				_wakeup.AbilityPermitted = false;
+
+				_attack.AbilityPermitted = false;
+			}
+        }
+
+        #endregion
+
+
+        public void SetComponennt()
+        {
+			_jump = GetComponent<PlayerJump>();
+			_running = GetComponent<PlayerRunning>();
+			_rolling  = GetComponent<PlayerRoll>();
+			_attack = GetComponent<WeaponAbillity>();
+			_guard = GetComponent<GuardAbillity>();
+			_wakeup = GetComponent<MyWakeUp>();
+			_damage = GetComponentInParent<MyDamageOntouch>();
+		}
+
+		//攻防関連
+        #region
+
+
 		/// <summary>
 		/// アーマー値に応じてイベントとばす
 		/// スタン攻撃中断もここで
@@ -725,124 +846,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 
 
-		/// <summary>
-		/// エンチャ時はエンチャントタイプを参照
-		/// </summary>
-		/// <param name="damageType"></param>
-		public void DamageSound(byte damageType,bool heavy)
-		{
-			if (damageType == 1)
-			{
-				GManager.instance.PlaySound("SlashDamage", transform.position);
-			}
-			else if (damageType == 2)
-			{
-				GManager.instance.PlaySound("StabDamage", transform.position);
-			}
-			else if (damageType == 4)
-			{
-				if (!heavy)
-				{
-					//	Debug.Log("チキン");
-					GManager.instance.PlaySound("StrikeDamage", transform.position);
-				}
-				else
-				{
-					GManager.instance.PlaySound("HeavyStrikeDamage", transform.position);
-					heavy = false;
-				}
-			}
-			else if (damageType == 8)
-			{
-				GManager.instance.PlaySound("HolyDamage", transform.position);
-			}
-			else if (damageType == 16)
-			{
-				GManager.instance.PlaySound("DarkDamage", transform.position);
-			}
-			else if (damageType == 32)
-			{
-
-
-				GManager.instance.PlaySound("FireDamage", transform.position);
-			}
-			else if (damageType == 64)
-			{
-				Debug.Log("sdfgg");
-				GManager.instance.PlaySound("ThunderDamage", transform.position);
-			}
-		}
-
-		#endregion
-
-		//ステータス関連
-		#region
-		/// <summary>
-		/// バフの数値を与える
-		/// 弾丸から呼ぶ
-		/// </summary>
-		public void BuffCalc(FireBullet _fire)
-        {
-		  _fire.attackFactor = attackFactor;
-		  _fire.fireATFactor = fireATFactor;
-		  _fire.thunderATFactor = thunderATFactor;
-		  _fire.darkATFactor = darkATFactor;
-		  _fire.holyATFactor = holyATFactor;
-     	}
-
-		public void SetLayer(int layerNumber)
-		{
-
-			this.gameObject.layer = layerNumber;
-
-		}
-
-		/// <summary>
-		/// スタミナ切れた時のアビリティ無効化
-		/// </summary>
-		public void StaminaExhaust()
-        {
-            if (GManager.instance.isEnable)
-            {
-
-            }
-            else
-            {
-				_rolling.AbilityPermitted = false;
-
-				_running.AbilityPermitted = false;
-
-				//_flying.AbilityPermitted = false;
-
-				_guard.AbilityPermitted = false;
-
-				_jump.AbilityPermitted = false;
-
-				_weapon.AbilityPermitted = false;
-
-				_wakeup.AbilityPermitted = false;
-
-				_attack.AbilityPermitted = false;
-			}
-        }
-
-        #endregion
-
-
-        public void SetComponennt()
-        {
-			_jump = GetComponent<PlayerJump>();
-			_running = GetComponent<PlayerRunning>();
-			_rolling  = GetComponent<PlayerRoll>();
-			_attack = GetComponent<WeaponAbillity>();
-			_guard = GetComponent<GuardAbillity>();
-			_wakeup = GetComponent<MyWakeUp>();
-			_damage = GetComponentInParent<MyDamageOntouch>();
-
-		}
-
-		//ヘルスのために攻撃状態か否かを返す
-		public bool AttackCheck()
+        //ヘルスのために攻撃状態か否かを返す
+        public bool AttackCheck()
         {
 			return _movement.CurrentState == CharacterStates.MovementStates.Attack;
         }
@@ -893,9 +898,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			_parry.ParryStart(num);
 			_guard.GuardEnd();
 		}
-		//アニメーションイベント
-		#region
-		public void AtackContinue()
+
+        #endregion
+
+        //アニメーションイベント
+        #region
+        public void AtackContinue()
         {
 
 			_weapon.Continue();
@@ -903,20 +911,63 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
         #endregion
 
-		//真なら停止中
-		public float NowSpeed()
-        {
-			return _controller.Speed.x;
-        }
+		//プレイヤー制御
+        #region
 
-		/// <summary>
-		/// 外側から向きを変える。
-		/// コンビネーションなどに
-		/// </summary>
-		public void PlayerFlip()
+        /// <summary>
+        /// 外側から向きを変える。
+        /// コンビネーションなどに
+        /// </summary>
+        public void PlayerFlip()
         {
 			_character.Flip();
         }
+
+		/// <summary>
+		/// trueでロック、falseで解除
+		/// </summary>
+		public void EventLock(bool Lock)
+        {
+            if (Lock)
+            {
+				_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+				_characterHorizontalMovement.SetHorizontalMove(0);
+				_controller.SetForce(Vector2.zero);
+            }
+            else
+            {
+				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+			}
+        }
+
+        #endregion
+
+        //状態確認
+        #region
+
+        //真なら停止中
+        public float NowSpeed()
+        {
+			return Mathf.Abs(_controller.Speed.x);
+        }
+
+		public bool CheckPLayerNeutral()
+        {
+            if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal && _controller.State.IsGrounded)
+            {
+				return true;
+            }
+            else
+            {
+				return false;
+            }
+        }
+
+
+        #endregion
+
+
+
 
     }
 }

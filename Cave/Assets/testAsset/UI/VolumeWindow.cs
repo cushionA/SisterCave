@@ -29,7 +29,7 @@ public class VolumeWindow : MonoBehaviour
     bool isFirst;//最初に音量設定開いたかどうか
     bool isBlock;
     bool isUp;
-    float verticalKey;
+
     float changeTime;
 
     // Start is called before the first frame update
@@ -45,7 +45,7 @@ public class VolumeWindow : MonoBehaviour
  
 
         selectObject = MainUICon.instance.eventSystem.currentSelectedGameObject;
-        verticalKey = GManager.instance.InputR.GetAxisRaw(MainUICon.instance.rewiredAction15);
+
 
         if (!isFirst)
         {
@@ -55,7 +55,7 @@ public class VolumeWindow : MonoBehaviour
             isFirst = true;
         }
 
-        if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction14))
+        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction14))
         {
             isChange = false;
             isBlock = false;
@@ -72,7 +72,7 @@ public class VolumeWindow : MonoBehaviour
 
 
 
-            if (!isChange && GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+            if (!isChange && MainUICon.instance._reInput.CancelButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown)
         {
             MainUICon.instance.masterUI.SetActive(true);
             this.gameObject.SetActive(false);
@@ -88,7 +88,7 @@ public class VolumeWindow : MonoBehaviour
                 ////Debug.log("bgm調整中");
 
                 //決定ボタン
-                if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+                if (MainUICon.instance._reInput.CancelButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown)
                 {
                     
                     bgmSlider.value = MasterAudio.GrabBusByName("BGM").volume * 100;
@@ -99,7 +99,7 @@ public class VolumeWindow : MonoBehaviour
                     ////Debug.log("b");
                     //こっちでは逆に音量をスライダーの数値に入れる
                 }
-                else if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction18))
+                else if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18))
                 {
                     if (!isBlock)
                     {
@@ -115,14 +115,14 @@ public class VolumeWindow : MonoBehaviour
                         isBlock = false;
                     }
                 }
-                else if(verticalKey > 0 && !isUp)
+                else if(MainUICon.instance._reInput.UIMovement.y > 0 && !isUp)
                 {
                     ////Debug.log("a");
                     bgmSlider.value += 10;
                     isUp = true;
                     isDown = false;
                 }
-                else if (verticalKey < 0 && !isDown)
+                else if (MainUICon.instance._reInput.UIMovement.y < 0 && !isDown)
                 {
                     bgmSlider.value -= 10;
                     isUp = false;
@@ -131,13 +131,13 @@ public class VolumeWindow : MonoBehaviour
             }
             else if(seSlider.gameObject == selectObject)
             {
-                if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction17))
+                if (MainUICon.instance._reInput.CancelButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown)
                 {
                     seSlider.value = DarkTonic.MasterAudio.MasterAudio.GrabBusByName("SE").volume * 100;
                     seButton.Select();
                     isChange = false;
                 }
-                else if (GManager.instance.InputR.GetButtonDown(MainUICon.instance.rewiredAction18))
+                else if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction18))
                 {
                     if (!isBlock)
                     {
@@ -153,20 +153,20 @@ public class VolumeWindow : MonoBehaviour
                         isBlock = false;
                     }
                 }
-                else if (verticalKey > 0 && !isUp)
+                else if (MainUICon.instance._reInput.UIMovement.y > 0 && !isUp)
                 {
                     seSlider.value += 10;
                     isUp = true;
                     isDown = false;
                 }
-                else if (verticalKey < 0 && !isDown)
+                else if (MainUICon.instance._reInput.UIMovement.y < 0 && !isDown)
                 {
                     seSlider.value -= 10;
                     isUp = false;
                     isDown = true;
                 }
             }
-            if (verticalKey != 0)
+            if (MainUICon.instance._reInput.UIMovement.y != 0)
             {
                 //    ////Debug.log("しののめの");
                 //changeTime += Time.realtimeSinceStartup;
@@ -211,7 +211,7 @@ public class VolumeWindow : MonoBehaviour
                     }
                 }
             }
-            else if (verticalKey == 0)
+            else if (MainUICon.instance._reInput.UIMovement.y == 0)
             {
                 isUp = false;
                 isDown = false;

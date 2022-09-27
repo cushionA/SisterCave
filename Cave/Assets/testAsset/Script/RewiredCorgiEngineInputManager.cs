@@ -20,8 +20,14 @@
 
         private int _rewiredActionId_siteHorizontal;
         private int _rewiredActionId_siteVertical;
+        private int _rewiredActionId_UIHorizontal;
+        private int _rewiredActionId_UIVertical;
         private int[] _rewiredButtonIds;
         private int _rewiredSystemPauseButtonId;
+
+        public Vector2 UIMovement { get { return _UIMovement; } }
+
+        public Vector2 SiteMovement { get { return _siteMovement; } }
 
         /// <summary>
         /// これが真なら入力されてる。
@@ -64,7 +70,7 @@
                 string actionName = StripPlayerIdFromActionName(ButtonList[i].ButtonID); 
                 if (string.IsNullOrEmpty(actionName)) continue;
                 _rewiredButtonIds[i] = ReInput.mapping.GetActionId(actionName);
-            //    Debug.Log($"test{actionName}{_rewiredButtonIds[i]}");
+          //      Debug.Log($"test{actionName}{_rewiredButtonIds[i]}");
                 // Find the Shoot action so we can reuse it instead of ShootAxis
                 //ShootAxisの代わりにShootアクションを再利用できるように検索します。
 
@@ -86,7 +92,8 @@
          //   _axisShootSecondary = "_SecondaryShootAxis";
             SiteVertical = "SiteVertical";
             SiteHorizontal = "SiteHorizontal";
-
+            UIVertical = "UIVertical";
+            UIHorizontal = "UIHorizontal";
 
             if (!ReInput.isReady) return;
            
@@ -97,6 +104,8 @@
             //_rewiredActionId_secondaryVertical = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(_axisSecondaryVertical));
             _rewiredActionId_siteHorizontal = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(SiteHorizontal));
             _rewiredActionId_siteVertical = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(SiteVertical));
+            _rewiredActionId_UIVertical = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(UIVertical));
+            _rewiredActionId_UIHorizontal = ReInput.mapping.GetActionId(StripPlayerIdFromActionName(UIHorizontal));
         }
 
         /// <summary>
@@ -108,8 +117,12 @@
                 return;
             }
             SetMovement();
-          //  SetSecondaryMovement();
-          //  SetShootAxis();
+            //  SetSecondaryMovement();
+            //  SetShootAxis();
+            if (MainUICon.instance.UIOn) 
+            {
+                SetUIMovement();
+            }
             GetInputButtons();
           
         }
@@ -231,14 +244,28 @@
 
 
         /// <summary>
-        /// Called every frame, gets shoot axis values from Rewired Player
+        /// Called every frame, gets secondary movement values from Rewired player
         /// </summary>
-        protected override void SetShootAxis() {
-            if(!_initialized) {
-                base.SetShootAxis();
+        public override void SetUIMovement()
+        {
+            if (!_initialized)
+            {
+                base.SetUIMovement();
                 return;
             }
+            if (SmoothMovement)
+            {
+                _UIMovement.x = _rewiredPlayer.GetAxis(_rewiredActionId_UIHorizontal);
+                _UIMovement.y = _rewiredPlayer.GetAxis(_rewiredActionId_UIVertical);
+            }
+            else
+            {
+                _UIMovement.x = _rewiredPlayer.GetAxisRaw(_rewiredActionId_UIHorizontal);
+                _UIMovement.y = _rewiredPlayer.GetAxisRaw(_rewiredActionId_UIVertical);
+            }
         }
+
+
 
         /// <summary>
         /// This is not used.

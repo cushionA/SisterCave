@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using MoreMountains.Tools;
 
 public class SelectControll : MonoBehaviour
 {
@@ -70,8 +71,8 @@ public class SelectControll : MonoBehaviour
     void Start()
     {
         
-       // mine = GetComponent<Navigation>();
-        me = GetComponent<Selectable>();
+       // mine = MMGetComponentNoAlloc<Navigation>();
+        me = this.gameObject.MMGetComponentNoAlloc<Selectable>();
    //     mine = me.navigation;
         //ChangeItem();
 
@@ -119,7 +120,7 @@ public class SelectControll : MonoBehaviour
 
             if (MainUICon.instance.isChange == 1)
             {
-                 sl = MainUICon.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                 sl = MainUICon.instance.firstDrop.MMGetComponentNoAlloc<ChildWindow>().objList[num].MMGetComponentNoAlloc<Selectable>();
                     UpSet(sl);
                MainUICon.instance.isChange = 2;
             }
@@ -127,11 +128,11 @@ public class SelectControll : MonoBehaviour
             {
                     if (s == 1)
                     {
-                        sl = MainUICon.instance.secondDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                        sl = MainUICon.instance.secondDrop.MMGetComponentNoAlloc<ChildWindow>().objList[num].MMGetComponentNoAlloc<Selectable>();
                     }
                     else
                     {
-                        sl = MainUICon.instance.firstDrop.GetComponent<ChildWindow>().objList[num].GetComponent<Selectable>();
+                        sl = MainUICon.instance.firstDrop.MMGetComponentNoAlloc<ChildWindow>().objList[num].MMGetComponentNoAlloc<Selectable>();
                     }
                 if (!isValue)
                 {

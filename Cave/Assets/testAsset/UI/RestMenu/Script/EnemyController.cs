@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
-
+using MoreMountains.CorgiEngine;
+using MoreMountains.Tools;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField]
@@ -84,7 +85,7 @@ public class EnemyController : MonoBehaviour
         GManager.instance.hp = GManager.instance.maxHp;
         GManager.instance.mp = GManager.instance.maxMp;
        // SManager.instance.sisStatus.mp = SManager.instance.sisStatus.maxMp;
-        SManager.instance.Sister.GetComponent<SisterFire>().AttackEnd();
+        SManager.instance.Sister.MMGetComponentNoAlloc<FireAbility>().MagicEnd();
         for (int i = 0;i < bt.Count;i++)
         {
             bt[i].Reset();
