@@ -25,18 +25,8 @@ public class AHSetButton : MonoBehaviour
     public void ValueApply()
     {
         RecoverCondition e;
-        if(editNum == 1)
-        {
-            e = MainUICon.instance.editParameter.nFirstRecover;
-        }
-        else if(editNum == 2)
-        {
-            e = MainUICon.instance.editParameter.nSecondRecover;
-        }
-        else
-        {
-            e = MainUICon.instance.editParameter.nThirdRecover;
-        }
+        e = MainUICon.instance.editParameter.nRecoverCondition[editNum];
+
         if (!isAct)
         {
             if (e.condition == RecoverCondition.RecoverStatus.ƒvƒŒƒCƒ„[‚ªó‘ÔˆÙí‚É‚©‚©‚Á‚½)

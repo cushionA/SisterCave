@@ -29,7 +29,7 @@ public class SettingWindowCon : MonoBehaviour
         if (isAH)
         {
             ButtonSet();
-            Debug.Log("asdfg");
+           // Debug.Log("asdfg");
         }
     }
 
@@ -68,13 +68,13 @@ public class SettingWindowCon : MonoBehaviour
             if (MainUICon.instance.settingNumber == 6)
             {
                 //  Debug.Log($"‘O{MainUICon.instance.settingNumber}");
-                myButton[MainUICon.instance.editNumber + 2].Select();
+                myButton[MainUICon.instance.editNumber + 3].Select();
                 MainUICon.instance.settingNumber = 5;
            //     Debug.Log($"ato{MainUICon.instance.settingNumber}");
             }
             else
             {
-                myButton[MainUICon.instance.editNumber - 1].Select();
+                myButton[MainUICon.instance.editNumber].Select();
             }
            // MainUICon.instance.isAH = false;
         }
@@ -83,13 +83,13 @@ public class SettingWindowCon : MonoBehaviour
             if (MainUICon.instance.settingNumber % 2 == 0)
             {
                 //  Debug.Log($"‘O{MainUICon.instance.settingNumber}");
-                myButton[MainUICon.instance.editNumber + 4].Select();
+                myButton[MainUICon.instance.editNumber + 5].Select();
                 MainUICon.instance.settingNumber--;
                 Debug.Log($"ato{MainUICon.instance.settingNumber}");
             }
             else
             {
-                myButton[MainUICon.instance.editNumber - 1].Select();
+                myButton[MainUICon.instance.editNumber].Select();
             }
         }
         enable = false;

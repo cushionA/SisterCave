@@ -108,7 +108,9 @@ public class MainUICon : MonoBehaviour
     ///<summary>
     /// 設定中のウィンドウはなにか
     /// 基本とか攻撃とか
-    /// さらに攻撃0~2、回復3~5とかにして１なら条件2なら行動という風に分ける
+    /// 1、ターゲット設定 2、攻撃設定
+    /// 3、支援条件 4、支援決定
+    /// 5、回復条件 6、回復決定
     ///</summary>
     [HideInInspector]
     public int settingNumber;
@@ -297,25 +299,29 @@ public class MainUICon : MonoBehaviour
         //    }
         if (eventSystem.currentSelectedGameObject != null)
         {
-           Debug.Log($"ね{eventSystem.currentSelectedGameObject}{selectButton}");
-        }else
-Debug.Log($"unnchi");
-
+            //  Debug.Log($"ね{eventSystem.currentSelectedGameObject}{selectButton}");
+        }
+        else
+        {
+            //Debug.Log($"unnchi");
+        }
    //     Debug.Log($"ね{stIn.RewiredInputManager.get(stIn.verticalAxis)}");
-
 
         if (tipNeed && isTips)
         {
+
             TipsWindow.gameObject.SetActive(true);
         }
         else
         {
+            
             TipsWindow.gameObject.SetActive(false);
             isTips = false;
 
         }
         if (_reInput.TipsButton.State.CurrentState == MMInput.ButtonStates.ButtonDown && eventSystem.currentSelectedGameObject != null)
         {
+          //  Debug.Log($"s");
             tipNeed = !tipNeed;
         }
 
@@ -326,7 +332,7 @@ Debug.Log($"unnchi");
                 selectButton = eventSystem.currentSelectedGameObject;
                 if (selectButton == _windowSelecter.gameObject)
                 {
-                    Debug.Log($"hh");
+
                     _scroll.ResetPoss();
                 }
             }

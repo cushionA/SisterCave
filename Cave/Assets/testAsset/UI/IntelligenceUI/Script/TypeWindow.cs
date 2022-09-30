@@ -110,72 +110,15 @@ public class TypeWindow : ValueChangeBase
     {
         if (s == 1)
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.firstTarget.percentage;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.secondTarget.percentage;
-            }
-            else if (e == 3)
-            {
-                return MainUICon.instance.editParameter.thirdTarget.percentage;
-            }
-            else if (e == 4)
-            {
-                return MainUICon.instance.editParameter.forthTarget.percentage;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.fiveTarget.percentage;
-            }
+            return MainUICon.instance.editParameter.targetCondition[e].percentage;
         }
         else if (s == 3)
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.firstPlan.percentage;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.secondPlan.percentage;
-            }
-            else if (e == 3)
-            {
-                return MainUICon.instance.editParameter.thirdPlan.percentage;
-            }
-            else if (e == 4)
-            {
-                return MainUICon.instance.editParameter.forthPlan.percentage;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.fivePlan.percentage;
-            }
+            return MainUICon.instance.editParameter.supportPlan[e].percentage;
         }
         else
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.firstRecover.percentage;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.secondRecover.percentage;
-            }
-            else if (e == 3)
-            {
-                return MainUICon.instance.editParameter.thirdRecover.percentage;
-            }
-            else if (e == 4)
-            {
-                return MainUICon.instance.editParameter.forthRecover.percentage;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.fiveRecover.percentage;
-            }
+            return MainUICon.instance.editParameter.recoverCondition[e].percentage;
         }
     }
 

@@ -155,29 +155,10 @@ public class MasterDrop : MonoBehaviour
             AttackJudge editJudge = new AttackJudge();
             //設定
             #region
-            if (e == 1)
-            {
-                editJudge = sis.firstTarget;
-            }
-            else if (e == 2)
-            {
-                editJudge = sis.secondTarget;
-            }
-            else if (e == 3)
-            {
-                editJudge = sis.thirdTarget;
-            }
-            else if (e == 4)
-            {
-                editJudge = sis.forthTarget;
-            }
-            else
-            {
-                editJudge = sis.fiveTarget;
-            }
+            editJudge = sis.targetCondition[e];
             #endregion
 
-            if(editJudge.condition == AttackJudge.TargetJudge.プレイヤーが状態異常にかかった時 ||
+            if (editJudge.condition == AttackJudge.TargetJudge.プレイヤーが状態異常にかかった時 ||
                editJudge.condition == AttackJudge.TargetJudge.かかってない支援がある ||
                editJudge.condition == AttackJudge.TargetJudge.強敵の存在 ||
                editJudge.condition == AttackJudge.TargetJudge.指定なし ||
@@ -212,32 +193,10 @@ public class MasterDrop : MonoBehaviour
             //MainUICon.instance.valueWindow.SetActive(false);
             FireCondition editAT;
             //内容割り当て
-            #region
-            if (e == 1)
-            {
-                editAT = sis.firstAttack;
-            }
-            else if (e == 2)
-            {
-                editAT = sis.secondAttack;
-            }
-            else if (e == 3)
-            {
-                editAT = sis.thirdAttack;
-            }
-            else if (e == 4)
-            {
-                editAT = sis.fourthAttack;
-            }
-            else if (e == 5)
-            {
-                editAT = sis.fiveAttack;
-            }
-            else
-            {
-                editAT = sis.nonAttack;
-            }
-            #endregion
+
+
+            editAT = sis.AttackCondition[e];
+
             if (editAT.condition == FireCondition.ActJudge.なにもしない || editAT.condition == FireCondition.ActJudge.回復行動に移行 ||
                 editAT.condition == FireCondition.ActJudge.支援行動に移行)
             {
@@ -254,32 +213,9 @@ public class MasterDrop : MonoBehaviour
         {
             SupportCondition editSP;
             //設定
-            #region
-            if (e == 1)
-            {
-                editSP = sis.firstPlan;
-            }
-            else if (e == 2)
-            {
-                editSP = sis.secondPlan;
-            }
-            else if (e == 3)
-            {
-                editSP = sis.thirdPlan;
-            }
-            else if (e == 4)
-            {
-                editSP = sis.forthPlan;
-            }
-            else if (e == 5)
-            {
-                editSP = sis.fivePlan;
-            }
-            else
-            {
-                editSP = sis.sixPlan;
-            }
-            #endregion
+
+            editSP = sis.supportPlan[e];
+
             if (s == 3)
             {
                 if(editSP.sCondition == SupportCondition.SupportStatus.強敵がいるかどうか || editSP.sCondition == SupportCondition.SupportStatus.指定なし || editSP.sCondition == SupportCondition.SupportStatus.プレイヤーが状態異常にかかった時
@@ -331,55 +267,15 @@ public class MasterDrop : MonoBehaviour
         {
             RecoverCondition editRC;
             //設定
-            #region
-            if (e == 1)
+            if (MainUICon.instance.isAH)
             {
-                if (MainUICon.instance.isAH)
-                {
-                    editRC = sis.nFirstRecover;
-                }
-                else
-                {
-                    editRC = sis.firstRecover;
-                }
-            }
-            else if (e == 2)
-            {
-                if (MainUICon.instance.isAH)
-                {
-                    editRC = sis.nSecondRecover;
-                }
-                else
-                {
-                    editRC = sis.secondRecover;
-                }
-            }
-            else if (e == 3)
-            {
-                if (MainUICon.instance.isAH)
-                {
-                    editRC = sis.nThirdRecover;
-                }
-                else
-                {
-                    editRC = sis.thirdRecover;
-                }
-            }
-            else if (e == 4)
-            {
-                editRC = sis.forthRecover;
-            }
-            else if (e == 5)
-            {
-
-                editRC = sis.fiveRecover;
+                editRC = sis.nRecoverCondition[e];
             }
             else
             {
-                editRC = sis.nonRecover;
+                editRC = sis.recoverCondition[e];
             }
-            #endregion
-            if(s == 5)
+            if (s == 5)
             {
                 if(editRC.condition == RecoverCondition.RecoverStatus.強敵がいるかどうか || editRC.condition == RecoverCondition.RecoverStatus.指定なし ||
                     editRC.condition == RecoverCondition.RecoverStatus.プレイヤーが状態異常にかかった時 || editRC.condition == RecoverCondition.RecoverStatus.任意の支援が切れているとき)

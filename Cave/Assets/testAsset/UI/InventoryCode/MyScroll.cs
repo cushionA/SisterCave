@@ -54,6 +54,11 @@ public class MyScroll: MonoBehaviour
 
     private void Start()
     {
+        if(Target == null)
+        {
+            Debug.Log($"{transform.root.gameObject.name}");
+        }
+
         startPosition = Target.anchoredPosition.y;
        if(_scrollLimit == 0)
         {

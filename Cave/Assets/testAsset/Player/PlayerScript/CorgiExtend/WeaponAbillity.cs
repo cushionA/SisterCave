@@ -410,6 +410,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 {
                     //落下開始までは無重力で
                     _controller.DefaultParameters.Gravity = 0;
+                    _controller.SetForce(Vector2.zero);
                 }
                 // 着地したら
                 if (startFall && _controller.State.IsGrounded)
@@ -481,7 +482,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         if (!isAirEnd)
                         {
                             atType = ActType.aAttack;
-                            //       
+                            _controller.SetForce(Vector2.zero);
                             _controller.DefaultParameters.Gravity = -15f;
                         }
                         else

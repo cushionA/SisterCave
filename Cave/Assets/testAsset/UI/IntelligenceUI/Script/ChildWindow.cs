@@ -1,4 +1,4 @@
-using System.Collections;
+using MoreMountains.Tools;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -70,6 +70,10 @@ public class ChildWindow : MonoBehaviour
             else if (s == 2)
             {
                 objList[1].SetActive(true);
+                if(type == 1)
+                {
+                    objList[5].SetActive(true);
+                }
                 i = 1;
             }
             else if (s == 3)
@@ -80,6 +84,10 @@ public class ChildWindow : MonoBehaviour
             else if (s == 4)
             {
                 objList[2].SetActive(true);
+                if (type == 1)
+                {
+                    objList[5].SetActive(true);
+                }
                 i = 2;
             }
             else if (s == 5)
@@ -91,13 +99,17 @@ public class ChildWindow : MonoBehaviour
             else
             {
                 objList[3].SetActive(true);
+                if (type == 1)
+                {
+                    objList[5].SetActive(true);
+                }
                 i = 3;
             }
-             objList[i].GetComponent<ValueChangeBase>().NumberSet();
+             objList[i].MMGetComponentNoAlloc<ValueChangeBase>().NumberSet();
             tx.text = introduction[i];
             if (Master)
             {
-                objList[i].GetComponent<Selectable>().Select();
+                objList[i].MMGetComponentNoAlloc<Selectable>().Select();
                 
             }
         }
@@ -129,7 +141,7 @@ public class ChildWindow : MonoBehaviour
             if (s == 1)
             {
                 AttackJudge editor = GetTarget(e);
-                Dropdown dd = objList[0].GetComponent<Dropdown>();
+                Dropdown dd = objList[0].MMGetComponentNoAlloc<Dropdown>();
                 //標的
                 //ちょっと複雑すぎる
                 if (type == 0)
@@ -289,7 +301,7 @@ public class ChildWindow : MonoBehaviour
             else if (s == 2)
             {
                 FireCondition editor = GetAttack(e);
-                Dropdown dd = objList[1].GetComponent<Dropdown>();
+                Dropdown dd = objList[1].MMGetComponentNoAlloc<Dropdown>();
                 //ちょっと複雑すぎる
                 if (type == 0)
                 {
@@ -455,7 +467,7 @@ public class ChildWindow : MonoBehaviour
             {
                 SupportCondition editor = GetSupport(e);
                 //これは最初のドロップダウンだけ
-                Dropdown dd = objList[4].GetComponent<Dropdown>();
+                Dropdown dd = objList[4].MMGetComponentNoAlloc<Dropdown>();
                 if (type == 0)
                 {
                     if (editor.sCondition == SupportCondition.SupportStatus.敵タイプ)
@@ -537,7 +549,7 @@ public class ChildWindow : MonoBehaviour
             else if (s == 4)
             {
                 SupportCondition editor = GetSupport(e);
-                Dropdown dd = objList[2].GetComponent<Dropdown>();
+                Dropdown dd = objList[2].MMGetComponentNoAlloc<Dropdown>();
                 //ちょっと複雑すぎる
                 if (type == 0)
                 {
@@ -646,7 +658,7 @@ public class ChildWindow : MonoBehaviour
             {
                 RecoverCondition editor = GetRecover(e);
                 //これは最初のドロップダウンだけ
-                Dropdown dd = objList[4].GetComponent<Dropdown>();
+                Dropdown dd = objList[4].MMGetComponentNoAlloc<Dropdown>();
                 if (type == 0)
                 {
                     if (editor.condition == RecoverCondition.RecoverStatus.敵タイプ)
@@ -727,7 +739,7 @@ public class ChildWindow : MonoBehaviour
             else
             {
                 RecoverCondition editor = GetRecover(e);
-                Dropdown dd = objList[3].GetComponent<Dropdown>();
+                Dropdown dd = objList[3].MMGetComponentNoAlloc<Dropdown>();
                 //ちょっと複雑すぎる
                 if (type == 0)
                 {
@@ -861,7 +873,7 @@ public class ChildWindow : MonoBehaviour
              //   Debug.Log("wee");
                 for (int i = 0; i <= objList.Count - 1; i++)
                 {
-                    target = objList[i].GetComponent<Toggle>();
+                    target = objList[i].MMGetComponentNoAlloc<Toggle>();
                     if (i == 0)
                     {
                      //   Debug.Log("ssssあｓ");
@@ -890,7 +902,7 @@ public class ChildWindow : MonoBehaviour
                 Debug.Log("aee");
                 for (int i = 0; i <= objList.Count- 1; i++)
                 {
-                    target = objList[i].GetComponent<Toggle>();
+                    target = objList[i].MMGetComponentNoAlloc<Toggle>();
                     target.isOn = false;
                 }
             }
@@ -900,17 +912,13 @@ public class ChildWindow : MonoBehaviour
         {
             int p = GetType(s, e);
             bool h = GetBool(s, e);
-            objList[0].GetComponent<Slider>().value = p;
-            objList[1].GetComponent<Toggle>().isOn = h;
+            objList[0].MMGetComponentNoAlloc<Slider>().value = p;
+            objList[1].MMGetComponentNoAlloc<Toggle>().isOn = h;
         }
 
     }
 
 
-    void WakeWindow() 
-    {
-
-    }
 
     void ResetWindow()
     {
@@ -936,72 +944,15 @@ public class ChildWindow : MonoBehaviour
     {
         if(s == 1)
         {
-            if (e == 1)
-            {
-               return MainUICon.instance.editParameter.firstTarget.percentage;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.secondTarget.percentage;
-            }
-            else if (e == 3)
-            {
-                return MainUICon.instance.editParameter.thirdTarget.percentage;
-            }
-            else if (e == 4)
-            {
-                return MainUICon.instance.editParameter.forthTarget.percentage;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.fiveTarget.percentage;
-            }
+            return MainUICon.instance.editParameter.targetCondition[e].percentage;
         }
         else if (s == 3)
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.firstPlan.percentage;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.secondPlan.percentage;
-            }
-            else if (e == 3)
-            {
-                return MainUICon.instance.editParameter.thirdPlan.percentage;
-            }
-            else if (e == 4)
-            {
-                return MainUICon.instance.editParameter.forthPlan.percentage;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.fivePlan.percentage;
-            }
+            return MainUICon.instance.editParameter.supportPlan[e].percentage;
         }
         else
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.firstRecover.percentage;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.secondRecover.percentage;
-            }
-            else if (e == 3)
-            {
-                return MainUICon.instance.editParameter.thirdRecover.percentage;
-            }
-            else if (e == 4)
-            {
-                return MainUICon.instance.editParameter.forthRecover.percentage;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.fiveRecover.percentage;
-            }
+            return MainUICon.instance.editParameter.recoverCondition[e].percentage;
         }
     }
 
@@ -1016,196 +967,40 @@ public class ChildWindow : MonoBehaviour
     {
         if (s == 1)
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.firstTarget.highOrLow;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.secondTarget.highOrLow;
-            }
-            else if (e == 3)
-            {
-                return MainUICon.instance.editParameter.thirdTarget.highOrLow;
-            }
-            else if (e == 4)
-            {
-                return MainUICon.instance.editParameter.forthTarget.highOrLow;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.fiveTarget.highOrLow;
-            }
+            return MainUICon.instance.editParameter.targetCondition[e].highOrLow;
         }
         else if (s == 3)
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.firstPlan.highOrLow;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.secondPlan.highOrLow;
-            }
-            else if (e == 3)
-            {
-                return MainUICon.instance.editParameter.thirdPlan.highOrLow;
-            }
-            else if (e == 4)
-            {
-                return MainUICon.instance.editParameter.forthPlan.highOrLow;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.fivePlan.highOrLow;
-            }
+            return MainUICon.instance.editParameter.supportPlan[e].highOrLow;
         }
         else
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.firstRecover.highOrLow;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.secondRecover.highOrLow;
-            }
-            else if (e == 3)
-            {
-                return MainUICon.instance.editParameter.thirdRecover.highOrLow;
-            }
-            else if (e == 4)
-            {
-                return MainUICon.instance.editParameter.forthRecover.highOrLow;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.fiveRecover.highOrLow;
-            }
+            return MainUICon.instance.editParameter.recoverCondition[e].highOrLow;
         }
     }
 
     AttackJudge GetTarget(int e)
     {
-        if (e == 1)
-        {
-            return MainUICon.instance.editParameter.firstTarget;
-        }
-        else if (e == 2)
-        {
-            return MainUICon.instance.editParameter.secondTarget;
-        }
-        else if (e == 3)
-        {
-            return MainUICon.instance.editParameter.thirdTarget;
-        }
-        else if (e == 4)
-        {
-            return MainUICon.instance.editParameter.forthTarget;
-        }
-        else
-        {
-            return MainUICon.instance.editParameter.fiveTarget;
-        }
+        return MainUICon.instance.editParameter.targetCondition[e];
     }
     FireCondition GetAttack(int e)
     {
-        if (e == 1)
-        {
-            return MainUICon.instance.editParameter.firstAttack;
-        }
-        else if (e == 2)
-        {
-            return MainUICon.instance.editParameter.secondAttack;
-        }
-        else if (e == 3)
-        {
-            return MainUICon.instance.editParameter.thirdAttack;
-        }
-        else if (e == 4)
-        {
-            return MainUICon.instance.editParameter.fourthAttack;
-        }
-        else if (e == 5)
-        {
-            return MainUICon.instance.editParameter.fiveAttack;
-        }
-        else
-        {
-            return MainUICon.instance.editParameter.nonAttack;
-        }
+        return MainUICon.instance.editParameter.AttackCondition[e];
     }
 
     SupportCondition GetSupport(int e)
     {
-        if (e == 1)
-        {
-            return MainUICon.instance.editParameter.firstPlan;
-        }
-        else if (e == 2)
-        {
-            return MainUICon.instance.editParameter.secondPlan;
-        }
-        else if (e == 3)
-        {
-            return MainUICon.instance.editParameter.thirdPlan;
-        }
-        else if (e == 4)
-        {
-            return MainUICon.instance.editParameter.forthPlan;
-        }
-        else if (e == 5)
-        {
-            return MainUICon.instance.editParameter.fivePlan;
-        }
-        else
-        {
-            return MainUICon.instance.editParameter.sixPlan;
-        }
+        return MainUICon.instance.editParameter.supportPlan[e];
     }
     RecoverCondition GetRecover( int e)
     {
         if (!MainUICon.instance.isAH)
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.firstRecover;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.secondRecover;
-            }
-            else if (e == 3)
-            {
-                return MainUICon.instance.editParameter.thirdRecover;
-            }
-            else if (e == 4)
-            {
-                return MainUICon.instance.editParameter.forthRecover;
-            }
-            else if (e == 5)
-            {
-                return MainUICon.instance.editParameter.fiveRecover;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.nonRecover;
-            }
+            return MainUICon.instance.editParameter.recoverCondition[e];
         }
         else
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.nFirstRecover;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.nSecondRecover;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.nThirdRecover;
-            }
+            return MainUICon.instance.editParameter.nRecoverCondition[e];
         }
     }
 }

@@ -21,12 +21,14 @@ MonoBehaviour:
   stateResetRes: 30
   targetResetRes: 5
   attackCT:
+  - 20
   - 0
   - 0
   - 0
   - 0
   - 0
   supportCT:
+  - 0
   - 0
   - 0
   - 0
@@ -39,238 +41,219 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  autHealCT:
+  - 0
+  - 0
+  - 0
   priority: 0
   nowMove: 0
-  firstTarget:
-    condition: 1
-    percentage: 50
-    highOrLow: 0
-    wp: 8
-    nextCondition: 5
-    upDown: 0
-  secondTarget:
-    condition: 0
-    percentage: 2
-    highOrLow: 0
-    wp: 8
-    nextCondition: 5
-    upDown: 0
-  thirdTarget:
-    condition: 0
-    percentage: 8
-    highOrLow: 1
-    wp: 8
-    nextCondition: 0
-    upDown: 0
-  forthTarget:
-    condition: 0
-    percentage: 1
-    highOrLow: 0
-    wp: 8
-    nextCondition: 0
-    upDown: 0
-  fiveTarget:
-    condition: 8
+  targetCondition:
+  - condition: 8
     percentage: 0
     highOrLow: 0
-    wp: 0
-    nextCondition: 0
-    upDown: 0
-  firstAttack:
-    UseMagic: {fileID: 0}
-    AutoWait: 0
-    CoolTime: 0
-    condition: 13
-    firstCondition: 6
+    wp: 8
     nextCondition: 5
     upDown: 0
-  secondAttack:
-    UseMagic: {fileID: 11400000, guid: ce2ad0639a113fa48b1d116eebbfe137, type: 2}
+  - condition: 6
+    percentage: 0
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  - condition: 7
+    percentage: 0
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  - condition: 8
+    percentage: 0
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  - condition: 8
+    percentage: 0
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  AttackCondition:
+  - UseMagic: {fileID: 0}
     AutoWait: 0
-    CoolTime: 0
     condition: 5
-    firstCondition: 1
-    nextCondition: 0
-    upDown: 0
-  thirdAttack:
-    UseMagic: {fileID: 0}
-    AutoWait: 0
-    CoolTime: 0
-    condition: 6
-    firstCondition: 0
+    firstCondition: 6
     nextCondition: 5
     upDown: 0
-  fourthAttack:
-    UseMagic: {fileID: 0}
+  - UseMagic: {fileID: 0}
     AutoWait: 0
-    CoolTime: 0
-    condition: 3
-    firstCondition: 6
-    nextCondition: 0
-    upDown: 0
-  fiveAttack:
-    UseMagic: {fileID: 0}
-    AutoWait: 0
-    CoolTime: 0
     condition: 14
     firstCondition: 6
     nextCondition: 5
     upDown: 0
-  nonAttack:
-    UseMagic: {fileID: 0}
+  - UseMagic: {fileID: 0}
     AutoWait: 0
-    CoolTime: 0
     condition: 14
     firstCondition: 6
     nextCondition: 5
     upDown: 0
-  firstPlan:
-    UseMagic: {fileID: 0}
-    sCondition: 5
-    needSupport: 0
-    percentage: 0
-    highOrLow: 1
-    ActBase: 0
-    useSupport: 0
-    nextCondition: 0
+  - UseMagic: {fileID: 0}
+    AutoWait: 0
+    condition: 14
+    firstCondition: 6
+    nextCondition: 5
     upDown: 0
-  secondPlan:
-    UseMagic: {fileID: 0}
-    sCondition: 0
-    needSupport: 0
-    percentage: 0
-    highOrLow: 0
-    ActBase: 0
-    useSupport: 0
-    nextCondition: 0
+  - UseMagic: {fileID: 0}
+    AutoWait: 0
+    condition: 14
+    firstCondition: 6
+    nextCondition: 5
     upDown: 0
-  thirdPlan:
-    UseMagic: {fileID: 0}
-    sCondition: 0
-    needSupport: 0
-    percentage: 0
-    highOrLow: 0
-    ActBase: 0
-    useSupport: 0
-    nextCondition: 0
+  - UseMagic: {fileID: 0}
+    AutoWait: 0
+    condition: 14
+    firstCondition: 6
+    nextCondition: 5
     upDown: 0
-  forthPlan:
-    UseMagic: {fileID: 0}
-    sCondition: 0
-    needSupport: 0
-    percentage: 0
-    highOrLow: 0
-    ActBase: 0
-    useSupport: 0
-    nextCondition: 0
-    upDown: 0
-  fivePlan:
-    UseMagic: {fileID: 0}
-    sCondition: 0
-    needSupport: 0
-    percentage: 0
-    highOrLow: 0
-    ActBase: 0
-    useSupport: 0
-    nextCondition: 0
-    upDown: 0
-  sixPlan:
-    UseMagic: {fileID: 0}
-    sCondition: 0
-    needSupport: 0
-    percentage: 0
-    highOrLow: 0
-    ActBase: 0
-    useSupport: 0
-    nextCondition: 0
-    upDown: 0
-  firstRecover:
-    UseMagic: {fileID: 0}
-    condition: 2
+  atSkipList: 000000000000000000000000000000000000000000000000
+  supportPlan:
+  - UseMagic: {fileID: 0}
+    sCondition: 7
     needSupport: 6
-    percentage: 50
-    highOrLow: 1
-    ActBase: 1
-    useSupport: 6
-    nextCondition: 7
-    upDown: 0
-  secondRecover:
-    UseMagic: {fileID: 11400000, guid: c2e81e9985be0824cade631e1c4c9b5a, type: 2}
-    condition: 2
-    needSupport: 6
-    percentage: 50
-    highOrLow: 0
-    ActBase: 0
-    useSupport: 6
-    nextCondition: 7
-    upDown: 0
-  thirdRecover:
-    UseMagic: {fileID: 0}
-    condition: 8
-    needSupport: 0
     percentage: 0
     highOrLow: 0
     ActBase: 3
     useSupport: 6
-    nextCondition: 0
+    nextCondition: 4
     upDown: 0
-  forthRecover:
-    UseMagic: {fileID: 0}
-    condition: 0
-    needSupport: 0
-    percentage: 0
-    highOrLow: 0
-    ActBase: 0
-    useSupport: 0
-    nextCondition: 0
-    upDown: 0
-  fiveRecover:
-    UseMagic: {fileID: 0}
-    condition: 0
-    needSupport: 0
-    percentage: 0
-    highOrLow: 0
-    ActBase: 0
-    useSupport: 0
-    nextCondition: 0
-    upDown: 0
-  nonRecover:
-    UseMagic: {fileID: 0}
-    condition: 0
-    needSupport: 0
-    percentage: 0
-    highOrLow: 0
-    ActBase: 0
-    useSupport: 0
-    nextCondition: 0
-    upDown: 0
-  nFirstRecover:
-    UseMagic: {fileID: 11400000, guid: c2e81e9985be0824cade631e1c4c9b5a, type: 2}
-    condition: 2
+  - UseMagic: {fileID: 0}
+    sCondition: 7
     needSupport: 6
-    percentage: 99
+    percentage: 0
     highOrLow: 0
-    ActBase: 0
+    ActBase: 3
+    useSupport: 6
+    nextCondition: 4
+    upDown: 0
+  - UseMagic: {fileID: 0}
+    sCondition: 7
+    needSupport: 6
+    percentage: 0
+    highOrLow: 0
+    ActBase: 3
+    useSupport: 6
+    nextCondition: 4
+    upDown: 0
+  - UseMagic: {fileID: 0}
+    sCondition: 7
+    needSupport: 6
+    percentage: 0
+    highOrLow: 0
+    ActBase: 3
+    useSupport: 6
+    nextCondition: 4
+    upDown: 0
+  - UseMagic: {fileID: 0}
+    sCondition: 7
+    needSupport: 6
+    percentage: 0
+    highOrLow: 0
+    ActBase: 3
+    useSupport: 6
+    nextCondition: 4
+    upDown: 0
+  - UseMagic: {fileID: 0}
+    sCondition: 7
+    needSupport: 6
+    percentage: 0
+    highOrLow: 0
+    ActBase: 3
+    useSupport: 6
+    nextCondition: 4
+    upDown: 0
+  sSkipList: 000000000000000000000000000000000000000000000000
+  recoverCondition:
+  - UseMagic: {fileID: 0}
+    condition: 7
+    needSupport: 6
+    percentage: 0
+    highOrLow: 0
+    ActBase: 3
     useSupport: 6
     nextCondition: 7
     upDown: 0
-  nSecondRecover:
-    UseMagic: {fileID: 0}
-    condition: 8
-    needSupport: 0
+  - UseMagic: {fileID: 0}
+    condition: 7
+    needSupport: 6
     percentage: 0
     highOrLow: 0
     ActBase: 3
-    useSupport: 0
-    nextCondition: 0
+    useSupport: 6
+    nextCondition: 7
     upDown: 0
-  nThirdRecover:
-    UseMagic: {fileID: 0}
-    condition: 8
-    needSupport: 0
+  - UseMagic: {fileID: 0}
+    condition: 7
+    needSupport: 6
     percentage: 0
     highOrLow: 0
     ActBase: 3
-    useSupport: 0
-    nextCondition: 0
+    useSupport: 6
+    nextCondition: 7
     upDown: 0
+  - UseMagic: {fileID: 0}
+    condition: 7
+    needSupport: 6
+    percentage: 0
+    highOrLow: 0
+    ActBase: 3
+    useSupport: 6
+    nextCondition: 7
+    upDown: 0
+  - UseMagic: {fileID: 0}
+    condition: 7
+    needSupport: 6
+    percentage: 0
+    highOrLow: 0
+    ActBase: 3
+    useSupport: 6
+    nextCondition: 7
+    upDown: 0
+  - UseMagic: {fileID: 0}
+    condition: 7
+    needSupport: 6
+    percentage: 0
+    highOrLow: 0
+    ActBase: 3
+    useSupport: 6
+    nextCondition: 7
+    upDown: 0
+  hSkipList: 000000000000000000000000000000000000000000000000
+  nRecoverCondition:
+  - UseMagic: {fileID: 0}
+    condition: 7
+    needSupport: 6
+    percentage: 0
+    highOrLow: 0
+    ActBase: 3
+    useSupport: 6
+    nextCondition: 7
+    upDown: 0
+  - UseMagic: {fileID: 0}
+    condition: 7
+    needSupport: 6
+    percentage: 0
+    highOrLow: 0
+    ActBase: 3
+    useSupport: 6
+    nextCondition: 7
+    upDown: 0
+  - UseMagic: {fileID: 0}
+    condition: 7
+    needSupport: 6
+    percentage: 0
+    highOrLow: 0
+    ActBase: 3
+    useSupport: 6
+    nextCondition: 7
+    upDown: 0
+  ahSkipList: 000000000000000000000000

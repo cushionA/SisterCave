@@ -940,6 +940,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
         }
 
+		/// <summary>
+		/// プレイヤーを停止させる
+		/// </summary>
+		public void PlayerStop()
+        {
+			_controller.SetForce(Vector2.zero);
+        }
+
         #endregion
 
         //状態確認

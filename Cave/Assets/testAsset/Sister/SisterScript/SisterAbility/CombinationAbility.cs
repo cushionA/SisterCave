@@ -254,8 +254,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     {
                         GManager.instance.pc.PlayerFlip();
                     }
-                } 
-                
+                }
+                GManager.instance.pc.PlayerStop();
                 Transform gofire = GManager.instance.PlayerEffector.transform;
                 //gofire.localScale *= 0.8f;
                 gofire.localScale = GManager.instance.Player.transform.localScale;

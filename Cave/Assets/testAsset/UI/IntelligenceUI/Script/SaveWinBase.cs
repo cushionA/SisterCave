@@ -23,7 +23,7 @@ public class SaveWinBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GManager.instance.InputR.GetButtonDown(MainUI.instance.rewiredAction17))
+        if (MainUICon.instance._reInput.CancelButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown)
         {
             SaveEnd();
       //      Debug.Log("ssss");

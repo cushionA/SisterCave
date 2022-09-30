@@ -902,7 +902,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							transform.position = move;
 							//Flip(-1);
 						}
-
+						_controller.SetForce(Vector2.zero);
 						nowPosition = false;
 						isEscape = true;
 						//escape‚ªtrue‚ÌŒx‰ú‚©‚çí“¬‚É‚È‚ç‚È‚¢
@@ -910,7 +910,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						reJudgeTime = 0;
 						changeable = true;
 
-						_warp.WarpStart(move);
+						_warp.WarpStart();
 
 
 
@@ -1071,7 +1071,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				SManager.instance.targetList = null;
 				SManager.instance.targetCondition = null;
 				SManager.instance.target = null;
-
+				SManager.instance.targetList = new List<GameObject>();
+				SManager.instance.targetCondition = new List<EnemyAIBase>();
 			}
 		}
 

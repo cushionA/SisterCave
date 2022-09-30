@@ -30,7 +30,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         //--------------------------------------------------------------------------
         //フィールドサーチに必要なパラメーター
-
+        [SerializeField]
         RangeSensor2D se;
         //  string dangerTag = "Danger";
         [SerializeField] BrainAbility sister;
@@ -72,7 +72,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             base.Initialization();
 
-            se = GetComponent<RangeSensor2D>();
+
         }
 
         /// <summary>
@@ -332,6 +332,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             SManager.instance.targetList = null;
             SManager.instance.targetCondition = null;
             SManager.instance.target = null;
+            SManager.instance.targetList = new List<GameObject>();
+            SManager.instance.targetCondition = new List<EnemyAIBase>();
             isSerch = false;
             pulseTime = 100;
         }

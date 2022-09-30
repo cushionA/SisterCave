@@ -22,14 +22,11 @@ public class GeneralValueChange : MonoBehaviour
 
     void OnEnable()
     {
-        if (MainUI.instance != null)
+        if (MainUICon.instance != null)
         {
             ValueApply();
         }
-        else
-        {
-            Debug.Log("ann");
-        }
+
     }
 
     // Update is called once per frame
@@ -112,11 +109,7 @@ public class GeneralValueChange : MonoBehaviour
         {
             Dropdown d = this.gameObject.MMGetComponentNoAlloc<Dropdown>();
 
-            //Debug.Log($"{MainUICon.instance.editParameter.priority}");
-           if(MainUI.instance == null)
-            {
-                Debug.Log("Ç‘ÇÒ");
-            }
+
             if (MainUICon.instance.editParameter.priority == SisterParameter.MoveType.çUåÇ)
             {
                 d.value = 0;

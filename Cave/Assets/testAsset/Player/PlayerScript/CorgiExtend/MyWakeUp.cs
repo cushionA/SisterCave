@@ -328,7 +328,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             
             //アーマーリセットしてな
             _characterHorizontalMovement.ReadInput = true;
-           
+            _health.ArmorReset();
             if (!cancel)
             { _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
                 _movement.ChangeState(CharacterStates.MovementStates.Idle);

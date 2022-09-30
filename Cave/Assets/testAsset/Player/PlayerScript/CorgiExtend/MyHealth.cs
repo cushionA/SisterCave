@@ -167,7 +167,7 @@ namespace MoreMountains.CorgiEngine
 
             damage = (int)Calc(_damageData, back);
 
-            Debug.Log($"おせーて{damage}と{CurrentHealth}{stunnState}");
+           // Debug.Log($"おせーて{damage}と{CurrentHealth}{stunnState}");
             if (um != null)
             {
                 //  Debug.Log($"ｈｈｈｈｈ{um.name}");
@@ -555,6 +555,26 @@ namespace MoreMountains.CorgiEngine
             }
             //バグ消しのリターン
             return MyWakeUp.StunnType.Falter;
+
+        }
+
+        public void ArmorReset()
+        {
+
+
+
+            if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
+            {
+                eData.ArmorReset();
+            }
+            else if (_defender == MyDamageOntouch.TypeOfSubject.Player)
+            {
+                pCon.ArmorReset();
+            }
+            else
+            {
+                //オブジェクトがダメージ受ける
+            }
 
         }
 

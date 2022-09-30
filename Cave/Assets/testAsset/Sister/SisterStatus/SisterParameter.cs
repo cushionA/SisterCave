@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 [Serializable]
 [CreateAssetMenu(fileName = "SisterParameter", menuName = "CreateSisterParameter")]
@@ -39,21 +36,25 @@ public class SisterParameter : ScriptableObject
     ///<Summary>
     /// 攻撃のクールタイム
     ///</Summary>
-    public List<float> attackCT;
+    public List<float> attackCT = new List<float>(6);
 
     [Header("支援のクールタイム")]
     ///<Summary>
     /// 支援のクールタイム
     ///</Summary>
-    public List<float> supportCT;
+    public List<float> supportCT = new List<float>(6);
 
     [Header("回復のクールタイム")]
     ///<Summary>
     /// 回復のクールタイム
     ///</Summary>
-    public List<float> healCT;
+    public List<float> healCT = new List<float>(6);
 
-
+    [Header("道中回復のクールタイム")]
+    ///<Summary>
+    ///  道中回復のクールタイム
+    ///</Summary>
+    public List<float> autHealCT = new List<float>(3);
     public enum MoveType
     {
         攻撃,
@@ -68,209 +69,53 @@ public class SisterParameter : ScriptableObject
 
     #region//nowStateが攻撃の時
 
-  /*    [HideInInspector]
-  public enum TargetJudge
-    {
-        兵士,
-        飛行,
-        射撃,
-        騎士,
-        待ち伏せ,
 
-        敵タイプ,
-        距離近いのから,
-        距離遠いのから,
-        敵のHP少ないのから,
-        敵のHP多いのから,
-        移動速度早い,
-        移動速度遅い,
-        強敵がいる,
-        プレイヤーのHPが規定値に達した際,//ここで回復させれば緊急回復になるし、MP多いとかにすれば切り札を運用できる
-                         　　　　　　　　//プレイヤーの体力関連は前のtargetをそのまま使う。前のが死滅したか初回なら一個次の条件で狙う
-        プレイヤーのMPが規定値に達した際,
-        自分のMPが規定値に達した際,
-        プレイヤーが状態異常にかかった時,
-        強敵かどうか,
-        斬撃属性が弱点,
-        刺突属性が弱点,
-        打撃属性が弱点,
-        聖属性が弱点,
-        闇属性が弱点,
-        炎属性が弱点,
-        雷属性が弱点,
-        なし
-
-    }*/
-    public AttackJudge firstTarget;//判断条件セット
-    public AttackJudge secondTarget;//判断条件セット
-    public AttackJudge thirdTarget;//判断条件セット
-    public AttackJudge forthTarget;//判断条件セット
-    public AttackJudge fiveTarget;
-
+/// <summary>
+/// ターゲット選択
+/// </summary>
+    public AttackJudge[] targetCondition = new AttackJudge[5];//判断条件セット
 
     /// <summary>
-    /// 弱点で判断した上にかぶせられる
+    /// 攻撃魔法選択
     /// </summary>
- /*   public enum AdditionalJudge
-    {
-      //  敵の弱点,//状態異常含む
-        敵のHP,
-        敵の距離,
-        敵の高度,
-      //  敵の移動速度,
-        なし
-    }*/
+    public FireCondition[] AttackCondition = new FireCondition[6];//一個目の条件に当てはまるやつ
 
-    /*  public enum KindofEnemy
-      {
-          Soldier,//陸の雑兵
-          Fly,//飛ぶやつ
-          Shooter,//遠距離
-          Knight,//盾持ち
-          Trap//待ち構えてるやつ
-        //  Strong
-      }*/
-    //  [Header("狙う敵のタイプ")]
-    //  public KindofEnemy TargetKind;
 
- /*   [HideInInspector]
-    public enum TargetPoint
-    {
-        Slash,
-        Pier,
-        Strike,
-        Holy,
-        Dark,
-        Fire,
-        Thunder
-    }
-    public TargetPoint tp;//標的にする弱点属性*/
-
- /*   [HideInInspector]
-    public enum AttackConditional
-    {
-        爆発する,
-        敵を吹き飛ばせる,
-        貫通する,
-        斬撃属性,
-        刺突属性,
-        打撃属性,
-        聖属性,
-        闇属性,
-        炎属性,
-        雷属性,
-        範囲攻撃,//設置火炎放射とかも含める?
-        発射数が多い,
-        状態異常つき,
-        弾速が早い,
-        MP消費が少ない,
-        MP消費が多い,
-        詠唱時間が短い,
-     //   攻撃魔法,//再判断
-        支援魔法,
-        回復魔法,
-        何もしない
-        //攻撃優先にして第一条件を強敵、回復にすれば強敵がいるときは回復してくれるよ
-    }*/
-
-    public FireCondition firstAttack;//一個目の条件に当てはまるやつ
-    public FireCondition secondAttack;
-    public FireCondition thirdAttack;
-    public FireCondition fourthAttack;
-    public FireCondition fiveAttack;
-    public FireCondition nonAttack;//なにも当てはまらないとき
-
-    public 
+    //UIチェックボックス入れて数字変える
+    [Header("クールタイムをスキップする条件")]
+    [Tooltip("第一1,第二2,第三4,第四8,第五16,問わず0")]
+    /// <summary>
+    /// 第一、1000000
+    //  第二、0100000
+    //　第三、0010000
+    //　第四、00010000
+    /// </summary>
+    public int[] atSkipList = new int[6];
 
     #endregion
 
     #region//nowStateが支援の時
-  /*  public enum SupportCondition
-    {
-        状態異常にかかった時,
-        攻撃強化がない,
-        防御強化がない,
-        アクション強化がない,
-        バリアがない,
-        エンチャントがない,
-        プレイヤーの体力がマックス,
-        プレイヤーの体力が半分以下,
-        プレイヤーの体力が二割以下,
-        かかっていない支援がある,//全てかかってるのは当てはまらないとき
-        なし
-    }*/
 
-    public SupportCondition firstPlan;
-    public SupportCondition secondPlan;
-    public SupportCondition thirdPlan;
-    public SupportCondition forthPlan;
-    public SupportCondition fivePlan;
-    public SupportCondition sixPlan;
+    public SupportCondition[] supportPlan = new SupportCondition[6];
 
-    /*   public enum SupportConditional
-       {
-           攻撃強化,//かけ直しは時間が延びる
-           防御強化,
-           アクション強化,
-           バリア,
-           エンチャント,
-           攻撃魔法,
-           回復魔法,
-           何もしない
+    public int[] sSkipList = new int[6];
 
-       }*/
-    /*    public SupportCondition firstSupport;//一個目の条件に当てはまるやつ
-        public SupportCondition secondSupport;
-        public SupportCondition thirdSupport;
-        public SupportCondition forthSupport;
-        public SupportCondition fiveSupport;
-        public SupportCondition nonSupport;//なにも当てはまらないとき
-        */
+
+
     #endregion
 
     #region//nowStateが回復の時
-    public RecoverCondition firstRecover;//一個目の条件に当てはまるやつ
-    public RecoverCondition secondRecover;
-    public RecoverCondition thirdRecover;
-    public RecoverCondition forthRecover;
-    public RecoverCondition fiveRecover;
-    public RecoverCondition nonRecover;//なにも当てはまらないとき
+    public RecoverCondition[] recoverCondition = new RecoverCondition[6];//一個目の条件に当てはまるやつ
+
+
+    public int[] hSkipList = new int[6];
+
     #endregion
 
-    public RecoverCondition nFirstRecover;//一個目の条件に当てはまるやつ
-    public RecoverCondition nSecondRecover;
-    public RecoverCondition nThirdRecover;
+    public RecoverCondition[] nRecoverCondition = new RecoverCondition[3];//一個目の条件に当てはまるやつ
 
 
-    /*    public enum RecoverJudge
-        {
-            リジェネが切れたとき,//回復量少ないけどたくさんリジェネするやつとか状態異常解除するやつとか
-            状態異常にかかった時,
-            プレイヤーの体力がマックス,
-            プレイヤーの体力が半分以下,
-            プレイヤーの体力が二割以下,//ここで回復させれば緊急回復になるし、MP多いとかにすれば切り札を運用できる
-            なし
-        }
+    public int[] ahSkipList = new int[3];
 
-        public RecoverJudge firstCondition;
-        public RecoverJudge secondCondition;
-        public RecoverJudge thirdCondition;
-        public RecoverJudge forthCondition;
-        public RecoverJudge fiveCondition;
-
-        public enum RecoverConditional
-        {
-            リジェネ時間が長い回復,
-            回復量が大きい回復,
-            MP消費が少ない回復,//リジェネ時間も短くて回復量がそこそこのが当てはまる
-            詠唱時間が短い回復,
-            状態異常を解除する回復,
-            攻撃魔法,
-            支援魔法,
-            何もしない
-        }
-
-
-        #endregion*/
 
 }

@@ -18,10 +18,10 @@ public class SManager : MonoBehaviour
     public　List<SisMagic> attackMagi;
     public List<SisMagic> supportMagi;
     public List<SisMagic> recoverMagi;
-    public List<GameObject> targetList;
+    public List<GameObject> targetList = new List<GameObject>();
    // [HideInInspector] public List<GameObject> targetRecord;
     //[HideInInspector]
-    public List<EnemyAIBase> targetCondition;
+    public List<EnemyAIBase> targetCondition = new List<EnemyAIBase>();
     [HideInInspector]public float closestEnemy;
     [HideInInspector] public GameObject playObject;
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using MoreMountains.Tools;
 public class TipsController : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -24,7 +24,7 @@ public class TipsController : MonoBehaviour
 
     void Start()
     {
-        mine = GetComponent<RectTransform>();
+        mine = this.gameObject.MMGetComponentNoAlloc<RectTransform>();
     }
 
     private void OnDisable()
@@ -40,19 +40,19 @@ public class TipsController : MonoBehaviour
         {
             MainUICon.instance.isTips = false;
             beforeObj = MainUICon.instance.eventSystem.currentSelectedGameObject;
-            Debug.Log($"ｄ{MainUICon.instance.eventSystem.currentSelectedGameObject.name}");
-            Debug.Log($"s{beforeObj}");
+         //   Debug.Log($"ｄ{MainUICon.instance.eventSystem.currentSelectedGameObject.name}");
+        //    Debug.Log($"s{beforeObj}");
             return;
         }
         if (MainUICon.instance.isTips && !isFirst)
         {
-            tx.text = MainUICon.instance.eventSystem.currentSelectedGameObject.GetComponent<TipsWindow>().description;
+            tx.text = MainUICon.instance.eventSystem.currentSelectedGameObject.MMGetComponentNoAlloc<TipsWindow>().description;
 
-            //      Vector2 posi = MainUICon.instance.eventSystem.currentSelectedGameObject.GetComponent<RectTransform>().anchoredPosition;
+            //      Vector2 posi = MainUICon.instance.eventSystem.currentSelectedGameObject.MMGetComponentNoAlloc<RectTransform>().anchoredPosition;
 
             //サイズ変更
             //  mine.anchoredPosition = new Vector2(posi.x + 120,posi.y);
-            Vector2 posi = MainUICon.instance.eventSystem.currentSelectedGameObject.GetComponent<RectTransform>().position;
+            Vector2 posi = MainUICon.instance.eventSystem.currentSelectedGameObject.MMGetComponentNoAlloc<RectTransform>().position;
 
             //サイズ変更
             mine.position = new Vector2(posi.x + 30, posi.y);

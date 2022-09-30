@@ -13,7 +13,7 @@ public class FireCondition
     [HideInInspector] public SisMagic UseMagic;
 
     public bool AutoWait;//自動で使用魔法の使用MPが回復するクールタイムを作る
-    public int CoolTime;//魔法を使った後のクールタイム
+
 
     [HideInInspector]
     public enum ActJudge

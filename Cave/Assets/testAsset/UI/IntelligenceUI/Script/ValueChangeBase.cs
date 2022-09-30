@@ -790,35 +790,12 @@ public  class ValueChangeBase : MonoBehaviour
     /// </summary>
     public void ApplyValue()
     {
-        //Debug.Log("sadfkgj");
+
         int s = MainUICon.instance.settingNumber;
         int e = MainUICon.instance.editNumber;
         if (s == 1)
         {
-            AttackJudge editJudge = new AttackJudge();
-            //ê›íË
-            #region
-            if (e == 1)
-            {
-                editJudge = MainUICon.instance.editParameter.firstTarget;
-            }
-            else if (e == 2)
-            {
-                editJudge = MainUICon.instance.editParameter.secondTarget;
-            }
-            else if (e == 3)
-            {
-                editJudge = MainUICon.instance.editParameter.thirdTarget;
-            }
-            else if (e == 4)
-            {
-                editJudge = MainUICon.instance.editParameter.forthTarget;
-            }
-            else
-            {
-                editJudge = MainUICon.instance.editParameter.fiveTarget;
-            }
-            #endregion
+            AttackJudge editJudge = MainUICon.instance.editParameter.targetCondition[e];
 
             ///<summary>
             ///É^Å[ÉQÉbÉgê›íË
@@ -975,65 +952,17 @@ public  class ValueChangeBase : MonoBehaviour
 
 
             //ê›íË
-            #region
-            if (e == 1)
-            {
-                MainUICon.instance.editParameter.firstTarget = editJudge;
-           //     MainUICon.instance.editParameter.firstAttack.UseMagic = null;
-            }
-            else if (e == 2)
-            {
-                MainUICon.instance.editParameter.secondTarget = editJudge;
-             //   MainUICon.instance.editParameter.secondAttack.UseMagic = null;
-            }
-            else if (e == 3)
-            {
-                MainUICon.instance.editParameter.thirdTarget = editJudge;
-             //   MainUICon.instance.editParameter.thirdAttack.UseMagic = null;
-            }
-            else if (e == 4)
-            {
-                MainUICon.instance.editParameter.forthTarget = editJudge;
-              //  MainUICon.instance.editParameter.fourthAttack.UseMagic = null;
-            }
-            else if (e == 5)
-            {
-                MainUICon.instance.editParameter.fiveTarget = editJudge;
-               // MainUICon.instance.editParameter.fiveAttack.UseMagic = null;
-            }
-            #endregion
+            MainUICon.instance.editParameter.targetCondition[e] = editJudge;
+
         }
         //çUåÇëIëÇÃéû
         else if (s == 2)
         {
             FireCondition editAT;
             //ì‡óeäÑÇËìñÇƒ
-            #region
-            if (e == 1)
-            {
-                editAT = MainUICon.instance.editParameter.firstAttack;
-            }
-            else if (e == 2)
-            {
-                editAT = MainUICon.instance.editParameter.secondAttack;
-            }
-            else if (e == 3)
-            {
-                editAT = MainUICon.instance.editParameter.thirdAttack;
-            }
-            else if (e == 4)
-            {
-                editAT = MainUICon.instance.editParameter.fourthAttack;
-            }
-            else if (e == 5)
-            {
-                editAT = MainUICon.instance.editParameter.fiveAttack;
-            }
-            else
-            {
-                editAT = MainUICon.instance.editParameter.nonAttack;
-            }
-            #endregion
+
+            editAT = MainUICon.instance.editParameter.AttackCondition[e];
+
             //çsìÆ
             //èåè
             //èåè2Å{ê^ãUíl
@@ -1194,64 +1123,17 @@ public  class ValueChangeBase : MonoBehaviour
             #endregion
             //UseMagicÇÇ»ÇµÇ…
             editAT.UseMagic = null;
-            #region
-            if (e == 1)
-            {
-                MainUICon.instance.editParameter.firstAttack = editAT;
-            }
-            else if (e == 2)
-            {
-                MainUICon.instance.editParameter.secondAttack = editAT;
-            }
-            else if (e == 3)
-            {
-                MainUICon.instance.editParameter.thirdAttack = editAT;
-            }
-            else if (e == 4)
-            {
-                MainUICon.instance.editParameter.fourthAttack = editAT;
-            }
-            else if (e == 5)
-            {
-                MainUICon.instance.editParameter.fiveAttack = editAT;
-            }
-            else if (e == 6)
-            {
-                MainUICon.instance.editParameter.nonAttack = editAT;
-            }
-            #endregion
+
+            MainUICon.instance.editParameter.AttackCondition[e] = editAT;
+
         }
         //éxâáèåèÇÃéû
         else if (s == 3 || s == 4)
         {
             SupportCondition editSP;
             //ê›íË
-            #region
-            if (e == 1)
-            {
-                editSP = MainUICon.instance.editParameter.firstPlan;
-            }
-            else if (e == 2)
-            {
-                editSP = MainUICon.instance.editParameter.secondPlan;
-            }
-            else if (e == 3)
-            {
-                editSP = MainUICon.instance.editParameter.thirdPlan;
-            }
-            else if (e == 4)
-            {
-                editSP = MainUICon.instance.editParameter.forthPlan;
-            }
-            else if (e == 5)
-            {
-                editSP = MainUICon.instance.editParameter.fivePlan;
-            }
-            else
-            {
-                editSP = MainUICon.instance.editParameter.sixPlan;
-            }
-            #endregion
+
+            editSP = MainUICon.instance.editParameter.supportPlan[e];
             if (s == 3)
             {
 
@@ -1449,32 +1331,7 @@ public  class ValueChangeBase : MonoBehaviour
             //UseMagicÇÇ»ÇµÇ…
             editSP.UseMagic = null;
             //ê›íË
-            #region
-            if (e == 1)
-            {
-                MainUICon.instance.editParameter.firstPlan = editSP;
-            }
-            else if (e == 2)
-            {
-                MainUICon.instance.editParameter.secondPlan = editSP;
-            }
-            else if (e == 3)
-            {
-                MainUICon.instance.editParameter.thirdPlan = editSP;
-            }
-            else if (e == 4)
-            {
-                MainUICon.instance.editParameter.forthPlan = editSP;
-            }
-            else if (e == 5)
-            {
-                MainUICon.instance.editParameter.fivePlan = editSP;
-            }
-            else
-            {
-                MainUICon.instance.editParameter.sixPlan = editSP;
-            }
-            #endregion
+            MainUICon.instance.editParameter.supportPlan[e] = editSP;
         }
         //éxâáçsìÆëIë
 
@@ -1486,47 +1343,14 @@ public  class ValueChangeBase : MonoBehaviour
             #region
             if (!MainUICon.instance.isAH)
             {
-                if (e == 1)
-                {
-                    editRC = MainUICon.instance.editParameter.firstRecover;
-                }
-                else if (e == 2)
-                {
-                    editRC = MainUICon.instance.editParameter.secondRecover;
-                }
-                else if (e == 3)
-                {
-                    editRC = MainUICon.instance.editParameter.thirdRecover;
-                }
-                else if (e == 4)
-                {
-                    editRC = MainUICon.instance.editParameter.forthRecover;
-                }
-                else if (e == 5)
-                {
-                    editRC = MainUICon.instance.editParameter.fiveRecover;
-                }
-                else
-                {
-                    editRC = MainUICon.instance.editParameter.nonRecover;
-                }
+                editRC = MainUICon.instance.editParameter.recoverCondition[e];
             }
             else
             {
-                if (e == 1)
-                {
-                    editRC = MainUICon.instance.editParameter.nFirstRecover;
-                }
-                else if (e == 2)
-                {
-                    editRC = MainUICon.instance.editParameter.nSecondRecover;
-                }
-                else
-                {
-                    editRC = MainUICon.instance.editParameter.nThirdRecover;
-                }
+                editRC = MainUICon.instance.editParameter.nRecoverCondition[e];
             }
             #endregion
+
             if (s == 5)
             {
 
@@ -1752,45 +1576,11 @@ public  class ValueChangeBase : MonoBehaviour
             #region
             if (!MainUICon.instance.isAH)
             {
-                if (e == 1)
-                {
-                    MainUICon.instance.editParameter.firstRecover = editRC;
-                }
-                else if (e == 2)
-                {
-                    MainUICon.instance.editParameter.secondRecover = editRC;
-                }
-                else if (e == 3)
-                {
-                    MainUICon.instance.editParameter.thirdRecover = editRC;
-                }
-                else if (e == 4)
-                {
-                    MainUICon.instance.editParameter.forthRecover = editRC;
-                }
-                else if (e == 5)
-                {
-                    MainUICon.instance.editParameter.fiveRecover = editRC;
-                }
-                else
-                {
-                    MainUICon.instance.editParameter.nonRecover = editRC;
-                }
+                MainUICon.instance.editParameter.recoverCondition[e] = editRC;
             }
             else
             {
-                if (e == 1)
-                {
-                    MainUICon.instance.editParameter.nFirstRecover = editRC;
-                }
-                else if (e == 2)
-                {
-                    MainUICon.instance.editParameter.nSecondRecover = editRC;
-                }
-                else
-                {
-                    MainUICon.instance.editParameter.nThirdRecover = editRC;
-                }
+                MainUICon.instance.editParameter.nRecoverCondition[e] = editRC;
             }
             #endregion
         }
@@ -1816,125 +1606,26 @@ public  class ValueChangeBase : MonoBehaviour
 
     AttackJudge GetTarget(int e)
     {
-        if (e == 1)
-        {
-            return MainUICon.instance.editParameter.firstTarget;
-        }
-        else if (e == 2)
-        {
-            return MainUICon.instance.editParameter.secondTarget;
-        }
-        else if (e == 3)
-        {
-            return MainUICon.instance.editParameter.thirdTarget;
-        }
-        else if (e == 4)
-        {
-            return MainUICon.instance.editParameter.forthTarget;
-        }
-        else
-        {
-            return MainUICon.instance.editParameter.fiveTarget;
-        }
+        return MainUICon.instance.editParameter.targetCondition[e];
     }
     FireCondition GetAttack(int e)
     {
-        if (e == 1)
-        {
-            return MainUICon.instance.editParameter.firstAttack;
-        }
-        else if (e == 2)
-        {
-            return MainUICon.instance.editParameter.secondAttack;
-        }
-        else if (e == 3)
-        {
-            return MainUICon.instance.editParameter.thirdAttack;
-        }
-        else if (e == 4)
-        {
-            return MainUICon.instance.editParameter.fourthAttack;
-        }
-        else if (e == 5)
-        {
-            return MainUICon.instance.editParameter.fiveAttack;
-        }
-        else
-        {
-            return MainUICon.instance.editParameter.nonAttack;
-        }
+        return MainUICon.instance.editParameter.AttackCondition[e];
     }
 
     SupportCondition GetSupport(int e)
     {
-        if (e == 1)
-        {
-            return MainUICon.instance.editParameter.firstPlan;
-        }
-        else if (e == 2)
-        {
-            return MainUICon.instance.editParameter.secondPlan;
-        }
-        else if (e == 3)
-        {
-            return MainUICon.instance.editParameter.thirdPlan;
-        }
-        else if (e == 4)
-        {
-            return MainUICon.instance.editParameter.forthPlan;
-        }
-        else if (e == 5)
-        {
-            return MainUICon.instance.editParameter.fivePlan;
-        }
-        else
-        {
-            return MainUICon.instance.editParameter.sixPlan;
-        }
+        return MainUICon.instance.editParameter.supportPlan[e];
     }
     RecoverCondition GetRecover(int e)
     {
         if (!MainUICon.instance.isAH)
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.firstRecover;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.secondRecover;
-            }
-            else if (e == 3)
-            {
-                return MainUICon.instance.editParameter.thirdRecover;
-            }
-            else if (e == 4)
-            {
-                return MainUICon.instance.editParameter.forthRecover;
-            }
-            else if (e == 5)
-            {
-                return MainUICon.instance.editParameter.fiveRecover;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.nonRecover;
-            }
+            return MainUICon.instance.editParameter.recoverCondition[e];
         }
         else
         {
-            if (e == 1)
-            {
-                return MainUICon.instance.editParameter.nFirstRecover;
-            }
-            else if (e == 2)
-            {
-                return MainUICon.instance.editParameter.nSecondRecover;
-            }
-            else
-            {
-                return MainUICon.instance.editParameter.nThirdRecover;
-            }
+            return MainUICon.instance.editParameter.nRecoverCondition[e];
         }
     }
 }

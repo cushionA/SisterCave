@@ -16,7 +16,7 @@ public class SliderWindow : ValueChangeBase
     [SerializeField] Text tx;
     [SerializeField] Toggle mine;
 
-    bool isChange;
+
 
     bool isDown;
     bool wait;
@@ -44,10 +44,9 @@ public class SliderWindow : ValueChangeBase
             isFirst = true;
         }
 
-       if (isChange)
-        {
+
             ////Debug.log("開始");
-            if (bgmSlider.gameObject == MainUICon.instance.eventSystem.currentSelectedGameObject)
+            if (bgmSlider.gameObject == MainUICon.instance.selectButton)
             {
                 ////Debug.log("bgm調整中");
 
@@ -67,7 +66,6 @@ public class SliderWindow : ValueChangeBase
                     isUp = false;
                     isDown = true;
                 }
-            }
             if (MainUICon.instance._reInput.UIMovement.y != 0)
             {
                 //    ////Debug.log("しののめの");
@@ -124,36 +122,33 @@ public class SliderWindow : ValueChangeBase
                 wait = false;
                 charge = false;
             }
-
         }
+
+
+        
     }
 
     public void VChange()
     {
         //決定ボタン
 
-
-        //DarkTonic.GetBusVolume();
-        // bgmButton.enabled = true;
         bgmSlider.value = firstValue;
-        //txChange();
+
         isFirst = false;
         bgmButton.Select();
-            isChange = false;
-        ////Debug.log("b");
-        //こっちでは逆に音量をスライダーの数値に入れる
-        //   EditEnd();
-        Invoke("EditEnd", 0.05f);
+
+
+
     }
 
     public void VEnd()
     {
         numberSave = (int)bgmSlider.value;
-        //base.ApplyValue();
+        base.ApplyValue();
         bgmButton.Select();
         isFirst = false;
-        isChange = false;
-       Invoke("EditEnd",0.05f);
+
+        EditEnd();
     }
 
     public void ToggleChange()
@@ -170,7 +165,7 @@ public class SliderWindow : ValueChangeBase
          
         //     bgmButton.enabled = false;
         bgmSlider.Select();
-        isChange = true;
+
 
     }
 

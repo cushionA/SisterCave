@@ -11,11 +11,7 @@ public class TipsWindow : MonoBehaviour
     [TextArea]
     public string description;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+
 
 
 
@@ -24,6 +20,7 @@ public class TipsWindow : MonoBehaviour
     {
         if(MainUICon.instance.eventSystem.currentSelectedGameObject == this.gameObject)
         {
+         //   Debug.Log($"fdfdfd");
             isFirst = true;
             MainUICon.instance.isTips = true;
         }

@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using MoreMountains.Tools;
 using UnityEngine.UI;
 
 public class DropDownWindow : ValueChangeBase
@@ -27,7 +25,7 @@ public class DropDownWindow : ValueChangeBase
         else
         {
         //    Debug.Log("dkfjg");
-            Dropdown d = this.gameObject.GetComponent<Dropdown>();
+            Dropdown d = this.gameObject.MMGetComponentNoAlloc<Dropdown>();
             numberSave = d.value;
             ApplyValue();
         }

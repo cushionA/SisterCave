@@ -77,10 +77,10 @@ public class OperationGeneral : MonoBehaviour
             }
             else
             {
-                Debug.Log($"ｒｒ{MainUICon.instance.selectButton}{myButton[1].gameObject}");
+             //   Debug.Log($"ｒｒ{MainUICon.instance.selectButton}{myButton[1].gameObject}");
 
                 if (MainUICon.instance.selectButton == myButton[1].gameObject)
-                {Debug.Log("ほね");
+                {//Debug.Log("ほね");
                     if (setObj[1].gameObject.activeSelf == false)
                     {
                         setObj[1].gameObject.SetActive(true);
@@ -194,7 +194,7 @@ public class OperationGeneral : MonoBehaviour
          //    Debug.Log("sssssssss");
             if (d)
             {
-                OparationCopy(MainUICon.instance.editParameter, SManager.instance.Sister.GetComponent<SisterFire>().sister);
+                OparationCopy(MainUICon.instance.editParameter, SManager.instance.Sister.MMGetComponentNoAlloc<FireAbility>().sister);
             }
         }
         else
@@ -212,7 +212,7 @@ public class OperationGeneral : MonoBehaviour
 
         //ディープコピー
 
-      //  Debug.Log($"まえ、もと{s.firstPlan.highOrLow}する{c.firstPlan.highOrLow}");
+      //  Debug.Log($"まえ、もと{s.supportPlan[i].highOrLow}する{c.supportPlan[i].highOrLow}");
       //  Debug.Log($"てるみ{s.name}あいあ{c.name}");
         s.oparationName = c.oparationName;
         s.oparationDescription = c.oparationDescription;
@@ -223,285 +223,106 @@ public class OperationGeneral : MonoBehaviour
         s.supportCT = new List<float>(c.supportCT);
         s.healCT = new List<float>(c.healCT);
         s.priority = c.priority;
-        #region
-        s.firstTarget.condition = c.firstTarget.condition;
-        s.firstTarget.percentage = c.firstTarget.percentage;
-        s.firstTarget.highOrLow = c.firstTarget.highOrLow;
-        s.firstTarget.wp = c.firstTarget.wp;
-        s.firstTarget.upDown = c.firstTarget.upDown;
-        s.firstTarget.nextCondition = c.firstTarget.nextCondition;
-        #endregion
-        #region
-        s.secondTarget.condition = c.secondTarget.condition;
-        s.secondTarget.percentage = c.secondTarget.percentage;
-        s.secondTarget.highOrLow = c.secondTarget.highOrLow;
-        s.secondTarget.wp = c.secondTarget.wp;
-        s.secondTarget.upDown = c.secondTarget.upDown;
-        s.secondTarget.nextCondition = c.secondTarget.nextCondition;
-        #endregion
-
-        #region
-        s.thirdTarget.condition = c.thirdTarget.condition;
-        s.thirdTarget.percentage = c.thirdTarget.percentage;
-        s.thirdTarget.highOrLow = c.thirdTarget.highOrLow;
-        s.thirdTarget.wp = c.thirdTarget.wp;
-        s.thirdTarget.upDown = c.thirdTarget.upDown;
-        s.thirdTarget.nextCondition = c.thirdTarget.nextCondition;
-        #endregion
-
-        #region
-        s.forthTarget.condition = c.forthTarget.condition;
-        s.forthTarget.percentage = c.forthTarget.percentage;
-        s.forthTarget.highOrLow = c.forthTarget.highOrLow;
-        s.forthTarget.wp = c.forthTarget.wp;
-        s.forthTarget.upDown = c.forthTarget.upDown;
-        s.forthTarget.nextCondition = c.forthTarget.nextCondition;
-        #endregion
-        #region
-        s.fiveTarget.condition = c.fiveTarget.condition;
-        s.fiveTarget.percentage = c.fiveTarget.percentage;
-        s.fiveTarget.highOrLow = c.fiveTarget.highOrLow;
-        s.fiveTarget.wp = c.fiveTarget.wp;
-        s.fiveTarget.upDown = c.fiveTarget.upDown;
-        s.fiveTarget.nextCondition = c.fiveTarget.nextCondition;
-        #endregion
-
-        //ここから攻撃
-        #region
-        s.firstAttack.condition = c.firstAttack.condition;
-        s.firstAttack.firstCondition = c.firstAttack.firstCondition;
-        s.firstAttack.nextCondition = c.firstAttack.nextCondition;
-        s.firstAttack.upDown = c.firstAttack.upDown;
-        #endregion
-        #region
-        s.secondAttack.condition = c.secondAttack.condition;
-        s.secondAttack.firstCondition = c.secondAttack.firstCondition;
-        s.secondAttack.nextCondition = c.secondAttack.nextCondition;
-        s.secondAttack.upDown = c.secondAttack.upDown;
-        #endregion
-        #region
-        s.thirdAttack.condition = c.thirdAttack.condition;
-        s.thirdAttack.firstCondition = c.thirdAttack.firstCondition;
-        s.thirdAttack.nextCondition = c.thirdAttack.nextCondition;
-        s.thirdAttack.upDown = c.thirdAttack.upDown;
-        #endregion
-        #region
-        s.fourthAttack.condition = c.fourthAttack.condition;
-        s.fourthAttack.firstCondition = c.fourthAttack.firstCondition;
-        s.fourthAttack.nextCondition = c.fourthAttack.nextCondition;
-        s.fourthAttack.upDown = c.fourthAttack.upDown;
-        #endregion
-
-        #region
-        s.fiveAttack.condition = c.fiveAttack.condition;
-        s.fiveAttack.firstCondition = c.fiveAttack.firstCondition;
-        s.fiveAttack.nextCondition = c.fiveAttack.nextCondition;
-        s.fiveAttack.upDown = c.fiveAttack.upDown;
-        #endregion
-        #region
-        s.nonAttack.condition = c.nonAttack.condition;
-        s.nonAttack.firstCondition = c.nonAttack.firstCondition;
-        s.nonAttack.nextCondition = c.nonAttack.nextCondition;
-        s.nonAttack.upDown = c.nonAttack.upDown;
-        #endregion
-
-        //ここから支援
-        #region
-        s.firstPlan.sCondition = c.firstPlan.sCondition;
-        s.firstPlan.percentage = c.firstPlan.percentage;
-        s.firstPlan.highOrLow = c.firstPlan.highOrLow;
-        s.firstPlan.useSupport = c.firstPlan.useSupport;
-        s.firstPlan.upDown = c.firstPlan.upDown;
-        s.firstPlan.nextCondition = c.firstPlan.nextCondition;
-        s.firstPlan.needSupport = c.firstPlan.needSupport;
-        s.firstPlan.ActBase = c.firstPlan.ActBase;
-        #endregion
-        #region
-        s.secondPlan.sCondition = c.secondPlan.sCondition;
-        s.secondPlan.percentage = c.secondPlan.percentage;
-        s.secondPlan.highOrLow = c.secondPlan.highOrLow;
-        s.secondPlan.useSupport = c.secondPlan.useSupport;
-        s.secondPlan.upDown = c.secondPlan.upDown;
-        s.secondPlan.nextCondition = c.secondPlan.nextCondition;
-        s.secondPlan.needSupport = c.secondPlan.needSupport;
-        s.secondPlan.ActBase = c.secondPlan.ActBase;
-        #endregion
-        #region
-        s.thirdPlan.sCondition = c.thirdPlan.sCondition;
-        s.thirdPlan.percentage = c.thirdPlan.percentage;
-        s.thirdPlan.highOrLow = c.thirdPlan.highOrLow;
-        s.thirdPlan.useSupport = c.thirdPlan.useSupport;
-        s.thirdPlan.upDown = c.thirdPlan.upDown;
-        s.thirdPlan.nextCondition = c.thirdPlan.nextCondition;
-        s.thirdPlan.needSupport = c.thirdPlan.needSupport;
-        s.thirdPlan.ActBase = c.thirdPlan.ActBase;
-        #endregion
-        #region
-        s.forthPlan.sCondition = c.forthPlan.sCondition;
-        s.forthPlan.percentage = c.forthPlan.percentage;
-        s.forthPlan.highOrLow = c.forthPlan.highOrLow;
-        s.forthPlan.useSupport = c.forthPlan.useSupport;
-        s.forthPlan.upDown = c.forthPlan.upDown;
-        s.forthPlan.nextCondition = c.forthPlan.nextCondition;
-        s.forthPlan.needSupport = c.forthPlan.needSupport;
-        s.forthPlan.ActBase = c.forthPlan.ActBase;
-        #endregion
-        #region
-        s.fivePlan.sCondition = c.fivePlan.sCondition;
-        s.fivePlan.percentage = c.fivePlan.percentage;
-        s.fivePlan.highOrLow = c.fivePlan.highOrLow;
-        s.fivePlan.useSupport = c.fivePlan.useSupport;
-        s.fivePlan.upDown = c.fivePlan.upDown;
-        s.fivePlan.nextCondition = c.fivePlan.nextCondition;
-        s.fivePlan.needSupport = c.fivePlan.needSupport;
-        s.fivePlan.ActBase = c.fivePlan.ActBase;
-        #endregion
-        #region
-        //      s.sixPlan.sCondition = c.sixPlan.sCondition;
-        //   s.sixPlan.percentage = c.sixPlan.percentage;
-        //    s.sixPlan.highOrLow = c.sixPlan.highOrLow;
-        s.sixPlan.useSupport = c.sixPlan.useSupport;
-        s.sixPlan.upDown = c.sixPlan.upDown;
-        s.sixPlan.nextCondition = c.sixPlan.nextCondition;
-        //      s.sixPlan.needSupport = c.sixPlan.needSupport;
-        s.sixPlan.ActBase = c.sixPlan.ActBase;
-        #endregion
-
-        //ここから回復
-        #region
-        s.firstRecover.condition = c.firstRecover.condition;
-        s.firstRecover.percentage = c.firstRecover.percentage;
-        s.firstRecover.highOrLow = c.firstRecover.highOrLow;
-        s.firstRecover.useSupport = c.firstRecover.useSupport;
-        s.firstRecover.upDown = c.firstRecover.upDown;
-        s.firstRecover.nextCondition = c.firstRecover.nextCondition;
-        s.firstRecover.needSupport = c.firstRecover.needSupport;
-        s.firstRecover.ActBase = c.firstRecover.ActBase;
-        #endregion
 
 
-        #region
-        s.secondRecover.condition = c.secondRecover.condition;
-        s.secondRecover.percentage = c.secondRecover.percentage;
-        s.secondRecover.highOrLow = c.secondRecover.highOrLow;
-        s.secondRecover.useSupport = c.secondRecover.useSupport;
-        s.secondRecover.upDown = c.secondRecover.upDown;
-        s.secondRecover.nextCondition = c.secondRecover.nextCondition;
-        s.secondRecover.needSupport = c.secondRecover.needSupport;
-        s.secondRecover.ActBase = c.secondRecover.ActBase;
-        #endregion
-        #region
+        for (int i = 0; i < 6; i++)
+        {
+            //ここから攻撃条件
+            #region
+            s.AttackCondition[i].condition = c.AttackCondition[i].condition;
+            s.AttackCondition[i].firstCondition = c.AttackCondition[i].firstCondition;
+            s.AttackCondition[i].nextCondition = c.AttackCondition[i].nextCondition;
+            s.AttackCondition[i].upDown = c.AttackCondition[i].upDown;
+            s.attackCT[i] = c.attackCT[i];
+            s.atSkipList[i] = c.atSkipList[i];
+            #endregion
 
-        s.thirdRecover.condition = c.thirdRecover.condition;
-        s.thirdRecover.percentage = c.thirdRecover.percentage;
-        s.thirdRecover.highOrLow = c.thirdRecover.highOrLow;
-        s.thirdRecover.useSupport = c.thirdRecover.useSupport;
-        s.thirdRecover.upDown = c.thirdRecover.upDown;
-        s.thirdRecover.nextCondition = c.thirdRecover.nextCondition;
-        s.thirdRecover.needSupport = c.thirdRecover.needSupport;
-        s.thirdRecover.ActBase = c.thirdRecover.ActBase;
-        #endregion
-        #region
+            //ここから支援
+            #region
+            s.supportPlan[i].sCondition = c.supportPlan[i].sCondition;
+            s.supportPlan[i].percentage = c.supportPlan[i].percentage;
+            s.supportPlan[i].highOrLow = c.supportPlan[i].highOrLow;
+            s.supportPlan[i].useSupport = c.supportPlan[i].useSupport;
+            s.supportPlan[i].upDown = c.supportPlan[i].upDown;
+            s.supportPlan[i].nextCondition = c.supportPlan[i].nextCondition;
+            s.supportPlan[i].needSupport = c.supportPlan[i].needSupport;
+            s.supportPlan[i].ActBase = c.supportPlan[i].ActBase;
+            s.supportCT[i] = c.supportCT[i];
+            s.sSkipList[i] = c.sSkipList[i];
+            #endregion
 
-        s.forthRecover.condition = c.forthRecover.condition;
-        s.forthRecover.percentage = c.forthRecover.percentage;
-        s.forthRecover.highOrLow = c.forthRecover.highOrLow;
-        s.forthRecover.useSupport = c.forthRecover.useSupport;
-        s.forthRecover.upDown = c.forthRecover.upDown;
-        s.forthRecover.nextCondition = c.forthRecover.nextCondition;
-        s.forthRecover.needSupport = c.forthRecover.needSupport;
-        s.forthRecover.ActBase = c.forthRecover.ActBase;
-        #endregion
-        #region
+            //ここから回復
+            #region
+            s.recoverCondition[i].condition = c.recoverCondition[i].condition;
+            s.recoverCondition[i].percentage = c.recoverCondition[i].percentage;
+            s.recoverCondition[i].highOrLow = c.recoverCondition[i].highOrLow;
+            s.recoverCondition[i].useSupport = c.recoverCondition[i].useSupport;
+            s.recoverCondition[i].upDown = c.recoverCondition[i].upDown;
+            s.recoverCondition[i].nextCondition = c.recoverCondition[i].nextCondition;
+            s.recoverCondition[i].needSupport = c.recoverCondition[i].needSupport;
+            s.recoverCondition[i].ActBase = c.recoverCondition[i].ActBase;
+            s.healCT[i] = c.healCT[i];
+            s.hSkipList[i] = c.hSkipList[i];
+            #endregion
 
-        s.fiveRecover.condition = c.fiveRecover.condition;
-        s.fiveRecover.percentage = c.fiveRecover.percentage;
-        s.fiveRecover.highOrLow = c.fiveRecover.highOrLow;
-        s.fiveRecover.useSupport = c.fiveRecover.useSupport;
-        s.fiveRecover.upDown = c.fiveRecover.upDown;
-        s.fiveRecover.nextCondition = c.fiveRecover.nextCondition;
-        s.fiveRecover.needSupport = c.fiveRecover.needSupport;
-        s.fiveRecover.ActBase = c.fiveRecover.ActBase;
-        #endregion
-        #region
-        //      s.nonRecover.condition = c.nonRecover.condition;
-        //   s.nonRecover.percentage = c.nonRecover.percentage;
-        //    s.nonRecover.highOrLow = c.nonRecover.highOrLow;
+            if (i < 5)
+            {
+                //ここから攻撃対象の条件
+                #region
+                s.targetCondition[i].condition = c.targetCondition[i].condition;
+                s.targetCondition[i].percentage = c.targetCondition[i].percentage;
+                s.targetCondition[i].highOrLow = c.targetCondition[i].highOrLow;
+                s.targetCondition[i].wp = c.targetCondition[i].wp;
+                s.targetCondition[i].upDown = c.targetCondition[i].upDown;
+                s.targetCondition[i].nextCondition = c.targetCondition[i].nextCondition;
 
-            s.nonRecover.useSupport = c.nonRecover.useSupport;
-        s.nonRecover.upDown = c.nonRecover.upDown;
-        s.nonRecover.nextCondition = c.nonRecover.nextCondition;
-  //      s.nonRecover.needSupport = c.nonRecover.needSupport;
-        s.nonRecover.ActBase = c.nonRecover.ActBase;
-        #endregion
-        #region
-
-        s.nFirstRecover.condition = c.nFirstRecover.condition;
-        s.nFirstRecover.percentage = c.nFirstRecover.percentage;
-        s.nFirstRecover.highOrLow = c.nFirstRecover.highOrLow;
-        s.nFirstRecover.useSupport = c.nFirstRecover.useSupport;
-        s.nFirstRecover.upDown = c.nFirstRecover.upDown;
-        s.nFirstRecover.nextCondition = c.nFirstRecover.nextCondition;
-        s.nFirstRecover.needSupport = c.nFirstRecover.needSupport;
-        s.nFirstRecover.ActBase = c.nFirstRecover.ActBase;
-        #endregion
-        #region
-
-        s.nSecondRecover.condition = c.nSecondRecover.condition;
-        s.nSecondRecover.percentage = c.nSecondRecover.percentage;
-        s.nSecondRecover.highOrLow = c.nSecondRecover.highOrLow;
-        s.nSecondRecover.useSupport = c.nSecondRecover.useSupport;
-        s.nSecondRecover.upDown = c.nSecondRecover.upDown;
-        s.nSecondRecover.nextCondition = c.nSecondRecover.nextCondition;
-        s.nSecondRecover.needSupport = c.nSecondRecover.needSupport;
-        s.nSecondRecover.ActBase = c.nSecondRecover.ActBase;
-        #endregion
-        #region
-
-        s.nThirdRecover.condition = c.nThirdRecover.condition;
-        s.nThirdRecover.percentage = c.nThirdRecover.percentage;
-        s.nThirdRecover.highOrLow = c.nThirdRecover.highOrLow;
-        s.nThirdRecover.useSupport = c.nThirdRecover.useSupport;
-        s.nThirdRecover.upDown = c.nThirdRecover.upDown;
-        s.nThirdRecover.nextCondition = c.nThirdRecover.nextCondition;
-        s.nThirdRecover.needSupport = c.nThirdRecover.needSupport;
-        s.nThirdRecover.ActBase = c.nThirdRecover.ActBase;
-        #endregion
-        //  Debug.Log($"あと、もと{s.firstPlan.highOrLow}され{c.firstPlan.highOrLow}");
+                #endregion
+                if (i < 3)
+                {
+                    //ここから道中回復
+                    #region
+                    s.nRecoverCondition[i].condition = c.nRecoverCondition[i].condition;
+                    s.nRecoverCondition[i].percentage = c.nRecoverCondition[i].percentage;
+                    s.nRecoverCondition[i].highOrLow = c.nRecoverCondition[i].highOrLow;
+                    s.nRecoverCondition[i].useSupport = c.nRecoverCondition[i].useSupport;
+                    s.nRecoverCondition[i].upDown = c.nRecoverCondition[i].upDown;
+                    s.nRecoverCondition[i].nextCondition = c.nRecoverCondition[i].nextCondition;
+                    s.nRecoverCondition[i].needSupport = c.nRecoverCondition[i].needSupport;
+                    s.nRecoverCondition[i].ActBase = c.nRecoverCondition[i].ActBase;
+                    s.autHealCT[i] = c.autHealCT[i];
+                    s.ahSkipList[i] = c.ahSkipList[i];
+                    #endregion
+                }
+            }
+        }
 
 
+        
+
+
+        //セーブした時は魔法のキャッシュを捨てる
         if (saveNow)
         {
-            s.firstAttack.UseMagic = null;
-            s.secondAttack.UseMagic = null;
-            s.thirdAttack.UseMagic = null;
-            s.fourthAttack.UseMagic = null;
-            s.fiveAttack.UseMagic = null;
-            s.nonAttack.UseMagic = null;
 
-            s.firstPlan.UseMagic = null;
-            s.secondPlan.UseMagic = null;
-            s.thirdPlan.UseMagic = null;
-            s.forthPlan.UseMagic = null;
-            s.fivePlan.UseMagic = null;
-            s.sixPlan.UseMagic = null;
 
-            s.firstRecover.UseMagic = null;
-            s.secondRecover.UseMagic = null;
-            s.thirdRecover.UseMagic = null;
-            s.forthRecover.UseMagic = null;
-            s.fiveRecover.UseMagic = null;
-            s.nonRecover.UseMagic = null;
-            s.nFirstRecover.UseMagic = null;
-            s.nSecondRecover.UseMagic = null;
-            s.nThirdRecover.UseMagic = null;
+            for (int i = 0; i < 6 ;i++)
+            {
+                s.AttackCondition[i].UseMagic = null;
+                s.supportPlan[i].UseMagic = null;
+                s.recoverCondition[i].UseMagic = null;
+                if (i < 3)
+                {
+                    s.nRecoverCondition[i].UseMagic = null;
+                }
+            }
+
         }
     }
 
 
     public void SaveData()
     {
-        OparationCopy(SManager.instance.Sister.GetComponent<SisterFire>().sister, MainUICon.instance.editParameter,true);
+        OparationCopy(SManager.instance.Sister.MMGetComponentNoAlloc<FireAbility>().sister, MainUICon.instance.editParameter,true);
         MainUICon.instance.isSave = true;
         next = false;
     }

@@ -155,7 +155,7 @@ public class FireBullet : MonoBehaviour
 
 		//初期化完了が真を返すまで待つ
 		await UniTask.WaitUntil(s);
-			
+
 
 		//ownnerは弾丸使用側で設定
 		fireTime = 0;
@@ -363,7 +363,10 @@ public class FireBullet : MonoBehaviour
 		//弾丸が始動するまでの待ち時間がある場合、動かず当たり判定もなくその場にとどまる
 		if (em.waitTime > 0 && !movable)
 		{
-			col.enabled = false;
+			if (col != null)
+			{
+				col.enabled = false;
+			}
 			waitNow += Time.fixedDeltaTime;
 			if (waitNow >= em.waitTime)
 			{

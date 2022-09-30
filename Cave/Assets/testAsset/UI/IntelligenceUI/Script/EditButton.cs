@@ -33,6 +33,7 @@ public class EditButton : MonoBehaviour
     void Start()
     {
         my = GetComponent<Selectable>();
+
     }
 
     // Update is called once per frame
@@ -58,7 +59,7 @@ public class EditButton : MonoBehaviour
         if (s == 1)
         {
             if (!isAct)
-            {
+            { 
                 AttackJudge j = GetTarget();
                 if (j.condition == AttackJudge.TargetJudge.プレイヤーのHPが規定値に達した際)
                 {
@@ -324,109 +325,21 @@ public class EditButton : MonoBehaviour
 
     AttackJudge GetTarget()
     {
-        if (editNum== 1)
-        {
-            return MainUICon.instance.editParameter.firstTarget;
-        }
-        else if (editNum== 2)
-        {
-            return MainUICon.instance.editParameter.secondTarget;
-        }
-        else if (editNum== 3)
-        {
-            return MainUICon.instance.editParameter.thirdTarget;
-        }
-        else if (editNum== 4)
-        {
-            return MainUICon.instance.editParameter.forthTarget;
-        }
-        else
-        {
-            return MainUICon.instance.editParameter.fiveTarget;
-        }
+        return MainUICon.instance.editParameter.targetCondition[editNum];
     }
 
     FireCondition GetAttack()
     {
-        if (editNum== 1)
-        {
-            return MainUICon.instance.editParameter.firstAttack;
-        }
-        else if (editNum== 2)
-        {
-            return MainUICon.instance.editParameter.secondAttack;
-        }
-        else if (editNum== 3)
-        {
-            return MainUICon.instance.editParameter.thirdAttack;
-        }
-        else if (editNum== 4)
-        {
-            return MainUICon.instance.editParameter.fourthAttack;
-        }
-        else if (editNum== 5)
-        {
-            return MainUICon.instance.editParameter.fiveAttack;
-        }
-        else
-        {
-            return MainUICon.instance.editParameter.nonAttack;
-        }
+        return MainUICon.instance.editParameter.AttackCondition[editNum];
     }
 
     SupportCondition GetSupport()
     {
-        if (editNum== 1)
-        {
-            return MainUICon.instance.editParameter.firstPlan;
-        }
-        else if (editNum== 2)
-        {
-            return MainUICon.instance.editParameter.secondPlan;
-        }
-        else if (editNum== 3)
-        {
-            return MainUICon.instance.editParameter.thirdPlan;
-        }
-        else if (editNum== 4)
-        {
-            return MainUICon.instance.editParameter.forthPlan;
-        }
-        else if (editNum== 5)
-        {
-            return MainUICon.instance.editParameter.fivePlan;
-        }
-        else
-        {
-            return MainUICon.instance.editParameter.sixPlan;
-        }
+        return MainUICon.instance.editParameter.supportPlan[editNum];
     }
     RecoverCondition GetRecover()
     {
-        if (editNum== 1)
-        {
-            return MainUICon.instance.editParameter.firstRecover;
-        }
-        else if (editNum== 2)
-        {
-            return MainUICon.instance.editParameter.secondRecover;
-        }
-        else if (editNum== 3)
-        {
-            return MainUICon.instance.editParameter.thirdRecover;
-        }
-        else if (editNum== 4)
-        {
-            return MainUICon.instance.editParameter.forthRecover;
-        }
-        else if (editNum== 5)
-        {
-            return MainUICon.instance.editParameter.fiveRecover;
-        }
-        else
-        {
-            return MainUICon.instance.editParameter.nonRecover;
-        }
+        return MainUICon.instance.editParameter.recoverCondition[editNum];
     }
 
 

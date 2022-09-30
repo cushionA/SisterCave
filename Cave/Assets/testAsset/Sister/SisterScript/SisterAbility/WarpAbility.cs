@@ -62,7 +62,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <summary>
         /// í“¬‚É“¦‚°‚éƒ[ƒv
         /// </summary>
-        public void WarpStart(Vector2 point)
+        public void WarpStart()
         {
             if (_sister.mp >= 5)
             {
