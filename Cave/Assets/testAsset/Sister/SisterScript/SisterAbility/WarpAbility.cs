@@ -68,7 +68,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 _sister.mp -= 5;
             }
-            Debug.Log("‚“‚“");
+
             _movement.ChangeState(CharacterStates.MovementStates.Warp);
             _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
 

@@ -32,6 +32,10 @@ public class EnemyValue
     public bool disParry;
     [Header("パリィ抵抗値")]
     public float parryResist;
+
+    /// <summary>
+    /// 落下攻撃などの場合、攻撃のあとで使う補足モーションの番号を入れておけば後で使える
+    /// </summary>
     [Header("落下攻撃")]
     public int suppleNumber;
 
@@ -45,4 +49,43 @@ public class EnemyValue
     [Header("攻撃エフェクト")]
     [AssetReferenceUILabelRestriction("AttackEffect")]
     public AssetReference attackEffect;
+
+    /// <summary>
+    /// ヒット回数制限
+    /// </summary>
+    public int _hitLimit = 1;
+
+
+    /// <summary>
+    /// 移動する時間
+    /// </summary>
+    public float _moveDuration = 0.2f;
+
+    /// <summary>
+    /// 攻撃の移動距離
+    /// ロックオンする場合はこの範囲内で敵との距離を入れる
+    /// </summary>
+    public float _moveDistance = 10f;
+
+    /// <summary>
+    /// 攻撃移動中に敵と接触時の挙動
+    /// </summary>
+    public MoreMountains.CorgiEngine.MyAttackMove.AttackContactType _contactType = MoreMountains.CorgiEngine.MyAttackMove.AttackContactType.通過;
+
+    /// <summary>
+    /// 落下攻撃かどうか
+    /// </summary>
+    public bool fallAttack = false;
+
+    /// <summary>
+    /// 攻撃時に移動開始するまでの時間
+    /// </summary>
+    public float startMoveTime = 0;
+
+    /// <summary>
+    /// 敵をロックオンして移動する攻撃かどうか
+    /// </summary>
+    public bool lockAttack = false;
+
+
 }

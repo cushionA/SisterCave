@@ -43,6 +43,13 @@ public class EnemyStatus : CharacterStatus
 	/// </summary>
 	 public bool isMetal;//鎧着てるかどうか
 
+
+
+	/// <summary>
+	/// 体の大きさ
+	/// </summary>
+	public MyCode.SoundManager.SizeTag _bodySize;
+
 	[Header("加速速度")]
 	///<summary>
 	///yこの値が大きいほど加速が早くなる
@@ -116,11 +123,6 @@ public class EnemyStatus : CharacterStatus
 	///</summary>
 	public float chaseRes;//逃げたプレイヤーを追いかける時間
 
-	[Header("横のジャンプ力")]
-	///<summary>
-	///AddForceでやる。空飛ぶキャラはきもちジャンプ力低め？
-	///</summary>
-	public float jumpMove;
 
 	[Header("縦のジャンプ力")]
 	///<summary>
@@ -143,7 +145,7 @@ public class EnemyStatus : CharacterStatus
 	///</summary>
 	public int jumpLimit;
 
-	[Header("回避時の速度")]
+	[Header("回避時の速度倍率")]
 	public float avoidSpeed;
 
 	[Header("回避の継続時間")]

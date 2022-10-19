@@ -152,7 +152,8 @@ public class FireBullet : MonoBehaviour
 			//初期化完了は発射側がやる
 			return _initialized;
 		};
-
+		_damage.CollidRestoreResset();
+		_damage._attackData._hitLimit = em._hitLimit;
 		//初期化完了が真を返すまで待つ
 		await UniTask.WaitUntil(s);
 
@@ -166,7 +167,7 @@ public class FireBullet : MonoBehaviour
 		//子供の弾丸は親のターゲット引き継ぐ
 		if (em.fireType != Magic.FIREBULLET.STOP || !em.isChild)
 		{
-			//	Debug.Log($"標的設定{SManager.instance.target.name}");
+			//	Debug.Log($"標的設定{SManager.instance.restoreTarget.name}");
 			
 			//
 			direction = (owner.localScale.x < 0.0f) ? -1 : 1;
@@ -174,37 +175,47 @@ public class FireBullet : MonoBehaviour
 
 
 
-		//Debug.Log($"標的{gameObject.name}");
-		// 初期化
-		if (em.fireType != Magic.FIREBULLET.STOP)
+
+
+		if (target == null)
 		{
-			posTarget = target.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+			speed = (direction == -1) ? -em.speedV : +em.speedV;
 		}
-		switch (em.fireType)
+		else
 		{
+			//Debug.Log($"標的{gameObject.name}");
+			// 初期化
+			if (em.fireType != Magic.FIREBULLET.STOP)
+			{
+				posTarget = target.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+			}
+
+			switch (em.fireType)
+			{
 
 
-			case Magic.FIREBULLET.ANGLE:
-				speed = (direction == -1) ? -em.speedV : +em.speedV;
+				case Magic.FIREBULLET.ANGLE:
+					speed = (direction == -1) ? -em.speedV : +em.speedV;
 
-				break;
-			case Magic.FIREBULLET.HOMING:
-				speed = em.speedV;
-				homingRotate = Quaternion.LookRotation(posTarget - transform.position);
-				//	transform.localScale = 
+					break;
+				case Magic.FIREBULLET.HOMING:
+					speed = em.speedV;
+					homingRotate = Quaternion.LookRotation(posTarget - transform.position);
+					//	transform.localScale = 
 
-				break;
-			case Magic.FIREBULLET.HOMING_Z:
-				speed = em.speedV;
-				homingRotate = Quaternion.LookRotation(posTarget - transform.position);
-				homingRange = em.homingAngleV;
-				homingAngle = transform.position.x < target.transform.position.x ? em.angle : em.angle + (180 - em.angle);
-				break;
-			case Magic.FIREBULLET.RAIN:
+					break;
+				case Magic.FIREBULLET.HOMING_Z:
+					speed = em.speedV;
+					homingRotate = Quaternion.LookRotation(posTarget - transform.position);
+					homingRange = em.homingAngleV;
+					homingAngle = transform.position.x < target.transform.position.x ? em.angle : em.angle + (180 - em.angle);
+					break;
+				case Magic.FIREBULLET.RAIN:
 
-				speed = em.speedV;
-				//em.angle = 
-				break;
+					speed = em.speedV;
+					//em.angle = 
+					break;
+			}
 		}
 		// 存在してる間のサウンドがあるなら
 		if (em.existSound != null)
@@ -312,8 +323,9 @@ public class FireBullet : MonoBehaviour
 			loud = false;
 		}
 		//弾丸の生存時間終わりなら
-
-		if (fireTime >= em.lifeTime)
+		//あるいは追尾弾の標的消えたら
+		//それか直進でいいか
+		if (fireTime >= em.lifeTime) // ((em.fireType == Magic.FIREBULLET.HOMING || em.fireType == Magic.FIREBULLET.HOMING) && target == null))
 		{
 
 			//   存在中の音声がなってるなら消す
@@ -353,7 +365,7 @@ public class FireBullet : MonoBehaviour
 
 		// ターゲット設定
 		//追尾時間以内なら追いかける
-		bool homing = ((fireTime) < em.homingTime);//((Time.fixedTime - fireTime) < em.homingTime);
+		bool homing = ((fireTime < em.homingTime) && target != null);//((Time.fixedTime - fireTime) < em.homingTime);
 		if (homing)
 		{
 
@@ -386,73 +398,84 @@ public class FireBullet : MonoBehaviour
 		}
 
 		// ホーミング処理
-		switch (em.fireType)
+		//ここでターゲットない場合は直進に
+		if (target == null)
 		{
-			case Magic.FIREBULLET.ANGLE: // 指定した角度に発射
-				if (movable)
-				{
-					//進行角度に従って速度を変化させる
-					rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
-				}
-				break;
-
-			case Magic.FIREBULLET.RAIN: // 指定した角度に発射
-				if (movable)
-				{   
-					//進行角度に従って速度を変化させる
-					rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
-				}
-				break;
-
-			case Magic.FIREBULLET.HOMING: // 完璧にホーミング
-				{
-					//WaitTimeとHormingTimeを同じかそれ以下にすれば停止中だけ敵を狙うやつになる
-					if (homing)
-					{
-						homingRotate = Quaternion.LookRotation(posTarget - transform.position);
-						//transform.rotation = 
-						transform.rotation = Quaternion.Euler(new Vector3(0, 0, (Quaternion.FromToRotation(Vector3.up, posTarget - transform.position).eulerAngles.z - 90)));
-
-						// Quaternion.Euler(new Vector3(0,0,Mathf.Atan2(posTarget.x - transform.position.x, posTarget.y - transform.position.y)));
-						//	Debug.Log($"アイイイ{Quaternion.FromToRotation(Vector3.up, posTarget - transform.position).eulerAngles.z}");
-					}
-
-					// 対象物へ回転する
-
-					//transform.rotation =
-
-					Vector3 vecMove = (homingRotate * Vector3.forward) * speed;
+			if (movable)
+			{
+				//進行角度に従って速度を変化させる
+				rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
+			}
+		}
+		else
+		{
+			switch (em.fireType)
+			{
+				case Magic.FIREBULLET.ANGLE: // 指定した角度に発射
 					if (movable)
 					{
-						rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * vecMove;
+						//進行角度に従って速度を変化させる
+						rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
 					}
-				}
-				break;
+					break;
 
-			case Magic.FIREBULLET.HOMING_Z: // 指定した角度内でホーミング
-				if (homing)
-				{
-					//敵と弾丸の角度を求めて度に変換
-					float targetAngle = Mathf.Atan2(posTarget.y - transform.position.y,
-														posTarget.x - transform.position.x) * Mathf.Rad2Deg;
-
-					float deltaAngle = Mathf.DeltaAngle(targetAngle, homingAngle);
-					float deltaHomingAngle = homingRange * Time.fixedDeltaTime;
-					if (Mathf.Abs(deltaAngle) >= deltaHomingAngle)
+				case Magic.FIREBULLET.RAIN: // 指定した角度に発射
+					if (movable)
 					{
-						homingAngle += (deltaAngle < 0.0f) ? +deltaHomingAngle : -deltaHomingAngle;
+						//進行角度に従って速度を変化させる
+						rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
 					}
-					homingRange += (em.homingAngleA * Time.fixedDeltaTime);
-					homingRotate = Quaternion.Euler(0.0f, 0.0f, homingAngle);
-				}
-				//うごけない場合は角度だけ変更
-				if (movable)
-				{
-					rb.velocity = (homingRotate * Vector3.right) * speed;
-				}
-				break;
-		}
+					break;
 
+				case Magic.FIREBULLET.HOMING: // 完璧にホーミング
+					{
+						//WaitTimeとHormingTimeを同じかそれ以下にすれば停止中だけ敵を狙うやつになる
+						if (homing)
+						{
+							homingRotate = Quaternion.LookRotation(posTarget - transform.position);
+							//transform.rotation = 
+							transform.rotation = Quaternion.Euler(new Vector3(0, 0, (Quaternion.FromToRotation(Vector3.up, posTarget - transform.position).eulerAngles.z - 90)));
+
+							// Quaternion.Euler(new Vector3(0,0,Mathf.Atan2(posTarget.x - transform.position.x, posTarget.y - transform.position.y)));
+							//	Debug.Log($"アイイイ{Quaternion.FromToRotation(Vector3.up, posTarget - transform.position).eulerAngles.z}");
+						}
+
+						// 対象物へ回転する
+
+						//transform.rotation =
+
+						Vector3 vecMove = (homingRotate * Vector3.forward) * speed;
+						if (movable)
+						{
+							rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * vecMove;
+						}
+					}
+					break;
+
+				case Magic.FIREBULLET.HOMING_Z: // 指定した角度内でホーミング
+					if (homing)
+					{
+						//敵と弾丸の角度を求めて度に変換
+						float targetAngle = Mathf.Atan2(posTarget.y - transform.position.y,
+															posTarget.x - transform.position.x) * Mathf.Rad2Deg;
+
+						float deltaAngle = Mathf.DeltaAngle(targetAngle, homingAngle);
+						float deltaHomingAngle = homingRange * Time.fixedDeltaTime;
+						if (Mathf.Abs(deltaAngle) >= deltaHomingAngle)
+						{
+							homingAngle += (deltaAngle < 0.0f) ? +deltaHomingAngle : -deltaHomingAngle;
+						}
+						homingRange += (em.homingAngleA * Time.fixedDeltaTime);
+						homingRotate = Quaternion.Euler(0.0f, 0.0f, homingAngle);
+					}
+					//うごけない場合は角度だけ変更
+					if (movable)
+					{
+						rb.velocity = (homingRotate * Vector3.right) * speed;
+					}
+					break;
+			}
+		}
 		if (!movable)
 		{
 			rb.velocity = Vector3.zero;
@@ -537,7 +560,7 @@ public class FireBullet : MonoBehaviour
 		else if (_user == MasicUser.Sister)
 		{
 			owner = SManager.instance.Sister.transform;
-			target = SManager.instance.target;
+			target = SManager.instance.restoreTarget;
 			owner.gameObject.MMGetComponentNoAlloc<FireAbility>().BuffCalc(this);
 			_healTag = "Player";
 		}
@@ -727,85 +750,21 @@ public class FireBullet : MonoBehaviour
 		//useEquip.hitLimmit--;
 		//mValueはモーション値
 
-		#region
-		/*
-		if (em.phyAtk > 0)
-		{
-			_damage._attackData.phyAtk = (Mathf.Pow(em.phyAtk, 2) * GManager.instance.useAtValue.x) * attackFactor;
+          _damage._attackData._attackType = em.attackType;
 
-			//斬撃刺突打撃を管理
-			if (GManager.instance.useAtValue.type == Equip.AttackType.Slash)
-			{
-				_damage._attackData._attackType = 0;
-			}
-			else if (GManager.instance.useAtValue.type == Equip.AttackType.Stab)
-			{
-				_damage._attackData._attackType = 2;
-			}
-			else if (GManager.instance.useAtValue.type == Equip.AttackType.Strike)
-			{
-
-
-				_damage._attackData._attackType = 4;
-
-				//						Debug.Log("皿だ");
-				if (GManager.instance.useAtValue.z >= 40)
-				{
-					_damage._attackData.isHeavy = true;
-				}
-				else
-				{
-					_damage._attackData.isHeavy = false;
-				}
-			}
-		}
-		//神聖
-		if (em.holyAtk > 0)
-		{
-			_damage._attackData.holyAtk = (Mathf.Pow(em.holyAtk, 2) * GManager.instance.useAtValue.x) * holyATFactor;
-
-		}
-		//闇
-		if (em.darkAtk > 0)
-		{
-			_damage._attackData.darkAtk = (Mathf.Pow(em.darkAtk, 2) * GManager.instance.useAtValue.x) * darkATFactor;
-
-		}
-		//炎
-		if (em.fireAtk > 0)
-		{
-			_damage._attackData.fireAtk = (Mathf.Pow(em.fireAtk, 2) * GManager.instance.useAtValue.x) * fireATFactor;
-
-		}
-		//雷
-		if (em.thunderAtk > 0)
-		{
-			_damage._attackData.thunderAtk = (Mathf.Pow(em.thunderAtk, 2) * GManager.instance.useAtValue.x) * thunderATFactor;
-
-		}
-		*/
-		#endregion
 		if (em.phyAtk > 0)
 		{
 			_damage._attackData.phyAtk = em.phyAtk * attackFactor;
 
 			//斬撃刺突打撃を管理
-			if (GManager.instance.useAtValue.type == Equip.AttackType.Slash)
-			{
-				_damage._attackData._attackType = 0;
-			}
-			else if (GManager.instance.useAtValue.type == Equip.AttackType.Stab)
-			{
-				_damage._attackData._attackType = 2;
-			}
-			else if (GManager.instance.useAtValue.type == Equip.AttackType.Strike)
-			{
+          if (em.attackType == 4)
+		{
 
 
-				_damage._attackData._attackType = 4;
+				//_damage._attackData._attackType = 4;
 
 				//						Debug.Log("皿だ");
-				if (GManager.instance.useAtValue.z >= 40)
+				if (em.shock >= 40)
 				{
 					_damage._attackData.isHeavy = true;
 				}
@@ -848,6 +807,9 @@ public class FireBullet : MonoBehaviour
 		_damage._attackData.isBlow = em.isBlow;
 
 		_damage._attackData.blowPower.Set(em.blowPower.x, em.blowPower.y);
+
+		
+
 	}
 
 	/// <summary>

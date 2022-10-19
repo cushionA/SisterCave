@@ -107,6 +107,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         GameObject prevTarget;
 
+        //攻撃を中断してコンビネーションしたか
+        bool attackStop;
+
+
         /// <summary>
         ///　ここで、パラメータを初期化する必要があります。
         /// </summary>
@@ -150,7 +154,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 
             }
             //長押しコンビネーションでストップされてるなら入力禁止で
-            if (_movement.CurrentState == CharacterStates.MovementStates.Combination || _movement.CurrentState == CharacterStates.MovementStates.Attack)
+            if (_movement.CurrentState == CharacterStates.MovementStates.Combination)
             {
                 return;
             }
@@ -174,7 +178,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         combiEnable = false;
                         Combination();
                         //combiEnable = false;
-                        cCounter.text = ((int)sb.status.equipCombination.coolTime).ToString();
+                       
                         if (cIcon.gameObject.activeSelf)
                         {
                             cIcon.gameObject.SetActive(false);
@@ -273,6 +277,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 castStopping = false;
                 _movement.ChangeState(CharacterStates.MovementStates.Cast);
             }
+            else if (attackStop)
+            {
+                attackStop = false;
+                _movement.ChangeState(CharacterStates.MovementStates.Attack);
+            }
             else
             {
                 _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
@@ -294,6 +303,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (_movement.CurrentState == CharacterStates.MovementStates.Cast)
             {
                 castStopping = true;
+            }
+            else if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
+            {
+                attackStop = true;
             }
             _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
             _movement.ChangeState(CharacterStates.MovementStates.Combination);
@@ -403,10 +416,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
             }
 
-            if (!combiEnable && conboChain == 0)
-            {
+
                 cCounter.text = (Mathf.Round(sb.status.equipCombination.coolTime - combinationCool)).ToString();
-            }
+
 
         }
 
@@ -459,7 +471,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     SManager.instance.target = transform.root.gameObject;
                 }
             }
-            Debug.Log($"あいいいｓｓｓ{ SManager.instance.target}");
+           // Debug.Log($"あいいいｓｓｓ{ SManager.instance.target}");
             CombinationStart();
            // Debug.Log("ｇｇｇｆ");
             //	ちゃんとターゲットがあるか、ターゲットを必要としないなら

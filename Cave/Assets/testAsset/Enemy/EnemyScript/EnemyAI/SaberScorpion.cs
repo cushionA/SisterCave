@@ -52,11 +52,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
                 else
                 {
-                    if (attackChanceTime >= 1.5 && !atV.isCombo)
+                    if (attackChanceTime >= 2 && !atV.isCombo)
                     {
-                        if (Mathf.Abs(distance.x) >= 45 && Mathf.Abs(distance.x) <= 60)
+                        if (Mathf.Abs(distance.x) >= 45)
                         {
-                            if (RandomValue(1, 100) <= 75)
+                            if (RandomValue(1, 100) <= 55)
                             {
                                 Attack(true, 5);
                             }
@@ -99,16 +99,19 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         }
                     }
                 }
-                ////Debug.log($"{status.ground}");
+
 
                     
                 if(isMovable)
                 {
-                    if (!guardJudge && (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove))
+                    if ((ground == EnemyStatus.MoveState.stay))
                     {
-                     GroundGuardAct(60);
+                        _guard.ActGuard();
                     }
-                    
+                    else
+                    {
+                        _guard.GuardEnd();
+                    }
                     
                     AgrMove();
                 }
@@ -136,6 +139,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected override void OnTriggerStay2D(Collider2D collision)
         {
             base.OnTriggerStay2D(collision);
+        }
+
+
+       void MMDamageTakenEvent()
+        {
+            if (_condition.CurrentState != CharacterStates.CharacterConditions.Moving && !isMovable)
+            {
+                ground = EnemyStatus.MoveState.stay;
+                _guard.ActGuard();
+            }
         }
 
     }

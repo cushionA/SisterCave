@@ -87,13 +87,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <summary>
 		/// 詠唱中つかう音
 		/// </summary>
-		string castSound;
+		string castSound = "NormalCastLoop1";
 
 		/// <summary>
 		/// 詠唱の音鳴らすサイン
 		/// 1はまだ再生してない。2は再生中。3は終わり
 		/// </summary>
-		byte soundStart = 0;
+		bool soundStart;
 		/// <summary>
 		/// 撃つ弾丸の数
 		/// </summary>
@@ -160,6 +160,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public float holyATFactor = 1;
 
 
+		GameObject castEffect;
+
+
 
 
 		/// <summary>
@@ -186,10 +189,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				//これは道中回復開始とそのサウンドを終わらせてる
 
-				if (soundStart == 2)
+				if (soundStart)
 				{
-					soundStart = 0;
+					soundStart = false;
 					GManager.instance.StopSound(castSound, 0.5f);
+					if (castEffect != null)
+					{
+						Addressables.ReleaseInstance(castEffect);
+						castEffect = null;
+					}
 					FireSoundJudge();
 				}
 				stateJudge = 0;
@@ -257,7 +265,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 
 			//戦闘中、かつ位置についているなら
-			else if (sb.nowState == BrainAbility.SisterState.戦い && sb.nowPosition)
+			else if (sb.nowState == BrainAbility.SisterState.戦い)
 			{
 				//戦闘開始時にフラグをきれいにしておきます
 
@@ -282,7 +290,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				///ターゲットと使用魔法設定
 				//クールタイム中でもスキップ条件があるなら動く
 				#region
-				if (_condition.CurrentState != CharacterStates.CharacterConditions.Moving && (!disEnable || _skipCondition != 0))
+				if (_condition.CurrentState != CharacterStates.CharacterConditions.Moving && (!disEnable || _skipCondition != 0) &&  sb.nowPosition)
 				{
 
 					//一定時間経過で戦闘思考を、なしでない限りは優先する状態に戻す
@@ -327,12 +335,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							//それでもターゲットがいなかったら
 							if (SManager.instance.target == null && !disEnable)
 							{
-								if (sister.AttackCondition[6].condition == FireCondition.ActJudge.回復行動に移行 || sister.AttackCondition[6].condition == FireCondition.ActJudge.支援行動に移行)
+								if (sister.AttackCondition[5].condition == FireCondition.ActJudge.回復行動に移行 || sister.AttackCondition[6].condition == FireCondition.ActJudge.支援行動に移行)
 								{
 									AttackStateChange(sister.AttackCondition[6]);
 									return;
 								}
-								else if (sister.AttackCondition[6].condition != FireCondition.ActJudge.なにもしない)
+								else if (sister.AttackCondition[5].condition != FireCondition.ActJudge.なにもしない)
 								{
 									SManager.instance.target = SManager.instance.targetList[RandomValue(0, SManager.instance.targetList.Count - 1)];
 									judgeSequence = 5;
@@ -456,6 +464,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						actionNum = (int)SManager.instance.useMagic.castType;
 						_movement.ChangeState(CharacterStates.MovementStates.Cast);
 						_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+						_controller.SetHorizontalForce(0);
 					}
 
 					
@@ -552,25 +561,33 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				//詠唱終わったら
 				if (waitCast >= SManager.instance.useMagic.castTime)
 				{
-					
-					//	waitCast = 0;
+
+					soundStart = false;
 					disEnable = true;
 					//GManager.instance.StopSound(castSound, 0.5f);
 					_movement.ChangeState(CharacterStates.MovementStates.Attack);
 
 					actionNum = (int)SManager.instance.useMagic.fireType;
-
+					Addressables.InstantiateAsync(SManager.instance.useMagic.castBreak, sb.firePosition.position, sb.firePosition.rotation);
+					if (castEffect != null)
+					{
+						Addressables.ReleaseInstance(castEffect);
+						castEffect = null;
+					}
 					//ここからの処理ではアニメーションイベントを使う
 				}
 				//詠唱中なら
-				else
+				else if(waitCast > 0.5)
 				{
 
 					//sb.//(SManager.instance.useMagic.castAnime);
-					if (soundStart == 1)
+					if (!soundStart)
 					{
+						 CastCircle().Forget();
+
 						GManager.instance.PlaySound(castSound, transform.position);
-						soundStart = 2;
+						
+						soundStart = true;
 					}
 				}
 			}
@@ -579,6 +596,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				//	詠唱中止。敵が死んで消えたりとか
 				GManager.instance.StopSound(castSound, 0.5f);
+				if (castEffect != null)
+				{
+					Addressables.ReleaseInstance(castEffect);
+					castEffect = null;
+				}
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 				actionNum = 0;
@@ -616,7 +638,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			if (disEnable && _condition.CurrentState != CharacterStates.CharacterConditions.Moving)
 			{
-				Debug.Log($"ddddd{coolTime}");
+			//	Debug.Log($"ddddd{coolTime}");
 				waitCast += _controller.DeltaTime;
 				//sb.//("Stand");
 				if (waitCast >= coolTime + 0.5f)
@@ -650,16 +672,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// 詠唱中のために音とエフェクトをセット
 		/// 使用する魔法を引数にして魔法レベルと属性で見る
 		/// 詠唱の音やエフェクト変えたいならここでいじる
-		public void CastEffect()
+		public async UniTaskVoid CastCircle()
 		{
 
 			Transform gofire = sb.firePosition;
 			//発生位置をPlayer
-			Addressables.InstantiateAsync(SManager.instance.useMagic.castEffect, gofire.position, gofire.rotation);
+			castEffect = await Addressables.InstantiateAsync(SManager.instance.useMagic.castEffect, gofire.position, gofire.rotation);
 			//	}
 
-			castSound = "normalCast";
-			soundStart = 1;
+			
+
 			int dir = (int)Mathf.Sign(SManager.instance.target.transform.position.x - transform.position.x);
 			sb.Flip(dir);
 		}
@@ -706,13 +728,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//弾が一発目なら
 			if (bCount == 1)
 			{
+				SManager.instance.restoreTarget = SManager.instance.target;
 				//   MyInstantiate(SManager.instance.useMagic.fireEffect, goFire, Quaternion.identity).Forget();
 				//Addressables.InstantiateAsync(SManager.instance.useMagic.fireEffect, goFire, Quaternion.identity);
 				if (SManager.instance.useMagic.fireType == SisMagic.FIREBULLET.RAIN)
 				{
 					//山なりの弾道で打ちたいときとか射出角度決めれたらいいかも
 					//位置をランダムにすれば角度はどうでもいい説もある
-					SManager.instance.useMagic.angle = GetAim(sb.firePosition.position, SManager.instance.target.transform.position);
+					SManager.instance.useMagic.angle = GetAim(sb.firePosition.position, SManager.instance.restoreTarget.transform.position);
 
 				}
 				sb.mp -= SManager.instance.useMagic.useMP;
@@ -721,7 +744,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//敵の位置にサーチ攻撃するとき
 			if (SManager.instance.useMagic.isChaice)
 			{
-				goFire.Set(SManager.instance.target.transform.position.x, SManager.instance.target.transform.position.y, SManager.instance.target.transform.position.y);
+				goFire.Set(SManager.instance.restoreTarget.transform.position.x, SManager.instance.restoreTarget.transform.position.y, SManager.instance.restoreTarget.transform.position.y);
 
 			}
 			//ランダムな位置に発生するとき
@@ -774,7 +797,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				SManager.instance.useMagic = null;
 				fireStart = false;
-				SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
+				SManager.instance.restoreTarget.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
 			}
 			//	bCount += 1;
 		}
@@ -2695,7 +2718,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				//	targetJudge = sister.targetResetRes;
 
-				SManager.instance.target = null;
+			//	SManager.instance.target = null;
 				sister.nowMove = SisterParameter.MoveType.攻撃;
 			}
 			else
@@ -2715,7 +2738,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				//	targetJudge = sister.targetResetRes;
 				SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
-				SManager.instance.target = null;
+				//SManager.instance.target = null;
 				sister.nowMove = SisterParameter.MoveType.攻撃;
 			}
 			else

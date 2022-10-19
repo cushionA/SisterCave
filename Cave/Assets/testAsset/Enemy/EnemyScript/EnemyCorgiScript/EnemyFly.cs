@@ -36,13 +36,12 @@ namespace MoreMountains.CorgiEngine
         protected bool _flying;
 
         // animation parameters
-        protected const string _flyingAnimationParameterName = "Flying";
+        protected const string _flyingAnimationParameterName = "FlyingState";
         protected const string _flySpeedAnimationParameterName = "FlySpeed";
         protected int _flyingAnimationParameter;
         protected int _flySpeedAnimationParameter;
 
-        protected const string _fastAnimationParameterName = "FastFlying";
-        protected int _fastAnimationParameter;
+
 
         /*
         /// the feedbacks to play when the ability starts
@@ -78,20 +77,7 @@ namespace MoreMountains.CorgiEngine
             _horizontalMovement = _horizontalInput;
             _verticalMovement = _verticalInput;
 
-            //îÚçsèÛë‘Ç∆ínñ èÛë‘êÿÇËë÷Ç¶ÇÃìGÇÕÇ±ÇÍÇÇøÇ·ÇÒÇ∆åƒÇ‘
-            /*
-            if (!AlwaysFlying)
-            {
-                if (_inputManager.FlyButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
-                {
-                    StartFlight();
-                }
 
-                if (_inputManager.FlyButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
-                {
-                    StopFlight();
-                }
-            }*/
 
 
         }
@@ -121,7 +107,7 @@ namespace MoreMountains.CorgiEngine
         {
             if ((!AbilityAuthorized) // if the ability is not permitted
                 || (_movement.CurrentState == CharacterStates.MovementStates.Dashing) // or if we're dashing
-                || (_movement.CurrentState == CharacterStates.MovementStates.Gripping) // or if we're in the gripping state
+                || (_movement.CurrentState == CharacterStates.MovementStates.Attack) // or if we're in the gripping state
                 || (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)) // or if we're not in normal conditions
             {
                 return;
@@ -155,7 +141,11 @@ namespace MoreMountains.CorgiEngine
             }
             _controller.GravityActive(true);
             _flying = false;
-            _movement.RestorePreviousState();
+
+            if (_movement.CurrentState != CharacterStates.MovementStates.Attack) 
+            {
+                _movement.ChangeState(CharacterStates.MovementStates.Idle); 
+            }
         }
 
         /// <summary>
@@ -165,6 +155,13 @@ namespace MoreMountains.CorgiEngine
         {
             base.ProcessAbility();
 
+            if ((_condition.CurrentState != CharacterStates.CharacterConditions.Normal)) 
+            {
+                StopFlight();
+            }
+
+         //   Debug.Log($"dddddddddd{_verticalMovement}");
+
             if (StopFlyingOnDeath && (_character.ConditionState.CurrentState == CharacterStates.CharacterConditions.Dead))
             {
                 return;
@@ -172,7 +169,7 @@ namespace MoreMountains.CorgiEngine
 
             if (AlwaysFlying)
             {
-                if (_movement.CurrentState != CharacterStates.MovementStates.Flying)
+                if (_movement.CurrentState != CharacterStates.MovementStates.Flying && _condition.CurrentState == CharacterStates.CharacterConditions.Normal)
                 {
                     _movement.ChangeState(CharacterStates.MovementStates.Flying);
                 }
@@ -239,7 +236,7 @@ namespace MoreMountains.CorgiEngine
 
             if (_flying)
             {
-
+           //     Debug.Log($"Ç†ÇãÇìÇÑ{FlySpeed}");
                 // we pass the horizontal force that needs to be applied to the controller.
                 float horizontalMovementSpeed = _horizontalMovement * FlySpeed.x * _controller.Parameters.SpeedFactor * MovementSpeedMultiplier;
                 float verticalMovementSpeed = _verticalMovement * FlySpeed.y * _controller.Parameters.SpeedFactor * MovementSpeedMultiplier;
@@ -301,9 +298,8 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected override void InitializeAnimatorParameters()
         {
-            RegisterAnimatorParameter(_flyingAnimationParameterName, AnimatorControllerParameterType.Bool, out _flyingAnimationParameter);
+            RegisterAnimatorParameter(_flyingAnimationParameterName, AnimatorControllerParameterType.Int, out _flyingAnimationParameter);
             RegisterAnimatorParameter(_flySpeedAnimationParameterName, AnimatorControllerParameterType.Float, out _flySpeedAnimationParameter);
-            RegisterAnimatorParameter(_fastAnimationParameterName, AnimatorControllerParameterType.Bool, out _fastAnimationParameter);
         }
 
         /// <summary>
@@ -311,8 +307,15 @@ namespace MoreMountains.CorgiEngine
         /// </summary>
         public override void UpdateAnimator()
         {
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _flyingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Flying), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _fastAnimationParameter, isFast, _character._animatorParameters, _character.PerformAnimatorSanityChecks);
+            int state = 0;
+            
+            if(_movement.CurrentState == CharacterStates.MovementStates.Flying || _movement.CurrentState == CharacterStates.MovementStates.FastFlying)
+            {
+                state = _movement.CurrentState == CharacterStates.MovementStates.Flying ? 1 : 2;
+            }
+
+            MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _flyingAnimationParameter, (state), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
+
             MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _flySpeedAnimationParameter, Mathf.Abs(_controller.Speed.magnitude), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
         }
 
@@ -324,7 +327,6 @@ namespace MoreMountains.CorgiEngine
             base.ResetAbility();
             StopFlight();
             MMAnimatorExtensions.UpdateAnimatorBool(_animator, _flyingAnimationParameter, false, _character._animatorParameters, _character.PerformAnimatorSanityChecks);
-            MMAnimatorExtensions.UpdateAnimatorBool(_animator, _fastAnimationParameter, false, _character._animatorParameters, _character.PerformAnimatorSanityChecks);
             MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _flySpeedAnimationParameter, 0f, _character._animatorParameters, _character.PerformAnimatorSanityChecks);
         }
 
@@ -387,27 +389,6 @@ namespace MoreMountains.CorgiEngine
 
         }
 
-        //ïsñæ
-        /*
-        /// <summary>
-        /// Stops the ability used sound effect
-        /// </summary>
-        public void AlterStartFeedbacks()
-        {
-            AddtionalStartFeedbacks?.StopFeedbacks();
-            _startFeedbackIsPlaying = false;
-        }
-
-
-        /// <summary>
-        /// Plays the ability stop sound effect
-        /// </summary>
-        protected void AlterPlayAbilityStopFeedbacks()
-        {
-            AddtionalStopFeedbacks?.PlayFeedbacks();
-        }
-
-        */
 
     }
 }

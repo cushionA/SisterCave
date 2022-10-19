@@ -203,7 +203,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			if (!ActiveAfterDeath)
 			{
 				if (!AbilityAuthorized
-					|| !(_condition.CurrentState == CharacterStates.CharacterConditions.Normal || _condition.CurrentState == CharacterStates.CharacterConditions.Moving)
+					|| (_condition.CurrentState != CharacterStates.CharacterConditions.Normal && _movement.CurrentState != CharacterStates.MovementStates.Rolling)
 					|| (_movement.CurrentState == CharacterStates.MovementStates.Gripping))
 				{
 					return;
@@ -300,6 +300,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				fallTime += _controller.DeltaTime;
 				if (fallTime > 0.0f) 
 				{
+
 					fallTime = 0;
 					_movement.ChangeState(CharacterStates.MovementStates.Falling);
 				}
@@ -394,7 +395,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						_movement.ChangeState(CharacterStates.MovementStates.Crouching);
 					}
-					else if(_condition.CurrentState == CharacterStates.CharacterConditions.Normal && (_movement.CurrentState != CharacterStates.MovementStates.Nostate))
+					else if(_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
 					{
 						//Debug.Log("‚í‚½‚µ‚ª‚í‚é‚¤‚²‚´‚¢‚Ü‚µ‚½");
 						_movement.ChangeState(CharacterStates.MovementStates.Idle);

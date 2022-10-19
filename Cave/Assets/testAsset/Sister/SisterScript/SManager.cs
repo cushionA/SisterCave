@@ -41,6 +41,12 @@ public class SManager : MonoBehaviour
     [HideInInspector] public bool isBattleEnd;
     //[HideInInspector] 
     public GameObject target;//攻撃対象
+
+    [HideInInspector]
+    /// <summary>
+    /// 射撃中消えないように保持するターゲット
+    /// </summary>
+    public GameObject restoreTarget;
     //詠唱中かどうか
     [HideInInspector] public bool castNow;
     /// <summary>
@@ -183,7 +189,7 @@ public class SManager : MonoBehaviour
     public void GetClosestEnemyX()
     {
 
-
+        if(targetList.Count != 0)
         closestEnemy = targetList[0].transform.position.x;
 
     }

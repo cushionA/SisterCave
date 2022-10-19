@@ -5,91 +5,133 @@ using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using MoreMountains.CorgiEngine;
 using MoreMountains.Tools;
+using UnityEngine.UI;
+
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField]
-    List<GameObject> EnemyList;
 
-    [SerializeField]
-   // [AssetReferenceUILabelRestriction]
-    List<AssetReference> EnemyData;
 
-    [SerializeField]
-    List<Transform> PointList;
+
+
 
     [SerializeField]
     List<BattleTest> bt;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// 召喚する敵のビット
+    /// </summary>
+    public int callNumber = 0b1111;
 
-    int isEnd;
 
-    public void ResetEnemy()
+
+    [SerializeField]
+    Toggle[] _numberSetter;
+
+    [SerializeField]
+    /// <summary>
+    /// 戻る先の窓
+    /// </summary>
+    Button _returnWindow;
+
+
+
+
+    private void Awake()
     {
-        GManager.instance.hp = GManager.instance.maxHp;
-        GManager.instance.mp = GManager.instance.maxMp;
-      //  SManager.instance.sisStatus.mp = SManager.instance.sisStatus.maxMp;
-
-        //bool isEnd = false;
-        if (isEnd == 0)
+        for (int i = 0; i < _numberSetter.Length; i++)
         {
-            for (int i = 0; i < EnemyList.Count; i++)
+
+            int num = 0b0001;
+            if (i != 0)
             {
-                Destroy(EnemyList[i]);
-                isEnd = i == 4 ? 1 : isEnd;
+                num = 0b0001 << i;
             }
-            
-        }
-        if (isEnd == 1)
-        {
-            for (int i = 0; i < PointList.Count; i++)
+            //オンなら
+            if ((callNumber & num) > 0)
             {
+                _numberSetter[i].isOn = true;
+            }
+            else
+            {
+                _numberSetter[i].isOn = false;
 
-                if (i == 0)
-                {
-                    // EnemyList.Add(.Result);
-                    Addressables.InstantiateAsync(EnemyData[i], PointList[0]);
-                    // EnemyList.Add(PointList[i].transform.GetChild(0).gameObject);
-                }
-                else if (i > 0 && i < 4)
-                {
-                    //EnemyList.Add(.Result);
-                    Addressables.InstantiateAsync(EnemyData[1], PointList[i]);
-                    // EnemyList.Add(PointList[i].transform.GetChild(0).gameObject);
-                }
-                else
-                {
-                    //EnemyList.Add(.Result);
-                    Addressables.InstantiateAsync(EnemyData[2], PointList[i]);
-                    //EnemyList.Add(PointList[i].transform.GetChild(0).gameObject);
-                }
-                // EnemyList.Add(PointList[i].transform.GetChild(0).gameObject);
-                isEnd = i == 4 ? 2 : isEnd;
             }
         }
-        if (isEnd == 2)
-        {
-            EnemyList[0] = (PointList[0].transform.GetChild(0).gameObject);
-            EnemyList[1] =(PointList[1].transform.GetChild(0).gameObject);
-            EnemyList[2] = (PointList[2].transform.GetChild(0).gameObject);
-            EnemyList[3] = (PointList[3].transform.GetChild(0).gameObject);
-            EnemyList[4] = (PointList[4].transform.GetChild(0).gameObject);
-            isEnd = 0;
-        }
+    }
 
+    private void Update()
+    {
+        if (MainUICon.instance._reInput.CancelButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown)
+        {
+            NumberSet();
+            WindowCancel();
+        }
+    }
+
+    public void NumberSet()
+    {
+        for (int i = 0; i < _numberSetter.Length; i++)
+        {
+            int num = 0b1;
+            if (i != 0)
+            {
+                num = 0b1 << i;
+            }
+            //オンなら
+            if (_numberSetter[i].isOn)
+            {
+                callNumber |= num;
+            }
+            else
+            {
+                //numを反転
+                num = ~num;
+                //抜いとく
+                callNumber &= num;
+ Debug.Log($"おいいい{num}");
+            }
+           
+        }
+    }
+
+    void WindowCancel()
+    {
+        _returnWindow.transform.root.gameObject.SetActive(true);
+        _returnWindow.Select();
+        this.gameObject.SetActive(false);
     }
 
 
+    public void ResetEnemy()
+    {
+        for (int i = 0; i < bt.Count; i++)
+        {
+
+            bt[i].Reset();
+
+        }
+    }
+
     public void AnotherReset()
     {
-        GManager.instance.hp = GManager.instance.maxHp;
+        NumberSet();
+        GManager.instance.HPReset();
         GManager.instance.mp = GManager.instance.maxMp;
        // SManager.instance.sisStatus.mp = SManager.instance.sisStatus.maxMp;
         SManager.instance.Sister.MMGetComponentNoAlloc<FireAbility>().MagicEnd();
         for (int i = 0;i < bt.Count;i++)
         {
-            bt[i].Reset();
-            _ = bt[i].ReSporn();
+            int num = 0b0001;
+            if (i != 0)
+            {
+                 num = 0b0001 << i;
+            }
+            if ((callNumber & num) > 0)
+            {
+                Debug.Log($"あああ{i}");
+                bt[i].ReSporn().Forget();
+            }
         }
+        WindowCancel();
     }
 }

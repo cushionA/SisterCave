@@ -1,0 +1,605 @@
+Using pre-set license
+Built from '2021.3/staging' branch; Version is '2021.3.10f1 (1c7d0df0160b) revision 1867021'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19043) 64bit Professional' Language: 'ja' Physical Memory: 16222 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2021.3.10f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker2
+-projectPath
+C:/Users/tatuk/Documents/SisterCave/Cave
+-logFile
+Logs/AssetImportWorker2.log
+-srvPort
+60134
+Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
+C:/Users/tatuk/Documents/SisterCave/Cave
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Refreshing native plugins compatible for Editor in 830.73 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.3.10f1 (1c7d0df0160b)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/tatuk/Documents/SisterCave/Cave/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2070 Super (ID=0x1ed1)
+    Vendor:   NVIDIA
+    VRAM:     8012 MB
+    Driver:   30.0.15.1278
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56072
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
+Registered in 0.007531 seconds.
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 507.72 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.051 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1051ms)
+		BeginReloadAssembly (60ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (879ms)
+			LoadAssemblies (59ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (118ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (22ms)
+			SetupLoadedEditorAssemblies (685ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (9ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (508ms)
+				BeforeProcessingInitializeOnLoad (1ms)
+				ProcessInitializeOnLoadAttributes (124ms)
+				ProcessInitializeOnLoadMethodAttributes (42ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.012547 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 541.30 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.687 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2688ms)
+		BeginReloadAssembly (120ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (6ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (22ms)
+		EndReloadAssembly (2455ms)
+			LoadAssemblies (145ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (405ms)
+			ReleaseScriptCaches (2ms)
+			RebuildScriptCaches (144ms)
+			SetupLoadedEditorAssemblies (1719ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (7ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (541ms)
+				BeforeProcessingInitializeOnLoad (143ms)
+				ProcessInitializeOnLoadAttributes (911ms)
+				ProcessInitializeOnLoadMethodAttributes (110ms)
+				AfterProcessingInitializeOnLoad (7ms)
+				EditorAssembliesLoaded (1ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (4ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Refreshing native plugins compatible for Editor in 5.21 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 9265 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 142 unused Assets / (8.2 MB). Loaded Objects now: 9759.
+Memory consumption went from 0.63 GB to 0.62 GB.
+Total: 7.066400 ms (FindLiveObjects: 0.664200 ms CreateObjectMapping: 0.776800 ms MarkObjects: 4.030200 ms  DeleteObjects: 1.594600 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 469586.827599 seconds.
+  path: Assets/AllIn1SpriteShader/Materials/Body_1.mat
+  artifactKey: Guid(050e164c81d39044f947ef9ea8276588) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AllIn1SpriteShader/Materials/Body_1.mat using Guid(050e164c81d39044f947ef9ea8276588) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'deb32203673241d28d1cb128268e1194') in 0.276594 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 22.440148 seconds.
+  path: Assets/AllIn1SpriteShader/Materials/Porter.mat
+  artifactKey: Guid(58d0f804518be0342a0a0096dfc9b70f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AllIn1SpriteShader/Materials/Porter.mat using Guid(58d0f804518be0342a0a0096dfc9b70f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6c08958050b243a3ae3102c6249107d0') in 0.016733 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 30.658262 seconds.
+  path: Assets/AllIn1SpriteShader/Materials/Porter_1.mat
+  artifactKey: Guid(fe53e6a6988aca3498e5307e433fce15) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AllIn1SpriteShader/Materials/Porter_1.mat using Guid(fe53e6a6988aca3498e5307e433fce15) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '158786eb29ada6e39d36a19d87462763') in 0.018759 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 27.231408 seconds.
+  path: Assets/testAsset/Enemy/EnemyPrefab/Soldir/NewNIdiot.prefab
+  artifactKey: Guid(9fee4d18ab9b05a498045b7e345dded2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Enemy/EnemyPrefab/Soldir/NewNIdiot.prefab using Guid(9fee4d18ab9b05a498045b7e345dded2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fce322a85f0b8f05d5f67e899418e861') in 0.225273 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 3.287485 seconds.
+  path: Assets/testAsset/Enemy/EnemyPrefab/Fly/Porter.prefab
+  artifactKey: Guid(dea6be2b28f522147a7a84546d290f91) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Enemy/EnemyPrefab/Fly/Porter.prefab using Guid(dea6be2b28f522147a7a84546d290f91) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '639fd3c8e1d34dd9c11e1a51ed56e5be') in 0.052535 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 15.760853 seconds.
+  path: Assets/AllIn1SpriteShader/Materials/Porter_2.mat
+  artifactKey: Guid(f2bb1536166c2584491475ead8f0ec92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AllIn1SpriteShader/Materials/Porter_2.mat using Guid(f2bb1536166c2584491475ead8f0ec92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f4806f8b5e18e66bd09e1b90cf4bee89') in 0.018864 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.188864 seconds.
+  path: Assets/AllIn1SpriteShader/Materials
+  artifactKey: Guid(345f2705e87e7424683ef2bd17d38c26) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AllIn1SpriteShader/Materials using Guid(345f2705e87e7424683ef2bd17d38c26) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6e72c8bad97a3ede3fda2a49497957bd') in 0.008929 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 49.071410 seconds.
+  path: Assets/AllIn1SpriteShader/Materials/Porter.mat
+  artifactKey: Guid(58d0f804518be0342a0a0096dfc9b70f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AllIn1SpriteShader/Materials/Porter.mat using Guid(58d0f804518be0342a0a0096dfc9b70f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e23ce041f2401a8755161989b6d87802') in 0.013305 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 71.101036 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/1x1Blue.png
+  artifactKey: Guid(470e18cc432c68249945840f82dc9f50) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/1x1Blue.png using Guid(470e18cc432c68249945840f82dc9f50) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a73838808e39202da6b4ce745a949f11') in 0.071688 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/1x1Ground.png
+  artifactKey: Guid(0951da8d743322e45b24646aee33e67b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/1x1Ground.png using Guid(0951da8d743322e45b24646aee33e67b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ec051b635eaad1e9a259c379e397d0c7') in 0.035549 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/2x1DarkGrey.png
+  artifactKey: Guid(2de4c81f824e2414b84c1ba995b18f53) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/2x1DarkGrey.png using Guid(2de4c81f824e2414b84c1ba995b18f53) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8e9522f9a1f83d8e07c8a940fb75c600') in 0.027972 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/4x1Yellow.png
+  artifactKey: Guid(89ddece3d9b66354bbf986058c4d8759) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/4x1Yellow.png using Guid(89ddece3d9b66354bbf986058c4d8759) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6e6a5cbe6fd5c2f67079630737a0b29c') in 0.028017 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/1x1Orange.png
+  artifactKey: Guid(2934bd9b3e91d094793bdddfd585a156) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/1x1Orange.png using Guid(2934bd9b3e91d094793bdddfd585a156) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '66cd9248b9eb4f9e3cedae121595f6e9') in 0.033014 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/1x1Yellow.png
+  artifactKey: Guid(f5144798c4a82f846a6357626a07ab1c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/1x1Yellow.png using Guid(f5144798c4a82f846a6357626a07ab1c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '193d2f24f76f75c2566d134533ca0001') in 0.020908 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/4x1Green.png
+  artifactKey: Guid(61dc440c5eeef6648aaa99f3f26abea1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/4x1Green.png using Guid(61dc440c5eeef6648aaa99f3f26abea1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '78a1ce0ae09dbb7bb39702907690e12c') in 0.023104 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/2x1Blue.png
+  artifactKey: Guid(79fc96d8147ff214890b19a18bb2643a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/2x1Blue.png using Guid(79fc96d8147ff214890b19a18bb2643a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5aa679c571fe7901ff350e250f9e8d0f') in 0.022649 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 2.345601 seconds.
+  path: Assets/beffio/UI - BUILDER/Source Files/Photography ┬⌐ beffio Tom Lassota/Kolobrzeg Poland Seaside - ┬⌐ beffio Tom Lassota.jpg
+  artifactKey: Guid(fb8f771b6ed6a07498558e646ceee548) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/beffio/UI - BUILDER/Source Files/Photography ┬⌐ beffio Tom Lassota/Kolobrzeg Poland Seaside - ┬⌐ beffio Tom Lassota.jpg using Guid(fb8f771b6ed6a07498558e646ceee548) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6461c090482fe8669253844a2423b241') in 0.309708 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/MiniPortalMat_AlbedoDecalMask_v2.png
+  artifactKey: Guid(94a0a39a013c13c40926131fb991606f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/MiniPortalMat_AlbedoDecalMask_v2.png using Guid(94a0a39a013c13c40926131fb991606f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0af352ab12100678bda39aefe2bc9d58') in 0.022259 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000040 seconds.
+  path: Assets/AnyPortrait/Editor/Images/Inspector/InspectorIcon_RootPortraits.png
+  artifactKey: Guid(b9d3527c99335c74b84fa8329b0f474b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Editor/Images/Inspector/InspectorIcon_RootPortraits.png using Guid(b9d3527c99335c74b84fa8329b0f474b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7ac27d3adff2c8e65a30ea917f3617ae') in 0.021276 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/SharpOreCrystalMat_Normal.png
+  artifactKey: Guid(f71128253f3dd5b448a821e9b2e693d4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/SharpOreCrystalMat_Normal.png using Guid(f71128253f3dd5b448a821e9b2e693d4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ded26470451631978c709ca9c919fd75') in 0.022188 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hovl Studio/Sword slash VFX/Textures/Point19.png
+  artifactKey: Guid(4b0225a5290cbe540bc56e26a8682db2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/Sword slash VFX/Textures/Point19.png using Guid(4b0225a5290cbe540bc56e26a8682db2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '44f9b22b9079a09e3bfbe9ae6d12b9d8') in 0.021198 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/AnyPortrait/Editor/Images/MeshEdit_InnerPointAxisLimited.png
+  artifactKey: Guid(f8605cfe2286db94ab040253b18dcffc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Editor/Images/MeshEdit_InnerPointAxisLimited.png using Guid(f8605cfe2286db94ab040253b18dcffc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3104be9d289dbad452b771672ec5e732') in 0.020048 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/Point5xPoint5Green.png
+  artifactKey: Guid(9bff525eea0c8784b9e66a2b87ac22fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/Point5xPoint5Green.png using Guid(9bff525eea0c8784b9e66a2b87ac22fb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '65bb1cb4074d94fb41ac89ff92343bfa') in 0.023500 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/12 - Demo Isometric/Resources/Sprites/woodenSupportsBlock_W.png
+  artifactKey: Guid(954d757e168ec074a9b186c3a7d046b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/12 - Demo Isometric/Resources/Sprites/woodenSupportsBlock_W.png using Guid(954d757e168ec074a9b186c3a7d046b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4083209658f7ce6b912c17a9958495aa') in 0.033525 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/MiniPortalMat_Normal.png
+  artifactKey: Guid(b5d8a9b56ad07da46a119f854cff2deb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/MiniPortalMat_Normal.png using Guid(b5d8a9b56ad07da46a119f854cff2deb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2ded95d29a3e5b74c81b6d966abe3bc3') in 0.021945 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/ARPG Effects/Textures/portal_modular.png
+  artifactKey: Guid(a718e636cd0277c499cbde7da7170627) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ARPG Effects/Textures/portal_modular.png using Guid(a718e636cd0277c499cbde7da7170627) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'db5c877e9eec4d248427f10026b31980') in 0.022576 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/ARPG Effects/Textures/portal.png
+  artifactKey: Guid(2ca5ac61052f7264e847fad5284dd1fe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ARPG Effects/Textures/portal.png using Guid(2ca5ac61052f7264e847fad5284dd1fe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f3526ac7788552bc3dacf4110c7186f3') in 0.049023 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/MiniPortalMat_MetallicSmoothness_v2.png
+  artifactKey: Guid(809fe2823470c894bb3a9cf0944a0d2c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/MiniPortalMat_MetallicSmoothness_v2.png using Guid(809fe2823470c894bb3a9cf0944a0d2c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '72d03821abe1941cc3f0ea056ce16795') in 0.021198 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/MiniPortalMat_Emission.png
+  artifactKey: Guid(ac3c4698f38a2d5488fef2359e1ad9bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/MiniPortalMat_Emission.png using Guid(ac3c4698f38a2d5488fef2359e1ad9bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0db0a0e0643eafb1921239369e0b0437') in 0.020495 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/SharpOreCrystalMat_AlbedoTransparency.png
+  artifactKey: Guid(d69edb85a5bc91d43a167786ba188fef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/SharpOreCrystalMat_AlbedoTransparency.png using Guid(d69edb85a5bc91d43a167786ba188fef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd1bba2869bf101c1e8881886fdc9292b') in 0.018096 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/AnyPortrait/Demo/PortraitGirl_Thumb.png
+  artifactKey: Guid(65dd69306708bea438388102d720f3bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Demo/PortraitGirl_Thumb.png using Guid(65dd69306708bea438388102d720f3bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7c607b7d62980f0aa171e475023b6308') in 0.022329 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/Point5xPoint5Grey.png
+  artifactKey: Guid(340faa0badae3504db388905c6a4063a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Textures/PrototypeBlocks/Point5xPoint5Grey.png using Guid(340faa0badae3504db388905c6a4063a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1c68ceab1ffec934b31da54fa7d7171e') in 0.021563 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/Hovl Studio/Sword slash VFX/Textures/Point12.png
+  artifactKey: Guid(c8ada4fdced7c07409542d983b96835e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/Sword slash VFX/Textures/Point12.png using Guid(c8ada4fdced7c07409542d983b96835e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '098af43abacfefa89d069386be0691c0') in 0.024855 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/SharpOreCrystalMat_MetallicSmoothness.png
+  artifactKey: Guid(c9d82532a85f9e44ebb0347565dbd98f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/SharpOreCrystalMat_MetallicSmoothness.png using Guid(c9d82532a85f9e44ebb0347565dbd98f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ff4bd0b7a0ec9fcd51256ca9b29ead58') in 0.023499 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/PoleBaseMat_Emission.png
+  artifactKey: Guid(b467e8a158f70c34ea41e74ebbbea874) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SineVFX/TopDownEffects/Resources/Meshes/Regular/Materials/PoleBaseMat_Emission.png using Guid(b467e8a158f70c34ea41e74ebbbea874) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a802e993a7249a3be2977d68f7cd7f0f') in 0.019196 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/AnyPortrait/Editor/Images/MeshEdit_Polygon.png
+  artifactKey: Guid(82d17d776e5e5664580f1b1014d902aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Editor/Images/MeshEdit_Polygon.png using Guid(82d17d776e5e5664580f1b1014d902aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dbeb287ea3045bcf2b958e3b5af121b7') in 0.018062 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 39.744055 seconds.
+  path: Assets/testAsset/Enemy/EnemyAnime/Porter/Sprite/Porter.mat
+  artifactKey: Guid(f412100b22592ad4a940bfdec4b70590) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Enemy/EnemyAnime/Porter/Sprite/Porter.mat using Guid(f412100b22592ad4a940bfdec4b70590) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bde458583a006ab4713c655fd0253421') in 0.019034 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 78.571260 seconds.
+  path: Assets/AllIn1SpriteShader/Resources/AllIn1OneShaderFunctions.cginc
+  artifactKey: Guid(df06cdcb3555be745b54ff3003fa687e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AllIn1SpriteShader/Resources/AllIn1OneShaderFunctions.cginc using Guid(df06cdcb3555be745b54ff3003fa687e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '761d558dd914c3b2c89f5f4fd11cb334') in 0.021280 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 4.wav
+  artifactKey: Guid(f6c4a42229093fb49934ba5f19396ad4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 4.wav using Guid(f6c4a42229093fb49934ba5f19396ad4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7ee24fb2b679f0aa6d5b0efff91bba1f') in 0.061817 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000041 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 5.wav
+  artifactKey: Guid(f9de49d76f67c4f45813e07cf647476d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 5.wav using Guid(f9de49d76f67c4f45813e07cf647476d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1b441e38fdceb9fbcd49728481ef7a2b') in 0.024694 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 2.wav
+  artifactKey: Guid(39bb7441101d163418f2ac241c0c2016) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 2.wav using Guid(39bb7441101d163418f2ac241c0c2016) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6c7ec8eeaaf5e898ac6b304b1fcf7420') in 0.022488 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000063 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 8.wav
+  artifactKey: Guid(91b3985a3b825734faea1f95bb7711bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 8.wav using Guid(91b3985a3b825734faea1f95bb7711bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b108c919422be627d9039e3e5f530254') in 0.018950 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 1.wav
+  artifactKey: Guid(d4407363924a3f044898d9e0bc9f59b6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 1.wav using Guid(d4407363924a3f044898d9e0bc9f59b6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '684db09ba6dd2d14d2ca4cf5f7a00616') in 0.023414 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000052 seconds.
+  path: Assets/AllIn1SpriteShader/2DRenderer_URP/PipelineSetup/AllIn12DRenderer.asset
+  artifactKey: Guid(bb4305d8e284ab94abb0fc3478415e62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AllIn1SpriteShader/2DRenderer_URP/PipelineSetup/AllIn12DRenderer.asset using Guid(bb4305d8e284ab94abb0fc3478415e62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e4fa87e36b6f0280a76d398124170c28') in 0.008667 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 6.wav
+  artifactKey: Guid(893cc5149d5db514397c81ce97c8d355) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 6.wav using Guid(893cc5149d5db514397c81ce97c8d355) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '36aed96e812102d42f29c168a769f465') in 0.020094 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000060 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 1.wav
+  artifactKey: Guid(3ec14c01da5e26940b192a19abc676e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 1.wav using Guid(3ec14c01da5e26940b192a19abc676e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '841ffbdefd03b4949ad125ef0034c03d') in 0.024963 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 6.wav
+  artifactKey: Guid(63f34db4fcad93149a2b508673a3847b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 6.wav using Guid(63f34db4fcad93149a2b508673a3847b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b782ebdf786cdc384ef94558d9fb3500') in 0.037734 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 4.wav
+  artifactKey: Guid(55986595fe0560d429270a0d2c9a703a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 4.wav using Guid(55986595fe0560d429270a0d2c9a703a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '30f3b8057e6edbb96d48778788ecabf9') in 0.020930 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 6.wav
+  artifactKey: Guid(4cc64b8cd92085d4b82c08ed20395016) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 6.wav using Guid(4cc64b8cd92085d4b82c08ed20395016) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6be4bd35220333c850c25a5f08603648') in 0.016170 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 3.wav
+  artifactKey: Guid(562003c889ce4c84f819fc9460dc6511) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 3.wav using Guid(562003c889ce4c84f819fc9460dc6511) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a5786a88257099a3f089e3f3d43dbbf') in 0.016879 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 2.wav
+  artifactKey: Guid(181b4ea80201eb64d9c05049d557c8d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 2.wav using Guid(181b4ea80201eb64d9c05049d557c8d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e12143a54102e375b1f9ecf7bd49dd92') in 0.024225 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 9.wav
+  artifactKey: Guid(30f532950a247c24989988ba2fd50b88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 9.wav using Guid(30f532950a247c24989988ba2fd50b88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '772f361c1bee0ae07b07db49f6ce1506') in 0.019537 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 3.wav
+  artifactKey: Guid(534d2c594389baf4f97b8931ea631371) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 3.wav using Guid(534d2c594389baf4f97b8931ea631371) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5752cc61f7a6fc1f61b7da225ef3ca5f') in 0.016444 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 1.wav
+  artifactKey: Guid(a46ca19e55a87424f951454c1e8e4ea3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 1.wav using Guid(a46ca19e55a87424f951454c1e8e4ea3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5b40c4019835cd794de7ad0751517164') in 0.016256 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 9.wav
+  artifactKey: Guid(c0a2e906fcd2d484bba28d33e5e75038) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate SFX Bundle - HD Remaster/Bullet Impacts & Flybys/Bullet Falling on Concrete/Bullet Falling on Concrete 9.wav using Guid(c0a2e906fcd2d484bba28d33e5e75038) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '690a33d7f3d934864fecf25be9e7be2a') in 0.014395 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 4.wav
+  artifactKey: Guid(eeb20ec85be8e9f4baeb44d4234567e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Sound FX Bundle/Bullet Impacts & Flybys/Bullet Falling on Earth_Dirt/Bullet Falling on Earth, Dirt 4.wav using Guid(eeb20ec85be8e9f4baeb44d4234567e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2df676e3ecb992db6a17bf01f8e290e2') in 0.014947 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 5.247811 seconds.
+  path: Assets/AllIn1SpriteShader
+  artifactKey: Guid(6d0a0ce4ca20ccf439708567672c7458) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AllIn1SpriteShader using Guid(6d0a0ce4ca20ccf439708567672c7458) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3065b3b1e4a72c430c649ec0864440ab') in 0.006444 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.028611 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 5.79 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.205 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2205ms)
+		BeginReloadAssembly (163ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (9ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (62ms)
+		EndReloadAssembly (1933ms)
+			LoadAssemblies (103ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (401ms)
+			ReleaseScriptCaches (6ms)
+			RebuildScriptCaches (173ms)
+			SetupLoadedEditorAssemblies (1104ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (15ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (6ms)
+				BeforeProcessingInitializeOnLoad (174ms)
+				ProcessInitializeOnLoadAttributes (792ms)
+				ProcessInitializeOnLoadMethodAttributes (108ms)
+				AfterProcessingInitializeOnLoad (8ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (44ms)
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Refreshing native plugins compatible for Editor in 10.32 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8812 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 118 unused Assets / (8.2 MB). Loaded Objects now: 9880.
+Memory consumption went from 0.61 GB to 0.61 GB.
+Total: 6.676100 ms (FindLiveObjects: 0.586500 ms CreateObjectMapping: 0.497300 ms MarkObjects: 3.601200 ms  DeleteObjects: 1.990500 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 235.551531 seconds.
+  path: Assets/AllIn1SpriteShader/2DRenderer_URP/PipelineSetup/AllIn12DRendererUrpAsset.asset
+  artifactKey: Guid(1b62cf18bd8effd449e667f64e0c8cc4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AllIn1SpriteShader/2DRenderer_URP/PipelineSetup/AllIn12DRendererUrpAsset.asset using Guid(1b62cf18bd8effd449e667f64e0c8cc4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '10eb760228acca77db5c4f9472dd6d7a') in 0.037588 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 276.075067 seconds.
+  path: Assets/testAsset/Map/Lighting/alter.prefab
+  artifactKey: Guid(f25a5507d222b6e4cbbce5ecca675d74) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Map/Lighting/alter.prefab using Guid(f25a5507d222b6e4cbbce5ecca675d74) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a3723cb269e0cdb108a9303bf5b856e9') in 0.237217 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 69.037701 seconds.
+  path: Assets/Beautify/URP/Demo/DemoSources/URP Settings/UniversalRenderPipelineAsset.asset
+  artifactKey: Guid(0420a5f7bad574a20bf7ad3eddd45a6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Beautify/URP/Demo/DemoSources/URP Settings/UniversalRenderPipelineAsset.asset using Guid(0420a5f7bad574a20bf7ad3eddd45a6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9122a2c359c7879abdc0fec635c7e1e0') in 0.016390 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 260.825668 seconds.
+  path: Assets/AllIn1SpriteShader/2DRenderer_URP/PipelineSetup/AllIn12DRenderer.asset
+  artifactKey: Guid(bb4305d8e284ab94abb0fc3478415e62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AllIn1SpriteShader/2DRenderer_URP/PipelineSetup/AllIn12DRenderer.asset using Guid(bb4305d8e284ab94abb0fc3478415e62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '84197407f558b351639c265a7e5b9507') in 0.003905 seconds 

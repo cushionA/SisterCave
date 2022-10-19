@@ -707,6 +707,8 @@ public class GManager : MonoBehaviour
         {
             stamina = 0;
         }
+        isStUse = true;
+
     }
     /// <summary>
     /// MP回復

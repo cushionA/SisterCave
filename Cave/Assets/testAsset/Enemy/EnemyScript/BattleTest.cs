@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 public class BattleTest : MonoBehaviour
 {
     [SerializeField] GameObject Enemy;
-    GameObject sis;
+
     [SerializeField] bool isBattle;
 
     [SerializeField]
@@ -32,13 +32,10 @@ public class BattleTest : MonoBehaviour
 
             if(Enemy == null)
             {
-            if (sis != null)
-            {
-                Enemy = sis.gameObject;
-            }
+            return;
             }
         //GameObject del = Enemy.gameObject;
-        if (Enemy != null)
+        else
         {
             Destroy(Enemy);
         }
@@ -48,10 +45,10 @@ public class BattleTest : MonoBehaviour
     public async  UniTaskVoid ReSporn()
     {
         
-        sis = await Addressables.InstantiateAsync(EnemyData);
+        Enemy = await Addressables.InstantiateAsync(EnemyData);
         //  Enemy = dd;
-        sis.transform.position = this.gameObject.transform.position;
-        Debug.Log($"{sis.name}");
+        Enemy.transform.position = this.gameObject.transform.position;
+        Debug.Log($"{Enemy.name}");
     }
 
 }

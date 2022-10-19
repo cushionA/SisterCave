@@ -141,6 +141,7 @@ namespace MoreMountains.CorgiEngine
 			// if we're running and not grounded, we change our state to Falling
 			if (!_controller.State.IsGrounded && (_movement.CurrentState == CharacterStates.MovementStates.Running) && _startFeedbackIsPlaying)
 			{
+
 				_movement.ChangeState(CharacterStates.MovementStates.Falling);
 				StopFeedbacks();
 			}
@@ -172,7 +173,7 @@ namespace MoreMountains.CorgiEngine
 				|| (!_controller.State.IsGrounded) // or if we're not grounded
 				|| (_condition.CurrentState != CharacterStates.CharacterConditions.Normal) || _movement.CurrentState == CharacterStates.MovementStates.Nostate) // or if we're not walking
 			{
-				Debug.Log("‚ ");
+
 				// we do nothing and exit
 				return;
 			}

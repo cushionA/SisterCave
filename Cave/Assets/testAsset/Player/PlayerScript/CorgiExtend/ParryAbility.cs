@@ -214,11 +214,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             parryNumber = num;
             if(num == 1 && isPlayer)
             {
-                blocking = true;Debug.Log($"‚Š‚ƒ‚Œ8{parryNumber}");
+                blocking = true;
+                GManager.instance.PlaySound(MyCode.SoundManager.instance.blockingSound, transform.position);
             }
             else
             {
                 blocking = false;
+                GManager.instance.PlaySound(MyCode.SoundManager.instance.parrySound, transform.position);
             }
             ParryJudgeEnd();
             ParryAvoid();

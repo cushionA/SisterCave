@@ -20,13 +20,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// 能力のインスペクタの冒頭にある
         public override string HelpBoxText() { return "スタミナ管理に使うコード"; }
 
-        //すでにスタミナを使用したかどうか
-        bool isUsed;
+        //スタミナ継続使用中かどうか
+        bool isUsing;
 
         /// <summary>
         /// スタミナ使用関連で時間を計測
         /// </summary>
        float stTime;
+
+        CharacterStates.MovementStates lastState = CharacterStates.MovementStates.Nostate;
 
         /// <summary>
         ///　ここで、パラメータを初期化する必要があります。
@@ -43,7 +45,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public override void ProcessAbility()
         {
             base.ProcessAbility();
-            StaminaController();
+     //       StaminaController();
+            StaminaJudge();
         }
 
 
@@ -54,10 +57,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected virtual void StaminaController()
         {
             if (NoUseJudge())
-            {
+            {            Debug.Log($"カルピス{_movement.CurrentState}");
                 //スタミナを使用してない状態に
                 GManager.instance.isStUse = false;
-                isUsed = false;
+
                 stTime = 0f;
 
             }
@@ -78,10 +81,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <returns></returns>
         protected virtual bool NoUseJudge()
         {
+
+
             //ガードに関してはガード中かつスタミナ使用中、またはダウン中でなければ
-            return (_movement.CurrentState == CharacterStates.MovementStates.Crouching || _movement.CurrentState == CharacterStates.MovementStates.Falling
-                   || _movement.CurrentState == CharacterStates.MovementStates.Idle || !(_movement.CurrentState == CharacterStates.MovementStates.Guard && GManager.instance.isStUse)
-                   || _condition.CurrentState != CharacterStates.CharacterConditions.Stunned);
+            return (!GManager.instance.isStUse && _condition.CurrentState == CharacterStates.CharacterConditions.Normal);
         }
 
         /// <summary>
@@ -89,12 +92,69 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         protected virtual void StaminaJudge()
         {
+
+            if(lastState != _movement.CurrentState)
+            {
+                if (_movement.CurrentState == CharacterStates.MovementStates.Running)
+                {
+
+                    GManager.instance.StaminaUse((int)(GManager.instance.dashSt * GManager.instance.stRatio));
+                    GManager.instance.isStUse = true;
+                    isUsing = true;
+
+                }
+                else if (_movement.CurrentState == CharacterStates.MovementStates.Jumping || _movement.CurrentState == CharacterStates.MovementStates.DoubleJumping)
+                {
+
+                    GManager.instance.StaminaUse((int)(GManager.instance.jumpSt * GManager.instance.stRatio));
+                    GManager.instance.isStUse = true;
+
+                }
+                else if (_movement.CurrentState == CharacterStates.MovementStates.Rolling)
+                {
+
+                    GManager.instance.StaminaUse((int)(GManager.instance.rollSt * GManager.instance.stRatio));
+                    GManager.instance.isStUse = true;
+
+                }
+                else if (!isUsing)
+                {
+                    GManager.instance.isStUse = false;
+                }
+                lastState = _movement.CurrentState;
+            }
+
+
+            if (isUsing)
+            {
+                stTime += _controller.DeltaTime;
+
+                if (_movement.CurrentState == CharacterStates.MovementStates.Running)
+                {
+                    //スタミナ未使用か、あるいは0.1秒ごとに
+                    if (stTime >= 0.1)
+                    {
+                        GManager.instance.StaminaUse((int)(GManager.instance.dashSt * GManager.instance.stRatio));
+                        GManager.instance.isStUse = true;
+                        stTime = 0;
+                    }
+                }
+                else
+                {
+                    isUsing = false;
+                    stTime = 0;
+                    GManager.instance.isStUse = false;
+                }
+            }
+
+ /*
+
             if(_movement.CurrentState == CharacterStates.MovementStates.Running)
             {
                 stTime += _controller.DeltaTime;
 
                 //スタミナ未使用か、あるいは0.1秒ごとに
-                if(!isUsed || stTime >= 0.1)
+                if(!isUsing || stTime >= 0.1)
                 {
                     GManager.instance.StaminaUse((int)(GManager.instance.dashSt * GManager.instance.stRatio));
                     isUsed = true;
@@ -119,9 +179,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
             }
 
+
             //武器関連はWeaponAbillityで消費させてたわ
             //多分ガードも同じ
-       /*     else if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
+           else if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
             {
                 if (!isUsed)
                 {

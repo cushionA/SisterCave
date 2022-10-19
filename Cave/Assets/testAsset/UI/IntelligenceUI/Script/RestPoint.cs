@@ -1,5 +1,6 @@
+using MoreMountains.Feedbacks;
 using System.Collections;
-using System.Collections.Generic;
+using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,9 +22,13 @@ public class RestPoint : MonoBehaviour
     [HideInInspector]
     public bool isFirst;
 
-
+    [SerializeField]
+    Selectable _resetWindow;
 
     // Start is called before the first frame update
+
+    
+
     void Start()
     {
         c = GetComponent<CircleCollider2D>();
@@ -39,14 +44,14 @@ public class RestPoint : MonoBehaviour
             isCallable = false;
             c.enabled = false;
             button.Select();
-            
+            _resetWindow.transform.parent.gameObject.MMGetComponentNoAlloc<EnemyController>().ResetEnemy();
             if (!isFirst)
             {
                 // Debug.Log($"aas{isFirst}");
 
                 isFirst = true;
             }
-           // Debug.Log("ssssssssseerf");
+
             GManager.instance.onGimmick = true;
             MainUICon.instance.UIOn = true;
             GManager.instance.PlayerEventLock(true);
@@ -68,7 +73,12 @@ public class RestPoint : MonoBehaviour
     }
 
 
-
+   public void ResetWindowCall()
+    {
+        _resetWindow.transform.parent.gameObject.SetActive(true);
+        _resetWindow.Select();
+        WindowCansel();
+    }
 
     public void WindowSet()
     {

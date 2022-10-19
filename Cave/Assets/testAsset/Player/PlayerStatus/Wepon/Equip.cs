@@ -58,6 +58,10 @@ public class Equip : Item
     public List<AnimationCurve> skillCurve;
     public List<AnimationCurve> intCurve;
 
+    /// <summary>
+    /// この数値でガードの音変わる
+    /// 35まで小盾、70から大盾
+    /// </summary>
     [Header("ガード力")]
     public List<float> guardPowerSet;//受け値
 
@@ -82,6 +86,7 @@ public class Equip : Item
     [SoundGroup]
     ///<Summary>
     ///　使用する音声のリスト。
+    ///　特殊な攻撃の音とか燃える音とか
     ///　Status.useSound[i]という形でアニメイベントで指定
     ///</Summary>
     public List<string> useSound;
@@ -98,5 +103,7 @@ public class Equip : Item
     [HideInInspector] public AttackType atType;
 
     public float _weight;
+
+
 
 }

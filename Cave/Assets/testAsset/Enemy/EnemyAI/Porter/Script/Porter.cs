@@ -1,120 +1,121 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Porter : EnemyBase
+namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
-
-    float attackChanceTime;//攻撃間隔
-    //[SerializeField] Material myWing;
-    bool isChange;
-    // Start is called before the first frame update
-    int take;
-    int moveType;
-   protected override void Start()
+    public class Porter : EnemyAIBase
     {
-        base.Start();
-    }
+
+        float attackChanceTime;//攻撃間隔
+                               //[SerializeField] Material myWing;
+        bool isChange;
+        // Start is called before the first frame update
+        int take;
+        int moveType;
 
 
-    // Update is called once per frame
-    protected override void FixedUpdate()
-    {
-        base.FixedUpdate();
-        if (isAggressive)
+        protected override void Initialization()
         {
-            GroundGuardAct(60);
-            //   isGuard = status.ground == EnemyStatus.MoveState.stay && !guardBreak && !isAttack ? true : false;
-            /*                if(isDamage && !isDown && (Mathf.Sign(transform.localScale.x) != Mathf.Sign(GManager.instance.Player.transform.localScale.x)))
-                  {
-                           status.ground = EnemyStatus.MoveState.stay;
-                       }*/
+            base.Initialization();
+        }
 
-            attackChanceTime += Time.fixedDeltaTime;
+
+
+        // Update is called once per frame
+        public override void ProcessAbility()
+        {
+            base.ProcessAbility();
+            
+            if (isAggressive)
+            {
+
+
+                attackChanceTime += _controller.DeltaTime;
 
 
                 if (attackChanceTime >= 6)
                 {
-                    if (!isAttack)
+                    if (_movement.CurrentState != CharacterStates.MovementStates.Attack)
                     {
 
-                    if (isDown)
-                    {
-                        attackChanceTime = 0f;
-                    }
+                        if (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned)
+                        {
+                            attackChanceTime = 0f;
+                        }
 
-                    if ((ground == EnemyStatus.MoveState.stay && air == EnemyStatus.MoveState.stay) && !isChange)
-                    {
-                        isChange = true;
-                        ground = EnemyStatus.MoveState.wakeup;
-                    }
+                        //パターン変更
+                        if ((ground == EnemyStatus.MoveState.stay && air == EnemyStatus.MoveState.stay) && !isChange)
+                        {
+                            isChange = true;
+                            ground = EnemyStatus.MoveState.wakeup;
+                        }
                         AgrFly(2);
-                    
+
                     }
-                    if (ground == EnemyStatus.MoveState.stay && air == EnemyStatus.MoveState.stay && isChange)
+                    //行動変更後なら
+                    if (ground == EnemyStatus.MoveState.stay && air == EnemyStatus.MoveState.stay && isChange )
                     {
 
-                    isChange = false;
-                    //SetAttackNumber(0);
-                    //attackNumber = 0;
-                          Attack(true, 0,true);
+                        isChange = false;
+                        //SetAttackNumber(0);
+                        //attackNumber = 0;
+                        Attack(true, 1, true);
+               //         Debug.Log("ｄｄ");
 
                         attackChanceTime = 3.0f;
                         take = 2;
                     }
-               else if(attackChanceTime >= 10)
+                    else if (attackChanceTime >= 10)
                     {
                         attackChanceTime = 0;
                         isChange = false;
                     }
                 }
-            else if(!isAttack)
-            {
-                if(attackChanceTime < 6)
+                else if (_movement.CurrentState != CharacterStates.MovementStates.Attack)
                 {
-                    AgrFly(moveType);
-                }
-                if (attackChanceTime >= 1.5 * take && take < 4 && attackChanceTime < 6)
-                {
-                    int sai = RandomValue(1,100);
-                    if(sai <= 50)
+                    if (attackChanceTime < 6)
                     {
-                        moveType = 0;
+                       // 
+                        AgrFly(moveType);
                     }
-                    else
+                    if (attackChanceTime >= 1.5 * take && take < 4 && attackChanceTime < 6)
                     {
-                        moveType = 1;
+                        int sai = RandomValue(1, 100);
+                        if (sai <= 50)
+                        {
+                            moveType = 0;
+                        }
+                        else
+                        {
+                            moveType = 1;
+                        }
+                        take++;
+                        if (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned)
+                        {
+                            //      移動タイプを変更
+                            moveType = moveType == 0 ? 1 : 1;
+                        }
                     }
-                    take++;
-                    if (isDown)
+                    else if (take >= 4)
                     {
-                        //      移動タイプを変更
-                        moveType = moveType == 0 ? 1 : 1;
+                        take = 0;
                     }
-                }
-                else if (take >= 4)
-                {
-                    take = 0;
+
+
                 }
 
 
+
+
+                // TriggerJump();
             }
-            
+            else if (!isAggressive)
+            {
+                PatrolFly();
+                //PatrolMove();
+            }
 
 
-
-           // TriggerJump();
         }
-        else if (!isAggressive)
-        {
-              PatrolFly();
-            //PatrolMove();
-        }
-
-        //  AirJump(direX * status.combatSpeed.x / 2);
-        GroundJump(transform.localScale.x * status.jumpMove, status.jumpPower * 1.2f);
-        // JumpCancel();
-        // Avoid(direX);
-
     }
 }

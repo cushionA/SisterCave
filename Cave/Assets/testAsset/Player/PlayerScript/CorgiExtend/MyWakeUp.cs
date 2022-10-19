@@ -130,9 +130,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 //アニメ終わったらスタン解除
                 //それか4以外全部まとめてアニメ松処理でもいいな
                 //今のタイプ入れるところでアニメの名前切り替えてもよかろ
-
-                if (CheckEnd("Falter"))
+                blowTime += _controller.DeltaTime;
+                //0.1秒以上で地面についたら
+                if (blowTime >= 0.15)
                 {
+                   _controller.SetHorizontalForce(0);
+                    blowTime = 0;
+                }
+
+              //  Debug.Log("ああああ");
+                    if (CheckEnd("Falter"))
+                {
+                    blowTime = 0;
                     Recover();
                 }
 
@@ -153,7 +162,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             else if (nowType == 6)
             {
-                Debug.Log("ddsd");
+
                 if (CheckEnd("NDie"))
                 {
                     Die();
@@ -163,11 +172,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
 
                     blowTime += _controller.DeltaTime;
-                    //0.1秒以上で地面についたら
-                    if (blowTime >= 0.08 && _controller.State.IsGrounded)
-                    {
+                //0.1秒以上で地面についたら
+                if (blowTime >= 0.08 && _controller.State.IsGrounded)
+                {
+                    _health._blowNow = false;
                     blowTime = 0;
-                     _controller.SetForce(Vector2.zero);
+                    _controller.SetForce(Vector2.zero);
                     if (nowType == 4)
                     {
                         nowType = 5;
@@ -180,7 +190,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                     }
                 }
-                
 
             }
             else if (nowType == 5)
@@ -209,7 +218,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="type"></param>
         public void StartStunn(StunnType type)
         {
-
+      //      Debug.Log("ｓｓｓｓ");
 
                 _condition.ChangeState(CharacterStates.CharacterConditions.Stunned);
                 _characterHorizontalMovement.SetHorizontalMove(0);
@@ -218,7 +227,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 if (type == StunnType.Falter)
                 {
                     nowType = 1;
-                    _controller.SetForce(Vector2.zero);
+                   // _controller.SetForce(Vector2.zero);
                 }
                 else if (type == StunnType.Parried)
                 {
@@ -232,6 +241,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
                 else if(type == StunnType.Down)
                 {
+                    _health._blowNow = true;
                     //現在吹き飛ばされてます
                     nowType = 4;
                        if(isPlayer)
@@ -239,8 +249,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
                 else if (type == StunnType.NDie)
                 {
-                    Debug.Log($"だの");
-                    _controller.SetForce(Vector2.zero);
+                _health._blowNow = true;
+                _controller.SetForce(Vector2.zero);
                     nowType = 6;
                 }
                 else if (type == StunnType.BlowDie)
@@ -257,6 +267,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         public void Die()
         {
+            _health.Die();
             if (isPlayer)
             {
                 Recover();
@@ -264,6 +275,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             else
             {
                 Destroy(_character.gameObject);
+                
             }
 
         }

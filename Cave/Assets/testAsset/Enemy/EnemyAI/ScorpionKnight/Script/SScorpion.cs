@@ -127,7 +127,7 @@ public class SScorpion : EnemyBase
         }
 
         //  AirJump(direX * status.combatSpeed.x / 2);
-        GroundJump(transform.localScale.x * status.jumpMove, status.jumpPower * 1.2f);
+       // GroundJump(transform.localScale.x * status.jumpMove, status.jumpPower * 1.2f);
         // JumpCancel();
        // Avoid(direX);
 

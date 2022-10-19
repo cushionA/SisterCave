@@ -87,9 +87,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		[SerializeField]
 		protected ParryAbility _parry;
 
-        #endregion
+		#endregion
 
-
+		[SerializeField]
+		GameObject eController;
 
         protected override void Initialization()
 		{
@@ -296,6 +297,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			#endregion
 
 			_rolling.RollDuration = GManager.instance.pStatus.avoidRes;
+
+			//rollSpeedはローリングのスピードが通常移動の何倍か
 			_rolling.RollSpeed = GManager.instance.pStatus.avoidSpeed;
 			_rolling.BlockHorizontalInput = true;
 			_rolling.PreventDamageCollisionsDuringRoll = true;
@@ -428,7 +431,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public override void ProcessAbility()
         {
             base.ProcessAbility();
-
+			
+			if (_controller.State.JustGotGrounded)
+            {
+				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorShakeSound[2], transform.position);
+			}
 		}
 
         /// <summary>
@@ -463,11 +470,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 			Equip useEquip;
-
+			float mainDamage = 0;
             if (isShield)
             {
 				useEquip = GManager.instance.equipShield;
-				GManager.instance.useAtValue.isShield = false;
+				
             }
             else
             {
@@ -478,10 +485,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			_damage._attackData.phyAtk = useEquip.phyAtk * attackFactor;
 
-                //斬撃刺突打撃を管理
-                if (GManager.instance.useAtValue.type == Equip.AttackType.Slash)
+				
+
+				//斬撃刺突打撃を管理
+				if (GManager.instance.useAtValue.type == Equip.AttackType.Slash)
                 {
-                    _damage._attackData._attackType = 0;
+                    _damage._attackData._attackType = 1;
                 }
                 else if (GManager.instance.useAtValue.type == Equip.AttackType.Stab)
                 {
@@ -508,31 +517,44 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (useEquip.holyAtk > 0)
 		{
 			_damage._attackData.holyAtk = useEquip.holyAtk * holyATFactor;
-
-		}
+				_damage._attackData._attackType = 8;
+				mainDamage = _damage._attackData.holyAtk;
+			}
 		//闇
 		if (useEquip.darkAtk > 0)
 		{
 			_damage._attackData.darkAtk = useEquip.darkAtk * darkATFactor;
-
+                if (_damage._attackData.darkAtk > mainDamage)
+                {
+					_damage._attackData._attackType = 16;
+					mainDamage = _damage._attackData.darkAtk;
+				}
 		}
 		//炎
 		if (useEquip.fireAtk > 0)
 		{
 			_damage._attackData.fireAtk = useEquip.fireAtk * fireATFactor;
-
-		}
+				if (_damage._attackData.fireAtk > mainDamage)
+				{
+					_damage._attackData._attackType = 32;
+					mainDamage = _damage._attackData.fireAtk;
+				}
+			}
 		//雷
 		if (useEquip.thunderAtk > 0)
 		{
 			_damage._attackData.thunderAtk = useEquip.thunderAtk * thunderATFactor;
-
-		}
+				if (_damage._attackData.thunderAtk > mainDamage)
+				{
+					_damage._attackData._attackType = 64;
+					mainDamage = _damage._attackData.thunderAtk;
+				}
+			}
 		_damage._attackData.shock = GManager.instance.useAtValue.z;
 
 
 		_damage._attackData.attackBuff = attackBuff;
-			//damage = Mathf.Floor(damage * attackBuff);
+		//	_damage._attackData.disParry = GManager.instance.useAtValue.disParry;
 			_damage._attackData.mValue = GManager.instance.useAtValue.x;
 			_damage._attackData.isBlow = GManager.instance.useAtValue.isBlow;
 		_damage._attackData.isLight = GManager.instance.useAtValue.isLight;
@@ -626,7 +648,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			nowArmor = GManager.instance.Armor;
 		}
 
+		/// <summary>
+		/// 全てのアビリティをキャンセル
+		/// </summary>
+		public void MoveReset()
+        {
+		//	Debug.Log("oooooo");
+			_attack.AttackEnd();
+			_guard.GuardEnd();
 
+        }
 
 
 		/// <summary>
@@ -635,6 +666,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <param name="damageType"></param>
 		public void DamageSound(byte damageType,bool heavy)
 		{
+
 			if (damageType == 1)
 			{
 				GManager.instance.PlaySound("SlashDamage", transform.position);
@@ -782,6 +814,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				GManager.instance.stamina -= (shock * 3) * (1 - (useEquip.guardPower / 100));
                 if (GManager.instance.stamina <= 0)
                 {
+					_guard.GuardEnd();
 					nowArmor = -1;
                 }
 			}
@@ -807,6 +840,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				if (isDown)
 				{
+					//Debug.Log($"ｓｓｓｓｓｓｓｓｓｓｓ{_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove}");
 					result = (MyWakeUp.StunnType.Down);
 				}
 				else
@@ -855,13 +889,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void WeaponChange()
 		{
 
-			if (_inputManager.WeaponChangeButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+			if (_inputManager.WeaponChangeButton.State.CurrentState == MMInput.ButtonStates.ButtonDown && _condition.CurrentState == CharacterStates.CharacterConditions.Normal)
 			{
-				_weapon.AttackEnd();
+				//_weapon.AttackEnd();
 				_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
 				//このフラグは武器切り替えか両手持ち切り替えかで区別するもの
 				//武器切り替え後は一回だけボタン離しても持ち手変更が反応しないようにする
-				Debug.Log("あいｓｄｋｆｒねお");
+
 			}
             else
             {
@@ -930,14 +964,24 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             if (Lock)
             {
-				_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+
 				_characterHorizontalMovement.SetHorizontalMove(0);
 				_controller.SetForce(Vector2.zero);
+				if (_controller.State.IsGrounded)
+				{
+					_movement.ChangeState(CharacterStates.MovementStates.Idle);
+				}
+                else
+                {
+					_movement.ChangeState(CharacterStates.MovementStates.Falling);
+				}
+				_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
             }
             else
             {
 				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 			}
+			
         }
 
 		/// <summary>
@@ -972,10 +1016,170 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
 
 
-        #endregion
+		#endregion
+
+		//アニメイベント
+		//音とエフェクト
+		#region
+
+
+		public void attackEffect()
+		{
+
+			Addressables.InstantiateAsync(GManager.instance.useAtValue.attackEffect, GManager.instance.pc.eController.transform);
+		}
+
+
+		/// <summary>
+		/// 現在の状況に合わせたサウンドを提供します
+		/// スタン以外
+		/// </summary>
+		/// <param name="i">これはバリエーションある場合のパラメータ</param>
+		public void MoveSound(int i = 0)
+        {
+			//Debug.Log($"sf{_movement.CurrentState}");
+			if (_movement.CurrentState == CharacterStates.MovementStates.moving || _movement.CurrentState == CharacterStates.MovementStates.GuardMove ||
+				_movement.CurrentState == CharacterStates.MovementStates.Crawling)
+            {
+				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorFootSound[1], transform.position);
+				if (GManager.instance.isWater)
+				{
+					GManager.instance.PlaySound("WaterStep", transform.position);
+				}
+			}
+			else if (_movement.CurrentState == CharacterStates.MovementStates.Running)
+			{
+				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorFootSound[1], transform.position);
+			}
+			else if (_movement.CurrentState == CharacterStates.MovementStates.Rolling)
+			{
+				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorRollSound[1], transform.position);
+			}
+			else if (_movement.CurrentState == CharacterStates.MovementStates.Jumping || _movement.CurrentState== CharacterStates.MovementStates.DoubleJumping)
+			{
+				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorJumpSound[1], transform.position);
+			}
+			else if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.Crouching)
+			{
+				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorShakeSound[0], transform.position);
+			}
+			//攻撃時は体が少し揺れる
+			else if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
+			{
+				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorShakeSound[0], transform.position);
+			}
+		}
+
+
+		/// <summary>
+		/// エフェクトを発生させるメソッド。
+		/// エフェクトを発生させる瞬間位置を変えてその位置をアニメに利用させる
+		/// あるいはアニメイベントで呼び出したエフェクト自体を動かす
+		/// </summary>
+		public void EffectController(string name)
+		{
+			Transform place = eController.transform;
+			Addressables.InstantiateAsync($"{name}", place.position, place.rotation);
+
+		}
+		public void AnimeSound(string useSoundName)
+		{
+
+			GManager.instance.PlaySound(useSoundName, transform.position);
+
+
+		}
+		public void AnimeChaise(string useSoundName)
+		{
+
+			GManager.instance.FollowSound(useSoundName, transform);
+
+		}
+
+		/// <summary>
+		/// 戦技とかでなる特殊な音を指定
+		/// </summary>
+		/// <param name="useSoundNum"></param>
+		/// <param name="isChase"></param>
+
+		public void WeaponSound(int useSoundNum, bool isChase = false)
+		{
+			if (!isChase)
+			{
+				GManager.instance.PlaySound(GManager.instance.equipWeapon.useSound[useSoundNum], transform.position);
+			}
+			else
+			{
+				GManager.instance.FollowSound(GManager.instance.equipWeapon.useSound[useSoundNum], transform);
+			}
+
+		}
+		public void GuardSound()
+		{
+
+
+			if (GManager.instance.twinHand)
+			{
+				GManager.instance.PlaySound(GManager.instance.equipWeapon.useSound[0], transform.position);
+			}
+            else
+            {
+				GManager.instance.PlaySound(GManager.instance.equipShield.useSound[0], transform.position);
+			}
+		}
+		/// <summary>
+		/// 燃えてる剣だったりして音が聞こえる場合
+		/// </summary>
+		/// <param name="useSoundNum"></param>
+		/// <param name="isChase"></param>
+		public void LeftSound(int useSoundNum, bool isChase = false)
+		{
+			if (!isChase)
+			{
+				GManager.instance.PlaySound(GManager.instance.equipShield.useSound[useSoundNum], transform.position);
+			}
+			else
+			{
+				GManager.instance.FollowSound(GManager.instance.equipShield.useSound[useSoundNum], transform);
+			}
+		}
+		public void StepSound()
+		{
+			GManager.instance.PlaySound("NAFootStep", transform.position);
+			if (GManager.instance.isWater)
+			{
+				GManager.instance.PlaySound("WaterStep", transform.position);
+			}
+		}
+		/// <summary>
+		/// 通常攻撃の音
+		/// </summary>
+		/// <param name="type"></param>
+		public void SwingSound(int type = 0)
+		{
+			//斬撃刺突打撃を管理
+			if (GManager.instance.useAtValue.type == MyCode.Weapon.AttackType.Stab)
+			{
+				GManager.instance.PlaySound(MyCode.SoundManager.instance.stabSound[type], transform.position);
+			}
+			else
+			{
+				GManager.instance.PlaySound(MyCode.SoundManager.instance.swingSound[type], transform.position);
+			}
+
+			//エンチャしてる場合も
+
+		}
+
+
+		#endregion
+
+
+
+	
 
 
 
 
-    }
+	}
 }

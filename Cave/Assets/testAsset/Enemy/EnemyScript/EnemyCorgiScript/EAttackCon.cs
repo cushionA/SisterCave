@@ -49,7 +49,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
                // Debug.Log("あじぇｋ");
             }
-           // Debug.Log($"いいい{motionNum}");
+
         }
 
         //どうせ呼ばれないから消す
@@ -77,7 +77,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void AttackTrigger(int num = 0)
         {
             //攻撃中じゃなけりゃあ
-
+ _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
                  motionNum = num;
                 _movement.ChangeState(CharacterStates.MovementStates.Attack);
                 //空中なら重力消す
@@ -86,7 +86,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     _controller.DefaultParameters.Gravity = 0f;
                 }
             nowAttack = true;
-            _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+           
             //  Debug.Log($"aaaaa{motionNum}");
         }
 
@@ -108,7 +108,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             //numパラメーターでアニメ再生の対象が変わる。
             MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _numAnimationParameter, motionNum, _character._animatorParameters);
-           // Debug.Log($"あいいい{motionNum}");
+       //   Debug.Log($"あいいい{motionNum}");
             //コンボ系の連続再生はAIの方で定義
             //攻撃のクールタイム…というかこのへんはかわらんやろ
         }

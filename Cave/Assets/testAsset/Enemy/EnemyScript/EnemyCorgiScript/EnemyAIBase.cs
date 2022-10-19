@@ -48,6 +48,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 	[Header("エネミーのステータス")]
 	public EnemyStatus status;
+
+
+
 	// === 外部パラメータ ======================================
 	/*[HideInInspector]*/
 	public bool isAggressive;//攻撃モードの敵
@@ -87,7 +90,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 	protected float attackBuff = 1;//攻撃倍率
 
-	bool flyNow;
+
 
 	/// <summary>
 	/// 攻撃の値
@@ -271,6 +274,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		int horizontalDirection;
 
+
+
+
+
 		//横移動は継承もとにあるよん
 
 		public PlayerJump _jump;
@@ -296,6 +303,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public ParryAbility _parry;
 
+		public MyAttackMove _rush;
+
 		//	protected Hittable _hitInfo;
 
 
@@ -317,6 +326,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// 
 		/// </summary>
 		int suppleNumber;
+
+		CharacterStates.MovementStates lastState = CharacterStates.MovementStates.Nostate;
+
+
+		bool flyNow;
+
 
 		// === コード（Monobehaviour基本機能の実装） ================
 		protected override void Initialization()
@@ -361,7 +376,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			base.ProcessAbility();
 			Brain();
+			ActionSound();
 		//	Debug.Log($"かどうか{_animator.name}");
+
+
 	}
 
 
@@ -399,7 +417,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			
 			//ドッグパイルありますか
 
-//Debug.Log($"あいい{_movement.CurrentState}");
+
 
 			//うごける時だけ
 			if (isMovable)
@@ -572,14 +590,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				_guard.GuardHit();
 				if (isDown)
 				{
-					nowArmor -= ((SManager.instance.useMagic.shock * 2) * status.guardPower / 100) * 1.2f;
+					nowArmor -= ((shock * 2) * status.guardPower / 100) * 1.2f;
 
 				}
 				else
 				{
-					nowArmor -= (SManager.instance.useMagic.shock * 2) * ((100 - status.guardPower) / 100);
+					nowArmor -= (shock * 2) * ((100 - status.guardPower) / 100);
 				}
-
+				if(nowArmor <= 0)
+                {
+					_guard.GuardEnd();
+				}
 			}
 
             else
@@ -867,10 +888,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 			else
             {
-				GravitySet(0);
+				GravitySet(status.firstGravity);
 				_flying.nFlySpeed.Set(status.patrolSpeed.x,status.patrolSpeed.y);
 				_flying.FastSpeed.Set(status.combatSpeed.x, status.combatSpeed.y);
-            }
+				_flying.FastFly(false,false);
+
+			}
 
 			if(_rolling != null)
             {
@@ -1036,8 +1059,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		 thunderDef = 70;
 
 			_health.InitialHealth = (int)maxHp;
-			_health.CurrentHealth = _health.InitialHealth;
-		nowArmor = status.Armor;
+			_health.MaximumHealth = (int)maxHp;
+			_health.CurrentHealth= _health.InitialHealth;
+		//	Debug.Log($"tanomu{_health.CurrentHealth}");
+			nowArmor = status.Armor;
 	}
 
 		/// <summary>
@@ -1050,7 +1075,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//status.hitLimmit--;
 			//mValueはモーション値
 
-
+			float mainDamage = 0;
 			if (status.phyAtk > 0)
 			{
 				_damage._attackData.phyAtk = status.phyAtk * attackFactor;
@@ -1085,29 +1110,45 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			if (status.holyAtk > 0)
 			{
 				_damage._attackData.holyAtk =  status.holyAtk * holyATFactor;
-
+				if (_damage._attackData.holyAtk > mainDamage)
+				{
+					_damage._attackData._attackType = 8;
+					mainDamage = _damage._attackData.holyAtk;
+				}
 			}
 			//闇
 			if (status.darkAtk > 0)
 			{
 				_damage._attackData.darkAtk =  status.darkAtk * darkATFactor;
-
+				if (_damage._attackData.darkAtk > mainDamage)
+				{
+					_damage._attackData._attackType = 16;
+					mainDamage = _damage._attackData.darkAtk;
+				}
 			}
 			//炎
 			if (status.fireAtk > 0)
 			{
 				_damage._attackData.fireAtk =  status.fireAtk * fireATFactor;
-
+				if (_damage._attackData.fireAtk > mainDamage)
+				{
+					_damage._attackData._attackType = 32;
+					mainDamage = _damage._attackData.fireAtk;
+				}
 			}
 			//雷
 			if (status.thunderAtk > 0)
 			{
 				_damage._attackData.thunderAtk =  status.thunderAtk * thunderATFactor;
-
+				if (_damage._attackData.thunderAtk > mainDamage)
+				{
+					_damage._attackData._attackType = 64;
+				//	mainDamage = _damage._attackData.Atk;
+				}
 			}
 			_damage._attackData.shock = atV.shock;
 			_damage._attackData.mValue = atV.mValue;
-
+			_damage._attackData.disParry = atV.disParry;
 			_damage._attackData.attackBuff = attackBuff;
 			//damage = Mathf.Floor(damage * attackBuff);
 			_damage._attackData._parryResist = atV.parryResist;
@@ -1197,28 +1238,42 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		///</sammary>
 		#region
 
-
 		/// <summary>
 		/// 攻撃前の初期化
 		/// </summary>
 		public void AttackPrepare()
-	{
-		//_movement.CurrentState != CharacterStates.MovementStates.Attack = true;
-		atV.coolTime = status.atValue[attackNumber].coolTime;
-		atV.isBlow = status.atValue[attackNumber].isBlow;
-		atV.mValue = status.atValue[attackNumber].mValue;
-		atV.aditionalArmor = status.atValue[attackNumber].aditionalArmor;
-		atV.isLight = status.atValue[attackNumber].isLight;
-		atV.disParry = status.atValue[attackNumber].disParry;
-		atV.blowPower = status.atValue[attackNumber].blowPower;
-		atV.shock = status.atValue[attackNumber].shock;
-		atV.type = status.atValue[attackNumber].type;
-		atV.isCombo = status.atValue[attackNumber].isCombo;
-		atV.escapePercentage = status.atValue[attackNumber].escapePercentage;
-		atV.parryResist = status.atValue[attackNumber].parryResist;
-		atV.attackEffect = status.atValue[attackNumber].attackEffect;
-		atV.suppleNumber = status.atValue[attackNumber].suppleNumber;
+		{
+			//_movement.CurrentState != CharacterStates.MovementStates.Attack = true;
+			atV.coolTime = status.atValue[attackNumber].coolTime;
+			atV.isBlow = status.atValue[attackNumber].isBlow;
+			atV.mValue = status.atValue[attackNumber].mValue;
+			atV.aditionalArmor = status.atValue[attackNumber].aditionalArmor;
+			atV.isLight = status.atValue[attackNumber].isLight;
+			atV.disParry = status.atValue[attackNumber].disParry;
+			atV.blowPower = status.atValue[attackNumber].blowPower;
+			atV.shock = status.atValue[attackNumber].shock;
+			atV.type = status.atValue[attackNumber].type;
+			atV.isCombo = status.atValue[attackNumber].isCombo;
+			atV.escapePercentage = status.atValue[attackNumber].escapePercentage;
+			atV.parryResist = status.atValue[attackNumber].parryResist;
+			atV.attackEffect = status.atValue[attackNumber].attackEffect;
+			atV.suppleNumber = status.atValue[attackNumber].suppleNumber;
+
+			//突進用の初期化
+			atV._moveDuration = status.atValue[attackNumber]._moveDuration;
+			atV._moveDistance = status.atValue[attackNumber]._moveDistance;
+			atV._contactType = status.atValue[attackNumber]._contactType;
+			atV.fallAttack = status.atValue[attackNumber].fallAttack;
+			atV.startMoveTime = status.atValue[attackNumber].startMoveTime;
+			atV.lockAttack = status.atValue[attackNumber].lockAttack;
+
+			//ヒット数制御関連
+			_damage._attackData._hitLimit = status.atValue[attackNumber]._hitLimit;
+			_damage.CollidRestoreResset();
+
+
 		}
+
 
 		/// <summary>
 		/// 弾丸を発射する
@@ -1226,7 +1281,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		/// <param name="i"></param>
 		/// <param name="random"></param>
-	public void ActionFire(int i, float random = 0.0f)
+		public void ActionFire(int i, float random = 0.0f)
 	{
 			//ランダムに入れてもいいけど普通に入れてもいい
 		i = i < 0 ? 0 : i;
@@ -1368,22 +1423,19 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	{
 
             if (!isAtEnable || !isMovable || number > status.atValue.Count || number <= 0)
-            {
+            {//Debug.Log($"一回きり{isAtEnable}{isMovable}{ number > status.atValue.Count}{number <= 0}");
 				return;
             }
-		//	Debug.Log("一回きり");
+			//	
+			isMovable = false;
+			if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
+			{
+				_guard.GuardEnd();
+			}
 
-			_guard.GuardEnd();
 			guardJudge = false;
 
-			if (!reverse)
-			{
-				 NormalFlip(direction);
-			}
-			else
-			{
-				NormalFlip(-direction);
-			}
+
 
 			if (select)
 			{
@@ -1393,13 +1445,29 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			AttackPrepare();
 		//	Debug.Log($"検査1{attackNumber}");
 			_attack.AttackTrigger(number);
-			_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
-			isAtEnable = false;
-			attackComp = true;
-			isMovable = false;
-			_characterHorizontalMovement.SetHorizontalMove(0);
 
-			//	Debug.Log("あああdsdfse");
+			isAtEnable = false;
+
+			_characterHorizontalMovement.SetHorizontalMove(0);
+			_controller.SetHorizontalForce(0);
+			//距離が移動範囲内で、ロックオンするなら距離を変える
+			float moveDistance = (atV.lockAttack && Mathf.Abs(distance.x) < atV._moveDistance) ? distance.x : atV._moveDistance;	
+
+			_rush.RushStart(atV._moveDuration,moveDistance * direction,atV._contactType,atV.fallAttack,atV.startMoveTime);
+
+
+			if (!reverse)
+			{
+			//	Debug.Log($"あああ{transform.lossyScale.x}{direction}");
+					NormalFlip(direction,true);
+
+			}
+			else
+			{
+
+					NormalFlip(-direction);
+
+			}
 		}
 
 
@@ -1449,15 +1517,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <summary>
 		/// クールタイムの間次の攻撃を待つ
 		/// </summary>
-		public async void WaitAttack()
+		public async  void WaitAttack()
 	{
 		if (_attack.nowAttack)
 		{
-				//Debug.Log($"tubuあん{attackNumber}");
+			//	Debug.Log($"tubuあん{attackNumber}");
 				if (attackContinue == 0)
 			{
 		//			Debug.Log($"かなしい{isMovable}ｓｓ{_movement.CurrentState}");
-				await	ExecuteAttack();
+				await ExecuteAttack();
 	
 			}
 				else if (attackContinue != 0)
@@ -1521,6 +1589,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		public void AttackEnd()
         {
+
 			_movement.ChangeState(CharacterStates.MovementStates.Idle);
 			if(_condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
             {
@@ -1530,11 +1599,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			isAtEnable = true;
 			stayTime = 0.0f;
 			attackNumber = 0;
-		//	suppleNumber = 0;
+
 			attackContinue = 0;
 			_attack.AttackEnd();
-			attackComp = false;
-			//_controller.DefaultParameters.Gravity = -status.firstGravity;
+			attackComp = true;
+			GravitySet(status.firstGravity);
 			isArmor = false;
 		}
 
@@ -1569,12 +1638,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		#endregion
 
 
-		/// <summary>
-		/// 音声関連の処理
-		/// </summary>
-		/// <param name="Name"></param>
-		/// <returns></returns>
-		#region
 
 
 		//	bool CheckEnd(string _currentStateName)
@@ -1607,6 +1670,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			if (_movement.CurrentState != CharacterStates.MovementStates.Attack)
 			{
+				Debug.Log($"ddd{_movement.CurrentState}{_condition.CurrentState}");
 				return;
 			}
 
@@ -1622,14 +1686,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				return 1.0f <= stateInfo.normalizedTime;
 			});
 			_attack.AttackEnd();
-		//	Debug.Log("あああ");
+		//	
 			NormalFlip(direction);
-			//	isAtEnable = true;これクールタイムで管理しようよ
-			//_movement.ChangeState(CharacterStates.MovementStates.Idle);
-		//	_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+
+
 			atV.aditionalArmor = 0;
 			isArmor = false;
-			_movement.RestorePreviousState();
+
+			//			_movement.RestorePreviousState();
+
+			_movement.ChangeState(CharacterStates.MovementStates.Idle);
+
 			//補足行動指定が0でないとき
 			if (atV.suppleNumber != 0 && !atV.isCombo)
 			{
@@ -1689,16 +1756,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	}
 
 
-	public void FlySound(int fly)
+		/// <summary>
+		/// アニメイベント
+		/// 音関連
+		/// </summary>
+		#region
+
+		public void FlySound()
 	{
-		if (fly == 1 && !flyNow)
+		if ((_movement.CurrentState == CharacterStates.MovementStates.Flying || _movement.CurrentState == CharacterStates.MovementStates.FastFlying)
+				&& _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
 		{
 			GManager.instance.PlaySound(status.walkSound, transform.position);
-			flyNow = true;
+
 		}
-		else if (fly == 0)
+		else
 		{
-			flyNow = false;
 			GManager.instance.StopSound(status.walkSound, 0.5f);
 		}
 	}
@@ -1744,7 +1817,67 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 	}
 
-	public void ActionSound(string useName)
+		/// <summary>
+		/// 現在の状況に合わせたサウンドを提供します
+		/// 移動とスタン以外
+		/// 固有の音に変えたい場合はオーバーライド
+		/// プレイヤーに移植してもいい
+		/// </summary>
+		/// <param name="i">これはバリエーションある場合のパラメータ</param>
+		public void ActionSound(int i = 0)
+		{
+            if (_controller.State.JustGotGrounded)
+            {
+				MyCode.SoundManager.instance.ShakeSound(status.isMetal, status._bodySize, transform);
+			}
+
+			if (status.kind == EnemyStatus.KindofEnemy.Fly)
+			{
+				if (!flyNow && (_condition.CurrentState != CharacterStates.CharacterConditions.Dead && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned))
+				{
+				//	Debug.Log("あいいいい");
+					GManager.instance.FollowSound(status.walkSound, transform);
+					flyNow = true;
+					return;
+				}
+                else if (flyNow && (_condition.CurrentState == CharacterStates.CharacterConditions.Dead || _condition.CurrentState == CharacterStates.CharacterConditions.Stunned))
+				{
+			//		Debug.Log("いいいい");
+					GManager.instance.StopSound(status.walkSound, 0.5f);
+					flyNow = false;
+					return;
+				}
+			}
+			if(lastState == _movement.CurrentState || _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+            {
+				return;
+            }
+			lastState = _movement.CurrentState;
+			//Debug.Log($"sf{_movement.CurrentState}");
+			if (_movement.CurrentState == CharacterStates.MovementStates.Rolling)
+			{
+				//これはFlyとかで分けるか
+				//GManager.instance.PlaySound(MyCode.SoundManager.instance.armorRollSound[1], transform.position);
+			}
+			else if (_movement.CurrentState == CharacterStates.MovementStates.Jumping || _movement.CurrentState == CharacterStates.MovementStates.DoubleJumping)
+			{
+				MyCode.SoundManager.instance.JumpSound(status.isMetal, status._bodySize, transform);
+			}
+			else if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.Crouching)
+			{
+				MyCode.SoundManager.instance.ShakeSound(status.isMetal,MyCode.SoundManager.SizeTag.small,transform);
+			}
+
+
+		}
+
+
+		public void GuardSound()
+        {
+			GManager.instance.PlaySound(status.guardSound, transform.position);
+		}
+
+		public void UseSound(string useName)
 	{
 		GManager.instance.PlaySound(useName, transform.position);
 	}
@@ -1780,18 +1913,19 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		#region
 
-		public void NormalFlip(float direction)
+		public void NormalFlip(float direction,bool tes = false)
 		{
-			if (isMovable)
-			{
-			
-				// Switch the way the player is labelled as facing.
 
-				// Multiply the player's x local scale by -1.
-				Vector3 theScale = transform.localScale;
-				theScale.x = direction * Mathf.Abs(theScale.x);
-				transform.localScale = theScale;
-			}
+                if (direction != MathF.Sign(transform.localScale.x))
+                {
+					if (tes) {
+						Debug.Log("あｆｄｄｆｄ");
+					}
+					Vector3 flip = transform.localScale;
+					flip.Set(direction, flip.y,flip.z);
+					transform.localScale = flip;
+                }
+
 		}
 
 		/// <summary>
@@ -1986,6 +2120,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				}
 				else
 				{
+
+
 					if (transform.position.x <= startPosition.x + status.waitDistance.x && isRight)
 					{
 						////("Move");
@@ -2038,6 +2174,33 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					isUp = !isUp;
 					_flying.SetVerticalMove(0);
 				}
+				if (transform.position.x <= startPosition.x + status.waitDistance.x && isRight)
+				{
+					
+					NormalFlip(1);
+					_flying.SetHorizontalMove(1);
+
+				}
+				else if (transform.position.x >= startPosition.x - status.waitDistance.x && !isRight)
+				{
+					NormalFlip(-1);
+					_flying.SetHorizontalMove(-1);
+				}
+				else
+				{
+
+					////////Debug.log("ああああ");
+					waitTime += _controller.DeltaTime;
+					_flying.SetHorizontalMove(0);
+					if (waitTime >= status.waitRes)
+					{
+						isRight = !isRight;
+						waitTime = 0.0f;
+						//	//////Debug.log("ああああ");
+
+					}
+				}
+
 			}
 		}
 
@@ -2127,34 +2290,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		public void AgrMove(int disIndex = 0)
 		{
-
+             GuardJudge();
 		//	Debug.Log($"知りたい{ground}");
 			stateJudge += _controller.DeltaTime;
 			#region//判断
+
+
+
 			if ((ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && ground != EnemyStatus.MoveState.escape)
 			//escapeだけはスクリプトから動かす
 			{
-				GuardJudge();
+				
 
 				bool isDashable = status.combatSpeed.x > 0;
-
-				if (attackComp && RandomValue(0, 100) <= atV.escapePercentage)
-				{
-					if (status.agrDistance[disIndex].x <= 30 || !isDashable)
-					{
-						ground = EnemyStatus.MoveState.leaveWalk;
-					}
-					else if (Mathf.Abs((Mathf.Abs(distance.x) / status.agrDistance[disIndex].x)) >= 0.6)
-					{
-						//逃げる時はガード終わらせる
-						_guard.GuardEnd();
-						ground = EnemyStatus.MoveState.leaveDash;
-						
-					}
-
-				}
-				//20パーセントの確率で停止以外に
-				else if (((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust) && RandomValue(0, 100) >= 40) || guardHit)
+				int dire = direction;
+				if (((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust) && RandomValue(0, 100) >= 40) || guardHit)
 				{
 					flipWaitTime = 1f;
 					ground = EnemyStatus.MoveState.stay;
@@ -2169,7 +2319,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					else
 					{
 						ground = EnemyStatus.MoveState.accessDash;
-						_guard.GuardEnd();
+
 						
 					}
 				}
@@ -2184,26 +2334,61 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					else
 					{
 						ground = EnemyStatus.MoveState.leaveDash;
-						_guard.GuardEnd();
+
 					}
 				}
+
+				if(attackComp && atV.escapePercentage > 0 && isMovable)
+                {
+                    if (RandomValue(0,100) <= atV.escapePercentage)
+                    {
+						if (status.agrDistance[disIndex].x <= 30 || !isDashable)
+						{
+							ground = EnemyStatus.MoveState.leaveWalk;
+						}
+						else if (Mathf.Abs((Mathf.Abs(distance.x) / status.agrDistance[disIndex].x)) >= 0.6)
+						{
+							//逃げる時はガード終わらせる
+							ground = EnemyStatus.MoveState.leaveDash;
+
+						}
+					}
+					attackComp = false;
+                }
+
+				if(ground == EnemyStatus.MoveState.leaveDash || ground == EnemyStatus.MoveState.leaveWalk)
+                {
+					dire *= -1;
+                }
+
+				BattleFlip(dire);
+
+                if (!flipComp)
+                {
+					ground = EnemyStatus.MoveState.stay;
+                }
+				
 				stateJudge = 0;
-				attackComp = false;
+				
 				if (_movement.CurrentState != CharacterStates.MovementStates.Running && isDashable)
 				{
 					if (ground == EnemyStatus.MoveState.accessDash || ground == EnemyStatus.MoveState.leaveDash)
 					{
+						if ((_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove))
+						{
+							_guard.GuardEnd();
+						}
 						_characterRun.RunStart();
 					}
 				}
 				else
 				{
-					if (ground != EnemyStatus.MoveState.accessDash && ground != EnemyStatus.MoveState.leaveDash)
+					if ((ground != EnemyStatus.MoveState.accessDash && ground != EnemyStatus.MoveState.leaveDash) || (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove))
 					{
 						_characterRun.RunStop();
 					}
 				}
-
+                        
 			}
 			#endregion
 
@@ -2213,10 +2398,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 {
 					return;
                 }
-				if (ground == EnemyStatus.MoveState.stay || !flipComp)
+				if (ground == EnemyStatus.MoveState.stay)
 				{
 					//バトルフリップはステイ中だけにする
-					BattleFlip(direction);
+					
 					_characterHorizontalMovement.SetHorizontalMove(0f);
 					isReach = true;
 					return;
@@ -2227,16 +2412,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				}
 				else if (ground == EnemyStatus.MoveState.accessWalk)
 				{
-					BattleFlip(direction);
+					
 					isReach = (Mathf.Abs(distance.x) - status.agrDistance[disIndex].x) <= status.walkDistance.x ? true : false;
-					_characterHorizontalMovement.SetHorizontalMove(lastDirection);
+					_characterHorizontalMovement.SetHorizontalMove(direction);
 
 				}
 				else if (ground == EnemyStatus.MoveState.accessDash)
 				{
-					BattleFlip(direction);
+					
 					isReach = false;
-					_characterHorizontalMovement.SetHorizontalMove(lastDirection);
+					_characterHorizontalMovement.SetHorizontalMove(direction);
 					//Runningフラグトゥルーの時の処理を見る
 					_characterRun.RunStart();
 					if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
@@ -2251,17 +2436,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					//近距離の場合歩き範囲をダッシュで離れるのより大きく
 					//歩き距離なら敵を見たまま撃つ
 					//動かない弓兵とかは移動速度ゼロに
-					BattleFlip(direction);
+					
 					isReach = true;
 
-					_characterHorizontalMovement.SetHorizontalMove(-lastDirection);
+					_characterHorizontalMovement.SetHorizontalMove(-direction);
 				}
 				else if (ground == EnemyStatus.MoveState.leaveDash)
 				{
-					_characterRun.RunStart();
-					BattleFlip(-direction);
+
+					
 					isReach = false;
-					_characterHorizontalMovement.SetHorizontalMove(-lastDirection);
+					_characterHorizontalMovement.SetHorizontalMove(-direction);
 				}
 			}
 		}
@@ -2269,69 +2454,80 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <summary>
 		/// 空を飛ぶタイプのエネミーに戦闘中乗せる。空を飛ぶ
 		/// </summary>
+		/// <param name="disIndex">使用する戦闘距離</param>
+		/// <param name="stMove">まっすぐ進むときに使うフラグ</param>
 		public void AgrFly(int disIndex = 0, int stMove = 0)
 		{
+			
 			stateJudge += _controller.DeltaTime;
 			#region//判断
 			if ((ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && ground != EnemyStatus.MoveState.escape && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
 			//escapeだけはスクリプトから動かす
 			{
-
+		//		Debug.Log($"アイ{air}");// {air}");//{_condition.CurrentState}
 				bool isSet = false;
+
+			int dire = direction;
 
 				//この場合はパーセンテージは分けるのに使おう
 				//攻撃終了後逃げる
 				if (stMove == 0 || attackComp)
 				{
-					if (attackComp && atV.escapePercentage > 0)
-					{
-						if (atV.escapePercentage % 2 == 0)
-						{
-							ground = EnemyStatus.MoveState.leaveWalk;
+					
 
-							air = atV.escapePercentage == 2 ? EnemyStatus.MoveState.leaveWalk : EnemyStatus.MoveState.stay;
+						if (attackComp && atV.escapePercentage > 0)
+						{
+							if (atV.escapePercentage % 2 == 0)
+							{
+								ground = EnemyStatus.MoveState.leaveWalk;
 
-						}
-						else
-						{
-							ground = EnemyStatus.MoveState.leaveDash;
-							air = atV.escapePercentage == 1 ? EnemyStatus.MoveState.leaveDash : EnemyStatus.MoveState.stay;
-						}
-						isSet = true;
-					}
-					//20パーセントの確率で停止以外に
-					else if ((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust) || guardHit)
-					{
+								air = atV.escapePercentage == 2 ? EnemyStatus.MoveState.leaveWalk : EnemyStatus.MoveState.stay;
 
-						ground = EnemyStatus.MoveState.stay;
-						//	flipWaitTime = 10;
-					}
-					else if (Mathf.Abs(distance.x) > status.agrDistance[disIndex].x)//近づく方じゃね？
-					{
-						if (Mathf.Abs(distance.x) <= status.walkDistance.x)
-						{
-							ground = EnemyStatus.MoveState.accessWalk;
+							}
+							else
+							{
+								ground = EnemyStatus.MoveState.leaveDash;
+								air = atV.escapePercentage == 1 ? EnemyStatus.MoveState.leaveDash : EnemyStatus.MoveState.stay;
+							}
+							isSet = true;
 						}
-						else
+						//20パーセントの確率で停止以外に
+						else if ((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust) || guardHit)
 						{
-							ground = EnemyStatus.MoveState.accessDash;
-							_guard.GuardEnd();
+
+							ground = EnemyStatus.MoveState.stay;
+							//	flipWaitTime = 10;
 						}
-					}
-					else if (Mathf.Abs(distance.x) < status.agrDistance[disIndex].x)//遠ざかる
-					{
-						//歩き距離なら敵を見たまま撃つ
-						//動かない弓兵とかは移動速度ゼロに
-						if (Mathf.Abs((Mathf.Abs(distance.x) - status.agrDistance[disIndex].x)) <= status.walkDistance.x / 2)
+						else if (Mathf.Abs(distance.x) > status.agrDistance[disIndex].x)//近づく方じゃね？
 						{
-							ground = EnemyStatus.MoveState.leaveWalk;
+							if (Mathf.Abs(distance.x) <= status.walkDistance.x)
+							{
+								ground = EnemyStatus.MoveState.accessWalk;
+							}
+							else
+							{
+								ground = EnemyStatus.MoveState.accessDash;
+
+							}
 						}
-						else
+						else if (Mathf.Abs(distance.x) < status.agrDistance[disIndex].x)//遠ざかる
 						{
-							_guard.GuardEnd();
-							ground = EnemyStatus.MoveState.leaveDash;
+							//歩き距離なら敵を見たまま撃つ
+							//動かない弓兵とかは移動速度ゼロに
+							if (Mathf.Abs((Mathf.Abs(distance.x) - status.agrDistance[disIndex].x)) <= status.walkDistance.x / 2)
+							{
+								ground = EnemyStatus.MoveState.leaveWalk;
+							}
+							else
+							{
+
+								ground = EnemyStatus.MoveState.leaveDash;
+							}
 						}
-					}
+
+
+
+					
 				}
 				else if (stMove != 0)
 				{
@@ -2339,8 +2535,25 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 				}
 
+				if (ground == EnemyStatus.MoveState.leaveDash || ground == EnemyStatus.MoveState.leaveWalk)
+				{
+					dire *= -1;
+				}
+				if (ground != EnemyStatus.MoveState.straight)
+				{
+					BattleFlip(dire);
+					if (!flipComp)
+					{
+						ground = EnemyStatus.MoveState.stay;
+					}
+				}
+
 				if (ground == EnemyStatus.MoveState.leaveDash || ground == EnemyStatus.MoveState.accessDash || ground == EnemyStatus.MoveState.straight)
 				{
+					if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
+					{
+						_guard.GuardEnd();
+					}
 					_flying.FastFly(false, false);
 				}
 				else
@@ -2358,18 +2571,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					//動かなくていいとき stay
 
 					//現在のプレイヤー高度と合わせて目標高度を割りだす。
-					float targetHigh = -distance.y;
 
-					if ((targetHigh <= status.agrDistance[disIndex].y + status.adjust && targetHigh >= status.agrDistance[disIndex].y - status.adjust) || guardHit)
+					//マイナスにすることで標的から見た自分の距離になる
+					//標的から上にいるか下にいるか
+					float targetHeight = -distance.y;
+
+
+					if ((targetHeight <= status.agrDistance[disIndex].y + status.adjust) && (targetHeight >= status.agrDistance[disIndex].y - status.adjust) || guardHit)
 					{
 
 						air = EnemyStatus.MoveState.stay;
 						_flying.FastFly(true, true);
-						//	flipWaitTime = 10;
 					}
-					else if (targetHigh <= status.agrDistance[disIndex].y)//近づく方じゃね？
+
+					//上昇する
+					else if (targetHeight <= status.agrDistance[disIndex].y)//近づく方じゃね？
 					{
-						if (status.agrDistance[disIndex].y - targetHigh <= status.walkDistance.y)
+						if (status.agrDistance[disIndex].y - targetHeight <= status.walkDistance.y)
 						{
 							air = EnemyStatus.MoveState.accessWalk;
 							_flying.FastFly(true, true);
@@ -2378,27 +2596,35 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							air = EnemyStatus.MoveState.accessDash;
 							_flying.FastFly(true, false);
-							_guard.GuardEnd();
+							if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
+							{
+								_guard.GuardEnd();
+							}
 						}
 					}
-					else if (targetHigh > status.agrDistance[disIndex].y)//遠ざかる
+					//降下する
+					else if (targetHeight > status.agrDistance[disIndex].y)//遠ざかる
 					{
 						//歩き距離なら敵を見たまま撃つ
 						//動かない弓兵とかは移動速度ゼロに
-						if (targetHigh - status.agrDistance[disIndex].y <= status.walkDistance.y)
+						if (targetHeight - status.agrDistance[disIndex].y <= status.walkDistance.y)
 						{
 							air = EnemyStatus.MoveState.leaveWalk;
 							_flying.FastFly(true, true);
 						}
 						else
 						{
-							_guard.GuardEnd();
-							
+							if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
+							{
+								_guard.GuardEnd();
+							}
 							air = EnemyStatus.MoveState.leaveDash;
 							_flying.FastFly(true, false);
 						}
 					}
+				//	Debug.Log($"ア{air}");
 				}
+
 				stateJudge = 0;
 				attackComp = false;
 				//	Debug.Log($"空{air}陸{ground}");
@@ -2421,7 +2647,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 				if (ground == EnemyStatus.MoveState.stay || !flipComp)
 				{
-					BattleFlip(direction);
+					
 					_flying.SetHorizontalMove(0);
 
 					isReach = true;
@@ -2429,16 +2655,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				}
 				else if (ground == EnemyStatus.MoveState.accessWalk)
 				{
-					BattleFlip(direction);
+
+					
 					isReach = (Mathf.Abs(distance.x) - status.agrDistance[disIndex].x) <= status.walkDistance.x ? true : false;
-					_flying.SetHorizontalMove(lastDirection);
+					_flying.SetHorizontalMove(direction);
 
 				}
 				else if (ground == EnemyStatus.MoveState.accessDash)
 				{
-					BattleFlip(direction);
+					
 					isReach = false;
-					_flying.SetHorizontalMove(lastDirection);
+					_flying.SetHorizontalMove(direction);
 					if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
 					{
 						ground = EnemyStatus.MoveState.accessWalk;
@@ -2447,26 +2674,27 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				}
 				else if (ground == EnemyStatus.MoveState.leaveWalk)//遠ざかる
 				{
+
 					//近距離の場合歩き範囲をダッシュで離れるのより大きく
 					//歩き距離なら敵を見たまま撃つ
 					//動かない弓兵とかは移動速度ゼロに
-					BattleFlip(-direction);
+					
 					isReach = true;
-					_flying.SetHorizontalMove(-lastDirection);
+					_flying.SetHorizontalMove(-direction);
 
 				}
 				else if (ground == EnemyStatus.MoveState.leaveDash)
 				{
-
-					BattleFlip(-direction);
+					
 					isReach = false;
-					_flying.SetHorizontalMove(-lastDirection);
+					_flying.SetHorizontalMove(-direction);
 				}
 				else if (ground == EnemyStatus.MoveState.straight)
 				{
-					if (stMove == 1)
+
+					if (stMove > 0)
 					{
-						 NormalFlip(stMove);
+						 NormalFlip(1);
 						isReach = false;
 						_flying.SetHorizontalMove(stMove);
 					}
@@ -2563,25 +2791,32 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public void BattleFlip(float direction)
 	{
-		if (lastDirection != direction)
-		{
-			flipWaitTime += _controller.DeltaTime;
-				flipComp = false;
-
-			if (flipWaitTime >= 0.8f)
+			if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
 			{
+                 flipWaitTime += _controller.DeltaTime;
+				if (lastDirection != direction)
+				{
+					
+					flipComp = false;
 
-				flipWaitTime = 0f;
-				NormalFlip(direction);
-				lastDirection = direction;
+					if (flipWaitTime >= 0.5f)
+					{
+
+						flipWaitTime = 0f;
+						if (direction != MathF.Sign(transform.localScale.x)) 
+						{
+							NormalFlip(direction);
+						}
+						lastDirection = direction;
+						flipComp = true;
+					}
+				}
+				else
+				{
 					flipComp = true;
+					flipWaitTime = 0;
+				}
 			}
-		}
-		else
-		{
-				flipComp = true;
-			flipWaitTime = 0;
-		}
 	}
 
 	protected void VerTicalMoveJudge()
@@ -2596,7 +2831,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 		else if (air == EnemyStatus.MoveState.accessDash)
 		{
-				_flying.SetVerticalMove(directionY);
+				_flying.SetVerticalMove(1);
 				//move.Set(0, status.addSpeed.y * (status.combatSpeed.y - rb.velocity.y));
 				//move.y = ;
 				_flying.FastFly(true, false);
@@ -2605,12 +2840,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		else if (air == EnemyStatus.MoveState.accessWalk)
 
 		{
-				_flying.SetVerticalMove(directionY);
+				_flying.SetVerticalMove(1);
 				_flying.FastFly(true, true);
 			}
 		else if (air == EnemyStatus.MoveState.leaveDash)
 		{
-				_flying.SetVerticalMove(-directionY);
+				_flying.SetVerticalMove(-1);
 				//move.Set(0, status.addSpeed.y * (-status.combatSpeed.y - rb.velocity.y));
 				_flying.FastFly(true, false);
 			//move.y = ;
@@ -2618,7 +2853,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		else if (air == EnemyStatus.MoveState.leaveWalk)
 
 		{
-				_flying.SetVerticalMove(-directionY);
+				_flying.SetVerticalMove(-1);
 				_flying.FastFly(true, true);
 			}
 	}
@@ -2640,21 +2875,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public void GuardJudge()
         {
-			if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal && _controller.State.IsGrounded && guardJudge && _movement.CurrentState != CharacterStates.MovementStates.Guard)
+			if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal && _controller.State.IsGrounded && guardJudge)
 			{
-				if ((Mathf.Sign(transform.localScale.x) != Mathf.Sign(GManager.instance.Player.transform.localScale.x)))
-				{
+
 					if (RandomValue(0, 100) >= (100 - guardProballity))
 					{
 						//flipWaitTime = 100;
-						ground = EnemyStatus.MoveState.stay;
-						//	Debug.Log("ｆ");
+					//	ground = EnemyStatus.MoveState.stay;
+							Debug.Log("ｆ");
 						_guard.ActGuard();
 
 					}
 					
 					guardJudge = false;
-				}
+
 			}
 		}
 
@@ -2820,11 +3054,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			else
 			{
 				_characterRun.RunStop();
+				_guard.GuardEnd();
 			}
 			ground = EnemyStatus.MoveState.wakeup;
 			air = EnemyStatus.MoveState.wakeup;
 			_sensor.RangeChange();
 		}
+
+
+
 
 		/// <summary>
 		///  必要なアニメーターパラメーターがあれば、アニメーターパラメーターリストに追加します。
@@ -2847,6 +3085,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _suppleAnimationParameter,suppleNumber, _character._animatorParameters);
 			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _combatAnimationParameter, isAggressive, _character._animatorParameters);
 		}
+
+
+
+
+
 	}
 }
 

@@ -81,7 +81,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         GuardEnd();
                     } 
                 }
-                else if (_movement.CurrentState == CharacterStates.MovementStates.Guard)
+                else if(_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
                 {
                     GuardEnd();
                 }
@@ -191,11 +191,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
          public void GuardEnd()
         {
-            _movement.ChangeState(CharacterStates.MovementStates.Idle);
-            if (isPlayer)
+            if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
             {
-                //ガード終わらせる
-                GManager.instance.isGuard = false;
+                _movement.ChangeState(CharacterStates.MovementStates.Idle);
+                if (isPlayer)
+                {
+                    //ガード終わらせる
+                    GManager.instance.isGuard = false;
+                }
             }
         } 
 

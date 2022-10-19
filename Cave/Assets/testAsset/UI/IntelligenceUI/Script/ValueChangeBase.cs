@@ -1039,10 +1039,12 @@ public  class ValueChangeBase : MonoBehaviour
 
                 if (numberSave == 0)
                 {
+
                     editAT.firstCondition = FireCondition.FirstCondition.“G‚ğ‚«”ò‚Î‚·;
                 }
                 else if (numberSave == 1)
                 {
+
                     editAT.firstCondition = FireCondition.FirstCondition.ŠÑ’Ê‚·‚é;
                 }
                 else if (numberSave == 2)

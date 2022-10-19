@@ -88,7 +88,7 @@ MonoBehaviour:
   UseDefaultSoundsIfNull: 1
   _sortNumber: 0
   front:
-  - {fileID: -6042941435903803190, guid: 76354687f293219479e71829882ea142, type: 3}
+  - {fileID: 3092050180187150460, guid: 76354687f293219479e71829882ea142, type: 3}
   Side:
   - {fileID: 1080394939938363784, guid: 76354687f293219479e71829882ea142, type: 3}
   Naname:
@@ -734,6 +734,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.1
+    _moveDistance: 30
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.073
+    lockAttack: 0
   - x: 0.7
     y: 8
     z: 8
@@ -749,6 +756,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.1
+    _moveDistance: 30
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.05
+    lockAttack: 0
   bValue:
   - x: 1
     y: 10
@@ -765,6 +779,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.2
+    _moveDistance: 45
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.07
+    lockAttack: 0
   - x: 1.05
     y: 13
     z: 15
@@ -780,6 +801,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.2
+    _moveDistance: 40
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.1
+    lockAttack: 0
   chargeValue:
   - x: 1.2
     y: 15
@@ -796,6 +824,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.25
+    _moveDistance: 60
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.1
+    lockAttack: 0
   - x: 1.25
     y: 15
     z: 15
@@ -811,6 +846,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.25
+    _moveDistance: 60
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.1
+    lockAttack: 0
   airValue:
   - x: 0.6
     y: 5
@@ -827,6 +869,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.2
+    _moveDistance: 10
+    _contactType: 0
+    fallAttack: 0
+    startMoveTime: 0
+    lockAttack: 0
   - x: 0.65
     y: 6
     z: 7
@@ -842,6 +891,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.2
+    _moveDistance: 10
+    _contactType: 0
+    fallAttack: 0
+    startMoveTime: 0
+    lockAttack: 0
   strikeValue:
   - x: 1.1
     y: 15
@@ -858,6 +914,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.2
+    _moveDistance: 10
+    _contactType: 0
+    fallAttack: 0
+    startMoveTime: 0
+    lockAttack: 0
   twinSValue:
   - x: 0.8
     y: 10
@@ -874,6 +937,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.15
+    _moveDistance: 20
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.1
+    lockAttack: 0
   - x: 0.83
     y: 11
     z: 11
@@ -889,6 +959,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.1
+    _moveDistance: 20
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.1
+    lockAttack: 0
   - x: 0.88
     y: 12
     z: 12
@@ -904,6 +981,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.1
+    _moveDistance: 25
+    _contactType: 0
+    fallAttack: 0
+    startMoveTime: 0.12
+    lockAttack: 0
   twinBValue:
   - x: 1.15
     y: 13
@@ -920,6 +1004,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.1
+    _moveDistance: 20
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.1
+    lockAttack: 0
   - x: 1.2
     y: 13
     z: 14
@@ -935,6 +1026,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.1
+    _moveDistance: 25
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.1
+    lockAttack: 0
   twinChargeValue:
   - x: 1.35
     y: 16
@@ -951,6 +1049,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.08
+    _moveDistance: 25
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.05
+    lockAttack: 0
   - x: 0.95
     y: 20
     z: 9
@@ -966,6 +1071,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 2
+    _moveDuration: 0.1
+    _moveDistance: 60
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.15
+    lockAttack: 0
   twinAirValue:
   - x: 0.75
     y: 8
@@ -982,6 +1094,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.2
+    _moveDistance: 10
+    _contactType: 0
+    fallAttack: 0
+    startMoveTime: 0
+    lockAttack: 0
   - x: 0.75
     y: 8
     z: 8
@@ -997,6 +1116,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.2
+    _moveDistance: 10
+    _contactType: 0
+    fallAttack: 0
+    startMoveTime: 0
+    lockAttack: 0
   twinStrikeValue:
   - x: 1.15
     y: 15
@@ -1013,6 +1139,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.2
+    _moveDistance: 10
+    _contactType: 0
+    fallAttack: 0
+    startMoveTime: 0
+    lockAttack: 0
   artsValue:
   - x: 0.35
     y: 15
@@ -1029,6 +1162,13 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.15
+    _moveDistance: 50
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.1
+    lockAttack: 0
   - x: 1.35
     y: 20
     z: 15
@@ -1036,7 +1176,7 @@ MonoBehaviour:
     isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 1500, y: 150}
+    blowPower: {x: 110, y: 45}
     useStamina: 15
     attackEffect:
       m_AssetGUID: 7f9db16e38fbd114fa303102028b4e92
@@ -1044,11 +1184,18 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     isShield: 0
+    _hitLimit: 1
+    _moveDuration: 0.1
+    _moveDistance: 55
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0.15
+    lockAttack: 0
   isLight: 0
   twinHand: 0
   isBlow: 1
   isCombo: 0
-  blowPower: {x: 1000, y: 100}
+  blowPower: {x: 0, y: 0}
   guardSpeed: 0
   _useContoroller:
   - {fileID: 22100000, guid: 78097b11b1d9cf645a57cafe12dd669f, type: 2}

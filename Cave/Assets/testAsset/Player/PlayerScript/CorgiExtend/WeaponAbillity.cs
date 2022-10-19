@@ -41,6 +41,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         [SerializeField]
         BoxCollider2D _attackBox;
 
+        [SerializeField]
+        MyDamageOntouch _damage;
+
+        [SerializeField]
+        MyAttackMove _rush;
+
         public enum ActType
         {
             noAttack,//なにもなし
@@ -180,27 +186,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 AttackFallController();
                 //     NumberControll();
 
-                if (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned)
-                {
-                    GManager.instance.isAttack = false;
-                    _movement.ChangeState(CharacterStates.MovementStates.Idle);
-                    attackNumber = 0;
-                    atType = ActType.noAttack;
-                    startFall = false;
-
-                    if (!_controller.State.IsGrounded)
-                    {
-                            _controller.DefaultParameters.Gravity = -GManager.instance.pStatus.firstGravity;
-
-                    }
-
-                    isComboEnd = false;
-                    //isAttackable = false; Debug.Log("ここまで3");
-                }
+  
 
 
                 if (isAttackable)
                 {
+
+
+
                     AttackCheck();
                     AnimationEndReserch();
 
@@ -208,24 +201,25 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             }
 
-     //         Debug.Log($"平常検査、攻撃可能{isAttackable}、攻撃タイプ{_movement.CurrentState}、移動可能{atType}、検査番号{test}、攻撃番号{attackNumber}");
+            // Debug.Log($"平常検査、攻撃可能{isAttackable}、移動可能{atType}、行動{_movement.CurrentState}");
 
 
         }
 
         public override void EarlyProcessAbility()
         {
-            if (_controller.State.IsGrounded && !isgroundReset)
+            base.EarlyProcessAbility();
+            if (_controller.State.IsGrounded && !isgroundReset && atType == ActType.aAttack)
             {
                 attackNumber = 0;
                 isgroundReset = true;
             }
-            else if (!_controller.State.IsGrounded && isgroundReset)
+            else if (!_controller.State.IsGrounded && isgroundReset && atType != ActType.aAttack)
             {
                 attackNumber = 0;
                 isgroundReset = false;
             }
-            base.EarlyProcessAbility();
+            
 
         }
 
@@ -352,7 +346,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
            //Debug.Log("攻撃可能に");
 
-            GManager.instance.StaminaUse(GManager.instance.useAtValue.useStamina);
+            
             if (atType == ActType.fAttack)
             {
                 startFall = true;
@@ -367,27 +361,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
             }
         }
-        public void SwingSound(int type = 0)
-        {
-            //斬撃刺突打撃を管理
-            if (GManager.instance.useAtValue.type == MyCode.Weapon.AttackType.Stab)
-            {
-                GManager.instance.PlaySound(MyCode.SoundManager.instance.stabSound[type], transform.position);
-            }
-            else
-            {
-                GManager.instance.PlaySound(MyCode.SoundManager.instance.swingSound[type], transform.position);
-            }
 
-            //エンチャしてる場合も
 
-        }
 
-        public void attackEffect()
-        {
-
-            Addressables.InstantiateAsync(GManager.instance.useAtValue.attackEffect, GManager.instance.pm.eContoroller.transform);
-        }
         #endregion
 
         //挙動操作系
@@ -399,15 +375,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //落下攻撃の時
             if (atType == ActType.fAttack)
             {
+
                 //もしContinueで落下開始してるなら
-                if (startFall)
+                if (startFall && attackNumber == 1)
                 {
+
                     // gravity =GManager.instance.pm.gravity * 3f;
                     //重力1.5倍
                     _controller.DefaultParameters.Gravity = GManager.instance.pStatus.firstGravity * -20f;
                 }
-                else
+                else if(attackNumber == 1)
                 {
+
                     //落下開始までは無重力で
                     _controller.DefaultParameters.Gravity = 0;
                     _controller.SetForce(Vector2.zero);
@@ -415,6 +394,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 // 着地したら
                 if (startFall && _controller.State.IsGrounded)
                 {
+               //     Debug.Log("suuuu");
+                    _controller.SetForce(Vector2.zero);
+                    attackNumber = 2;
                     //重力をもとに戻す
                     _controller.DefaultParameters.Gravity = -GManager.instance.pStatus.firstGravity;
 
@@ -427,12 +409,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     //キャンセル可能に
                     if (groundTime >= 0.1f)
                     {
+
                         isAttackable = true;
                         //GManager.instance.isAttack = false;
                         //  
                         // GManager.instance.isArmor = false;
                         groundTime = 0;
-                        Debug.Log("機能してます");
+
                         attackNumber = 0;
 
                         smallTrigger = false;
@@ -511,7 +494,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     else
                     {
                         atType = ActType.fAttack;
-                        Debug.Log($"1開始{attackNumber}");
+
                     }
                 }
                 else if (artsKey || artsTrigger)
@@ -533,8 +516,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             if (isCharging)
             {
+                _controller.SetHorizontalForce(0);
                 if (chargeKey)
-                {Debug.Log("アイ矢―");
+                {
                    // 
                     chargeTime += _controller.DeltaTime;
                     //チャージ中
@@ -616,7 +600,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
            // Debug.Log($"あええええあ{_inputManager.CheckButtonUsing()}");
             //Anyは軸も行ける
             //キーコンフィグで反映されなかったりしたらInputRの参照そろえてないのを確認
-            if (!fire1Key && !fire2Key && !artsKey)
+            if (!fire1Key && !fire2Key && !artsKey && _inputManager.CombinationButton.State.CurrentState == MMInput.ButtonStates.Off)
             {
                 if (_inputManager.CheckButtonUsing())
                 {
@@ -650,9 +634,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 #region//モーション終了検査
                 if (atType == ActType.fAttack)
                 {
-                    //  Debug.Log($"sdfg");
-                    //落下開始しててすでに着地してるなら
-                    if (_controller.State.IsGrounded)
+
+                //落下開始しててすでに着地してるなら
+                if (_controller.State.IsGrounded)
                     {
                     // Debug.Log($"pie");
                     //着地アニメ終わってるなら解放
@@ -662,7 +646,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                 else if (atType != ActType.cCharge && atType != ActType.noAttack)
                 {
-                //     Debug.Log("アイイイ");
+
                     await AttackEndWait();
                 }
                 #endregion
@@ -678,11 +662,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         void GroundCheck()
         {
+
             test = 5;
             //何かしらの入力があれば
             if (anyKey && _preInput == 0)
             {
-               Debug.Log("あああ");
+
                 AttackEnd();
             }
             //攻撃入力が続けばコンボに
@@ -730,11 +715,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
         void AirCheck()
         {
-         
+
             if ((anyKey && _preInput == 0) || _controller.State.IsGrounded)
             {
                 AttackEnd();
-  Debug.Log("hhhhhh");
+
             }
             else if (_preInput == 1)
             {
@@ -781,25 +766,28 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             test = 0;
             GManager.instance.isAttack = false;
-            if (_controller.State.IsGrounded)
-            {
-                _movement.ChangeState(CharacterStates.MovementStates.Idle);
-            }
-            else
-            {
-                _movement.ChangeState(CharacterStates.MovementStates.Falling);
-            }
-         //   Debug.Log($"なんなに{isDisenable}");
+
+
            if(_condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
             {
+                if (_controller.State.IsGrounded)
+                {
+                    
+                    _movement.ChangeState(CharacterStates.MovementStates.Idle);
+                }
+                else
+                {
+                    _movement.ChangeState(CharacterStates.MovementStates.Falling);
+                }
                 _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
             }
-
+            isCharging = false;
             startFall = false;
-            atType = ActType.noAttack;
+            atType = ActType.noAttack; 
+       
             if (comboEnd)
             {
-
+               
 
                 attackNumber = 0;
                 isComboEnd = false;
@@ -820,7 +808,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             //もし連撃じゃないなら攻撃番号はリセット
             _preInput = 0;
-
+     Debug.Log($"いあいいｓ{comboEnd}{attackNumber}{bigTrigger}");
         }
 
         #endregion
@@ -863,7 +851,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             #region
 
             //int osixtuko = 1000;
+            _damage.CollidRestoreResset();
 
+            GManager.instance.useAtValue.isShield = false;
+            //落下攻撃かどうか
+            GManager.instance.useAtValue.fallAttack = atType == ActType.fAttack;
             if (atType == ActType.sAttack)
             {
                 sAttackPrepare();
@@ -896,23 +888,26 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.fallAttack = true;
                 //Debug.Log("つづくよ２");
                 //osixtuko = 5;
+                
             }
 
             #endregion
             attackNumber++;
-         //  Debug.Log($"sjf{comboLimit}{attackNumber}{atType}{_controller.State.IsGrounded}");
+
             if (attackNumber >= comboLimit && comboLimit != 0)
             {
                 
                 isComboEnd = true;
 
             }
-            //  攻撃不可能状態
-          //  isAttackable = false;
-            //攻撃番号加算
-            //prepareで0から始まる番号使うので先に加算はダメです
-           
-          //  Debug.Log($"3おおおおお{attackNumber}");
+
+            //距離が移動範囲内で、ロックオンするなら距離を変える
+            //ロックオン機能がまだできてない
+           // float moveDistance = (GManager.instance.useAtValue.lockAttack && distance.x < GManager.instance.useAtValue._moveDistance) ? distance.x : GManager.instance.useAtValue._moveDistance;
+
+            _rush.RushStart(GManager.instance.useAtValue._moveDuration, GManager.instance.useAtValue._moveDistance, GManager.instance.useAtValue._contactType, GManager.instance.useAtValue.fallAttack, GManager.instance.useAtValue.startMoveTime);
+            GManager.instance.StaminaUse(GManager.instance.useAtValue.useStamina);
+
         }
 
 
@@ -1009,6 +1004,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.sValue[attackNumber].useStamina;
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.sValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.sValue.Count;
+                _damage._attackData._hitLimit = GManager.instance.equipWeapon.sValue[attackNumber]._hitLimit;
+
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.sValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.sValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.sValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.sValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.sValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.sValue[attackNumber].lockAttack;
             }
             else
             {
@@ -1023,6 +1026,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinSValue[attackNumber].useStamina;
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.twinSValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.twinSValue.Count;
+                _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinSValue[attackNumber]._hitLimit;
+
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.twinSValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.twinSValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.twinSValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinSValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinSValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinSValue[attackNumber].lockAttack;
             }
         }
 
@@ -1044,6 +1055,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.bValue[attackNumber].useStamina;
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.bValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.bValue.Count;
+                _damage._attackData._hitLimit = GManager.instance.equipWeapon.bValue[attackNumber]._hitLimit;
+
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.bValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.bValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.bValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.bValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.bValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.bValue[attackNumber].lockAttack;
             }
             else
             {
@@ -1058,6 +1077,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinBValue[attackNumber].useStamina;
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.twinBValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.twinBValue.Count;
+                _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinBValue[attackNumber]._hitLimit;
+
+                //突進用の初期化
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.twinBValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.twinBValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.twinBValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinBValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinBValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinBValue[attackNumber].lockAttack;
             }
         }
 
@@ -1079,6 +1107,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.chargeValue[attackNumber].useStamina;
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.chargeValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.bValue.Count;
+                _damage._attackData._hitLimit = GManager.instance.equipWeapon.chargeValue[attackNumber]._hitLimit;
+
+                //突進用の初期化
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.chargeValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.chargeValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.chargeValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.chargeValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.chargeValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.chargeValue[attackNumber].lockAttack;
+
             }
             else
             {
@@ -1093,6 +1131,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinChargeValue[attackNumber].useStamina;
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.twinChargeValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.twinBValue.Count;
+                _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinChargeValue[attackNumber]._hitLimit;
+
+                //突進用の初期化
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.twinChargeValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.twinChargeValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.twinChargeValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinChargeValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinChargeValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinChargeValue[attackNumber].lockAttack;
             }
         }
         public void airAttackPrepare()//デフォが斬撃
@@ -1115,6 +1162,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.airValue[attackNumber].useStamina;
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.airValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.airValue.Count;
+                _damage._attackData._hitLimit = GManager.instance.equipWeapon.airValue[attackNumber]._hitLimit;
+
+                //突進用の初期化
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.airValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.airValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.airValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.airValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.airValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.airValue[attackNumber].lockAttack;
+
             }
             else
             {
@@ -1129,6 +1186,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinAirValue[attackNumber].useStamina;
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.twinAirValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.twinAirValue.Count;
+                _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinAirValue[attackNumber]._hitLimit;
+
+                //突進用の初期化
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.twinAirValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.twinAirValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.twinAirValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinAirValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinAirValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinAirValue[attackNumber].lockAttack;
+
             }
         }
         public void strikeAttackPrepare()//デフォが斬撃
@@ -1150,7 +1217,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.strikeValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.strikeValue[attackNumber].useStamina;
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.strikeValue[attackNumber].attackEffect;
+                _damage._attackData._hitLimit = GManager.instance.equipWeapon.strikeValue[attackNumber]._hitLimit;
 
+                //突進用の初期化
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.strikeValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.strikeValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.strikeValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.strikeValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.strikeValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.strikeValue[attackNumber].lockAttack;
             }
             else
             {
@@ -1164,7 +1239,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].useStamina;
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].attackEffect;
+                _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinStrikeValue[attackNumber]._hitLimit;
 
+                //突進用の初期化
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.twinStrikeValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.twinStrikeValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.twinStrikeValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].lockAttack;
             }
             comboLimit = 1;
         }
@@ -1187,6 +1270,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.isShieldAttack = true;
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipShield.artsValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipShield.artsValue.Count;
+                _damage._attackData._hitLimit = GManager.instance.equipShield.artsValue[attackNumber]._hitLimit;
+
+                //突進用の初期化
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipShield.artsValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipShield.artsValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipShield.artsValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipShield.artsValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipShield.artsValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipShield.artsValue[attackNumber].lockAttack;
             }
             else
             {
@@ -1202,6 +1294,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.artsValue[attackNumber].attackEffect;
                 GManager.instance.isShieldAttack = false;
                 comboLimit = GManager.instance.equipWeapon.artsValue.Count;
+                _damage._attackData._hitLimit = GManager.instance.equipWeapon.artsValue[attackNumber]._hitLimit;
+
+                //突進用の初期化
+                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.artsValue[attackNumber]._moveDuration;
+                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.artsValue[attackNumber]._moveDistance;
+                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.artsValue[attackNumber]._contactType;
+                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.artsValue[attackNumber].fallAttack;
+                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.artsValue[attackNumber].startMoveTime;
+                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.artsValue[attackNumber].lockAttack;
             }
         }
         #endregion

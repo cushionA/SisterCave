@@ -103,7 +103,11 @@ public class Magic : Item
 
 	public FIREBULLET fireType = FIREBULLET.HOMING;
 
-
+	/// <summary>
+	/// ヒット回数
+	/// </summary>
+	[HideInInspector]
+	public int _hitLimit = 1;
 
 	[Header("貫通弾")]
 	///<summary>
@@ -247,6 +251,11 @@ public class Magic : Item
 	/// </summary>
 	public AssetReference castEffect;
 
+	[Header("詠唱終了のエフェクト")]
+	/// <summary>
+	// 詠唱中のエフェクト
+	/// </summary>
+	public AssetReference castBreak;
 
 	/*	[Header("発生エフェクト")]
 		/// <summary>

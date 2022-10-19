@@ -22,6 +22,16 @@ namespace MoreMountains.CorgiEngine
         [SerializeField]
         protected new MyHealth _health;
         protected new MyHealth _colliderHealth;
+
+        [HideInInspector]
+        public List<MyHealth> _restoreHealth = new List<MyHealth>();
+
+        List<int> _restoreCount = new List<int>();
+        /// <summary>
+        /// 衝突したヘルスの番号
+        /// </summary>
+        int collideNum;
+
         /// <summary>
         /// 攻撃する主体のタイプ
         /// </summary>
@@ -66,6 +76,7 @@ namespace MoreMountains.CorgiEngine
         }
         protected override void OnCollideWithDamageable(Health health)
         {
+         //   Debug.Log($"知りた");
             //背後に当たったかどうかを確認するためのアタリハンテイ検査座標
             float basePosition = 0;
       //      Debug.Log($"asdf{_attacker}");
@@ -84,7 +95,7 @@ namespace MoreMountains.CorgiEngine
             }
             else if (_attacker == TypeOfSubject.Magic)
             {
-                basePosition = _collidingCollider.bounds.center.x;
+                basePosition = transform.position.x;
 
             }
             else
@@ -102,6 +113,7 @@ namespace MoreMountains.CorgiEngine
                 //当たったやつが
                 (basePosition > _colliderHealth.transform.position.x && _colliderHealth.transform.localScale.x < 0))
             {
+
                 isRight = basePosition < _colliderHealth.transform.position.x;
 
                 back = true;
@@ -109,6 +121,7 @@ namespace MoreMountains.CorgiEngine
             }
             else
             {
+          //      Debug.Log($"fh{basePosition}{_colliderHealth.transform.position.x}");
                 isRight = basePosition < _colliderHealth.transform.position.x;
                 back = false;
             }
@@ -135,12 +148,13 @@ namespace MoreMountains.CorgiEngine
 
                     //敵がプレイヤーに攻撃した時、ダウンするかをはかる。
                     ParryDown = _health.ParryArmorCheck();
-Debug.Log($"mae{ParryDown}");
+
                 }
                 //敵以外パリィされたらスタン
  　　　　　　　 ParryStunn(ParryDown);
                 //パリィした相手はボーナス
-                _colliderHealth.ParryStart(ParryDown);
+
+                    _colliderHealth.ParryStart(ParryDown);
 
                 return;
             }
@@ -231,6 +245,49 @@ Debug.Log($"mae{ParryDown}");
             _collidingCollider = collider;
             _colliderHealth = collider.gameObject.MMGetComponentNoAlloc<MyHealth>();
 
+            //ここでヘルスの無敵確認するか
+            if (_colliderHealth.InvulnerableCheck())
+            {
+                return;
+            }
+
+            //含んでないなら
+            if (_restoreHealth.Count != 0)
+            {
+                collideNum = 100;
+                for (int i = 0;i<_restoreHealth.Count;i++)
+                {
+                    if (_restoreHealth[i] == _colliderHealth)
+                    {
+                        collideNum = i;
+                        break;
+                    }
+                }
+                //含まれてない場合
+                if (collideNum == 100)
+                {
+                    _restoreHealth.Add(_colliderHealth);
+                    collideNum = _restoreHealth.Count - 1;
+                     _restoreCount.Add(0);
+                }
+            }
+            else
+            {
+                _restoreHealth.Add(_colliderHealth);
+                collideNum = 0;
+                _restoreCount.Add(0);
+            }
+
+            if (_restoreCount[collideNum] >= _attackData._hitLimit)
+            {
+                return;
+            }
+            else
+            {
+                _restoreCount[collideNum]++;
+            }
+            
+
             OnHit?.Invoke();
 
             // ぶつかるものが壊れるものであれば
@@ -254,7 +311,8 @@ Debug.Log($"mae{ParryDown}");
         /// 敵をノックバックさせるメソッド
         /// </summary>
         protected virtual MyWakeUp.StunnType ApplyDamageCausedKnockback(bool isBack,bool isRight)
-        {
+        {//
+            _colliderCorgiController.SetForce(Vector2.zero);
             MyWakeUp.StunnType result = _colliderHealth.ArmorCheck(_attackData.shock,_attackData.isBlow, isBack);
 
             bool isAirDown = false;
@@ -262,6 +320,7 @@ Debug.Log($"mae{ParryDown}");
             //空中特殊ダウンが発生するなら
             if (_colliderHealth.AirDownJudge(result))
             {
+
                 isAirDown = true;
                 result = MyWakeUp.StunnType.Down;
                 _colliderHealth.AirDown();
@@ -277,22 +336,25 @@ Debug.Log($"mae{ParryDown}");
                 }
                 else
                 {
+                    
                         //少しだけ浮く
-                    DamageCausedKnockbackForce.Set(0, 30);
+                    DamageCausedKnockbackForce.Set(0, 60);
                 }
             }
             else if(result == MyWakeUp.StunnType.Falter)
             {
                 //アニメで動かす
 
-                //       float fDire = isRight ? 10 : -10;
+                    float blowDire = isRight ? 160 : -160;
+
+                DamageCausedKnockbackForce.Set(blowDire, 0);
 
                 //吹き飛ばさないときBlowPowerで怯み方向を確認
                 //基本的に0（初期値）なら普通に吹き飛ばす
 
                 //怯む方向を大事ですよこいつ
                 // DamageCausedKnockbackForce.Set(fDire, 0);
-                DamageCausedKnockbackForce.Set(0, 0);
+                //  DamageCausedKnockbackForce.Set(0, 0);
             }
             else
             {
@@ -302,19 +364,7 @@ Debug.Log($"mae{ParryDown}");
             if ((_colliderCorgiController != null) && (DamageCausedKnockbackForce != Vector2.zero) && (!_colliderHealth.Invulnerable) && (!_colliderHealth.PostDamageInvulnerable) && (!_colliderHealth.ImmuneToKnockback))
             {
                 _knockbackForce.x = DamageCausedKnockbackForce.x;
-              /*
-                if (DamageCausedKnockbackDirection == CausedKnockbackDirections.BasedOnSpeed)
-                {
-                    Vector2 totalVelocity = _colliderCorgiController.Speed + _velocity;
-                    _knockbackForce.x *= -1 * Mathf.Sign(totalVelocity.x);
-                }
-                if (DamageCausedKnockbackDirection == CausedKnockbackDirections.BasedOnOwnerPosition)
-                {
-                    if (Owner == null) { Owner = this.gameObject; }
-                    Vector2 relativePosition = _colliderCorgiController.transform.position - Owner.transform.position;
-                    _knockbackForce.x *= Mathf.Sign(relativePosition.x);
-                }
-              */
+
                 _knockbackForce.y = DamageCausedKnockbackForce.y;
 
                 if (DamageCausedKnockbackType == KnockbackStyles.SetForce)
@@ -355,6 +405,14 @@ Debug.Log($"mae{ParryDown}");
             
         }
 
+        /// <summary>
+        /// 衝突状況をリセット
+        /// </summary>
+        public void CollidRestoreResset()
+        {
+            _restoreHealth.Clear();
+            _restoreCount.Clear();
+        }
 
 
     }

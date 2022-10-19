@@ -16,6 +16,7 @@ public class AttackBlock : MonoBehaviour
     //}
     private void FixedUpdate()
     {
+        transform.position = transform.root.position;
         attackBlock();
     }
 

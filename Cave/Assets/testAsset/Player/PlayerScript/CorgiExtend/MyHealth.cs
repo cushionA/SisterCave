@@ -25,6 +25,13 @@ namespace MoreMountains.CorgiEngine
         [HideInInspector]
         public bool _parryNow;
 
+        /// <summary>
+        /// 今吹き飛ばされてるか
+        /// 吹き飛ばされてるなら押されたりするのから自由になれる
+        /// </summary>
+        [HideInInspector]
+        public bool _blowNow;
+
         protected new MyCharacter _character;
 
         protected UltimateTextDamageManager um;
@@ -131,14 +138,10 @@ namespace MoreMountains.CorgiEngine
             float invincibilityDuration, Vector3 damageDirection, bool back, MyWakeUp.StunnType stunnState)
         {
 
-            // Debug.Log($"知りたいのだ");
+            // Debug.Log($"知りたいのだ{stunnState}");
 
             // オブジェクトが無敵であれば、何もせずに終了します。
-            if (TemporarilyInvulnerable || Invulnerable || ImmuneToDamage || PostDamageInvulnerable)
-            {
-                OnHitZero?.Invoke();
-                return;
-            }
+
             // すでに0を下回っている場合は、何もせずに終了します。
             if ((CurrentHealth <= 0) && (InitialHealth != 0))
             {
@@ -167,7 +170,7 @@ namespace MoreMountains.CorgiEngine
 
             damage = (int)Calc(_damageData, back);
 
-           // Debug.Log($"おせーて{damage}と{CurrentHealth}{stunnState}");
+        //  Debug.Log($"おせーて{damage}と{CurrentHealth}{stunnState}");
             if (um != null)
             {
                 //  Debug.Log($"ｈｈｈｈｈ{um.name}");
@@ -176,7 +179,7 @@ namespace MoreMountains.CorgiEngine
             if (damage <= 0)
             {
                 OnHitZero?.Invoke();
-                return;
+              //  return;
             }
 
 
@@ -243,11 +246,12 @@ namespace MoreMountains.CorgiEngine
 
                 if (_defender == MyDamageOntouch.TypeOfSubject.Player)
                 {
+                    pCon.MoveReset();
                     pCon._wakeup.StartStunn(stunnState);
                 }
                 else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
                 {
-                    //  
+                    eData.AttackEnd();
                     eData._wakeup.StartStunn(stunnState);
                 }
             }
@@ -278,7 +282,22 @@ namespace MoreMountains.CorgiEngine
                     }
                     else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
                     {
+                        for (int i = 0; i < SManager.instance.targetList.Count; i++)
+                        {
+                            if (SManager.instance.targetList[i] == this.gameObject)
+                            {
+                                SManager.instance.targetList.Remove(this.gameObject);
+                                break;
+                            }
 
+                        }
+                        //空飛ぶ敵はダウンして死ぬ
+                        if ((eData.status.kind == EnemyStatus.KindofEnemy.Fly))
+                        {
+                            stunnState = MyWakeUp.StunnType.BlowDie;
+                        }
+                        //感知されないレイヤーに
+                        this.gameObject.layer = 15;
                         eData._wakeup.StartStunn(stunnState);
                     }
                 }
@@ -297,8 +316,8 @@ namespace MoreMountains.CorgiEngine
             //	GManager.instance.equipWeapon.hitLimmit--;
 
             //	Equip _damageData;
-            byte _attackType = 0;
-            float mainDamage = 0;
+
+
 
             //////Debug.log("終了");
             float damage = 0;//バフデバフ処理用にdamageとして保持する
@@ -307,11 +326,12 @@ namespace MoreMountains.CorgiEngine
 
             //ガード時
             if (_defData.isGuard && !back)
-            {  //   Debug.Log($"あいいいｓ{_defData.isGuard}ｄ{!back}");
+            {  
+           //     Debug.Log($"あいいいｓ{_defData.isGuard}ｄ{!back}");
                 //ガード時
                 if (_damageData.phyAtk > 0)
                 {
-                    mainDamage = _damageData.phyAtk;
+
                     //斬撃刺突打撃を管理
                     if (_damageData._attackType == 0)
                     {
@@ -322,18 +342,14 @@ namespace MoreMountains.CorgiEngine
                     {
                         damage += (Mathf.Pow(_damageData.phyAtk * mValue, 2)) / (_damageData.phyAtk + _defData.pierDef) * ((100 - _defData.phyCut) / 100);
                         stab = true;
-                        _attackType = 2;
+
                     }
                     else
                     {
                         damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.strDef) * ((100 - _defData.phyCut) / 100);
                         //	_damageData.phyType = 4;
                         //						Debug.Log("皿だ");
-                        if (_damageData.shock >= 40)
-                        {
-                            _damageData.isHeavy = true;
-                        }
-                        _attackType = 4;
+
                     }
 
                 }
@@ -342,41 +358,23 @@ namespace MoreMountains.CorgiEngine
                 {
                     damage += (Mathf.Pow(_damageData.holyAtk, 2) * mValue) / (_damageData.holyAtk + _defData.holyDef) * ((100 - _defData.holyCut) / 100);
 
-                    if (_damageData.holyAtk > mainDamage)
-                    {
-                        _attackType = 8;
-                        mainDamage = _damageData.holyAtk;
 
-                    }
                 }
                 //闇
                 if (_damageData.darkAtk > 0)
                 {
                     damage += (Mathf.Pow(_damageData.darkAtk, 2) * mValue) / (_damageData.darkAtk + _defData.darkDef) * ((100 - _defData.darkCut) / 100);
-                    if (_damageData.holyAtk > mainDamage)
-                    {
-                        _damageData._attackType = 16;
-                        mainDamage = _damageData.darkAtk;
-                    }
+
                 }
                 //炎
                 if (_damageData.fireAtk > 0)
                 {
                     damage += (Mathf.Pow(_damageData.fireAtk, 2) * mValue) / (_damageData.fireAtk + _defData.fireDef) * ((100 - _defData.fireCut) / 100);
-                    if (_damageData.fireAtk > mainDamage)
-                    {
-                        _damageData._attackType = 32;
-                        mainDamage = _damageData.fireAtk;
-                    }
+
                 }
                 //雷
                 if (_damageData.thunderAtk > 0)
                 {
-                    if (_damageData.thunderAtk > mainDamage)
-                    {
-                        _damageData._attackType = 64;
-                        mainDamage = _damageData.thunderAtk;
-                    }
                     damage += (Mathf.Pow(_damageData.thunderAtk, 2) * mValue) / (_damageData.thunderAtk + _defData.thunderDef) * ((100 - _defData.thunderCut) / 100);
 
                 }
@@ -384,19 +382,19 @@ namespace MoreMountains.CorgiEngine
                 if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
                 {
 
-
+                    eData.GuardSound();
                 }
                 else if (_defender == MyDamageOntouch.TypeOfSubject.Player)
                 {
-
+                    pCon.GuardSound();
                 }
             }
             else
             {
-
+           //     Debug.Log($"ｆｆ{_defData.isGuard}ｄ{!back}");
                 if (_damageData.phyAtk > 0)
                 {
-                    mainDamage = _damageData.phyAtk;
+
                     //斬撃刺突打撃を管理
                     if (_damageData._attackType == 0)
                     {// Debug.Log($"オオヌキフラッシュ{(Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def)}");
@@ -428,41 +426,23 @@ namespace MoreMountains.CorgiEngine
                 {
                     damage += (Mathf.Pow(_damageData.holyAtk, 2) * mValue) / (_damageData.holyAtk + _defData.holyDef);
 
-                    if (_damageData.holyAtk > mainDamage)
-                    {
-                        _attackType = 8;
-                        mainDamage = _damageData.holyAtk;
-
-                    }
                 }
                 //闇
                 if (_damageData.darkAtk > 0)
                 {
                     damage += (Mathf.Pow(_damageData.darkAtk, 2) * mValue) / (_damageData.darkAtk + _defData.darkDef);
-                    if (_damageData.holyAtk > mainDamage)
-                    {
-                        _damageData._attackType = 16;
-                        mainDamage = _damageData.darkAtk;
-                    }
+
                 }
                 //炎
                 if (_damageData.fireAtk > 0)
                 {
                     damage += (Mathf.Pow(_damageData.fireAtk, 2) * mValue) / (_damageData.fireAtk + _defData.fireDef);
-                    if (_damageData.fireAtk > mainDamage)
-                    {
-                        _damageData._attackType = 32;
-                        mainDamage = _damageData.fireAtk;
-                    }
+
                 }
                 //雷
                 if (_damageData.thunderAtk > 0)
                 {
-                    if (_damageData.thunderAtk > mainDamage)
-                    {
-                        _damageData._attackType = 64;
-                        mainDamage = _damageData.thunderAtk;
-                    }
+
                     damage += (Mathf.Pow(_damageData.thunderAtk, 2) * mValue) / (_damageData.thunderAtk + _defData.thunderDef);
 
                 }
@@ -484,6 +464,28 @@ namespace MoreMountains.CorgiEngine
                 {
 
                 }
+                if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
+                {
+
+                    //アタックデータをセットするメソッドとかほしい
+                    //ヒット時ダメージ計算でヒット時やるか
+                    eData.DamageSound(_damageData._attackType, _damageData.isHeavy);
+
+
+                }
+                else if (_defender == MyDamageOntouch.TypeOfSubject.Player)
+                {
+                    pCon.DamageSound(_damageData._attackType, _damageData.isHeavy);
+                }
+                else if (_defender == MyDamageOntouch.TypeOfSubject.Magic)
+                {
+
+                }
+                else
+                {
+                    //オブジェクトがダメージ受ける
+                }
+
             }
 
             if (_defData.attackNow && stab)
@@ -499,27 +501,7 @@ namespace MoreMountains.CorgiEngine
 
 
 
-            if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
-            {
 
-                //アタックデータをセットするメソッドとかほしい
-                //ヒット時ダメージ計算でヒット時やるか
-                eData.DamageSound(_attackType, _damageData.isHeavy);
-
-
-            }
-            else if (_defender == MyDamageOntouch.TypeOfSubject.Player)
-            {
-                pCon.DamageSound(_attackType, _damageData.isHeavy);
-            }
-            else if (_defender == MyDamageOntouch.TypeOfSubject.Magic)
-            {
-
-            }
-            else
-            {
-                //オブジェクトがダメージ受ける
-            }
 
 
             //    Debug.Log($"ねええええ{damage}");
@@ -585,6 +567,8 @@ namespace MoreMountains.CorgiEngine
         /// <returns></returns>
         public bool ParryArmorCheck()
         {
+
+
             if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
             {
                 return eData.ParryArmorJudge();
@@ -655,25 +639,14 @@ namespace MoreMountains.CorgiEngine
                                 return false;
                             }
                         }
-                        else
-                        {
-                            return false;
-                        }
                     }
-                    else
-                    {
-                        return false;
-                    }
+
                 }
-                else
-                {
-                    return false;
-                }
+
             }
-            else
-            {
+
                 return false;
-            }
+
         }
 
         public void AirDown()
@@ -739,6 +712,25 @@ namespace MoreMountains.CorgiEngine
 
         }
 
+        public void Die()
+        {
+
+            if (_defender == MyDamageOntouch.TypeOfSubject.Player)
+            {
+
+            }
+            else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
+            {
+                if (SManager.instance.target == this.gameObject)
+                {
+                    SManager.instance.target = null;
+                    eData.TargetEffectCon(1);
+                }
+
+            }
+        }
+
+
         public void GuardReport()
         {
             if (_defender == MyDamageOntouch.TypeOfSubject.Player)
@@ -758,5 +750,23 @@ namespace MoreMountains.CorgiEngine
             await MMCoroutine.WaitFor(delay);
             PostDamageInvulnerable = false;
         }
+
+        /// <summary>
+        /// 今ヘルスが無敵であるかどうか
+        /// </summary>
+        /// <returns></returns>
+        public bool InvulnerableCheck()
+        {
+            if (TemporarilyInvulnerable || Invulnerable || ImmuneToDamage || PostDamageInvulnerable)
+            {
+                OnHitZero?.Invoke();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }

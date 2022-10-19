@@ -19,7 +19,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// 能力のインスペクタの冒頭にある
         public override string HelpBoxText() { return "敵さんのセンサー"; }
         [SerializeField]
-        PolygonCollider2D _sight;
+        GameObject _sight;
 
         //--------------------------------------------------------------------------
         //フィールドサーチに必要なパラメーター
@@ -105,8 +105,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         #region
         private void Serch()
         {
-            if (!SManager.instance.isSerch)
-            {
+
                 pulseTime += _controller.DeltaTime;
                 if (pulseTime >= pulseWait)
                 {
@@ -117,7 +116,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     //isSerchがつくと勝手にSマネージャーが敵リストの面倒を見てくれる
                     pulseTime = 0;
                 }
-            }
+            
         }
 
 /// <summary>
@@ -145,9 +144,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
         #endregion
 
-
-
-
+//視界センサーの残骸
+        #region
+        /*
         /// <summary>
         /// 視界センサー周辺
         /// 視界ではisPlayトリガーしないぽい
@@ -188,7 +187,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             }
 
-            RaycastHit2D onHitRay = Physics2D.Raycast(i_fromPosition, i_toTargetDir,/* SerchRadius,*/ layerMask.value);
+            RaycastHit2D onHitRay = Physics2D.Raycast(i_fromPosition, i_toTargetDir,
+        layerMask.value);
             if (!onHitRay.collider)
             {
                 return false;
@@ -215,10 +215,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                 if (CheckFoundObject(collision.gameObject))
                 {
+                Debug.Log("機能してます");
                 brain.StartCombat();
                     RangeChange();
                     //即座にポジション判断できるように
-                    //Debug.Log("機能してますよー");
+                    
                     se.Pulse();
                     SerchEnemy();
                     //isSerchがつくと勝手にSマネージャーが敵リストの面倒を見てくれる
@@ -227,11 +228,30 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     //検索はAgrSerchに任せる。いや入れていい。最初に検知されるのは近いやつだしどうせすぐ更新される
                 }
         }
-
-
-
+        */
 
         #endregion
+
+        /// <summary>
+        ///     トリガーセンサーから呼び出すもの
+        /// </summary>
+        public void FindEnemy()
+        {
+        //    Debug.Log("機能してます");
+            brain.StartCombat();
+            RangeChange();
+            //即座にポジション判断できるように
+
+            se.Pulse();
+            SerchEnemy();
+            //isSerchがつくと勝手にSマネージャーが敵リストの面倒を見てくれる
+            pulseTime = 0;
+
+            //検索はAgrSerchに任せる。いや入れていい。最初に検知されるのは近いやつだしどうせすぐ更新される
+        }
+
+
+
 
         public void RangeChange()
         {
@@ -239,31 +259,33 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 se.SensorRange = aggresiveRange;
 
-                if(_sight != null)
-               _sight.enabled = false;
+                if (_sight != null)
+                    _sight.SetActive(false);
             }
             else
             {
                 se.SensorRange = fieldRange;
                 if (_sight != null)
-                _sight.enabled = true;
+                    _sight.SetActive(true);
             }
 
         }
 
 
 
-
+        /*
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            Debug.Log($"機能してますよー{collision.gameObject.name}");
             SightSensor(collision.collider);
         }
         private void OnCollisionStay2D(Collision2D collision)
         {
+            Debug.Log($"機能してますぜ{collision.gameObject.name}");
             SightSensor(collision.collider);
         }
 
-
+        */
 
     }
 }

@@ -1,34 +1,29 @@
 using MoreMountains.Tools;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DropDownWindow : ValueChangeBase
 {
 
-    bool reset;
+
+    Dropdown d;
 
 
-
+    private void Start()
+    {
+        d = this.gameObject.MMGetComponentNoAlloc<Dropdown>();
+    }
     // Start is called before the first frame update
 
-    private void OnDisable()
-    {
-        reset = false;
-    }
 
     public void ApplyDrop()
     {
-       // Debug.Log("sssdfggh");
-        if (!reset)
-        {
-            reset = true;
-        }
-        else
-        {
-        //    Debug.Log("dkfjg");
-            Dropdown d = this.gameObject.MMGetComponentNoAlloc<Dropdown>();
+
+
+            
             numberSave = d.value;
             ApplyValue();
-        }
+
     }
 
 }

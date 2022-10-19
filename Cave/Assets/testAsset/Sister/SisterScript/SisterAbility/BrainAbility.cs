@@ -297,10 +297,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			EscapeWarp();
 			if (nowState == SisterState.戦い)
 			{
-				//Debug.Log($"位置についてますかー{nowPosition}");
-				SManager.instance.BattleEndCheck();
-				BattleEnd();
+				
 
+				BattleEnd();
 
 				PositionSetting();
 
@@ -388,36 +387,38 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			if ( _controller.State.IsGrounded && !disEnable)
 			{
 				//ポジションにつきに行く。かつついてなくて地面にいる
-				if (!nowPosition)
-				{
-					//ここで使うのは一番近い敵
-
 					SManager.instance.GetClosestEnemyX();
 					float enemyDistance = SManager.instance.closestEnemy - myPosition.x;
 					int mDirection = (int)Mathf.Sign(enemyDistance);
 					enemyDistance = Mathf.Abs(enemyDistance);
+		//		Debug.Log($"iiiiiiiiiiii{nowPosition}");
+				if (!nowPosition)
+				{
+					//ここで使うのは一番近い敵
+
+					//Debug.Log("dddsssdd");
 					//一番近い敵が右にいるとき
-					if (!nowPosition)
+
+					if (changeable)
 					{
 
-						if (changeable)
+				//		Debug.Log("うｎ");
+						//敵から十分に離れたら
+						if (enemyDistance >= status.battleDis)
 						{
-							//敵から十分に離れたら
-							if (enemyDistance >= status.battleDis)
-							{
-								
-								nowPosition = true;
-								nowMove = MoveState.停止;
-								moveDirection = mDirection;
-							}
-							else// if (SManager.instance.closestEnemy - myPosition.x < status.battleDis)
-							{
-								nowMove = MoveState.走り;
-								moveDirection = -mDirection;
-							}
+						//	Debug.Log("ああああ");
+							nowPosition = true;
+							nowMove = MoveState.停止;
+							moveDirection = mDirection;
 						}
-
+						else// if (SManager.instance.closestEnemy - myPosition.x < status.battleDis)
+						{
+					//		Debug.Log("ですよねー");
+							nowMove = MoveState.走り;
+							moveDirection = -mDirection;
+						}
 					}
+
 
 				}
 				else if (nowPosition)
@@ -426,9 +427,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 					//再判定するかどうか
 					//詠唱してないときに敵が逃亡範囲内にて聞いたら再判定
-					if (!disEnable)
-					{
-						
+
 						escapeTime += _controller.DeltaTime;
 						if (SManager.instance.target != null && changeable)
 						{
@@ -439,18 +438,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							
 
 						}
-					}
-					if (escapeTime >= SManager.instance.sisStatus.escapeTime)
+
+					if (escapeTime >= SManager.instance.sisStatus.escapeTime && enemyDistance < status.battleDis)
 					{
 						escapeTime = 0.0f;
-
+						Debug.Log("ddddd");
 						nowPosition = false;
+						SManager.instance.target = null;
 						// = 99;
 					}
 
 				}
 				//	}
 			}
+
 		}
 
 
@@ -1002,7 +1003,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//  (_currentStateName);
 		}
 
-		public void StepSound(int type)
+        /// <summary>
+        /// アニメイベント
+		/// 音
+        /// </summary>
+        #region
+        public void StepSound(int type)
 		{
 			if (type == 0)
 			{
@@ -1031,11 +1037,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		}
 
-		/// <summary>
-		/// ステート変化前の処理
-		/// </summary>
-		/// <param name="nextState"></param>
-		public void StateChange(SisterState nextState = SisterState.のんびり)
+        #endregion
+
+        /// <summary>
+        /// ステート変化前の処理
+        /// </summary>
+        /// <param name="nextState"></param>
+        public void StateChange(SisterState nextState = SisterState.のんびり)
         {
 			if (nextState == SisterState.戦い)
 			{

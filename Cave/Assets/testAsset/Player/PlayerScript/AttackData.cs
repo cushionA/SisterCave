@@ -80,4 +80,13 @@ public class AttackData
 	/// </summary>
 	[HideInInspector]
 	public float _parryResist;
+
+	/// <summary>
+	/// ƒqƒbƒg‰ñ”
+	/// </summary>
+	[HideInInspector]
+	public int _hitLimit = 1;
+
+
+
 }
