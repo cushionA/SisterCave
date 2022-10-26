@@ -950,10 +950,6 @@ MonoBehaviour:
     m_Address: Assets/testAsset/Enemy/EnemyAnime/Porter/Sprite/Porter.spriteatlas
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: f412100b22592ad4a940bfdec4b70590
-    m_Address: Assets/testAsset/Enemy/EnemyAnime/Porter/Sprite/Porter.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 37c1cbb5d0a4cc44084fe91a671a19f4
     m_Address: Assets/AllIn1SpriteShader/Materials/SaberScorpionKight.mat
     m_ReadOnly: 0
@@ -986,8 +982,44 @@ MonoBehaviour:
     m_Address: Assets/testAsset/Enemy/EnemyPrefab/Soldir/NewNIdiot.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 58d0f804518be0342a0a0096dfc9b70f
+  - m_GUID: 1b62cf18bd8effd449e667f64e0c8cc4
+    m_Address: Assets/AllIn1SpriteShader/2DRenderer_URP/PipelineSetup/AllIn12DRendererUrpAsset.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c3a8a5161c47d5f40b803e70a2dfc78f
+    m_Address: Assets/AllIn1SpriteShader/Materials/Porter_1.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1e6e9b364866e664cb268f4493b3d4a0
+    m_Address: Assets/MudBun/Shader/Render/URP/MudLockedMeshURP.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d51e8d549d2b0ce4989e9a06178ab9bc
     m_Address: Assets/AllIn1SpriteShader/Materials/Porter.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 677cca399782dea41aedc1d292ecb67d
+    m_Address: Assets/AllIn1SpriteShader/Textures/fire2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bb4305d8e284ab94abb0fc3478415e62
+    m_Address: Assets/AllIn1SpriteShader/2DRenderer_URP/PipelineSetup/AllIn12DRenderer.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 41439944d30ece34e96484bdb6645b55
+    m_Address: Packages/com.unity.render-pipelines.universal/Runtime/Data/PostProcessData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 45de8f4006edc6948b033431b5a29e56
+    m_Address: Assets/Hovl Studio/Sword slash VFX/Materials/Glow1bcg.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 50088b16d51b76e4aaa4463a7ba96997
+    m_Address: Assets/testAsset/Effects/Material/Materials 1/Beams/arcanebeam.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f41b34ad41b7c9c4a90bedf02642b4be
+    m_Address: Assets/testAsset/Enemy/EnemyAI/Porter/Status/Porter.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

@@ -36,41 +36,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public bool nowAttack;
 
 
-
-
         public  void AttackEnd()
         {
          //
             motionNum = 0;
-            _controller.DefaultParameters.Gravity = -_base.status.firstGravity;
+
+
+         //   _controller.DefaultParameters.Gravity = -_base.status.firstGravity;
             nowAttack = false;
             if(_condition.CurrentState == CharacterStates.CharacterConditions.Moving)
             {
                 _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
                // Debug.Log("あじぇｋ");
             }
-
+            transform.root.rotation = Quaternion.identity;
         }
 
-        //どうせ呼ばれないから消す
-        /*
-        /// <summary>
-        /// アビリティサイクルの開始時に呼び出され、ここで入力の有無を確認します。
-        /// </summary>
-        protected override void HandleInput()
-        {
-            //ここで何ボタンが押されているかによって行動変えたりできるねぇ
-            //InputReactionフラグとかいいかも
 
-            // here as an example we check if we're pressing down
-            // on our main stick/direction pad/keyboard
-            if (ReIManager.PrimaryMovement.y < -ReIManager.Threshold.y)
-            {
-                
-            }//DoSomething();
-            
-        }
-        */
         /// <summary>
         /// AIからこいつ呼び出す
         /// </summary>

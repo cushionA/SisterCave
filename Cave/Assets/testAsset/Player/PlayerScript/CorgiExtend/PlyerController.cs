@@ -92,7 +92,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		[SerializeField]
 		GameObject eController;
 
-        protected override void Initialization()
+		[SerializeField]
+		EnemyController eCon;
+
+		protected override void Initialization()
 		{
 			base.Initialization();
 			anim = _animator;
@@ -431,18 +434,24 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public override void ProcessAbility()
         {
             base.ProcessAbility();
-			
+            if (_health.CurrentHealth <= 0)
+            {
+				Debug.Log($"éÄÇµÇƒ{_condition.CurrentState}");
+            }
 			if (_controller.State.JustGotGrounded)
             {
 				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorShakeSound[2], transform.position);
 			}
 		}
-
-        /// <summary>
-        /// èdóÕê›íË
-        /// </summary>
-        /// <param name="gravity"></param>
-        public void GravitySet(float gravity)
+        public void HPReset()
+        {
+			_health.CurrentHealth = GManager.instance.pStatus.maxHp;
+        }
+		/// <summary>
+		/// èdóÕê›íË
+		/// </summary>
+		/// <param name="gravity"></param>
+		public void GravitySet(float gravity)
 		{
 			//rb.gravityScale = gravity;
 			_controller.DefaultParameters.Gravity = -gravity;
@@ -455,6 +464,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public int ReturnHealth()
         {
 			return (int)_health.CurrentHealth;
+        }
+
+
+       public void testReset()
+        {
+            if (eCon.EnemyExist())
+            {
+				eCon.ResetEnemy();
+            }
+			transform.position = new Vector2(182.8f,transform.position.y);
+			SManager.instance.Sister.transform.position = new Vector2(187.8f, transform.position.y);
         }
 
         /// <summary>

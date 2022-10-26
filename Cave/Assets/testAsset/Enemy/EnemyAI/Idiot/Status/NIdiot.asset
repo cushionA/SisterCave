@@ -40,21 +40,20 @@ MonoBehaviour:
   fireCut: 0
   thunderCut: 0
   guardPower: 100
-  judgePace: 2
+  judgePace: 0.8
   isMetal: 0
   _bodySize: 0
   addSpeed: {x: 300, y: 0}
-  patrolSpeed: {x: 25, y: 0}
+  patrolSpeed: {x: 10, y: 0}
   waitDistance: {x: 15, y: 0}
   waitRes: 1
-  combatSpeed: {x: 60, y: 0}
+  combatSpeed: {x: 20, y: 0}
   agrDistance:
   - {x: 15, y: 0}
   walkDistance: {x: 50, y: 0}
   adjust: 7
   escapeDistance: {x: 200, y: 150}
   chaseRes: 23
-  jumpMove: 80
   jumpPower: 150
   jumpRes: 0.4
   jumpCool: 12

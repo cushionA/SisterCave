@@ -717,7 +717,7 @@ namespace MoreMountains.CorgiEngine
 
             if (_defender == MyDamageOntouch.TypeOfSubject.Player)
             {
-
+                pCon.testReset();
             }
             else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
             {

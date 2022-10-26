@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using MoreMountains.Tools;
 using UnityEngine;
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -18,9 +18,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         [SerializeField] bool test;
         // Start is called before the first frame update
         [SerializeField] int tesnum;
+        string unko;
         protected override void Initialization()
         {
             base.Initialization();
+
         }
  
 
@@ -56,7 +58,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     {
                         if (Mathf.Abs(distance.x) >= 45)
                         {
-                            if (RandomValue(1, 100) <= 55)
+                            if (RandomValue(1, 100) <= 35)
                             {
                                 Attack(true, 5);
                             }

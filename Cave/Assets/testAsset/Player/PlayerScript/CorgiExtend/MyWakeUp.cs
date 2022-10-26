@@ -167,6 +167,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 {
                     Die();
                 }
+                else if (isPlayer)
+                {
+                    Die();
+                }
             }
             else if (nowType == 4 || nowType == 7)
             {
@@ -204,6 +208,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 _controller.SetForce(Vector2.zero);
                 if (CheckEnd("DDie"))
+                {
+                    Die();
+                }
+                else if (isPlayer)
                 {
                     Die();
                 }
@@ -270,6 +278,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             _health.Die();
             if (isPlayer)
             {
+
+                GManager.instance.HPReset();
                 Recover();
             }
             else

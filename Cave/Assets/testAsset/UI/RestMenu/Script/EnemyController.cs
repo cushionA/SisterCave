@@ -112,13 +112,29 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    public bool EnemyExist()
+    {
+        for (int i = 0; i < bt.Count; i++)
+        {
+            if (bt[i].Enemy != null)
+            {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
     public void AnotherReset()
     {
         NumberSet();
         GManager.instance.HPReset();
         GManager.instance.mp = GManager.instance.maxMp;
-       // SManager.instance.sisStatus.mp = SManager.instance.sisStatus.maxMp;
-        SManager.instance.Sister.MMGetComponentNoAlloc<FireAbility>().MagicEnd();
+        // SManager.instance.sisStatus.mp = SManager.instance.sisStatus.maxMp;
+        if (SManager.instance.Sister.activeSelf) 
+        {
+            SManager.instance.Sister.MMGetComponentNoAlloc<FireAbility>().MagicEnd();
+        }
         for (int i = 0;i < bt.Count;i++)
         {
             int num = 0b0001;

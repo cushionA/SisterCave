@@ -25,13 +25,16 @@ public class RestPoint : MonoBehaviour
     [SerializeField]
     Selectable _resetWindow;
 
+
+
     // Start is called before the first frame update
 
-    
+    EnemyController eCon;
 
     void Start()
     {
         c = GetComponent<CircleCollider2D>();
+        eCon = _resetWindow.transform.parent.gameObject.MMGetComponentNoAlloc<EnemyController>();
     }
 
     // Update is called once per frame
@@ -44,7 +47,7 @@ public class RestPoint : MonoBehaviour
             isCallable = false;
             c.enabled = false;
             button.Select();
-            _resetWindow.transform.parent.gameObject.MMGetComponentNoAlloc<EnemyController>().ResetEnemy();
+            eCon.ResetEnemy();
             if (!isFirst)
             {
                 // Debug.Log($"aas{isFirst}");
@@ -75,6 +78,10 @@ public class RestPoint : MonoBehaviour
 
    public void ResetWindowCall()
     {
+        if (eCon.EnemyExist())
+        {
+            eCon.ResetEnemy();
+        }
         _resetWindow.transform.parent.gameObject.SetActive(true);
         _resetWindow.Select();
         WindowCansel();

@@ -13,6 +13,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         int take;
         int moveType;
 
+        [SerializeField]
+        Material wingMatt;
 
         protected override void Initialization()
         {
@@ -55,11 +57,19 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     //s“®•ÏXŒã‚È‚ç
                     if (ground == EnemyStatus.MoveState.stay && air == EnemyStatus.MoveState.stay && isChange )
                     {
-
+                        //¶‚É‚¢‚éŽž‚Íat2
                         isChange = false;
                         //SetAttackNumber(0);
                         //attackNumber = 0;
-                        Attack(true, 1, true);
+
+                        if (targetPosition.x > transform.position.x)
+                        {
+                            Attack(true, 2, true);
+                        }
+                        else
+                        {
+                            Attack(true, 1, true);
+                        }
                //         Debug.Log("‚„‚„");
 
                         attackChanceTime = 3.0f;
@@ -117,5 +127,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
         }
+
+
     }
 }

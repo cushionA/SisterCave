@@ -99,7 +99,33 @@ MonoBehaviour:
       m_EditorAssetChanged: 0
     _hitLimit: 1
     _moveDuration: 0.2
-    _moveDistance: 0
+    _moveDistance: -20
+    _contactType: 1
+    fallAttack: 0
+    startMoveTime: 0
+    lockAttack: 0
+  - mValue: 1.1
+    aditionalArmor: 15
+    shock: 10
+    isBlow: 0
+    isLight: 0
+    type: 1
+    coolTime: 0
+    blowPower: {x: 0, y: 0}
+    isCombo: 0
+    isShoot: 0
+    disParry: 0
+    parryResist: 20
+    suppleNumber: 0
+    escapePercentage: 1
+    attackEffect:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    _hitLimit: 1
+    _moveDuration: 0.2
+    _moveDistance: -20
     _contactType: 1
     fallAttack: 0
     startMoveTime: 0

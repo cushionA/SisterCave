@@ -1152,7 +1152,7 @@ public class GManager : MonoBehaviour
 
     public void HPReset()
     {
-        hp = pStatus.maxHp;
+        pc.HPReset();
     }
 
     //いらないやつ

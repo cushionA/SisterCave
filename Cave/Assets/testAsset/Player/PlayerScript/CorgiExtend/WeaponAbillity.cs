@@ -808,7 +808,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             //もし連撃じゃないなら攻撃番号はリセット
             _preInput = 0;
-     Debug.Log($"いあいいｓ{comboEnd}{attackNumber}{bigTrigger}");
+    // Debug.Log($"いあいいｓ{comboEnd}{attackNumber}{bigTrigger}");
         }
 
         #endregion

@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 
 public class BattleTest : MonoBehaviour
 {
-    [SerializeField] GameObject Enemy;
+    public GameObject Enemy;
 
     [SerializeField] bool isBattle;
 

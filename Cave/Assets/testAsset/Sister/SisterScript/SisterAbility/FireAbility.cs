@@ -335,9 +335,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							//それでもターゲットがいなかったら
 							if (SManager.instance.target == null && !disEnable)
 							{
-								if (sister.AttackCondition[5].condition == FireCondition.ActJudge.回復行動に移行 || sister.AttackCondition[6].condition == FireCondition.ActJudge.支援行動に移行)
+								if (sister.AttackCondition[5].condition == FireCondition.ActJudge.回復行動に移行 || sister.AttackCondition[5].condition == FireCondition.ActJudge.支援行動に移行)
 								{
-									AttackStateChange(sister.AttackCondition[6]);
+									AttackStateChange(sister.AttackCondition[5]);
 									return;
 								}
 								else if (sister.AttackCondition[5].condition != FireCondition.ActJudge.なにもしない)
@@ -697,7 +697,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			stateJudge = 0;
 			waitCast = 0;
 			coolTime = 0;
-			//	SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
+			//SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
 			SManager.instance.target = null;
 			actionNum = 0;
 			waitCast = 0;

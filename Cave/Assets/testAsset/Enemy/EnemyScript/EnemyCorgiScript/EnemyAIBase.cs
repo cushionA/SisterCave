@@ -80,6 +80,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	protected bool isMovable;
 	protected bool isAnimeStart;//アニメの開始に使う
 
+	/// <summary>
+	/// 移動設定の時に決める進行方向
+	/// </summary>
+
 
 
 	[HideInInspector] public int bulletDirection;//敵弾がどちらから来たか
@@ -122,7 +126,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	protected float ySpeed;
 	protected int direction;
 	protected int directionY;
-	protected float moveDirectionX;
+
+		/// <summary>
+		/// 移動設定の時に決める進行方向
+		/// </summary>
+		protected float moveDirectionX;
 	protected float moveDirectionY;
 	protected float jumpTime;//ジャンプのクールタイム。
 	protected bool disenableJump;//ジャンプ不可能状態
@@ -364,13 +372,45 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			enableFire = true;
 		}
-		//parentMatt = GetComponent<SpriteRenderer>().material;
-		//td = GetComponent<TargetDisplay>();
+			//parentMatt = GetComponent<SpriteRenderer>().material;
+			//td = GetComponent<TargetDisplay>();
+			//MaterialSet();
 	}
 
 
+		/// <summary>
+		/// 最初のマテリアルの無効有効設定
+		/// </summary>
+		protected void MaterialSet()
+        {
+			//親マテリアルの情報を見る
+			//	Debug.Log($"{parentMatt.material}");
+			//全部のスプライトを集めて設定する
+			for(int i = 0;  i < spriteList.Length;i++)
+			{
 
+				GetAllChildren(spriteList[i]);
+				//	await UniTask.WaitForFixedUpdate();
+			}
 
+			Material coppy = controllTarget[0].material;
+
+			//何らかの条件でいじり方変える
+            if (true)
+            {
+				coppy.EnableKeyword("Fade_ON");
+				coppy.DisableKeyword("BLUR_ON");
+				coppy.DisableKeyword("MOTIONBLUR_ON");
+			}
+
+			for (int i = 0; i <= controllTarget.Count - 1; i++)
+			{
+				controllTarget[i].material.CopyPropertiesFromMaterial(coppy);
+
+			}
+
+			controllTarget.Clear();
+		}
 
 	public override void ProcessAbility()
 		{
@@ -1762,7 +1802,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		#region
 
-		public void FlySound()
+		public virtual void FlySound()
 	{
 		if ((_movement.CurrentState == CharacterStates.MovementStates.Flying || _movement.CurrentState == CharacterStates.MovementStates.FastFlying)
 				&& _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
@@ -1918,9 +1958,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                 if (direction != MathF.Sign(transform.localScale.x))
                 {
-					if (tes) {
-						Debug.Log("あｆｄｄｆｄ");
-					}
+
 					Vector3 flip = transform.localScale;
 					flip.Set(direction, flip.y,flip.z);
 					transform.localScale = flip;
@@ -2365,7 +2403,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                 if (!flipComp)
                 {
-					ground = EnemyStatus.MoveState.stay;
+               //     if (ground != EnemyStatus.MoveState.stay)
+                  //  {
+					//	Debug.Log($"dddd{dire != lastDirection}");
+				//	}
+				//	ground = EnemyStatus.MoveState.stay;
+					
                 }
 				
 				stateJudge = 0;
@@ -2388,7 +2431,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						_characterRun.RunStop();
 					}
 				}
-                        
+				moveDirectionX = direction;
+
 			}
 			#endregion
 
@@ -2414,14 +2458,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				{
 					
 					isReach = (Mathf.Abs(distance.x) - status.agrDistance[disIndex].x) <= status.walkDistance.x ? true : false;
-					_characterHorizontalMovement.SetHorizontalMove(direction);
+					_characterHorizontalMovement.SetHorizontalMove(moveDirectionX);
 
 				}
 				else if (ground == EnemyStatus.MoveState.accessDash)
 				{
 					
 					isReach = false;
-					_characterHorizontalMovement.SetHorizontalMove(direction);
+					_characterHorizontalMovement.SetHorizontalMove(moveDirectionX);
 					//Runningフラグトゥルーの時の処理を見る
 					_characterRun.RunStart();
 					if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
@@ -2439,14 +2483,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					
 					isReach = true;
 
-					_characterHorizontalMovement.SetHorizontalMove(-direction);
+					_characterHorizontalMovement.SetHorizontalMove(-moveDirectionX);
 				}
 				else if (ground == EnemyStatus.MoveState.leaveDash)
 				{
 
 					
 					isReach = false;
-					_characterHorizontalMovement.SetHorizontalMove(-direction);
+					_characterHorizontalMovement.SetHorizontalMove(-moveDirectionX);
 				}
 			}
 		}
@@ -2791,6 +2835,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public void BattleFlip(float direction)
 	{
+			if(direction == 0)
+            {
+				return;
+            }
 			if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
 			{
                  flipWaitTime += _controller.DeltaTime;
@@ -2799,7 +2847,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					
 					flipComp = false;
 
-					if (flipWaitTime >= 0.5f)
+					if (flipWaitTime >= 0.2f)
 					{
 
 						flipWaitTime = 0f;
@@ -2814,7 +2862,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				else
 				{
 					flipComp = true;
-					flipWaitTime = 0;
+				//	flipWaitTime = 0;
 				}
 			}
 	}
@@ -2904,7 +2952,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			if (materialSet == 1)
 			{
 
-				GetAllChildren(spriteList[mattControllNum], ref mattTrans);
+				GetAllChildren(spriteList[mattControllNum]);
 				//	await UniTask.WaitForFixedUpdate();
 
 				materialSet++;
@@ -2949,31 +2997,46 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-
-	private void GetAllChildren(Transform parent, ref List<Transform> transforms, bool Weapon = false)
+		/// <summary>
+		/// マテリアルを取得するやつ
+		/// Weaponは武器を探すフラグ
+		/// スプライトリストの外から武器を持ってくる
+		/// </summary>
+		/// <param name="parent">マテリアルを収集するオブジェクトの親</param>
+		/// <param name="transforms">使用するリスト</param>
+		/// <param name="Weapon">一番上のオブジェクトであるかどうか。選択したスプライトリストじゃないとこに武器のマテリアルがある</param>
+	private void GetAllChildren(Transform parent, bool Weapon = false)
 	{
-		foreach (Transform child in parent)
+		for (int i = 0; i < parent.childCount;i++)
 		{
-			transforms.Add(child);
-			GetAllChildren(child, ref transforms, true);
+				//まず子オブジェクトをトランスフォームのリストに追加
+				//子オブジェクトの子オブジェクトまで探索
+
+				Transform child = parent.GetChild(i);
+
+			GetAllChildren(child, true);
+			//レンダラーを取り出す（あとでこいつを操作する）
 			Renderer sr = child.gameObject.MMGetComponentNoAlloc<Renderer>();
 			if (sr != null)
 			{
+				//リストに追加
 				//Debug.Log(sr.name);
 				controllTarget.Add(sr);
 			}
 		}
+		
+		//一番上のオブジェクトの時武器と盾を探す
 		if (!Weapon)
 		{
-			Transform die = transform.Find("Attack");
+			Transform die = transform.MMFindDeepChildBreadthFirst("Attack");
 			if (die != null)
 			{
-				GetAllChildren(die, ref transforms, true);
+				GetAllChildren(die, true);
 			}
 			die = transform.Find("Guard");
 			if (die != null)
 			{
-				GetAllChildren(die, ref transforms, true);
+				GetAllChildren(die, true);
 			}
 
 		}
