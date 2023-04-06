@@ -456,7 +456,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 if (SManager.instance.target != null)
                 {
                     prevTarget = SManager.instance.target;
-                    SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
+                    if (SManager.instance.target != transform.root.gameObject &&  SManager.instance.target != GManager.instance.Player)
+                    {
+                        SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
+                        
+                    }
                     SManager.instance.target = null;
                     fire.TargetSelect(sb.status.equipCombination.mainTarget[conboChain], dammy);
                    

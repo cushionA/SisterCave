@@ -134,6 +134,7 @@ MonoBehaviour:
   shock: 0
   mValue: 0
   fireType: 1
+  _hitLimit: 1
   penetration: 0
   lifeTime: 1
   speedV: 0
@@ -161,6 +162,11 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  castBreak:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   fireSound: 
   moveSound: 
   existSound: 
@@ -180,7 +186,13 @@ MonoBehaviour:
   coolTime: 20
   mainTarget:
   - condition: 0
-    percentage: 8
+    percentage: 2
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  - condition: 0
+    percentage: 2
     highOrLow: 0
     wp: 8
     nextCondition: 5
@@ -191,27 +203,21 @@ MonoBehaviour:
     wp: 8
     nextCondition: 5
     upDown: 0
-  - condition: 0
-    percentage: 1
-    highOrLow: 0
-    wp: 8
-    nextCondition: 5
-    upDown: 0
   subTarget:
   - condition: 0
-    percentage: 31
+    percentage: 8
     highOrLow: 0
     wp: 8
     nextCondition: 5
     upDown: 0
   - condition: 0
-    percentage: 31
+    percentage: 8
     highOrLow: 0
     wp: 8
     nextCondition: 5
     upDown: 0
   - condition: 0
-    percentage: 31
+    percentage: 4
     highOrLow: 0
     wp: 8
     nextCondition: 5

@@ -43,6 +43,7 @@ public class RestPoint : MonoBehaviour
 //Debug.Log($"s{c.enabled}s");
         if (isCallable && MainUICon.instance._reInput.SubmitButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown && GManager.instance.PlayerStateCheck())
         {
+            GManager.instance.PlayerEventLock(true);
             WindowSet();
             isCallable = false;
             c.enabled = false;
@@ -57,7 +58,7 @@ public class RestPoint : MonoBehaviour
 
             GManager.instance.onGimmick = true;
             MainUICon.instance.UIOn = true;
-            GManager.instance.PlayerEventLock(true);
+            
         }
         else if (isFirst && !isCallable && MainUICon.instance._reInput.CancelButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown && window.activeSelf)
         {

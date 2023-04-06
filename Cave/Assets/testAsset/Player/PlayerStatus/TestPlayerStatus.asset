@@ -34,11 +34,11 @@ MonoBehaviour:
   initialStamina: 60
   initialWeight: 0
   earnedSoul: 0
-  maxStamina: 105
-  stamina: 105
+  maxStamina: 40
+  stamina: 40
   Vitality: 9
-  Endurance: 19
-  capacity: 800
+  Endurance: 25
+  capacity: 90
   power: 5
   skill: 8
   _int: 1
@@ -73,17 +73,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1.6339221
-      outSlope: 1.6339221
+      inSlope: 1.1
+      outSlope: 1.1
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 99
-      value: 161.75829
-      inSlope: 1.6339221
-      outSlope: 1.6339221
+      time: 100
+      value: 110
+      inSlope: 1.1
+      outSlope: 1.1
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -152,10 +152,10 @@ MonoBehaviour:
   addSpeed: {x: 0, y: 0}
   jumpMove: 0
   jumpPower: 0
-  jumpRes: 60
+  jumpRes: 45
   jumpCool: 0.4
   jumpLimit: 1
   avoidCool: 0.2
-  firstGravity: 120
+  firstGravity: 150
   downRes: 1
   _weightState: 0

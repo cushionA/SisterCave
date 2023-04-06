@@ -87,5 +87,13 @@ public class EnemyValue
     /// </summary>
     public bool lockAttack = false;
 
+    /// <summary>
+    /// スーパーアーマー付きかどうか
+    /// </summary>
+    public bool superArmor;
 
+    /// <summary>
+    /// ガード攻撃かどうか
+    /// </summary>
+    public bool guardAttack;
 }

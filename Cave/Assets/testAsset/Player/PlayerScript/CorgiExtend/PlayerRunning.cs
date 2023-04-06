@@ -86,7 +86,7 @@ namespace MoreMountains.CorgiEngine
 			*/
 			#endregion
 
-			if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
+			if ((_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed) && _horizontalInput != 0)
 			{
 				RunStart();
 				
@@ -103,8 +103,12 @@ namespace MoreMountains.CorgiEngine
                 }
 				pressTime = 0;
 			}
+			else if ((_horizontalInput == 0 || GManager.instance.stamina <= 0) && _movement.CurrentState == CharacterStates.MovementStates.Running)
+            {
+				RunStop();
+			}
 
-			if (AutoRun)
+				if (AutoRun)
 			{
 				if (_inputManager.PrimaryMovement.magnitude > AutoRunThreshold)
 				{

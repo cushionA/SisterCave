@@ -4782,9 +4782,9 @@ GameObject:
   - component: {fileID: 19933634}
   - component: {fileID: 19881220}
   - component: {fileID: 7767278527899452852}
-  - component: {fileID: 6259618914933073896}
   - component: {fileID: 788525621732590038}
   - component: {fileID: 5822830982496665648}
+  - component: {fileID: 1354076095236334476}
   m_Layer: 22
   m_Name: SHolyBullet
   m_TagString: SisAttack
@@ -9534,22 +9534,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &6259618914933073896
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100002}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &788525621732590038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9613,6 +9597,24 @@ MonoBehaviour:
   Owner: {fileID: 0}
   _attacker: 2
   _health: {fileID: 0}
+  _restoreHealth: []
+  isBreake: 0
+--- !u!58 &1354076095236334476
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 0a1ae9298746d5c468794c1e033a08e4, type: 2}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 2.5
 --- !u!1 &100006
 GameObject:
   m_ObjectHideFlags: 0
@@ -19177,7 +19179,7 @@ MonoBehaviour:
   occlusionLayer: 0
   translucentLayer: 0
   translucentPresetId: 0
-  color: {r: 0.9803913, g: 1, b: 0.8349056, a: 0.156}
+  color: {r: 0.9803913, g: 1, b: 0.8349056, a: 0.163}
   size: 3.3
   spotAngleInner: 360
   spotAngleOuter: 360
@@ -19244,15 +19246,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4593384002465906, guid: 00da3d6e6c982024096c104b8494b5c7, type: 3}
       propertyPath: m_LocalScale.x
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4593384002465906, guid: 00da3d6e6c982024096c104b8494b5c7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4593384002465906, guid: 00da3d6e6c982024096c104b8494b5c7, type: 3}
       propertyPath: m_LocalScale.z
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4593384002465906, guid: 00da3d6e6c982024096c104b8494b5c7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19294,6 +19296,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 199892297695151214, guid: 00da3d6e6c982024096c104b8494b5c7,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a365f93e2a7c5884c8445913051f42d0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00da3d6e6c982024096c104b8494b5c7, type: 3}
 --- !u!1 &4010832155182221342 stripped
@@ -19314,7 +19321,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875177b8b4c4720458a82d53bb566036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStop: 1
 --- !u!4 &4016444066849068258 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4593384002465906, guid: 00da3d6e6c982024096c104b8494b5c7,

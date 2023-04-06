@@ -281,7 +281,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 
 			// if we're walking and not moving anymore, we go back to the Idle state
-			if ((_movement.CurrentState == CharacterStates.MovementStates.moving)
+			if ((_movement.CurrentState == CharacterStates.MovementStates.moving || _movement.CurrentState == CharacterStates.MovementStates.Running)
 			&& (_normalizedHorizontalSpeed == 0))
 			{
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);

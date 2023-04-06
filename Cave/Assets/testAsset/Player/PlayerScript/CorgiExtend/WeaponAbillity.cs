@@ -344,9 +344,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             // GManager.instance.pm.anim.Play("OArts1");
 
-           //Debug.Log("攻撃可能に");
+            //Debug.Log("攻撃可能に");
 
-            
+            _health._guardAttack = false;
             if (atType == ActType.fAttack)
             {
                 startFall = true;
@@ -449,8 +449,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
 
             //スタミナ利用可能なら
-            if (GManager.instance.isEnable && atType == ActType.noAttack && _condition.CurrentState == CharacterStates.CharacterConditions.Normal && !GManager.instance.equipWeapon.isCombo && !isCharging)
+            if (GManager.instance.isEnable && atType == ActType.noAttack && _condition.CurrentState == CharacterStates.CharacterConditions.Normal && !GManager.instance.useAtValue.isCombo && !isCharging)
             {
+
+                //コンボじゃなくてスタミナないなら戻る
+                if (GManager.instance.stamina <= 0 && !GManager.instance.useAtValue.isCombo)
+                {
+                    smallTrigger = false;
+                    artsTrigger = false;
+                    bigTrigger = false;
+                    attackNumber = 0;
+                    return;
+                }
 
                 // 1通常攻撃、2は空中弱、3は強、4は空中強、5は戦技
                 if (fire1Key || smallTrigger)
@@ -506,7 +516,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 
             }
             //攻撃中じゃなくてコンボ属性じゃないなら
-            if (GManager.instance.equipWeapon.isCombo && _condition.CurrentState == CharacterStates.CharacterConditions.Normal)
+            if (GManager.instance.useAtValue.isCombo && _condition.CurrentState == CharacterStates.CharacterConditions.Normal)
             {
 
                 //コンボ入力
@@ -808,7 +818,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             //もし連撃じゃないなら攻撃番号はリセット
             _preInput = 0;
-    // Debug.Log($"いあいいｓ{comboEnd}{attackNumber}{bigTrigger}");
+            // Debug.Log($"いあいいｓ{comboEnd}{attackNumber}{bigTrigger}");
+            _health._superArumor = false;
+
+            staminaRecover().Forget();
+        }
+
+        async UniTaskVoid staminaRecover()
+        {
+            await UniTask.Delay(1000);
+            GManager.instance.isStUse = false;
         }
 
         #endregion
@@ -907,6 +926,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             _rush.RushStart(GManager.instance.useAtValue._moveDuration, GManager.instance.useAtValue._moveDistance, GManager.instance.useAtValue._contactType, GManager.instance.useAtValue.fallAttack, GManager.instance.useAtValue.startMoveTime);
             GManager.instance.StaminaUse(GManager.instance.useAtValue.useStamina);
+                GManager.instance.isStUse = true;
 
         }
 
@@ -1012,6 +1032,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.sValue[attackNumber].fallAttack;
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.sValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.sValue[attackNumber].lockAttack;
+                _health._superArumor = GManager.instance.equipWeapon.sValue[attackNumber].superArmor;
+                _health._guardAttack = GManager.instance.equipWeapon.sValue[attackNumber].guardAttack;
             }
             else
             {
@@ -1034,6 +1056,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinSValue[attackNumber].fallAttack;
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinSValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinSValue[attackNumber].lockAttack;
+                _health._superArumor = GManager.instance.equipWeapon.twinSValue[attackNumber].superArmor;
+                _health._guardAttack = GManager.instance.equipWeapon.twinSValue[attackNumber].guardAttack;
             }
         }
 
@@ -1063,6 +1087,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.bValue[attackNumber].fallAttack;
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.bValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.bValue[attackNumber].lockAttack;
+                _health._superArumor = GManager.instance.equipWeapon.bValue[attackNumber].superArmor;
+                _health._guardAttack = GManager.instance.equipWeapon.bValue[attackNumber].guardAttack;
             }
             else
             {
@@ -1086,6 +1112,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinBValue[attackNumber].fallAttack;
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinBValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinBValue[attackNumber].lockAttack;
+
+                _health._superArumor = GManager.instance.equipWeapon.twinBValue[attackNumber].superArmor;
+                _health._guardAttack = GManager.instance.equipWeapon.twinBValue[attackNumber].guardAttack;
             }
         }
 
@@ -1117,6 +1146,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.chargeValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.chargeValue[attackNumber].lockAttack;
 
+                _health._superArumor = GManager.instance.equipWeapon.chargeValue[attackNumber].superArmor;
+                _health._guardAttack = GManager.instance.equipWeapon.chargeValue[attackNumber].guardAttack;
             }
             else
             {
@@ -1140,6 +1171,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinChargeValue[attackNumber].fallAttack;
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinChargeValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinChargeValue[attackNumber].lockAttack;
+                _health._superArumor = GManager.instance.equipWeapon.twinChargeValue[attackNumber].superArmor;
+                _health._guardAttack = GManager.instance.equipWeapon.twinChargeValue[attackNumber].guardAttack;
             }
         }
         public void airAttackPrepare()//デフォが斬撃
@@ -1172,6 +1205,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.airValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.airValue[attackNumber].lockAttack;
 
+                _health._superArumor = GManager.instance.equipWeapon.airValue[attackNumber].superArmor;
+                _health._guardAttack = GManager.instance.equipWeapon.airValue[attackNumber].guardAttack;
             }
             else
             {
@@ -1196,6 +1231,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinAirValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinAirValue[attackNumber].lockAttack;
 
+                _health._superArumor = GManager.instance.equipWeapon.twinAirValue[attackNumber].superArmor;
+                _health._guardAttack = GManager.instance.equipWeapon.twinAirValue[attackNumber].guardAttack;
             }
         }
         public void strikeAttackPrepare()//デフォが斬撃
@@ -1226,6 +1263,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.strikeValue[attackNumber].fallAttack;
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.strikeValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.strikeValue[attackNumber].lockAttack;
+
+                _health._superArumor = true;
+                _health._guardAttack = GManager.instance.equipWeapon.strikeValue[attackNumber].guardAttack;
             }
             else
             {
@@ -1248,6 +1288,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].fallAttack;
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].lockAttack;
+
+                _health._superArumor = true;
+                _health._guardAttack = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].guardAttack;
             }
             comboLimit = 1;
         }
@@ -1279,6 +1322,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.fallAttack = GManager.instance.equipShield.artsValue[attackNumber].fallAttack;
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipShield.artsValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipShield.artsValue[attackNumber].lockAttack;
+
+                _health._superArumor = GManager.instance.equipShield.artsValue[attackNumber].superArmor;
+                _health._guardAttack = GManager.instance.equipShield.artsValue[attackNumber].guardAttack;
             }
             else
             {
@@ -1303,6 +1349,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.artsValue[attackNumber].fallAttack;
                 GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.artsValue[attackNumber].startMoveTime;
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.artsValue[attackNumber].lockAttack;
+
+                _health._superArumor = GManager.instance.equipWeapon.artsValue[attackNumber].superArmor;
+                _health._guardAttack = GManager.instance.equipWeapon.artsValue[attackNumber].guardAttack;
             }
         }
         #endregion

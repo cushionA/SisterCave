@@ -22,9 +22,9 @@ MonoBehaviour:
   targetResetRes: 5
   attackCT:
   - 0
-  - 0
-  - 0
-  - 0
+  - 2
+  - 30
+  - 40
   - 0
   - 0
   supportCT:
@@ -35,9 +35,9 @@ MonoBehaviour:
   - 0
   - 0
   healCT:
-  - 3
-  - 3
-  - 3
+  - 0
+  - 15
+  - 0
   - 0
   - 0
   - 0
@@ -48,29 +48,29 @@ MonoBehaviour:
   priority: 0
   nowMove: 0
   targetCondition:
+  - condition: 1
+    percentage: 50
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  - condition: 0
+    percentage: 2
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
+  - condition: 0
+    percentage: 8
+    highOrLow: 0
+    wp: 8
+    nextCondition: 5
+    upDown: 0
   - condition: 8
     percentage: 0
     highOrLow: 0
     wp: 8
-    nextCondition: 5
-    upDown: 0
-  - condition: 6
-    percentage: 0
-    highOrLow: 0
-    wp: 8
-    nextCondition: 5
-    upDown: 0
-  - condition: 7
-    percentage: 0
-    highOrLow: 0
-    wp: 8
-    nextCondition: 5
-    upDown: 0
-  - condition: 8
-    percentage: 0
-    highOrLow: 0
-    wp: 8
-    nextCondition: 5
+    nextCondition: 0
     upDown: 0
   - condition: 8
     percentage: 0
@@ -79,9 +79,27 @@ MonoBehaviour:
     nextCondition: 5
     upDown: 0
   AttackCondition:
+  - UseMagic: {fileID: 11400000, guid: 37c6e5e57dfe6ed41a37f81dcf48bf9c, type: 2}
+    AutoWait: 0
+    condition: 13
+    firstCondition: 6
+    nextCondition: 5
+    upDown: 0
   - UseMagic: {fileID: 0}
     AutoWait: 0
     condition: 5
+    firstCondition: 1
+    nextCondition: 5
+    upDown: 0
+  - UseMagic: {fileID: 0}
+    AutoWait: 0
+    condition: 6
+    firstCondition: 0
+    nextCondition: 5
+    upDown: 0
+  - UseMagic: {fileID: 0}
+    AutoWait: 0
+    condition: 3
     firstCondition: 6
     nextCondition: 5
     upDown: 0
@@ -97,25 +115,7 @@ MonoBehaviour:
     firstCondition: 6
     nextCondition: 5
     upDown: 0
-  - UseMagic: {fileID: 0}
-    AutoWait: 0
-    condition: 14
-    firstCondition: 6
-    nextCondition: 5
-    upDown: 0
-  - UseMagic: {fileID: 0}
-    AutoWait: 0
-    condition: 14
-    firstCondition: 6
-    nextCondition: 5
-    upDown: 0
-  - UseMagic: {fileID: 0}
-    AutoWait: 0
-    condition: 14
-    firstCondition: 6
-    nextCondition: 5
-    upDown: 0
-  atSkipList: 000000000000000000000000000000000000000000000000
+  atSkipList: 000000000100000001000000010000000100000001000000
   supportPlan:
   - UseMagic: {fileID: 0}
     sCondition: 7
@@ -174,11 +174,20 @@ MonoBehaviour:
   sSkipList: 000000000000000000000000000000000000000000000000
   recoverCondition:
   - UseMagic: {fileID: 0}
-    condition: 7
+    condition: 2
     needSupport: 6
-    percentage: 0
+    percentage: 90
+    highOrLow: 1
+    ActBase: 1
+    useSupport: 6
+    nextCondition: 7
+    upDown: 0
+  - UseMagic: {fileID: 0}
+    condition: 2
+    needSupport: 6
+    percentage: 55
     highOrLow: 0
-    ActBase: 3
+    ActBase: 0
     useSupport: 6
     nextCondition: 7
     upDown: 0
@@ -218,23 +227,14 @@ MonoBehaviour:
     useSupport: 6
     nextCondition: 7
     upDown: 0
-  - UseMagic: {fileID: 0}
-    condition: 7
-    needSupport: 6
-    percentage: 0
-    highOrLow: 0
-    ActBase: 3
-    useSupport: 6
-    nextCondition: 7
-    upDown: 0
-  hSkipList: 000000000000000000000000000000000000000000000000
+  hSkipList: 000000000100000000000000000000000000000000000000
   nRecoverCondition:
   - UseMagic: {fileID: 0}
-    condition: 7
+    condition: 2
     needSupport: 6
-    percentage: 0
+    percentage: 99
     highOrLow: 0
-    ActBase: 3
+    ActBase: 0
     useSupport: 6
     nextCondition: 7
     upDown: 0

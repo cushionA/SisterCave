@@ -227,4 +227,44 @@ public class SManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 逃げるべき標的の位置を教える
+    /// </summary>
+    /// <returns></returns>
+    public void EscapePosition(ref Vector2 setVector)
+    {
+        if (targetList.Count == 0)
+        {
+            setVector.Set(0f,0f);
+            return;
+        }
+        else
+        {
+            //一番Xポジションが大きいやつ
+            float highest = 0;
+            //一番Xポジションが小さいやつ
+            float lowest = 0;
+
+            for (int i = 0;i < targetList.Count; i++)
+            {
+                if (i == 0)
+                {
+                    highest = targetList[i].transform.position.x;
+                    lowest = targetList[i].transform.position.x;
+                }
+                else
+                {
+                    highest = targetList[i].transform.position.x > highest ? targetList[i].transform.position.x : highest;
+                    lowest = targetList[i].transform.position.x < lowest ? targetList[i].transform.position.x : lowest;
+                }
+            }
+            setVector.Set(lowest,highest);
+
+
+
+        }
+    }
+
+
+
 }

@@ -280,8 +280,8 @@ MonoBehaviour:
     isBlow: 1
     isLight: 0
     type: 2
-    blowPower: {x: 100, y: 25}
-    useStamina: 18
+    blowPower: {x: 80, y: 12}
+    useStamina: 20
     attackEffect:
       m_AssetGUID: 
       m_SubObjectName: 
@@ -295,6 +295,8 @@ MonoBehaviour:
     fallAttack: 0
     startMoveTime: 0.1
     lockAttack: 0
+    superArmor: 0
+    guardAttack: 1
   - x: 1
     y: 20
     z: 39
@@ -302,8 +304,8 @@ MonoBehaviour:
     isBlow: 1
     isLight: 0
     type: 2
-    blowPower: {x: 100, y: 100}
-    useStamina: 18
+    blowPower: {x: 80, y: 12}
+    useStamina: 20
     attackEffect:
       m_AssetGUID: 
       m_SubObjectName: 
@@ -317,6 +319,8 @@ MonoBehaviour:
     fallAttack: 0
     startMoveTime: 0
     lockAttack: 0
+    superArmor: 0
+    guardAttack: 1
   artsAnime:
   - {fileID: 7400000, guid: e6a62f903a042874ba6d2b1b70f5361c, type: 2}
   - {fileID: 7400000, guid: e6a62f903a042874ba6d2b1b70f5361c, type: 2}

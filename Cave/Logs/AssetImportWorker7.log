@@ -1,0 +1,990 @@
+Using pre-set license
+Built from '2021.3/staging' branch; Version is '2021.3.10f1 (1c7d0df0160b) revision 1867021'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'ja' Physical Memory: 16222 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2021.3.10f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker7
+-projectPath
+C:/Users/tatuk/Documents/SisterCave/Cave
+-logFile
+Logs/AssetImportWorker7.log
+-srvPort
+51675
+Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
+C:/Users/tatuk/Documents/SisterCave/Cave
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Refreshing native plugins compatible for Editor in 687.79 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.3.10f1 (1c7d0df0160b)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/tatuk/Documents/SisterCave/Cave/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2070 Super (ID=0x1ed1)
+    Vendor:   NVIDIA
+    VRAM:     8003 MB
+    Driver:   31.0.15.2656
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56516
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
+Registered in 0.008441 seconds.
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 539.08 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.073 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1073ms)
+		BeginReloadAssembly (68ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (896ms)
+			LoadAssemblies (66ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (104ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (26ms)
+			SetupLoadedEditorAssemblies (706ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (9ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (539ms)
+				BeforeProcessingInitializeOnLoad (1ms)
+				ProcessInitializeOnLoadAttributes (112ms)
+				ProcessInitializeOnLoadMethodAttributes (44ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.016784 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 564.83 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.548 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2549ms)
+		BeginReloadAssembly (106ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (6ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (19ms)
+		EndReloadAssembly (2322ms)
+			LoadAssemblies (117ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (406ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (146ms)
+			SetupLoadedEditorAssemblies (1593ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (7ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (565ms)
+				BeforeProcessingInitializeOnLoad (155ms)
+				ProcessInitializeOnLoadAttributes (751ms)
+				ProcessInitializeOnLoadMethodAttributes (107ms)
+				AfterProcessingInitializeOnLoad (8ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (4ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Refreshing native plugins compatible for Editor in 5.16 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 9256 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 130 unused Assets / (3.8 MB). Loaded Objects now: 9762.
+Memory consumption went from 0.63 GB to 0.62 GB.
+Total: 5.263400 ms (FindLiveObjects: 0.653000 ms CreateObjectMapping: 0.731900 ms MarkObjects: 3.069500 ms  DeleteObjects: 0.808000 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 272116.758417 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Mask23bcg2.mat
+  artifactKey: Guid(38f885e4ae2b4e74b85ed321e5394417) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Mask23bcg2.mat using Guid(38f885e4ae2b4e74b85ed321e5394417) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0720f5952624f6e6b3d2ee7cb9368ef7') in 0.278204 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000042 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Stone1bcg.mat
+  artifactKey: Guid(891abf03fa8149741b24cfee8f04116f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Stone1bcg.mat using Guid(891abf03fa8149741b24cfee8f04116f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a2fa3e4f3ffb704f5328ed4d3cef5ab') in 0.029079 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Plus1bcg.mat
+  artifactKey: Guid(2312a61aff7aabd4b90ea59c49972209) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Plus1bcg.mat using Guid(2312a61aff7aabd4b90ea59c49972209) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3cad260523f7c6fea4d77c7d99a2f389') in 0.027557 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Trails73cg3.mat
+  artifactKey: Guid(f1c8243e08c1f534ebb680118c532613) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Trails73cg3.mat using Guid(f1c8243e08c1f534ebb680118c532613) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3942b888c9b4de5cc809ee3ad437adc3') in 0.036404 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Trail48cg.mat
+  artifactKey: Guid(515ee2a7ec124f646842afffa89838d2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Trail48cg.mat using Guid(515ee2a7ec124f646842afffa89838d2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '79e133372b33f5ade1bc1673555b6419') in 0.031449 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Star3bcg.mat
+  artifactKey: Guid(9509d65f44bec55498ba99d0a564e28b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Star3bcg.mat using Guid(9509d65f44bec55498ba99d0a564e28b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'db7ee7e830490a90c504106fbaad8c64') in 0.029701 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000051 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/SparkExolosion1bcg.mat
+  artifactKey: Guid(3cdb7774cf6350d4f9b279edce3d08be) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/SparkExolosion1bcg.mat using Guid(3cdb7774cf6350d4f9b279edce3d08be) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5ed1ab187e67f247199d5fdd13cebcea') in 0.030744 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Trail60bcg.mat
+  artifactKey: Guid(b8ec4de64f77fdc429abf7abb17bc82b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Trail60bcg.mat using Guid(b8ec4de64f77fdc429abf7abb17bc82b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0fc50d09927cca548f7f047162c07a17') in 0.036254 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Point20bcg.mat
+  artifactKey: Guid(540c41a60cf49424091b0262d3b77fd2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Point20bcg.mat using Guid(540c41a60cf49424091b0262d3b77fd2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6c26938c3b2237c846c3e20b9eacfd0c') in 0.029128 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Trail29cg.mat
+  artifactKey: Guid(a1b5342d56c8edf4caeeb103dcf3053e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Trail29cg.mat using Guid(a1b5342d56c8edf4caeeb103dcf3053e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c18301665a0c5c0f23168f2867c15e68') in 0.023146 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Smoke16lg.mat
+  artifactKey: Guid(12f6739229ffaa942acbec6f18fb7ee8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Smoke16lg.mat using Guid(12f6739229ffaa942acbec6f18fb7ee8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8bda0efb98918c5dd46b1b6ca5fc9138') in 0.029979 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Shield2bcg.mat
+  artifactKey: Guid(fb86da0d004d65247ad8858b989ac459) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Shield2bcg.mat using Guid(fb86da0d004d65247ad8858b989ac459) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '82572333faaf66f5d5e042c0faf6dfa5') in 0.029511 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Semicircle7bcg.mat
+  artifactKey: Guid(097681739006eda4daeda8c905e63cff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Semicircle7bcg.mat using Guid(097681739006eda4daeda8c905e63cff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aa8fbeef68b51ddd2eb4c55d6cb58a24') in 0.029034 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/SunShinesCG.mat
+  artifactKey: Guid(1db8b49dcd689084698f7a4a13fb2a22) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/SunShinesCG.mat using Guid(1db8b49dcd689084698f7a4a13fb2a22) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7bd593fddde5ca84aaa886aecb9c8ce2') in 0.030159 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Scythe.mat
+  artifactKey: Guid(85e7ef87cd4bc01419c1a9ff989e2cec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Scythe.mat using Guid(85e7ef87cd4bc01419c1a9ff989e2cec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '87702c950b50df834b9c2a748eb1f4ce') in 0.032588 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Noise43cg.mat
+  artifactKey: Guid(eef6f45e3dfeeb049a3da5e2e52af88d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Noise43cg.mat using Guid(eef6f45e3dfeeb049a3da5e2e52af88d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f4c251390552a4a382a0f26090a4001f') in 0.028557 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/ParticleMesh1bcg.mat
+  artifactKey: Guid(3fb4dd6717300544a8015ff660826310) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/ParticleMesh1bcg.mat using Guid(3fb4dd6717300544a8015ff660826310) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '37e0a318fb260cc17d04f35d3469de9e') in 0.031110 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Star2bcg.mat
+  artifactKey: Guid(09b4ce3140709214d891c32fdea6004c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Star2bcg.mat using Guid(09b4ce3140709214d891c32fdea6004c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4497744bb2f5ee400b9e736f148a7102') in 0.030001 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Noise34cg.mat
+  artifactKey: Guid(6f0dbf05a167b4c41996065a21a27e92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Noise34cg.mat using Guid(6f0dbf05a167b4c41996065a21a27e92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8c2738e368ccd399aca1614eb0d193f5') in 0.024972 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Trail42bcg.mat
+  artifactKey: Guid(2e2ec68e64e5126489ef901ef2719fe8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Trail42bcg.mat using Guid(2e2ec68e64e5126489ef901ef2719fe8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cc14885248684df1777de869a2e05831') in 0.022792 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Spark5bcg.mat
+  artifactKey: Guid(7db36d08f5482f24cb7034bb3d1353de) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Spark5bcg.mat using Guid(7db36d08f5482f24cb7034bb3d1353de) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bffd3d3a46cbce8ad572a91f92d94063') in 0.031548 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Trail29cg3.mat
+  artifactKey: Guid(1527ae2bfa2902f4aa26e90dbf40dae9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Trail29cg3.mat using Guid(1527ae2bfa2902f4aa26e90dbf40dae9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4a15635d0792048051ba7e171d15e292') in 0.023547 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.494251 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/TrailShader5.mat
+  artifactKey: Guid(752db219892c5ee4489f671310b99079) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/TrailShader5.mat using Guid(752db219892c5ee4489f671310b99079) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aec15c4816f64f6f306e842935a30a0d') in 0.031343 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Waves17cg.mat
+  artifactKey: Guid(9047e616b5b02b745a5ae38f15567adc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Waves17cg.mat using Guid(9047e616b5b02b745a5ae38f15567adc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '743cfaf0658bf75d000e6083bcf5cbd6') in 0.030974 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Waves22cg3.mat
+  artifactKey: Guid(9f92e37dd8633f94c950ce0f4a164008) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Waves22cg3.mat using Guid(9f92e37dd8633f94c950ce0f4a164008) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fcec6d3540fc16db58df7fdafa2c08b9') in 0.039328 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/TwoSides19.mat
+  artifactKey: Guid(253697e4c104e18448b4e6aa05e6007e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/TwoSides19.mat using Guid(253697e4c104e18448b4e6aa05e6007e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c94fd221d90b82b4fd5efa9f9acfc7e5') in 0.028857 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.012032 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 7.17 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.179 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2180ms)
+		BeginReloadAssembly (167ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (10ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (57ms)
+		EndReloadAssembly (1897ms)
+			LoadAssemblies (125ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (432ms)
+			ReleaseScriptCaches (7ms)
+			RebuildScriptCaches (185ms)
+			SetupLoadedEditorAssemblies (994ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (15ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (7ms)
+				BeforeProcessingInitializeOnLoad (176ms)
+				ProcessInitializeOnLoadAttributes (659ms)
+				ProcessInitializeOnLoadMethodAttributes (127ms)
+				AfterProcessingInitializeOnLoad (8ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (51ms)
+Platform modules already initialized, skipping
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Refreshing native plugins compatible for Editor in 11.87 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8817 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 106 unused Assets / (3.8 MB). Loaded Objects now: 9869.
+Memory consumption went from 0.61 GB to 0.60 GB.
+Total: 5.438200 ms (FindLiveObjects: 0.540900 ms CreateObjectMapping: 0.500300 ms MarkObjects: 3.531400 ms  DeleteObjects: 0.864800 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011589 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 4.89 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.899 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1900ms)
+		BeginReloadAssembly (154ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (9ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (56ms)
+		EndReloadAssembly (1647ms)
+			LoadAssemblies (105ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (405ms)
+			ReleaseScriptCaches (7ms)
+			RebuildScriptCaches (149ms)
+			SetupLoadedEditorAssemblies (851ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (14ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (5ms)
+				BeforeProcessingInitializeOnLoad (148ms)
+				ProcessInitializeOnLoadAttributes (565ms)
+				ProcessInitializeOnLoadMethodAttributes (110ms)
+				AfterProcessingInitializeOnLoad (7ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (42ms)
+Platform modules already initialized, skipping
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Refreshing native plugins compatible for Editor in 13.94 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8816 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 106 unused Assets / (3.8 MB). Loaded Objects now: 9876.
+Memory consumption went from 0.61 GB to 0.60 GB.
+Total: 5.372900 ms (FindLiveObjects: 0.665800 ms CreateObjectMapping: 0.480100 ms MarkObjects: 3.213200 ms  DeleteObjects: 1.012900 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.015862 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 5.93 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.110 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2111ms)
+		BeginReloadAssembly (157ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (10ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (53ms)
+		EndReloadAssembly (1829ms)
+			LoadAssemblies (119ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (426ms)
+			ReleaseScriptCaches (5ms)
+			RebuildScriptCaches (162ms)
+			SetupLoadedEditorAssemblies (960ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (17ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (6ms)
+				BeforeProcessingInitializeOnLoad (177ms)
+				ProcessInitializeOnLoadAttributes (639ms)
+				ProcessInitializeOnLoadMethodAttributes (113ms)
+				AfterProcessingInitializeOnLoad (9ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (47ms)
+Platform modules already initialized, skipping
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Refreshing native plugins compatible for Editor in 20.57 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8816 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 106 unused Assets / (3.8 MB). Loaded Objects now: 9884.
+Memory consumption went from 0.61 GB to 0.60 GB.
+Total: 8.003400 ms (FindLiveObjects: 0.793900 ms CreateObjectMapping: 0.917300 ms MarkObjects: 5.251500 ms  DeleteObjects: 1.039500 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.011795 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 7.82 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.048 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2048ms)
+		BeginReloadAssembly (168ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (10ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (59ms)
+		EndReloadAssembly (1770ms)
+			LoadAssemblies (118ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (405ms)
+			ReleaseScriptCaches (5ms)
+			RebuildScriptCaches (139ms)
+			SetupLoadedEditorAssemblies (955ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (16ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (8ms)
+				BeforeProcessingInitializeOnLoad (176ms)
+				ProcessInitializeOnLoadAttributes (631ms)
+				ProcessInitializeOnLoadMethodAttributes (116ms)
+				AfterProcessingInitializeOnLoad (8ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (48ms)
+Platform modules already initialized, skipping
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Refreshing native plugins compatible for Editor in 10.60 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8816 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 106 unused Assets / (3.8 MB). Loaded Objects now: 9893.
+Memory consumption went from 0.61 GB to 0.60 GB.
+Total: 6.112300 ms (FindLiveObjects: 0.676300 ms CreateObjectMapping: 0.583100 ms MarkObjects: 3.780900 ms  DeleteObjects: 1.070900 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.013327 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 5.77 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.081 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2082ms)
+		BeginReloadAssembly (164ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (12ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (50ms)
+		EndReloadAssembly (1810ms)
+			LoadAssemblies (121ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (423ms)
+			ReleaseScriptCaches (5ms)
+			RebuildScriptCaches (183ms)
+			SetupLoadedEditorAssemblies (945ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (15ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (6ms)
+				BeforeProcessingInitializeOnLoad (167ms)
+				ProcessInitializeOnLoadAttributes (626ms)
+				ProcessInitializeOnLoadMethodAttributes (122ms)
+				AfterProcessingInitializeOnLoad (8ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (44ms)
+Platform modules already initialized, skipping
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Refreshing native plugins compatible for Editor in 11.35 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8816 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 106 unused Assets / (3.8 MB). Loaded Objects now: 9902.
+Memory consumption went from 0.61 GB to 0.60 GB.
+Total: 6.142100 ms (FindLiveObjects: 0.672500 ms CreateObjectMapping: 0.594800 ms MarkObjects: 3.727500 ms  DeleteObjects: 1.145900 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.013059 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 5.88 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.173 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2174ms)
+		BeginReloadAssembly (182ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (11ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (59ms)
+		EndReloadAssembly (1871ms)
+			LoadAssemblies (125ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (444ms)
+			ReleaseScriptCaches (5ms)
+			RebuildScriptCaches (175ms)
+			SetupLoadedEditorAssemblies (982ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (17ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (6ms)
+				BeforeProcessingInitializeOnLoad (171ms)
+				ProcessInitializeOnLoadAttributes (661ms)
+				ProcessInitializeOnLoadMethodAttributes (116ms)
+				AfterProcessingInitializeOnLoad (10ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (48ms)
+Platform modules already initialized, skipping
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Refreshing native plugins compatible for Editor in 14.26 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8817 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 107 unused Assets / (3.8 MB). Loaded Objects now: 9909.
+Memory consumption went from 0.61 GB to 0.60 GB.
+Total: 6.005900 ms (FindLiveObjects: 0.694000 ms CreateObjectMapping: 0.751500 ms MarkObjects: 3.580400 ms  DeleteObjects: 0.978700 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 460.751459 seconds.
+  path: Assets/testAsset/Effects/Effect/Magic/Hit/Holy/SHolyBulletHit.prefab
+  artifactKey: Guid(e96482c459afbc14ea18f40c2e2f30cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Effects/Effect/Magic/Hit/Holy/SHolyBulletHit.prefab using Guid(e96482c459afbc14ea18f40c2e2f30cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '65f841865eb32b5607cfb3287cffcd9e') in 0.671855 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 9.840299 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Gradient17сg.mat
+  artifactKey: Guid(9789c18d41224784a9de7d60dac2b68f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Gradient17сg.mat using Guid(9789c18d41224784a9de7d60dac2b68f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6ba7ac05eca41af900706287859bba1f') in 0.037050 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicCircle28bcg.mat
+  artifactKey: Guid(d30370e4694cfe541b2f51be90a9f11d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicCircle28bcg.mat using Guid(d30370e4694cfe541b2f51be90a9f11d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0c5c8d80bd61435aac7d35e149570370') in 0.501185 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Laser3.mat
+  artifactKey: Guid(9989147526a84334c932ae785491cd4d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Laser3.mat using Guid(9989147526a84334c932ae785491cd4d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3243cdac7667ae7dd46f157dcb4bf5be') in 0.019758 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicCircle33cg.mat
+  artifactKey: Guid(238167bba4c704142974cb847f741b22) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicCircle33cg.mat using Guid(238167bba4c704142974cb847f741b22) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5eb9f8dd04c7eff5f099c9d5abfbdfbd') in 0.019530 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Semicircle6bcg.mat
+  artifactKey: Guid(e10acc4b68a4e7b4eaa75206eacf0d19) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Semicircle6bcg.mat using Guid(e10acc4b68a4e7b4eaa75206eacf0d19) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3162eafec41075fb2f5928f9405a54e8') in 0.023125 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicCircle23bcg.mat
+  artifactKey: Guid(4473021d276d6f541874d74fa86176df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicCircle23bcg.mat using Guid(4473021d276d6f541874d74fa86176df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ca66e0eb96fb2a5db91f6269e8c66f87') in 0.023755 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicText5cg.mat
+  artifactKey: Guid(a14f15c67837d2e4c819517816533469) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicText5cg.mat using Guid(a14f15c67837d2e4c819517816533469) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9cfd02bd27416ec3c5182d23689eb489') in 0.020556 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicCircle34cg.mat
+  artifactKey: Guid(f294ee72af8ee864984370c08378bf66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicCircle34cg.mat using Guid(f294ee72af8ee864984370c08378bf66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '514a4095ec9de5793068f6cfceb29423') in 0.019296 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Object3bcg.mat
+  artifactKey: Guid(b1aee1c6374851e438b41f40031f8d29) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Object3bcg.mat using Guid(b1aee1c6374851e438b41f40031f8d29) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd99f35079eef1ae5097ab53c79a5d817') in 0.018439 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Halo1cg.mat
+  artifactKey: Guid(e1bcc46310373e548b353c1383305c54) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Halo1cg.mat using Guid(e1bcc46310373e548b353c1383305c54) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '36b164fb0cec4f1eb387636eafcf0eb8') in 0.017245 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Point20bcg.mat
+  artifactKey: Guid(540c41a60cf49424091b0262d3b77fd2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Point20bcg.mat using Guid(540c41a60cf49424091b0262d3b77fd2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '768700eb5e6b0324f4e822f2839d1c6b') in 0.019234 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/HPL2cg.mat
+  artifactKey: Guid(1b5f613319e0f324c9637cfac64149e4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/HPL2cg.mat using Guid(1b5f613319e0f324c9637cfac64149e4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1535cabc7f57708990cab90ebe18c037') in 0.020539 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicCircle50bcg.mat
+  artifactKey: Guid(30c424462325f0f4fa38fcc7ddc6798d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/MagicCircle50bcg.mat using Guid(30c424462325f0f4fa38fcc7ddc6798d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bd8e27df7ee86f9be914569e8083fbe1') in 0.020322 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Smoke16lg.mat
+  artifactKey: Guid(12f6739229ffaa942acbec6f18fb7ee8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Smoke16lg.mat using Guid(12f6739229ffaa942acbec6f18fb7ee8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b1247f5ad6e565a80f3176d7ea77e573') in 0.050297 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Semicircle7bcg.mat
+  artifactKey: Guid(097681739006eda4daeda8c905e63cff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Semicircle7bcg.mat using Guid(097681739006eda4daeda8c905e63cff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1d2cfe2c7f884f087ef77ff8d1cd4ba2') in 0.021327 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Mask33bcg.mat
+  artifactKey: Guid(53619e81bdf418140ac9398f8097a089) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Mask33bcg.mat using Guid(53619e81bdf418140ac9398f8097a089) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '579f38d90074b3a891c0b0c40fed5ee2') in 0.019386 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Scythe.mat
+  artifactKey: Guid(85e7ef87cd4bc01419c1a9ff989e2cec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Scythe.mat using Guid(85e7ef87cd4bc01419c1a9ff989e2cec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '199ba52025aa27fde61dc352e269cb33') in 0.017409 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/ParticleMesh1bcg.mat
+  artifactKey: Guid(3fb4dd6717300544a8015ff660826310) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/ParticleMesh1bcg.mat using Guid(3fb4dd6717300544a8015ff660826310) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '65076f4321fd930702f208d059022ddd') in 0.021696 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Laser5.mat
+  artifactKey: Guid(14c9496dd1f115149924253e2d53f0a9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Laser5.mat using Guid(14c9496dd1f115149924253e2d53f0a9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd654b94ec1766636bd68be35157e23ac') in 0.024466 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/MuzzleFlash2bcg.mat
+  artifactKey: Guid(dec45a67c4f21f642b99f0aa0f9ad488) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/MuzzleFlash2bcg.mat using Guid(dec45a67c4f21f642b99f0aa0f9ad488) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ecd33e61bfc647e99530ce441d7416a7') in 0.020680 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Noise34cg.mat
+  artifactKey: Guid(6f0dbf05a167b4c41996065a21a27e92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Noise34cg.mat using Guid(6f0dbf05a167b4c41996065a21a27e92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd82c35785db1ef02ea5003862468d728') in 0.025766 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/LineDistort1cg.mat
+  artifactKey: Guid(7d16bb6aa52cb704b9c34540e4c3a9aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/LineDistort1cg.mat using Guid(7d16bb6aa52cb704b9c34540e4c3a9aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2e8f4a8f900a341ee486604e09245a59') in 0.020774 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000045 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Mask30cg.mat
+  artifactKey: Guid(98536f43d23842c40b204f5a66781bef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Mask30cg.mat using Guid(98536f43d23842c40b204f5a66781bef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '76c72c726330ef1151b67ed3e67b4d22') in 0.020108 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Particles7bcg.mat
+  artifactKey: Guid(e84b0ad8969157548863961e00485d0c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Particles7bcg.mat using Guid(e84b0ad8969157548863961e00485d0c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cb502760d2285fb33aaa9fe650080875') in 0.030762 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 3.605000 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Crack5bcg.mat
+  artifactKey: Guid(85c062832566e9f429bc1c428036f739) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Crack5bcg.mat using Guid(85c062832566e9f429bc1c428036f739) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd1e0345d5baa2b6d2f6298acbb431b45') in 0.033226 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater40bcg.mat
+  artifactKey: Guid(77b3cf30fe44bde4498632fe849e81f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater40bcg.mat using Guid(77b3cf30fe44bde4498632fe849e81f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '91d8001fe60bc1fa8baa4ed477b14b49') in 0.025419 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000041 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Feather3bcg.mat
+  artifactKey: Guid(52ae5b2666d14ad42908822c6382453b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Feather3bcg.mat using Guid(52ae5b2666d14ad42908822c6382453b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9a0f9decb75cf602979d85ad24da58a0') in 0.026099 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater13bcg.mat
+  artifactKey: Guid(6ef7edb52bed76543a4e879227a2e460) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater13bcg.mat using Guid(6ef7edb52bed76543a4e879227a2e460) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '606e9334bfb698d7b91b07335b955d3d') in 0.021571 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000039 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Dagger2bcg.mat
+  artifactKey: Guid(5f6167e3c98e43549b91f961beaab14c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Dagger2bcg.mat using Guid(5f6167e3c98e43549b91f961beaab14c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '60c6b2ec7cfa8de621d880da3a8f80db') in 0.025058 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/DragonHead1ts.mat
+  artifactKey: Guid(dd19e1cff6a8f1a448924a373d58c797) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/DragonHead1ts.mat using Guid(dd19e1cff6a8f1a448924a373d58c797) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fb89e15ba0d35f5f34afe6fb09b17a4a') in 0.022582 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Flash1cg.mat
+  artifactKey: Guid(49e8fa54d8b5d394d98a037964663ce5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Flash1cg.mat using Guid(49e8fa54d8b5d394d98a037964663ce5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '791fa826e97c993d34b2c85fb7abf9ac') in 0.023375 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Creater6bcg.mat
+  artifactKey: Guid(241a3ac4c771ff74ca6dfc7cc662443e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Creater6bcg.mat using Guid(241a3ac4c771ff74ca6dfc7cc662443e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '865b43e5391d4cc5a189d96589dfadaa') in 0.027943 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater14bcg.mat
+  artifactKey: Guid(0b3b87181748ffc4f9b80c25a3b18d91) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater14bcg.mat using Guid(0b3b87181748ffc4f9b80c25a3b18d91) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d1c9bc1d49c16253a563396b0270ab2') in 0.021801 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Flare4cg.mat
+  artifactKey: Guid(8a6e728ea97b2bf4399f7190a57a3735) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Flare4cg.mat using Guid(8a6e728ea97b2bf4399f7190a57a3735) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b343fefedf1c20426623435ce86f3c70') in 0.020708 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater15bcg.mat
+  artifactKey: Guid(c13f75a1159f41d4da97a1074dd90539) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater15bcg.mat using Guid(c13f75a1159f41d4da97a1074dd90539) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '05144f0465ff7b7f1ce2ad14d75da692') in 0.026397 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater43bcg.mat
+  artifactKey: Guid(540c67cdbfe296f439c76e5d479aef62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater43bcg.mat using Guid(540c67cdbfe296f439c76e5d479aef62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b5886e541fb901241e85ce435f689c53') in 0.020372 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater18cg.mat
+  artifactKey: Guid(03a707ba10ff06b4c8b2793d666e84c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Crater18cg.mat using Guid(03a707ba10ff06b4c8b2793d666e84c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1e081fcb4084a547cd1f8c2d445208bb') in 0.023905 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/DirtBcg.mat
+  artifactKey: Guid(07660251047e8e54ea928f013ff7799e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/DirtBcg.mat using Guid(07660251047e8e54ea928f013ff7799e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '368b9da829b3306060b0ad206629281e') in 0.022918 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Debris2bcg.mat
+  artifactKey: Guid(f70cc5513449bfb4cb538cf5118a4189) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Debris2bcg.mat using Guid(f70cc5513449bfb4cb538cf5118a4189) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9970548cc15a15426d4fdc9e05e5ce81') in 0.022999 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Crack7bcg.mat
+  artifactKey: Guid(ffbf1de599dba82428751c025f3668d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Crack7bcg.mat using Guid(ffbf1de599dba82428751c025f3668d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7e4e3478809e9a388606c417156919d8') in 0.022462 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Flash33cg.mat
+  artifactKey: Guid(11390ab8a8dd6024497b9ff5ba722ce2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Flash33cg.mat using Guid(11390ab8a8dd6024497b9ff5ba722ce2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c62e09c6dfe66a368d92df345f8dd2f3') in 0.020413 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Flower2bcg.mat
+  artifactKey: Guid(730b96cc28fb1f5409b58a336056a0fe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Flower2bcg.mat using Guid(730b96cc28fb1f5409b58a336056a0fe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7b2de4aa557e02a2461b607f41e03aac') in 0.020042 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Flash3cg.mat
+  artifactKey: Guid(2f061e69d76c79748883dd593a7e74c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Flash3cg.mat using Guid(2f061e69d76c79748883dd593a7e74c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b20dc2c0d42caa89329335789032bd1c') in 0.019822 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Fire3cg.mat
+  artifactKey: Guid(9eab677f82769b44682705e7a6c0c076) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Fire3cg.mat using Guid(9eab677f82769b44682705e7a6c0c076) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd07ee751d54ce444a74804d1410abbc2') in 0.023862 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/Crack6bcg.mat
+  artifactKey: Guid(06ed439858d6b394eb2fbeda50f0ec16) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/Crack6bcg.mat using Guid(06ed439858d6b394eb2fbeda50f0ec16) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a95c81de89d37cb1b01b3db7929fc40e') in 0.024514 seconds 
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0

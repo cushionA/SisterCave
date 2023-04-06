@@ -153,6 +153,7 @@ namespace MoreMountains.CorgiEngine
                 }
             
             actRoll = false;
+            
             InitiateRoll();
         }
 
@@ -237,6 +238,7 @@ namespace MoreMountains.CorgiEngine
             // we set its rolling state to true
             _movement.ChangeState(CharacterStates.MovementStates.Rolling);
             _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+            _characterHorizontalMovement.ResetHorizontalSpeed();
             // we start our sounds
             PlayAbilityStartFeedbacks();
 

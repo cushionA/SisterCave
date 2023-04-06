@@ -4,7 +4,7 @@ using MoreMountains.Tools;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using UnityEngine.Serialization;
-
+using UnityEngine.AddressableAssets;
 
 namespace MoreMountains.CorgiEngine
 {
@@ -31,6 +31,12 @@ namespace MoreMountains.CorgiEngine
         /// Õ“Ë‚µ‚½ƒwƒ‹ƒX‚Ì”Ô†
         /// </summary>
         int collideNum;
+
+        /// <summary>
+        /// ‚±‚ÌUŒ‚‚ªI‚í‚Á‚½‚ç”j‰ó‚·‚é‚Æ‚¢‚¤ƒtƒ‰ƒO
+        /// “G‚Éƒqƒbƒg‚µ‚½Œã^‚É‚È‚è©‚ç‚ğ”j‰ó‚·‚é
+        /// </summary>
+        public bool isBreake;
 
         /// <summary>
         /// UŒ‚‚·‚éå‘Ì‚Ìƒ^ƒCƒv
@@ -184,6 +190,10 @@ namespace MoreMountains.CorgiEngine
 
             SelfDamage(DamageTakenEveryTime + DamageTakenDamageable);
 
+            if (isBreake)
+            {
+                Addressables.ReleaseInstance(this.gameObject);
+            }
         }
 
         protected override void ApplyDamageTakenKnockback()

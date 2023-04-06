@@ -50,6 +50,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                // Debug.Log("‚ ‚¶‚¥‚‹");
             }
             transform.root.rotation = Quaternion.identity;
+            _health._superArumor = false;
+            _health._guardAttack = false;
         }
 
 

@@ -443,7 +443,7 @@ public class GManager : MonoBehaviour
         maxHp = pStatus.initialHp + pStatus.HpCurve.Evaluate(Vitality) + equipCore.additionalHp;
         maxMp = pStatus.initialMp + pStatus.MpCurve.Evaluate(pStatus.capacity) + equipCore.additionalMp;
         maxStamina = pStatus.initialStamina + pStatus.StaminaCurve.Evaluate(Endurance) + equipCore.additionalStamina;
-        //  ////Debug.log($"テスト数値{pStatus.StaminaCurve.Evaluate(Endurance)}");
+     // Debug.Log($"テスト数値{maxStamina}");
 
         if (pStatus.capacity >= 0 && pStatus.capacity < 7)
         {
@@ -788,6 +788,7 @@ public class GManager : MonoBehaviour
             }
 
         }
+
 
 
 

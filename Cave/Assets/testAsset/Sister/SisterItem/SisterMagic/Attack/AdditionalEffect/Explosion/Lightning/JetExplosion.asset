@@ -152,6 +152,7 @@ MonoBehaviour:
   shock: 50
   mValue: 1.2
   fireType: 4
+  _hitLimit: 1
   penetration: 1
   lifeTime: 0.2
   speedV: 0
@@ -170,11 +171,16 @@ MonoBehaviour:
   isBlow: 1
   cBlow: 0
   isChaice: 0
-  blowPower: {x: 1800, y: 150}
+  blowPower: {x: 300, y: 40}
   bulletNumber: 1
   VRandom: 0
   HRandom: 0
   castEffect:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  castBreak:
     m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 

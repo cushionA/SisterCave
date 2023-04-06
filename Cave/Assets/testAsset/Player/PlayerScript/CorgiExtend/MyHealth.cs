@@ -25,6 +25,13 @@ namespace MoreMountains.CorgiEngine
         [HideInInspector]
         public bool _parryNow;
 
+        [HideInInspector]
+        public bool _guardAttack;
+
+        [HideInInspector]
+        public bool _superArumor;
+
+
         /// <summary>
         /// 今吹き飛ばされてるか
         /// 吹き飛ばされてるなら押されたりするのから自由になれる
@@ -119,7 +126,7 @@ namespace MoreMountains.CorgiEngine
             StoreInitialPosition();
             _initialized = true;
             //操作側でやる
-            //    CurrentHealth = InitialHealth;
+            //   
             DamageEnabled();
             DisablePostDamageInvulnerability();
             UpdateHealthBar(false);
@@ -173,7 +180,7 @@ namespace MoreMountains.CorgiEngine
         //  Debug.Log($"おせーて{damage}と{CurrentHealth}{stunnState}");
             if (um != null)
             {
-                //  Debug.Log($"ｈｈｈｈｈ{um.name}");
+                  Debug.Log($"ｈｈｈｈｈ{um.name}{damage}");
                 um.AddStack(damage, this.gameObject.transform);
             }
             if (damage <= 0)
@@ -246,12 +253,13 @@ namespace MoreMountains.CorgiEngine
 
                 if (_defender == MyDamageOntouch.TypeOfSubject.Player)
                 {
+                    pCon.GravitySet(GManager.instance.pStatus.firstGravity);
                     pCon.MoveReset();
                     pCon._wakeup.StartStunn(stunnState);
                 }
                 else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
                 {
-                    eData.AttackEnd();
+                    eData.AttackEnd(true);
                     eData._wakeup.StartStunn(stunnState);
                 }
             }
@@ -325,7 +333,7 @@ namespace MoreMountains.CorgiEngine
             //float damage;//バフデバフ処理用にdamageとして保持する
 
             //ガード時
-            if (_defData.isGuard && !back)
+            if ((_defData.isGuard || _guardAttack) && !back)
             {  
            //     Debug.Log($"あいいいｓ{_defData.isGuard}ｄ{!back}");
                 //ガード時
@@ -456,14 +464,7 @@ namespace MoreMountains.CorgiEngine
 
                 //バックアタック
 
-                if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
-                {
-
-                }
-                else if (_defender == MyDamageOntouch.TypeOfSubject.Player)
-                {
-
-                }
+ 
                 if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
                 {
 
@@ -515,17 +516,17 @@ namespace MoreMountains.CorgiEngine
         public MyWakeUp.StunnType ArmorCheck(float shock, bool isBlow, bool isBack)
         {
 
-
+            MyWakeUp.StunnType result = MyWakeUp.StunnType.notStunned;
 
             if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
             {
                 //アタックデータをセットするメソッドとかほしい
                 //ヒット時ダメージ計算でヒット時やるか
-                return eData.ArmorControll(shock, isBlow, isBack);
+                result = eData.ArmorControll(shock, isBlow, isBack);
             }
             else if (_defender == MyDamageOntouch.TypeOfSubject.Player)
             {
-                return pCon.ArmorControll(shock, isBlow, isBack, !GManager.instance.twinHand);
+                result = pCon.ArmorControll(shock, isBlow, isBack, !GManager.instance.twinHand);
             }
             else if (_defender == MyDamageOntouch.TypeOfSubject.Magic)
             {
@@ -535,9 +536,11 @@ namespace MoreMountains.CorgiEngine
             {
                 //オブジェクトがダメージ受ける
             }
-            //バグ消しのリターン
-            return MyWakeUp.StunnType.Falter;
-
+            if (_superArumor || (_guardAttack && !isBack))
+            {
+                result = MyWakeUp.StunnType.notStunned;
+            }
+            return result;
         }
 
         public void ArmorReset()
@@ -559,6 +562,7 @@ namespace MoreMountains.CorgiEngine
             }
 
         }
+
 
         /// <summary>
         /// 自分がプレイヤーに攻撃した時にパリィ演出はいるかをはかる
@@ -648,6 +652,7 @@ namespace MoreMountains.CorgiEngine
                 return false;
 
         }
+
 
         public void AirDown()
         {
@@ -767,6 +772,7 @@ namespace MoreMountains.CorgiEngine
                 return false;
             }
         }
+
 
     }
 }

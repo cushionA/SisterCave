@@ -195,8 +195,8 @@ public class FireBullet : MonoBehaviour
 
 
 				case Magic.FIREBULLET.ANGLE:
-					speed = (direction == -1) ? -em.speedV : +em.speedV;
-
+					speed = em.speedV;
+//(direction == -1) ? -em.speedV : +
 					break;
 				case Magic.FIREBULLET.HOMING:
 					speed = em.speedV;
@@ -260,13 +260,13 @@ public class FireBullet : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-	//	Debug.Log($"sdddssdsdsd{other.gameObject.name}");
-		//Debug.Log("あたり");
+	Debug.Log($"sdddssdsdsd{other.gameObject.name}");
+	
 		BulletHit(other);
 	}
 	void OnTriggerStay2D(Collider2D other)
 	{
-	//	Debug.Log($"sdddssdsdsd{other.gameObject.name}");
+		//Debug.Log($"sdddssdsdsd{other.gameObject.name}");
 		BulletHit(other);
 	}
 
@@ -327,7 +327,7 @@ public class FireBullet : MonoBehaviour
 		//それか直進でいいか
 		if (fireTime >= em.lifeTime) // ((em.fireType == Magic.FIREBULLET.HOMING || em.fireType == Magic.FIREBULLET.HOMING) && target == null))
 		{
-
+	//Debug.Log("あたり");
 			//   存在中の音声がなってるなら消す
 			if (isExPlay)
 			{
@@ -423,7 +423,7 @@ public class FireBullet : MonoBehaviour
 					if (movable)
 					{
 						//進行角度に従って速度を変化させる
-						rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
+						rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f) +  (Math.Sign(target.transform.position.x - transform.position.x) > 0 ? Vector3.zero : new Vector3(0,0,180 - em.angle));
 					}
 					break;
 
@@ -614,9 +614,9 @@ public class FireBullet : MonoBehaviour
 		isAct = true;
 
 		//子弾あるなら発射
-		if (em.isHit)
+		//	bool needInitialize = sm == null ? false :true;
+		if (sm != null)
 		{
-			bool needInitialize = sm == null ? false :true;
 			sm.direction = direction;
 
 			//next.transform.localScale.Set(0, 0,0);
@@ -631,38 +631,28 @@ public class FireBullet : MonoBehaviour
 						goFire.position = new Vector3(this.gameObject.transform.position.x + RandomValue(-sm.em.HRandom, sm.em.HRandom), this.gameObject.transform.position.y + RandomValue(-sm.em.VRandom, sm.em.VRandom), this.gameObject.transform.position.z);
 					}
 
-					if (needInitialize)
-					{
-						Instantiate(next, goFire.position, goFire.rotation).MMGetComponentNoAlloc<FireBullet>().InitializedBullet(this.gameObject,target,direction);
-					}
-					//GameObject add = Addressables.
-					else
-					{
-						Instantiate(next, goFire.position, goFire.rotation);//次のエフェクトを
-																			//add.MMGetComponentNoAlloc<SisterFireBullet>().target = target;
-					}
+					Instantiate(next, goFire.position, goFire.rotation).MMGetComponentNoAlloc<FireBullet>().InitializedBullet(this.gameObject, target, direction);
+
 				}
 			}
 			else
 			{
-				//Addressables.
-
-				if (needInitialize)
-				{
-					Instantiate(next, this.gameObject.transform.position, next.transform.rotation).MMGetComponentNoAlloc<FireBullet>().InitializedBullet(this.gameObject, target, direction);
-				}
-				else
-				{
-					Instantiate(next, this.gameObject.transform.position, next.transform.rotation);
-				}
+				Instantiate(next, this.gameObject.transform.position, next.transform.rotation).MMGetComponentNoAlloc<FireBullet>().InitializedBullet(this.gameObject, target, direction);
 			}
-		}
-        //Debug.Log("ssssdf");
 
-		
+		}
+		else if (em.hitEffect != null)
+		{
+
+			Addressables.InstantiateAsync(em.hitEffect, this.gameObject.transform.position, transform.rotation);
+
+		}
+
+
+
 		//いろんなものと衝突してるなら
-        if (collisionList.Count > 0)
-        {
+		if (collisionList.Count > 0)
+        {Debug.Log("ssssdf");
 			for (int i = 0; i < collisionList.Count;i++)
             {
 				//もしすでにぶつかったものと一致したら
@@ -676,7 +666,6 @@ public class FireBullet : MonoBehaviour
         }
 		if (!alreadyEffect)
 		{
-			collisionList.Add(other.transform);
 			if (Magic.MagicType.Attack == em.mType)
 			{
 
@@ -692,15 +681,25 @@ public class FireBullet : MonoBehaviour
 					{
 						GManager.instance.StopSound(em.existSound, 1f);
 					}
-					Addressables.ReleaseInstance(this.gameObject);
-					Destroy(this.gameObject);
-					//		Debug.Log("あたり");
+		
+
+					if(other.gameObject.tag == SManager.instance.enemyTag || other.gameObject.tag == GManager.instance.playerTag)
+                    {
+                        _damage.isBreake = true;
+                    }
+                    else
+                    {
+
+						Addressables.ReleaseInstance(this.gameObject);
+                       // Destroy(this.gameObject);
+					}
+					//
 					//sm.em
 					//next.transform.localScale = em.hitEffectScale;
 				}
 				else
 				{
-
+					collisionList.Add(other.transform);
 					//何回貫通できるかみたいな数値入れてもいいかも
 
 					//他のとこでは衝突で消えるでしょ
@@ -710,9 +709,10 @@ public class FireBullet : MonoBehaviour
 			}
 			else if (other.gameObject.tag == _healTag)
 			{
+				collisionList.Add(other.transform);
 				if (Magic.MagicType.Recover == em.mType)
 				{
-					Debug.Log("あ");
+
 					HealMagic(other.gameObject);
 				}
 				else if (Magic.MagicType.Support == em.mType)

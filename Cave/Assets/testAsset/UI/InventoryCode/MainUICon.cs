@@ -307,6 +307,12 @@ public class MainUICon : MonoBehaviour
         }
    //     Debug.Log($"‚Ë{stIn.RewiredInputManager.get(stIn.verticalAxis)}");
 
+
+
+
+        if (UIOn)
+        {
+
         if (tipNeed && isTips)
         {
 
@@ -324,9 +330,6 @@ public class MainUICon : MonoBehaviour
           //  Debug.Log($"s");
             tipNeed = !tipNeed;
         }
-
-        if (UIOn)
-        {
             if (selectButton != eventSystem.currentSelectedGameObject)
             {
                 selectButton = eventSystem.currentSelectedGameObject;

@@ -40,4 +40,17 @@ public class RestMenuButton : MonoBehaviour
         res.isFirst = false;
     }
 
+    public void SisterOff()
+    {
+        if (SManager.instance.Sister.activeSelf)
+        {
+            SManager.instance.Sister.SetActive(false);
+        }
+        else
+        {
+            SManager.instance.Sister.SetActive(true);
+        }
+    }
+
+
 }

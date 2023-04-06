@@ -184,7 +184,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public override void ProcessAbility()
 		{
 			base.ProcessAbility();
-		//	Debug.Log($"ああｋ{_movement.CurrentState}");
+			if(waitCast > 0 && SManager.instance.useMagic != null)
+			//Debug.Log($"ああｋ{waitCast >= SManager.instance.useMagic.castTime}");
 			if (isReset)
 			{
 				//これは道中回復開始とそのサウンドを終わらせてる
@@ -200,6 +201,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					}
 					FireSoundJudge();
 				}
+				
 				stateJudge = 0;
 				coolTime = 0;
 				disEnable = false;
@@ -426,6 +428,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 				if (SManager.instance.target != null && SManager.instance.useMagic != null)
 				{
+					//MPないなら逃げて
+					if (sb.mp < SManager.instance.useMagic.useMP)
+					{
+						sb.PositionJudge();
+						return;
+					}
+
 					//	bool isWrong = false;
 					//使用魔法が攻撃で、かつターゲットが敵である。
 					if (SManager.instance.useMagic.mType == SisMagic.MagicType.Attack)
@@ -558,6 +567,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				//活動開始
 			//	Debug.Log($"アイイイ{SManager.instance.useMagic}d{SManager.instance.useMagic.castTime}");
 				waitCast += _controller.DeltaTime;
+				_controller.SetHorizontalForce(0);
 				//詠唱終わったら
 				if (waitCast >= SManager.instance.useMagic.castTime)
 				{
@@ -566,8 +576,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					disEnable = true;
 					//GManager.instance.StopSound(castSound, 0.5f);
 					_movement.ChangeState(CharacterStates.MovementStates.Attack);
-
-					actionNum = (int)SManager.instance.useMagic.fireType;
+					waitCast = 0;
+					actionNum = (int)SManager.instance.useMagic.FireType;
 					Addressables.InstantiateAsync(SManager.instance.useMagic.castBreak, sb.firePosition.position, sb.firePosition.rotation);
 					if (castEffect != null)
 					{
@@ -577,7 +587,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					//ここからの処理ではアニメーションイベントを使う
 				}
 				//詠唱中なら
-				else if(waitCast > 0.5)
+				else if(waitCast > 0.3)
 				{
 
 					//sb.//(SManager.instance.useMagic.castAnime);
@@ -605,6 +615,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 				actionNum = 0;
 				waitCast = 0;
+
 				return;
 			}
 		}
@@ -641,6 +652,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//	Debug.Log($"ddddd{coolTime}");
 				waitCast += _controller.DeltaTime;
 				//sb.//("Stand");
+				//逃げる
+				sb.PositionJudge();
 				if (waitCast >= coolTime + 0.5f)
 				{
 					disEnable = false;
@@ -718,10 +731,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				return;
 			}
-		//	Debug.Log("きてる");
-			//	Debug.Log($"ハザード{SManager.instance.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
-			//魔法使用中MagicUseでかつ弾丸生成中でなければ
+            //	Debug.Log("きてる");
+            //	Debug.Log($"ハザード{SManager.instance.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
+            //魔法使用中MagicUseでかつ弾丸生成中でなければ
 
+            if (_movement.CurrentState == CharacterStates.MovementStates.Combination)
+            {
+				return;
+            }
 			bCount += 1;
 			//弾の発射というか生成位置
 			Vector3 goFire = sb.firePosition.position;
@@ -798,6 +815,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				SManager.instance.useMagic = null;
 				fireStart = false;
 				SManager.instance.restoreTarget.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
+
+				sb.PositionJudge();
 			}
 			//	bCount += 1;
 		}
@@ -843,7 +862,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					//	ランダムバリュー使ってレコードから指定
 					if (condition.highOrLow)
 					{
-						if (GManager.instance.hp / GManager.instance.maxHp >= condition.percentage / 100f)
+						if (sb.pc.HPRatio() >= condition.percentage / 100f)
 						{
 							if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
 							{
@@ -862,9 +881,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					}
 					else
 					{
-						//		Debug.Log($"あああ{GManager.instance.hp / GManager.instance.maxHp}と{condition.percentage / 100}");
+						//		Debug.Log($"あああ{sb.pc.HPRatio()}と{condition.percentage / 100}");
 						//Debug.Log($"あああ{condition.percentage / 100f}");
-						if (GManager.instance.hp / GManager.instance.maxHp <= condition.percentage / 100f)
+						if (sb.pc.HPRatio() <= condition.percentage / 100f)
 						{
 
 							if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
@@ -1383,11 +1402,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 					if (condition.highOrLow)
 					{
-						return GManager.instance.hp / GManager.instance.maxHp >= condition.percentage / 100f ? true : false;
+						return sb.pc.HPRatio() >= condition.percentage / 100f ? true : false;
 					}
 					else
 					{
-						return GManager.instance.hp / GManager.instance.maxHp <= condition.percentage / 100f ? true : false;
+						return sb.pc.HPRatio() <= condition.percentage / 100f ? true : false;
 					}
 				//return GManager.instance.hp == GManager.instance.maxHp ? true : false;
 				//-----------------------------------------------------------------------------------------------------
@@ -1725,11 +1744,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 					if (condition.highOrLow)
 					{
-						return GManager.instance.hp / GManager.instance.maxHp >= condition.percentage / 100f ? true : false;
+						return sb.pc.HPRatio() >= condition.percentage / 100f ? true : false;
 					}
 					else
 					{
-						return GManager.instance.hp / GManager.instance.maxHp <= condition.percentage / 100f ? true : false;
+						return sb.pc.HPRatio() <= condition.percentage / 100f ? true : false;
 					}
 				//return GManager.instance.hp == GManager.instance.maxHp ? true : false;
 				//-----------------------------------------------------------------------------------------------------

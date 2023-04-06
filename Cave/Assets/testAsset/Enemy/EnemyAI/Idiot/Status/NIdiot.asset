@@ -24,7 +24,7 @@ MonoBehaviour:
   darkDef: 70
   fireDef: 20
   thunderDef: 70
-  Armor: 40
+  Armor: 35
   useSound: []
   footStepSound: 
   walkSound: 
@@ -103,6 +103,8 @@ MonoBehaviour:
     fallAttack: 0
     startMoveTime: 0.5
     lockAttack: 0
+    superArmor: 0
+    guardAttack: 0
   - mValue: 1
     aditionalArmor: 0
     shock: 20
@@ -129,6 +131,8 @@ MonoBehaviour:
     fallAttack: 0
     startMoveTime: 0.4
     lockAttack: 0
+    superArmor: 0
+    guardAttack: 0
   - mValue: 1.2
     aditionalArmor: 20
     shock: 30
@@ -155,6 +159,8 @@ MonoBehaviour:
     fallAttack: 0
     startMoveTime: 0.2
     lockAttack: 0
+    superArmor: 0
+    guardAttack: 0
   parriable: 0
   unBaind: 1
   attackType: 0

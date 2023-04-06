@@ -129,8 +129,12 @@ public class EnemyController : MonoBehaviour
     {
         NumberSet();
         GManager.instance.HPReset();
-        GManager.instance.mp = GManager.instance.maxMp;
-        // SManager.instance.sisStatus.mp = SManager.instance.sisStatus.maxMp;
+        GManager.instance.mp = GManager.instance.maxMp; 
+        if (SManager.instance.Sister.activeSelf)
+        {
+        SManager.instance.Sister.MMGetComponentNoAlloc<BrainAbility>().MPReset();
+        }
+
         if (SManager.instance.Sister.activeSelf) 
         {
             SManager.instance.Sister.MMGetComponentNoAlloc<FireAbility>().MagicEnd();
@@ -144,7 +148,7 @@ public class EnemyController : MonoBehaviour
             }
             if ((callNumber & num) > 0)
             {
-                Debug.Log($"‚ ‚ ‚ {i}");
+//                Debug.Log($"‚ ‚ ‚ {i}");
                 bt[i].ReSporn().Forget();
             }
         }

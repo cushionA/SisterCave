@@ -48,7 +48,7 @@ public class BattleTest : MonoBehaviour
         Enemy = await Addressables.InstantiateAsync(EnemyData);
         //  Enemy = dd;
         Enemy.transform.position = this.gameObject.transform.position;
-        Debug.Log($"{Enemy.name}");
+     //   Debug.Log($"{Enemy.name}");
     }
 
 }

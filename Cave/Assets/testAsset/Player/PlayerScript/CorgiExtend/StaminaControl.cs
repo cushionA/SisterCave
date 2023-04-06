@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Tools;
 using MoreMountains.Feedbacks;
-using UnityEngine.AddressableAssets;
+using Cysharp.Threading.Tasks;
 using Rewired.Integration.CorgiEngine;
 using DarkTonic.MasterAudio;
 
@@ -117,9 +117,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     GManager.instance.isStUse = true;
 
                 }
-                else if (!isUsing)
+                //もし使ってないならスタミナユーズをオフにする
+                else if (!isUsing && _movement.CurrentState != CharacterStates.MovementStates.Attack)
                 {
-                    GManager.instance.isStUse = false;
+                    staminaRecover().Forget();
+
                 }
                 lastState = _movement.CurrentState;
             }
@@ -141,10 +143,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
                 else
                 {
+
                     isUsing = false;
                     stTime = 0;
-                    GManager.instance.isStUse = false;
+                    staminaRecover().Forget();
                 }
+            }
+
+            async UniTaskVoid staminaRecover()
+            {
+                await UniTask.Delay(350);
+                if (lastState == _movement.CurrentState)
+                {
+                  GManager.instance.isStUse = false;
+                }
+                
             }
 
  /*

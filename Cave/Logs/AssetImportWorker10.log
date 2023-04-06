@@ -1,0 +1,474 @@
+Using pre-set license
+Built from '2021.3/staging' branch; Version is '2021.3.10f1 (1c7d0df0160b) revision 1867021'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'ja' Physical Memory: 16222 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2021.3.10f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker10
+-projectPath
+C:/Users/tatuk/Documents/SisterCave/Cave
+-logFile
+Logs/AssetImportWorker10.log
+-srvPort
+51675
+Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
+C:/Users/tatuk/Documents/SisterCave/Cave
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Refreshing native plugins compatible for Editor in 699.82 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.3.10f1 (1c7d0df0160b)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/tatuk/Documents/SisterCave/Cave/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2070 Super (ID=0x1ed1)
+    Vendor:   NVIDIA
+    VRAM:     8003 MB
+    Driver:   31.0.15.2656
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56648
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.10f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
+Registered in 0.008216 seconds.
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 647.23 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.207 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1207ms)
+		BeginReloadAssembly (65ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (1032ms)
+			LoadAssemblies (63ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (106ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (35ms)
+			SetupLoadedEditorAssemblies (825ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (12ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (647ms)
+				BeforeProcessingInitializeOnLoad (1ms)
+				ProcessInitializeOnLoadAttributes (120ms)
+				ProcessInitializeOnLoadMethodAttributes (44ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.013550 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 593.83 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.614 seconds
+Domain Reload Profiling:
+	ReloadAssembly (2614ms)
+		BeginReloadAssembly (104ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (20ms)
+		EndReloadAssembly (2386ms)
+			LoadAssemblies (109ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (422ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (155ms)
+			SetupLoadedEditorAssemblies (1639ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (7ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (594ms)
+				BeforeProcessingInitializeOnLoad (163ms)
+				ProcessInitializeOnLoadAttributes (751ms)
+				ProcessInitializeOnLoadMethodAttributes (116ms)
+				AfterProcessingInitializeOnLoad (8ms)
+				EditorAssembliesLoaded (1ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (4ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
+Refreshing native plugins compatible for Editor in 5.25 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 9274 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 130 unused Assets / (3.8 MB). Loaded Objects now: 9780.
+Memory consumption went from 0.63 GB to 0.63 GB.
+Total: 7.154900 ms (FindLiveObjects: 0.692200 ms CreateObjectMapping: 0.833300 ms MarkObjects: 4.797200 ms  DeleteObjects: 0.830800 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 273661.853910 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/HandPaintedLightning2.png
+  artifactKey: Guid(e1f5daa4611af4844a03ec5a45012456) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/HandPaintedLightning2.png using Guid(e1f5daa4611af4844a03ec5a45012456) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5057276cc01e5822de88a26486320e5e') in 0.160933 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/SunShines.png
+  artifactKey: Guid(b95a26434e848b945bbc4f17bcea0e93) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/SunShines.png using Guid(b95a26434e848b945bbc4f17bcea0e93) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '47e7889d30b9648906c34e9689b921bf') in 0.020775 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail29.png
+  artifactKey: Guid(b1f8d78a5fe9ad94cb9f2eaa2f795e1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail29.png using Guid(b1f8d78a5fe9ad94cb9f2eaa2f795e1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '117814bb2998eab1a56e957164e45525') in 0.018274 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail42.png
+  artifactKey: Guid(03560c8b050664d4c8d41740612aa6a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail42.png using Guid(03560c8b050664d4c8d41740612aa6a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'abf1ef937a3fa0a8e6b13ec309a6eeae') in 0.021923 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Marker1.png
+  artifactKey: Guid(d81586be954f174479bb509163fefc0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Marker1.png using Guid(d81586be954f174479bb509163fefc0b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ab7d1ad1b5d2192ef0b90ccac298a446') in 0.023022 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Shield2.png
+  artifactKey: Guid(56df80c159e5e9845998f58bfe02af72) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Shield2.png using Guid(56df80c159e5e9845998f58bfe02af72) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9e1925fb859e28e0c1e04fa8da00ac83') in 0.023767 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle26.png
+  artifactKey: Guid(9be9fe68a467f504f98f66b83de51272) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle26.png using Guid(9be9fe68a467f504f98f66b83de51272) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '42ab38105a1b0d0dde4ca760c130cd2f') in 0.022299 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Point5.png
+  artifactKey: Guid(02b9b18c4238f2345b649081568ea51f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Point5.png using Guid(02b9b18c4238f2345b649081568ea51f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '69534283075aa48d2141a24352c8c24b') in 0.022019 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle29.png
+  artifactKey: Guid(eb13b29ace1fa9d4095c24bf469d8cfd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle29.png using Guid(eb13b29ace1fa9d4095c24bf469d8cfd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ee0d83034c786821ffc61d69d80d6dfa') in 0.024814 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/ParticleMesh1.png
+  artifactKey: Guid(ea0d31e9ba1c3854dada15fd71c2de2b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/ParticleMesh1.png using Guid(ea0d31e9ba1c3854dada15fd71c2de2b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '222e40f39027e8d7995816fc6272518d') in 0.020531 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail60.png
+  artifactKey: Guid(cf17ffffb60f17643afa4937c61ceb02) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail60.png using Guid(cf17ffffb60f17643afa4937c61ceb02) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4e6cad22e994ec6ac6b365f880a062c4') in 0.017764 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Smoke.png
+  artifactKey: Guid(190f03e800924ac45966dff7ad924828) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Smoke.png using Guid(190f03e800924ac45966dff7ad924828) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '902e4bbb005b3d3918d65a9c128343c6') in 0.014936 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Heart3.png
+  artifactKey: Guid(a6dea954fdcd12549a7238623e605ec1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Heart3.png using Guid(a6dea954fdcd12549a7238623e605ec1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dd21faf1200582c57250b6d4df5caf0a') in 0.027918 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle27.png
+  artifactKey: Guid(66ab2ac7065f8c141a548a2f9648dc1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle27.png using Guid(66ab2ac7065f8c141a548a2f9648dc1e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '09d80994ec58c3a0ff05a184db7f577f') in 0.023845 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000041 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Mask29.png
+  artifactKey: Guid(ff1f37f27c0586346b47aa765962d97a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Mask29.png using Guid(ff1f37f27c0586346b47aa765962d97a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9c20aa4b56382bfa8bce194755cf52df') in 0.027334 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Smoke16.png
+  artifactKey: Guid(1a79ed0e5b8318247ab4f25206709453) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Smoke16.png using Guid(1a79ed0e5b8318247ab4f25206709453) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7a485277846571564218564bea1bb605') in 0.029764 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Semicircle6.png
+  artifactKey: Guid(77c34709cf851d94d811f77a97e6ecb3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Semicircle6.png using Guid(77c34709cf851d94d811f77a97e6ecb3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e82ffd961d5affb7454d0660568225a8') in 0.020304 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail44.png
+  artifactKey: Guid(1f4a0a8d81984c94e92c9bb247a9015b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail44.png using Guid(1f4a0a8d81984c94e92c9bb247a9015b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '636ff5abd4f118478caf3020d86fc89f') in 0.024853 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Particles6.png
+  artifactKey: Guid(62d3dc998440a2e46b163248e1d43d20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Particles6.png using Guid(62d3dc998440a2e46b163248e1d43d20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f82b7f6b9a7f02550aebbeb3368d0d9a') in 0.027599 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle62.png
+  artifactKey: Guid(3627f73926c6a824197ab150ff33672f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle62.png using Guid(3627f73926c6a824197ab150ff33672f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c0a9508a8b18133bc3bcdc5534a0d22') in 0.026662 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail39.png
+  artifactKey: Guid(edc4055b7b77c7948a01b5f9076b2932) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail39.png using Guid(edc4055b7b77c7948a01b5f9076b2932) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '96111291b9d869beb94faacd5903e0de') in 0.020840 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle23.png
+  artifactKey: Guid(4ca3a6d757e699743a44a2b194ae4582) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle23.png using Guid(4ca3a6d757e699743a44a2b194ae4582) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0cb32d642ddfbe9c8a91148d4c3e0ab7') in 0.024632 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/SmokeAnim2.png
+  artifactKey: Guid(c46ae826be1a0f84db11c2b747fd1a6e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/SmokeAnim2.png using Guid(c46ae826be1a0f84db11c2b747fd1a6e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '71e85846cf74b60828a4b5ab4234cbeb') in 0.024873 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Noise53.png
+  artifactKey: Guid(7d68a918c0765ff46bd6aa7513519399) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Noise53.png using Guid(7d68a918c0765ff46bd6aa7513519399) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd636b30734f93a0a59d967ee37c5a15d') in 0.030310 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail73.png
+  artifactKey: Guid(7ae741e4c5226834db440bb3f58952b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Trail73.png using Guid(7ae741e4c5226834db440bb3f58952b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b6c244cb7a1c75389af61d32a2e40b63') in 0.024868 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Mask41.png
+  artifactKey: Guid(b711eace7dad7784ca0c9bbb199d752c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Mask41.png using Guid(b711eace7dad7784ca0c9bbb199d752c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3396b57e81a7c572d16b97d3c4ecd5ec') in 0.029043 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Mask33.png
+  artifactKey: Guid(17784056104067443abd4a30f329b1a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Mask33.png using Guid(17784056104067443abd4a30f329b1a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aa18350f7630b9bceba654164773a74e') in 0.025918 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Smoke33.png
+  artifactKey: Guid(5d4108e4ec7f25c41989d22983d99292) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Smoke33.png using Guid(5d4108e4ec7f25c41989d22983d99292) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1efe93470bd78700f64eda05c00b945c') in 0.025979 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Line3.png
+  artifactKey: Guid(a119dc3bf61a5f74a92c2083a429bfdd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Line3.png using Guid(a119dc3bf61a5f74a92c2083a429bfdd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4d79d9180153b04f68ee1e7af3c836a2') in 0.025724 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle37.png
+  artifactKey: Guid(92a115fd50b4af44e867cd4eab32a9e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/MagicCircle37.png using Guid(92a115fd50b4af44e867cd4eab32a9e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7bed164430ae27f32eb7c7bafce51353') in 0.024789 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.039243 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/TrailGradient21.png
+  artifactKey: Guid(c7976d7d8409bde40a0bec99e7bd289f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/TrailGradient21.png using Guid(c7976d7d8409bde40a0bec99e7bd289f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '45e01f8533df18cf1bd5724359408f20') in 0.017605 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/TrailPart4.png
+  artifactKey: Guid(434ed0593dbfa5249868ea6562816d45) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/TrailPart4.png using Guid(434ed0593dbfa5249868ea6562816d45) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6e5273110ac040e1a8112890b34c11e3') in 0.018214 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/YinYang.png
+  artifactKey: Guid(1c81396f141718b4dbd2f5f2646bd104) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/YinYang.png using Guid(1c81396f141718b4dbd2f5f2646bd104) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '67d0ceae078cd9635dbf1eab8fdacacb') in 0.017821 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/waves3.png
+  artifactKey: Guid(57fa093c24b94d644aedadcf534562a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/waves3.png using Guid(57fa093c24b94d644aedadcf534562a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fefccaf1a35d9e5ba93fca5c6cab8567') in 0.014211 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 5.625429 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Materials/MuzzleFlash2cg.mat
+  artifactKey: Guid(503813d282098fb46936710f053bb835) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Materials/MuzzleFlash2cg.mat using Guid(503813d282098fb46936710f053bb835) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e03e524dafb4dc199287d6e0f0f3667d') in 0.203602 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 97.028633 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Dragon_Emissive.png
+  artifactKey: Guid(81a573845f9c862459bae3187d3c7388) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Dragon_Emissive.png using Guid(81a573845f9c862459bae3187d3c7388) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2c6a3218c01f3a1226ad03899458e68d') in 0.027123 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient13.png
+  artifactKey: Guid(958819898bd75f3458a6901fc77b4082) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient13.png using Guid(958819898bd75f3458a6901fc77b4082) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0450621daee3dbe4e6e40a04354bd849') in 0.018188 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Gold1.png
+  artifactKey: Guid(a73d7799882c40946a37359a732c0d45) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Gold1.png using Guid(a73d7799882c40946a37359a732c0d45) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '687ff657229e49eb4e27fd606f096dd7') in 0.030466 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000037 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Feather3.png
+  artifactKey: Guid(294fa81217ad0dc4faca0c42637d9993) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Feather3.png using Guid(294fa81217ad0dc4faca0c42637d9993) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7b86349397881a8a4277d89cb66ec8b9') in 0.023907 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Gold2.png
+  artifactKey: Guid(10be3eb66d4b7aa4aa6eaf6c64a7f0dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Gold2.png using Guid(10be3eb66d4b7aa4aa6eaf6c64a7f0dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '145c2f65f9e13d734b75cc7fe545aa10') in 0.017605 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000045 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient3.png
+  artifactKey: Guid(b954a276cc04135469618f6338147329) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient3.png using Guid(b954a276cc04135469618f6338147329) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1eae11e2a30dfcff3a8be1713bcd22c3') in 0.022377 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient8.png
+  artifactKey: Guid(5b66e25d75ad8bc47a270f48df3ae17d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient8.png using Guid(5b66e25d75ad8bc47a270f48df3ae17d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '80592a5526c615e6dcd1d2a940380b15') in 0.022504 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient10.png
+  artifactKey: Guid(f7f9d0eccf5f76a4db7fc1591cadcf34) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient10.png using Guid(f7f9d0eccf5f76a4db7fc1591cadcf34) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f7b23a20c708e7afcd0546785b5b63c9') in 0.019563 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Flower2.png
+  artifactKey: Guid(79e3a040570b6c640a988b87b9c97b16) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Flower2.png using Guid(79e3a040570b6c640a988b87b9c97b16) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '698e98e2442666dbdfb492d95042b009') in 0.026388 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000040 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/EGACrystal.png
+  artifactKey: Guid(d8b9c3ef0a12bf54b9d05343bbecbc61) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/EGACrystal.png using Guid(d8b9c3ef0a12bf54b9d05343bbecbc61) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a4992e0c81052d77b33b176dca307e24') in 0.024125 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Flare4.png
+  artifactKey: Guid(fe05455264c0eda4dabeb02e41d98557) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Flare4.png using Guid(fe05455264c0eda4dabeb02e41d98557) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '70480581f9ee04e600f0ac8168032e41') in 0.023776 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Flash34.png
+  artifactKey: Guid(8086ba3c1fd0f4040af60d27c82edbb5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Flash34.png using Guid(8086ba3c1fd0f4040af60d27c82edbb5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '54350158d91dde2a655aba0930c3ac94') in 0.017687 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient5.png
+  artifactKey: Guid(475148f624c505341850123b44186528) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient5.png using Guid(475148f624c505341850123b44186528) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a4944fa8c71ac84437f3824de67ad6f') in 0.020278 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient7.png
+  artifactKey: Guid(a4ba2bd4b0bb17e4fab41ceaec17b81e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Hovl Studio/RPG VFX Bundle/Textures/Gradient7.png using Guid(a4ba2bd4b0bb17e4fab41ceaec17b81e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ba9a8bbfcb5cc49035b36e43300ae02b') in 0.013038 seconds 
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0

@@ -473,9 +473,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
 				eCon.ResetEnemy();
             }
-			transform.position = new Vector2(182.8f,transform.position.y);
-			SManager.instance.Sister.transform.position = new Vector2(187.8f, transform.position.y);
-        }
+			transform.position = new Vector2(182.8f,transform.position.y + 10);
+			SManager.instance.Sister.transform.position = new Vector2(187.8f, transform.position.y + 10);
+			if (SManager.instance.Sister.activeSelf)
+			{
+			SManager.instance.Sister.MMGetComponentNoAlloc<BrainAbility>().MPReset();
+			}
+
+
+		}
 
         /// <summary>
         /// ダメージ計算
@@ -824,17 +830,24 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 			if ((_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove) && isBack)
 			{
-				Debug.Log("ｄｄｄｓでｒ");
+
 				_guard.GuardEnd();
 			}
 
-			if (!isBack && (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove))
+			if (!isBack && (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove || _health._guardAttack))
 			{
-				_guard.GuardHit();
+				if (!_health._guardAttack) 
+				{
+					_guard.GuardHit();
+				}
 				GManager.instance.stamina -= (shock * 3) * (1 - (useEquip.guardPower / 100));
                 if (GManager.instance.stamina <= 0)
                 {
-					_guard.GuardEnd();
+					if (!_health._guardAttack)
+					{
+						_guard.GuardEnd();
+					}
+					
 					nowArmor = -1;
                 }
 			}
@@ -869,13 +882,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
 					{
 						result = MyWakeUp.StunnType.GuardBreake;
-					//	Debug.Log("dkdl");
 					}
 					//パリィは別発生
 					else
 					{
 						result = MyWakeUp.StunnType.Falter;
-					//	Debug.Log("ｓｄｊでｋｄ");
+
 					}
 
 				}
@@ -886,16 +898,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				result = MyWakeUp.StunnType.notStunned;
 			}
 
-			/*
-			if (hp <= 0)
-			{
-				// _condition.ChangeState(CharacterStates.CharacterConditions.Dead);
-				atBlock.gameObject.SetActive(false);
-				//atBlock.gameObject.SetActive(false);
-				isAnimeStart = false;
 
-			}
-			*/
 			return result;
 		}
 
@@ -987,6 +990,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 				_characterHorizontalMovement.SetHorizontalMove(0);
 				_controller.SetForce(Vector2.zero);
+				if(_movement.CurrentState == CharacterStates.MovementStates.Attack)
+                {
+					return;
+                }
+
 				if (_controller.State.IsGrounded)
 				{
 					_movement.ChangeState(CharacterStates.MovementStates.Idle);
@@ -1034,6 +1042,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				return false;
             }
         }
+
+		public float HPRatio()
+        {
+		    return _health.CurrentHealth / _health.MaximumHealth;
+		}
 
 
 		#endregion
@@ -1098,8 +1111,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		public void EffectController(string name)
 		{
+			Debug.Log("あああ");
 			Transform place = eController.transform;
-			Addressables.InstantiateAsync($"{name}", place.position, place.rotation);
+			Addressables.InstantiateAsync(name, place.position, place.rotation);
 
 		}
 		public void AnimeSound(string useSoundName)

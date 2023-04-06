@@ -662,7 +662,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 				if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
 				{
-					AttackEnd();
+					AttackEnd(true);
                 }
 
                 if (isDown)
@@ -705,7 +705,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			
 			if (nowArmor <= 0)
 			{
-				AttackEnd();
+				AttackEnd(true);
 			//	_wakeup.StartStunn(MyWakeUp.StunnType.Parried);
 				return true;
 			}
@@ -1310,7 +1310,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//ヒット数制御関連
 			_damage._attackData._hitLimit = status.atValue[attackNumber]._hitLimit;
 			_damage.CollidRestoreResset();
-
+			_health._superArumor = status.atValue[attackNumber].superArmor;
+			_health._guardAttack = status.atValue[attackNumber].guardAttack;
 
 		}
 
@@ -1627,14 +1628,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <summary>
 		/// アニメ中断
 		/// </summary>
-		public void AttackEnd()
+		public void AttackEnd(bool stun = false)
         {
-
-			_movement.ChangeState(CharacterStates.MovementStates.Idle);
-			if(_condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
+            if (!stun)
             {
+                _movement.ChangeState(CharacterStates.MovementStates.Idle);
 				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
             }
+
 			atV.aditionalArmor = 0;
 			isAtEnable = true;
 			stayTime = 0.0f;
@@ -2341,7 +2342,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				
 
 				bool isDashable = status.combatSpeed.x > 0;
-				int dire = direction;
+				moveDirectionX = direction;
 				if (((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust) && RandomValue(0, 100) >= 40) || guardHit)
 				{
 					flipWaitTime = 1f;
@@ -2394,22 +2395,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					attackComp = false;
                 }
 
-				if(ground == EnemyStatus.MoveState.leaveDash || ground == EnemyStatus.MoveState.leaveWalk)
+				if(ground == EnemyStatus.MoveState.leaveDash)
                 {
-					dire *= -1;
+					moveDirectionX *= -1;
                 }
 
-				BattleFlip(dire);
 
-                if (!flipComp)
-                {
-               //     if (ground != EnemyStatus.MoveState.stay)
-                  //  {
-					//	Debug.Log($"dddd{dire != lastDirection}");
-				//	}
-				//	ground = EnemyStatus.MoveState.stay;
-					
-                }
+				NormalFlip(moveDirectionX);
+
 				
 				stateJudge = 0;
 				
@@ -2431,14 +2424,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						_characterRun.RunStop();
 					}
 				}
-				moveDirectionX = direction;
-
 			}
 			#endregion
+			//BattleFlip(moveDirectionX);
+
 
 			if (isMovable)
 			{
-				if(_movement.CurrentState == CharacterStates.MovementStates.Attack)
+				if(_movement.CurrentState == CharacterStates.MovementStates.Attack || _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
                 {
 					return;
                 }
@@ -2451,7 +2444,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					return;
 
 					//Debug.Log($"ねずみ{blowM.x}");
-
 
 				}
 				else if (ground == EnemyStatus.MoveState.accessWalk)
@@ -2490,7 +2482,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 					
 					isReach = false;
-					_characterHorizontalMovement.SetHorizontalMove(-moveDirectionX);
+					_characterHorizontalMovement.SetHorizontalMove(moveDirectionX);
 				}
 			}
 		}
@@ -2839,15 +2831,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
 				return;
             }
-			if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
-			{
+
                  flipWaitTime += _controller.DeltaTime;
 				if (lastDirection != direction)
 				{
 					
 					flipComp = false;
 
-					if (flipWaitTime >= 0.2f)
+					if (flipWaitTime >= 0.5f &&_movement.CurrentState != CharacterStates.MovementStates.Attack && _condition.CurrentState == CharacterStates.CharacterConditions.Normal)
 					{
 
 						flipWaitTime = 0f;
@@ -2858,13 +2849,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						lastDirection = direction;
 						flipComp = true;
 					}
-				}
-				else
-				{
-					flipComp = true;
-				//	flipWaitTime = 0;
-				}
-			}
+		       	}
 	}
 
 	protected void VerTicalMoveJudge()
