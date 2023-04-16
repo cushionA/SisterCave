@@ -338,6 +338,7 @@ namespace MoreMountains.CorgiEngine
 
             if (result == MyWakeUp.StunnType.Down)
             {
+
                 if (!isAirDown)
                 {
                     float blowDire = isRight ? _attackData.blowPower.x : _attackData.blowPower.x * -1;

@@ -137,10 +137,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             SManager.instance.targetList.Clear();
             SManager.instance.targetCondition.Clear();
             //‹——£‚ª‹ß‚¢‡‚É“G‚ğ•À‚Ñ‘Ö‚¦‚é
-            for (int i = 0; i < se.DetectedObjectsOrderedByDistance.Count; i++)
+            if (se.DetectedObjectsOrderedByDistance.Count > 0)
             {
-                SManager.instance.TargetAdd(se.DetectedObjectsOrderedByDistance[i]);
-                  
+                for (int i = 0; i < se.DetectedObjectsOrderedByDistance.Count; i++)
+                {
+                    SManager.instance.TargetAdd(se.DetectedObjectsOrderedByDistance[i]);
+
+                }
             }
         }
         #endregion

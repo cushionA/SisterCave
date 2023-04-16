@@ -20,7 +20,7 @@ namespace MoreMountains.CorgiEngine
         [Tooltip("高速飛行のスピード")]
         public  Vector2 FastSpeed;
 
-        Vector2 FlySpeed;
+        public Vector2 FlySpeed;
 
         /// a multiplier you can target to increase/reduce the flight speed
         public float MovementSpeedMultiplier { get; set; }
@@ -33,6 +33,9 @@ namespace MoreMountains.CorgiEngine
 
         protected float _horizontalMovement;
         protected float _verticalMovement;
+
+        public float VerticalMovement { get { return _verticalMovement; } }
+
         protected bool _flying;
 
         // animation parameters
@@ -66,6 +69,22 @@ namespace MoreMountains.CorgiEngine
             if (AlwaysFlying)
             {
                 StartFlight();
+            }
+        }
+
+
+        public void SpeedSet(float x,float y, bool isFast)
+        {
+            if (!isFast)
+            {
+                
+                nFlySpeed.Set(x,y);
+Debug.Log($"あhyj{x}ff{nFlySpeed.x}");
+                FlySpeed.Set(x,y);
+            }
+            else
+            {
+                FastSpeed.Set(x, y);
             }
         }
 
@@ -330,6 +349,11 @@ namespace MoreMountains.CorgiEngine
             MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _flySpeedAnimationParameter, 0f, _character._animatorParameters, _character.PerformAnimatorSanityChecks);
         }
 
+        /// <summary>
+        /// 速くとばせるためのメソッド 追記：重力操作消去
+        /// </summary>
+        /// <param name="vertical">縦の設定を変えるかどうか。真なら縦の速度を変える</param>
+        /// <param name="end">ダッシュを終わらせるかどうか。真なら縦か横のダッシュを終わらせる</param>
         public  void FastFly(bool vertical = false,bool end = false)
         {
             //verticalの時縦
@@ -353,11 +377,12 @@ namespace MoreMountains.CorgiEngine
                     _flying = true;
                     if(!vertical)
                     {
-                      FlySpeed.x = FastSpeed.x;
+                      
+                        FlySpeed.Set(FastSpeed.x,FlySpeed.y);
                     }
                     else
                     {
-                        FlySpeed.y = FastSpeed.y;
+                        FlySpeed.Set(FlySpeed.x, FastSpeed.y);
                     }
                 }
 
@@ -369,18 +394,14 @@ namespace MoreMountains.CorgiEngine
             }
             else
             {
-                /*    if (isFast)
-                    {
 
-                        AlterPlayAbilityStopFeedbacks();
-                    }*/
                 if (!vertical)
                 {
-                    FlySpeed.x = nFlySpeed.x;
+                    FlySpeed.Set(nFlySpeed.x, FlySpeed.y);
                 }
                 else
                 {
-                    FlySpeed.y = nFlySpeed.y;
+                    FlySpeed.Set(FlySpeed.x,nFlySpeed.y);
                 }
                 _controller.GravityActive(true);
                 _flying = false;

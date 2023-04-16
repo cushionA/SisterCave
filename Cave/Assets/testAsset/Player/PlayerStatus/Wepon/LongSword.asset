@@ -743,6 +743,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - x: 0.7
     y: 8
     z: 8
@@ -767,6 +768,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   bValue:
   - x: 1
     y: 10
@@ -792,6 +794,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - x: 1.05
     y: 13
     z: 15
@@ -816,6 +819,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   chargeValue:
   - x: 1.2
     y: 15
@@ -841,6 +845,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - x: 1.25
     y: 15
     z: 15
@@ -865,6 +870,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   airValue:
   - x: 0.6
     y: 5
@@ -890,6 +896,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - x: 0.65
     y: 6
     z: 7
@@ -914,6 +921,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   strikeValue:
   - x: 1.1
     y: 15
@@ -939,6 +947,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   twinSValue:
   - x: 0.8
     y: 10
@@ -964,6 +973,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - x: 0.83
     y: 11
     z: 11
@@ -988,6 +998,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - x: 0.88
     y: 12
     z: 12
@@ -1012,6 +1023,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   twinBValue:
   - x: 1.15
     y: 13
@@ -1037,6 +1049,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - x: 1.2
     y: 13
     z: 14
@@ -1061,6 +1074,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   twinChargeValue:
   - x: 1.35
     y: 16
@@ -1069,7 +1083,7 @@ MonoBehaviour:
     isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 0, y: 1000}
+    blowPower: {x: 30, y: 90}
     useStamina: 25
     attackEffect:
       m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
@@ -1086,6 +1100,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - x: 0.95
     y: 20
     z: 9
@@ -1110,6 +1125,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   twinAirValue:
   - x: 0.75
     y: 8
@@ -1135,6 +1151,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - x: 0.75
     y: 8
     z: 8
@@ -1159,6 +1176,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   twinStrikeValue:
   - x: 1.15
     y: 15
@@ -1184,6 +1202,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   artsValue:
   - x: 0.35
     y: 15
@@ -1209,6 +1228,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - x: 1.35
     y: 20
     z: 15
@@ -1216,7 +1236,7 @@ MonoBehaviour:
     isBlow: 1
     isLight: 0
     type: 0
-    blowPower: {x: 70, y: 20}
+    blowPower: {x: 120, y: 40}
     useStamina: 25
     attackEffect:
       m_AssetGUID: 7f9db16e38fbd114fa303102028b4e92
@@ -1233,6 +1253,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   isLight: 0
   twinHand: 0
   isBlow: 1

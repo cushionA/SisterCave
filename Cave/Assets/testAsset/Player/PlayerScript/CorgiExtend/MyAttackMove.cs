@@ -154,6 +154,11 @@ namespace MoreMountains.CorgiEngine
 		public bool anotherLock;
 
 		/// <summary>
+		/// 背中攻撃かどうか
+		/// </summary>
+		bool backAttack;
+
+		/// <summary>
 		/// On Start(), we initialize our various flags
 		/// </summary>
 		protected override void Initialization()
@@ -273,7 +278,7 @@ namespace MoreMountains.CorgiEngine
 						if (pushNow)
 						{
 
-							_raycastDirection = _controller.Speed.x > 0 ? transform.right : -transform.right;
+							_raycastDirection = _controller.Speed.x > 0 ? Vector3.right : Vector3.left;
 							_raycastOrigin = _controller.ColliderCenterPosition + _raycastDirection * (_controller.Width() / 2);
 							RaycastHit2D hit = MMDebug.RayCast(_raycastOrigin, _raycastDirection, keepDistance, _controller.PlatformMask, Color.green, _controller.Parameters.DrawRaycastsGizmos);
 
@@ -294,11 +299,33 @@ namespace MoreMountains.CorgiEngine
                             }
 						}
 
-						int direction = _character.IsFacingRight ? 1 : -1;
-					//	Debug.Log("ｆｆｆ");
-						//ここから移動処理
-						//_controller.SetHorizontalForce(1000000000000000000 * direction);
-						_controller.SetHorizontalForce(_moveSpeed * direction);
+                        //	int direction = _moveSpeed > 0 ? 1 : -1;
+                        //	Debug.Log("ｆｆｆ");
+                        //ここから移動処理
+                        //_controller.SetHorizontalForce(1000000000000000000 * direction);
+
+                        if (!isPlayer)
+                        {
+							_controller.SetHorizontalForce(_moveSpeed); //* direction
+						}
+                        else
+                        {
+
+                            if (transform.localScale.x > 0)
+                            {
+								
+                            }
+
+                            if (backAttack)
+                            {
+								_controller.SetHorizontalForce(_moveSpeed * -transform.localScale.x); //* direction
+							}
+                            else
+                            {
+								_controller.SetHorizontalForce(_moveSpeed * transform.localScale.x); //* direction
+							}
+							
+						}
 					}
 				}
 			}
@@ -343,13 +370,13 @@ namespace MoreMountains.CorgiEngine
 				// 速度がある時、プッシュ可能なオブジェクトと衝突しているかどうかを確認するために前方に光線を投射します。
 
 				//止まってる時はむいてる方、動いてる時は動いてる方にレイを
-				if (_controller.Speed.x == 0)
+				if (transform.localScale.x > 0)
 			{
-				_raycastDirection = _character.IsFacingRight ? transform.right : -transform.right;
+				_raycastDirection = backAttack ? Vector3.left : Vector3.right;
 			}
 			else
 			{
-				_raycastDirection = _controller.Speed.x > 0 ? transform.right : -transform.right;
+				_raycastDirection = backAttack? Vector3.right : Vector3.left;
 			}
 
 			//自分のコライダーの先端から光線を飛ばしてる
@@ -480,9 +507,9 @@ namespace MoreMountains.CorgiEngine
 		/// <param name="_type">敵と接触した時の対応</param>
 		/// <param name="infinityMove">落下攻撃で無限に横移動し続けるかどうか</param>
 		/// <param name="startTime">移動を開始するまでの時間</param>
-		public void RushStart(float duration, float distance, AttackContactType _type,bool fallAttack = false, float startTime = 0)
+		public void RushStart(float duration, float distance, AttackContactType _type,bool fallAttack = false, float startTime = 0,bool isBack = false)
         {
-
+			backAttack = isBack;
 			if (!fallAttack)
 			{
 				nowState = RushState.待機;

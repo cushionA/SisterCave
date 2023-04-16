@@ -233,7 +233,7 @@ public class SManager : MonoBehaviour
     /// <returns></returns>
     public void EscapePosition(ref Vector2 setVector)
     {
-        if (targetList.Count == 0)
+        if (!(targetList.Count > 0 && targetList != null))
         {
             setVector.Set(0f,0f);
             return;
@@ -244,13 +244,27 @@ public class SManager : MonoBehaviour
             float highest = 0;
             //一番Xポジションが小さいやつ
             float lowest = 0;
+            bool first = false;
 
             for (int i = 0;i < targetList.Count; i++)
             {
-                if (i == 0)
+                if (targetList == null)
+                {
+                    highest = 0;
+                    lowest = highest;
+                    break;
+                }
+
+                if (targetList[i] == null)
+                {
+                    continue;
+                }
+
+                if (!first)
                 {
                     highest = targetList[i].transform.position.x;
-                    lowest = targetList[i].transform.position.x;
+                    lowest = highest;
+                    first = true;
                 }
                 else
                 {

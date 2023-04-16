@@ -15,7 +15,7 @@ MonoBehaviour:
   isPoison: 0
   isParalyze: 0
   level: 1
-  maxHp: 350
+  maxHp: 300
   maxMp: 30
   Def: 70
   pierDef: 40
@@ -44,15 +44,15 @@ MonoBehaviour:
   isMetal: 0
   _bodySize: 0
   addSpeed: {x: 300, y: 70}
-  patrolSpeed: {x: 40, y: 40}
-  waitDistance: {x: 40, y: 0}
+  patrolSpeed: {x: 55, y: 50}
+  waitDistance: {x: 80, y: 0}
   waitRes: 1
-  combatSpeed: {x: 100, y: 80}
+  combatSpeed: {x: 85, y: 70}
   agrDistance:
-  - {x: 70, y: 45}
+  - {x: 60, y: 45}
   - {x: 50, y: 70}
-  - {x: 10, y: 20}
-  walkDistance: {x: 10, y: 20}
+  - {x: 33, y: 18}
+  walkDistance: {x: 40, y: 0}
   adjust: 10
   escapeDistance: {x: 400, y: 200}
   chaseRes: 12
@@ -63,7 +63,7 @@ MonoBehaviour:
   avoidSpeed: 0
   avoidRes: 0
   avoidCool: 0
-  firstGravity: 30
+  firstGravity: 80
   downRes: 0
   velocityMin: {x: -1000, y: -1000}
   velocityMax: {x: 1000, y: 1000}
@@ -98,12 +98,15 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     _hitLimit: 1
-    _moveDuration: 0.2
-    _moveDistance: -20
+    _moveDuration: 0.15
+    _moveDistance: 40
     _contactType: 1
     fallAttack: 0
-    startMoveTime: 0
+    startMoveTime: 0.1
     lockAttack: 0
+    superArmor: 0
+    guardAttack: 0
+    backAttack: 1
   - mValue: 1.1
     aditionalArmor: 15
     shock: 10
@@ -124,12 +127,15 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     _hitLimit: 1
-    _moveDuration: 0.2
-    _moveDistance: -20
+    _moveDuration: 0.15
+    _moveDistance: 40
     _contactType: 1
     fallAttack: 0
-    startMoveTime: 0
+    startMoveTime: 0.1
     lockAttack: 0
+    superArmor: 0
+    guardAttack: 0
+    backAttack: 1
   parriable: 0
   unBaind: 1
   attackType: 0

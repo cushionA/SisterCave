@@ -280,6 +280,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
 
                 GManager.instance.HPReset();
+                transform.root.gameObject.layer = 7;
                 Recover();
             }
             else

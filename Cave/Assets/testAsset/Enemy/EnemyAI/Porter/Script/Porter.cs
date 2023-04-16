@@ -34,10 +34,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                 attackChanceTime += _controller.DeltaTime;
 
-
+                    AgrFly(moveType);
                 if (attackChanceTime >= 6)
                 {
-                    if (_movement.CurrentState != CharacterStates.MovementStates.Attack)
+                    
+
+                    //一回落ち着いてからパターン変更
+                    if ((ground == EnemyStatus.MoveState.stay && air == EnemyStatus.MoveState.stay) && !isChange)
+                    {
+                        isChange = true;
+                        ground = EnemyStatus.MoveState.wakeup;
+                        moveType = 2;
+                    }
+
+                    if (_movement.CurrentState != CharacterStates.MovementStates.Attack　&& isChange)
                     {
 
                         if (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned)
@@ -45,17 +55,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             attackChanceTime = 0f;
                         }
 
-                        //パターン変更
-                        if ((ground == EnemyStatus.MoveState.stay && air == EnemyStatus.MoveState.stay) && !isChange)
-                        {
-                            isChange = true;
-                            ground = EnemyStatus.MoveState.wakeup;
-                        }
-                        AgrFly(2);
-
                     }
                     //行動変更後なら
-                    if (ground == EnemyStatus.MoveState.stay && air == EnemyStatus.MoveState.stay && isChange )
+                    if (ground == EnemyStatus.MoveState.stay && air == EnemyStatus.MoveState.stay&& isChange  && moveType == 2 && Mathf.Abs(distance.x) < 50)
                     {
                         //左にいる時はat2
                         isChange = false;
@@ -64,13 +66,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                         if (targetPosition.x > transform.position.x)
                         {
-                            Attack(true, 2, true);
+                            Attack(true, 2);
                         }
                         else
                         {
-                            Attack(true, 1, true);
+                            Attack(true, 1);
                         }
-               //         Debug.Log("ｄｄ");
+                        Debug.Log($"ｄｄ{moveType}");
 
                         attackChanceTime = 3.0f;
                         take = 2;
@@ -85,8 +87,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 {
                     if (attackChanceTime < 6)
                     {
-                       // 
-                        AgrFly(moveType);
+                       // AgrFly(moveType);
                     }
                     if (attackChanceTime >= 1.5 * take && take < 4 && attackChanceTime < 6)
                     {
@@ -121,6 +122,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             else if (!isAggressive)
             {
+              
                 PatrolFly();
                 //PatrolMove();
             }

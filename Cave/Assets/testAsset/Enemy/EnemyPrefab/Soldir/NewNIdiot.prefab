@@ -4197,6 +4197,7 @@ MonoBehaviour:
   _attacker: 0
   _health: {fileID: 7080401917474185497}
   _restoreHealth: []
+  isBreake: 0
 --- !u!1 &7080401917474185493
 GameObject:
   m_ObjectHideFlags: 0
@@ -4299,6 +4300,8 @@ MonoBehaviour:
     fallAttack: 0
     startMoveTime: 0
     lockAttack: 0
+    superArmor: 0
+    guardAttack: 0
   ground: 6
   air: 6
   dogPile: {fileID: 0}
@@ -4505,6 +4508,8 @@ MonoBehaviour:
   _defender: 0
   blowVector: {x: 0, y: 0}
   _parryNow: 0
+  _guardAttack: 0
+  _superArumor: 0
   _blowNow: 0
 --- !u!114 &7080401917474185496
 MonoBehaviour:
@@ -4564,7 +4569,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    Physics2DInteraction: 1
+    Physics2DInteraction: 0
     Physics2DPushForce: 2
     DrawRaycastsGizmos: 1
     DisplayWarnings: 1
@@ -4680,7 +4685,7 @@ MonoBehaviour:
   CameraTargetSpeed: 5
   AdditionalAbilityNodes:
   - {fileID: 7979082222389611157}
-  FlipModelOnDirectionChange: 0
+  FlipModelOnDirectionChange: 1
   ModelFlipValue: {x: -1, y: 1, z: 1}
   RotateModelOnDirectionChange: 0
   ModelRotationValue: {x: 0, y: 180, z: 0}

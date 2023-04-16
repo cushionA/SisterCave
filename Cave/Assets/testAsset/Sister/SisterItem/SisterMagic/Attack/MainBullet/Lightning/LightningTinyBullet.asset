@@ -151,7 +151,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   shock: 30
   mValue: 0.2
-  fireType: 2
+  fireType: 1
+  _hitLimit: 1
   penetration: 0
   lifeTime: 5
   speedV: 40
@@ -159,7 +160,7 @@ MonoBehaviour:
   angle: 0
   homingTime: 3
   homingAngleV: 260
-  homingAngleA: -30
+  homingAngleA: -2
   waitTime: 0
   delayTime: 0
   isChild: 0

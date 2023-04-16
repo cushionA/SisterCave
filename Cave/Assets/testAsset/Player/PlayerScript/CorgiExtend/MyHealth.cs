@@ -302,6 +302,7 @@ namespace MoreMountains.CorgiEngine
                         //空飛ぶ敵はダウンして死ぬ
                         if ((eData.status.kind == EnemyStatus.KindofEnemy.Fly))
                         {
+                            _controller.SetHorizontalForce(0);
                             stunnState = MyWakeUp.StunnType.BlowDie;
                         }
                         //感知されないレイヤーに
@@ -543,6 +544,9 @@ namespace MoreMountains.CorgiEngine
             return result;
         }
 
+        /// <summary>
+        /// 敵の場合はプレイヤーの方を向く、立ち上がり時
+        /// </summary>
         public void ArmorReset()
         {
 

@@ -61,7 +61,7 @@ MonoBehaviour:
   avoidSpeed: 2
   avoidRes: 0.4
   avoidCool: 12
-  firstGravity: 25
+  firstGravity: 180
   downRes: 1
   velocityMin: {x: -1000, y: -1000}
   velocityMax: {x: 1000, y: 1000}
@@ -105,6 +105,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - mValue: 1
     aditionalArmor: 0
     shock: 20
@@ -133,6 +134,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   - mValue: 1.2
     aditionalArmor: 20
     shock: 30
@@ -161,6 +163,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   parriable: 0
   unBaind: 1
   attackType: 0

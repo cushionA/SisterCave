@@ -65,6 +65,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	protected bool posiReset;//戦闘とかで場を離れたとき戻るためのフラグ
 	protected Vector3 firstDirection;//最初に向いてる向き
 	//protected bool nowJump;
+	/// <summary>
+	/// 目標の間合いにいる
+	/// </summary>
 	protected bool isReach;//間合いの中にいる
 	protected Vector2 targetPosition;//敵の場所
 	protected bool isUp;
@@ -574,10 +577,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	}
 	/// <summary>
 	/// アーマーをリセット
+	/// 怯み中なら振り返る
 	/// </summary>
 	public void ArmorReset()
 	{
 		nowArmor = status.Armor;
+            if (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned)
+            {
+				NormalFlip(direction,true);
+            }
 	}
 
 	public void ArmorRecover()
@@ -929,10 +937,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			else
             {
 				GravitySet(status.firstGravity);
-				_flying.nFlySpeed.Set(status.patrolSpeed.x,status.patrolSpeed.y);
-				_flying.FastSpeed.Set(status.combatSpeed.x, status.combatSpeed.y);
-				_flying.FastFly(false,false);
-
+				if (_flying != null) 
+				{
+					//Debug.Log($"あああｓｄ{_flying.nFlySpeed == null}{status.patrolSpeed.x}");
+					_flying.SpeedSet(status.patrolSpeed.x, status.patrolSpeed.y,false);
+					_flying.SpeedSet(status.combatSpeed.x, status.combatSpeed.y,true);
+					//	_flying.FastFly(false, false);
+					Debug.Log($"hhhhd{_flying.FlySpeed.x}");
+				}
+                else
+                {
+					Debug.Log("あああｓｄ");
+				}
 			}
 
 			if(_rolling != null)
@@ -1306,7 +1322,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			atV.fallAttack = status.atValue[attackNumber].fallAttack;
 			atV.startMoveTime = status.atValue[attackNumber].startMoveTime;
 			atV.lockAttack = status.atValue[attackNumber].lockAttack;
-
+			atV.backAttack = status.atValue[attackNumber].backAttack;
 			//ヒット数制御関連
 			_damage._attackData._hitLimit = status.atValue[attackNumber]._hitLimit;
 			_damage.CollidRestoreResset();
@@ -1460,7 +1476,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// isShoot = trueの時の処理つくる？。いらない？つまりたまうちってこったな
 		/// リヴァースで逆向きで
 		/// </summary>
-		public void Attack(bool select = false, int number = 1, bool reverse = false)
+		/// <param name="select">攻撃番号を指定するかどうか</param>
+		/// <param name="number">指定する攻撃</param>
+		/// <param name="reverse">逆に振り返って攻撃</param>
+		public void Attack(bool select = false, int number = 1)
 	{
 
             if (!isAtEnable || !isMovable || number > status.atValue.Count || number <= 0)
@@ -1477,6 +1496,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			guardJudge = false;
 
 
+			if (!atV.backAttack)
+			{
+				//	Debug.Log($"あああ{transform.lossyScale.x}{direction}");
+				NormalFlip(direction);
+
+			}
+			else
+			{
+
+				NormalFlip(-direction);
+
+			}
 
 			if (select)
 			{
@@ -1489,26 +1520,27 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			isAtEnable = false;
 
+
+			flipWaitTime = 0;
+
+            if (status.kind == EnemyStatus.KindofEnemy.Fly)
+            {
+				_flying.SetHorizontalMove(0);
+				_flying.SetVerticalMove(0);
+            }
+            else
+            {
 			_characterHorizontalMovement.SetHorizontalMove(0);
-			_controller.SetHorizontalForce(0);
+            }
+			_controller.SetForce(Vector2.zero);
+
 			//距離が移動範囲内で、ロックオンするなら距離を変える
 			float moveDistance = (atV.lockAttack && Mathf.Abs(distance.x) < atV._moveDistance) ? distance.x : atV._moveDistance;	
 
-			_rush.RushStart(atV._moveDuration,moveDistance * direction,atV._contactType,atV.fallAttack,atV.startMoveTime);
+			_rush.RushStart(atV._moveDuration,moveDistance * direction,atV._contactType,atV.fallAttack,atV.startMoveTime,atV.backAttack);
 
 
-			if (!reverse)
-			{
-			//	Debug.Log($"あああ{transform.lossyScale.x}{direction}");
-					NormalFlip(direction,true);
 
-			}
-			else
-			{
-
-					NormalFlip(-direction);
-
-			}
 		}
 
 
@@ -1951,20 +1983,27 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		/// <summary>
 		/// 移動関連処理
+		/// forceはダウン後の振り向きなど強制ふりむきフラグ
 		/// </summary>
 		#region
 
-		public void NormalFlip(float direction,bool tes = false)
+		public void NormalFlip(float direction,bool force = false)
 		{
+            if ((_condition.CurrentState == CharacterStates.CharacterConditions.Dead || _condition.CurrentState == CharacterStates.CharacterConditions.Stunned) && !force)
+            {
+				return;
+            }
 
                 if (direction != MathF.Sign(transform.localScale.x))
                 {
 
-					Vector3 flip = transform.localScale;
-					flip.Set(direction, flip.y,flip.z);
-					transform.localScale = flip;
+				//Vector3 flip = transform.localScale;
+				//	flip.Set(direction, flip.y,flip.z);
+				//transform.localScale = flip;
+				_character.Flip();
                 }
-
+			flipComp = true;
+			lastDirection = direction;
 		}
 
 		/// <summary>
@@ -1975,10 +2014,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//_characterFly.SetHorizontalMove(1f);
 			//このへん使って振り向き行おう
 
-			Vector3 theScale = transform.localScale;
-			theScale.x *= -1;
-			transform.localScale = theScale;
-			lastDirection = direction;
+			NormalFlip(Mathf.Sign(-transform.localScale.x));
 		}
 
 		/// <summary>
@@ -2157,8 +2193,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						}
 					}
 				}
-				else
-				{
+				//これいらんかも
+                #region
+				/*
+                else
+                {
 
 
 					if (transform.position.x <= startPosition.x + status.waitDistance.x && isRight)
@@ -2187,60 +2226,73 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 						}
 					}
-				}
-			}
-		}
+				}*/
+                #endregion
+            }
+        }
 
 		/// <summary>
 		/// 待機中空を飛ぶ
+		/// patrolMoveは横移動。これは縦移動。いや縦横どちらもだわ
 		/// 待機と選択で積む
 		/// </summary>
 		public void PatrolFly()
 		{
+
 			if (!posiReset && isMovable)
 			{
 
-				if (transform.position.y <= startPosition.y + status.waitDistance.y && isUp)
-				{
-					_flying.SetVerticalMove(1);
-				}
-				else if (transform.position.y >= startPosition.y - status.waitDistance.y && !isUp)
-				{
-					_flying.SetVerticalMove(-1);
-				}
-				else
-				{
-					isUp = !isUp;
-					_flying.SetVerticalMove(0);
-				}
-				if (transform.position.x <= startPosition.x + status.waitDistance.x && isRight)
-				{
-					
-					NormalFlip(1);
-					_flying.SetHorizontalMove(1);
-
-				}
-				else if (transform.position.x >= startPosition.x - status.waitDistance.x && !isRight)
-				{
-					NormalFlip(-1);
-					_flying.SetHorizontalMove(-1);
-				}
-				else
+				if (status.waitDistance.x != 0)
 				{
 
-					////////Debug.log("ああああ");
-					waitTime += _controller.DeltaTime;
-					_flying.SetHorizontalMove(0);
-					if (waitTime >= status.waitRes)
+					if (transform.position.x <= startPosition.x + status.waitDistance.x && isRight)
 					{
-						isRight = !isRight;
-						waitTime = 0.0f;
-						//	//////Debug.log("ああああ");
+						Debug.Log($"sddssd{_flying.FlySpeed.x}");
+						NormalFlip(1);
+						_flying.SetHorizontalMove(1);
 
+					}
+					else if (transform.position.x >= startPosition.x - status.waitDistance.x && !isRight)
+					{
+
+						NormalFlip(-1);
+						_flying.SetHorizontalMove(-1);
+					}
+					else
+					{
+
+						Debug.Log("ああああ");
+						waitTime += _controller.DeltaTime;
+						_flying.SetHorizontalMove(0);
+						if (waitTime >= status.waitRes)
+						{
+							isRight = !isRight;
+							waitTime = 0.0f;
+							
+
+						}
 					}
 				}
 
-			}
+				if (status.waitDistance.y != 0)
+                {
+					if (transform.position.y <= startPosition.y + status.waitDistance.y && isUp)
+					{
+						_flying.SetVerticalMove(1);
+					}
+					else if (transform.position.y >= startPosition.y - status.waitDistance.y && !isUp)
+					{
+						_flying.SetVerticalMove(-1);
+					}
+					else
+					{
+						isUp = !isUp;
+						_flying.SetVerticalMove(0);
+					}
+				}
+
+			} 
+
 		}
 
 		/// <summary>
@@ -2342,7 +2394,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				
 
 				bool isDashable = status.combatSpeed.x > 0;
-				moveDirectionX = direction;
+				
 				if (((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust) && RandomValue(0, 100) >= 40) || guardHit)
 				{
 					flipWaitTime = 1f;
@@ -2394,7 +2446,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					}
 					attackComp = false;
                 }
-
+/*
 				if(ground == EnemyStatus.MoveState.leaveDash)
                 {
 					moveDirectionX *= -1;
@@ -2402,7 +2454,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 				NormalFlip(moveDirectionX);
-
+*/
 				
 				stateJudge = 0;
 				
@@ -2431,14 +2483,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			if (isMovable)
 			{
-				if(_movement.CurrentState == CharacterStates.MovementStates.Attack || _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+				if (ground == EnemyStatus.MoveState.leaveDash)
+				{
+					moveDirectionX = -direction;
+				}
+                else
                 {
-					return;
-                }
+					moveDirectionX = direction;
+				}
+
+				BattleFlip(moveDirectionX);
 				if (ground == EnemyStatus.MoveState.stay)
 				{
 					//バトルフリップはステイ中だけにする
-					
+
 					_characterHorizontalMovement.SetHorizontalMove(0f);
 					isReach = true;
 					return;
@@ -2446,62 +2504,424 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					//Debug.Log($"ねずみ{blowM.x}");
 
 				}
-				else if (ground == EnemyStatus.MoveState.accessWalk)
-				{
-					
-					isReach = (Mathf.Abs(distance.x) - status.agrDistance[disIndex].x) <= status.walkDistance.x ? true : false;
-					_characterHorizontalMovement.SetHorizontalMove(moveDirectionX);
 
-				}
-				else if (ground == EnemyStatus.MoveState.accessDash)
+
+				if (!flipComp && ground != EnemyStatus.MoveState.stay)
 				{
-					
-					isReach = false;
-					_characterHorizontalMovement.SetHorizontalMove(moveDirectionX);
-					//Runningフラグトゥルーの時の処理を見る
-					_characterRun.RunStart();
-					if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
+					Debug.Log($"ああああ");
+					//dire *= 0.8f;
+					_characterHorizontalMovement.SetHorizontalMove(Mathf.Sign(_controller.Speed.x));
+				}
+                else
+                {
+					if (_movement.CurrentState == CharacterStates.MovementStates.Attack || _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
 					{
-						ground = EnemyStatus.MoveState.accessWalk;
-						stateJudge = 0.0f;
-						_characterRun.RunStop();
+						return;
+					}
+
+					if (ground == EnemyStatus.MoveState.accessWalk)
+					{
+						_characterHorizontalMovement.SetHorizontalMove(moveDirectionX);
+						isReach = Mathf.Abs(distance.x) <= status.walkDistance.x ? true : false;
+					//	_characterHorizontalMovement.SetHorizontalMove(moveDirectionX);
+
+					}
+					else if (ground == EnemyStatus.MoveState.accessDash)
+					{
+
+						isReach = false;
+						_characterHorizontalMovement.SetHorizontalMove(moveDirectionX);
+						//Runningフラグトゥルーの時の処理を見る
+
+						if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
+						{
+							ground = EnemyStatus.MoveState.accessWalk;
+							stateJudge = 0.0f;
+							_characterRun.RunStop();
+						}
+					}
+					else if (ground == EnemyStatus.MoveState.leaveWalk)//遠ざかる
+					{
+						//近距離の場合歩き範囲をダッシュで離れるのより大きく
+						//歩き距離なら敵を見たまま撃つ
+						//動かない弓兵とかは移動速度ゼロに
+						Debug.Log("ddd");
+						isReach = true;
+						_characterHorizontalMovement.SetHorizontalMove(-moveDirectionX);
+					}
+					else if (ground == EnemyStatus.MoveState.leaveDash)
+					{
+						_characterHorizontalMovement.SetHorizontalMove(moveDirectionX);
+						isReach = false;
 					}
 				}
-				else if (ground == EnemyStatus.MoveState.leaveWalk)//遠ざかる
-				{
-					//近距離の場合歩き範囲をダッシュで離れるのより大きく
-					//歩き距離なら敵を見たまま撃つ
-					//動かない弓兵とかは移動速度ゼロに
-					
-					isReach = true;
 
-					_characterHorizontalMovement.SetHorizontalMove(-moveDirectionX);
-				}
-				else if (ground == EnemyStatus.MoveState.leaveDash)
-				{
-
-					
-					isReach = false;
-					_characterHorizontalMovement.SetHorizontalMove(moveDirectionX);
-				}
 			}
 		}
 
 		/// <summary>
 		/// 空を飛ぶタイプのエネミーに戦闘中乗せる。空を飛ぶ
+		/// 必要な機能は飛行モード切替、まっすぐ飛行、振り向き制限に移動不可時の停止
+		/// 飛行時の基準距離やまっすぐ飛ぶかどうかなど指定できる
 		/// </summary>
 		/// <param name="disIndex">使用する戦闘距離</param>
-		/// <param name="stMove">まっすぐ進むときに使うフラグ</param>
+		/// <param name="stMove">まっすぐ進むときに使うフラグ。飛ぶときにまっすぐ飛ばせたいなら指定</param>
 		public void AgrFly(int disIndex = 0, int stMove = 0)
 		{
-			
+			//条件を変えるために必要な時間計測
 			stateJudge += _controller.DeltaTime;
+
 			#region//判断
+
+			//判断後だけ真になる
+			bool judgeEnd = false;
+
+			//判断に必要な時間が経過しているし起動直後でもないし逃げてもいないしスタンしてもいない
+			if ((ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && ground != EnemyStatus.MoveState.escape && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
+			//Straightだけはスクリプトから動かす
+			{
+
+				//		Debug.Log($"アイ{air}");// {air}");//{_condition.CurrentState}
+
+				air = EnemyStatus.MoveState.wakeup;
+				judgeEnd = true;
+				
+
+                //この場合はパーセンテージは分けるのに使おう
+                //攻撃終了後逃げる
+                //これは直進より攻撃完了後の再判定を優先ということか
+
+
+				//横の移動モード判定
+                #region
+                if (stMove == 0 || attackComp)
+				{
+
+					//攻撃後は逃げる可能性に従って逃げなさい
+					//飛行タイプの敵に限り攻撃後逃げる可能性ではなく逃げ方を指定してる
+					if (attackComp && atV.escapePercentage > 0)
+					{
+						if (atV.escapePercentage % 2 == 0)
+						{
+							ground = EnemyStatus.MoveState.leaveWalk;
+
+							air = atV.escapePercentage == 2 ? EnemyStatus.MoveState.leaveWalk : EnemyStatus.MoveState.stay;
+
+						}
+						else
+						{
+							ground = EnemyStatus.MoveState.leaveDash;
+							air = atV.escapePercentage == 1 ? EnemyStatus.MoveState.leaveDash : EnemyStatus.MoveState.stay;
+						}
+
+					}
+
+					//近いと停止
+					else if ((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust) || guardHit)
+					{
+
+						ground = EnemyStatus.MoveState.stay;
+						//	flipWaitTime = 10;
+					}
+					//離れてたら近づく
+					else if (Mathf.Abs(distance.x) > status.agrDistance[disIndex].x)//近づく方じゃね？
+					{
+						if (Mathf.Abs(distance.x) <= status.walkDistance.x)
+						{
+							ground = EnemyStatus.MoveState.accessWalk;
+						}
+						else
+						{
+							ground = EnemyStatus.MoveState.accessDash;
+
+						}
+					}
+					//遠ざかる
+					else if (Mathf.Abs(distance.x) < status.agrDistance[disIndex].x)
+					{
+						//歩き距離なら敵を見たまま撃つ
+						//動かない弓兵とかは移動速度ゼロに
+						if (Mathf.Abs((Mathf.Abs(distance.x) - status.agrDistance[disIndex].x)) <= status.walkDistance.x / 2)
+						{
+							ground = EnemyStatus.MoveState.leaveWalk;
+						}
+						else
+						{
+
+							ground = EnemyStatus.MoveState.leaveDash;
+						}
+					}
+
+					
+
+
+				}
+				//直進を指定されてるなら
+                else if (stMove != 0)
+				{
+					ground = EnemyStatus.MoveState.straight;
+
+				}
+				#endregion
+
+
+				//縦の移動に関して未設定ならモード設定
+				//飛行速度の変更は行わない
+				#region
+				if (air == EnemyStatus.MoveState.wakeup)
+				{
+					//条件まとめ
+					//超下にいるとき     lvD
+					//超上にいる時       acD
+					//ちょい下にいるとき lvW
+					//ちょい上にいるとき acW
+					//動かなくていいとき stay
+
+					//現在のプレイヤー高度と合わせて目標高度を割りだす。
+
+					//マイナスにすることで標的から見た自分の距離になる
+					//標的から上にいるか下にいるか
+					float targetHeight = -distance.y;
+
+
+					if ((targetHeight <= status.agrDistance[disIndex].y + status.adjust) && (targetHeight >= status.agrDistance[disIndex].y - status.adjust) || guardHit)
+					{
+
+						air = EnemyStatus.MoveState.stay;
+						//_flying.FastFly(true, true);
+					}
+
+					//上昇する
+					else if (targetHeight <= status.agrDistance[disIndex].y)//近づく方じゃね？
+					{
+						if (Mathf.Abs(distance.y) <= status.walkDistance.y)
+						{
+							air = EnemyStatus.MoveState.accessWalk;
+							//_flying.FastFly(true, true);
+						}
+						else
+						{
+							air = EnemyStatus.MoveState.accessDash;
+							//	_flying.FastFly(true, false);
+							if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
+							{
+								_guard.GuardEnd();
+							}
+						}
+					}
+					//降下する
+					else if (targetHeight > status.agrDistance[disIndex].y)//遠ざかる
+					{
+						//歩き距離なら敵を見たまま撃つ
+						//動かない弓兵とかは移動速度ゼロに
+						if (Mathf.Abs(distance.y) <= status.walkDistance.y)
+						{
+							air = EnemyStatus.MoveState.leaveWalk;
+							//	_flying.FastFly(true, true);
+						}
+						else
+						{
+							if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
+							{
+								_guard.GuardEnd();
+							}
+							air = EnemyStatus.MoveState.leaveDash;
+							//	_flying.FastFly(true, false);
+						}
+					}
+
+				}
+				#endregion
+
+				stateJudge = 0;
+				attackComp = false;
+				Debug.Log($"アイ{ground}");
+			}
+            #endregion
+
+
+            
+            //ここでは移動速度の変更やガードの解除などを行う
+            //移動する方向は常に変え続ける
+            #region
+            if (judgeEnd)
+			{
+				//横のダッシュ開始
+				if (ground == EnemyStatus.MoveState.leaveDash || ground == EnemyStatus.MoveState.accessDash || ground == EnemyStatus.MoveState.straight)
+				{
+					//走る時はガードダメ
+					if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
+					{
+						_guard.GuardEnd();
+					}
+					_flying.FastFly(false, false);
+				}
+				//横のダッシュ停止
+				else
+				{
+					_flying.FastFly(false, true);
+				}
+
+				VerTicalMoveJudge();
+
+
+
+
+				//	Debug.Log($"空{air}陸{ground}");
+				//	Debug.Log($"空{distance.y}");
+
+				//状態切り替え時には振り向くように
+				//flipWaitTime = 3;
+			}
+            #endregion
+
+			//動ける状態なら動くし振り向く
+            if (isMovable)
+            {
+				int dire = direction;
+
+				//Leaveならあとずさり
+				if (ground == EnemyStatus.MoveState.leaveDash || ground == EnemyStatus.MoveState.leaveWalk)
+				{
+					dire *= -1;
+				}
+
+
+				//突進以外なら振り向かないと動いちゃダメ
+				if (ground != EnemyStatus.MoveState.straight)
+				{
+					BattleFlip(dire);
+					if (!flipComp　&& ground != EnemyStatus.MoveState.stay)
+					{
+						Debug.Log($"ああああ");
+						//dire *= 0.8f;
+						_flying.SetHorizontalMove(Mathf.Sign(_controller.Speed.x));
+					}
+                    else
+                    {
+						//横移動のコード
+						#region
+						//groundとairの組み合わせで呼び出すもの変えよう
+
+						if (ground == EnemyStatus.MoveState.stay)
+						{
+
+							_flying.SetHorizontalMove(0);
+
+							isReach = true;
+
+						}
+
+						else
+						{
+							
+							_flying.SetHorizontalMove(dire);
+							if (ground == EnemyStatus.MoveState.accessWalk)
+							{
+								isReach = false;
+								if (Mathf.Abs(distance.x) <= status.walkDistance.x)
+								{
+									isReach = true;
+									//ground = EnemyStatus.MoveState.stay;
+
+								}
+
+							}
+							else if (ground == EnemyStatus.MoveState.accessDash)
+							{
+
+								isReach = false;
+								if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
+								{
+									//ground = EnemyStatus.MoveState.accessWalk;
+									stateJudge = 0.0f;
+								}
+							}
+							else if (ground == EnemyStatus.MoveState.leaveWalk)//遠ざかる
+							{
+
+								//近距離の場合歩き範囲をダッシュで離れるのより大きく
+								//歩き距離なら敵を見たまま撃つ
+								//動かない弓兵とかは移動速度ゼロに
+								isReach = true;
+
+							}
+							else if (ground == EnemyStatus.MoveState.leaveDash)
+							{
+
+								isReach = false;
+
+							}
+						}
+
+						#endregion
+
+						//縦移動のコード
+						#region
+						if (air == EnemyStatus.MoveState.stay)
+						{
+
+							_flying.SetVerticalMove(0);
+						}
+						else if (air == EnemyStatus.MoveState.accessDash || air == EnemyStatus.MoveState.accessWalk)
+
+						{
+							_flying.SetVerticalMove(1);
+						}
+						else if (air == EnemyStatus.MoveState.leaveDash || air == EnemyStatus.MoveState.leaveWalk)
+						{
+							_flying.SetVerticalMove(-1);
+						}
+						#endregion
+					}
+
+                }
+				else
+				{
+					NormalFlip(stMove);
+					isReach = false;
+					_flying.SetHorizontalMove(stMove);
+				}
+
+
+			}
+
+			//動けない状態ならとめる
+            else if(_flying.VerticalMovement != 0)
+            {
+				_flying.FastFly(false, true);
+				_flying.FastFly(false, false);
+				_flying.SetVerticalMove(0);
+			}
+
+
+
+
+
+        }
+
+		//旧AgrFly
+        #region
+		/*
+        /// <summary>
+        /// 空を飛ぶタイプのエネミーに戦闘中乗せる。空を飛ぶ
+        /// </summary>
+        /// <param name="disIndex">使用する戦闘距離</param>
+        /// <param name="stMove">まっすぐ進むときに使うフラグ</param>
+        public void AgrFly(int disIndex = 0, int stMove = 0)
+		{
+			//条件を変えるために必要な時間計測
+			stateJudge += _controller.DeltaTime;
+
+			#region//判断
+
+			//判断に必要な時間が経過しているし起動直後でもないし逃げてもいないしスタンしてもいない
 			if ((ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && ground != EnemyStatus.MoveState.escape && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
 			//escapeだけはスクリプトから動かす
 			{
-		//		Debug.Log($"アイ{air}");// {air}");//{_condition.CurrentState}
-				bool isSet = false;
+			//		Debug.Log($"アイ{air}");// {air}");//{_condition.CurrentState}
+
+				air = EnemyStatus.MoveState.wakeup;
 
 			int dire = direction;
 
@@ -2525,7 +2945,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 								ground = EnemyStatus.MoveState.leaveDash;
 								air = atV.escapePercentage == 1 ? EnemyStatus.MoveState.leaveDash : EnemyStatus.MoveState.stay;
 							}
-							isSet = true;
+							
 						}
 						//20パーセントの確率で停止以外に
 						else if ((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust) || guardHit)
@@ -2571,10 +2991,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 				}
 
+				//動ける状態なら動く
+			if (isMovable)
+			{
+					//Leaveならあとずさり
 				if (ground == EnemyStatus.MoveState.leaveDash || ground == EnemyStatus.MoveState.leaveWalk)
 				{
 					dire *= -1;
 				}
+
+				//突進以外なら振り向かないと動いちゃダメ
 				if (ground != EnemyStatus.MoveState.straight)
 				{
 					BattleFlip(dire);
@@ -2596,8 +3022,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				{
 					_flying.FastFly(false, true);
 				}
-				//縦
-				if (!isSet)
+
+				//縦の移動に関して未設定ならモード設定
+				//飛行速度の変更は行わない
+				if (air == EnemyStatus.MoveState.wakeup)
 				{
 					//条件まとめ
 					//超下にいるとき     lvD
@@ -2617,7 +3045,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 
 						air = EnemyStatus.MoveState.stay;
-						_flying.FastFly(true, true);
+						//_flying.FastFly(true, true);
 					}
 
 					//上昇する
@@ -2626,12 +3054,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						if (status.agrDistance[disIndex].y - targetHeight <= status.walkDistance.y)
 						{
 							air = EnemyStatus.MoveState.accessWalk;
-							_flying.FastFly(true, true);
+							//_flying.FastFly(true, true);
 						}
 						else
 						{
 							air = EnemyStatus.MoveState.accessDash;
-							_flying.FastFly(true, false);
+						//	_flying.FastFly(true, false);
 							if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
 							{
 								_guard.GuardEnd();
@@ -2646,7 +3074,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						if (targetHeight - status.agrDistance[disIndex].y <= status.walkDistance.y)
 						{
 							air = EnemyStatus.MoveState.leaveWalk;
-							_flying.FastFly(true, true);
+						//	_flying.FastFly(true, true);
 						}
 						else
 						{
@@ -2655,26 +3083,25 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 								_guard.GuardEnd();
 							}
 							air = EnemyStatus.MoveState.leaveDash;
-							_flying.FastFly(true, false);
+						//	_flying.FastFly(true, false);
 						}
 					}
-				//	Debug.Log($"ア{air}");
+
 				}
 
 				stateJudge = 0;
 				attackComp = false;
 				//	Debug.Log($"空{air}陸{ground}");
 				//	Debug.Log($"空{distance.y}");
+
 				//状態切り替え時には振り向くように
-				flipWaitTime = 3;
+				//flipWaitTime = 3;
 			}
 			#endregion
 
 
 
 
-			if (isMovable)
-			{
 
 				VerTicalMoveJudge();
 
@@ -2725,7 +3152,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					isReach = false;
 					_flying.SetHorizontalMove(-direction);
 				}
-				else if (ground == EnemyStatus.MoveState.straight)
+				else if (ground == EnemyStatus.MoveState.straight && isMovable)
 				{
 
 					if (stMove > 0)
@@ -2744,11 +3171,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 
 		}
-		/// <summary>
-		/// 回避。方向指定も可能だが戦闘時に限りdirectionで前方。-directionで後ろに
-		/// </summary>
-		/// <param name="direction"></param>
-		public void Avoid(float direction)
+		*/
+        #endregion
+
+
+        /// <summary>
+        /// 回避。方向指定も可能だが戦闘時に限りdirectionで前方。-directionで後ろに
+        /// </summary>
+        /// <param name="direction"></param>
+        public void Avoid(float direction)
 		{
 			if (!isMovable)
 			{
@@ -2827,7 +3258,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public void BattleFlip(float direction)
 	{
-			if(direction == 0)
+			if(direction == 0 || _movement.CurrentState == CharacterStates.MovementStates.Attack)
             {
 				return;
             }
@@ -2842,53 +3273,26 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 
 						flipWaitTime = 0f;
-						if (direction != MathF.Sign(transform.localScale.x)) 
-						{
+
 							NormalFlip(direction);
-						}
-						lastDirection = direction;
-						flipComp = true;
+						//lastDirection = direction;
+						
 					}
 		       	}
 	}
 
+		//飛行モードに応じて移動方向と飛行速度を変更
 	protected void VerTicalMoveJudge()
 	{
-		if (air == EnemyStatus.MoveState.stay)
+        if (air == EnemyStatus.MoveState.accessDash || air == EnemyStatus.MoveState.leaveDash)
 		{
-
-				_flying.SetVerticalMove(0);
-				//move.Set(0, status.addSpeed.y * (0 - rb.velocity.y));
-				//move.y = 0;
-				_flying.FastFly(false, true);
-			}
-		else if (air == EnemyStatus.MoveState.accessDash)
-		{
-				_flying.SetVerticalMove(1);
-				//move.Set(0, status.addSpeed.y * (status.combatSpeed.y - rb.velocity.y));
-				//move.y = ;
 				_flying.FastFly(true, false);
-				
-			}
-		else if (air == EnemyStatus.MoveState.accessWalk)
 
-		{
-				_flying.SetVerticalMove(1);
-				_flying.FastFly(true, true);
-			}
-		else if (air == EnemyStatus.MoveState.leaveDash)
-		{
-				_flying.SetVerticalMove(-1);
-				//move.Set(0, status.addSpeed.y * (-status.combatSpeed.y - rb.velocity.y));
-				_flying.FastFly(true, false);
-			//move.y = ;
 		}
-		else if (air == EnemyStatus.MoveState.leaveWalk)
-
+		else
 		{
-				_flying.SetVerticalMove(-1);
 				_flying.FastFly(true, true);
-			}
+		}
 	}
 
         #endregion
@@ -3080,7 +3484,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			targetPosition = GManager.instance.Player.transform.position;
 			distance = targetPosition - (Vector2)transform.position;
-			//Debug.Log($"知りたいのだ{targetPosition.x}");
+			//Debug.Log($"知りたい{targetPosition.x}");
 			direction = distance.x >= 0 ? 1 : -1;
 			isAggressive = true;
 			NormalFlip(direction);
@@ -3092,7 +3496,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		public void CombatEnd()
         {
-			Debug.Log("もんじゃ");
+
 			isAggressive = false;
 			if (status.kind == EnemyStatus.KindofEnemy.Fly)
 			{

@@ -96,4 +96,9 @@ public class EnemyValue
     /// ガード攻撃かどうか
     /// </summary>
     public bool guardAttack;
+
+    /// <summary>
+    /// 背面攻撃かどうか
+    /// </summary>
+    public bool backAttack;
 }

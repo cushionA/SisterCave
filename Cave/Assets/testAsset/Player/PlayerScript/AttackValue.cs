@@ -93,4 +93,9 @@ public class AttackValue
     /// </summary>
     public bool guardAttack;
 
+    /// <summary>
+    /// 背中向ける攻撃かどうか
+    /// </summary>
+    public bool backAttack;
+
 }

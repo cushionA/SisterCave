@@ -13,6 +13,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
     /// 普通に状況判断して動くためのスクリプト
 	/// ワープ、攻撃、コンビネーション（各動作は分ける？）は別スクリプトに
 	/// あるいはコンビネーションは主人公に持たせる？
+	/// 移動機能の改修
+	/// ・移動と方向転換は共通のコントローラーに集める
+	/// ・各メソッドでは状態変化と移動方向だけ指定
     /// </summary>
     [AddComponentMenu("Corgi Engine/Character/Abilities/BrainAbility")]
     public class BrainAbility : MyAbillityBase
@@ -102,7 +105,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <summary>
 		/// nowPosition設定のために使う
 		/// </summary>
-		Vector2 judgePosition;
+		Vector2 judgePosition = new Vector2();
 
 		/// <summary>
 		/// 戦闘時持ち場を離れていいか判断する時間。
@@ -179,7 +182,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-		//横移動は継承もとにあるよん
+		//横移動は継承もとにある
 
 		public PlayerJump _jump;
 		//　public int _numberOfJumps = 0;
@@ -318,14 +321,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				////Serch.SetActive(true);ほかのステートに移動するときに
 				////Serch2.SetActive(true);
 
-				if (!disEnable)
-				{
+
 					PatrolMove();
 
 
-					//	PositionSetting();
-					
-				}
 
 				//	PositionChange();
 				if (patrolJudge >= patrolTime)
@@ -341,10 +340,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 			else if (nowState == SisterState.のんびり)
 			{
-				if (!disEnable)
-				{
 					PlayMove();
-				}
+
 				WaitJudge();
 				//待機状態には色々する
 
@@ -357,12 +354,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			}
 
-			if(Mathf.Sign(transform.localScale.x) ==　Mathf.Sign(_characterHorizontalMovement.MovementSpeed) && !disEnable)
-            {
-				//移動方向とキャラの方向合わないなら静止
-				_characterHorizontalMovement.SetHorizontalMove(0);
-				_characterRun.RunStop();
-            }
 			MoveController();
 			JumpController();
 		}
@@ -396,82 +387,65 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					//ベクターのxが小さい方
 					SManager.instance.EscapePosition(ref judgePosition);
 
-					//	float enemyDistance = SManager.instance.targetList[0].transform.position.x - this.transform.position.x;
-					//	int mDirection = (int)Mathf.Sign(enemyDistance);
-					//		enemyDistance = Mathf.Abs(enemyDistance);
-
+					//位置についていないとき
 					if (!nowPosition)
 					{
-						//ここで使うのは一番近い敵
-
-						//Debug.Log("dddsssdd");
-						//一番近い敵が右にいるとき
 
 
 						if (changeable)
 						{
-							//敵位置の左端より左に近いとき、左に逃げる（差が多いほうが遠いやん）
-							//移動の基準点はjudgeposition.xになる
-							if (Mathf.Abs(judgePosition.x - transform.position.x) < Mathf.Abs(judgePosition.y - transform.position.x))
+
+							if (SManager.instance.targetList.Count > 0) 
 							{
-								if (transform.position.x < judgePosition.x - status.battleDis)
+								//敵位置の左端より左に近いとき、左に逃げる（差が多いほうが遠いやん）
+								//移動の基準点はjudgeposition.xになる
+								if (Mathf.Abs(judgePosition.x - transform.position.x) < Mathf.Abs(judgePosition.y - transform.position.x))
+								{
+
+									nowMove = MoveState.走り;
+									moveDirection = -1;
+
+								}
+								//壁にぶつかった時
+								else if ((_controller.State.IsCollidingLeft) || (_controller.State.IsCollidingRight))
 								{
 									nowPosition = true;
 									nowMove = MoveState.停止;
-									moveDirection = 1;
+									moveDirection = Mathf.Sign(SManager.instance.targetList[0].transform.position.x - this.transform.position.x);
 								}
+								//敵位置の右端に近い時、右に逃げる
+								//移動の基準点はjudgeposition.yになる
 								else
 								{
 									nowMove = MoveState.走り;
-									moveDirection = -1;
+									moveDirection = 1;
+
 								}
 							}
-							//壁にぶつかった時
-							else if ((_controller.State.IsCollidingLeft) || (_controller.State.IsCollidingRight))
-							{
-								nowPosition = true;
+                            else
+                            {
+							//	nowPosition = true;
 								nowMove = MoveState.停止;
-								moveDirection = Mathf.Sign(SManager.instance.targetList[0].transform.position.x - this.transform.position.x);
+								moveDirection = direction;
 							}
-							//敵位置の右端に近い時、右に逃げる
-							//移動の基準点はjudgeposition.yになる
-							else
-							{
-								if (transform.position.x > judgePosition.y + status.battleDis)
-								{
-									nowPosition = true;
-									nowMove = MoveState.停止;
-									moveDirection = -1;
-								}
-								else
-								{
-									nowMove = MoveState.走り;
-									moveDirection = 1;
-								}
-							}
-
-
-							/*
-											//		Debug.Log("うｎ");
-													//敵から十分に離れたら
-													if (enemyDistance >= status.battleDis)
-													{
-													//	Debug.Log("ああああ");
-														nowPosition = true;
-														nowMove = MoveState.停止;
-														moveDirection = mDirection;
-													}
-													else// if (SManager.instance.targetList[0].transform.position.x - this.transform.position.x < status.battleDis)
-													{
-												//		Debug.Log("ですよねー");
-														nowMove = MoveState.走り;
-														moveDirection = -mDirection;
-													}
-							*/
+							SisFlip(moveDirection);
 						}
-
-
+						if (transform.position.x < judgePosition.x - status.battleDis)
+						{
+							nowPosition = true;
+							nowMove = MoveState.停止;
+							//	moveDirection = 1;
+							SisFlip(1);
+						}
+						else if (transform.position.x > judgePosition.y + status.battleDis)
+						{
+							nowPosition = true;
+							nowMove = MoveState.停止;
+							//moveDirection = -1;
+							SisFlip(-1);
+						}
 					}
+
 					else if (nowPosition)
 					{
 						//ここで使うのはターゲットの敵
@@ -482,13 +456,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					
 						if (SManager.instance.target != null && changeable)
 						{
-							int atDirection = (int)Mathf.Sign(SManager.instance.target.transform.position.x - this.transform.position.x);
+							float atDirection = Mathf.Sign(SManager.instance.target.transform.position.x - this.transform.position.x);
 							nowMove = MoveState.停止;
 
-							moveDirection = atDirection;
+							SisFlip(atDirection);
+
 						}
 					}
-					//	}
+
 				}
 				if (nowPosition)
 				{
@@ -518,34 +493,56 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		}
 
+		public void SisFlip(float dire)
+        {
+            if (!changeable)
+            {
+				return;
+            }
+			//方向が0の時は振り向かない
+			if (transform.localScale.x != dire && dire != 0)
+			{
+				_character.Flip();
+			}
+			changeable = false;
+		}
+
+		/// <summary>
+		/// ダッシュと歩行の遷移を司る
+		/// </summary>
 		public void MoveController()
         {
 
 			if (!changeable)
 			{
 				reJudgeTime += _controller.DeltaTime;
-				if (reJudgeTime >= 1f)
+				if (reJudgeTime >= 0.8f)
 				{
+					//状態を変化できるように
 					changeable = true;
 					reJudgeTime = 0;
 				}
 			}
 		//	Debug.Log($"今{nowMove}");
 
-
+			//動ける場合は移動状態に基づいてダッシュ発動やダッシュ状態の解除を
 			if (!disEnable)
 			{
-			//	Debug.Log($"あいいい");
+
+
+
+				//ダッシュ状態の解除と発動
+				#region
+
+
+				float dire = transform.localScale.x;
 				if (nowMove == MoveState.停止)
 				{
 					if (_movement.CurrentState == CharacterStates.MovementStates.Running)
 					{
 						_characterRun.RunStop();
 					}
-					if (transform.localScale.x != moveDirection)
-					{
-						_character.Flip();
-					}
+
 					_characterHorizontalMovement.SetHorizontalMove(0);
 				}
 				else if (nowMove == MoveState.歩き)
@@ -555,7 +552,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						_characterRun.RunStop();
 					}
 					isWait = false;
-					_characterHorizontalMovement.SetHorizontalMove(moveDirection);
+					_characterHorizontalMovement.SetHorizontalMove(dire);
+
 				}
 				else if (nowMove == MoveState.走り)
 				{
@@ -564,17 +562,50 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						_characterRun.RunStart();
 						isWait = false;
 					}
-					_characterHorizontalMovement.SetHorizontalMove(moveDirection);
+					_characterHorizontalMovement.SetHorizontalMove(dire);
 				}
+
+				/*
+				//移動方向とキャラの方向合わないなら静止
+				if (Mathf.Sign(transform.localScale.x) != Mathf.Sign(_characterHorizontalMovement.MovementSpeed) && _characterHorizontalMovement.MovementSpeed != 0)
+				{
+
+					Debug.Log($"sddf{Mathf.Sign(transform.localScale.x)}ddd{Mathf.Sign(_characterHorizontalMovement.MovementSpeed)}dsf{dire}");
+					nowMove = MoveState.停止;
+
+				}
+				*/
+                #endregion
+            }
+			//移動できないときは止まる
+            else
+            {
+				if (_movement.CurrentState == CharacterStates.MovementStates.Running)
+				{
+					_characterRun.RunStop();
+				}
+				isWait = false;
+				_characterHorizontalMovement.SetHorizontalMove(0);
 			}
-				lastState = nowMove;
-
-			
+            lastState = nowMove;
 
 
+
+
+		}
+
+
+		/// <summary>
+		/// 追い越し防止メソッド
+		/// </summary>
+		/// <param name="targ">追い越しちゃいけない相手との距離</param>
+		public void PassingPrevention(float targ)
+        {
+            if (Mathf.Abs(targ) < 10)
+            {
+				nowMove = MoveState.停止;
+            }
         }
-
-
 
 		/// <summary>
 		/// 待機中の哨戒行動
@@ -605,9 +636,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         }
 						
 					}
-					changeable = false;
-					moveDirection = direction;
+					SisFlip(direction);
 				}
+				PassingPrevention(distance.x);
 
 			}
 		}
@@ -615,16 +646,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{//のんびり
 			if (_controller.State.IsGrounded && !disEnable)
 			{
-			//	Debug.Log($"ｓｄｓｄｄｓ{pc.NowSpeed()}");
-				//イベントオブジェクトは動かないので常に判断
+				//	
+
+				//イベントオブジェクトは動かないので常に判断していい？
+				//isPlay中は目的物に向かってまっすぐ行くので別に移動制御するか？
 				if (isPlay)
 				{
-					    float playDistance = playPosition - this.transform.position.x;
-						playDirection = playDistance >= 0 ? 1 : -1;
-						playDistance = Mathf.Abs(playDistance);
+					float playDistance = playPosition - this.transform.position.x;
+					playDirection = playDistance >= 0 ? 1 : -1;
+					playDistance = Mathf.Abs(playDistance);
 					if (Mathf.Abs(distance.x) <= status.playDistance && !isClose)
 					{
-						
+
 						//環境物に接触
 						waitTime = 0.0f;
 
@@ -643,7 +676,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							nowMove = MoveState.走り;
 
 						}
-						moveDirection = playDirection;
+						//	SisFlip(playDirection);
 					}
 					else
 					{
@@ -658,63 +691,69 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						}
 
 						//ある程度離れたら遊ばなくなる
-                        if (playDistance >= 100)
-                        {
+						if (playDistance >= 100)
+						{
 							isPlay = false;
-                        }
+						}
 						moveDirection = direction;
 					}
 				}
-				else if (Mathf.Abs(distance.x) <= status.patrolDistance + status.adjust)
+
+				//ここからは他の移動と同じに処理
+
+				else
 				{
-
-					//プレイヤーが止まってる時は停止
-					if (pc.NowSpeed() <= 100)
+					if (changeable)
 					{
-						nowMove = MoveState.停止;
-						isWait = true;
-						//isWaitで時間経過で一人で遊んだりする？
-					}
-					//動いてるなら歩く
-					else
-					{
-						nowMove = MoveState.歩き;
-						
+						//Debug.Log($"ｓｄｓｄｄｓ{pc.NowSpeed()}");
+						//距離が遊んでいていい範囲内で一度離れて接近中でなければ
+						if (Mathf.Abs(distance.x) <= status.patrolDistance + status.adjust && !isClose)
+						{
 
-					}
+							//プレイヤーが止まってる時は停止
+							if (pc.NowSpeed() <= 70)
+							{
+								nowMove = MoveState.停止;
+								isWait = true;
+								//isWaitで時間経過で一人で遊んだりする？
+								SisFlip(0);
+								Debug.Log("sd");
+							}
+							//動いてるなら歩く
+							else
+							{
+								nowMove = MoveState.歩き;
+								Debug.Log("dd");
+								SisFlip(direction);
+							}
+						}
 
-					changeable = false;
-					reJudgeTime = 0;
-				}
-				else if (changeable)
-				{
-					//遊んでいていい距離から離れたら
-					if (Mathf.Abs(distance.x) > status.walkDistance)//|| isClose)
-					{
-				//		Debug.Log($"ggggg");
-						isClose = true;//接近しようっていうフラグ
+						//遊んでいていい距離から離れたら
+						else if (Mathf.Abs(distance.x) > status.walkDistance || isClose)
+						{
+							Debug.Log("ff");
+							isClose = true;//接近しようっていうフラグ
+							nowMove = MoveState.走り;
+							SisFlip(direction);
+						}
+						//遊んでていい距離の中で、プレイヤーにくっついてないとき
+						else if (Mathf.Abs(distance.x) > status.patrolDistance)
+						{
+							Debug.Log("ffg");
+							nowMove = MoveState.歩き;
+							SisFlip(direction);
+						}
+
 						if (Mathf.Abs(distance.x) <= status.patrolDistance)
 						{
+							Debug.Log("hhh");
 							//くっついたら接近指示フラグ解除
 							isClose = false;
+
 						}
-						nowMove = MoveState.走り;
-
 					}
-					//プレイヤーにくっついてる時
-					
-					//遊んでていい距離の中で、プレイヤーにくっついてないとき
-					else if (Mathf.Abs(distance.x) > status.patrolDistance)
-					{
-
-						nowMove = MoveState.歩き;
-
-					}
-
-					moveDirection = direction;
-					changeable = false;
+					PassingPrevention(distance.x);
 				}
-				
 
 　　　　　　　　//isWaitの活用例
 				#region
@@ -723,7 +762,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				else if (stateNumber == 10)
 				{
 					waitTime += _controller.DeltaTime;
-					//Flip(direction);
+
 					//プレイヤーが立ち止まってて環境物がないとき
 					_characterHorizontalMovement.SetHorizontalMove(0); 
 					//("Stand");
@@ -754,7 +793,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			_characterHorizontalMovement.SetHorizontalMove(0);
 			if (waitTime >= SManager.instance.sisStatus.waitRes)
 			{
-				//Flip(-transform.localScale.x);//反転させます
+
 				waitTime = 0.0f;
 			}
 		}
@@ -956,14 +995,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							move.Set(basePosition.x - 6, basePosition.y + 5);
 							move.y = RayGroundCheck(move) + 10;
 							transform.position = move;
-							//Flip(1);
+
 						}
 						else
 						{
 							move.Set(basePosition.x + 6, basePosition.y + 5);
 							move.y = RayGroundCheck(move) + 10;
 							transform.position = move;
-							//Flip(-1);
+
 						}
 						_controller.SetForce(Vector2.zero);
 						nowPosition = false;

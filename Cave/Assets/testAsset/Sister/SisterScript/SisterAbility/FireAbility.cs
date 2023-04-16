@@ -184,8 +184,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public override void ProcessAbility()
 		{
 			base.ProcessAbility();
-			if(waitCast > 0 && SManager.instance.useMagic != null)
-			//Debug.Log($"‚ ‚ ‚‹{waitCast >= SManager.instance.useMagic.castTime}");
+
 			if (isReset)
 			{
 				//‚±‚ê‚Í“¹’†‰ñ•œŠJŽn‚Æ‚»‚ÌƒTƒEƒ“ƒh‚ðI‚í‚ç‚¹‚Ä‚é
@@ -568,6 +567,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//	Debug.Log($"ƒAƒCƒCƒC{SManager.instance.useMagic}d{SManager.instance.useMagic.castTime}");
 				waitCast += _controller.DeltaTime;
 				_controller.SetHorizontalForce(0);
+				float dir = Mathf.Sign(SManager.instance.target.transform.position.x - transform.position.x);
+				sb.SisFlip(dir);
+
+				
+
 				//‰r¥I‚í‚Á‚½‚ç
 				if (waitCast >= SManager.instance.useMagic.castTime)
 				{
@@ -606,11 +610,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				//	‰r¥’†Ž~B“G‚ªŽ€‚ñ‚ÅÁ‚¦‚½‚è‚Æ‚©
 				GManager.instance.StopSound(castSound, 0.5f);
-				if (castEffect != null)
-				{
+		//		if (castEffect != null)
+			//	{
 					Addressables.ReleaseInstance(castEffect);
 					castEffect = null;
-				}
+			//	}
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 				actionNum = 0;
@@ -693,10 +697,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			castEffect = await Addressables.InstantiateAsync(SManager.instance.useMagic.castEffect, gofire.position, gofire.rotation);
 			//	}
 
-			
+			float dir = Mathf.Sign(SManager.instance.target.transform.position.x - transform.position.x);
+			sb.SisFlip(dir);
 
-			int dir = (int)Mathf.Sign(SManager.instance.target.transform.position.x - transform.position.x);
-			sb.Flip(dir);
+
 		}
 
 
@@ -739,6 +743,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
 				return;
             }
+
+
+
 			bCount += 1;
 			//’e‚Ì”­ŽË‚Æ‚¢‚¤‚©¶¬ˆÊ’u
 			Vector3 goFire = sb.firePosition.position;
@@ -801,6 +808,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				DelayInstantiate(SManager.instance.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.useMagic.startRotation)).Forget();
 			}
+
+                //	‰r¥’†Ž~B“G‚ªŽ€‚ñ‚ÅÁ‚¦‚½‚è‚Æ‚©
+			if (SManager.instance.restoreTarget == null)
+			{
+				
+
+				_movement.ChangeState(CharacterStates.MovementStates.Idle);
+				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+				actionNum = 0;
+			}
+
 			//’eŠÛ‚ð¶¬‚µI‚í‚Á‚½‚ç
 			if (bCount >= SManager.instance.useMagic.bulletNumber)
 			{
@@ -2298,7 +2316,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			}
 
-			if (targetList.Count == 0)
+			if (targetList.Count == 0 || targetList == null)
 			{
 				targetCanList = null;
 				targetCanStatus = null;
@@ -2436,13 +2454,19 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					}
 
 					SManager.instance.target = targetList[selectNumber];
-					SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(2);
+					if (SManager.instance.target != null)
+					{
+						SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(2);
+					}
 				}
 				else
 				{
 
 					SManager.instance.target = targetList[0];
-					SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(2);
+					if (SManager.instance.target != null)
+					{
+						SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(2);
+					}
 				}
 				targetCanList = null;
 				targetCanStatus = null;

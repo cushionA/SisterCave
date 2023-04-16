@@ -208,12 +208,12 @@ public class FireBullet : MonoBehaviour
 					speed = em.speedV;
 					homingRotate = Quaternion.LookRotation(posTarget - transform.position);
 					homingRange = em.homingAngleV;
-					homingAngle = transform.position.x < target.transform.position.x ? em.angle : em.angle + (180 - em.angle);
+					homingAngle = em.homingAngleA;
 					break;
 				case Magic.FIREBULLET.RAIN:
 
 					speed = em.speedV;
-					//em.angle = 
+					em.angle =  SManager.instance.useMagic.angle;
 					break;
 			}
 		}

@@ -83,6 +83,9 @@ public class RestPoint : MonoBehaviour
         {
             eCon.ResetEnemy();
         }
+        SManager.instance.target = null;
+        SManager.instance.targetList.Clear();
+       
         _resetWindow.transform.parent.gameObject.SetActive(true);
         _resetWindow.Select();
         WindowCansel();
