@@ -149,12 +149,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shock: 50
-  mValue: 1.2
+  shock: 80
+  mValue: 1.5
   fireType: 4
   _hitLimit: 1
   penetration: 1
-  lifeTime: 0.2
+  lifeTime: 0.4
   speedV: 0
   speedA: 0
   angle: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
   isBlow: 1
   cBlow: 0
   isChaice: 0
-  blowPower: {x: 130, y: 15}
+  blowPower: {x: 190, y: 40}
   bulletNumber: 1
   VRandom: 0
   HRandom: 0

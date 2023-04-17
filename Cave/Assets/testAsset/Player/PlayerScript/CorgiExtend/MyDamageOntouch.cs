@@ -77,6 +77,7 @@ namespace MoreMountains.CorgiEngine
             DamageTakenInvincibilityDuration = 0.15f;
             DamageCausedKnockbackType = KnockbackStyles.AddForce;
             DamageCausedKnockbackDirection = CausedKnockbackDirections.BasedOnOwnerPosition;
+            InvincibilityDuration = 0.25f;
          //   _attackData
          //   _health = Owner.gameObject.GetComponent<MyHealth>();
         }
@@ -241,6 +242,7 @@ namespace MoreMountains.CorgiEngine
             // 衝突しているオブジェクトが無視リストに含まれている場合は、何もせずに終了します。
             if (_ignoredGameObjects.Contains(collider.gameObject))
             {
+                Debug.Log($"{this.gameObject.name}が{collider.transform.gameObject.name}");
                 return;
             }
 
@@ -258,6 +260,7 @@ namespace MoreMountains.CorgiEngine
             //ここでヘルスの無敵確認するか
             if (_colliderHealth.InvulnerableCheck())
             {
+             //   Debug.Log($"{this.gameObject.name}が{collider.transform.gameObject.name}");
                 return;
             }
 
@@ -290,6 +293,7 @@ namespace MoreMountains.CorgiEngine
 
             if (_restoreCount[collideNum] >= _attackData._hitLimit)
             {
+                Debug.Log($"{this.gameObject.name}が{collider.transform.gameObject.name}");
                 return;
             }
             else

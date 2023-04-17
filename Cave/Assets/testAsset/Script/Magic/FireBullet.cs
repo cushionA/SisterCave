@@ -637,7 +637,7 @@ public class FireBullet : MonoBehaviour
 			}
 			else
 			{
-				Instantiate(next, this.gameObject.transform.position, next.transform.rotation).MMGetComponentNoAlloc<FireBullet>().InitializedBullet(this.gameObject, target, direction);
+				Instantiate(next, this.gameObject.transform.position, next.transform.rotation).GetComponent<FireBullet>().InitializedBullet(this.gameObject, target, direction);
 			}
 
 		}
@@ -648,7 +648,7 @@ public class FireBullet : MonoBehaviour
 
 		}
 
-
+	
 
 		//‚¢‚ë‚ñ‚È‚à‚Ì‚ÆÕ“Ë‚µ‚Ä‚é‚È‚ç
 		if (collisionList.Count > 0)
@@ -720,6 +720,7 @@ public class FireBullet : MonoBehaviour
 
 				}
 			}
+			//Debug.Log($"{this.gameObject.name}‚ª{other.transform.gameObject.name}");
 		}
 
 

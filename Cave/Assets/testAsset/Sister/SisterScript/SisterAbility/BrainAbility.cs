@@ -1067,7 +1067,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			//Transform rotate = SManager.instance.useMagic.castEffect.LoadAssetAsync<Transform>().Result as Transform;
 
-			Addressables.InstantiateAsync("WarpCircle", gofire.position, gofire.rotation);//.Result;//発生位置をPlayer
+			Addressables.InstantiateAsync("WarpCircle", gofire);//.Result;//発生位置をPlayer
 			GManager.instance.PlaySound("Warp", transform.position);
 		}
 		//ワープ専用の地面探知

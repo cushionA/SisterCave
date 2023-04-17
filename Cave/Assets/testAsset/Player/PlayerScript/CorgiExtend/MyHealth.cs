@@ -145,7 +145,7 @@ namespace MoreMountains.CorgiEngine
             float invincibilityDuration, Vector3 damageDirection, bool back, MyWakeUp.StunnType stunnState)
         {
 
-            // Debug.Log($"知りたいのだ{stunnState}");
+            // Debug.Log($"知りたい{stunnState}");
 
             // オブジェクトが無敵であれば、何もせずに終了します。
 
@@ -336,7 +336,7 @@ namespace MoreMountains.CorgiEngine
             //ガード時
             if ((_defData.isGuard || _guardAttack) && !back)
             {  
-           //     Debug.Log($"あいいいｓ{_defData.isGuard}ｄ{!back}");
+
                 //ガード時
                 if (_damageData.phyAtk > 0)
                 {
@@ -406,7 +406,7 @@ namespace MoreMountains.CorgiEngine
 
                     //斬撃刺突打撃を管理
                     if (_damageData._attackType == 0)
-                    {// Debug.Log($"オオヌキフラッシュ{(Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def)}");
+                    {
                         damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def);
 
                     }
@@ -422,7 +422,7 @@ namespace MoreMountains.CorgiEngine
                         damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.strDef);
                         //	_damageData.phyType = 4;
                         //						Debug.Log("皿だ");
-                        if (GManager.instance.equipWeapon.shock >= 40)
+                        if (_damageData.shock >= 40)
                         {
                             _damageData.isHeavy = true;
                         }
@@ -519,7 +519,12 @@ namespace MoreMountains.CorgiEngine
 
             MyWakeUp.StunnType result = MyWakeUp.StunnType.notStunned;
 
-            if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
+            if (_superArumor || (_guardAttack && !isBack) || shock <= 0)
+            {
+                result = MyWakeUp.StunnType.notStunned;
+            }
+
+            else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
             {
                 //アタックデータをセットするメソッドとかほしい
                 //ヒット時ダメージ計算でヒット時やるか
@@ -537,10 +542,7 @@ namespace MoreMountains.CorgiEngine
             {
                 //オブジェクトがダメージ受ける
             }
-            if (_superArumor || (_guardAttack && !isBack))
-            {
-                result = MyWakeUp.StunnType.notStunned;
-            }
+
             return result;
         }
 

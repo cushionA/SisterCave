@@ -34404,7 +34404,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8269646903969781330}
   serializedVersion: 8
-  lengthInSec: 0.1
+  lengthInSec: 0.3
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -39310,6 +39310,8 @@ MonoBehaviour:
   Owner: {fileID: 0}
   _attacker: 2
   _health: {fileID: 0}
+  _restoreHealth: []
+  isBreake: 0
 --- !u!114 &4592944070679602917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39327,10 +39329,9 @@ MonoBehaviour:
   em: {fileID: 11400000, guid: e9f3c681906085646a7b67ecb0d0ae63, type: 2}
   rb: {fileID: 7330611243167120470}
   target: {fileID: 0}
-  direction: 0
+  direction: -1
   attackFactor: 1
   fireATFactor: 1
   thunderATFactor: 1
   darkATFactor: 1
   holyATFactor: 1
-  isTest: 1

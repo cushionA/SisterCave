@@ -106,7 +106,7 @@ public class Magic : Item
 	/// <summary>
 	/// ヒット回数
 	/// </summary>
-	[HideInInspector]
+
 	public int _hitLimit = 1;
 
 	[Header("貫通弾")]
