@@ -79,7 +79,7 @@ namespace MoreMountains.CorgiEngine
             {
                 
                 nFlySpeed.Set(x,y);
-Debug.Log($"‚ hyj{x}ff{nFlySpeed.x}");
+//Debug.Log($"‚ hyj{x}ff{nFlySpeed.x}");
                 FlySpeed.Set(x,y);
             }
             else

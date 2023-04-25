@@ -83,6 +83,7 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected override void HandleInput()
 		{
+
 			// Crouch Detection : if the player is pressing "down" and if the character is grounded and the crouch action is enabled
 			//‰º“ü‚ê‚Ä‚½‚ç‚µ‚á‚ª‚Þ
 			if (_verticalInput < -_inputManager.Threshold.y)

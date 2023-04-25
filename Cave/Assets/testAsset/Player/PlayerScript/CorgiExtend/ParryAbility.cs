@@ -120,7 +120,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                          defenceTime += _controller.DeltaTime;
 
                     if (!GManager.instance.equipWeapon.twinHand)
-                        {  
+                        {
+                        Debug.Log("ô–Ê‘ä");
                             if ((defenceTime >= GManager.instance.equipShield.parryStart || GManager.instance.blocking)  && !_health._parryNow)
                             {
                           
@@ -140,18 +141,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         }
                         else
                         {
+
                             if ((defenceTime >= GManager.instance.equipWeapon.parryStart || GManager.instance.blocking) && !_health._parryNow)
                             {
                                 GManager.instance.PlaySound("ParryStart", GManager.instance.Player.transform.position);
                                 ParryJudgeStart();
-                                defenceTime = GManager.instance.equipShield.parryStart;
+                                defenceTime = GManager.instance.equipWeapon.parryStart;
                                 GManager.instance.blocking = false;
+
                             }
 
                             else if (defenceTime - GManager.instance.equipWeapon.parryStart > GManager.instance.equipWeapon.parryTime)
                             {
-;
-                                defenceTime = 0.0f;
+                            ; Debug.Log($"dgg{defenceTime}");
+                            defenceTime = 0.0f;
                                 ParryJudgeEnd();
                             noGuard = true;
                         }

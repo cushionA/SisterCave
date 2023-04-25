@@ -23,8 +23,8 @@ MonoBehaviour:
   attackCT:
   - 0
   - 2
-  - 30
-  - 40
+  - 6
+  - 10
   - 0
   - 0
   supportCT:
@@ -85,7 +85,7 @@ MonoBehaviour:
     firstCondition: 6
     nextCondition: 5
     upDown: 0
-  - UseMagic: {fileID: 0}
+  - UseMagic: {fileID: 11400000, guid: 37c6e5e57dfe6ed41a37f81dcf48bf9c, type: 2}
     AutoWait: 0
     condition: 5
     firstCondition: 1
@@ -97,7 +97,7 @@ MonoBehaviour:
     firstCondition: 0
     nextCondition: 5
     upDown: 0
-  - UseMagic: {fileID: 0}
+  - UseMagic: {fileID: 11400000, guid: 5f1fb068811c62f45b1ca2f5ce0496ff, type: 2}
     AutoWait: 0
     condition: 3
     firstCondition: 6
@@ -229,7 +229,7 @@ MonoBehaviour:
     upDown: 0
   hSkipList: 000000000100000000000000000000000000000000000000
   nRecoverCondition:
-  - UseMagic: {fileID: 0}
+  - UseMagic: {fileID: 11400000, guid: c2e81e9985be0824cade631e1c4c9b5a, type: 2}
     condition: 2
     needSupport: 6
     percentage: 99

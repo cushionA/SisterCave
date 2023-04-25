@@ -293,6 +293,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				#region
 				if (_condition.CurrentState != CharacterStates.CharacterConditions.Moving && (!disEnable || _skipCondition != 0) &&  sb.nowPosition)
 				{
+					
 
 					//一定時間経過で戦闘思考を、なしでない限りは優先する状態に戻す
 					if (stateJudge >= sister.stateResetRes && sister.priority != SisterParameter.MoveType.なし)
@@ -306,7 +307,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 					//攻撃ステートで
 					if (sister.nowMove == SisterParameter.MoveType.攻撃)
-					{
+					{Debug.Log($"あああ{disEnable}{_skipCondition}");
 
 						//ターゲットがいないならターゲットを探します。
 						if (SManager.instance.target == null)
@@ -317,9 +318,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							//五番目までだから長さから1引いてる
                             for (int i = 0;i < sister.targetCondition.Length;i++)
                             {
+							//	int skiCheck =  (int)Mathf.Pow(2, i)
+
+								//0乗は１
 								//クールタイム中で、なおかつスキップコンディションに当てはまらないなら処理を飛ばす。
 								//シフト演算？
-                                if (disEnable && (_skipCondition & (int)Mathf.Pow(2, i)) != (int)Mathf.Pow(2, i))
+								if (disEnable && (_skipCondition & (int)Mathf.Pow(2, i)) != (int)Mathf.Pow(2, i))
                                 {
 									continue;
                                 }
@@ -355,13 +359,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							//Debug.Log("使用魔法設定ができてないのが問題");
 
-							if (sister.nowMove != SisterParameter.MoveType.攻撃)
+							//Disenaでスキップコンディションに含まれていないなら戻る
+							if (sister.nowMove != SisterParameter.MoveType.攻撃 || (disEnable && (_skipCondition & (int)Mathf.Pow(2, judgeSequence)) != (int)Mathf.Pow(2, judgeSequence)))
 							{
 								judgeSequence = 0;
+								SManager.instance.target = null;
 								return;
 
 
 							}
+
 							AttackAct(sister.AttackCondition[judgeSequence]);
 
 						}
@@ -394,6 +401,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 								break;
 							}
 						}
+
+                        if (disEnable && (_skipCondition & (int)Mathf.Pow(2, judgeSequence)) != (int)Mathf.Pow(2, judgeSequence))
+						{
+							judgeSequence = 0;
+							SManager.instance.target = null;
+							return;
+                        }
 					}
 					//支援と同じ
 					else if (sister.nowMove == SisterParameter.MoveType.回復)
@@ -416,6 +430,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 								judgeSequence = i;
 								break;
 							}
+						}
+						if (disEnable && (_skipCondition & (int)Mathf.Pow(2, judgeSequence)) != (int)Mathf.Pow(2, judgeSequence))
+						{
+							judgeSequence = 0;
+							SManager.instance.target = null;
+							return;
 						}
 					}
 
@@ -564,7 +584,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			if (sb.mp >= SManager.instance.useMagic.useMP && SManager.instance.target != null)
 			{
 				//活動開始
-			//	Debug.Log($"アイイイ{SManager.instance.useMagic}d{SManager.instance.useMagic.castTime}");
+				//Debug.Log($"アイイイ{SManager.instance.useMagic}d{SManager.instance.useMagic.castTime}");
 				waitCast += _controller.DeltaTime;
 				_controller.SetHorizontalForce(0);
 				float dir = Mathf.Sign(SManager.instance.target.transform.position.x - transform.position.x);
@@ -653,7 +673,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			if (disEnable && _condition.CurrentState != CharacterStates.CharacterConditions.Moving)
 			{
-			//	Debug.Log($"ddddd{coolTime}");
+			//	Debug.Log($"ddddd{coolTime}ｄｄ{waitCast}d{SManager.instance.useMagic}");
 				waitCast += _controller.DeltaTime;
 				//sb.//("Stand");
 				//逃げる
@@ -704,11 +724,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 
 
-
+		/// <summary>
+		/// 外部から中断させる
+		/// </summary>
 		public void MagicEnd()
 		{
 			_skipCondition = 0;
-			disEnable = false;
+			//disEnable = false;
 			_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 			_movement.ChangeState(CharacterStates.MovementStates.Idle);
 			stateJudge = 0;

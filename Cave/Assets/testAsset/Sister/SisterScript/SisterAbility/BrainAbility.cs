@@ -717,13 +717,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 								isWait = true;
 								//isWaitで時間経過で一人で遊んだりする？
 								SisFlip(0);
-								Debug.Log("sd");
+								//Debug.Log("sd");
 							}
 							//動いてるなら歩く
 							else
 							{
 								nowMove = MoveState.歩き;
-								Debug.Log("dd");
+							//	Debug.Log("dd");
 								SisFlip(direction);
 							}
 						}
@@ -731,7 +731,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						//遊んでいていい距離から離れたら
 						else if (Mathf.Abs(distance.x) > status.walkDistance || isClose)
 						{
-							Debug.Log("ff");
+							//Debug.Log("ff");
 							isClose = true;//接近しようっていうフラグ
 							nowMove = MoveState.走り;
 							SisFlip(direction);
@@ -739,14 +739,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						//遊んでていい距離の中で、プレイヤーにくっついてないとき
 						else if (Mathf.Abs(distance.x) > status.patrolDistance)
 						{
-							Debug.Log("ffg");
+						//	Debug.Log("ffg");
 							nowMove = MoveState.歩き;
 							SisFlip(direction);
 						}
 
 						if (Mathf.Abs(distance.x) <= status.patrolDistance)
 						{
-							Debug.Log("hhh");
+							//Debug.Log("hhh");
 							//くっついたら接近指示フラグ解除
 							isClose = false;
 

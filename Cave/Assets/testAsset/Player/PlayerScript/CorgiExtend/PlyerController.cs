@@ -1111,7 +1111,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		public void EffectController(string name)
 		{
-			Debug.Log("‚ ‚ ‚ ");
+			//Debug.Log("‚ ‚ ‚ ");
 			Transform place = eController.transform;
 			Addressables.InstantiateAsync(name, place.position, place.rotation);
 

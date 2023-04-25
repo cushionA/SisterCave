@@ -858,6 +858,7 @@ public class GManager : MonoBehaviour
                 twinHand = true;
                // Debug.Log($"asidk{_anim.runtimeAnimatorController.name}");
                 _anim.runtimeAnimatorController = equipWeapon._useContoroller[1];
+                GManager.instance.equipWeapon.twinHand = true;
             }
             //片手持ちに
             else
@@ -865,6 +866,7 @@ public class GManager : MonoBehaviour
                 twinHand = false;
                 _anim.runtimeAnimatorController = equipWeapon._useContoroller[0];
                 AnimationSetting();
+                GManager.instance.equipWeapon.twinHand = false;
             }
         }
 

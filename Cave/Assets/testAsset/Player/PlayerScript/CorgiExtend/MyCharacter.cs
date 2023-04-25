@@ -177,7 +177,11 @@ namespace MoreMountains.CorgiEngine
 		protected override void EarlyProcessAbilities()
 		{
 			//Debug.Log($"dddアビリティのながさ{_myAbilities.Length}コーギーアビリティの長さ{_characterAbilities.Length}");
-
+			//UI出てる時は操作不可
+			if (MainUICon.instance.UIOn)
+			{
+				return;
+			}
 			foreach (MyAbillityBase ability in _myAbilities)
 			{
 
@@ -198,6 +202,11 @@ namespace MoreMountains.CorgiEngine
 		{
 			//	Debug.Log($"sssss{ability.GetType()}");
 
+			//UI出てる時は操作不可
+			if (MainUICon.instance.UIOn)
+			{
+				return;
+			}
 			foreach (MyAbillityBase ability in _myAbilities)
 			{
 				if (ability.enabled && ability.AbilityInitialized)
@@ -212,6 +221,11 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected override void LateProcessAbilities()
 		{
+			//UI出てる時は操作不可
+			if (MainUICon.instance.UIOn)
+			{
+				return;
+			}
 			foreach (MyAbillityBase ability in _myAbilities)
 			{
 				if (ability.enabled && ability.AbilityInitialized)

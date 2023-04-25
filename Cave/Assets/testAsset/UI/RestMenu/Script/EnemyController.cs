@@ -88,7 +88,7 @@ public class EnemyController : MonoBehaviour
                 num = ~num;
                 //”²‚¢‚Æ‚­
                 callNumber &= num;
- Debug.Log($"‚¨‚¢‚¢‚¢{num}");
+// Debug.Log($"‚¨‚¢‚¢‚¢{num}");
             }
            
         }

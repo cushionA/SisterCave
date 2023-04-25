@@ -180,7 +180,7 @@ namespace MoreMountains.CorgiEngine
         //  Debug.Log($"‚¨‚¹[‚Ä{damage}‚Æ{CurrentHealth}{stunnState}");
             if (um != null)
             {
-                  Debug.Log($"‚ˆ‚ˆ‚ˆ‚ˆ‚ˆ{um.name}{damage}");
+               //   Debug.Log($"‚ˆ‚ˆ{um.name}{damage}");
                 um.AddStack(damage, this.gameObject.transform);
             }
             if (damage <= 0)

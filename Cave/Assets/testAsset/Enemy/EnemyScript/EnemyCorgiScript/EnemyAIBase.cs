@@ -943,7 +943,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					_flying.SpeedSet(status.patrolSpeed.x, status.patrolSpeed.y,false);
 					_flying.SpeedSet(status.combatSpeed.x, status.combatSpeed.y,true);
 					//	_flying.FastFly(false, false);
-					Debug.Log($"hhhhd{_flying.FlySpeed.x}");
+					//Debug.Log($"hhhhd{_flying.FlySpeed.x}");
 				}
                 else
                 {
@@ -2247,7 +2247,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 					if (transform.position.x <= startPosition.x + status.waitDistance.x && isRight)
 					{
-						Debug.Log($"sddssd{_flying.FlySpeed.x}");
+				//		Debug.Log($"sddssd{_flying.FlySpeed.x}");
 						NormalFlip(1);
 						_flying.SetHorizontalMove(1);
 
@@ -2261,7 +2261,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					else
 					{
 
-						Debug.Log("ああああ");
+						//Debug.Log("ああああ");
 						waitTime += _controller.DeltaTime;
 						_flying.SetHorizontalMove(0);
 						if (waitTime >= status.waitRes)
@@ -2545,7 +2545,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						//近距離の場合歩き範囲をダッシュで離れるのより大きく
 						//歩き距離なら敵を見たまま撃つ
 						//動かない弓兵とかは移動速度ゼロに
-						Debug.Log("ddd");
+						//Debug.Log("ddd");
 						isReach = true;
 						_characterHorizontalMovement.SetHorizontalMove(-moveDirectionX);
 					}
@@ -2735,7 +2735,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 				stateJudge = 0;
 				attackComp = false;
-				Debug.Log($"アイ{ground}");
+			//	Debug.Log($"アイ{ground}");
 			}
             #endregion
 

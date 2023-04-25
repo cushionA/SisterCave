@@ -90,6 +90,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
 
 
+
             if (_inputManager == null) {// Debug.Log("‚ ‚“‚Š‚Á‚Å");
                                         return; }
 

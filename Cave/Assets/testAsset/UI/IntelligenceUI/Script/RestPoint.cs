@@ -41,7 +41,7 @@ public class RestPoint : MonoBehaviour
     void Update()
     {
 //Debug.Log($"s{c.enabled}s");
-        if (isCallable && MainUICon.instance._reInput.SubmitButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown && GManager.instance.PlayerStateCheck())
+        if (isCallable && MainUICon.instance._reInput.SubmitButton.State.CurrentState == MoreMountains.Tools.MMInput.ButtonStates.ButtonDown && GManager.instance.PlayerStateCheck() && !MainUICon.instance.isMenu)
         {
             GManager.instance.PlayerEventLock(true);
             WindowSet();

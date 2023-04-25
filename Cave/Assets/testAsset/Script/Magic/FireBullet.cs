@@ -260,7 +260,7 @@ public class FireBullet : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-	Debug.Log($"sdddssdsdsd{other.gameObject.name}");
+	//Debug.Log($"sdddssdsdsd{other.gameObject.name}");
 	
 		BulletHit(other);
 	}
@@ -652,7 +652,7 @@ public class FireBullet : MonoBehaviour
 
 		//‚¢‚ë‚ñ‚È‚à‚Ì‚ÆÕ“Ë‚µ‚Ä‚é‚È‚ç
 		if (collisionList.Count > 0)
-        {Debug.Log("ssssdf");
+        {//Debug.Log("ssssdf");
 			for (int i = 0; i < collisionList.Count;i++)
             {
 				//‚à‚µ‚·‚Å‚É‚Ô‚Â‚©‚Á‚½‚à‚Ì‚Æˆê’v‚µ‚½‚ç

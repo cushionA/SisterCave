@@ -21,8 +21,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         //   [Header("武器データ")]
         /// declare your parameters here
-        ///WeaponHandle参考にして 
-
+        ///WeaponHandle参考にして
+        
+        ///絶対に停止してほしくない
+        float lastTime;
 
         // Animation parameters
 
@@ -332,12 +334,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
             {   // 待機時間を作りたいならば、ここの値を大きくする。
-                return false;
+                if (lastTime > 0 && lastTime == _animator.GetCurrentAnimatorStateInfo(0).normalizedTime)
+                {
+                    lastTime = 0;
+                    return true;
+                }
+                else 
+                {
+                    lastTime = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                    return false;
+                }
             }
             //AnimatorClipInfo[] clipInfo = sAni.GetCurrentAnimatorClipInfo(0);
 
             ////Debug.Log($"アニメ終了");
-
+            lastTime = 0;
             return true;
 
             // return !(sAni.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);

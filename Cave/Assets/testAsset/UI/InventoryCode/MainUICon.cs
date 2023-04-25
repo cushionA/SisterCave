@@ -251,6 +251,8 @@ public class MainUICon : MonoBehaviour
     [SerializeField]
     Selectable[] startButton;
 
+    [SerializeField]
+    GameObject[] OptionWindow;
 
     /// <summary>
     /// みんなが使えるフィードバック
@@ -356,6 +358,10 @@ public class MainUICon : MonoBehaviour
                     UIOn = false;
                     _TimeStart?.PlayFeedbacks();
 
+                    for (int i = 0;i <= OptionWindow.Length - 1;i++)
+                    {
+                        OptionWindow[i].SetActive(false);
+                    }
                     isInitial = false;
                     ButtonOn();
 
@@ -513,13 +519,13 @@ public class MainUICon : MonoBehaviour
 
                     }
                     //最初と最後以外なら
-                    else if (_windowSelecter.value != 0 && !(lastNumber >= _windowSelecter.options.Count - 1))
+                    else if (_windowSelecter.value != 0 && !(_windowSelecter.value >= _windowSelecter.options.Count - 1))
                     {
- 　　　　　　　　　　　
+ 　　　　　　　　　　　Debug.Log("ふぇｓ");
 
                         if (lastNumber != 0 && !(lastNumber >= _windowSelecter.options.Count - 1))
                         {
-                            Debug.Log($"ddddddd{lastNumber -1}{_windowSelecter.value - 1}");
+                         //  
                             _useInventory[lastNumber - 1].gameObject.SetActive(false);
                         }
                         else
@@ -529,7 +535,13 @@ public class MainUICon : MonoBehaviour
                             equipWindow.SetActive(false);
                         }
                         _useInventory[_windowSelecter.value - 1].gameObject.SetActive(true);
-                        _inventoryCon.MenuReset(_useInventory[_windowSelecter.value -1]);
+
+                        //インベントリあるならやれ
+                        if (_useInventory[_windowSelecter.value - 1] != null) 
+                        {
+                            _inventoryCon.MenuReset(_useInventory[_windowSelecter.value - 1]);
+                        }
+                      //  Debug.Log($"ddddddd{lastNumber -1}{_windowSelecter.value - 1}de{_useInventory[lastNumber - 1].gameObject.name}");
                         lastNumber = _windowSelecter.value;
                        
                         _slotNow = true;
@@ -547,7 +559,7 @@ public class MainUICon : MonoBehaviour
                              inventoryWindow.SetActive(false);
                         }
                         systemWindow.SetActive(true);
-
+                        
                         NavigationSetting(1);
                         lastNumber = _windowSelecter.value;
                         _slotNow = false;
