@@ -179,7 +179,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                     blowTime += _controller.DeltaTime;
                 //0.1秒以上で地面についたら
-                if (blowTime >= 0.08 && _controller.State.IsGrounded)
+                if (blowTime >= 0.1 && _controller.State.IsGrounded)
                 {
                     _health._blowNow = false;
                     blowTime = 0;
@@ -205,6 +205,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     {
                         Recover();
                     }
+                //怯みモーション出たら戻る
+                else if (CheckEnd("Falter"))
+                {
+                    nowType = 4;
+                }
             }
             else if (nowType == 8)
             {
@@ -212,6 +217,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 if (CheckEnd("DDie"))
                 {
                     Die();
+                }
+                //怯みモーション出たらやり直し
+                else if (CheckEnd("Falter"))
+                {
+                    nowType = 7;
                 }
                 else if (isPlayer)
                 {

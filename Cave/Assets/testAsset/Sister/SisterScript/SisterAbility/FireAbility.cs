@@ -82,7 +82,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <summary>
 		/// 何個目の条件でターゲット見つけたかを確認する
 		/// </summary>
-		int judgeSequence;
+		 [HideInInspector]
+		public int judgeSequence;
 
 		/// <summary>
 		/// 詠唱中つかう音
@@ -185,6 +186,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			base.ProcessAbility();
 
+
 			if (isReset)
 			{
 				//これは道中回復開始とそのサウンドを終わらせてる
@@ -237,10 +239,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-			if (_movement.CurrentState == CharacterStates.MovementStates.Combination )
-            {
-				return;
-            }
+
 			if (_condition.CurrentState != CharacterStates.CharacterConditions.Moving)
 			{
 				recoverTime += _controller.DeltaTime;
@@ -291,9 +290,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				///ターゲットと使用魔法設定
 				//クールタイム中でもスキップ条件があるなら動く
 				#region
+				Debug.Log($"あああ{_movement.CurrentState}{_condition.CurrentState}");
 				if (_condition.CurrentState != CharacterStates.CharacterConditions.Moving && (!disEnable || _skipCondition != 0) &&  sb.nowPosition)
 				{
-					
+					Debug.Log($"ss{sister.nowMove}");
 
 					//一定時間経過で戦闘思考を、なしでない限りは優先する状態に戻す
 					if (stateJudge >= sister.stateResetRes && sister.priority != SisterParameter.MoveType.なし)
@@ -307,19 +307,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 					//攻撃ステートで
 					if (sister.nowMove == SisterParameter.MoveType.攻撃)
-					{Debug.Log($"あああ{disEnable}{_skipCondition}");
+					{
 
+						Debug.Log($"s1{sister.targetCondition.Length}");
 						//ターゲットがいないならターゲットを探します。
 						if (SManager.instance.target == null)
 						{
 
+							judgeSequence = 0;
 
 							//五番目までやる
 							//五番目までだから長さから1引いてる
                             for (int i = 0;i < sister.targetCondition.Length;i++)
                             {
 							//	int skiCheck =  (int)Mathf.Pow(2, i)
-
+	Debug.Log($"uuu");
 								//0乗は１
 								//クールタイム中で、なおかつスキップコンディションに当てはまらないなら処理を飛ばす。
 								//シフト演算？
@@ -327,16 +329,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                                 {
 									continue;
                                 }
-								
+
+							
+
 								TargetSelect(sister.targetCondition[i], sister.AttackCondition[i]);
 								
 								if (SManager.instance.target != null)
                                 {
+									Debug.Log($"{SManager.instance.target.name}");
 									judgeSequence = i;
+Debug.Log($"せで{i}");
 									break;
                                 }
-								
+
+
 							}
+							Debug.Log($"s2");
 							//それでもターゲットがいなかったら
 							if (SManager.instance.target == null && !disEnable)
 							{
@@ -355,19 +363,26 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							//EnemyRecordとtargetConditionは一致してる。
 							//敵情報更新
 						}
+
+                        else
+                        {
+							SManager.instance.target = null;
+							return;
+						}
+						Debug.Log($"s3");
 						if (SManager.instance.target != null)
 						{
 							//Debug.Log("使用魔法設定ができてないのが問題");
 
 							//Disenaでスキップコンディションに含まれていないなら戻る
-							if (sister.nowMove != SisterParameter.MoveType.攻撃 || (disEnable && (_skipCondition & (int)Mathf.Pow(2, judgeSequence)) != (int)Mathf.Pow(2, judgeSequence)))
+							if (sister.nowMove != SisterParameter.MoveType.攻撃 || (disEnable && ((_skipCondition & (int)Mathf.Pow(2, judgeSequence)) != (int)Mathf.Pow(2, judgeSequence))))
 							{
+								Debug.Log("ｄｄｄｄｆｓｆｓ");
 								judgeSequence = 0;
 								SManager.instance.target = null;
 								return;
-
-
 							}
+							Debug.Log($"s4{judgeSequence}");
 
 							AttackAct(sister.AttackCondition[judgeSequence]);
 
@@ -391,6 +406,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							if (i == sister.supportPlan.Length - 1)
                             {
 								SupportAct(sister.supportPlan[i]);
+								Debug.Log($"df{i}");
 								judgeSequence = i;
 							}
 							else if(SupportJudge(sister.supportPlan[i]))
@@ -398,6 +414,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 								SupportAct(sister.supportPlan[i]);
 								judgeSequence = i;
+								Debug.Log($"ff{i}");
 								break;
 							}
 						}
@@ -423,11 +440,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							{
 								RecoverAct(sister.recoverCondition[i]);
 								judgeSequence = i;
+								Debug.Log($"de{i}");
 							}
 							else if (HealJudge(sister.recoverCondition[i]))
 							{
 								RecoverAct(sister.recoverCondition[i]);
 								judgeSequence = i;
+							
 								break;
 							}
 						}
@@ -495,7 +514,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						_controller.SetHorizontalForce(0);
 					}
 
-					
+
 					//ターゲットがいて使用する魔法もあって使用魔法とターゲットもかみ合っているなら
 
 					ActionFire();
@@ -506,7 +525,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 
 			//現在戦い中じゃないなら
-			else if (sb.nowState != BrainAbility.SisterState.戦い)
+			else if (sb.nowState != BrainAbility.SisterState.戦い )
 			{
 				//一応リセットと戦闘開始時にリセットしてもらえるよう仕込み
 
@@ -521,11 +540,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						healJudge += _controller.DeltaTime;
 						if (healJudge >= 3f)
 						{
-							//	healAct = true;
-							//SManager.instance.target = GManager.instance.Player;
-							//SManager.instance.useMagic = null;
-							//SManager.instance.target = GManager.instance.Player;
-						//SManager.instance.target = GManager.instance.Player;
+
 						for (int i = 0; i < sister.recoverCondition.Length; i++)
 						{
 								if (disEnable && (_skipCondition & (int)Mathf.Pow(2, i)) != (int)Mathf.Pow(2, i))
@@ -536,6 +551,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 								{
 									RecoverAct(sister.nRecoverCondition[i]);
 									judgeSequence = i;
+									
 									break;
 								}
 						}
@@ -560,7 +576,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						}
 						coolTime = sister.autHealCT[judgeSequence];
 						_skipCondition = sister.ahSkipList[judgeSequence];
-						//Debug.Log("げせぬ");
+
 						ActionFire();
 					}
 				}
@@ -578,13 +594,19 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <param name="random"></param>
 		public void ActionFire(float random = 0.0f)
 		{
+			if (disEnable)
+			{
+				waitCast = 0;
+				disEnable = false;
+			}
+
 			//ランダムに入れてもいいけど普通に入れてもいい
 
 			//使用する魔法のMPがあって、かつ標的がいるなら
 			if (sb.mp >= SManager.instance.useMagic.useMP && SManager.instance.target != null)
 			{
 				//活動開始
-				//Debug.Log($"アイイイ{SManager.instance.useMagic}d{SManager.instance.useMagic.castTime}");
+				//
 				waitCast += _controller.DeltaTime;
 				_controller.SetHorizontalForce(0);
 				float dir = Mathf.Sign(SManager.instance.target.transform.position.x - transform.position.x);
@@ -595,6 +617,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				//詠唱終わったら
 				if (waitCast >= SManager.instance.useMagic.castTime)
 				{
+
+
 
 					soundStart = false;
 					disEnable = true;
@@ -712,9 +736,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public async UniTaskVoid CastCircle()
 		{
 
-			Transform gofire = sb.firePosition;
+			Vector3 posi = new Vector3(transform.position.x, transform.position.y - 11, 40);
 			//発生位置をPlayer
-			castEffect = await Addressables.InstantiateAsync(SManager.instance.useMagic.castEffect, gofire.position, gofire.rotation);
+			castEffect = await Addressables.InstantiateAsync(SManager.instance.useMagic.castEffect, posi, Quaternion.Euler(-98,0,0));
 			//	}
 
 			float dir = Mathf.Sign(SManager.instance.target.transform.position.x - transform.position.x);
@@ -729,19 +753,29 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		public void MagicEnd()
 		{
+			SManager.instance.target = null;
 			_skipCondition = 0;
 			//disEnable = false;
-			_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
-			_movement.ChangeState(CharacterStates.MovementStates.Idle);
 			stateJudge = 0;
 			waitCast = 0;
 			coolTime = 0;
 			//SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
-			SManager.instance.target = null;
+			
 			actionNum = 0;
-			waitCast = 0;
-
+			_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+			_movement.ChangeState(CharacterStates.MovementStates.Idle);
 		}
+
+		/// <summary>
+		/// MPが魔法使用できないほど減少して、なおかつMP支払い前であるかどうかを確認するメソッド
+		/// </summary>
+		public bool MPCheck()
+        {
+
+			return (SManager.instance.useMagic.useMP > sb.mp && bCount < 2);
+
+        }
+
 
 
 		/// <summary>
@@ -781,7 +815,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				{
 					//山なりの弾道で打ちたいときとか射出角度決めれたらいいかも
 					//位置をランダムにすれば角度はどうでもいい説もある
-					SManager.instance.useMagic.angle = GetAim(sb.firePosition.position, SManager.instance.restoreTarget.transform.position);
+					SManager.instance.useAngle = GetAim(sb.firePosition.position, SManager.instance.restoreTarget.transform.position);
 
 				}
 				sb.mp -= SManager.instance.useMagic.useMP;
@@ -854,7 +888,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				SManager.instance.useMagic = null;
 				fireStart = false;
-				SManager.instance.restoreTarget.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
+				if (SManager.instance.restoreTarget != null && SManager.instance.target != GManager.instance.Player) 
+				{
+					SManager.instance.restoreTarget.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
+				}
 
 				sb.PositionJudge();
 			}
@@ -906,7 +943,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
 							{
-
+								Debug.Log($"zz");
 								AttackStateChange(act);
 								return;
 							}
@@ -1253,11 +1290,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <param name="condition"></param>
 		public void AttackAct(FireCondition condition)
 		{
-			//	Debug.Log($"重要状態開示{sister.nowMove }");
-			//Debug.Log($"asgd{condition.condition}");
+
+
 			if (condition.UseMagic == null)
 			{
-				//Debug.Log("ghdks");
+				Debug.Log("ghdks");
 				switch (condition.condition)
 				{
 					case FireCondition.ActJudge.斬撃属性:
@@ -1414,7 +1451,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 			else
 			{
-				//	Debug.Log($"おかしなとき{condition.UseMagic.name}");
+				if (judgeSequence != 2)
+				{
+					Debug.Log($"おかしなとき{condition.condition}{condition.UseMagic}{judgeSequence}");
+				}
+				if (condition.condition == FireCondition.ActJudge.回復行動に移行 || condition.condition == FireCondition.ActJudge.支援行動に移行)
+				{
+
+					AttackStateChange(condition);
+					return;
+				}
+				else if (condition.condition == FireCondition.ActJudge.なにもしない)
+				{
+					return;
+				}
 				SManager.instance.useMagic = condition.UseMagic;
 			}
 		}
@@ -1754,6 +1804,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 			else
 			{
+			
 				SManager.instance.useMagic = condition.UseMagic;
 			}
 		}
@@ -2005,7 +2056,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				}
 				if (candidate.Count == 0)
 				{
-					//Debug.Log($"焼肉{SManager.instance.useMagic.name}");
+					
 					SManager.instance.useMagic = null;
 					return;
 				}
@@ -2017,7 +2068,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 						condition.UseMagic = candidate[0];
 						magicCanList = null;
-						Debug.Log($"君の名は{SManager.instance.useMagic.name}");
+
 					}
 					else
 					{
@@ -2222,6 +2273,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			if (targetList.Count == 0 || targetList == null)
 			{
+				targetCanList = null;
+				targetCanStatus = null;
 				return;
 			}
 			else if (targetList.Count >= 1)
@@ -2328,8 +2381,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					}
 					for (int i = 0; i < removeNumber.Count; i++)
 					{
-						targetCanList.Remove(targetList[removeNumber[i] - i]);
-						targetCanStatus.Remove(statusList[removeNumber[i] - i]);
+						targetList.Remove(targetList[removeNumber[i] - i]);
+						statusList.Remove(statusList[removeNumber[i] - i]);
 					}
 					removeNumber = null;
 					#endregion
@@ -2340,8 +2393,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			if (targetList.Count == 0 || targetList == null)
 			{
-				targetCanList = null;
-				targetCanStatus = null;
+				
 				return;
 
 			}
@@ -2772,6 +2824,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				sister.nowMove = SisterParameter.MoveType.支援;
 			}
 			stateJudge = 0.0f;
+			judgeSequence = 0;
 			SManager.instance.useMagic = null;
 		}
 		/// <summary>
@@ -2792,6 +2845,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 			stateJudge = 0.0f;
 			//	return;
+			judgeSequence = 0;
 			SManager.instance.useMagic = null;
 		}
 		/// <summary>
@@ -2802,7 +2856,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			if (condition == RecoverCondition.MagicJudge.攻撃ステートに)
 			{
 				//	targetJudge = sister.targetResetRes;
-				SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
+				if (SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>() != null)
+				{
+					SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
+				}
 				//SManager.instance.target = null;
 				sister.nowMove = SisterParameter.MoveType.攻撃;
 			}
@@ -2811,6 +2868,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				sister.nowMove = SisterParameter.MoveType.支援;
 			}
 			SManager.instance.useMagic = null;
+			judgeSequence = 0;
 			stateJudge = 0.0f;
 		}
 

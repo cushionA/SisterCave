@@ -55,6 +55,9 @@ public class SManager : MonoBehaviour
     [HideInInspector] public bool actNow;
     //  public Slider MpSlider;//シスターさんのMP管理
     [HideInInspector] public SisMagic useMagic;
+
+    [HideInInspector] public float useAngle;
+
     //[SerializeField] GameObject NIdoit;
     //[SerializeField] bool isDEEEp;
 

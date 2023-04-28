@@ -1058,8 +1058,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public void attackEffect()
 		{
+			if (!string.IsNullOrEmpty(GManager.instance.useAtValue.attackEffect.AssetGUID))
+			{
 
-			Addressables.InstantiateAsync(GManager.instance.useAtValue.attackEffect, GManager.instance.pc.eController.transform);
+				Addressables.InstantiateAsync(GManager.instance.useAtValue.attackEffect, eController.transform);
+			}
 		}
 
 

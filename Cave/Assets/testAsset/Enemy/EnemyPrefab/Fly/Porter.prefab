@@ -325,7 +325,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 2168447053194725977}
   m_Bounds:
-    m_Center: {x: -249.15509, y: 20.024372, z: 0}
+    m_Center: {x: -249.15509, y: 20.02437, z: 0}
     m_Extent: {x: 7.6752014, y: 1.9939003, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -512,6 +512,7 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 0
+    backAttack: 0
   ground: 6
   air: 6
   dogPile: {fileID: 0}
@@ -814,7 +815,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    Physics2DInteraction: 1
+    Physics2DInteraction: 0
     Physics2DPushForce: 2
     DrawRaycastsGizmos: 1
     DisplayWarnings: 1
@@ -1464,7 +1465,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 2168447054661762354}
   m_Bounds:
-    m_Center: {x: -249.13031, y: 20.03889, z: 0}
+    m_Center: {x: -249.13031, y: 20.038895, z: 0}
     m_Extent: {x: 0.62000275, y: 0.24914074, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -2133,7 +2134,7 @@ MonoBehaviour:
   SensorRange: 50
   DetectsOnLayers:
     serializedVersion: 2
-    m_Bits: 32896
+    m_Bits: 4227200
   SensorUpdateMode: 0
   CheckInterval: 1
   InitialBufferSize: 1
@@ -2319,6 +2320,7 @@ MonoBehaviour:
   _health: {fileID: 0}
   nFlySpeed: {x: 0, y: 0}
   FastSpeed: {x: 0, y: 0}
+  FlySpeed: {x: 0, y: 0}
   AlwaysFlying: 1
   StopFlyingOnDeath: 1
 --- !u!1 &8545974840133807064

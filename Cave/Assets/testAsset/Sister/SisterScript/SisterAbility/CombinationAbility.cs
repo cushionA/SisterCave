@@ -41,6 +41,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //protected RewiredCorgiEngineInputManager _inputManager;
 
         float combinationCool;
+
+        //コンビネーションのクールタイムを消化してMPなしで使える状態かどうか
         bool combiEnable = true;
         /// <summary>
         /// 連携対象設定で使うためのダミー
@@ -55,6 +57,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         [SerializeField]
         Transform cIcon;
 
+        /// <summary>
+        /// 連携のクールタイム消化を視覚化したスライダー
+        /// </summary>
         [SerializeField]
         Slider cSlider;
 
@@ -90,7 +95,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         /// <summary>
         /// 真なら必要な入力がもたらされたということ
-        /// つまりボタンが離されたってこと
+        /// つまり長押ししてたボタンが離されたってこと
         /// </summary>
         bool needInput;
 
@@ -147,6 +152,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             // on our main stick/direction pad/keyboard
 
 
+            //長押し系の連携で、待機モーション中に手を離したら発動へ
             if (_combState == CombinationState.Act)
             {
                 //ボタンから手が離れているなら真に
@@ -154,61 +160,67 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 
             }
             //長押しコンビネーションでストップされてるなら入力禁止で
-            if (_movement.CurrentState == CharacterStates.MovementStates.Combination)
+            if (_movement.CurrentState == CharacterStates.MovementStates.Combination || _combState != CombinationState.Idle)
             {
                 return;
             }
 
             if (sb.status.equipCombination != null)
             {
-             //  
+             
+                　　　//地面に立っているときしか連携は使えない
                 if (_inputManager.CombinationButton.State.CurrentState == MMInput.ButtonStates.ButtonDown
                     && _controller.State.IsGrounded)
                 {
-                    //       Debug.Log("kl");
+                    
                     chainEndTime = 0;
-                    //条件の意図としてはコンビネーションが設定されてて地面にいてクールタイム中じゃなくて魔法発動中じゃない
-                    //コンボ可能フラグはコンボ中は不可になってる。チェイン数見て最後に改めて戻される。
+
+
+                    //条件の意図としてはコンビネーションが設定されてて地面にいてクールタイム中じゃなくて魔法発動中じゃない時だけ
+                    //連携可能フラグはコンボ中は不可になってる。チェイン数見て最後に改めて戻される。
                     if (combiEnable && conboChain == 0) //&& !(SManager.instance.actNow && !SManager.instance.castNow))
                     {
-                        Debug.Log($"お肉売り場{conboChain}");
+                       // Debug.Log($"お肉{conboChain}");
+                        
                         //コンボ中にコンボ受付時間切れを待つ時間計測のタイマーを再入力するたびにリセット
                         combinationCool = 0;
-                        //SManager.instance.castNow = false;
+
+                        //連携出せないように
                         combiEnable = false;
                         Combination();
-                        //combiEnable = false;
                        
+                        //クールタイム計算開始
                         if (cIcon.gameObject.activeSelf)
                         {
                             cIcon.gameObject.SetActive(false);
                         }
                         cSlider.value = 0;
+
                     }
                     //コンビネーションのクールタイムが完了してないとMP使う
-                    else if (!combiEnable && combinationCool >= 1f && sb.status.equipCombination.useMP <= sb.mp)
+                    //初回で、なおかつMP足りない奴は弾く
+                    else if (!combiEnable && combinationCool >= 1f && !(sb.status.equipCombination.useMP > sb.mp && conboChain == 0))
                     {
-                        	Debug.Log($"お肉売り場{conboChain}");
-                      //  combinationCool = 0;
-                      //  conboChain = 0;
-                        //combiEnable = true;
+                        
+
 
                         //初回だけMP消費
                         if (conboChain == 0)
                         {
                             sb.mp -= sb.status.equipCombination.useMP;
                         }
+
                         Combination();
-                   //     cCounter.text = ((int)sb.status.equipCombination.coolTime).ToString();
+
+                        //クールタイムとかはそのままでいい
+/*
                         if (cIcon.gameObject.activeSelf)
                         {
                             cIcon.gameObject.SetActive(false);
                         }
-                        cSlider.value = 0;
+                       cSlider.value = 0;*/
                     }
                 }
-
-// Debug.Log($"kds{_inputManager.CombinationButton.State.CurrentState}");
                 
             }
         }
@@ -260,38 +272,66 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     }
                 }
                 GManager.instance.pc.PlayerStop();
-                Transform gofire = GManager.instance.PlayerEffector.transform;
+                Vector3 posi = new Vector3(GManager.instance.Player.transform.position.x, GManager.instance.Player.transform.position.y,40);
                 //gofire.localScale *= 0.8f;
-                gofire.localScale = GManager.instance.Player.transform.localScale;
-                Addressables.InstantiateAsync("WarpCircle", gofire);//.Result;//発生位置をPlayer
-                GManager.instance.PlaySound("Warp", gofire.position);
+                
+                Addressables.InstantiateAsync("WarpCircle", posi, Quaternion.Euler(-98, 0, 0));//.Result;//発生位置をPlayer
+                GManager.instance.PlaySound("Warp", GManager.instance.Player.transform.position);
                 //return 1;
             }
             // return 0;
 
-            //最後に初期化
-            _combState = CombinationState.Idle;
-            needInput = false;
+
+
+            //行動中止フラグ
+            bool stop = false;
+
+            if(prevTarget != null)
+            {
+                Debug.Log($"ｄｆｆｒ{prevTarget.name}");
+                SManager.instance.target = prevTarget;
+                prevTarget = null;
+            }
+            //攻撃中とかで前のターゲットが消滅してるなら
+            else if (castStopping || attackStop)
+            {
+                stop = true;
+
+            }
+
             if (castStopping)
             {
                 castStopping = false;
-                _movement.ChangeState(CharacterStates.MovementStates.Cast);
+                if (stop || fire.MPCheck())
+                {
+                    fire.MagicEnd();
+                }
+                else
+                {
+                    _movement.ChangeState(CharacterStates.MovementStates.Cast);
+                }
             }
             else if (attackStop)
             {
                 attackStop = false;
-                _movement.ChangeState(CharacterStates.MovementStates.Attack);
+                if (stop || fire.MPCheck())
+                {
+                    fire.MagicEnd();
+                }
+                else
+                {
+                    _movement.ChangeState(CharacterStates.MovementStates.Attack);
+                }
             }
             else
             {
                 _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
                 _movement.ChangeState(CharacterStates.MovementStates.Idle);
             }
-            if(prevTarget != null)
-            {
-                SManager.instance.target = prevTarget;
-                prevTarget = null;
-            }
+
+            //最後に初期化
+            _combState = CombinationState.Idle;
+            needInput = false;
         }
 
         public void CombinationStart()
@@ -308,13 +348,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 attackStop = true;
             }
+            //使用待機でも攻撃中でもないならPrev入ってんのはバグ
+            if (!castStopping && !attackStop )
+            {
+                
+                prevTarget = null;
+            }
+
             _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
             _movement.ChangeState(CharacterStates.MovementStates.Combination);
         }
 
 
         /// <summary>
-        /// コンビネーションタイプによって効果発動をコントロール
+        /// コンビネーションタイプによって効果発動のタイミングをコントロール
         /// </summary>
         void CombinationController()
         {
@@ -380,7 +427,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         public void CombiCool()
         {
-            //何もしてないときだけ
+            //クールタイム消化中に
             if (!combiEnable)
             {
                 //	Debug.Log($"野菜売り場");
@@ -397,6 +444,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     cIcon.gameObject.SetActive(true);
 
                 }
+                cCounter.text = (Mathf.Round(sb.status.equipCombination.coolTime - combinationCool)).ToString();
             }
             //ここでコンビネーション可能とか
             if (conboChain > 0 && _movement.CurrentState != CharacterStates.MovementStates.Combination)
@@ -417,7 +465,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
 
 
-                cCounter.text = (Mathf.Round(sb.status.equipCombination.coolTime - combinationCool)).ToString();
+                
 
 
         }
@@ -453,18 +501,26 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (sb.status.equipCombination.isTargeting)
             {
                 //ターゲットが必要なら指定
+
+                
+
+                //_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+               // _movement.ChangeState(CharacterStates.MovementStates.Combination);
                 if (SManager.instance.target != null)
                 {
                     prevTarget = SManager.instance.target;
                     if (SManager.instance.target != transform.root.gameObject &&  SManager.instance.target != GManager.instance.Player)
                     {
+                        
                         SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
                         
                     }
+
                     SManager.instance.target = null;
+                }
                     fire.TargetSelect(sb.status.equipCombination.mainTarget[conboChain], dammy);
                    
-                }
+
                 if (SManager.instance.target == null)
                 {
                     fire.TargetSelect(sb.status.equipCombination.subTarget[conboChain], dammy);
@@ -475,22 +531,24 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     SManager.instance.target = transform.root.gameObject;
                 }
             }
-           // Debug.Log($"あいいいｓｓｓ{ SManager.instance.target}");
-            CombinationStart();
-           // Debug.Log("ｇｇｇｆ");
-            //	ちゃんとターゲットがあるか、ターゲットを必要としないなら
+
+
+
+            //	ちゃんとターゲットがあるか、またはなくてもターゲットを必要としないなら処理を進める
             if (SManager.instance.target != null || !sb.status.equipCombination.isTargeting)
             {
+                CombinationStart();
                 conboChain++;
                // Debug.Log($"お肉売り場{conboChain}");
+
+               //上限までチェインしてたらもうやめ
                 if (conboChain >= sb.status.equipCombination.chainNumber)
                 {
                     conboChain = 0;
-                    //combiEnable = false;
+
                 }
-                //_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
-               // SManager.instance.target = null;
             }
+
         }
 
 
@@ -509,7 +567,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         public override void UpdateAnimator()
         {
-            //クラウチングに気をつけろよ
+            
             MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _combiAnimationParameter, (int)_combState, _character._animatorParameters);
         }
 

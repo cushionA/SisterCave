@@ -161,8 +161,10 @@ public class FireBullet : MonoBehaviour
 		//ownnerは弾丸使用側で設定
 		fireTime = 0;
 
-		col = this.gameObject.MMGetComponentNoAlloc<Collider2D>();
-
+		if (this.gameObject != null)
+		{
+			col = this.gameObject.MMGetComponentNoAlloc<Collider2D>();
+		}
 
 		//子供の弾丸は親のターゲット引き継ぐ
 		if (em.fireType != Magic.FIREBULLET.STOP || !em.isChild)
@@ -213,7 +215,7 @@ public class FireBullet : MonoBehaviour
 				case Magic.FIREBULLET.RAIN:
 
 					speed = em.speedV;
-					em.angle =  SManager.instance.useMagic.angle;
+					em.angle =  SManager.instance.useAngle;
 					break;
 			}
 		}
@@ -641,10 +643,11 @@ public class FireBullet : MonoBehaviour
 			}
 
 		}
-		else if (em.hitEffect != null)
+		else if (!string.IsNullOrEmpty(em.hitEffect.AssetGUID))
 		{
 
-			Addressables.InstantiateAsync(em.hitEffect, this.gameObject.transform.position, transform.rotation);
+				Addressables.InstantiateAsync(em.hitEffect, this.gameObject.transform.position, transform.rotation);
+
 
 		}
 

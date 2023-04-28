@@ -1741,9 +1741,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	}
 		private async UniTask ExecuteAttack()
 		{
-			if (_movement.CurrentState != CharacterStates.MovementStates.Attack)
+			if (_movement.CurrentState != CharacterStates.MovementStates.Attack && _condition.CurrentState == CharacterStates.CharacterConditions.Dead
+				&& _condition.CurrentState == CharacterStates.CharacterConditions.Stunned)
 			{
-				Debug.Log($"ddd{_movement.CurrentState}{_condition.CurrentState}");
+			//	Debug.Log($"ddd{_movement.CurrentState}{_condition.CurrentState}");
 				return;
 			}
 
@@ -1755,6 +1756,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			// モーション終了まで待機
 			await UniTask.WaitUntil(() => {
+				
 				var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 				return 1.0f <= stateInfo.normalizedTime;
 			});
@@ -1823,7 +1825,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 		else if (damageType == 64)
 		{
-			Debug.Log("sdfgg");
+
 			GManager.instance.PlaySound("ThunderDamage", transform.position);
 		}
 	}
@@ -2508,7 +2510,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 				if (!flipComp && ground != EnemyStatus.MoveState.stay)
 				{
-					Debug.Log($"ああああ");
+
 					//dire *= 0.8f;
 					_characterHorizontalMovement.SetHorizontalMove(Mathf.Sign(_controller.Speed.x));
 				}

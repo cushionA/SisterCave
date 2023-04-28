@@ -482,6 +482,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		public void PositionJudge()
         {
+            if (SManager.instance.targetList.Count == 0 || SManager.instance.targetList[0] == null)
+            {
+				return;
+            }
 			if (escapeTime >= SManager.instance.sisStatus.escapeTime && Mathf.Abs(SManager.instance.targetList[0].transform.position.x - this.transform.position.x) < status.escapeZone)
 			{
 				escapeTime = 0.0f;
@@ -1004,16 +1008,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							transform.position = move;
 
 						}
+						
 						_controller.SetForce(Vector2.zero);
 						nowPosition = false;
-
+                         WarpEffect();
 						//escapeがtrueの時警戒から戦闘にならない
 
 						reJudgeTime = 0;
 						changeable = true;
 
 						_warp.WarpStart();
-
+						
 
 
 						if (nowState == SisterState.戦い)
@@ -1063,11 +1068,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 		public void WarpEffect()
 		{
-			Transform gofire = firePosition;
+			Vector3 posi = new Vector3(transform.position.x,transform.position.y-11,40);
 
 			//Transform rotate = SManager.instance.useMagic.castEffect.LoadAssetAsync<Transform>().Result as Transform;
 
-			Addressables.InstantiateAsync("WarpCircle", gofire);//.Result;//発生位置をPlayer
+			Addressables.InstantiateAsync("WarpCircle",posi,Quaternion.Euler(-98, 0,0));//.Result;//発生位置をPlayer
 			GManager.instance.PlaySound("Warp", transform.position);
 		}
 		//ワープ専用の地面探知
@@ -1157,6 +1162,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				//Debug.Log("機能してますよー");
 
 				nowState = BrainAbility.SisterState.戦い;//この辺はまた後で設定できるようにしよう
+				_fire.judgeSequence = 0;
 			}
             else
             {
