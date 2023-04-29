@@ -71,7 +71,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <summary>
 		/// 詠唱時間待ち
 		/// </summary>
-		float waitCast;//
+		 [HideInInspector]
+		public float waitCast;
+
 		float coolTime;
 		/// <summary>
 		/// 攻撃、回復、などの優先行動を入れ替える
@@ -104,10 +106,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		List<GameObject> targetCanList;
 		List<EnemyAIBase> targetCanStatus;
 		List<SisMagic> magicCanList;
-		/// <summary>
-		///　ターゲットの種類と使用魔法がかみ合っているか見るためのパラメーター
-		/// </summary>
-		byte targetType = 0;
+
+
 
 		/// <summary>
 		/// 何番目の詠唱なのか
@@ -290,7 +290,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				///ターゲットと使用魔法設定
 				//クールタイム中でもスキップ条件があるなら動く
 				#region
-				Debug.Log($"あああ{_movement.CurrentState}{_condition.CurrentState}");
+				
 				if (_condition.CurrentState != CharacterStates.CharacterConditions.Moving && (!disEnable || _skipCondition != 0) &&  sb.nowPosition)
 				{
 					Debug.Log($"ss{sister.nowMove}");
@@ -321,7 +321,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             for (int i = 0;i < sister.targetCondition.Length;i++)
                             {
 							//	int skiCheck =  (int)Mathf.Pow(2, i)
-	Debug.Log($"uuu");
 								//0乗は１
 								//クールタイム中で、なおかつスキップコンディションに当てはまらないなら処理を飛ばす。
 								//シフト演算？
@@ -330,22 +329,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 									continue;
                                 }
 
-							
-
-								TargetSelect(sister.targetCondition[i], sister.AttackCondition[i]);
+								SManager.instance.target = TargetSelect(sister.targetCondition[i], sister.AttackCondition[i]);
 								
 								if (SManager.instance.target != null)
                                 {
 									Debug.Log($"{SManager.instance.target.name}");
 									judgeSequence = i;
-Debug.Log($"せで{i}");
 									break;
                                 }
 
 
 							}
 							Debug.Log($"s2");
-							//それでもターゲットがいなかったら
+
+							//それでもターゲットがいなかったら補足行動
 							if (SManager.instance.target == null && !disEnable)
 							{
 								if (sister.AttackCondition[5].condition == FireCondition.ActJudge.回復行動に移行 || sister.AttackCondition[5].condition == FireCondition.ActJudge.支援行動に移行)
@@ -477,7 +474,7 @@ Debug.Log($"せで{i}");
 					//使用魔法が攻撃で、かつターゲットが敵である。
 					if (SManager.instance.useMagic.mType == SisMagic.MagicType.Attack)
 					{
-						if (sister.nowMove != SisterParameter.MoveType.攻撃 && targetType != 1)
+						if (sister.nowMove != SisterParameter.MoveType.攻撃)
 						{
 							return;
 						}
@@ -487,7 +484,7 @@ Debug.Log($"せで{i}");
 					}
 					else if (SManager.instance.useMagic.mType == SisMagic.MagicType.Recover)
 					{
-						if (sister.nowMove != SisterParameter.MoveType.回復 && targetType != 2)
+						if (sister.nowMove != SisterParameter.MoveType.回復)
 						{
 							return;
 							//isWrong = true;
@@ -497,7 +494,7 @@ Debug.Log($"せで{i}");
 					}
 					else
 					{
-						if (sister.nowMove != SisterParameter.MoveType.支援 && targetType != 2)
+						if (sister.nowMove != SisterParameter.MoveType.支援)
 						{
 							return;
 						}
@@ -907,7 +904,7 @@ Debug.Log($"せで{i}");
 		/// 攻撃ステートでターゲットを決定
 		/// </summary>
 		/// <param name="condition"></param>
-		public void TargetSelect(AttackJudge condition, FireCondition act)
+		public GameObject TargetSelect(AttackJudge condition, FireCondition act)
 		{
 			//Debug.Log($"判断番号{judgeSequence}");
 			//		bool testes = false;
@@ -923,17 +920,16 @@ Debug.Log($"せで{i}");
 					{
 
 						AttackStateChange(act);
-						return;
+						return null;
 					}
 					else if (act.condition == FireCondition.ActJudge.なにもしない)
 					{
-						return;
+						return null;
 					}
 					targetCanList = new List<GameObject>(SManager.instance.targetList);
 					targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-					SecondTargetJudge(targetCanList, condition, targetCanStatus);
+					return SecondTargetJudge(targetCanList, condition, targetCanStatus);
 
-					break;
 				//-----------------------------------------------------------------------------------------------------
 				case AttackJudge.TargetJudge.プレイヤーのHPが規定値に達した際:
 					//	ランダムバリュー使ってレコードから指定
@@ -945,15 +941,15 @@ Debug.Log($"せで{i}");
 							{
 								Debug.Log($"zz");
 								AttackStateChange(act);
-								return;
+								return null;
 							}
 							else if (act.condition == FireCondition.ActJudge.なにもしない)
 							{
-								return;
+								return null;
 							}
 							targetCanList = new List<GameObject>(SManager.instance.targetList);
 							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							SecondTargetJudge(targetCanList, condition, targetCanStatus);
+							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
 						}
 					}
 					else
@@ -969,17 +965,16 @@ Debug.Log($"せで{i}");
 								//Debug.Log($"朝顔{sister.nowMove}");
 
 								AttackStateChange(act);
-								return;
-								//		testes = true;
+								return null;
 							}
 							else if (act.condition == FireCondition.ActJudge.なにもしない)
 							{
-								return;
+								return null;
 							}
 
 							targetCanList = new List<GameObject>(SManager.instance.targetList);
 							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							SecondTargetJudge(targetCanList, condition, targetCanStatus);
+							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
 						}
 					}
 					break;
@@ -994,15 +989,15 @@ Debug.Log($"せで{i}");
 							{
 
 								AttackStateChange(act);
-								return;
+								return null;
 							}
 							else if (act.condition == FireCondition.ActJudge.なにもしない)
 							{
-								return;
+								return null;
 							}
 							targetCanList = new List<GameObject>(SManager.instance.targetList);
 							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							SecondTargetJudge(targetCanList, condition, targetCanStatus);
+							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
 						}
 					}
 					else
@@ -1014,16 +1009,16 @@ Debug.Log($"せで{i}");
 							{
 
 								AttackStateChange(act);
-								return;
+								return null;
 							}
 							else if (act.condition == FireCondition.ActJudge.なにもしない)
 							{
-								return;
+								return null;
 							}
 
 							targetCanList = new List<GameObject>(SManager.instance.targetList);
 							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							SecondTargetJudge(targetCanList, condition, targetCanStatus);
+							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
 						}
 					}
 					break;
@@ -1032,15 +1027,15 @@ Debug.Log($"せで{i}");
 															  //	ランダムバリュー使ってレコードから指定
 					targetCanList = new List<GameObject>(SManager.instance.targetList);
 					targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-					SecondTargetJudge(targetCanList, condition, targetCanStatus);
-					break;
+					return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+					
 				//-----------------------------------------------------------------------------------------------------
 				case AttackJudge.TargetJudge.状態異常にかかってる敵://未実装
 														 //	ランダムバリュー使ってレコードから指定
 					targetCanList = new List<GameObject>(SManager.instance.targetList);
 					targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-					SecondTargetJudge(targetCanList, condition, targetCanStatus);
-					break;
+					return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+					
 				//-----------------------------------------------------------------------------------------------------
 				case AttackJudge.TargetJudge.自分のMPが規定値に達した際:
 					if (condition.highOrLow)
@@ -1051,15 +1046,15 @@ Debug.Log($"せで{i}");
 							{
 
 								AttackStateChange(act);
-								return;
+								return null;
 							}
 							else if (act.condition == FireCondition.ActJudge.なにもしない)
 							{
-								return;
+								return null;
 							}
 							targetCanList = new List<GameObject>(SManager.instance.targetList);
 							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							SecondTargetJudge(targetCanList, condition, targetCanStatus);
+							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
 						}
 					}
 					else
@@ -1071,15 +1066,15 @@ Debug.Log($"せで{i}");
 							{
 
 								AttackStateChange(act);
-								return;
+								return null;
 							}
 							else if (act.condition == FireCondition.ActJudge.なにもしない)
 							{
-								return;
+								return null;
 							}
 							targetCanList = new List<GameObject>(SManager.instance.targetList);
 							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							SecondTargetJudge(targetCanList, condition, targetCanStatus);
+							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
 						}
 					}
 					break;
@@ -1098,11 +1093,11 @@ Debug.Log($"せで{i}");
 								{
 
 									AttackStateChange(act);
-									return;
+									return null;
 								}
 								else if (act.condition == FireCondition.ActJudge.なにもしない)
 								{
-									return;
+									return null;
 								}
 								targetCanList.Add(SManager.instance.targetList[i]);
 								//break;
@@ -1121,11 +1116,11 @@ Debug.Log($"せで{i}");
 								{
 
 									AttackStateChange(act);
-									return;
+									return null;
 								}
 								else if (act.condition == FireCondition.ActJudge.なにもしない)
 								{
-									return;
+									return null;
 								}
 								targetCanList.Add(SManager.instance.targetList[i]);
 								//break;
@@ -1133,10 +1128,10 @@ Debug.Log($"せで{i}");
 							}
 						}
 					}
-					SecondTargetJudge(targetCanList, condition, targetCanStatus);
+					return SecondTargetJudge(targetCanList, condition, targetCanStatus);
 					//ここに二次処理三次処理をCanListを引数に開始
 
-					break;
+				
 				//-----------------------------------------------------------------------------------------------------
 				case AttackJudge.TargetJudge.敵タイプ:
 					//   Soldier,//陸の雑兵
@@ -1152,17 +1147,17 @@ Debug.Log($"せで{i}");
 						{
 
 							AttackStateChange(act);
-							return;
+							return null;
 						}
 						else if (act.condition == FireCondition.ActJudge.なにもしない)
 						{
-							return;
+							return null;
 						}
 						targetCanList = new List<GameObject>(SManager.instance.targetList);
 						targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
 
 
-						SecondTargetJudge(targetCanList, condition, targetCanStatus);
+						return SecondTargetJudge(targetCanList, condition, targetCanStatus);
 						//break;
 					}
 					else
@@ -1182,11 +1177,11 @@ Debug.Log($"せで{i}");
 									{
 
 										AttackStateChange(act);
-										return;
+										return null;
 									}
 									else if (act.condition == FireCondition.ActJudge.なにもしない)
 									{
-										return;
+										return null;
 									}
 									targetCanList.Add(SManager.instance.targetList[i]);
 									targetCanStatus.Add(SManager.instance.targetCondition[i]);
@@ -1202,11 +1197,11 @@ Debug.Log($"せで{i}");
 									{
 
 										AttackStateChange(act);
-										return;
+										return null;
 									}
 									else if (act.condition == FireCondition.ActJudge.なにもしない)
 									{
-										return;
+										return null;
 									}
 									targetCanList.Add(SManager.instance.targetList[i]);
 									targetCanStatus.Add(SManager.instance.targetCondition[i]);
@@ -1221,11 +1216,11 @@ Debug.Log($"せで{i}");
 									{
 
 										AttackStateChange(act);
-										return;
+										return null;
 									}
 									else if (act.condition == FireCondition.ActJudge.なにもしない)
 									{
-										return;
+										return null;
 									}
 									//	siroko++;
 									//		Debug.Log($"今の数字{siroko}");
@@ -1242,11 +1237,11 @@ Debug.Log($"せで{i}");
 									{
 
 										AttackStateChange(act);
-										return;
+										return null;
 									}
 									else if (act.condition == FireCondition.ActJudge.なにもしない)
 									{
-										return;
+										return null;
 									}
 									//	siroko++;
 									//		Debug.Log($"今の数字{siroko}");
@@ -1263,11 +1258,11 @@ Debug.Log($"せで{i}");
 									{
 
 										AttackStateChange(act);
-										return;
+										return null;
 									}
 									else if (act.condition == FireCondition.ActJudge.なにもしない)
 									{
-										return;
+										return null;
 									}
 									targetCanList.Add(SManager.instance.targetList[i]);
 									targetCanStatus.Add(SManager.instance.targetCondition[i]);
@@ -1275,13 +1270,13 @@ Debug.Log($"せで{i}");
 								}
 							}
 						}
-						SecondTargetJudge(targetCanList, condition, targetCanStatus);
+						return SecondTargetJudge(targetCanList, condition, targetCanStatus);
 					}
 
-					break;
+					
 					//-----------------------------------------------------------------------------------------------------
 			}
-
+			return null;
 		}
 
 		/// <summary>
@@ -2241,7 +2236,7 @@ Debug.Log($"せで{i}");
 			}
 
 			SManager.instance.target = GManager.instance.Player;
-			targetType = 2;
+
 		}
 		/// <summary>
 		/// 二点間の角度を求める
@@ -2264,7 +2259,7 @@ Debug.Log($"せで{i}");
 		/// <param name="targetList"></param>
 		/// <param name="condition"></param>
 		/// <param name="statusList"></param>
-		void SecondTargetJudge(List<GameObject> targetList, AttackJudge condition, List<EnemyAIBase> statusList)
+		GameObject SecondTargetJudge(List<GameObject> targetList, AttackJudge condition, List<EnemyAIBase> statusList)
 		{
 
 			//	Debug.Log($"sddf{targetCanList[0].name}");
@@ -2275,7 +2270,7 @@ Debug.Log($"せで{i}");
 			{
 				targetCanList = null;
 				targetCanStatus = null;
-				return;
+				return null;
 			}
 			else if (targetList.Count >= 1)
 			{
@@ -2381,6 +2376,8 @@ Debug.Log($"せで{i}");
 					}
 					for (int i = 0; i < removeNumber.Count; i++)
 					{
+						//[removeNumber[i] - i]はこれまで配列の中から消した分を差し引いて指定してる
+						//i=2なら少なくとも二個の要素が消えてるのでその分インデックスが変わる
 						targetList.Remove(targetList[removeNumber[i] - i]);
 						statusList.Remove(statusList[removeNumber[i] - i]);
 					}
@@ -2394,7 +2391,7 @@ Debug.Log($"せで{i}");
 			if (targetList.Count == 0 || targetList == null)
 			{
 				
-				return;
+				return null;
 
 			}
 
@@ -2526,26 +2523,28 @@ Debug.Log($"せで{i}");
 							}
 						}
 					}
+					targetCanList = null;
+					targetCanStatus = null;
 
-					SManager.instance.target = targetList[selectNumber];
 					if (SManager.instance.target != null)
 					{
-						SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(2);
+						targetList[selectNumber].MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(2);
 					}
+					return targetList[selectNumber];
 				}
 				else
 				{
-
-					SManager.instance.target = targetList[0];
 					if (SManager.instance.target != null)
 					{
-						SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(2);
+						targetList[0].MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(2);
 					}
+					targetCanList = null;
+					targetCanStatus = null;
+					return targetList[0];
 				}
-				targetCanList = null;
-				targetCanStatus = null;
+
 			}
-			targetType = 1;
+
 		}
 
 		/// <summary>

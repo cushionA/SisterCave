@@ -1166,6 +1166,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
             else
             {
+
 				_fire.isReset = true;
 
 				//˜Z•bˆÈã“GŒŸ’m‚¹‚ñ‚¸‚ê‚ÎŒx‰úƒtƒFƒCƒY‚Ö
@@ -1186,6 +1187,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				SManager.instance.targetList = new List<GameObject>();
 				SManager.instance.targetCondition = new List<EnemyAIBase>();
 			}
+            if (nextState == SisterState.í‚¢ || nowState == SisterState.í‚¢)
+            {
+				_fire.waitCast = 0;
+            }
+
 		}
 
 

@@ -108,9 +108,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         RewiredCorgiEngineInputManager _input;
 
         /// <summary>
-        /// コンビネーション前のターゲット
+        /// コンビネーションのターゲット
         /// </summary>
-        GameObject prevTarget;
+        GameObject combinationTarget;
 
         //攻撃を中断してコンビネーションしたか
         bool attackStop;
@@ -242,7 +242,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //ワープ
             if (sb.status.equipCombination._sortNumber == 1)
             { //Debug.Log($"sdsdsd{SManager.instance.target == null}");
-                Vector2 warpPosi =  SManager.instance.target.transform.position;
+                Vector2 warpPosi =  combinationTarget.transform.position;
               
 
                 float exY = sb.RayGroundCheck(warpPosi);
@@ -250,7 +250,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 //地表から十五以下の距離なら接地
                 warpPosi.y = warpPosi.y - exY <= 15 ? exY : warpPosi.y;
                         
-                if (SManager.instance.target.transform.localScale.x > 0)
+                if (combinationTarget.transform.localScale.x > 0)
                 {
                     warpPosi.Set(warpPosi.x - 10, warpPosi.y);
 
@@ -286,14 +286,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //行動中止フラグ
             bool stop = false;
 
-            if(prevTarget != null)
-            {
-                Debug.Log($"ｄｆｆｒ{prevTarget.name}");
-                SManager.instance.target = prevTarget;
-                prevTarget = null;
-            }
+            combinationTarget = null;
             //攻撃中とかで前のターゲットが消滅してるなら
-            else if (castStopping || attackStop)
+            if (castStopping || attackStop)
             {
                 stop = true;
 
@@ -347,12 +342,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             else if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
             {
                 attackStop = true;
-            }
-            //使用待機でも攻撃中でもないならPrev入ってんのはバグ
-            if (!castStopping && !attackStop )
-            {
-                
-                prevTarget = null;
             }
 
             _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
@@ -508,34 +497,34 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                // _movement.ChangeState(CharacterStates.MovementStates.Combination);
                 if (SManager.instance.target != null)
                 {
-                    prevTarget = SManager.instance.target;
+                  
                     if (SManager.instance.target != transform.root.gameObject &&  SManager.instance.target != GManager.instance.Player)
                     {
-                        
+                        //ロックオンを解除
                         SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
                         
                     }
 
-                    SManager.instance.target = null;
+                   
                 }
-                    fire.TargetSelect(sb.status.equipCombination.mainTarget[conboChain], dammy);
+                   combinationTarget = fire.TargetSelect(sb.status.equipCombination.mainTarget[conboChain], dammy);
                    
 
-                if (SManager.instance.target == null)
+                if (combinationTarget == null)
                 {
-                    fire.TargetSelect(sb.status.equipCombination.subTarget[conboChain], dammy);
+                    combinationTarget = fire.TargetSelect(sb.status.equipCombination.subTarget[conboChain], dammy);
                 }
 
-                if (SManager.instance.target == null)
+                if (combinationTarget == null)
                 {
-                    SManager.instance.target = transform.root.gameObject;
+                   combinationTarget = transform.root.gameObject;
                 }
             }
 
 
 
             //	ちゃんとターゲットがあるか、またはなくてもターゲットを必要としないなら処理を進める
-            if (SManager.instance.target != null || !sb.status.equipCombination.isTargeting)
+            if (combinationTarget != null || !sb.status.equipCombination.isTargeting)
             {
                 CombinationStart();
                 conboChain++;
