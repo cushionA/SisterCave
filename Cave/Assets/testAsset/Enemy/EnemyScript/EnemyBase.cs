@@ -2781,52 +2781,7 @@ if (!isDamage)
 			
             if(!isDown && blowDown)
             {
-				if (!isAnimeStart)
-				{
-					rb.velocity = Vector2.zero;
-					//("DDie");
-					isAnimeStart = true;
-				}
-				else
-				{
-					rb.velocity = Vector2.zero;
-					if (!CheckEnd("DDie"))
-					{
-						SManager.instance.EnemyDeath(this.gameObject);
-						if (SManager.instance.target == this.gameObject)
-						{
-							SManager.instance.target = null;
-							TargetEffectCon(1);
-						}
-						Destroy(this.gameObject);
-					}
 
-				}
-			}
-			
-			else if (!isDown && !blowDown) 
-			{
-				
-                if (!isAnimeStart)
-                {
-
-                  //("NDie");
-					isAnimeStart = true;
-                }
-                else
-                {
-                    if (!CheckEnd("NDie"))
-                    {
-						SManager.instance.EnemyDeath(this.gameObject);
-						if(SManager.instance.target == this.gameObject)
-                        {
-							SManager.instance.target = null;
-							TargetEffectCon(1);
-                        }
-						Destroy(this.gameObject);
-					}
-
-                }
 				
 			}
         }

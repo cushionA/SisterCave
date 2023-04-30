@@ -340,9 +340,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		CharacterStates.MovementStates lastState = CharacterStates.MovementStates.Nostate;
 
-
+		/// <summary>
+		/// 今飛んでるかどうか
+		/// 音の再生につかう
+		/// </summary>
 		bool flyNow;
 
+		/// <summary>
+		/// 今シスターさんのセンサー内にいるかどうか
+		/// </summary>
+		bool _seenNow;
+
+		/// <summary>
+		/// シスターさんがこの敵を見失ってる時間
+		/// </summary>
+		float loseSightTime;
 
 		// === コード（Monobehaviour基本機能の実装） ================
 		protected override void Initialization()
@@ -420,6 +432,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			base.ProcessAbility();
 			Brain();
 			ActionSound();
+			LoseSightWait();
 		//	Debug.Log($"かどうか{_animator.name}");
 
 
@@ -512,7 +525,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//トリガーで呼びましょう
 			JumpController();
 		//	Parry();
-			Die();//ヘルスに変える
+
 			MaterialControll();
 
 
@@ -772,63 +785,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	{
 		_health.SetHealth((int)status.maxHp,this.gameObject);
 	}
-	public void Die()
-	{
-		if (_condition.CurrentState == CharacterStates.CharacterConditions.Dead)
-		{
 
-			if (_condition.CurrentState != CharacterStates.CharacterConditions.Stunned && blowDown)
-			{
-				if (!isAnimeStart)
-				{
-				//	rb.velocity = Vector2.zero;
-					//("DDie");
-					isAnimeStart = true;
-				}
-				else
-				{
-				//	rb.velocity = Vector2.zero;
-					if (!CheckEnd("DDie"))
-					{
-						SManager.instance.EnemyDeath(this.gameObject);
-						if (SManager.instance.target == this.gameObject)
-						{
-							SManager.instance.target = null;
-							TargetEffectCon(1);
-						}
-						Destroy(this.gameObject);
-					}
-
-				}
-			}
-
-			else if (_condition.CurrentState != CharacterStates.CharacterConditions.Stunned && !blowDown)
-			{
-
-				if (!isAnimeStart)
-				{
-
-					//("NDie");
-					isAnimeStart = true;
-				}
-				else
-				{
-					if (!CheckEnd("NDie"))
-					{
-						SManager.instance.EnemyDeath(this.gameObject);
-						if (SManager.instance.target == this.gameObject)
-						{
-							SManager.instance.target = null;
-							TargetEffectCon(1);
-						}
-						Destroy(this.gameObject);
-					}
-
-				}
-
-			}
-		}
-	}
 	 protected void ParameterSet(EnemyStatus status)
         {
 			///<summary>
@@ -1749,8 +1706,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 
 			// モーションを実行(実行後にAnimator更新のため1フレーム待つ)
-		//	animator.Play("Attack");
-			await UniTask.DelayFrame(1);
+			//	animator.Play("Attack");
+
+			var token = this.GetCancellationTokenOnDestroy();
+			await UniTask.DelayFrame(1,cancellationToken:token);
 
 
 
@@ -1759,7 +1718,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				
 				var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 				return 1.0f <= stateInfo.normalizedTime;
-			});
+			}, cancellationToken: token);
 			_attack.AttackEnd();
 		//	
 			NormalFlip(direction);
@@ -3300,7 +3259,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         #endregion
 
 	/// <summary>
-	/// FixedUpdateに置いてガードさせる
 	/// 引数はガードする確率
 	/// ガード中移動してたら
 	/// </summary>
@@ -3435,10 +3393,25 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	}
 
 
-	public void TargetEffectCon(int state = 0)
+		/// <summary>
+		/// シスターさんの索敵関連のメソッド
+		/// </summary>
+		/// <param name="state"></param>
+        #region
+
+		///<summary>
+		/// ロックカーソルの色を変える
+		/// 0で始動（黄色）、1で消す、2で標的表示（赤）それ以外で黄色に戻す
+		/// </summary>
+        public void TargetEffectCon(int state = 0)
 	{
 		if (state == 0)
 		{
+				//赤を黄色に戻さないようにすでにカーソルついてるなら戻りなさい
+                if (td.gameObject.activeSelf)
+                {
+					return;
+                }
 			td.gameObject.SetActive(true);
 			td.color = EnemyManager.instance.stateClor[0];
 		}
@@ -3458,14 +3431,60 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 	}
 
-
-
+		/// <summary>
+		/// センサーから離れている時間を計測する
+		/// </summary>
+		void LoseSightWait()
+        {
+            if (!_seenNow)
+            {
+				loseSightTime += _controller.DeltaTime;
+            }
+        }
 
 
 		/// <summary>
-		/// 攻撃状態開始
+		/// シスターさんのセンサー内に入っているかどうか
+		/// seenがFalseならセンサーから出ている
 		/// </summary>
-		public void StartCombat()
+		/// <param name="seen"></param>
+		public void SisterRecognition(bool seen)
+        {
+			if (seen) 
+			{
+				_seenNow = true;
+				loseSightTime = 0;
+			}
+            else
+            {
+				_seenNow = false;
+            }
+        }
+
+
+		/// <summary>
+		/// この敵がシスターさんに現在認識されているかどうか
+		/// 一定時間センサー内から離れた敵や死んだ敵は認識しない
+		/// 時間はセンサーから離れた時にフラグ立てられて測り始める？
+		/// それかロック矢印つけるコードでいろいろしていいかも
+		/// 真なら見失ってる
+		/// </summary>
+		/// <returns></returns>
+	　　public bool SisterCheck()
+        {
+			return (loseSightTime > 8 || _condition.CurrentState == CharacterStates.CharacterConditions.Dead);
+
+        }
+
+
+        #endregion
+
+
+
+        /// <summary>
+        /// 攻撃状態開始
+        /// </summary>
+        public void StartCombat()
         {
 			//攻撃行動中。
 			//ここに敵との距離とか判断してHorizontalMoveとか起動するメソッドを。

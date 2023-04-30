@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Tools;
-using SensorToolkit;
+using Micosmo.SensorToolkit;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -24,7 +24,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //--------------------------------------------------------------------------
         //フィールドサーチに必要なパラメーター
         [SerializeField]
-        RangeSensor2D se;
+        LOSSensor2D se;
         //  string dangerTag = "Danger";
         [SerializeField] EnemyAIBase brain;
         /// <summary>
@@ -57,7 +57,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //共通パラメーター
 
         int nowState;
-
+        RangeSensor2D range;
         /// <summary>
         ///　ここで、パラメータを初期化する必要があります。
         /// </summary>
@@ -65,8 +65,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             base.Initialization();
 
-        
-
+        range = (RangeSensor2D)se.InputSensor;
+            RangeChange();
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 // we do nothing and exit
                 return;
             }
-            if (se.SensorRange != 0)
+            if (range.Circle.Radius != 0)
             {
                 Serch();
             }
@@ -110,6 +110,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 if (pulseTime >= pulseWait)
                 {
                     //Debug.Log("機能してますよー");
+                range.Pulse();
                     se.Pulse();
                     SerchEnemy();
 
@@ -128,7 +129,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //距離が近い順に敵を並び替える
 
-            if (se.DetectedObjects.Count != 0)
+            if (se.Detections.Count != 0)
             {
                 brain.StartCombat();
             }
@@ -257,14 +258,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             if (brain.isAggressive)
             {
-                se.SensorRange = aggresiveRange;
+                range.Circle.Radius = aggresiveRange;
 
                 if (_sight != null)
                     _sight.SetActive(false);
             }
             else
             {
-                se.SensorRange = fieldRange;
+                range.Circle.Radius = fieldRange;
                 if (_sight != null)
                     _sight.SetActive(true);
             }
@@ -273,19 +274,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-        /*
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            Debug.Log($"機能してますよー{collision.gameObject.name}");
-            SightSensor(collision.collider);
-        }
-        private void OnCollisionStay2D(Collision2D collision)
-        {
-            Debug.Log($"機能してますぜ{collision.gameObject.name}");
-            SightSensor(collision.collider);
-        }
 
-        */
 
     }
 }

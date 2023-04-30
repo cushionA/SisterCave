@@ -290,24 +290,33 @@ namespace MoreMountains.CorgiEngine
                     }
                     else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
                     {
-                        for (int i = 0; i < SManager.instance.targetList.Count; i++)
-                        {
-                            if (SManager.instance.targetList[i] == this.gameObject)
-                            {
-                                SManager.instance.targetList.Remove(this.gameObject);
-                                break;
-                            }
+                        //体力ゼロの時点で感知されないレイヤーに
+                        this.gameObject.layer = 15;
 
+                        //ターゲットではなくなる
+                        if (SManager.instance.target == this.gameObject)
+                        {
+                            SManager.instance.target = null;
                         }
+
+                        //ターゲットリストから自分を削除
+                            SManager.instance.RemoveEnemy(this.gameObject);
+
+                        //エフェクトも消して
+                        eData.TargetEffectCon(1);
+
+
+
                         //空飛ぶ敵はダウンして死ぬ
                         if ((eData.status.kind == EnemyStatus.KindofEnemy.Fly))
                         {
                             _controller.SetHorizontalForce(0);
                             stunnState = MyWakeUp.StunnType.BlowDie;
                         }
-                        //感知されないレイヤーに
-                        this.gameObject.layer = 15;
+
                         eData._wakeup.StartStunn(stunnState);
+
+
                     }
                 }
 
@@ -506,7 +515,7 @@ namespace MoreMountains.CorgiEngine
 
 
 
-            //    Debug.Log($"ねええええ{damage}");
+            //    Debug.Log($"ええ{damage}");
 
             return Mathf.Floor(damage * GManager.instance.attackBuff);
 
@@ -735,9 +744,9 @@ namespace MoreMountains.CorgiEngine
                 if (SManager.instance.target == this.gameObject)
                 {
                     SManager.instance.target = null;
-                    eData.TargetEffectCon(1);
+                    
                 }
-
+　　　　　　　　　
             }
         }
 

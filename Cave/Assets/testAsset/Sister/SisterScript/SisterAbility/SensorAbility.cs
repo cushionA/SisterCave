@@ -1,8 +1,8 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Tools;
-using SensorToolkit;
+using Micosmo.SensorToolkit;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -28,12 +28,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         GameObject _sight;
 
-        TriggerSensor2D _sightSensor;
+        LOSSensor2D _sightSensor;
+
+        RangeSensor2D range;
 
         //--------------------------------------------------------------------------
         //フィールドサーチに必要なパラメーター
         [SerializeField]
-        RangeSensor2D se;
+        LOSSensor2D se;
         //  string dangerTag = "Danger";
         [SerializeField] BrainAbility sister;
         /// <summary>
@@ -62,10 +64,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// 戦闘中パルスを飛ばす範囲
         /// </summary>
         [SerializeField] float aggresiveRange = 150;
-        //-----------------------------------------------------------------------       
-        //共通パラメーター
 
-        int nowState;
+        private readonly UniTaskCompletionSource
+            uniTaskCompletionSource = new UniTaskCompletionSource();
+
+        public UniTask SerchAsync => uniTaskCompletionSource.Task;
+        
+
+
 
         /// <summary>
         ///　ここで、パラメータを初期化する必要があります。
@@ -73,8 +79,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected override void Initialization()
         {
             base.Initialization();
-            _sightSensor = _sight.MMGetComponentNoAlloc<TriggerSensor2D>();
-
+            _sightSensor = _sight.MMGetComponentNoAlloc<LOSSensor2D>();
+            range = (RangeSensor2D)se.InputSensor;
+            RangeChange();
         }
 
         /// <summary>
@@ -101,50 +108,36 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 return;
             }
 
-            if(sister.nowState == BrainAbility.SisterState.戦い)
-            {
-                AggresiveSerch();
-            }
-            else
+            if(sister.nowState != BrainAbility.SisterState.戦い)
             {
                 FieldSerch();
             }
         }
 
         /// <summary>
-        /// AggresiveSerch系統
+        /// 戦闘中のセンサー
+        /// FireAbillityから呼び出して使う
         /// </summary>
         #region
-        private void AggresiveSerch()
+        public async void AggresiveSerch()
         {
 
+                //Debug.Log("機能してますよー");
+                SensorPulse();
 
-                pulseTime += _controller.DeltaTime;
-                if (pulseTime >= pulseWait)
-                {
-                    //Debug.Log("機能してますよー");
-                    se.Pulse();
-                    SerchEnemy();
-
+                
+            SManager.instance.TargetAdd(se.GetDetectionsByDistance(SManager.instance.enemyTag));
+            await SManager.instance._addAsync;
+         //   Debug.Log("ｓでｆ");
+            //処理終了通知
+            uniTaskCompletionSource.TrySetResult();
                     //isSerchがつくと勝手にSマネージャーが敵リストの面倒を見てくれる
-                    pulseTime = 0;
-                }
-
         }
         public void SerchEnemy()
         {
-            //ターゲットリストをまっさらに
-            SManager.instance.targetList.Clear();
-            SManager.instance.targetCondition.Clear();
             //距離が近い順に敵を並び替える
-            if (se.DetectedObjectsOrderedByDistance.Count > 0)
-            {
-                for (int i = 0; i < se.DetectedObjectsOrderedByDistance.Count; i++)
-                {
-                    SManager.instance.TargetAdd(se.DetectedObjectsOrderedByDistance[i]);
-
-                }
-            }
+            SensorPulse();
+            SManager.instance.InitialAdd(se.GetDetectionsByDistance(SManager.instance.enemyTag));
         }
         #endregion
 
@@ -161,7 +154,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 if (pulseTime >= pulseWait)
                 {
                     //Debug.Log("機能してますよー");
-                    se.Pulse();
+                    SensorPulse();
                     isSerch = true;
                     pulseTime = 0;
                 }
@@ -176,20 +169,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void DetectObject()
         {
             //敵タグがあるなら
-            if (se.GetDetectedByTag(SManager.instance.enemyTag).Count >= 1)
-            { 
-                
+            if (se.GetDetections(SManager.instance.enemyTag).Count >= 1)
+            {
+                Debug.Log("La");
                 RangeChange();
-                se.Pulse();
-                sister.StateChange(BrainAbility.SisterState.戦い);
                 SerchEnemy();
+                sister.StateChange(BrainAbility.SisterState.戦い);
+                
                 SManager.instance.GetClosestEnemyX();
 
 
                 sister.reJudgeTime = 150;
             }
             //危険タグがあるなら警戒
-            else if (se.GetDetectedByTag(SManager.instance.dangerTag).Count >= 1)
+            else if (se.GetDetections(SManager.instance.dangerTag).Count >= 1)
             {
                 sister.nowState = BrainAbility.SisterState.警戒;
                 //この辺は移動条件の初期化
@@ -201,9 +194,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 sister.isPlay = false;
             }
             //遊びタグがあって遊んでないなら
-            else if (se.GetDetectedByTag(SManager.instance.reactionTag).Count >= 1 && !sister.isPlay)
+            else if (se.GetDetections(SManager.instance.reactionTag).Count >= 1 && !sister.isPlay)
             {
-                SManager.instance.playObject = se.GetNearestToPoint(SManager.instance.Sister.transform.position);
+                SManager.instance.playObject = se.GetNearestDetectionToPoint(SManager.instance.Sister.transform.position);
                 sister.isPlay = true;
                 sister.playPosition = SManager.instance.playObject.transform.position.x;
                 sister.playDirection = SManager.instance.playObject.transform.localScale.x;
@@ -212,111 +205,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         #endregion
 
-        /// <summary>
-        /// 視界センサー周辺
-        /// 視界ではisPlayトリガーしないぽい
-        /// あとこれ視界オブジェクトのコライダーからトリガーしないとダメぽい
-        /// </summary>
-        #region
-
-        /*
-
-
-        /// <summary>
-        /// レイを飛ばして壁越しではないか調べる
-        /// </summary>
-        /// <param name="i_target">感知した物体</param>
-        /// <returns></returns>
-        private bool CheckFoundObject(GameObject i_target)
-        {
-            Vector2 targetPosition = i_target.transform.position;//targetの位置を取得
-            Vector2 myPosition = transform.position;//自分の位置
-
-
-
-
-            Vector2 toTargetDir = (targetPosition - myPosition).normalized;
-
-            if (!IsHitRay(myPosition, toTargetDir, i_target))
-            {//IsHitsRayが真なら真を返す
-                return false;
-            }
-
-            return true;
-
-
-        }
-
-        private bool IsHitRay(Vector2 i_fromPosition, Vector2 i_toTargetDir, GameObject i_target)
-        {
-            // 方向ベクトルが無い場合は、同位置にあるものだと判断する。
-            if (i_toTargetDir.sqrMagnitude <= Mathf.Epsilon)
-            {//sqrはベクトルの長さを返す
-                return true;
-
-            }
-
-            RaycastHit2D onHitRay = Physics2D.Raycast(i_fromPosition, i_toTargetDir, layerMask.value);
-            if (!onHitRay.collider)
-            {
-                return false;
-            }
-            //  ////Debug.log($"{onHitRay.transform.gameObject}");
-            ////Debug.DrawRay(i_fromPosition,i_toTargetDir * SerchRadius);
-            if (onHitRay.transform.gameObject != i_target)
-            {//onHitRayは当たった場所
-             //当たった場所がPlayerの位置でなければ
-             //////Debug.log("あいに");
-                return false;
-            }
-
-            return true;
-        }
-
-
-        /// <summary>
-        /// これをセンサーのコライダーから呼び出すか
-        /// </summary>
-        /// <param name="collision"></param>
-        public void SightSensor(Collider2D collision)
-        {
-            if (collision.tag == SManager.instance.enemyTag)
-            {
-                if (CheckFoundObject(collision.gameObject) && sister.nowState != BrainAbility.SisterState.戦い)
-                {
-                    sister.StateChange(BrainAbility.SisterState.戦い);
-                    RangeChange();
-                    //即座にポジション判断できるように
-
-                    //Debug.Log("機能してますよー");
-                    se.Pulse();
-                    SerchEnemy();
-                    //isSerchがつくと勝手にSマネージャーが敵リストの面倒を見てくれる
-                    pulseTime = 0;
-                    SManager.instance.GetClosestEnemyX();
-
-                    //検索はAgrSerchに任せる。いや入れていい。最初に検知されるのは近いやつだしどうせすぐ更新される
-                }
-            }
-            else if (collision.tag == SManager.instance.dangerTag)
-            {
-
-                if (CheckFoundObject(collision.gameObject) && sister.nowState != BrainAbility.SisterState.警戒)
-                {
-                    sister.nowState = BrainAbility.SisterState.警戒;
-
-
-                    sister.changeable = true;
-                    SManager.instance.playObject = null;
-                    sister.isPlay = false;
-                }
-            }
-        }
-
-
-    */
-
-        #endregion
 
 
 
@@ -326,21 +214,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="collision"></param>
         public void FindObject()
         {
-            GameObject obj = _sightSensor.GetNearest();
+            GameObject obj = _sightSensor.GetNearestDetection();
 
-            
-            for (int i= 0; i < _sightSensor.GetDetected().Count;i++)
+            GameObject pick = null;
+            for (int i= 0; i < _sightSensor.Detections.Count;i++)
             {
+                pick  = _sightSensor.GetDetections()[i];
+
                 //危険物があったらそっち優先
-                if (_sightSensor.GetDetected()[i].tag == SManager.instance.dangerTag)
+                if (pick.tag == SManager.instance.dangerTag)
                 {
-                    obj = _sightSensor.GetDetected()[i];
+                    obj = pick;
                     continue;
                 }
                 //敵のオブジェクトがあったらそっち最優先
-                if (_sightSensor.GetDetected()[i].tag == SManager.instance.enemyTag)
+                if (pick.tag == SManager.instance.enemyTag)
                 {
-                    obj = _sightSensor.GetDetected()[i];
+                    obj = pick;
                     break;
                 }
             }
@@ -353,8 +243,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     RangeChange();
                     //即座にポジション判断できるように
 
-                    //Debug.Log("機能してますよー");
-                    se.Pulse();
                     SerchEnemy();
                     //isSerchがつくと勝手にSマネージャーが敵リストの面倒を見てくれる
                     pulseTime = 0;
@@ -380,7 +268,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 if (sister.nowState == BrainAbility.SisterState.のんびり)
                 {
-                    SManager.instance.playObject = se.GetNearestToPoint(SManager.instance.Sister.transform.position);
+                    SManager.instance.playObject = se.GetNearestDetectionToPoint(SManager.instance.Sister.transform.position);
                     sister.isPlay = true;
                     sister.playPosition = SManager.instance.playObject.transform.position.x;
                     sister.playDirection = SManager.instance.playObject.transform.localScale.x;
@@ -391,46 +279,29 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         public void RangeChange()
         {
+            
             if(sister.nowState == BrainAbility.SisterState.戦い)
             {
-                se.SensorRange = aggresiveRange;
+               
+                range.Circle.Radius = aggresiveRange;
                 if (_sight != null)
                     _sight.SetActive(false);
             }
             else
             {
-                se.SensorRange = fieldRange;
+                range.Circle.Radius = fieldRange;
                 if (_sight != null)
                     _sight.SetActive(true);
             }
 
         }
-        /// <summary>
-        /// 再探知
-        /// </summary>
-        public void ReSerch()
-        {
-            SManager.instance.targetList = null;
-            SManager.instance.targetCondition = null;
-            SManager.instance.target = null;
-            SManager.instance.targetList = new List<GameObject>();
-            SManager.instance.targetCondition = new List<EnemyAIBase>();
-            isSerch = false;
-            pulseTime = 100;
-        }
-
-/*
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            SightSensor(collision.collider);
-        }
-        private void OnCollisionStay2D(Collision2D collision)
-        {
-            SightSensor(collision.collider);
-        }
 
 
-        */
+        void SensorPulse()
+        {
+            range.Pulse();
+            se.Pulse();
+        }
 
 
     }

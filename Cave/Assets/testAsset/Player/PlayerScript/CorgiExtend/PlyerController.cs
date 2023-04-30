@@ -436,7 +436,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             base.ProcessAbility();
             if (_health.CurrentHealth <= 0)
             {
-				Debug.Log($"Ž€‚µ‚Ä{_condition.CurrentState}");
+				Debug.Log($"Ž€‚ñ‚¾{_condition.CurrentState}");
             }
 			if (_controller.State.JustGotGrounded)
             {

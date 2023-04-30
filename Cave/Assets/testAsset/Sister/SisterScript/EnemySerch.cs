@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SensorToolkit;
+using Micosmo.SensorToolkit;
 public class EnemySerch : MonoBehaviour
 {
 
@@ -32,8 +32,7 @@ public class EnemySerch : MonoBehaviour
 
 
                 sister.reJudgeTime = 150;
-                //         Debug.Log("牧島");
-                SManager.instance.TargetAdd(collision.gameObject);
+
              //       SManager.instance.targetCondition.Add(SManager.instance.targetList[0].GetComponent<EnemyAIBase>());
                     sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
                     sister.Serch3.SetActive(true);
@@ -76,8 +75,7 @@ public class EnemySerch : MonoBehaviour
                 sister.isPlay = false;
 
 
-                   //Debug.Log("牧島");
-                    SManager.instance.TargetAdd(collision.gameObject);
+
                    // SManager.instance.targetCondition.Add(SManager.instance.targetList[0].GetComponent<EnemyBase>());
                     sister.nowState = SisterBrain.SisterState.戦い;//この辺はまた後で設定できるようにしよう
                     sister.Serch3.SetActive(true);

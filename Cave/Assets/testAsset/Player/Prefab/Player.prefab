@@ -1411,7 +1411,7 @@ GameObject:
   - component: {fileID: 7954504493746531617}
   m_Layer: 22
   m_Name: REquip
-  m_TagString: Untagged
+  m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7654,22 +7654,22 @@ PrefabInstance:
     - target: {fileID: -5409208054568819055, guid: 8e147a19ed9cdde428bfd842de685b63,
         type: 3}
       propertyPath: m_Bounds.m_Center.x
-      value: 0.33164132
+      value: 0.13025236
       objectReference: {fileID: 0}
     - target: {fileID: -5409208054568819055, guid: 8e147a19ed9cdde428bfd842de685b63,
         type: 3}
       propertyPath: m_Bounds.m_Center.y
-      value: -0.073307276
+      value: 0.0035710335
       objectReference: {fileID: 0}
     - target: {fileID: -5409208054568819055, guid: 8e147a19ed9cdde428bfd842de685b63,
         type: 3}
       propertyPath: m_Bounds.m_Extent.x
-      value: 1.7018645
+      value: 1.8464234
       objectReference: {fileID: 0}
     - target: {fileID: -5409208054568819055, guid: 8e147a19ed9cdde428bfd842de685b63,
         type: 3}
       propertyPath: m_Bounds.m_Extent.y
-      value: 2.2223306
+      value: 2.2139478
       objectReference: {fileID: 0}
     - target: {fileID: -5317411058324207578, guid: 8e147a19ed9cdde428bfd842de685b63,
         type: 3}

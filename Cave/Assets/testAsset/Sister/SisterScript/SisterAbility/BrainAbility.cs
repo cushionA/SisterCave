@@ -259,8 +259,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		protected override void Initialization()
         {
             base.Initialization();
-            // randomBool = false;
-            
+			// randomBool = false;
+
 			//センサーアビリティの切り替え動作に変更
 			_sensor.RangeChange();
 			//_characterHorizontalMovement.FlipCharacterToFaceDirection = false;
@@ -1024,10 +1024,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						if (nowState == SisterState.戦い)
 						{
 							reJudgeTime = 0;
-							nowState = SisterState.警戒;
+							
+							Debug.Log("ｒ");
 							_sensor.RangeChange();
 							patrolTime = 0;
-							_sensor.ReSerch();
+							StateChange(SisterState.警戒);
+							//_sensor.ReSerch();
 						}
 					}
 				}
@@ -1041,9 +1043,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		private void BattleEnd()
 		{
-
+			//Debug.Log($"にき{SManager.instance.targetList.Count}");
 			//敵がいなかったら
-			if (_movement.CurrentState != CharacterStates.MovementStates.Warp)
+			if (_movement.CurrentState != CharacterStates.MovementStates.Warp && SManager.instance.targetList != null)
 			{
 
 				if (SManager.instance.targetList.Count == 0)
@@ -1051,7 +1053,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					battleEndTime += _controller.DeltaTime;
 
 					//時間計測して警戒に移行
-					if (battleEndTime >= 2)
+					if (battleEndTime >= 4)
 					{
 						StateChange();
 						nowState = SisterState.警戒;
@@ -1159,15 +1161,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				isPlay = false;
 				//即座にポジション判断できるように
 				reJudgeTime = 150;
-				//Debug.Log("機能してますよー");
+				Debug.Log("機能してますよー");
 
 				nowState = BrainAbility.SisterState.戦い;//この辺はまた後で設定できるようにしよう
-				_fire.judgeSequence = 0;
+				_fire.StateInitialize(true);
 			}
             else
             {
 
-				_fire.isReset = true;
+				_fire.StateInitialize(false);
 
 				//六秒以上敵検知せんずれば警戒フェイズへ
 				nowPosition = false;
@@ -1176,16 +1178,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				reJudgeTime = 0;
 				patrolTime = 0;
 				changeable = true;
+				Debug.Log("ｇ");
 				_sensor.RangeChange();
 				//Serch2.SetActive(true);
 				//Serch.SetActive(true);
 				battleEndTime = 0;
 
-				SManager.instance.targetList = null;
-				SManager.instance.targetCondition = null;
+				SManager.instance.targetList.Clear();
+				SManager.instance.targetCondition.Clear();
 				SManager.instance.target = null;
-				SManager.instance.targetList = new List<GameObject>();
-				SManager.instance.targetCondition = new List<EnemyAIBase>();
+
 			}
             if (nextState == SisterState.戦い || nowState == SisterState.戦い)
             {

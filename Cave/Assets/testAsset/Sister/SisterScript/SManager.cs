@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.CorgiEngine;
@@ -24,6 +24,8 @@ public class SManager : MonoBehaviour
     public List<EnemyAIBase> targetCondition = new List<EnemyAIBase>();
     [HideInInspector]public float closestEnemy;
     [HideInInspector] public GameObject playObject;
+
+
 
     /// <summary>
     /// 敵死んだフラグ。これが立つとパルス飛ばして敵検索
@@ -58,8 +60,11 @@ public class SManager : MonoBehaviour
 
     [HideInInspector] public float useAngle;
 
-    //[SerializeField] GameObject NIdoit;
-    //[SerializeField] bool isDEEEp;
+
+    private readonly UniTaskCompletionSource
+    uniTaskCompletionSource = new UniTaskCompletionSource();
+
+    public UniTask _addAsync => uniTaskCompletionSource.Task;
 
     private void Awake()
     {
@@ -206,27 +211,126 @@ public class SManager : MonoBehaviour
         }
     }*/
 
-    public void EnemyDeath(GameObject enemy)
-    {
-        targetList.Remove(enemy);
-        targetCondition.Remove(enemy.MMGetComponentNoAlloc<EnemyAIBase>());
-        if (targetList.Count == 0)
-        {
-            isSerch = true;
-        }
-    }
+
     /// <summary>
     /// ターゲットとそのAIを格納して黄色マークつけてあげる
     /// </summary>
     /// <param name="target"></param>
-    public void TargetAdd(GameObject target)
+    public void TargetAdd(List<GameObject> next)
     {
-        if (!targetList.Contains(target))
+        //以前のターゲットリストを作成
+        //敵が自分で何秒センサーに入ってないと計算してくれるので
+        //継続して持つ必要はなくローカル変数に
+        List<GameObject> LastTarget = new List<GameObject>();
+        List<EnemyAIBase> LastCondition = new List<EnemyAIBase>();
+
+        for (int i = 0;i < targetList.Count;i++)
         {
-            targetList.Add(target);
-            targetCondition.Add(target.MMGetComponentNoAlloc<EnemyAIBase>());
-            //認識した敵に黄色のマークをつける
-            targetCondition[targetCondition.Count - 1].TargetEffectCon();
+            //検知したオブジェクトにターゲットの要素が含まれてないなら追加
+            //これによりさっきまで検知されてたけど今は検知されてないオブジェクトのリストができる
+            if (!next.Contains(targetList[i]))
+            {
+                LastTarget.Add(targetList[i]);
+                LastCondition.Add(targetCondition[i]);
+
+                //この敵は認識されてない
+                targetCondition[i].SisterRecognition(false);
+            }
+        }
+        //検出した敵からリストを作成し、情報はいったん消す
+
+        targetList　= new List<GameObject>(next);
+       
+        targetCondition.Clear();
+
+        //センサーに検知された敵の情報取得
+        for (int i = 0; i < targetList.Count;i++)
+        {
+            targetCondition.Add(targetList[i].MMGetComponentNoAlloc<EnemyAIBase>());
+
+            //この敵は認識されてるものとする
+            targetCondition[i].SisterRecognition(true);
+
+            //ついでにロックカーソルも
+            targetCondition[i].TargetEffectCon(0);
+        }   
+        Debug.Log($"かず{targetList.Count}d{targetCondition.Count}");
+            //次は検出されなかった敵がまだ削除猶予範囲内にいるかどうかを確認
+            for (int i = 0; i < LastCondition.Count; i++)
+        {
+            //シスターさんに見られてなければ削除
+            if (LastCondition[i].SisterCheck())
+            {
+                LastTarget[i] = null;
+
+                //ロックカーソルを消す
+                LastCondition[i].TargetEffectCon(1);
+
+                LastCondition[i] = null;
+            }
+        }
+
+
+
+        //ついでにちゃんと削除猶予された敵がいるなら情報ごとリストにぶち込む
+        if (LastTarget.Count > 0)
+        {
+            for (int i = 0; i < LastTarget.Count;i++)
+            {
+                if (LastTarget[i] != null)
+                {
+                    targetList.Add(LastTarget[i]);
+                    targetCondition.Add(LastCondition[i]);
+                }
+            }
+        }
+
+        //処理終了通知
+        uniTaskCompletionSource.TrySetResult();
+    }
+
+    /// <summary>
+    /// 最初に敵を見つけた時のやつ
+    /// </summary>
+    /// <param name="next"></param>
+    public void InitialAdd(List<GameObject> next)
+    {
+        Debug.Log($"最初");
+        targetList = new List<GameObject>(next);
+        //センサーに検知された敵の情報取得
+        for (int i = 0; i < targetList.Count; i++)
+        {
+            targetCondition.Add(targetList[i].MMGetComponentNoAlloc<EnemyAIBase>());
+
+            //この敵は認識されてるものとする
+            targetCondition[i].SisterRecognition(true);
+
+            //ついでにロックカーソルも
+            targetCondition[i].TargetEffectCon(0);
+        }
+        Debug.Log($"最初の数{targetList.Count}dd{targetCondition.Count}");
+    }
+
+    public void RemoveEnemy(GameObject enemy)
+    {
+        if (targetList.Contains(enemy))
+        {
+            int index = targetList.IndexOf(enemy);
+            List<GameObject> delList  = new List<GameObject>();
+            List<EnemyAIBase> delCondition = new List<EnemyAIBase>();
+
+            for (int i = 0;i < targetList.Count;i++)
+            {
+                if(i == index)
+                {
+                    continue;
+                }
+                delList.Add(targetList[i]);
+                delCondition.Add(targetCondition[i]);
+            }
+
+            targetList = new List<GameObject>(delList);
+            targetCondition = new List<EnemyAIBase>(delCondition);
         }
     }
 

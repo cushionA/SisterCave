@@ -192,7 +192,7 @@ public class MyScroll: MonoBehaviour
             hoge.Set(hoge.x,startPosition);
             Target.anchoredPosition = hoge;
             _limitCounter = -scrollWait;
-          //  Debug.Log($"ÉNÉ\ñ—{_limitCounter}");
+          //  Debug.Log($"ñ—{_limitCounter}");
 
     }
 }

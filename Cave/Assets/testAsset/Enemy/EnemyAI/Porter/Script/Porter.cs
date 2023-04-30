@@ -72,7 +72,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         {
                             Attack(true, 1);
                         }
-                        Debug.Log($"‚„‚„{moveType}");
+                       // Debug.Log($"‚„‚„{moveType}");
 
                         attackChanceTime = 3.0f;
                         take = 2;

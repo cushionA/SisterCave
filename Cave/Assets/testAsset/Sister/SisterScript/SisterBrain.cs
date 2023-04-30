@@ -1399,11 +1399,7 @@ public class SisterBrain : MonoBehaviour
 						nowState = SisterState.警戒;
 						
 						reJudgePositionTime = 0;
-                        for(int i=0;i < SManager.instance.targetList.Count; i++)
-                        {
-							SManager.instance.targetList[i].GetComponent<EnemyBase>().TargetEffectCon(1);
-						}
-						SManager.instance.targetList.Clear();
+
 
 						SManager.instance.targetCondition.Clear();
 						SManager.instance.target = null;
@@ -1444,25 +1440,7 @@ public class SisterBrain : MonoBehaviour
 
 				isReset = true;
 			//六秒以上敵検知せんずれば警戒フェイズへ
-			nowPosition = false;
-			isPosition = false;
-		//	SManager.instance.isEscape = true;
-			nowState = SisterState.警戒;
-			//escapeがtrueの時警戒から戦闘にならない
-			stateNumber = 3;
-			beforeNumber = 0;
-			reJudgeTime = 0;
-			reJudgePositionTime = 0;
-			changeable = true;
-			Serch3.SetActive(false);
-			Serch2.SetActive(true);
-			Serch.SetActive(true);
-			battleEndTime = 0;
 
-			SManager.instance.targetList.Clear();
-			SManager.instance.targetCondition.Clear();
-			SManager.instance.target = null;
-			SManager.instance.isBattleEnd = false;
 				}
 
 		}
