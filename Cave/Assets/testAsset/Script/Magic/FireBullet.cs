@@ -407,8 +407,14 @@ public class FireBullet : MonoBehaviour
 		{
 			if (movable)
 			{
-				//進行角度に従って速度を変化させる
-				rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
+
+				// オブジェクトの角度を取得
+				float angle = transform.rotation.eulerAngles.z + 180;
+				// 角度から単位ベクトル
+				Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+
+				//進行角度にとぶ
+				rb.velocity = direction * speed;
 			}
 		}
 		else

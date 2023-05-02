@@ -13,7 +13,7 @@ namespace MoreMountains.CorgiEngine
 	///落下攻撃用に距離無制限で進み続けるようなオプションも
 	///コライダーのサイズをレイキャスト距離に足せ
 	///ガードはいらない
-	///「「「「「ルートオブジェクトにつけろ」」」」」
+	///ルートオブジェクトにつけて
 	///簡単に言うと攻撃中前進する機能、衝突する状態で他人や自分を停止させるコードがある、といった感じ
 	///
 	[AddComponentMenu("Corgi Engine/Character/Abilities/MyAttackMove")]
@@ -444,6 +444,11 @@ namespace MoreMountains.CorgiEngine
 					//ガードやガード移動、突進せずに攻撃してる時の処理
 					else
 					{
+                        if (BlowNow())
+                        {
+							return;
+                        }
+
 						//衝突した相手が衝突判定を出すような行動をしていないとき
 						//相手を一方向にロックする
 						//もし衝突判定が出る行動をしているなら自分は自分で停止する。
@@ -578,12 +583,12 @@ namespace MoreMountains.CorgiEngine
 
 
 		/// <summary>
-		/// 今吹き飛ばされているか
+		/// 今死んでなくて吹き飛ばされてないか
 		/// </summary>
 		/// <returns></returns>
 		public bool BlowNow()
         {
-			return _health._blowNow;
+			return _health._blowNow || _health.CurrentHealth <= 0;
         }
         #endregion
     }

@@ -166,14 +166,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <summary>
 		/// 魔法使用待機中のエフェクト
 		/// </summary>
-		GameObject castEffect;
+		public GameObject castEffect;
 
 		/// <summary>
 		/// 弾丸生成中にターゲットが消えてもいいように位置を覚えておく
 		/// </summary>
 		Vector2 _tgPosition;
 
-
+		
 
 
 		/// <summary>
@@ -259,7 +259,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 				//ターゲットが消えたら詠唱やめる
-				CastStop().Forget();
+				castCheck();
 
 
 				
@@ -485,6 +485,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					Addressables.InstantiateAsync(SManager.instance.useMagic.castBreak, sb.firePosition.position, sb.firePosition.rotation);
 					if (castEffect != null)
 					{
+						Vector3 pos = new Vector3(transform.position.x, transform.position.y, -100);
+						castEffect.transform.position = pos;
 						Addressables.ReleaseInstance(castEffect);
 						castEffect = null;
 					}
@@ -510,8 +512,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				//	詠唱中止。敵が死んで消えたりとか
 				GManager.instance.StopSound(castSound, 0.5f);
-		//		if (castEffect != null)
-			//	{
+
+
+				//とりあえずカメラから消す
+				Debug.Log("れｃ");
+				Vector3 pos = new Vector3(transform.position.x, transform.position.y, -100);
+                 castEffect.transform.position = pos;
 					Addressables.ReleaseInstance(castEffect);
 					castEffect = null;
 			//	}
@@ -614,8 +620,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//disEnable = false;
 			stateJudge = 0;
 			waitCast = 0;
-			//SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
-			
+			//とりあえずカメラから消す
+							
+			if (castEffect != null)
+			{
+
+				Vector3 pos = new Vector3(transform.position.x, transform.position.y, -100);
+				castEffect.transform.position = pos;
+				Addressables.ReleaseInstance(castEffect);
+				castEffect = null;
+			}
+
+
 			actionNum = 0;
 			_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 			_movement.ChangeState(CharacterStates.MovementStates.Idle);
@@ -2900,10 +2916,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		#endregion
 
-		async UniTaskVoid CastStop()
-		{
-			await UniTask.RunOnThreadPool(() => castCheck());
-		}
+
 		void castCheck()
 		{
 
@@ -2912,7 +2925,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 				waitCast = 0;
-				actionNum = (int)SManager.instance.useMagic.castType;
+				//とりあえずカメラから消す
+
+				if (castEffect != null)
+				{
+
+					Vector3 pos = new Vector3(transform.position.x, transform.position.y, -100);
+					castEffect.transform.position = pos;
+					Addressables.ReleaseInstance(castEffect);
+					castEffect = null;
+				}
+
+
+				actionNum = 0;
+
+				waitCast = 0;
 			}
 
 		}
@@ -2968,6 +2995,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					GManager.instance.StopSound(castSound, 0.5f);
 					if (castEffect != null)
 					{
+						Vector3 pos = new Vector3(transform.position.x, transform.position.y, -100);
+						castEffect.transform.position = pos;
 						Addressables.ReleaseInstance(castEffect);
 						castEffect = null;
 					}

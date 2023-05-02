@@ -272,6 +272,8 @@ namespace MoreMountains.CorgiEngine
                 // ヘルスを0にします。（ヘルスバーに便利です。）
                 CurrentHealth = 0;
 
+                Invulnerable = true;
+
                 if (_character != null)
                 {
 

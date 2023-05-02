@@ -57,6 +57,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         [SerializeField]
         Transform cIcon;
 
+
+
         /// <summary>
         /// 連携のクールタイム消化を視覚化したスライダー
         /// </summary>

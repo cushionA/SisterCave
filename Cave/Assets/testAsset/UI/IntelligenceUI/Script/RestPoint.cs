@@ -3,6 +3,7 @@ using System.Collections;
 using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.UI;
+using MoreMountains.CorgiEngine;
 
 public class RestPoint : MonoBehaviour
 {
@@ -55,7 +56,10 @@ public class RestPoint : MonoBehaviour
 
                 isFirst = true;
             }
-
+            if (SManager.instance.Sister.activeSelf)
+            {
+                SManager.instance.Sister.GetComponent<FireAbility>().MagicEnd();
+            }
             GManager.instance.onGimmick = true;
             MainUICon.instance.UIOn = true;
             
@@ -85,7 +89,7 @@ public class RestPoint : MonoBehaviour
         }
         SManager.instance.target = null;
         SManager.instance.targetList.Clear();
-       
+
         _resetWindow.transform.parent.gameObject.SetActive(true);
         _resetWindow.Select();
         WindowCansel();

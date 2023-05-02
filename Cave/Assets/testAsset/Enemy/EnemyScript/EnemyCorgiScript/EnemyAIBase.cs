@@ -1547,15 +1547,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <summary>
 		/// クールタイムの間次の攻撃を待つ
 		/// </summary>
-		public async  void WaitAttack()
+		public  void WaitAttack()
 	{
 		if (_attack.nowAttack)
 		{
 			//	Debug.Log($"tubuあん{attackNumber}");
 				if (attackContinue == 0)
 			{
-		//			Debug.Log($"かなしい{isMovable}ｓｓ{_movement.CurrentState}");
-				await ExecuteAttack();
+
+					//			Debug.Log($"かなしい{isMovable}ｓｓ{_movement.CurrentState}");
+					 ExecuteAttack().Forget();
 	
 			}
 				else if (attackContinue != 0)

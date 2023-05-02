@@ -281,7 +281,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public void Brain()
         {
 
-
+			Debug.Log("fhs");
 			if (isStop || _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
 			{
 				disEnable = true;
@@ -358,21 +358,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			JumpController();
 		}
 
-        /// <summary>
-        /// アビリティサイクルの開始時に呼び出され、ここで入力の有無を確認します。
-        /// </summary>
-        protected override void HandleInput()
-        {
-            //ここで何ボタンが押されているかによって引数渡すか
-
-            // here as an example we check if we're pressing down
-            // on our main stick/direction pad/keyboard
-            if (_inputManager.CombinationButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
-            {
-				//ワープとかの連携を置く
-            }
-			//長押しの処理も入れる？
-        }
 
 		/// <summary>
 		/// 支援位置につかせるメソッド
@@ -648,6 +633,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 		public void PlayMove()
 		{//のんびり
+
 			if (_controller.State.IsGrounded && !disEnable)
 			{
 				//	
@@ -784,6 +770,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 				#endregion
 			}
+ 
 		}
 
 

@@ -178,7 +178,7 @@ namespace MoreMountains.CorgiEngine
 		{
 			//Debug.Log($"dddアビリティのながさ{_myAbilities.Length}コーギーアビリティの長さ{_characterAbilities.Length}");
 			//UI出てる時は操作不可
-			if (MainUICon.instance.UIOn)
+			if (MainUICon.instance.UIOn && CharacterType == CharacterTypes.Player)
 			{
 				return;
 			}
@@ -203,7 +203,7 @@ namespace MoreMountains.CorgiEngine
 			//	Debug.Log($"sssss{ability.GetType()}");
 
 			//UI出てる時は操作不可
-			if (MainUICon.instance.UIOn)
+			if (MainUICon.instance.UIOn && CharacterType == CharacterTypes.Player)
 			{
 				return;
 			}
@@ -222,7 +222,7 @@ namespace MoreMountains.CorgiEngine
 		protected override void LateProcessAbilities()
 		{
 			//UI出てる時は操作不可
-			if (MainUICon.instance.UIOn)
+			if (MainUICon.instance.UIOn && CharacterType == CharacterTypes.Player)
 			{
 				return;
 			}

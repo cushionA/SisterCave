@@ -135,10 +135,7 @@ public class EnemyController : MonoBehaviour
         SManager.instance.Sister.MMGetComponentNoAlloc<BrainAbility>().MPReset();
         }
 
-        if (SManager.instance.Sister.activeSelf) 
-        {
-            SManager.instance.Sister.MMGetComponentNoAlloc<FireAbility>().MagicEnd();
-        }
+
         for (int i = 0;i < bt.Count;i++)
         {
             int num = 0b0001;

@@ -117,7 +117,36 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             HandleInput();
         }
 
+        /// <summary>
+        /// On enable, we bind our respawn delegate
+        /// </summary>
+        protected override void OnEnable()
+        {
+            if (_health == null)
+            {
+                _health = this.gameObject.GetComponentInParent<MyHealth>();
+            }
 
+            if (_health != null)
+            {
+                _health.OnRevive += OnRespawn;
+                _health.OnDeath += OnDeath;
+                _health.OnHit += OnHit;
+            }
+        }
+
+        /// <summary>
+        /// On disable, we unbind our respawn delegate
+        /// </summary>
+        protected override void OnDisable()
+        {
+            if (_health != null)
+            {
+                _health.OnRevive -= OnRespawn;
+                _health.OnDeath -= OnDeath;
+                _health.OnHit -= OnHit;
+            }
+        }
 
         /// <summary>
         /// Binds the animator from the character and initializes the animator parameters
