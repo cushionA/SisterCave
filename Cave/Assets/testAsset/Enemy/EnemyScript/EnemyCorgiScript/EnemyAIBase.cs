@@ -2755,7 +2755,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					BattleFlip(dire);
 					if (!flipCompÅ@&& ground != EnemyStatus.MoveState.stay)
 					{
-						Debug.Log($"Ç†Ç†Ç†Ç†");
+				
 						//dire *= 0.8f;
 						_flying.SetHorizontalMove(Mathf.Sign(_controller.Speed.x));
 					}

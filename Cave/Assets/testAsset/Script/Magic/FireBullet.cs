@@ -5,6 +5,8 @@ using System;
 using MoreMountains.CorgiEngine;
 using MoreMountains.Tools;
 using System.Collections.Generic;
+using UnityEngine.Jobs;
+using Unity.Jobs;
 
 /// <summary>
 /// 最初にDamageOnTouchと回復量を初期化する。
@@ -63,12 +65,15 @@ public class FireBullet : MonoBehaviour
 	/// 弾丸がどれくらいの時間存在してるか計測する。
 	/// </summary>
 	float fireTime;
-	[HideInInspector] public GameObject target;
-	Vector3 posTarget;
-	float homingAngle;
-	Quaternion homingRotate;
-	float speed;
-	float homingRange;
+
+
+	public GameObject target;
+
+	TransformAccessArray myTransform;
+
+
+
+
 	/// <summary>
 	/// 存在音ならしたか
 	/// 音を鳴らすのに使う
@@ -81,14 +86,18 @@ public class FireBullet : MonoBehaviour
 	/// 音を消すのに使う
 	/// </summary>
 	bool isExPlay;
+
+
 	GameObject next;
+
+
 	//次に出す弾丸の動作スクリプト
 	FireBullet sm;
 	/// <summary>
 	/// キャラが右と左どちらから弾を撃ったか
 	/// </summary>
 	[HideInInspector] public int direction;
-	Vector2 bulletScale;//弾丸の拡大率
+
 
 
 	float effectWait;//サポートや回復が再度効果を現すまで
@@ -99,10 +108,17 @@ public class FireBullet : MonoBehaviour
 	/// </summary>
 	float waitNow;
 	Collider2D col;
+
 	/// <summary>
 	/// もし弾丸が動かない待ち時間があるなら止めるフラグ
 	/// </summary>
 	bool movable;
+
+
+	FireJob job;
+
+	JobHandle _handler;
+
 
 	/// <summary>
 	/// 初期化されてますか？
@@ -141,6 +157,9 @@ public class FireBullet : MonoBehaviour
         {
 			InitializePlayerBullet();
         }
+
+		myTransform = new TransformAccessArray(0);
+		myTransform.Add(transform);
     }
 
 
@@ -168,7 +187,7 @@ public class FireBullet : MonoBehaviour
 		}
 
 		//子供の弾丸は親のターゲット引き継ぐ
-		if (em.fireType != Magic.FIREBULLET.STOP || !em.isChild)
+		if (em._moveSt.fireType != Magic.FIREBULLET.STOP || !em.isChild)
 		{
 			//	Debug.Log($"標的設定{SManager.instance.restoreTarget.name}");
 			
@@ -183,39 +202,7 @@ public class FireBullet : MonoBehaviour
 
 		//Debug.Log($"標的{gameObject.name}");
 
-		// 最初に敵の位置初期化
-		if (em.fireType != Magic.FIREBULLET.STOP && target != null)
-		{
-			posTarget = target.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
 
-		}
-
-		switch (em.fireType)
-		{
-
-
-			case Magic.FIREBULLET.ANGLE:
-				speed = em.speedV;
-				//(direction == -1) ? -em.speedV : +
-				break;
-			case Magic.FIREBULLET.HOMING:
-				speed = em.speedV;
-				homingRotate = Quaternion.LookRotation(posTarget - transform.position);
-				//	transform.localScale = 
-
-				break;
-			case Magic.FIREBULLET.HOMING_Z:
-				speed = em.speedV;
-				homingRotate = Quaternion.LookRotation(posTarget - transform.position);
-				homingRange = em.homingAngleV;
-				homingAngle = em.homingAngleA;
-				break;
-			case Magic.FIREBULLET.RAIN:
-
-				speed = em.speedV;
-				em.angle = SManager.instance.useAngle;
-				break;
-		}
 
 		// 存在してる間のサウンドがあるなら
 		if (em.existSound != null)
@@ -226,7 +213,6 @@ public class FireBullet : MonoBehaviour
 
 
 		attackEnabled = true;
-		bulletScale = em.bulletScaleV;
 		GManager.instance.PlaySound(em.fireSound, transform.position);
 
 		//	hitSound = em.hitSound != null ? true : false;
@@ -271,16 +257,12 @@ public class FireBullet : MonoBehaviour
 		BulletHit(other);
 	}
 
-	void Update()
-	{
-		if (em.isRotate)
-		{
-			// スプライト画像の回転処理
-			transform.Rotate(0.0f, 0.0f, Time.deltaTime * em.rotateVt);
-		}
-	}
+    private void OnDisable()
+    {
+		myTransform.Dispose();
+    }
 
-	void FixedUpdate()
+    void FixedUpdate()
 	{
 
         Debug.Log($"名前{this.gameObject.name}標的{target == null}");
@@ -298,7 +280,7 @@ public class FireBullet : MonoBehaviour
             if (em.mType == Magic.MagicType.Attack)
             {
 				//貫通弾なら。速度0以上かつ弾丸も一秒以上生きるなら爆発とかではない
-                if (em.penetration && em.speedV > 0 && em.lifeTime > 1)
+                if (em.penetration && em._moveSt.speedV > 0 && em._moveSt.lifeTime > 1)
                 {
                     if (effectWait >= 1.5f)
                     {
@@ -328,7 +310,7 @@ public class FireBullet : MonoBehaviour
 		//弾丸の生存時間終わりなら
 		//あるいは追尾弾の標的消えたら
 		//それか直進でいいか
-		if (fireTime >= em.lifeTime) // ((em.fireType == Magic.FIREBULLET.HOMING || em.fireType == Magic.FIREBULLET.HOMING) && target == null))
+		if (fireTime >= em._moveSt.lifeTime) // ((em._moveSt.fireType == Magic.FIREBULLET.HOMING || em._moveSt.fireType == Magic.FIREBULLET.HOMING) && target == null))
 		{
 
 			//   存在中の音声がなってるなら消す
@@ -345,22 +327,9 @@ public class FireBullet : MonoBehaviour
 			
 		}
 
-		//弾丸を左右速度に応じて振り向かせる
-		if (rb.velocity.x > 0f)
-		{
-			Vector3 theScale = transform.localScale;
-			theScale.x = Mathf.Abs(theScale.x);
-			transform.localScale = theScale;
-		}
-		else if (rb.velocity.x < 0f)
-		{
-			Vector3 theScale = transform.localScale;
-			theScale.x = -1 * Mathf.Abs(theScale.x);
-			transform.localScale = theScale;
 
-		}
 
-		if (em.fireType == Magic.FIREBULLET.STOP)
+		if (em._moveSt.fireType == Magic.FIREBULLET.STOP)
 		{
 			return;
 		}
@@ -368,22 +337,17 @@ public class FireBullet : MonoBehaviour
 
 		// ターゲット設定
 		//追尾時間以内なら追いかける
-		bool homing = ((fireTime < em.homingTime) && target != null);//((Time.fixedTime - fireTime) < em.homingTime);
-		if (homing)
-		{
+		bool homing = ((fireTime < em._moveSt.homingTime) && target != null);//((Time.fixedTime - fireTime) < em.homingTime);
 
-			posTarget = target.transform.position + Vector3.up;
-		}
 
 		//弾丸が始動するまでの待ち時間がある場合、動かず当たり判定もなくその場にとどまる
-		if (em.waitTime > 0 && !movable)
+		if (em._moveSt.waitTime > 0 && !movable)
 		{
 			if (col != null)
 			{
 				col.enabled = false;
 			}
-			waitNow += Time.fixedDeltaTime;
-			if (waitNow >= em.waitTime)
+			if (fireTime >= em._moveSt.waitTime)
 			{
 				if (em.moveSound != null)
 				{
@@ -391,7 +355,6 @@ public class FireBullet : MonoBehaviour
 				}
 				movable = true;
 				col.enabled = true;
-				waitNow = 0;
 			}
 
 		}
@@ -402,122 +365,37 @@ public class FireBullet : MonoBehaviour
 
 
 		// ホーミング処理
-		//ここでターゲットない場合は直進に
-		if (target == null)
+		//ここでジョブ呼び出し
+		//movableは渡す
+
+
+		if (target != null)
+        {
+			job.targetLost = false;
+    		job.posTarget = target.transform.position;
+        }
+        else
+        {
+			job.targetLost = true;
+        }
+		Debug.Log($"おああああ{job.ToString()}");
+		job.movable = movable;
+		job.homing = homing;
+
+		this._handler = this.job.Schedule(myTransform);
+		_handler.Complete();
+
+
+		if (movable)
 		{
-			if (movable)
-			{
-
-				// オブジェクトの角度を取得
-				float angle = transform.rotation.eulerAngles.z + 180;
-				// 角度から単位ベクトル
-				Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-
-				//進行角度にとぶ
-				rb.velocity = direction * speed;
-			}
+			rb.velocity = job._velocity;
 		}
-		else
-		{
-			switch (em.fireType)
-			{
-				case Magic.FIREBULLET.ANGLE: // 指定した角度に発射
-					if (movable)
-					{
-						//進行角度に従って速度を変化させる
-						rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f);
-					}
-					break;
-
-				case Magic.FIREBULLET.RAIN: // 指定した角度に発射
-					if (movable)
-					{
-						//進行角度に従って速度を変化させる
-						rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * new Vector3(speed, 0.0f, 0.0f) + (Math.Sign(target.transform.position.x - transform.position.x) > 0 ? Vector3.zero : new Vector3(0, 0, 180 - em.angle));
-					}
-					break;
-
-				case Magic.FIREBULLET.HOMING: // 完璧にホーミング
-					{
-						//WaitTimeとHormingTimeを同じかそれ以下にすれば停止中だけ敵を狙うやつになる
-						if (homing)
-						{
-							homingRotate = Quaternion.LookRotation(posTarget - transform.position);
-							//transform.rotation = 
-							transform.rotation = Quaternion.Euler(new Vector3(0, 0, (Quaternion.FromToRotation(Vector3.up, posTarget - transform.position).eulerAngles.z - 90)));
-
-							// Quaternion.Euler(new Vector3(0,0,Mathf.Atan2(posTarget.x - transform.position.x, posTarget.y - transform.position.y)));
-								
-						}
-
-						// 対象物へ回転する
-
-						//transform.rotation =
-
-						Vector3 vecMove = (homingRotate * Vector3.forward) * speed;
-						if (movable)
-						{Debug.Log($"アイ{Quaternion.Euler(0.0f, 0.0f, em.angle) * vecMove}u{Quaternion.Euler(0.0f, 0.0f, em.angle)}i{vecMove}");
-							rb.velocity = Quaternion.Euler(0.0f, 0.0f, em.angle) * vecMove;
-						}
-					}
-					break;
-
-				case Magic.FIREBULLET.HOMING_Z: // 指定した角度内でホーミング
-					if (homing)
-					{
-						//敵と弾丸の角度を求めて度に変換
-						float targetAngle = Mathf.Atan2(posTarget.y - transform.position.y,
-															posTarget.x - transform.position.x) * Mathf.Rad2Deg;
-
-						float deltaAngle = Mathf.DeltaAngle(targetAngle, homingAngle);
-						float deltaHomingAngle = homingRange * Time.fixedDeltaTime;
-						if (Mathf.Abs(deltaAngle) >= deltaHomingAngle)
-						{
-							homingAngle += (deltaAngle < 0.0f) ? +deltaHomingAngle : -deltaHomingAngle;
-						}
-						homingRange += (em.homingAngleA * Time.fixedDeltaTime);
-						homingRotate = Quaternion.Euler(0.0f, 0.0f, homingAngle);
-					}
-					//うごけない場合は角度だけ変更
-					if (movable)
-					{
-						rb.velocity = (homingRotate * Vector3.right) * speed;
-					}
-					break;
-			}
-		}
-		if (!movable)
-		{
-			rb.velocity = Vector3.zero;
-
-		}
-		speed += em.speedA * Time.fixedDeltaTime;
+        else
+        {
+			rb.velocity = Vector2.zero;
+        }
 
 
-		// スケール計算
-		//どんどん大きくなったり小さくなったり
-		//小さくなりすぎたら破壊する
-		if (bulletScale != Vector2.zero)
-		{
-			Vector2 changeScale = new Vector2();
-			changeScale.Set(Mathf.Abs(transform.localScale.x), Mathf.Abs(transform.localScale.y));
-			changeScale.x = (bulletScale.x + changeScale.x) > 0 ? (bulletScale.x + changeScale.x) : changeScale.x;
-			changeScale.y = (bulletScale.y + changeScale.y) > 0 ? (bulletScale.y + changeScale.y) : changeScale.y;
-
-
-			changeScale.x = transform.localScale.x >= 0 ? changeScale.x : -changeScale.x;
-			transform.localScale = changeScale;
-		}
-		bulletScale += em.bulletScaleA * Time.fixedDeltaTime;
-		/*		if (transform.localScale.x < 0.0f || transform.localScale.y < 0.0f || transform.localScale.z < 0.0f)
-				{
-					if(isExPlay)
-					{
-						GManager.instance.StopSound(em.existSound, 1f);
-					}
-					Addressables.ReleaseInstance(this.gameObject);
-				//	Debug.Log("スケール");
-				}*/
 
 	}
 	public int RandomValue(int X, int Y)
@@ -529,15 +407,15 @@ public class FireBullet : MonoBehaviour
 	/// <summary>
 	/// 使用者ごとに異なる弾丸の初期化
 	/// 使用者が呼び出す
-	/// 子弾のためにこのスクリプト内でも呼び出す
+	/// 子弾のためにこのスクリプト内で呼び出す
 	/// </summary>
-	public void InitializedBullet(GameObject _owner, GameObject _target,int _direction = 1)
-    {
+	public void InitializeNextBullet(GameObject _owner, GameObject _target, int _direction = 1)
+	{
+
 		owner = _owner.transform;
 		target = _target;
-
 		//使用者に従って
-        if (_user == MasicUser.Child)
+		if (_user == MasicUser.Child)
         {
 			//武器の威力修正でやる？
 			_owner.MMGetComponentNoAlloc<FireBullet>().BuffCalc(this);
@@ -551,12 +429,15 @@ public class FireBullet : MonoBehaviour
 
 		}
 
+
+		Debug.Log("ぇ");
 		//初期化完了
 		_initialized = true;
 	}
 
     void InitializePlayerBullet()
     {
+
 
 		//使用者に従って
 		if (_user == MasicUser.Player)
@@ -574,7 +455,11 @@ public class FireBullet : MonoBehaviour
 			_healTag = "Player";
 		}
 
-		//初期化完了
+		em._moveSt.angle = SManager.instance.useAngle;
+		job = new FireJob
+		{ _status = em._moveSt };
+
+		job.Initialize(target.transform.position, transform.position);
 		_initialized = true;
 	}
 
@@ -640,13 +525,13 @@ public class FireBullet : MonoBehaviour
 						goFire.position = new Vector3(this.gameObject.transform.position.x + RandomValue(-sm.em.HRandom, sm.em.HRandom), this.gameObject.transform.position.y + RandomValue(-sm.em.VRandom, sm.em.VRandom), this.gameObject.transform.position.z);
 					}
 
-					Instantiate(next, goFire.position, goFire.rotation).MMGetComponentNoAlloc<FireBullet>().InitializedBullet(this.gameObject, target, direction);
+					Instantiate(next, goFire.position, goFire.rotation).MMGetComponentNoAlloc<FireBullet>().InitializeNextBullet(this.gameObject, target, direction);
 
 				}
 			}
 			else
 			{
-				Instantiate(next, this.gameObject.transform.position, next.transform.rotation).GetComponent<FireBullet>().InitializedBullet(this.gameObject, target, direction);
+				Instantiate(next, this.gameObject.transform.position, next.transform.rotation).GetComponent<FireBullet>().InitializeNextBullet(this.gameObject, target, direction);
 			}
 
 		}

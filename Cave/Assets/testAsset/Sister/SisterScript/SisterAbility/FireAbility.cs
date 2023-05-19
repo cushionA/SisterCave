@@ -363,7 +363,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 					if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
 					{
-					//	Debug.Log("ssd");
+						//Debug.Log($"ssd{(int)SManager.instance.useMagic.castType}");
 						actionNum = (int)SManager.instance.useMagic.castType;
 						_movement.ChangeState(CharacterStates.MovementStates.Cast);
 						_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
@@ -426,6 +426,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 						if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
 						{
+					//		Debug.Log("hhhhhhj");
 							actionNum = (int)SManager.instance.useMagic.castType;
 							_movement.ChangeState(CharacterStates.MovementStates.Cast);
 							_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
@@ -475,12 +476,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				{
 
 
-
+					
 					soundStart = false;
 					disEnable = true;
 					//GManager.instance.StopSound(castSound, 0.5f);
 					_movement.ChangeState(CharacterStates.MovementStates.Attack);
 					waitCast = 0;
+
 					actionNum = (int)SManager.instance.useMagic.FireType;
 					Addressables.InstantiateAsync(SManager.instance.useMagic.castBreak, sb.firePosition.position, sb.firePosition.rotation);
 					if (castEffect != null)
@@ -525,7 +527,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 				actionNum = 0;
 				waitCast = 0;
-
+			//	Debug.Log("adedwdwadwd");
 				return;
 			}
 		}
@@ -583,7 +585,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		public void EventFire()
 		{
-		//	Debug.Log("きtyaaaa");
+
 			fireStart = true;
 			//待てこれキャストサウンド介する必要ある？
 			//普通に判断して普通に入れよ
@@ -631,7 +633,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				castEffect = null;
 			}
 
-
+			//Debug.Log("ffggrfe");
 			actionNum = 0;
 			_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 			_movement.ChangeState(CharacterStates.MovementStates.Idle);
@@ -657,13 +659,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <param name="vRandom"></param>
 		void MagicUse(int hRandom, int vRandom)
 		{
-
+	//		Debug.Log($"なまえ{SManager.instance.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
 			if (!fireStart || delayNow)
 			{
 				return;
 			}
-            //	Debug.Log("きてる");
-            //	Debug.Log($"なまえ{SManager.instance.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}")
+
+
+            
 
             //魔法使用中MagicUseでかつ弾丸生成中でなければ
             if (_movement.CurrentState == CharacterStates.MovementStates.Combination)
@@ -679,6 +682,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//弾が一発目なら
 			if (bCount == 1)
 			{
+
 				//ターゲットが消えてもいいように場所を覚えておく
 				if (SManager.instance.target != null) 
 				{
@@ -696,15 +700,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					_movement.ChangeState(CharacterStates.MovementStates.Idle);
 					SManager.instance.useMagic = null;
 					fireStart = false;
-					
+
 					return;
                 }
+
 				//なんかあってもいいように一応ターゲットを保存
 				SManager.instance.restoreTarget = SManager.instance.target;
 
 				//   MyInstantiate(SManager.instance.useMagic.fireEffect, goFire, Quaternion.identity).Forget();
 				//Addressables.InstantiateAsync(SManager.instance.useMagic.fireEffect, goFire, Quaternion.identity);
-				if (SManager.instance.useMagic.fireType == SisMagic.FIREBULLET.RAIN)
+				if (SManager.instance.useMagic._moveSt.fireType == SisMagic.FIREBULLET.RAIN)
 				{
 					//山なりの弾道で打ちたいときとか射出角度決めれたらいいかも
 					//位置をランダムにすれば角度はどうでもいい説もある
@@ -744,7 +749,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				goFire = new Vector3(sb.firePosition.position.x + xRandom, sb.firePosition.position.y + yRandom, 0);//銃口から
 				
 			}
-
+			
 			//Debug.Log($"魔法の名前5{SManager.instance.useMagic.hiraganaName}");
 			//    MyInstantiate(SManager.instance.useMagic.effects, goFire, Quaternion.identity).Forget();//.Result;//発生位置をPlayer
 			//即座に発生する弾丸の一発目なら
@@ -767,7 +772,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				//disEnable = true;
 				bCount = 0;
 				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
-
+				//Debug.Log("dddw3d");
 				actionNum = 0;
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				SManager.instance.useMagic = null;
@@ -834,14 +839,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 						if (SManager.instance.target != null)
 						{
-							Debug.Log($"{SManager.instance.target.name}");
+						//	Debug.Log($"{SManager.instance.target.name}");
 							judgeSequence = i;
 							break;
 						}
 
 
 					}
-					Debug.Log($"s2");
+				//	Debug.Log($"s2");
 
 					//それでもターゲットがいなかったら補足行動
 					if (SManager.instance.target == null && !disEnable)
@@ -1355,7 +1360,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			if (condition.UseMagic == null)
 			{
-				Debug.Log("ghdks");
+
 				switch (condition.condition)
 				{
 					case FireCondition.ActJudge.斬撃属性:
@@ -1425,7 +1430,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.炎属性:
-						Debug.Log($"rrrr");
+
 						magicCanList = new List<SisMagic>();
 						for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 						{
@@ -1512,10 +1517,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 			else
 			{
-				if (judgeSequence != 2)
-				{
-					Debug.Log($"おかしなとき{condition.condition}{condition.UseMagic}{judgeSequence}");
-				}
+
 				if (condition.condition == FireCondition.ActJudge.回復行動に移行 || condition.condition == FireCondition.ActJudge.支援行動に移行)
 				{
 
@@ -2638,7 +2640,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						for (int i = 0; i < magicList.Count; i++)
 						{
-							if (magicList[i].fireType == Magic.FIREBULLET.ANGLE || magicList[i].fireType == Magic.FIREBULLET.RAIN)
+							if (magicList[i]._moveSt.fireType == Magic.FIREBULLET.ANGLE || magicList[i]._moveSt.fireType == Magic.FIREBULLET.RAIN)
 							{
 								removeNumber.Add(i);
 							}
@@ -2649,7 +2651,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						for (int i = 0; i < magicList.Count; i++)
 						{
-							if (magicList[i].speedV != 0)
+							if (magicList[i]._moveSt.speedV != 0)
 							{
 								removeNumber.Add(i);
 							}
@@ -2660,7 +2662,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						for (int i = 0; i < magicList.Count; i++)
 						{
-							if (magicList[i].fireType == Magic.FIREBULLET.ANGLE || magicList[i].fireType == Magic.FIREBULLET.RAIN)
+							if (magicList[i]._moveSt.fireType == Magic.FIREBULLET.ANGLE || magicList[i]._moveSt.fireType == Magic.FIREBULLET.RAIN)
 							{
 								removeNumber.Add(i);
 							}
@@ -2671,7 +2673,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						for (int i = 0; i < magicList.Count; i++)
 						{
-							if (magicList[i].fireType == Magic.FIREBULLET.RAIN)
+							if (magicList[i]._moveSt.fireType == Magic.FIREBULLET.RAIN)
 							{
 								removeNumber.Add(i);
 							}
@@ -2936,7 +2938,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					castEffect = null;
 				}
 
-
+			//	Debug.Log("dsdffg");
 				actionNum = 0;
 
 				waitCast = 0;

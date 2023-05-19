@@ -281,7 +281,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public void Brain()
         {
 
-			Debug.Log("fhs");
+
 			if (isStop || _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
 			{
 				disEnable = true;
@@ -1148,7 +1148,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				isPlay = false;
 				//即座にポジション判断できるように
 				reJudgeTime = 150;
-				Debug.Log("機能してますよー");
+				//Debug.Log("機能してますよー");
 
 				nowState = BrainAbility.SisterState.戦い;//この辺はまた後で設定できるようにしよう
 				_fire.StateInitialize(true);

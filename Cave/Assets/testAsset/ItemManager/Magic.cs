@@ -1,6 +1,6 @@
 ﻿using DarkTonic.MasterAudio;
 using MoreMountains.InventoryEngine;
-
+using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -59,6 +59,7 @@ public class Magic : Item
 
 	[Header("表示用攻撃力")]
 	public float displayAtk;
+
 	[Header("回復の基礎量")]
 	public float recoverBase;//回復
 
@@ -101,7 +102,6 @@ public class Magic : Item
     public float mValue;//攻撃するときリストの中からその都度モーション値設定。弾丸部分と爆発部分で威力違うとかできる
 						//二つ目のエフェクトの起動時とかに
 
-	public FIREBULLET fireType = FIREBULLET.HOMING;
 
 	/// <summary>
 	/// ヒット回数
@@ -109,58 +109,100 @@ public class Magic : Item
 
 	public int _hitLimit = 1;
 
+
+
 	[Header("貫通弾")]
 	///<summary>
 	///オンにすれば弾が貫通
 	///</summary>
 	public bool penetration = false;
 
-	[Header("弾丸の生存時間")]
-	/// <summary>
-	/// これだけ経つと弾丸が消える
-	/// </summary>
-	public float lifeTime = 3.0f;
 
-	[Header("初期速度")]
+	/// <summary>
+	/// 弾丸のステータスで変わんないとこだけまとめる
+	/// </summary>
+	 [Serializable]
+	public struct BMoveStatus
+    {
+
+	public FIREBULLET fireType;
+
+		[Header("弾丸の生存時間")]
+		/// <summary>
+		/// これだけ経つと弾丸が消える
+		/// </summary>
+		public float lifeTime;
+	
+		[Header("初期速度")]
 	///<summary>
 	///射出される速度
 	///</summary>
-	public float speedV = 10.0f;
+	public float speedV;
 
 	[Header("速度の加速度")]
 	/// <summary>
 	/// プラスにすればだんだん早く、マイナスにすれば遅く
 	/// </summary>
-	public float speedA = 0.0f;
+	public float speedA;
 
 	[Header("射出角度")]
 	///<summary>
 	///　最初に放たれる角度上とか斜めとか水平とか
 	///</summary>
-	public float angle = 0.0f;
+	public float angle;
 	[Header("追尾時間")]
 	/// <summary>
 	/// 追いかける時間。最初だけ追尾させれば方向だけ合わせる
 	/// </summary>
-	public float homingTime = 0.0f;
+	public float homingTime;
 
 	[Header("追尾の強さ")]
 	///<summary>
 	///追尾の強さ。プラスなら追尾。マイナスなら逸れる
 	///</summary>
-	public float homingAngleV = 180.0f;
+	public float homingAngleV;
 
 	[Header("追尾の加速度")]
 	/// <summary>
 	/// これがプラスだと時間ごとに追尾力が上がる。マイナスなら下がる
 	/// </summary>
-	public float homingAngleA = 20.0f;
+	public float homingAngleA;
 
 	[Header("射出開始までの時間")]
 	/// <summary>
 	/// これがあると一定秒数待つよ
 	/// </summary>
-	public float waitTime = 0f;
+	public float waitTime;
+
+	[Header("弾丸の回転")]
+	public float rotateVt;
+
+		[Header("回転オン")]
+		/// <summary>
+		/// 回転するか否か。真で回転
+		/// </summary>
+		public bool isRotate;
+
+		[Header("弾丸の拡大率")]
+		/// <summary>
+		/// 大きくしたり小さくしたり
+		/// </summary>
+		public Vector2 bulletScaleV;
+
+		[Header("弾丸の拡大の加速率")]
+		/// <summary>
+		/// だんだん大きくしたり
+		/// </summary>
+		public Vector2 bulletScaleA;
+	}
+
+	
+	public BMoveStatus _moveSt;
+
+
+
+
+
 
 	[Header("弾丸生成までの時間")]
 	/// <summary>
@@ -180,26 +222,9 @@ public class Magic : Item
 		/// </summary>
 		public Vector3 hitEffectScale = Vector3.one;*/
 
-	[Header("弾丸の回転")]
-	public float rotateVt = 360.0f;
 
-	[Header("回転オン")]
-	/// <summary>
-	/// 回転するか否か。真で回転
-	/// </summary>
-	public bool isRotate;
 
-	[Header("弾丸の拡大率")]
-	/// <summary>
-	/// 大きくしたり小さくしたり
-	/// </summary>
-	public Vector2 bulletScaleV = Vector3.zero;
 
-	[Header("弾丸の拡大の加速率")]
-	/// <summary>
-	/// だんだん大きくしたり
-	/// </summary>
-	public Vector2 bulletScaleA = Vector3.zero;
 
 	[Header("吹き飛ばすかどうか")]
 	/// <summary>
@@ -257,11 +282,7 @@ public class Magic : Item
 	/// </summary>
 	public AssetReference castBreak;
 
-	/*	[Header("発生エフェクト")]
-		/// <summary>
-		// 発生時のエフェクト
-		/// </summary>
-		public AssetReference fireEffect;*/
+
 	[Header("発生サウンド")]
 	[SoundGroup]
 	/// <summary>

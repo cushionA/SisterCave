@@ -254,7 +254,7 @@ public class SManager : MonoBehaviour
             //ついでにロックカーソルも
             targetCondition[i].TargetEffectCon(0);
         }   
-        Debug.Log($"かず{targetList.Count}d{targetCondition.Count}");
+        //Debug.Log($"かず{targetList.Count}d{targetCondition.Count}");
             //次は検出されなかった敵がまだ削除猶予範囲内にいるかどうかを確認
             for (int i = 0; i < LastCondition.Count; i++)
         {
@@ -295,7 +295,7 @@ public class SManager : MonoBehaviour
     /// <param name="next"></param>
     public void InitialAdd(List<GameObject> next)
     {
-        Debug.Log($"最初");
+       //// Debug.Log($"最初");
         targetList = new List<GameObject>(next);
         //センサーに検知された敵の情報取得
         for (int i = 0; i < targetList.Count; i++)
@@ -308,7 +308,7 @@ public class SManager : MonoBehaviour
             //ついでにロックカーソルも
             targetCondition[i].TargetEffectCon(0);
         }
-        Debug.Log($"最初の数{targetList.Count}dd{targetCondition.Count}");
+       // Debug.Log($"最初の数{targetList.Count}dd{targetCondition.Count}");
     }
 
     public void RemoveEnemy(GameObject enemy)
