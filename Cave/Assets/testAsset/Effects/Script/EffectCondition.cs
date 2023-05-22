@@ -16,7 +16,7 @@ public class EffectCondition
 
     ///<summary>
     /// どのステートで出てくるか
-    /// 最初にリスと作る時に割り振られる
+    /// 最初にリスト作る時に割り振られる
     /// あっちの選んだステートの数から上から順に割り振る
     /// </summary>
     public MoreMountains.CorgiEngine.EffectControllAbility.SelectState _useState;
@@ -30,6 +30,8 @@ public class EffectCondition
         Repeat,//そのステートの間繰り返す
         Wait,// 少し待って再生
         WaitRepeat,//少し待って繰り返し
+        Loop,//ずっと鳴らし続ける
+        WaitLoop,
         End//状態終わった時に
     }
 
@@ -41,7 +43,7 @@ public class EffectCondition
     public class StateEffect
     {
         [Tooltip("出すエフェクト")]
-        public GameObject _useEffect;
+        public ParticleSystem _useEffect;
 
         [Tooltip("Soonはすぐに再生、Repeatはステートの間ループ、Waitは待ってから出現")]
         public EmitType _emitType = EmitType.Soon;
@@ -51,6 +53,9 @@ public class EffectCondition
 
         [Tooltip("エフェクトが出たあとついてくるか")]
         public bool _isFollow;
+
+        [Tooltip(" 再生スピードがアニメの再生速度の影響を受けるかどうか")]
+        public bool _matchAnime;
     }
     [System.Serializable]
     /// <summary>
@@ -68,6 +73,9 @@ public class EffectCondition
 
         [Tooltip("エフェクトが出たあとついてくるか")]
         public bool _isFollow;
+
+        [Tooltip(" 再生スピードがアニメの再生速度の影響を受けるかどうか")]
+        public bool _matchAnime;
     }
 
     [Header("エフェクトの設定")]

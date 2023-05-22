@@ -68,6 +68,7 @@ ScriptedImporter:
     flipbookRows: 0
     flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -110,6 +111,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
   - name: AdditionalShield
@@ -132,7 +134,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 622, y: 423}
+    uvTransform: {x: 825, y: 612}
+    spritePosition: {x: 203, y: 189}
   - name: Hold
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -153,7 +156,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 1264, y: -665}
+    uvTransform: {x: 1865, y: 4}
+    spritePosition: {x: 601, y: 669}
   - name: Shield
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -174,7 +178,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 1016, y: 543}
+    uvTransform: {x: 1673, y: 612}
+    spritePosition: {x: 657, y: 69}
   - name: Hold_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -195,7 +200,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 998, y: 1270}
+    uvTransform: {x: 1673, y: 1643}
+    spritePosition: {x: 675, y: 373}
   - name: Shield_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -216,7 +222,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -315, y: -87}
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 319, y: 91}
   - name: Hold_2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -237,7 +244,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 1040, y: 1510}
+    uvTransform: {x: 1673, y: 1816}
+    spritePosition: {x: 633, y: 306}
   - name: Shield_2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -258,7 +266,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 723, y: -35}
+    uvTransform: {x: 825, y: 4}
+    spritePosition: {x: 102, y: 39}
   characterData:
     bones: []
     parts: []

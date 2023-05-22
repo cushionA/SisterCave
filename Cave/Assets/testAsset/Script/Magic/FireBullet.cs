@@ -7,6 +7,7 @@ using MoreMountains.Tools;
 using System.Collections.Generic;
 using UnityEngine.Jobs;
 using Unity.Jobs;
+using Unity.Collections;
 
 /// <summary>
 /// 最初にDamageOnTouchと回復量を初期化する。
@@ -71,7 +72,7 @@ public class FireBullet : MonoBehaviour
 
 	TransformAccessArray myTransform;
 
-
+	NativeArray<Vector3> result;
 
 
 	/// <summary>
@@ -151,16 +152,19 @@ public class FireBullet : MonoBehaviour
 
 
 
+
     private void Awake()
     {
         if(_user == MasicUser.Player || _user == MasicUser.Sister)
         {
 			InitializePlayerBullet();
         }
-
 		myTransform = new TransformAccessArray(0);
 		myTransform.Add(transform);
-    }
+		result = new NativeArray<Vector3>(1, Allocator.Persistent);
+		job.result = result;
+
+	}
 
 
     // === コード（Monobehaviour基本機能の実装） ================
@@ -241,6 +245,9 @@ public class FireBullet : MonoBehaviour
 		}
 		if(this.gameObject != null)
 		DamageCalc();
+
+
+
 	}
 
 
@@ -257,11 +264,14 @@ public class FireBullet : MonoBehaviour
 		BulletHit(other);
 	}
 
-    private void OnDisable()
+
+    private void OnDestroy()
     {
 		myTransform.Dispose();
-    }
+		result.Dispose();
+	}
 
+	
     void FixedUpdate()
 	{
 
@@ -378,17 +388,18 @@ public class FireBullet : MonoBehaviour
         {
 			job.targetLost = true;
         }
-		Debug.Log($"おああああ{job.ToString()}");
+		
 		job.movable = movable;
 		job.homing = homing;
-
+		job.time = Time.fixedDeltaTime;
+	//	job.homingAngle = transform.rotation; 
 		this._handler = this.job.Schedule(myTransform);
 		_handler.Complete();
 
 
 		if (movable)
 		{
-			rb.velocity = job._velocity;
+			rb.velocity = result[0];
 		}
         else
         {
@@ -430,7 +441,7 @@ public class FireBullet : MonoBehaviour
 		}
 
 
-		Debug.Log("ぇ");
+
 		//初期化完了
 		_initialized = true;
 	}

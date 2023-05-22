@@ -47,6 +47,7 @@ ScriptedImporter:
     flipbookRows: 0
     flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -89,6 +90,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
   - name: Bail
@@ -112,6 +114,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 116, y: -1183}
+    spritePosition: {x: 0, y: 0}
   - name: Neutral
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -133,6 +136,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: -409, y: -558}
+    spritePosition: {x: 0, y: 0}
   - name: Smile
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -154,6 +158,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 104, y: -680}
+    spritePosition: {x: 0, y: 0}
   - name: Hair
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -175,6 +180,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: -128, y: -1018}
+    spritePosition: {x: 0, y: 0}
   - name: Neck
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -196,6 +202,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: -421, y: -411}
+    spritePosition: {x: 0, y: 0}
   - name: Head
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -217,6 +224,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: -403, y: -680}
+    spritePosition: {x: 0, y: 0}
   - name: DRightArm
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -238,6 +246,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 140, y: -275}
+    spritePosition: {x: 0, y: 0}
   - name: URightArm
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -259,6 +268,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 63, y: -361}
+    spritePosition: {x: 0, y: 0}
   - name: HoldHand
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -280,6 +290,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 290, y: -714}
+    spritePosition: {x: 0, y: 0}
   - name: Chest
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -301,6 +312,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: -183, y: -389}
+    spritePosition: {x: 0, y: 0}
   - name: NeutralBody
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -322,6 +334,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: -371, y: -458}
+    spritePosition: {x: 0, y: 0}
   - name: URightLeg
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -343,6 +356,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 289, y: -724}
+    spritePosition: {x: 0, y: 0}
   - name: NeutralLeg
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -364,6 +378,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 56, y: 61}
+    spritePosition: {x: 0, y: 0}
   characterData:
     bones: []
     parts: []

@@ -78,6 +78,7 @@ ScriptedImporter:
     flipbookRows: 0
     flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -120,6 +121,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
   - name: "LongSword\uFF13"
@@ -142,7 +144,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -221, y: -129}
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 225, y: 133}
   - name: "LongSword\uFF12"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -163,7 +166,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -46, y: 423}
+    uvTransform: {x: 4, y: 804}
+    spritePosition: {x: 50, y: 381}
   - name: "LongSword\uFF11"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -184,7 +188,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -46, y: 251}
+    uvTransform: {x: 4, y: 527}
+    spritePosition: {x: 50, y: 276}
   characterData:
     bones: []
     parts:

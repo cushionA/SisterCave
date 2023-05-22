@@ -56,6 +56,7 @@ ScriptedImporter:
     flipbookRows: 0
     flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -98,6 +99,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData:
   - name: Naname
     originalName: 
@@ -1014,7 +1016,8 @@ ScriptedImporter:
     - {x: 82, y: 29}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -212, y: -25}
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 216, y: 29}
   - name: Side
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -3007,7 +3010,8 @@ ScriptedImporter:
     - {x: 182, y: 23}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -45, y: 665}
+    uvTransform: {x: 4, y: 880}
+    spritePosition: {x: 49, y: 215}
   - name: Front
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -4348,7 +4352,8 @@ ScriptedImporter:
     - {x: 38, y: 122}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -41, y: 408}
+    uvTransform: {x: 4, y: 516}
+    spritePosition: {x: 45, y: 108}
   rigSpriteImportData:
   - name: ScorpionSaber_0
     originalName: 
@@ -5263,6 +5268,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   - name: ScorpionSaber_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -7290,6 +7296,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 0, y: 872}
+    spritePosition: {x: 0, y: 0}
   - name: ScorpionSaber_2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -8343,6 +8350,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 0, y: 506}
+    spritePosition: {x: 0, y: 0}
   characterData:
     bones: []
     parts:

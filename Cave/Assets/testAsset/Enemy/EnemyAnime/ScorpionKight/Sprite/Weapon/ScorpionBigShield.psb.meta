@@ -47,6 +47,7 @@ ScriptedImporter:
     flipbookRows: 0
     flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -89,6 +90,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData:
   - name: SideHandle
     originalName: 
@@ -110,7 +112,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 897, y: 148}
+    uvTransform: {x: 1804, y: 993}
+    spritePosition: {x: 907, y: 845}
   - name: SideShield
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -131,7 +134,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -985, y: 1546}
+    uvTransform: {x: 4, y: 1577}
+    spritePosition: {x: 989, y: 31}
   - name: NanameHandle
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -152,7 +156,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 486, y: 286}
+    uvTransform: {x: 1414, y: 993}
+    spritePosition: {x: 928, y: 707}
   - name: NanameShield
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -173,7 +178,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -263, y: -425}
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 267, y: 429}
   - name: BackHandle
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -194,7 +200,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 322, y: -630}
+    uvTransform: {x: 1191, y: 4}
+    spritePosition: {x: 869, y: 634}
   - name: BackShield
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -215,7 +222,8 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -42, y: 615}
+    uvTransform: {x: 4, y: 993}
+    spritePosition: {x: 46, y: 378}
   rigSpriteImportData:
   - name: SideHandle
     originalName: 
@@ -238,6 +246,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 897, y: 148}
+    spritePosition: {x: 0, y: 0}
   - name: SideShield
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -259,6 +268,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: -985, y: 1546}
+    spritePosition: {x: 0, y: 0}
   - name: NanameHandle
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -280,6 +290,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 486, y: 286}
+    spritePosition: {x: 0, y: 0}
   - name: NanameShield
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -301,6 +312,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: -263, y: -425}
+    spritePosition: {x: 0, y: 0}
   - name: BackHandle
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -322,6 +334,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 322, y: -630}
+    spritePosition: {x: 0, y: 0}
   - name: BackShield
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -343,6 +356,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: -42, y: 615}
+    spritePosition: {x: 0, y: 0}
   characterData:
     bones: []
     parts: []

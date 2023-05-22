@@ -47,6 +47,7 @@ ScriptedImporter:
     flipbookRows: 0
     flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -89,6 +90,7 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
   - name: Head
@@ -490,7 +492,8 @@ ScriptedImporter:
     - {x: 0, y: 29}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 250, y: -2060}
+    uvTransform: {x: 442, y: 4}
+    spritePosition: {x: 192, y: 2064}
   - name: Hand
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -947,7 +950,8 @@ ScriptedImporter:
     - {x: 0, y: 26}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 167, y: 572}
+    uvTransform: {x: 303, y: 1759}
+    spritePosition: {x: 136, y: 1187}
   - name: DArm
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -1674,7 +1678,8 @@ ScriptedImporter:
     - {x: 65, y: 26}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 130, y: -306}
+    uvTransform: {x: 264, y: 1038}
+    spritePosition: {x: 134, y: 1344}
   - name: UArm
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -2391,7 +2396,8 @@ ScriptedImporter:
     - {x: 64, y: 1}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 517, y: -452}
+    uvTransform: {x: 649, y: 1216}
+    spritePosition: {x: 132, y: 1668}
   - name: Hand_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -2837,7 +2843,8 @@ ScriptedImporter:
     - {x: 0, y: 25}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -191, y: 196}
+    uvTransform: {x: 338, y: 1402}
+    spritePosition: {x: 529, y: 1206}
   - name: DArm_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -3712,7 +3719,8 @@ ScriptedImporter:
     - {x: 9, y: 79}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -190, y: -331}
+    uvTransform: {x: 338, y: 1038}
+    spritePosition: {x: 528, y: 1369}
   - name: UArm_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -4609,7 +4617,8 @@ ScriptedImporter:
     - {x: 81, y: 19}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 207, y: -470}
+    uvTransform: {x: 725, y: 1216}
+    spritePosition: {x: 518, y: 1686}
   - name: UBody
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -5061,7 +5070,8 @@ ScriptedImporter:
     - {x: 0, y: 31}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -131, y: -1601}
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 135, y: 1605}
   - name: DBody
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -5473,7 +5483,8 @@ ScriptedImporter:
     - {x: 31, y: 0}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -177, y: -754}
+    uvTransform: {x: 4, y: 557}
+    spritePosition: {x: 181, y: 1311}
   - name: NShoes
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -5861,7 +5872,8 @@ ScriptedImporter:
     - {x: 0, y: 27}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -621, y: 1706}
+    uvTransform: {x: 4, y: 1759}
+    spritePosition: {x: 625, y: 53}
   - name: DLeg
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -6431,7 +6443,8 @@ ScriptedImporter:
     - {x: 0, y: 29}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -106, y: 1095}
+    uvTransform: {x: 442, y: 1216}
+    spritePosition: {x: 548, y: 121}
   - name: ULeg
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -6992,7 +7005,8 @@ ScriptedImporter:
     - {x: 49, y: 29}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: -414, y: 336}
+    uvTransform: {x: 4, y: 1038}
+    spritePosition: {x: 418, y: 702}
   - name: NShoes_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -7371,7 +7385,8 @@ ScriptedImporter:
     - {x: 0, y: 28}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 289, y: 1803}
+    uvTransform: {x: 442, y: 1859}
+    spritePosition: {x: 153, y: 56}
   - name: DLeg_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -8063,7 +8078,8 @@ ScriptedImporter:
     - {x: 62, y: 29}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 455, y: 295}
+    uvTransform: {x: 627, y: 478}
+    spritePosition: {x: 172, y: 183}
   - name: ULeg_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -8645,7 +8661,8 @@ ScriptedImporter:
     - {x: 51, y: 17}
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 231, y: -231}
+    uvTransform: {x: 442, y: 478}
+    spritePosition: {x: 211, y: 709}
   characterData:
     bones:
     - name: bone_1

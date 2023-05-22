@@ -39,28 +39,31 @@ public struct FireJob : IJobParallelForTransform
 
 	float speed;
 	float homingRange;
+	public float time;
+
 
 
 	//-------------------------------------	出力
 
 	//０が速度、１が回転
-	//public NativeArray<Vector3> result;
-
-	public Vector3 _velocity;
+	public NativeArray<Vector3> result;
 
 
 	void IJobParallelForTransform.Execute(int index,TransformAccess _transform)
 	{
 
-		Debug.Log($"どぇ{_velocity}");
+		//direction とnewをjobでの影響
 		if (homing)
 		{
 			posTarget += Vector3.up;
 		}
-		Debug.Log($"hhhhhhhhhhhh");
+
 		MoveCalcu(_transform);
+
+
+
 		BulletStateControll(_transform);
-		
+
 	}
 
 	public void Initialize(Vector3 enemy,Vector3 myPosi)
@@ -90,7 +93,7 @@ public struct FireJob : IJobParallelForTransform
 				
 				break;
 		}
-	//	Debug.Log($"どぇ{_velocity}");
+	//	Debug.Log($"どぇ{result[0]}");
 
 	}
 
@@ -100,30 +103,30 @@ public struct FireJob : IJobParallelForTransform
 	void BulletStateControll(TransformAccess _transform)
     {
 
-		speed += _status.speedA * Time.fixedDeltaTime;
+		speed += _status.speedA * time;
 
 		// スケール計算
 		//どんどん大きくなったり小さくなったり
 		//小さくなりすぎたら破壊する
 		if (_status.bulletScaleV != Vector2.zero)
 		{
-			Vector2 changeScale = new Vector2();
-			changeScale.Set(Mathf.Abs(_transform.localScale.x), Mathf.Abs(_transform.localScale.y));
-			changeScale.x = (_status.bulletScaleV.x + changeScale.x) > 0 ? (_status.bulletScaleV.x + changeScale.x) : changeScale.x;
-			changeScale.y = (_status.bulletScaleV.y + changeScale.y) > 0 ? (_status.bulletScaleV.y + changeScale.y) : changeScale.y;
+			
+			memory.Set(Mathf.Abs(_transform.localScale.x), Mathf.Abs(_transform.localScale.y),_transform.localScale.z);
+			memory.x = (_status.bulletScaleV.x + memory.x) > 0 ? (_status.bulletScaleV.x + memory.x) : memory.x;
+			memory.y = (_status.bulletScaleV.y + memory.y) > 0 ? (_status.bulletScaleV.y + memory.y) : memory.y;
 
 
-			changeScale.x = _transform.localScale.x >= 0 ? changeScale.x : -changeScale.x;
-			_transform.localScale = changeScale;
+			memory.x = _transform.localScale.x >= 0 ? memory.x : -memory.x;
+			_transform.localScale = memory;
 		}
 		if (_status.bulletScaleA != Vector2.zero)
 		{
-			_status.bulletScaleV += _status.bulletScaleA * Time.fixedDeltaTime;
+			_status.bulletScaleV += _status.bulletScaleA * time;
         }
 		if (_status.isRotate)
 		{
 
-			memory.Set(0.0f, 0.0f, Time.fixedDeltaTime * _status.rotateVt);
+			memory.Set(0.0f, 0.0f, time * _status.rotateVt);
 			// スプライト画像の回転処理
 			_transform.rotation = Quaternion.Euler(_transform.rotation.eulerAngles +  memory);
 		}
@@ -134,17 +137,17 @@ public struct FireJob : IJobParallelForTransform
 	/// </summary>
 	void MoveCalcu(TransformAccess _transform)
     {
-		Debug.Log($"sdfssff");
+		
 		// ホーミング処理
 		//ここでターゲットない場合は直進に
 		if (targetLost)
 		{
 
 			// 角度から単位ベクトル
-			_velocity = new Vector2(Mathf.Cos((_transform.rotation.z +180) * Mathf.Deg2Rad), Mathf.Sin((_transform.rotation.z + 180) * Mathf.Deg2Rad));
+			//result[0] = new Vector2(Mathf.Cos((_transform.rotation.z +180) * Mathf.Deg2Rad), Mathf.Sin((_transform.rotation.z + 180) * Mathf.Deg2Rad));
 
 			//進行角度にとぶ
-			_velocity *= speed;
+			result[0] *= speed;
 		}
 		else
 		{
@@ -161,37 +164,54 @@ public struct FireJob : IJobParallelForTransform
 
 				memory.Set(speed, 0.0f, 0.0f);
 
-				_velocity = Quaternion.Euler(0.0f, 0.0f, _status.angle) * memory;
-
+				result[0] = Quaternion.Euler(0.0f, 0.0f, _status.angle) * memory;
 				if (Math.Sign(posTarget.x - _transform.position.x) > 0)
 				{
 					memory.Set(0, 0, 180 - _transform.rotation.z);
-					_velocity += memory;
+					result[0] += memory;
 				}
 			}
 			else if (_status.fireType == Magic.FIREBULLET.HOMING)
 			{
-
+				float s;
+	
 
 				//WaitTimeとHormingTimeを同じかそれ以下にすれば停止中だけ敵を狙うやつになる
 				if (homing)
 				{
-					homingAngle = Quaternion.LookRotation(posTarget - _transform.position);
-					_transform.rotation = homingAngle;
+					memory.Set(0, 0,Mathf.Atan2( posTarget.y - _transform.position.y, posTarget.x - _transform.position.x) * Mathf.Rad2Deg);
+					homingAngle = Quaternion.Euler(memory) * Quaternion.Euler(0.0f, 0.0f, _status.angle);
 
+				//	
 				}
-
+				s = homingAngle.eulerAngles.z;
+				if (_transform.rotation != homingAngle)
+				{
+					_transform.rotation = homingAngle;
+				}
 				if (!movable)
 				{
+					result[0] = Vector3.zero;
 					return;
 				}
+                if (!homing)
+                {
+					//方向は一致してる
+					//方向自体が途中で変わってる？
+				//	Debug.Log($"ｓｆ{homingAngle.eulerAngles.z}ededded{_transform.rotation.eulerAngles.z}");
 
+                }
+				
+				
 				// 対象物へ回転する
+				result[0] = (homingAngle * Vector3.forward) * speed;
 
-				_velocity = (homingAngle * Vector3.forward) * speed;
-
-				_velocity = Quaternion.Euler(0.0f, 0.0f, _status.angle) * _velocity;
-
+				result[0] = Quaternion.Euler(0.0f, 0.0f, _status.angle) * result[0];
+				//ベクトルは途中で変わってない
+				//でも進む角度と向きが違う
+				//角度だけどっかで変わってる？
+				//フレーム遅延のせいで前のフレームのresult受け取ってるはありそう
+				//Debug.Log($"ｓｆ{homingAngle.eulerAngles.z == s}");
 			}
 
 			//zホーミングって結局追尾する角度に制限かけるってことだよね
@@ -205,21 +225,22 @@ public struct FireJob : IJobParallelForTransform
 															posTarget.x - _transform.position.x) * Mathf.Rad2Deg;
 
 						float deltaAngle = Mathf.DeltaAngle(targetAngle, homingAngle);
-						float deltaHomingAngle = homingRange * Time.fixedDeltaTime;
+						float deltaHomingAngle = homingRange * time;
 						if (Mathf.Abs(deltaAngle) >= deltaHomingAngle)
 						{
 							homingAngle += (deltaAngle < 0.0f) ? +deltaHomingAngle : -deltaHomingAngle;
 						}
-						homingRange += (_status.homingAngleA * Time.fixedDeltaTime);
+						homingRange += (_status.homingAngleA * time);
 						homingAngle = Quaternion.Euler(0.0f, 0.0f, homingAngle);
 					}
 
 
 					//うごけない場合は角度だけ変更
 
-					_velocity	=  (homingAngle * Vector3.right) * speed;
+					result[0]	=  (homingAngle * Vector3.right) * speed;
 
 				}*/
+
 		}
 
 		if (!movable)
@@ -227,13 +248,13 @@ public struct FireJob : IJobParallelForTransform
 			return;
 		}
 		//弾丸を左右速度に応じて振り向かせる
-		if (_velocity.x > 0f && _transform.localScale.x < 0)
+		if (result[0].x > 0f && _transform.localScale.x < 0)
 		{
 			Vector3 theScale = _transform.localScale;
 			theScale.x = Mathf.Abs(theScale.x);
 			_transform.localScale = theScale;
 		}
-		else if (_velocity.x < 0f && _transform.localScale.x > 0)
+		else if (result[0].x < 0f && _transform.localScale.x > 0)
 		{
 			Vector3 theScale = _transform.localScale;
 			theScale.x = -1 * Mathf.Abs(theScale.x);
