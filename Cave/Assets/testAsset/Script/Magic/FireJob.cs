@@ -37,7 +37,7 @@ public struct FireJob : IJobParallelForTransform
 
 	//---------------------------変わるステータス
 
-	float speed;
+	public float speed;
 	float homingRange;
 	public float time;
 
@@ -102,9 +102,7 @@ public struct FireJob : IJobParallelForTransform
 	/// </summary>
 	void BulletStateControll(TransformAccess _transform)
     {
-
-		speed += _status.speedA * time;
-
+		
 		// スケール計算
 		//どんどん大きくなったり小さくなったり
 		//小さくなりすぎたら破壊する
@@ -123,6 +121,7 @@ public struct FireJob : IJobParallelForTransform
 		{
 			_status.bulletScaleV += _status.bulletScaleA * time;
         }
+
 		if (_status.isRotate)
 		{
 
@@ -142,12 +141,18 @@ public struct FireJob : IJobParallelForTransform
 		//ここでターゲットない場合は直進に
 		if (targetLost)
 		{
-
+			// オブジェクトの角度を取得
+			float angle = _transform.rotation.eulerAngles.z;
 			// 角度から単位ベクトル
-			//result[0] = new Vector2(Mathf.Cos((_transform.rotation.z +180) * Mathf.Deg2Rad), Mathf.Sin((_transform.rotation.z + 180) * Mathf.Deg2Rad));
+			Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
 
 			//進行角度にとぶ
-			result[0] *= speed;
+
+
+			//進行角度にとぶ
+			result[0] = direction * speed;
+			Debug.Log($"ffrefrf{result[0].x}");
+
 		}
 		else
 		{
@@ -173,22 +178,19 @@ public struct FireJob : IJobParallelForTransform
 			}
 			else if (_status.fireType == Magic.FIREBULLET.HOMING)
 			{
-				float s;
 	
 
 				//WaitTimeとHormingTimeを同じかそれ以下にすれば停止中だけ敵を狙うやつになる
 				if (homing)
 				{
+					
 					memory.Set(0, 0,Mathf.Atan2( posTarget.y - _transform.position.y, posTarget.x - _transform.position.x) * Mathf.Rad2Deg);
 					homingAngle = Quaternion.Euler(memory) * Quaternion.Euler(0.0f, 0.0f, _status.angle);
+					//角度いじるのはホーミングしてる間だけと約束
+					//前のコードではホーミングやめたせいでロテーションがリセットされてる？　
+                   _transform.rotation = homingAngle;
+				}
 
-				//	
-				}
-				s = homingAngle.eulerAngles.z;
-				if (_transform.rotation != homingAngle)
-				{
-					_transform.rotation = homingAngle;
-				}
 				if (!movable)
 				{
 					result[0] = Vector3.zero;
@@ -201,12 +203,20 @@ public struct FireJob : IJobParallelForTransform
 				//	Debug.Log($"ｓｆ{homingAngle.eulerAngles.z}ededded{_transform.rotation.eulerAngles.z}");
 
                 }
-				
-				
-				// 対象物へ回転する
-				result[0] = (homingAngle * Vector3.forward) * speed;
+				float angle = _transform.rotation.eulerAngles.z + _status.angle;
+				// 角度から単位ベクトル
+				Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
 
-				result[0] = Quaternion.Euler(0.0f, 0.0f, _status.angle) * result[0];
+				//進行角度にとぶ
+
+
+				//進行角度にとぶ
+				result[0] = direction * speed;
+
+				// 対象物へ回転する
+				//		result[0] = (homingAngle * Vector3.forward) * speed;
+
+				//			result[0] = Quaternion.Euler(0.0f, 0.0f, _status.angle) * result[0];
 				//ベクトルは途中で変わってない
 				//でも進む角度と向きが違う
 				//角度だけどっかで変わってる？

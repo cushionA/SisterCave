@@ -151,22 +151,24 @@ MonoBehaviour:
     m_RotationOrder: 4
   shock: 0
   mValue: 0
-  fireType: 1
+  _hitLimit: 1
   penetration: 1
-  lifeTime: 1.5
-  speedV: 0
-  speedA: 0
-  angle: 0
-  homingTime: 0
-  homingAngleV: 0
-  homingAngleA: 0
-  waitTime: 0
+  _moveSt:
+    fireType: 0
+    lifeTime: 1
+    speedV: 0
+    speedA: 0
+    angle: 0
+    homingTime: 0
+    homingAngleV: 0
+    homingAngleA: 0
+    waitTime: 0
+    rotateVt: 0
+    isRotate: 0
+    bulletScaleV: {x: 0, y: 0}
+    bulletScaleA: {x: 0, y: 0}
   delayTime: 0
   isChild: 0
-  rotateVt: 0
-  isRotate: 0
-  bulletScaleV: {x: 0, y: 0}
-  bulletScaleA: {x: 0, y: 0}
   isBlow: 0
   cBlow: 0
   isChaice: 1

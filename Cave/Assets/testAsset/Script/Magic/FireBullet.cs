@@ -190,14 +190,7 @@ public class FireBullet : MonoBehaviour
 			col = this.gameObject.MMGetComponentNoAlloc<Collider2D>();
 		}
 
-		//子供の弾丸は親のターゲット引き継ぐ
-		if (em._moveSt.fireType != Magic.FIREBULLET.STOP || !em.isChild)
-		{
-			//	Debug.Log($"標的設定{SManager.instance.restoreTarget.name}");
-			
-			//
-			direction = (owner.localScale.x < 0.0f) ? -1 : 1;
-		}
+
 
 
 
@@ -388,6 +381,12 @@ public class FireBullet : MonoBehaviour
         {
 			job.targetLost = true;
         }
+
+        if (em._moveSt.speedA != 0)
+        {
+			job.speed += (em._moveSt.speedA * Time.fixedDeltaTime);
+		}
+
 		
 		job.movable = movable;
 		job.homing = homing;
@@ -471,6 +470,8 @@ public class FireBullet : MonoBehaviour
 		{ _status = em._moveSt };
 
 		job.Initialize(target.transform.position, transform.position);
+
+		
 		_initialized = true;
 	}
 
