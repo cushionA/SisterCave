@@ -609,6 +609,33 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         #endregion
 
 
+        ///<summary>
+        /// エフェクトや音声をセットしたりの管理コード
+        /// </summary>
+        #region
+
+
+        ///<summary>
+        ///  再生する音やエフェクトをリセットする
+        ///  
+        /// </summary>
+        public void ResorceReset(List<EffectCondition>　_newList,List<PrefabPool> _newPrefab)
+        {
+            //エフェクトをリセット
+            particlesPool.CleanUp();
+            _stateList = _newList;
+
+            for (int i = 0;i < _newPrefab.Count;i++)
+            {
+               particlesPool.CreatePrefabPool(_newPrefab[i]);
+            }
+
+        }
+
+
+        #endregion
+
+
 
         #endregion
 

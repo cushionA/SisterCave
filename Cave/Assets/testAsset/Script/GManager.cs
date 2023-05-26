@@ -8,6 +8,8 @@ using UnityEngine.AddressableAssets;
 using MyCode;
 using MoreMountains.Tools;
 using MoreMountains.CorgiEngine;
+using PathologicalGames;
+using System.Linq;
 
 public class GManager : MonoBehaviour
 {
@@ -1131,8 +1133,204 @@ public class GManager : MonoBehaviour
 
 
     /// <summary>
-    /// コンボ制限をセットする。
+    /// 使用するエフェクトをパッケージしてセットする
     /// </summary>
+    public void EffectPackage()
+    {
+        EffectControllAbility ec = Player.MMGetComponentNoAlloc<EffectControllAbility>();
+        List<EffectCondition> _newList;
+        List<PrefabPool> _newPrefab;
+        
+
+        if(ec != null)
+        {
+
+            //武器
+            if (equipWeapon._useList.Any())
+            {
+                _newList = new List<EffectCondition>(equipWeapon._useList);
+                _newPrefab = new List<PrefabPool>(equipWeapon._usePrefab);
+            }
+            else
+            {
+                _newList = new List<EffectCondition>();
+                _newPrefab = new List<PrefabPool>();
+            }
+
+            //シールド
+            if (equipShield._useList.Any())
+            {
+                //newリストが空なら
+                if (!_newList.Any())
+                {
+                    _newList.AddRange(equipShield._useList);
+
+                }
+                else
+                { 
+                         bool isContain = false;
+
+                    for (int i=0;i< equipShield._useList.Count;i++)
+                    {
+                        for (int s = 0; s < _newList.Count; s++)
+                        {
+                            isContain = false;
+
+                            //新しいリストの中に現在検査中のステート(i)が含まれるか確認
+                            if (equipShield._useList[i]._useState == _newList[s]._useState)
+                            {
+                                isContain = true;
+
+                                //エフェクトがあるならエフェクトを追加
+                                if (equipShield._useList[i]._stateEffects.Any())
+                                {
+                                    _newList[s]._stateEffects.AddRange(equipShield._useList[i]._stateEffects);
+                                }
+
+                                //音があるなら音を追加
+                                if (equipShield._useList[i]._stateSounds.Any())
+                                {
+                                    _newList[s]._stateSounds.AddRange(equipShield._useList[i]._stateSounds);
+                                }
+                                s = _newList.Count;
+                            }
+                        }
+
+                        //含んでないステートなら保存する
+                        if (!isContain)
+                        {
+                            _newList.Add(equipShield._useList[i]);
+                        }
+                    }
+                }
+
+                if (equipShield._usePrefab.Any())
+                {
+                    _newPrefab.AddRange(equipShield._usePrefab);
+                }
+            }
+
+            //コア
+            if (equipCore._useList.Any())
+            {
+                //newリストが空なら
+                if (!_newList.Any())
+                {
+                    _newList.AddRange(equipCore._useList);
+
+                }
+                else
+                {
+                    bool isContain = false;
+
+                    for (int i = 0; i < equipCore._useList.Count; i++)
+                    {
+                        for (int s = 0; s < _newList.Count; s++)
+                        {
+                            isContain = false;
+
+                            //新しいリストの中に現在検査中のステート(i)が含まれるか確認
+                            if (equipCore._useList[i]._useState == _newList[s]._useState)
+                            {
+                                isContain = true;
+
+                                //エフェクトがあるならエフェクトを追加
+                                if (equipCore._useList[i]._stateEffects.Any())
+                                {
+                                    _newList[s]._stateEffects.AddRange(equipCore._useList[i]._stateEffects);
+                                }
+
+                                //音があるなら音を追加
+                                if (equipCore._useList[i]._stateSounds.Any())
+                                {
+                                    _newList[s]._stateSounds.AddRange(equipCore._useList[i]._stateSounds);
+                                }
+                                s = _newList.Count;
+                            }
+                        }
+
+                        //含んでないステートなら保存する
+                        if (!isContain)
+                        {
+                            _newList.Add(equipCore._useList[i]);
+                        }
+                    }
+                }
+                if (equipCore._usePrefab.Any())
+                {
+                    _newPrefab.AddRange(equipCore._usePrefab);
+                }
+            }
+
+
+            //封印
+            //魔法は装備してる魔法の属性とかレベルで設定して別に管理する
+            #region
+            /*
+            if (equipMagic.Any())
+            {
+
+                //newリストが空なら
+                if (!_newList.Any())
+                {
+                    _newList.AddRange(equipShield._useList);
+
+                }
+                else
+                {
+                    bool isContain = false;
+
+                    for (int i = 0; i < equipShield._useList.Count; i++)
+                    {
+
+                            isContain = false;
+
+                            //新しいリストの中に現在検査中のステート(i)が含まれるか確認
+                            if (equipShield._useList[i]._useState == EffectControllAbility.SelectState.Cast)
+                            {
+                                isContain = true;
+
+                                //エフェクトがあるならエフェクトを追加
+                                if (equipShield._useList[i]._stateEffects.Any())
+                                {
+                                    _newList[s]._stateEffects.AddRange(equipShield._useList[i]._stateEffects);
+                                }
+
+                                //音があるなら音を追加
+                                if (equipShield._useList[i]._stateSounds.Any())
+                                {
+                                    _newList[s]._stateSounds.AddRange(equipShield._useList[i]._stateSounds);
+                                }
+                                s = _newList.Count;
+                            }
+                            else if (equipShield._useList[i]._useState == EffectControllAbility.SelectState.Attack)
+                            {
+                                 
+                            }
+
+                        //含んでないステートなら保存する
+                        if (!isContain)
+                        {
+                            _newList.Add(equipShield._useList[i]);
+                        }
+                    }
+                }
+
+                _newPrefab.AddRange(equipShield._usePrefab);
+                _newList.AddRange(equipShield._useList);
+                _newPrefab.AddRange(equipShield._usePrefab);
+            }
+            */
+            #endregion
+
+            ec.ResorceReset(_newList,_newPrefab);
+        }
+
+
+
+    }
+
+
 
 
     #endregion

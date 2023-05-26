@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.InventoryEngine;
+using PathologicalGames;
 
 public class Equip : Item
 {
@@ -82,14 +83,16 @@ public class Equip : Item
     [Header("固有技の消費MP")]
     public List<float> artsMP;
 
-    [Header("使用する音声、最初はガード")]
-    [SoundGroup]
+
+
+
     ///<Summary>
     ///　使用する音声のリスト。
     ///　特殊な攻撃の音とか燃える音とか
     ///　Status.useSound[i]という形でアニメイベントで指定
+    ///　useListに入れ替え
     ///</Summary>
-    public List<string> useSound;
+  //  public List<string> useSound;
 
     public enum AttackType
     {
@@ -104,6 +107,7 @@ public class Equip : Item
 
     public float _weight;
 
-
+    public List<EffectCondition> _useList;
+    public List<PrefabPool> _usePrefab;
 
 }

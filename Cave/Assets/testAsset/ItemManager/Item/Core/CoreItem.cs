@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using MoreMountains.InventoryEngine;
+using System.Collections.Generic;
+using PathologicalGames;
 
 [Serializable]
 [CreateAssetMenu(fileName = "CoreItem", menuName = "CreateCore")]
@@ -71,11 +73,12 @@ public class CoreItem : InventoryItem
 
     //大怯み、吹っ飛び。基本均一でアーマー値を足す
 
-   // public float attackBuff = 1.0f;
+    // public float attackBuff = 1.0f;
     //攻撃バフ値
     //[HideInInspector] public float defBuff;防御力は直接加算
 
-
-  //  public enum 
+    public List<EffectCondition> _useList;
+    public List<PrefabPool> _usePrefab;
+    //  public enum 
 
 }

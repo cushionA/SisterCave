@@ -1,6 +1,8 @@
 ﻿using DarkTonic.MasterAudio;
 using MoreMountains.InventoryEngine;
+using PathologicalGames;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -372,4 +374,8 @@ public class Magic : Item
 	[Header("初期回転")]
 	///</Sammary>>
 	public Vector3 startRotation;
+
+
+	public List<EffectCondition> _useList;
+	public List<PrefabPool> _usePrefab;
 }
