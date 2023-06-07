@@ -1268,11 +1268,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-			int adType = 1;
+			int adType = 0;
 
             if (atV.disParry)
             {
-				adType = 2;
+				adType = 1;
             }
 
 			_atEf.EffectPrepare(status.atValue[attackNumber].EffectLevel,adType, status.atValue[attackNumber].mainElement, status.atValue[attackNumber].motionType);

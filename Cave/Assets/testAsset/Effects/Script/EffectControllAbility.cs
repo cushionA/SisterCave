@@ -848,12 +848,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             //エフェクトをリセット
             particlesPool.CleanUp();
-            _stateList = _newList;
+            _stateList.Clear();
+
+            if (_newList.Any())
+            {
+                _stateList = _newList;
+            }
 
             //ステートも再判断
             prevE.state = 10000;
             prevS.state = 10000;
 
+            if (!_newPrefab.Any())
+            {
+                return;
+            }
             for (int i = 0;i < _newPrefab.Count;i++)
             {
                particlesPool.CreatePrefabPool(_newPrefab[i]);

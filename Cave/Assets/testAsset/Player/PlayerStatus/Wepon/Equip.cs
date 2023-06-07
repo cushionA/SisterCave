@@ -224,6 +224,7 @@ public class Equip : Item
     [Header("通常ムーブエフェクトのプレハブ")]
     public PrefabPool[] _usePrefab;
 
+
     [Foldout("サウンドとエフェクト")]
     [Header("固有エフェクトとサウンドリスト")]
     public MoreMountains.CorgiEngine.AtEffectCon.EffectAndSound[] AttackEffect;

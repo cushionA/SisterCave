@@ -1347,17 +1347,17 @@ public class GManager : MonoBehaviour
             //シールド
             if (equipShield.AttackEffect.Any())
             {
-
                _newList.AddRange(equipShield.AttackEffect);
 
+            }
 
-                if (equipShield._usePrefab.Any())
-                {
-                    _newPrefab.AddRange(equipShield.AttackPrefab);
-                }
+            if (equipShield._usePrefab.Any())
+            {
+                _newPrefab.AddRange(equipShield.AttackPrefab);
             }
             ac.ATResorceReset(_newList,_newPrefab);
             _newPrefab.Clear();
+            _newList.Clear();
         }
 
 

@@ -911,7 +911,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 //osixtuko = 5;
             }
 
-            int adType = 1;
+            int adType = 0;
 
 
 

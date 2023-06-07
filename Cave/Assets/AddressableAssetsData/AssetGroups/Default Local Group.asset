@@ -441,10 +441,6 @@ MonoBehaviour:
     m_Address: Assets/testAsset/Effects/Effect/SisterHeal/RecoverEffect.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: ee761b3355ccfda45a75989e965b9896
-    m_Address: ParryEffectA
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: e96482c459afbc14ea18f40c2e2f30cc
     m_Address: Assets/testAsset/Effects/Effect/Bullet/SHolyBulletHit.prefab
     m_ReadOnly: 0
@@ -815,14 +811,6 @@ MonoBehaviour:
     m_Address: Assets/testAsset/Player/PlayerStatus/TestPlayerStatus.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 845e1d3ae0ca7654a8ea442aaba3f72a
-    m_Address: Assets/testAsset/Effects/Effect/Action/DarkPiller.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 344495aab0b517b4fbb5693968ae2143
-    m_Address: DisParriableEffect
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: b1e24df2591dcb740abd0c43cf86b8c9
     m_Address: Assets/testAsset/Sound/MonsterSpecific/DisenableParry.wav
     m_ReadOnly: 0
@@ -901,11 +889,6 @@ MonoBehaviour:
     m_Address: Assets/testAsset/Enemy/EnemyAnime/Porter/Animation/Attack1.anim
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: f30877ff02a634e40b87cac2dae723a5
-    m_Address: 'BlockingEffect '
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - AttackEffect
   - m_GUID: fe3535ca0ff4d514d9133b4454bbb102
     m_Address: Assets/testAsset/Enemy/EnemyAnime/Porter/Sprite/Porter.psb
     m_ReadOnly: 0
@@ -1100,14 +1083,6 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: 37c6e5e57dfe6ed41a37f81dcf48bf9c
     m_Address: Assets/testAsset/Sister/SisterItem/SisterMagic/Attack/MainBullet/Fire/FireNeedle.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 7b1007415e55ed74ca1a4091e427bd0d
-    m_Address: Assets/testAsset/Sound/Common/Condition/stanSound.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 3d6d84509d0852d44b77ff8a4bdb74f1
-    m_Address: Assets/testAsset/Sound/Common/Condition/GuardBreake.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
