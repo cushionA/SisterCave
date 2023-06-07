@@ -1034,66 +1034,7 @@ GManager.instance.isGBreak = false;
 
     }*/
 
-    void GuardBreake()
-    {
-        GManager.instance.isGBreak = false;
-    }
 
-    /// <summary>
-    /// エフェクトを発生させるメソッド。
-    /// エフェクトを発生させる瞬間位置を変えてその位置をアニメに利用させる
-    /// あるいはアニメイベントで呼び出したエフェクト自体を動かす
-    /// </summary>
-    public void EffectController(string name)
-    {
-        Transform place = eContoroller.transform;
-        Addressables.InstantiateAsync($"{name}",place.position,place.rotation);
-
-    }
-    public void AnimeSound(string useSoundName)
-    {
-
-            GManager.instance.PlaySound(useSoundName, transform.position);
-
-
-    }
-    public void AnimeChaise(string useSoundName)
-    {
-
-            GManager.instance.FollowSound(useSoundName, transform);
-
-    }
-    public void WeaponSound(int useSoundNum, bool isChase = false)
-    {
-        if (!isChase)
-        {
-            GManager.instance.PlaySound(GManager.instance.equipWeapon.useSound[useSoundNum], transform.position);
-        }
-        else
-        {
-            GManager.instance.FollowSound(GManager.instance.equipWeapon.useSound[useSoundNum], transform);
-        }
-
-    }
-    public void LeftSound(int useSoundNum, bool isChase = false)
-    {
-        if (!isChase)
-        {
-            GManager.instance.PlaySound(GManager.instance.equipShield.useSound[useSoundNum], transform.position);
-        }
-        else
-        {
-            GManager.instance.FollowSound(GManager.instance.equipShield.useSound[useSoundNum], transform);
-        }
-    }
-    public void StepSound()
-    {
-        GManager.instance.PlaySound("NAFootStep", transform.position);
-        if (GManager.instance.isWater)
-        {
-            GManager.instance.PlaySound("WaterStep", transform.position);
-        }
-    }
 
 }
 

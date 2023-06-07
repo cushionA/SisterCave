@@ -11,6 +11,7 @@ using MoreMountains.CorgiEngine;
 using PathologicalGames;
 using System.Linq;
 
+
 public class GManager : MonoBehaviour
 {
     public static GManager instance = null;
@@ -359,10 +360,6 @@ public class GManager : MonoBehaviour
 
         _anim = Player.GetComponent<Animator>();
 
-        //     myAnimatorOverride = new AnimatorOverrideController(_anim.runtimeAnimatorController);
-        //   _anim.runtimeAnimatorController = myAnimatorOverride.runtimeAnimatorController;
-
-      //  hp = pc.ReturnHealth();
 
         hpSl = HpSlider.GetComponent<RectTransform>();
         mpSl = MpSlider.GetComponent<RectTransform>();
@@ -1112,8 +1109,10 @@ public class GManager : MonoBehaviour
 
             }
         }
-        
 
+        //エフェクトも入れ替え
+        EffectPackage();
+        
     }
 
     /// <summary>
@@ -1138,12 +1137,13 @@ public class GManager : MonoBehaviour
     public void EffectPackage()
     {
         EffectControllAbility ec = Player.MMGetComponentNoAlloc<EffectControllAbility>();
-        List<EffectCondition> _newList;
+
         List<PrefabPool> _newPrefab;
         
 
         if(ec != null)
-        {
+        {       
+            List<EffectCondition> _newList;
 
             //武器
             if (equipWeapon._useList.Any())
@@ -1170,7 +1170,7 @@ public class GManager : MonoBehaviour
                 { 
                          bool isContain = false;
 
-                    for (int i=0;i< equipShield._useList.Count;i++)
+                    for (int i=0;i < equipShield._useList.Length;i++)
                     {
                         for (int s = 0; s < _newList.Count; s++)
                         {
@@ -1324,10 +1324,92 @@ public class GManager : MonoBehaviour
             #endregion
 
             ec.ResorceReset(_newList,_newPrefab);
+            _newPrefab.Clear();
+        }
+
+        AtEffectCon ac = Player.MMGetComponentNoAlloc<AtEffectCon>();
+
+        if (ac != null)
+        {
+            List<MoreMountains.CorgiEngine.AtEffectCon.EffectAndSound> _newList;
+            //武器
+            if (equipWeapon.AttackEffect.Any())
+            {
+                _newList = new List<AtEffectCon.EffectAndSound>(equipWeapon.AttackEffect);
+                _newPrefab = new List<PrefabPool>(equipWeapon.AttackPrefab);
+            }
+            else
+            {
+                _newList = new List<AtEffectCon.EffectAndSound>();
+                _newPrefab = new List<PrefabPool>();
+            }
+
+            //シールド
+            if (equipShield.AttackEffect.Any())
+            {
+
+               _newList.AddRange(equipShield.AttackEffect);
+
+
+                if (equipShield._usePrefab.Any())
+                {
+                    _newPrefab.AddRange(equipShield.AttackPrefab);
+                }
+            }
+            ac.ATResorceReset(_newList,_newPrefab);
+            _newPrefab.Clear();
         }
 
 
+        //魔法の設定
 
+    }
+
+    /// <summary>
+    /// 魔法装備変更時にエフェクトを積みなおす
+    /// </summary>
+    /// <param name="ac"></param>
+    public void MagicEffectSet()
+    {
+        AtEffectCon ac = Player.MMGetComponentNoAlloc<AtEffectCon>();
+        List<PrefabPool> _newPrefab = new List<PrefabPool>();
+
+        //魔法の設定
+        if (equipMagic.Any())
+        {
+            for (int i = 0;i < equipMagic.Count;i++)
+            {
+
+                //使用する魔法のエフェクトをパッキング
+                for (int s = 0; s < equipMagic[i]._usePrefab.Length; s++)
+                {
+
+                    _newPrefab.Add(equipMagic[i]._usePrefab[s]);
+                }
+
+                //ここから子弾見ていく
+                Magic magi = equipMagic[i];
+
+                //子どもがなくなるまで
+                while (magi.childM != null)
+                {
+                    for (int s = 0; s < magi.childM._usePrefab.Length; s++)
+                    {
+
+                        _newPrefab.Add(equipMagic[i]._usePrefab[s]);
+                    }
+                    magi = magi.childM;
+                }
+
+                ac.MagicResorceReset(_newPrefab);
+
+                _newPrefab.Clear();
+            }
+        }
+        else
+        {
+            ac.MagicResorceReset(null);
+        }
     }
 
 
@@ -1356,94 +1438,7 @@ public class GManager : MonoBehaviour
         pc.HPReset();
     }
 
-    //いらないやつ
-    #region
-    /*
-    /// <summary>
-    /// 何度も当たり判定が検出されるのを防ぐためのもの
-    /// </summary>
-    public void DamageAvoid()
-    {
-        if (isDamage)
-        {
-            avoidTime += Time.fixedDeltaTime;
-            pc.SetLayer(10);
-            if (avoidTime >= 0.1)
-            {
-                isDamage = false;
-                avoidTime = 0;
-                pc.SetLayer(11);
-            }
-        }
-    }
 
-    /// <summary>
-    /// ノックバックする。
-    /// </summary>
-    public void NockBack()
-    {
-        if ((blowDown || isGBreak) && isFalter)
-        {
-            isFalter = false;
-            isAnimeStart = false;
-        }
-        if (isDown && !blowDown && isFalter)
-        {
-            if (!isAnimeStart)
-            {
-                //isFalter = true;
-                isAnimeStart = true;
-                _anim.Play("TLongSwordFalter");
-            }
-            else if (!CheckEnd("TLongSwordFalter"))
-            {
-                isDown = false;
-                isAnimeStart = false;
-                isFalter = false;
-                
-
-            }
-
-
-        }
-    }
-    /// <summary>
-    /// 攻撃をはじかれノックバックする。
-    /// </summary>
-    public void Parry()
-    {
-        if (isBounce && (blowDown || isFalter))
-        {
-            isBounce = false;
-            isAnimeStart = false;
-
-
-
-        }
-        if (isBounce && !blowDown)
-        {
-            if (!isAnimeStart)
-            {
-                isAttack = false;
-                isDown = true;
-                //isFalter = true;
-                isAnimeStart = true;
-                _anim.Play("Bounce");
-                //Debug.Log("弾かれ");
-            }
-            else if (!CheckEnd("Bounce"))
-            {
-                isDown = false;
-                isAnimeStart = false;
-                isBounce = false;
-            }
-        }
-    }
-
-    */
-
-
-    #endregion
 
 
     ///<summary>

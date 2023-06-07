@@ -209,21 +209,24 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void ParryStart(int num = 2)
         {
          //   Debug.Log($"ｊｃｌ7{_movement.CurrentState}");
-            _movement.ChangeState(CharacterStates.MovementStates.Parry);
+            
             _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
-        //    
+ 
             //レイヤーも回避レイヤーに
             //スタミナ回復とかも持たせるか
             parryNumber = num;
             if(num == 1 && isPlayer)
             {
+                _movement.ChangeState(CharacterStates.MovementStates.justGuard);
                 blocking = true;
-                GManager.instance.PlaySound(MyCode.SoundManager.instance.blockingSound, transform.position);
+              //  GManager.instance.PlaySound(MyCode.SoundManager.instance.blockingSound, transform.position);
             }
             else
             {
+                _movement.ChangeState(CharacterStates.MovementStates.Parry);
                 blocking = false;
-                GManager.instance.PlaySound(MyCode.SoundManager.instance.parrySound, transform.position);
+              //  GManager.instance.PlaySound(MyCode.SoundManager.instance.parrySound, transform.position);
+                
             }
             ParryJudgeEnd();
             ParryAvoid();

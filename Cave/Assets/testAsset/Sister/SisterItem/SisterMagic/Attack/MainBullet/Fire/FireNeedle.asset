@@ -88,31 +88,19 @@ MonoBehaviour:
   UseDefaultSoundsIfNull: 1
   _sortNumber: 0
   selectable: 0
-  mType: 0
-  atType: 0
   magicLevel: 1
+  magicElement: 0
+  phyElement: 0
+  mType: 0
   phyBase: 0
   holyBase: 0
   darkBase: 0
   fireBase: 60
   thunderBase: 0
-  phyAtk: 0
-  holyAtk: 0
-  darkAtk: 0
-  fireAtk: 65
-  thunderAtk: 0
-  displayAtk: 80
+  displayAtk: 54
   recoverBase: 0
-  recoverAmount: 0
-  castTime: 2.3
-  useMP: 30
-  effectTime: 0
-  effectNow: 0
-  effects:
-    m_AssetGUID: f51b8be1e443bff43b9c9f5379e9a059
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  shock: 7
+  mValue: 0.9
   powerCurve:
     serializedVersion: 2
     m_Curve: []
@@ -149,10 +137,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shock: 7
-  mValue: 0.9
-  _hitLimit: 1
-  penetration: 1
+  effectTime: 0
+  phyAtk: 0
+  holyAtk: 0
+  darkAtk: 0
+  fireAtk: 65
+  thunderAtk: 0
+  recoverAmount: 0
+  castTime: 2.3
+  useMP: 30
+  effects: {fileID: 0}
+  flashEffect: {fileID: 0}
+  hitEffect: {fileID: 0}
+  childM: {fileID: 0}
+  _usePrefab: []
   _moveSt:
     fireType: 1
     lifeTime: 5
@@ -167,39 +165,25 @@ MonoBehaviour:
     isRotate: 0
     bulletScaleV: {x: 0, y: 0}
     bulletScaleA: {x: 0, y: 0}
-  delayTime: 0.4
-  isChild: 0
-  isBlow: 0
-  cBlow: 0
   isChaice: 0
-  blowPower: {x: 0, y: 0}
   bulletNumber: 4
   VRandom: 15
   HRandom: 5
-  castEffect:
-    m_AssetGUID: df5eeaefb9c8168468981f3f8a76febb
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  castBreak:
-    m_AssetGUID: 0f99d88e486595b4d8132ebc81364051
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  delayTime: 0.4
+  startRotation: {x: 0, y: 0, z: 0}
+  effectNow: 0
+  isChild: 0
+  penetration: 1
+  isBlow: 0
+  cBlow: 0
+  _hitLimit: 1
+  blowPower: {x: 0, y: 0}
   fireSound: NeedleSet
   moveSound: NeedleFly
   existSound: 
   hitSound: LightStab
   FireType: 1
   castType: 1
-  hitEffect:
-    m_AssetGUID: 
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  isHit: 0
-  attackType: 32
-  startRotation: {x: 0, y: 0, z: 0}
   sType: 0
   isExprode: 0
   isSlip: 0

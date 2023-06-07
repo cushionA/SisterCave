@@ -10,18 +10,8 @@ public class EffectCondition
 {
 
 
-
-    [Header("再生するステート")]
-    [MMInspectorGroup("再生条件", true)]
-
-    ///<summary>
-    /// どのステートで出てくるか
-    /// 最初にリスト作る時に割り振られる
-    /// あっちの選んだステートの数から上から順に割り振る
-    /// </summary>
-    public MoreMountains.CorgiEngine.EffectControllAbility.SelectState _useState;
-
-
+    //定義
+    #region
 
 
     public enum EmitType
@@ -32,8 +22,10 @@ public class EffectCondition
         WaitRepeat,//少し待って繰り返し
         Loop,//ずっと鳴らし続ける
         WaitLoop,
-        End//状態終わった時に
+        End,//状態終わった時に
+        None//再生しない
     }
+
 
     [System.Serializable]
     /// <summary>
@@ -56,7 +48,16 @@ public class EffectCondition
 
         [Tooltip(" 再生スピードがアニメの再生速度の影響を受けるかどうか")]
         public bool _matchAnime;
+
+
+        [Tooltip("親の方向を無視するかどうか")]
+        /// <summary>
+        /// 親の方向無視するなら
+        /// </summary>
+        public bool ignoreDirection;
     }
+
+
     [System.Serializable]
     /// <summary>
     /// サウンドの詳細データ。
@@ -76,20 +77,42 @@ public class EffectCondition
 
         [Tooltip(" 再生スピードがアニメの再生速度の影響を受けるかどうか")]
         public bool _matchAnime;
+
     }
 
+    #endregion
+
+
+
+    [Header("再生するステート")]
+    ///<summary>
+    /// どのステートで出てくるか
+    /// 最初にリスト作る時に割り振られる
+    /// あっちの選んだステートの数から上から順に割り振る
+    /// </summary>
+    public MoreMountains.CorgiEngine.EffectControllAbility.SelectState _useState;
+
+    /// <summary>
+    /// 歩行とかで共通の足音やらを使うならそっちで
+    /// </summary>
+    [Header("共通エフェクトを使用するか")]
+    [Tooltip("共通の設定を使用するか")]
+    public bool generalEffect;
+
     [Header("エフェクトの設定")]
-    [MMInspectorGroup("エフェクトの設定", true)]
-    [MMCondition("_effectOn", true)]
     [Tooltip("エフェクトの設定リスト")]
     public List<StateEffect> _stateEffects;
 
 
+
+    /// <summary>
+    /// 歩行とかで共通の足音やらを使うならそっちで
+    /// </summary>
+    [Header("共通サウンドを使用するか")]
+    [Tooltip("共通の設定を使用するか")]
+    public bool generalSound;
+
     [Header("サウンドの設定")]
-    [MMInspectorGroup("サウンドの設定", true)]
-
-
-    [MMCondition("_soundOn",false)]
     [Tooltip("音の設定リスト")]
     public List<StateSound> _stateSounds;
 

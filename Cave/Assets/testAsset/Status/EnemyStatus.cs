@@ -23,6 +23,7 @@ public class EnemyStatus : CharacterStatus
 	//雷
 	public float thunderAtk;
 
+
 	public float phyCut;//カット率
 	public float holyCut;//光。
 	public float darkCut;//闇。
@@ -44,11 +45,13 @@ public class EnemyStatus : CharacterStatus
 	 public bool isMetal;//鎧着てるかどうか
 
 
+	public Equip.GuardType shieldType;
 
-	/// <summary>
-	/// 体の大きさ
-	/// </summary>
-	public MyCode.SoundManager.SizeTag _bodySize;
+
+    /// <summary>
+    /// 体の大きさ
+    /// </summary>
+    public MyCode.SoundManager.SizeTag _bodySize;
 
 	[Header("加速速度")]
 	///<summary>

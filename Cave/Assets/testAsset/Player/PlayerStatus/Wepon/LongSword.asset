@@ -678,6 +678,43 @@ MonoBehaviour:
   - MetalSGuard
   atType: 2
   _weight: 0
+  _useList:
+  - _useState: 0
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 0
+    _stateSounds: []
+  _usePrefab:
+  - prefab: {fileID: 0}
+    preloadAmount: 0
+    preloadTime: 0
+    preloadFrames: 0
+    preloadDelay: 0
+    limitInstances: 0
+    limitAmount: 0
+    limitFIFO: 0
+    cullDespawned: 0
+    cullAbove: 0
+    cullDelay: 0
+    cullMaxPerPass: 0
+    _logMessages: 0
+    originalScal: {x: 0, y: 0, z: 0}
+    spawnPool: {fileID: 0}
+  AttackEffect:
+  - callNum: 0
+    effect:
+      _useEffect: {fileID: 0}
+      _emitType: 0
+      _emitPosition: {fileID: 0}
+      _isFollow: 0
+      _matchAnime: 0
+      ignoreDirection: 0
+    sound:
+      _useSound: 
+      _playType: 0
+      _isFollow: 0
+      _matchAnime: 0
+  AttackPrefab: []
   isTwin: 0
   isMagic: 0
   MagicAssistBase: 100
@@ -719,7 +756,8 @@ MonoBehaviour:
   atAromor: 20
   chargeRes: 1.3
   sValue:
-  - x: 0.65
+  - EffectLevel: 0
+    x: 0.65
     y: 5
     z: 5
     isCombo: 0
@@ -728,11 +766,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 13
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.1
@@ -744,7 +777,10 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - x: 0.7
+    mainElement: 0
+    subElement: 0
+  - EffectLevel: 0
+    x: 0.7
     y: 8
     z: 8
     isCombo: 0
@@ -753,11 +789,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 13
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.1
@@ -769,8 +800,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    subElement: 0
   bValue:
-  - x: 1
+  - EffectLevel: 0
+    x: 1
     y: 10
     z: 10
     isCombo: 0
@@ -779,11 +813,6 @@ MonoBehaviour:
     type: 1
     blowPower: {x: 0, y: 0}
     useStamina: 18
-    attackEffect:
-      m_AssetGUID: f315a38a9c056f64b8bca44fe9689f06
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.2
@@ -795,7 +824,10 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - x: 1.05
+    mainElement: 0
+    subElement: 0
+  - EffectLevel: 0
+    x: 1.05
     y: 13
     z: 15
     isCombo: 0
@@ -804,11 +836,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 18
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.2
@@ -820,8 +847,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    subElement: 0
   chargeValue:
-  - x: 1.2
+  - EffectLevel: 0
+    x: 1.2
     y: 15
     z: 15
     isCombo: 0
@@ -830,11 +860,6 @@ MonoBehaviour:
     type: 1
     blowPower: {x: 0, y: 0}
     useStamina: 23
-    attackEffect:
-      m_AssetGUID: f315a38a9c056f64b8bca44fe9689f06
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.25
@@ -846,7 +871,10 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - x: 1.25
+    mainElement: 0
+    subElement: 0
+  - EffectLevel: 0
+    x: 1.25
     y: 15
     z: 15
     isCombo: 0
@@ -855,11 +883,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 23
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.25
@@ -871,8 +894,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    subElement: 0
   airValue:
-  - x: 0.6
+  - EffectLevel: 0
+    x: 0.6
     y: 5
     z: 7
     isCombo: 0
@@ -881,11 +907,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 12
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.2
@@ -897,7 +918,10 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - x: 0.65
+    mainElement: 0
+    subElement: 0
+  - EffectLevel: 0
+    x: 0.65
     y: 6
     z: 7
     isCombo: 0
@@ -906,11 +930,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 12
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.2
@@ -922,8 +941,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    subElement: 0
   strikeValue:
-  - x: 1.1
+  - EffectLevel: 0
+    x: 1.1
     y: 15
     z: 15
     isCombo: 0
@@ -932,11 +954,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 100, y: 0}
     useStamina: 25
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.2
@@ -948,8 +965,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    subElement: 0
   twinSValue:
-  - x: 0.8
+  - EffectLevel: 0
+    x: 0.8
     y: 10
     z: 10
     isCombo: 0
@@ -958,11 +978,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 15
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.15
@@ -974,7 +989,10 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - x: 0.83
+    mainElement: 0
+    subElement: 0
+  - EffectLevel: 0
+    x: 0.83
     y: 11
     z: 11
     isCombo: 0
@@ -983,11 +1001,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 15
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.1
@@ -999,7 +1012,10 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - x: 0.88
+    mainElement: 0
+    subElement: 0
+  - EffectLevel: 0
+    x: 0.88
     y: 12
     z: 12
     isCombo: 0
@@ -1008,11 +1024,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 10
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.1
@@ -1024,8 +1035,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    subElement: 0
   twinBValue:
-  - x: 1.15
+  - EffectLevel: 0
+    x: 1.15
     y: 13
     z: 13
     isCombo: 0
@@ -1034,11 +1048,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 20
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.1
@@ -1050,7 +1059,10 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - x: 1.2
+    mainElement: 0
+    subElement: 0
+  - EffectLevel: 0
+    x: 1.2
     y: 13
     z: 14
     isCombo: 0
@@ -1059,11 +1071,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 20
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.1
@@ -1075,8 +1082,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    subElement: 0
   twinChargeValue:
-  - x: 1.35
+  - EffectLevel: 0
+    x: 1.35
     y: 16
     z: 18
     isCombo: 0
@@ -1085,11 +1095,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 30, y: 90}
     useStamina: 25
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.08
@@ -1101,7 +1106,10 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - x: 0.95
+    mainElement: 0
+    subElement: 0
+  - EffectLevel: 0
+    x: 0.95
     y: 20
     z: 9
     isCombo: 0
@@ -1110,11 +1118,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 28
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 2
     _moveDuration: 0.1
@@ -1126,8 +1129,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    subElement: 0
   twinAirValue:
-  - x: 0.75
+  - EffectLevel: 0
+    x: 0.75
     y: 8
     z: 8
     isCombo: 0
@@ -1136,11 +1142,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 15
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.2
@@ -1152,7 +1153,10 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - x: 0.75
+    mainElement: 0
+    subElement: 0
+  - EffectLevel: 0
+    x: 0.75
     y: 8
     z: 8
     isCombo: 0
@@ -1161,11 +1165,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 15
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.2
@@ -1177,8 +1176,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    subElement: 0
   twinStrikeValue:
-  - x: 1.15
+  - EffectLevel: 0
+    x: 1.15
     y: 15
     z: 20
     isCombo: 0
@@ -1187,11 +1189,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 100, y: 0}
     useStamina: 30
-    attackEffect:
-      m_AssetGUID: 1409b5d0e3a22d34a95e1cf178dc0273
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.2
@@ -1203,8 +1200,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    subElement: 0
   artsValue:
-  - x: 0.35
+  - EffectLevel: 0
+    x: 0.35
     y: 15
     z: 50
     isCombo: 0
@@ -1213,11 +1213,6 @@ MonoBehaviour:
     type: 2
     blowPower: {x: 0, y: 0}
     useStamina: 20
-    attackEffect:
-      m_AssetGUID: 
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.15
@@ -1229,7 +1224,10 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - x: 1.35
+    mainElement: 0
+    subElement: 0
+  - EffectLevel: 0
+    x: 1.35
     y: 20
     z: 15
     isCombo: 0
@@ -1238,11 +1236,6 @@ MonoBehaviour:
     type: 0
     blowPower: {x: 120, y: 40}
     useStamina: 25
-    attackEffect:
-      m_AssetGUID: 7f9db16e38fbd114fa303102028b4e92
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.1
@@ -1254,6 +1247,8 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    subElement: 0
   isLight: 0
   twinHand: 0
   isBlow: 1

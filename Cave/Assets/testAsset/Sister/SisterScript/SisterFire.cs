@@ -275,8 +275,6 @@ public class SisterFire : MonoBehaviour
 
         //Transform rotate = SManager.instance.useMagic.castEffect.LoadAssetAsync<Transform>().Result as Transform;
 
-      //  MyInstantiate(SManager.instance.useMagic.castEffect, gofire.position, gofire.rotation).Forget();//.Result;//発生位置をPlayer
-		Addressables.InstantiateAsync(SManager.instance.useMagic.castEffect, gofire.position, gofire.rotation);
 		//	}
 
 		castSound = "normalCast";

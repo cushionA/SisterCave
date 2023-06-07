@@ -15,16 +15,8 @@ public class EnemyMagic : ScriptableObject
 		HOMING_Z,//指定した角度内に標的があるとき追尾。
 	}
 
-	public enum AttackType
-    {
-        Slash,//斬撃。ほどほどに通るやつが多い
-        Stab,//刺突。弱点のやつと耐えるやつがいる
-        Strike//打撃。弱点のやつと耐えるやつがいる。アーマーとひるませ強く
-    }
-    /// <summary>
-    /// 剣で刺突するときとかはアニメイベントで変える
-    /// </summary>
-    public AttackType atType;
+
+
     [Header("射撃オブジェクトリスト")]
     ///<summary>
     ///生成する弾丸や魔法陣オブジェクト

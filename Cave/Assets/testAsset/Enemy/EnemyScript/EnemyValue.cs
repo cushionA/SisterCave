@@ -6,6 +6,18 @@ using UnityEngine.AddressableAssets;
 [System.Serializable] //これを書くとinspectorに表示される。
 public class EnemyValue
 {
+
+    /// <summary>
+    /// どんなエフェクトや音をもらうか
+    /// 攻撃の威力レベル
+    /// </summary>
+    public AttackValue.AttackLevel EffectLevel;
+
+    /// <summary>
+    /// モーションの詳細
+    /// </summary>
+    public AttackValue.MotionType motionType;
+
     [Header("モーション値")]
     public float mValue;
     [Header("攻撃時のアーマー")]
@@ -46,9 +58,6 @@ public class EnemyValue
     ///</summary>
     public float escapePercentage;
 
-    [Header("攻撃エフェクト")]
-    [AssetReferenceUILabelRestriction("AttackEffect")]
-    public AssetReference attackEffect;
 
     /// <summary>
     /// ヒット回数制限
@@ -98,7 +107,14 @@ public class EnemyValue
     public bool guardAttack;
 
     /// <summary>
-    /// 背面攻撃かどうか
+    /// 背面で出す、背中向ける攻撃かどうか
     /// </summary>
     public bool backAttack;
+
+    [Tooltip("攻撃のメイン属性")]
+    public MoreMountains.CorgiEngine.AtEffectCon.Element mainElement;
+
+
+    [Tooltip("攻撃の物理属性")]
+    public Equip.AttackType phyElement;
 }

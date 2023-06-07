@@ -30,6 +30,21 @@ namespace MoreMountains.CorgiEngine
 		//Idleだけじゃなく放置したらなるやつ全般にいいかも
 		public bool banIdle = false;
 
+		
+		public enum GroundFeature
+        {
+			Nomal,//普通
+			Water,//水
+			Grass,//草
+
+        }
+
+		/// <summary>
+		/// 現在立っている地形の特徴
+		/// 地面側から送るか？
+		/// </summary>
+		public GroundFeature nowGround = GroundFeature.Nomal;
+
 		/// <summary>
 		/// アビリティを取得し、さらに使用するためにキャッシュする。
 		/// 実行時に能力を追加する場合は、必ずこれを呼び出します。
@@ -214,6 +229,7 @@ namespace MoreMountains.CorgiEngine
 					ability.ProcessAbility();
 				}
 			}
+
 		}
 
 		/// <summary>

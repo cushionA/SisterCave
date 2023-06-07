@@ -156,6 +156,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         bool _flipable;
 
+        AtEffectCon _atEf;
+
         #endregion
 
         /// <summary>
@@ -164,7 +166,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected override void Initialization()
         {
             base.Initialization();
-
+            _atEf = _character.FindAbility<AtEffectCon>();
             // randomBool = false;
         }
 
@@ -907,8 +909,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.fallAttack = true;
                 //Debug.Log("つづくよ２");
                 //osixtuko = 5;
-                
             }
+
+            int adType = 1;
+
+
+
+            _atEf.EffectPrepare(GManager.instance.useAtValue.EffectLevel, adType, GManager.instance.useAtValue.mainElement, GManager.instance.useAtValue.motionType);
+
 
             #endregion
             attackNumber++;
@@ -1014,7 +1022,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (!GManager.instance.twinHand)
             {
 
-                GManager.instance.useAtValue.type = GManager.instance.equipWeapon.sValue[attackNumber].type;
                 GManager.instance.useAtValue.x = GManager.instance.equipWeapon.sValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipWeapon.sValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipWeapon.sValue[attackNumber].z;
@@ -1022,7 +1029,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.sValue[attackNumber].isCombo;
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.sValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.sValue[attackNumber].useStamina;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.sValue[attackNumber].attackEffect;
+
                 comboLimit = GManager.instance.equipWeapon.sValue.Count;
                 _damage._attackData._hitLimit = GManager.instance.equipWeapon.sValue[attackNumber]._hitLimit;
 
@@ -1035,11 +1042,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 _health._superArumor = GManager.instance.equipWeapon.sValue[attackNumber].superArmor;
                 _health._guardAttack = GManager.instance.equipWeapon.sValue[attackNumber].guardAttack;
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.sValue[attackNumber].backAttack;
+
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.sValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.sValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.sValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.sValue[attackNumber].EffectLevel;
             }
             else
             {
 
-                GManager.instance.useAtValue.type = GManager.instance.equipWeapon.twinSValue[attackNumber].type;
+
                 GManager.instance.useAtValue.x = GManager.instance.equipWeapon.twinSValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipWeapon.twinSValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipWeapon.twinSValue[attackNumber].z;
@@ -1047,7 +1059,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.twinSValue[attackNumber].isCombo;
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.twinSValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinSValue[attackNumber].useStamina;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.twinSValue[attackNumber].attackEffect;
+
                 comboLimit = GManager.instance.equipWeapon.twinSValue.Count;
                 _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinSValue[attackNumber]._hitLimit;
 
@@ -1061,6 +1073,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 _health._guardAttack = GManager.instance.equipWeapon.twinSValue[attackNumber].guardAttack;
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.twinSValue[attackNumber].backAttack;
 
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.twinSValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.twinSValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.twinSValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.twinSValue[attackNumber].EffectLevel;
             }
         }
 
@@ -1072,7 +1088,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (!GManager.instance.twinHand)
             {
 
-                GManager.instance.useAtValue.type = GManager.instance.equipWeapon.bValue[attackNumber].type;
                 GManager.instance.useAtValue.x = GManager.instance.equipWeapon.bValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipWeapon.bValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipWeapon.bValue[attackNumber].z;
@@ -1080,7 +1095,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.bValue[attackNumber].isCombo;
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.bValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.bValue[attackNumber].useStamina;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.bValue[attackNumber].attackEffect;
+
                 comboLimit = GManager.instance.equipWeapon.bValue.Count;
                 _damage._attackData._hitLimit = GManager.instance.equipWeapon.bValue[attackNumber]._hitLimit;
 
@@ -1092,13 +1107,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.bValue[attackNumber].lockAttack;
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.bValue[attackNumber].backAttack;
 
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.bValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.bValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.bValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.bValue[attackNumber].EffectLevel;
+
                 _health._superArumor = GManager.instance.equipWeapon.bValue[attackNumber].superArmor;
                 _health._guardAttack = GManager.instance.equipWeapon.bValue[attackNumber].guardAttack;
             }
             else
             {
 
-                GManager.instance.useAtValue.type = GManager.instance.equipWeapon.twinBValue[attackNumber].type;
+
                 GManager.instance.useAtValue.x = GManager.instance.equipWeapon.twinBValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipWeapon.twinBValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipWeapon.twinBValue[attackNumber].z;
@@ -1106,7 +1126,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.twinBValue[attackNumber].isCombo;
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.twinBValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinBValue[attackNumber].useStamina;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.twinBValue[attackNumber].attackEffect;
+               // = GManager.instance.equipWeapon.twinBValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.twinBValue.Count;
                 _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinBValue[attackNumber]._hitLimit;
 
@@ -1120,6 +1140,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.twinBValue[attackNumber].backAttack;
                 _health._superArumor = GManager.instance.equipWeapon.twinBValue[attackNumber].superArmor;
                 _health._guardAttack = GManager.instance.equipWeapon.twinBValue[attackNumber].guardAttack;
+
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.twinBValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.twinBValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.twinBValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.twinBValue[attackNumber].EffectLevel;
+
             }
         }
 
@@ -1131,15 +1157,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (!GManager.instance.twinHand)
             {
 
-                GManager.instance.useAtValue.type = GManager.instance.equipWeapon.chargeValue[attackNumber].type;
                 GManager.instance.useAtValue.x = GManager.instance.equipWeapon.chargeValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipWeapon.chargeValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipWeapon.chargeValue[attackNumber].z;
                 GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.chargeValue[attackNumber].isBlow;
                 GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.chargeValue[attackNumber].isCombo;
-                GManager.instance.equipWeapon.blowPower = GManager.instance.equipWeapon.chargeValue[attackNumber].blowPower;
+                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.chargeValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.chargeValue[attackNumber].useStamina;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.chargeValue[attackNumber].attackEffect;
+               // = GManager.instance.equipWeapon.chargeValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.bValue.Count;
                 _damage._attackData._hitLimit = GManager.instance.equipWeapon.chargeValue[attackNumber]._hitLimit;
 
@@ -1153,11 +1178,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.chargeValue[attackNumber].backAttack;
                 _health._superArumor = GManager.instance.equipWeapon.chargeValue[attackNumber].superArmor;
                 _health._guardAttack = GManager.instance.equipWeapon.chargeValue[attackNumber].guardAttack;
+
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.chargeValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.chargeValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.chargeValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.chargeValue[attackNumber].EffectLevel;
             }
             else
             {
 
-                GManager.instance.useAtValue.type = GManager.instance.equipWeapon.twinChargeValue[attackNumber].type;
                 GManager.instance.useAtValue.x = GManager.instance.equipWeapon.twinChargeValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipWeapon.twinChargeValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipWeapon.twinChargeValue[attackNumber].z;
@@ -1165,7 +1194,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.twinChargeValue[attackNumber].isCombo;
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.twinChargeValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinChargeValue[attackNumber].useStamina;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.twinChargeValue[attackNumber].attackEffect;
+               // = GManager.instance.equipWeapon.twinChargeValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.twinBValue.Count;
                 _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinChargeValue[attackNumber]._hitLimit;
 
@@ -1180,6 +1209,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 _health._guardAttack = GManager.instance.equipWeapon.twinChargeValue[attackNumber].guardAttack;
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.twinChargeValue[attackNumber].backAttack;
 
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.twinChargeValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.twinChargeValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.twinChargeValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.twinChargeValue[attackNumber].EffectLevel;
+
             }
         }
         public void airAttackPrepare()//デフォが斬撃
@@ -1192,7 +1226,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (!GManager.instance.twinHand)
             {
 
-                GManager.instance.useAtValue.type = GManager.instance.equipWeapon.airValue[attackNumber].type;
                 GManager.instance.useAtValue.x = GManager.instance.equipWeapon.airValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipWeapon.airValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipWeapon.airValue[attackNumber].z;
@@ -1200,7 +1233,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.airValue[attackNumber].isCombo;
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.airValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.airValue[attackNumber].useStamina;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.airValue[attackNumber].attackEffect;
+               // = GManager.instance.equipWeapon.airValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.airValue.Count;
                 _damage._attackData._hitLimit = GManager.instance.equipWeapon.airValue[attackNumber]._hitLimit;
 
@@ -1214,11 +1247,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.airValue[attackNumber].backAttack;
                 _health._superArumor = GManager.instance.equipWeapon.airValue[attackNumber].superArmor;
                 _health._guardAttack = GManager.instance.equipWeapon.airValue[attackNumber].guardAttack;
+
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.airValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.airValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.airValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.airValue[attackNumber].EffectLevel;
+
             }
             else
             {
 
-                GManager.instance.useAtValue.type = GManager.instance.equipWeapon.twinAirValue[attackNumber].type;
                 GManager.instance.useAtValue.x = GManager.instance.equipWeapon.twinAirValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipWeapon.twinAirValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipWeapon.twinAirValue[attackNumber].z;
@@ -1226,7 +1264,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.twinAirValue[attackNumber].isCombo;
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.twinAirValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinAirValue[attackNumber].useStamina;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.twinAirValue[attackNumber].attackEffect;
+               // = GManager.instance.equipWeapon.twinAirValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipWeapon.twinAirValue.Count;
                 _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinAirValue[attackNumber]._hitLimit;
 
@@ -1240,6 +1278,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.twinAirValue[attackNumber].backAttack;
                 _health._superArumor = GManager.instance.equipWeapon.twinAirValue[attackNumber].superArmor;
                 _health._guardAttack = GManager.instance.equipWeapon.twinAirValue[attackNumber].guardAttack;
+
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.twinAirValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.twinAirValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.twinAirValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.twinAirValue[attackNumber].EffectLevel;
             }
         }
         public void strikeAttackPrepare()//デフォが斬撃
@@ -1252,7 +1295,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (!GManager.instance.twinHand)
             {
 
-                GManager.instance.useAtValue.type = GManager.instance.equipWeapon.strikeValue[attackNumber].type;
                 GManager.instance.useAtValue.x = GManager.instance.equipWeapon.strikeValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipWeapon.strikeValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipWeapon.strikeValue[attackNumber].z;
@@ -1260,7 +1302,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.strikeValue[attackNumber].isCombo;
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.strikeValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.strikeValue[attackNumber].useStamina;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.strikeValue[attackNumber].attackEffect;
+               // = GManager.instance.equipWeapon.strikeValue[attackNumber].attackEffect;
                 _damage._attackData._hitLimit = GManager.instance.equipWeapon.strikeValue[attackNumber]._hitLimit;
 
                 //突進用の初期化
@@ -1273,11 +1315,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.strikeValue[attackNumber].backAttack;
                 _health._superArumor = true;
                 _health._guardAttack = GManager.instance.equipWeapon.strikeValue[attackNumber].guardAttack;
+
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.strikeValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.strikeValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.strikeValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.strikeValue[attackNumber].EffectLevel;
             }
             else
             {
 
-                GManager.instance.useAtValue.type = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].type;
                 GManager.instance.useAtValue.x = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].z;
@@ -1285,7 +1331,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].isCombo;
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].useStamina;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].attackEffect;
+               // = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].attackEffect;
                 _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinStrikeValue[attackNumber]._hitLimit;
 
                 //突進用の初期化
@@ -1298,6 +1344,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].backAttack;
                 _health._superArumor = true;
                 _health._guardAttack = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].guardAttack;
+
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].EffectLevel;
             }
             comboLimit = 1;
         }
@@ -1309,7 +1360,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (!GManager.instance.twinHand && !GManager.instance.equipShield.weaponArts)
             {
                 GManager.instance.useAtValue.isShield = true;
-                GManager.instance.useAtValue.type = GManager.instance.equipShield.artsValue[attackNumber].type;
+
                 GManager.instance.useAtValue.x = GManager.instance.equipShield.artsValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipShield.artsValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipShield.artsValue[attackNumber].z;
@@ -1318,7 +1369,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipShield.artsValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipShield.artsValue[attackNumber].useStamina;
                 GManager.instance.isShieldAttack = true;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipShield.artsValue[attackNumber].attackEffect;
+               // = GManager.instance.equipShield.artsValue[attackNumber].attackEffect;
                 comboLimit = GManager.instance.equipShield.artsValue.Count;
                 _damage._attackData._hitLimit = GManager.instance.equipShield.artsValue[attackNumber]._hitLimit;
 
@@ -1332,11 +1383,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipShield.artsValue[attackNumber].backAttack;
                 _health._superArumor = GManager.instance.equipShield.artsValue[attackNumber].superArmor;
                 _health._guardAttack = GManager.instance.equipShield.artsValue[attackNumber].guardAttack;
+
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipShield.artsValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipShield.artsValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipShield.artsValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipShield.artsValue[attackNumber].EffectLevel;
             }
             else
             {
                 
-                GManager.instance.useAtValue.type = GManager.instance.equipWeapon.artsValue[attackNumber].type;
+
                 GManager.instance.useAtValue.x = GManager.instance.equipWeapon.artsValue[attackNumber].x;
                 GManager.instance.useAtValue.y = GManager.instance.equipWeapon.artsValue[attackNumber].y;
                 GManager.instance.useAtValue.z = GManager.instance.equipWeapon.artsValue[attackNumber].z;
@@ -1344,7 +1400,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.artsValue[attackNumber].isCombo;
                 GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.artsValue[attackNumber].blowPower;
                 GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.artsValue[attackNumber].useStamina;
-                GManager.instance.useAtValue.attackEffect = GManager.instance.equipWeapon.artsValue[attackNumber].attackEffect;
                 GManager.instance.isShieldAttack = false;
 
                 comboLimit = GManager.instance.equipWeapon.artsValue.Count;
@@ -1360,6 +1415,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.artsValue[attackNumber].backAttack;
                 _health._superArumor = GManager.instance.equipWeapon.artsValue[attackNumber].superArmor;
                 _health._guardAttack = GManager.instance.equipWeapon.artsValue[attackNumber].guardAttack;
+
+                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.artsValue[attackNumber].mainElement;
+                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.artsValue[attackNumber].motionType;
+                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.artsValue[attackNumber].phyElement;
+                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.artsValue[attackNumber].EffectLevel;
             }
         }
         #endregion

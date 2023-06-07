@@ -49,18 +49,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// このメソッドは、ヘルプボックスのテキストを表示するためにのみ使用されます。
         public override string HelpBoxText() { return "この機能は音声やエフェクトを再生するための機能です。"; }
 
+
         //フィールド
         //――――――――――――――――――――――――――――――――――――――――-―――――――――――――――――――――――
+#region
+
+        //定義
         #region
-
-        /// <summary>
-        /// エフェクトを生成するクラス
-        /// オブジェクトプール機能
-        /// Spawnで生成。エフェクトの再生が終了すると自動で消滅
-        /// </summary>
-        [SerializeField]
-        SpawnPool particlesPool;
-
         public enum SelectState
         {
             Idle,
@@ -69,6 +64,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             Running,
             Crouching,
             Crawling,
+
             Jumping,
             DoubleJumping,
             Flying,
@@ -79,13 +75,65 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             GuardMove,
             Warp,
             Parry,
+            justGuard,
             Cast,
             Combination,
             Frozen,
+            BlowDead,
             Dead,
-            Stunned,
+            Faltter,
+            Blow,
+            Wakeup,
+            GBreake,//ガードブレイク
             Null
         }
+
+        #endregion
+
+
+        //インスペクタで設定
+        #region
+
+        /// <summary>
+        /// エフェクトを生成するクラス
+        /// オブジェクトプール機能
+        /// Spawnで生成。エフェクトの再生が終了すると自動で消滅
+        /// </summary>
+        [SerializeField]
+        SpawnPool particlesPool;
+
+        /// <summary>
+        /// 外からは編集できず、設定はメソッドを使ってやるようにする
+        /// エフェクトや音を使うステートと再生方法のリスト
+        /// </summary>
+        [Header("効果を使うステートと使い方の設定")]
+        [SerializeField]
+        private List<EffectCondition> _stateList;
+
+        [Header("鎧着てるかどうか")]
+        /// <summary>
+        /// 鎧着てるかどうか
+        /// 共通サウンドが金属系の音になる
+        /// </summary>
+        public bool isMetal;//鎧着てるかどうか
+
+        [Header("体のサイズ")]
+        /// <summary>
+        /// 体の大きさ
+        /// 大きいと共通サウンドやエフェクトが変化する
+        /// </summary>
+        public MyCode.SoundManager.SizeTag bodySize;
+
+        [Header("エフェクトのサイズ倍率")]
+        /// <summary>
+        /// エフェクトのサイズ倍率
+        /// </summary>
+        public float sizeMultipler = 1;
+
+        #endregion
+
+        //内部ステータス
+        #region
 
         /// <summary>
         /// 現在再生に利用しているステート
@@ -99,15 +147,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         float speedMultipler = 1;
 
         /// <summary>
-        /// 外からは編集できず、設定はメソッドを使ってやるようにする
-        /// エフェクトや音を使うステートのリスト
-        /// </summary>
-        [SerializeField]
-        private List<EffectCondition> _stateList = new List<EffectCondition>();
-
-
-
-        /// <summary>
         /// 今現在利用中の素材を管理するためのリスト
         /// </summary>
         List<EffectCondition.StateEffect> _waitEffect = new List<EffectCondition.StateEffect>();
@@ -119,7 +158,27 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         List<EffectCondition.StateSound> _waitSound = new List<EffectCondition.StateSound>();
 
+        /// <summary>
+        /// 共通設定の再生を行う際にどう再生するか示す
+        /// </summary>
+        EffectCondition.EmitType generalEType;
+
+        /// <summary>
+        /// 共通設定の再生を行う際にどう再生するか示す
+        /// </summary>
+        EffectCondition.EmitType generalSType;
+
+
+        //前回の再生情報を保存することで毎回条件判断を繰り返さないように
+        MyCode.SoundManager.PreviousEffect prevE = new MyCode.SoundManager.PreviousEffect();
+        MyCode.SoundManager.PreviousSound prevS = new MyCode.SoundManager.PreviousSound();
+
         #endregion
+
+
+
+
+#endregion
 
 
         //メソッド
@@ -132,7 +191,41 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected override void Initialization()
         {
             base.Initialization();
+            prevE.state = 10000;
+            prevS.state = 10000;
         }
+        
+         public override void ProcessAbility()
+        {
+            base.ProcessAbility();
+
+            //着地音をトリガー
+            if (_controller.State.JustGotGrounded)
+            {
+                //吹き飛ばし中に接地したらちゃんと起き上がりへ
+                if (_useState == SelectState.Blow)
+                {
+                    _useState = SelectState.Wakeup;
+
+                    //前のステートのエフェクトとかを処分
+                    EffectCheck();
+                    SoundCheck();
+                    UseSelect(_useState);
+                }
+                else if (_useState == SelectState.BlowDead)
+                {
+                    _useState = SelectState.Dead;
+
+                    //前のステートのエフェクトとかを処分
+                    EffectCheck();
+                    SoundCheck();
+                    UseSelect(_useState);
+                }
+
+                MyCode.SoundManager.instance.GotGround(transform,_useState,isMetal,bodySize,_character.nowGround);
+            }
+        }
+
 
 
         ///<summary>
@@ -200,16 +293,27 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
             //状態異常のステートは動作のステートに優先する
+
+            //スタン時はHealthから情報を取得
             if (_cState == CharacterStates.CharacterConditions.Stunned)
             {
-                _useState = SelectState.Stunned;
+                SelectState container;
+                container = _health.GetStanState();
+
+                if(container == SelectState.Null)
+                {
+                    return;
+                }
+                _useState = container;
+                MyCode.SoundManager.instance.StanEffect(transform,_useState,_condition.PreviousState == CharacterStates.CharacterConditions.Stunned,sizeMultipler);
+                
             }
             else if (_cState == CharacterStates.CharacterConditions.Dead)
             {
-                _useState = SelectState.Dead;
+               _useState = _health.GetStanState() == SelectState.BlowDead ? SelectState.BlowDead : SelectState.Dead;
             }
 
-            if (_useState != SelectState.Null)
+            if(_useState != SelectState.Null)
             {
                 UseSelect(_useState);
             }
@@ -230,8 +334,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     //音やエフェクトに影響するかも
                     speedMultipler =　_character._animator.GetCurrentAnimatorStateInfo(0).speed;
 
+                    //共通設定使うなら
+                    if (_stateList[i].generalEffect)
+                    {
+                        GeneralEPlay(state);
+                    }
                     //エフェクトが一つ以上登録されてるなら
-                    if (_stateList[i]._stateEffects.Any())
+                    else if (_stateList[i]._stateEffects.Any())
                     {
                         float count = _stateList[i]._stateEffects.Count;
                         if (count == 1)
@@ -248,8 +357,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         }
 
                     }
+                    
+
+                    //共通設定使うなら
+                    if (_stateList[i].generalSound)
+                    {
+                        GeneralSPlay(state);
+                    }
                     //音が一つ以上登録されてるなら
-                    if (_stateList[i]._stateSounds.Any())
+                    else if (_stateList[i]._stateSounds.Any())
                     {
                         float count = _stateList[i]._stateSounds.Count;
                         if (count == 1)
@@ -285,7 +401,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             if (_condition._emitType == EffectCondition.EmitType.Soon)
             {
-                //ここで音鳴らす
+                //ここでエフェクトを出す
                 EffectSpawn(_condition);
             }
             else
@@ -311,6 +427,26 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     _loopEffect.Add(EffectSpawn(_condition));
                 }
             }
+        }
+
+        /// <summary>
+        /// 共通エフェクトを再生する処理
+        /// ループはなしで
+        /// </summary>
+        protected void GeneralEPlay(SelectState _state)
+        {
+            generalEType = EffectCondition.EmitType.Soon;
+　　　　　　if (_state == SelectState.moving || _state == SelectState.Running || _state == SelectState.FastFlying ||
+                _state == SelectState.Flying || _state == SelectState.Crawling || _state == SelectState.GuardMove)
+            {
+                generalEType = EffectCondition.EmitType.Repeat;
+            }
+
+            if (generalEType != EffectCondition.EmitType.Soon || generalEType != EffectCondition.EmitType.Repeat)
+            {
+                prevE = MyCode.SoundManager.instance.GeneralEffectPlay(transform,_state,bodySize,_character.nowGround,prevE,sizeMultipler);
+            }
+
         }
 
         /// <summary>
@@ -343,6 +479,29 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
         }
 
+        /// <summary>
+        /// 音を再生したり管理開始したり
+        /// ループはなしで
+        /// </summary>
+        protected void GeneralSPlay(SelectState _state)
+        {
+            generalSType = EffectCondition.EmitType.Soon;
+            if (_state == SelectState.Falling)
+            {
+                generalSType = EffectCondition.EmitType.End;
+            }
+            else if (_state == SelectState.moving || _state == SelectState.Running || _state == SelectState.FastFlying ||
+                _state == SelectState.Flying || _state == SelectState.Crawling || _state == SelectState.GuardMove)
+            {
+                generalSType = EffectCondition.EmitType.Repeat;
+            }
+
+            if (generalSType != EffectCondition.EmitType.Soon || generalSType != EffectCondition.EmitType.Repeat)
+            {
+               prevS =  MyCode.SoundManager.instance.GeneralSoundPlay(transform,_state, speedMultipler, isMetal, bodySize, _character.nowGround,prevS);
+            }
+        }
+
         #endregion
 
 
@@ -358,33 +517,45 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         void EffectCheck()
         {
-            //再生中、待機中のエフェクトが一つでもあるなら
-            if (_waitEffect.Any())
+
+            if (generalEType != EffectCondition.EmitType.None)
             {
-                for (int i = 0; i < _waitEffect.Count; i++)
+                if (generalEType == EffectCondition.EmitType.End)
                 {
-                    //最後に出すやつなら今出す
-                    if (_waitEffect[i]._emitType == EffectCondition.EmitType.End)
+                    prevE = MyCode.SoundManager.instance.GeneralEffectPlay(transform,_useState,  bodySize, _character.nowGround,prevE,sizeMultipler);
+
+                }
+                generalEType = EffectCondition.EmitType.None;
+            }
+            else
+            {
+                //再生中、待機中のエフェクトが一つでもあるなら
+                if (_waitEffect.Any())
+                {
+                    for (int i = 0; i < _waitEffect.Count; i++)
                     {
-                        EffectSpawn(_waitEffect[i]);
+                        //最後に出すやつなら今出す
+                        if (_waitEffect[i]._emitType == EffectCondition.EmitType.End)
+                        {
+                            EffectSpawn(_waitEffect[i]);
+                        }
                     }
+                    //エフェクトの処理が終わったらリストのお掃除
+                    _waitEffect.Clear();
                 }
-                //エフェクトの処理が終わったらリストのお掃除
-                _waitEffect = new List<EffectCondition.StateEffect>();
-            }
 
-            //ループ中のエフェクトが一つでもあるなら
-            if (_loopEffect.Any())
-            {
-                for (int i = 0; i < _loopEffect.Count; i++)
+                //ループ中のエフェクトが一つでもあるなら
+                if (_loopEffect.Any())
                 {
-                    particlesPool.Despawn(_loopEffect[i].transform);
+                    for (int i = 0; i < _loopEffect.Count; i++)
+                    {
+                        particlesPool.Despawn(_loopEffect[i].transform);
+                    }
+                    //エフェクトの処理が終わったらリストのお掃除
+                    _loopEffect.Clear();
                 }
-                //エフェクトの処理が終わったらリストのお掃除
-                _loopEffect = new List<ParticleSystem>();
+
             }
-
-
         }
 
         /// <summary>
@@ -393,26 +564,38 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         void SoundCheck()
         {
-            //再生中、待機中の音が一つでもあるなら
-            if (_waitSound.Any())
+
+            if (generalSType != EffectCondition.EmitType.None)
             {
-                for (int i = 0; i < _waitSound.Count; i++)
+                if (generalSType == EffectCondition.EmitType.End)
                 {
-
-                    //リピートの音をフェイドさせる
-                    if (_waitSound[i]._playType == EffectCondition.EmitType.Loop || _waitSound[i]._playType == EffectCondition.EmitType.WaitLoop)
-                    {
-                        GManager.instance.StopSound(_waitSound[i]._useSound);
-                    }
-                    //最後に鳴らすやつなら今鳴らす
-                    else if (_waitSound[i]._playType == EffectCondition.EmitType.End)
-                    {
-                        SoundPlay(_waitSound[i]);
-                    }
+                    prevS =  MyCode.SoundManager.instance.GeneralSoundPlay(transform,_useState, speedMultipler, isMetal, bodySize,_character.nowGround,prevS);
                 }
-                //音の処理が終わったらリストのお掃除
-                _waitSound = new List<EffectCondition.StateSound>();
+                generalSType = EffectCondition.EmitType.None;
+            }
+            else
+            {
+                //再生中、待機中の音が一つでもあるなら
+                if (_waitSound.Any())
+                {
+                    for (int i = 0; i < _waitSound.Count; i++)
+                    {
 
+                        //リピートの音をフェイドさせる
+                        if (_waitSound[i]._playType == EffectCondition.EmitType.Loop || _waitSound[i]._playType == EffectCondition.EmitType.WaitLoop)
+                        {
+                            GManager.instance.StopSound(_waitSound[i]._useSound);
+                        }
+                        //最後に鳴らすやつなら今鳴らす
+                        else if (_waitSound[i]._playType == EffectCondition.EmitType.End)
+                        {
+                            SoundPlay(_waitSound[i]);
+                        }
+                    }
+                    //音の処理が終わったらリストの掃除
+                    _waitSound.Clear();
+
+                }
             }
         }
         #endregion
@@ -430,19 +613,32 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="number"></param>
         public void EffectStartEvent(int number)
         {
-            //ループなら追加しておく
-            if (_waitEffect[number]._emitType == EffectCondition.EmitType.WaitLoop)
+            EffectCondition.EmitType type;
+
+            //これがノンじゃないなら共通で再生
+            if (generalEType != EffectCondition.EmitType.None)
             {
-                //アニメの再生速度に合わせないなら
-                _loopEffect.Add(EffectSpawn(_waitEffect[number]));
+
+                prevE = MyCode.SoundManager.instance.GeneralEffectPlay(transform,_useState,   bodySize, _character.nowGround,prevE,sizeMultipler);
+                type = generalEType;
             }
             else
             {
-                //音を鳴らす
-                EffectSpawn(_waitEffect[number]);
+                type = _waitEffect[number]._emitType;
+                //ループなら追加しておく
+                if (_waitEffect[number]._emitType == EffectCondition.EmitType.WaitLoop)
+                {
+                    //アニメの再生速度に合わせないなら
+                    _loopEffect.Add(EffectSpawn(_waitEffect[number]));
+                }
+                else
+                {
+                    //音を鳴らす
+                    EffectSpawn(_waitEffect[number]);
+                }
             }
             //リピートする音なら
-            if (_waitEffect[number]._emitType == EffectCondition.EmitType.Repeat || _waitEffect[number]._emitType == EffectCondition.EmitType.WaitRepeat)
+            if (type == EffectCondition.EmitType.Repeat || type == EffectCondition.EmitType.WaitRepeat)
             {
                 //繰り返す素材の再生始動
                 EffectRepeat(_waitEffect[number], GetCurrentTime(), _useState).Forget();
@@ -456,11 +652,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="number"></param>
         public void SoundStartEvent(int number)
         {
-            //音を鳴らす
-            SoundPlay(_waitSound[number]);
+            EffectCondition.EmitType type;
+
+            //これがノンじゃないなら共通で再生
+            if (generalSType != EffectCondition.EmitType.None)
+            {
+                prevS = MyCode.SoundManager.instance.GeneralSoundPlay(transform,_useState, speedMultipler, isMetal, bodySize, _character.nowGround,prevS);
+                type = generalSType;
+            }
+            else
+            {
+                //音を鳴らす
+                SoundPlay(_waitSound[number]);
+                type = _waitSound[number]._playType;
+            }
 
             //リピートする音なら
-            if (_waitSound[number]._playType == EffectCondition.EmitType.Repeat || _waitSound[number]._playType == EffectCondition.EmitType.WaitRepeat)
+            if (type == EffectCondition.EmitType.Repeat || type == EffectCondition.EmitType.WaitRepeat)
             {
                 //繰り返す素材の再生始動
                 SoundRepeat(_waitSound[number],GetCurrentTime(), _useState).Forget();
@@ -490,7 +698,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
         /// <summary>
-        /// 音のステータスに合わせて適切に生成する
+        /// エフェクトのステータスに合わせて適切に生成する
         /// </summary>
         ParticleSystem EffectSpawn(EffectCondition.StateEffect effect)
         {
@@ -523,6 +731,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     ef = particlesPool.Spawn(effect._useEffect, effect._emitPosition.position, effect._emitPosition.rotation);
                 }
             }
+
+
+            Vector3 ls = ef.transform.localScale;
+
+            //方向無視しないし追従もしてないなら
+            if (!effect.ignoreDirection && !effect._isFollow)
+            {
+                ls.x = Math.Sign(ls.x) == Math.Sign(_character.CharacterModel.transform.localScale.x) ? ls.x : ls.x * -1;
+            }
+
+            //サイズ倍率があるなら
+            if (sizeMultipler != 1)
+            {
+                ls *= sizeMultipler;
+            }
+            ef.transform.localScale = ls;
+
             return ef;
         }
 
@@ -624,6 +849,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //エフェクトをリセット
             particlesPool.CleanUp();
             _stateList = _newList;
+
+            //ステートも再判断
+            prevE.state = 10000;
+            prevS.state = 10000;
 
             for (int i = 0;i < _newPrefab.Count;i++)
             {

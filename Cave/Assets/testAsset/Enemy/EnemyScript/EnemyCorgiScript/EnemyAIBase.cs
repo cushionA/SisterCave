@@ -304,6 +304,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public MyWakeUp _wakeup;
 
+		public AtEffectCon _atEf;
+
 		public EAttackCon _attack;
 
 		[SerializeField]
@@ -1088,27 +1090,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//status.hitLimmit--;
 			//mValueはモーション値
 
-			float mainDamage = 0;
+
+			_damage._attackData._attackType = atV.mainElement;
+			_damage._attackData.phyType = atV.phyElement;
+
 			if (status.phyAtk > 0)
 			{
 				_damage._attackData.phyAtk = status.phyAtk * attackFactor;
 
-				//斬撃刺突打撃を管理
-				if (atV.type == EnemyStatus.AttackType.Slash)
-				{
-					_damage._attackData._attackType = 0;
-				}
-				else if (atV.type == EnemyStatus.AttackType.Stab)
-				{
-					_damage._attackData._attackType = 2;
-				}
-				else if (atV.type == EnemyStatus.AttackType.Strike)
-				{
-
-
-					_damage._attackData._attackType = 4;
-
-					//						Debug.Log("皿だ");
 					if (atV.shock >= 40)
 					{
 						_damage._attackData.isHeavy = true;
@@ -1117,47 +1106,31 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						_damage._attackData.isHeavy = false;
 					}
-				}
+				
 			}
 			//神聖
 			if (status.holyAtk > 0)
 			{
 				_damage._attackData.holyAtk =  status.holyAtk * holyATFactor;
-				if (_damage._attackData.holyAtk > mainDamage)
-				{
-					_damage._attackData._attackType = 8;
-					mainDamage = _damage._attackData.holyAtk;
-				}
+
 			}
 			//闇
 			if (status.darkAtk > 0)
 			{
 				_damage._attackData.darkAtk =  status.darkAtk * darkATFactor;
-				if (_damage._attackData.darkAtk > mainDamage)
-				{
-					_damage._attackData._attackType = 16;
-					mainDamage = _damage._attackData.darkAtk;
-				}
+
 			}
 			//炎
 			if (status.fireAtk > 0)
 			{
 				_damage._attackData.fireAtk =  status.fireAtk * fireATFactor;
-				if (_damage._attackData.fireAtk > mainDamage)
-				{
-					_damage._attackData._attackType = 32;
-					mainDamage = _damage._attackData.fireAtk;
-				}
+
 			}
 			//雷
 			if (status.thunderAtk > 0)
 			{
 				_damage._attackData.thunderAtk =  status.thunderAtk * thunderATFactor;
-				if (_damage._attackData.thunderAtk > mainDamage)
-				{
-					_damage._attackData._attackType = 64;
-				//	mainDamage = _damage._attackData.Atk;
-				}
+
 			}
 			_damage._attackData.shock = atV.shock;
 			_damage._attackData.mValue = atV.mValue;
@@ -1269,7 +1242,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			atV.isCombo = status.atValue[attackNumber].isCombo;
 			atV.escapePercentage = status.atValue[attackNumber].escapePercentage;
 			atV.parryResist = status.atValue[attackNumber].parryResist;
-			atV.attackEffect = status.atValue[attackNumber].attackEffect;
+		//	atV.attackEffect = status.atValue[attackNumber].attackEffect;
 			atV.suppleNumber = status.atValue[attackNumber].suppleNumber;
 
 			//突進用の初期化
@@ -1280,12 +1253,29 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			atV.startMoveTime = status.atValue[attackNumber].startMoveTime;
 			atV.lockAttack = status.atValue[attackNumber].lockAttack;
 			atV.backAttack = status.atValue[attackNumber].backAttack;
+
+			atV.mainElement = status.atValue[attackNumber].mainElement;
+			atV.phyElement = status.atValue[attackNumber].phyElement;
+			atV.motionType = status.atValue[attackNumber].motionType;
+			atV.EffectLevel = status.atValue[attackNumber].EffectLevel;
+
 			//ヒット数制御関連
 			_damage._attackData._hitLimit = status.atValue[attackNumber]._hitLimit;
 			_damage.CollidRestoreResset();
+
 			_health._superArumor = status.atValue[attackNumber].superArmor;
 			_health._guardAttack = status.atValue[attackNumber].guardAttack;
 
+
+
+			int adType = 1;
+
+            if (atV.disParry)
+            {
+				adType = 2;
+            }
+
+			_atEf.EffectPrepare(status.atValue[attackNumber].EffectLevel,adType, status.atValue[attackNumber].mainElement, status.atValue[attackNumber].motionType);
 		}
 
 
@@ -1504,7 +1494,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public void attackEffect()
 		{
 			// Debug.Log($"アイイイイイイ{atEffect.SubObjectName}");
-			Addressables.InstantiateAsync(atV.attackEffect, effectController.transform);
+			//Addressables.InstantiateAsync(atV.attackEffect, effectController.transform);
 		}
 
 
@@ -1742,53 +1732,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		}
 
-		/// <summary>
-		/// エンチャ時はエンチャントタイプを参照
-		/// </summary>
-		/// <param name="damageType"></param>
-		public void DamageSound(byte damageType,bool heavy)
-	{
-		if (damageType == 1)
-		{
-			GManager.instance.PlaySound("SlashDamage", transform.position);
-		}
-		else if (damageType == 2)
-		{
-			GManager.instance.PlaySound("StabDamage", transform.position);
-		}
-		else if (damageType == 4)
-		{
-			if (!heavy)
-			{
-				//	Debug.Log("チキン");
-				GManager.instance.PlaySound("StrikeDamage", transform.position);
-			}
-			else
-			{
-				GManager.instance.PlaySound("HeavyStrikeDamage", transform.position);
-				heavy = false;
-			}
-		}
-		else if (damageType == 8)
-		{
-			GManager.instance.PlaySound("HolyDamage", transform.position);
-		}
-		else if (damageType == 16)
-		{
-			GManager.instance.PlaySound("DarkDamage", transform.position);
-		}
-		else if (damageType == 32)
-		{
 
-
-			GManager.instance.PlaySound("FireDamage", transform.position);
-		}
-		else if (damageType == 64)
-		{
-
-			GManager.instance.PlaySound("ThunderDamage", transform.position);
-		}
-	}
 
 
 		/// <summary>
@@ -1909,36 +1853,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public void GuardSound()
         {
-			GManager.instance.PlaySound(status.guardSound, transform.position);
+			MyCode.SoundManager.instance.GuardSound(status.isMetal, status.shieldType, transform.position);
 		}
 
-		public void UseSound(string useName)
-	{
-		GManager.instance.PlaySound(useName, transform.position);
-	}
 
-	public void SwingSound(int type = 0)
-	{
-		//斬撃刺突打撃を管理
-		if (atV.type == EnemyStatus.AttackType.Stab)
-		{
-			GManager.instance.PlaySound(MyCode.SoundManager.instance.stabSound[type], transform.position);
-		}
-		else
-		{
-			GManager.instance.PlaySound(MyCode.SoundManager.instance.swingSound[type], transform.position);
-		}
 
-		//エンチャしてる場合も
 
-	}
-	public void FirstSound(int type = 0)
-	{
-		GManager.instance.PlaySound(MyCode.SoundManager.instance.fistSound[type], transform.position);
-
-		//エンチャしてる場合も
-
-	}
 
 		#endregion
 

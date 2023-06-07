@@ -130,7 +130,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (nowType == 1)
             {
                 //アニメ終わったらスタン解除
-                //それか4以外全部まとめてアニメ松処理でもいいな
+                //それか4以外全部まとめてアニメ待つ処理でもいいな
                 //今のタイプ入れるところでアニメの名前切り替えてもよかろ
                 blowTime += _controller.DeltaTime;
                 //0.1秒以上で地面についたら
@@ -140,7 +140,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     blowTime = 0;
                 }
 
-              //  Debug.Log("ああああ");
                     if (CheckEnd("Falter"))
                 {
                     blowTime = 0;
@@ -303,6 +302,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         }
 
+
+
+        public int GetStanState()
+        {
+            return nowType;
+        }
 
 
 

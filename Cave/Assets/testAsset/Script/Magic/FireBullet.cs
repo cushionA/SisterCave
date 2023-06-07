@@ -1,6 +1,6 @@
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-using UnityEngine.AddressableAssets;
+
 using System;
 using MoreMountains.CorgiEngine;
 using MoreMountains.Tools;
@@ -16,6 +16,7 @@ using Unity.Collections;
 /// まず攻撃者にかかってるバフを取得
 /// そして攻撃力などはステータスから獲得
 /// これは通り飛んで当たるだけ
+/// 最初のサイズ保存してタイムリセットしてリストもきれいに
 
 /// 最初は追尾弱くして上向きに飛ばす弾丸を徐々に追尾強くしたりすれば曲射とか特殊な軌道の弾丸作れそう
 /// </summary>
@@ -47,28 +48,54 @@ public class FireBullet : MonoBehaviour
 
 	public Magic em;
 
-	[Header("標的")]
-	/// <summary>
-	/// 標的。狙うもの
-	/// </summary>
+
 
 
 	// === 外部パラメータ ======================================
 	[System.NonSerialized] Transform owner;
-	/// <summary>
-	/// よくわからん存在
-	/// </summary>
-	[System.NonSerialized] public bool attackEnabled;
+
+
 
 	// === 内部パラメータ ======================================
-	[SerializeField] Rigidbody2D rb;
+
+
+	[SerializeField]
+	Rigidbody2D rb;
+
+
+	//リセット対象
+    #region
+    /// <summary>
+    /// 弾丸がどれくらいの時間存在してるか計測する。
+    /// </summary>
+    float fireTime;
+
 	/// <summary>
-	/// 弾丸がどれくらいの時間存在してるか計測する。
+	/// 標的。狙うもの
 	/// </summary>
-	float fireTime;
-
-
+	[HideInInspector]
 	public GameObject target;
+
+	/// <summary>
+	/// 効果あるかどうか。
+	/// 連続して効果発揮しないように
+	/// </summary>
+	bool isAct;	
+	float effectWait;//サポートや回復が再度効果を現すまで
+    
+		/// <summary>
+	/// 初期化されてますか？
+	/// </summary>
+	bool _initialized;
+	
+	/// <summary>
+	/// すでに衝突したもの
+	/// </summary>
+	List<Transform> collisionList = new List<Transform>();
+	#endregion
+
+
+
 
 	TransformAccessArray myTransform;
 
@@ -80,8 +107,9 @@ public class FireBullet : MonoBehaviour
 	/// 音を鳴らすのに使う
 	/// </summary>
 	bool loud;//常に音が鳴るかどうか
-	bool isAct;
-	//	bool hitSound;
+
+
+
 	/// <summary>
 	/// 存在音ならしたか
 	/// 音を消すのに使う
@@ -89,25 +117,14 @@ public class FireBullet : MonoBehaviour
 	bool isExPlay;
 
 
-	GameObject next;
-
-
-	//次に出す弾丸の動作スクリプト
-	FireBullet sm;
 	/// <summary>
 	/// キャラが右と左どちらから弾を撃ったか
 	/// </summary>
-	[HideInInspector] public int direction;
+	[HideInInspector]int direction;
 
 
 
-	float effectWait;//サポートや回復が再度効果を現すまで
 
-	/// <summary>
-	/// 弾丸に精製後の待ち時間がある場合に何秒待ったか数える
-	/// WaitTimeとHormingTimeを同じかそれ以下にすれば停止中だけ敵を狙うやつになる
-	/// </summary>
-	float waitNow;
 	Collider2D col;
 
 	/// <summary>
@@ -120,16 +137,7 @@ public class FireBullet : MonoBehaviour
 
 	JobHandle _handler;
 
-
-	/// <summary>
-	/// 初期化されてますか？
-	/// </summary>
-	bool _initialized;
-
-	/// <summary>
-	/// すでに衝突したもの
-	/// </summary>
-	List<Transform> collisionList = new List<Transform>();
+	AtEffectCon atEf;
 
 
 	/// <summary>
@@ -151,9 +159,7 @@ public class FireBullet : MonoBehaviour
 	string _healTag;
 
 
-
-
-    private void Awake()
+    private void OnEnable()
     {
         if(_user == MasicUser.Player || _user == MasicUser.Sister)
         {
@@ -209,21 +215,10 @@ public class FireBullet : MonoBehaviour
 		}
 
 
-		attackEnabled = true;
 		GManager.instance.PlaySound(em.fireSound, transform.position);
 
 		//	hitSound = em.hitSound != null ? true : false;
 		
-		//ヒット時に他の弾丸を出すなら
-		if (em.isHit)
-		{
-			next = await LoadBullet();
-			sm = next.MMGetComponentNoAlloc<FireBullet>();
-			//smが存在してるなら
-			//Debug.Log($"名前{target.name}");
-
-			
-		}
 
 
 		if (em.isChild)
@@ -258,8 +253,21 @@ public class FireBullet : MonoBehaviour
 	}
 
 
-    private void OnDestroy()
+    private void OnDisable()
     {
+		fireTime = 0;
+
+		target = null;
+
+		isAct = false;
+		effectWait = 0;//サポートや回復が再度効果を現すまで
+
+		_initialized = false;
+		collisionList.Clear();
+		
+		//ここまで初期化
+
+
 		myTransform.Dispose();
 		result.Dispose();
 	}
@@ -321,11 +329,11 @@ public class FireBullet : MonoBehaviour
 			{
 				GManager.instance.StopSound(em.existSound, 1f);
 			}
-            //子弾丸であるなら消える
+			//子弾丸であるなら消える
 
-				
 
-				Addressables.ReleaseInstance(this.gameObject);
+
+			atEf.BulletClear(transform);
 				Destroy(this.gameObject);
 			
 		}
@@ -419,7 +427,7 @@ public class FireBullet : MonoBehaviour
 	/// 使用者が呼び出す
 	/// 子弾のためにこのスクリプト内で呼び出す
 	/// </summary>
-	public void InitializeNextBullet(GameObject _owner, GameObject _target, int _direction = 1)
+	public void InitializeNextBullet(GameObject _owner, GameObject _target, int _direction,AtEffectCon con)
 	{
 
 		owner = _owner.transform;
@@ -439,7 +447,7 @@ public class FireBullet : MonoBehaviour
 
 		}
 
-
+		atEf = con;
 
 		//初期化完了
 		_initialized = true;
@@ -461,7 +469,10 @@ public class FireBullet : MonoBehaviour
 		{
 			owner = SManager.instance.Sister.transform;
 			target = SManager.instance.restoreTarget;
-			owner.gameObject.MMGetComponentNoAlloc<FireAbility>().BuffCalc(this);
+			FireAbility fa = owner.gameObject.MMGetComponentNoAlloc<FireAbility>();
+			fa.BuffCalc(this);
+			atEf = fa.atEf;
+
 			_healTag = "Player";
 		}
 
@@ -476,17 +487,7 @@ public class FireBullet : MonoBehaviour
 	}
 
 
-	/// <summary>
-	/// //次のエフェクトをあらかじめロードしておく処理
-	/// </summary>
-	/// <returns></returns>
-	async UniTask<GameObject> LoadBullet()
-	{
 
-
-		return await Addressables.LoadAssetAsync<GameObject>(em.hitEffect);
-
-	}
 
 	void HealMagic(GameObject target)
 	{
@@ -519,43 +520,59 @@ public class FireBullet : MonoBehaviour
 
 		isAct = true;
 
-		//子弾あるなら発射
-		//	bool needInitialize = sm == null ? false :true;
-		if (sm != null)
+
+		if (em.hitEffect != null)
 		{
-			sm.direction = direction;
 
-			//next.transform.localScale.Set(0, 0,0);
-			if (sm.em.bulletNumber > 1)
+			//子弾の魔法あるなら
+			if (em.childM != null)
 			{
-				Transform goFire = this.gameObject.transform;
-				goFire.rotation = next.transform.rotation;
-				for (int x = 0; x >= sm.em.bulletNumber - 1; x++)
+
+				//next.transform.localScale.Set(0, 0,0);
+
+				Vector3 goFire = transform.position;
+				Vector2 random = Vector2.zero;
+
+				FireBullet nb = atEf.BulletCall(em.hitEffect, this.gameObject.transform.position, transform.rotation,em.childM.flashEffect).gameObject.MMGetComponentNoAlloc<FireBullet>();
+
+				nb.InitializeNextBullet(this.gameObject, target, direction, atEf);
+				transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, em.childM._moveSt.angle);
+				nb.transform.rotation = transform.rotation;
+
+				float num = em.childM.bulletNumber;
+				if (num > 1)
 				{
-					if (sm.em.VRandom != 0 || sm.em.HRandom != 0)
+
+					random.Set(em.childM.HRandom, em.childM.VRandom);
+
+
+
+					for (int x = 1; x < num; x++)
 					{
-						goFire.position = new Vector3(this.gameObject.transform.position.x + RandomValue(-sm.em.HRandom, sm.em.HRandom), this.gameObject.transform.position.y + RandomValue(-sm.em.VRandom, sm.em.VRandom), this.gameObject.transform.position.z);
+						if (x == 0)
+						{
+						}
+
+						else
+						{
+							if (random.x != 0 || random.y != 0)
+							{
+								goFire.Set(goFire.x + RandomValue((int)-random.x, (int)random.x), goFire.y + RandomValue((int)-random.y, (int)random.y), this.gameObject.transform.position.z);
+							}
+
+							atEf.BulletCall(em.hitEffect, goFire, transform.rotation, em.childM.flashEffect).gameObject.MMGetComponentNoAlloc<FireBullet>().InitializeNextBullet(this.gameObject, target, direction, atEf);
+						}
 					}
-
-					Instantiate(next, goFire.position, goFire.rotation).MMGetComponentNoAlloc<FireBullet>().InitializeNextBullet(this.gameObject, target, direction);
-
 				}
 			}
 			else
-			{
-				Instantiate(next, this.gameObject.transform.position, next.transform.rotation).GetComponent<FireBullet>().InitializeNextBullet(this.gameObject, target, direction);
-			}
+				{
+					atEf.BulletCall(em.hitEffect, this.gameObject.transform.position, transform.rotation);
+				}
 
-		}
-		else if (!string.IsNullOrEmpty(em.hitEffect.AssetGUID))
-		{
-
-				Addressables.InstantiateAsync(em.hitEffect, this.gameObject.transform.position, transform.rotation);
 
 
 		}
-
-	
 
 		//いろんなものと衝突してるなら
 		if (collisionList.Count > 0)
@@ -597,12 +614,10 @@ public class FireBullet : MonoBehaviour
                     else
                     {
 
-						Addressables.ReleaseInstance(this.gameObject);
+						atEf.BulletClear(transform);
                        // Destroy(this.gameObject);
 					}
-					//
-					//sm.em
-					//next.transform.localScale = em.hitEffectScale;
+
 				}
 				else
 				{
@@ -658,29 +673,25 @@ public class FireBullet : MonoBehaviour
 		//useEquip.hitLimmit--;
 		//mValueはモーション値
 
-          _damage._attackData._attackType = em.attackType;
+          _damage._attackData._attackType = em.magicElement;
+		_damage._attackData.phyType = em.phyElement;
 
 		if (em.phyAtk > 0)
 		{
 			_damage._attackData.phyAtk = em.phyAtk * attackFactor;
 
-			//斬撃刺突打撃を管理
-          if (em.attackType == 4)
-		{
+			//_damage._attackData._attackType = 4;
 
-
-				//_damage._attackData._attackType = 4;
-
-				//						Debug.Log("皿だ");
-				if (em.shock >= 40)
-				{
-					_damage._attackData.isHeavy = true;
-				}
-				else
-				{
-					_damage._attackData.isHeavy = false;
-				}
+			//						Debug.Log("皿だ");
+			if (em.shock >= 40)
+			{
+				_damage._attackData.isHeavy = true;
 			}
+			else
+			{
+				_damage._attackData.isHeavy = false;
+			}
+
 		}
 		//神聖
 		if (em.holyAtk > 0)

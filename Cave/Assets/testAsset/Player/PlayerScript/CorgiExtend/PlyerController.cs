@@ -493,10 +493,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		//useEquip.hitLimmit--;
 		//mValueはモーション値
 
-
-
 			Equip useEquip;
-			float mainDamage = 0;
+			
+			
             if (isShield)
             {
 				useEquip = GManager.instance.equipShield;
@@ -506,77 +505,51 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
 				useEquip = GManager.instance.equipWeapon;
             }
+			
+			_damage._attackData._attackType = GManager.instance.useAtValue.mainElement;
+			_damage._attackData.phyType = GManager.instance.useAtValue.phyElement;
 
 			if (useEquip.phyAtk > 0)
-		{
-			_damage._attackData.phyAtk = useEquip.phyAtk * attackFactor;
-
-				
-
-				//斬撃刺突打撃を管理
-				if (GManager.instance.useAtValue.type == Equip.AttackType.Slash)
-                {
-                    _damage._attackData._attackType = 1;
-                }
-                else if (GManager.instance.useAtValue.type == Equip.AttackType.Stab)
-                {
-                    _damage._attackData._attackType = 2;
-                }
-                else if (GManager.instance.useAtValue.type == Equip.AttackType.Strike)
-                {
+			{
+				_damage._attackData.phyAtk = useEquip.phyAtk * attackFactor;
 
 
-                    _damage._attackData._attackType = 4;
-
-                    //						Debug.Log("皿だ");
-                    if (GManager.instance.useAtValue.z >= 40)
-                    {
-                        _damage._attackData.isHeavy = true;
-                    }
-                    else
-                    {
-                        _damage._attackData.isHeavy = false;
-                    }
-                }
-            }
-            //神聖
-            if (useEquip.holyAtk > 0)
-		{
-			_damage._attackData.holyAtk = useEquip.holyAtk * holyATFactor;
-				_damage._attackData._attackType = 8;
-				mainDamage = _damage._attackData.holyAtk;
-			}
-		//闇
-		if (useEquip.darkAtk > 0)
-		{
-			_damage._attackData.darkAtk = useEquip.darkAtk * darkATFactor;
-                if (_damage._attackData.darkAtk > mainDamage)
-                {
-					_damage._attackData._attackType = 16;
-					mainDamage = _damage._attackData.darkAtk;
-				}
-		}
-		//炎
-		if (useEquip.fireAtk > 0)
-		{
-			_damage._attackData.fireAtk = useEquip.fireAtk * fireATFactor;
-				if (_damage._attackData.fireAtk > mainDamage)
+				//						Debug.Log("皿だ");
+				if (GManager.instance.useAtValue.z >= 40)
 				{
-					_damage._attackData._attackType = 32;
-					mainDamage = _damage._attackData.fireAtk;
+					_damage._attackData.isHeavy = true;
 				}
-			}
-		//雷
-		if (useEquip.thunderAtk > 0)
-		{
-			_damage._attackData.thunderAtk = useEquip.thunderAtk * thunderATFactor;
-				if (_damage._attackData.thunderAtk > mainDamage)
+				else
 				{
-					_damage._attackData._attackType = 64;
-					mainDamage = _damage._attackData.thunderAtk;
+					_damage._attackData.isHeavy = false;
 				}
 			}
-		_damage._attackData.shock = GManager.instance.useAtValue.z;
+			//神聖
+			if (useEquip.holyAtk > 0)
+			{
+				_damage._attackData.holyAtk = useEquip.holyAtk * holyATFactor;
+
+			}
+			//闇
+			if (useEquip.darkAtk > 0)
+			{
+				_damage._attackData.darkAtk = useEquip.darkAtk * darkATFactor;
+
+			}
+			//炎
+			if (useEquip.fireAtk > 0)
+			{
+				_damage._attackData.fireAtk = useEquip.fireAtk * fireATFactor;
+
+			}
+			//雷
+			if (useEquip.thunderAtk > 0)
+			{
+				_damage._attackData.thunderAtk = useEquip.thunderAtk * thunderATFactor;
+
+			}
+
+			_damage._attackData.shock = GManager.instance.useAtValue.z;
 
 
 		_damage._attackData.attackBuff = attackBuff;
@@ -686,54 +659,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
 
 
-		/// <summary>
-		/// エンチャ時はエンチャントタイプを参照
-		/// </summary>
-		/// <param name="damageType"></param>
-		public void DamageSound(byte damageType,bool heavy)
-		{
-
-			if (damageType == 1)
-			{
-				GManager.instance.PlaySound("SlashDamage", transform.position);
-			}
-			else if (damageType == 2)
-			{
-				GManager.instance.PlaySound("StabDamage", transform.position);
-			}
-			else if (damageType == 4)
-			{
-				if (!heavy)
-				{
-					//	Debug.Log("チキン");
-					GManager.instance.PlaySound("StrikeDamage", transform.position);
-				}
-				else
-				{
-					GManager.instance.PlaySound("HeavyStrikeDamage", transform.position);
-					heavy = false;
-				}
-			}
-			else if (damageType == 8)
-			{
-				GManager.instance.PlaySound("HolyDamage", transform.position);
-			}
-			else if (damageType == 16)
-			{
-				GManager.instance.PlaySound("DarkDamage", transform.position);
-			}
-			else if (damageType == 32)
-			{
-
-
-				GManager.instance.PlaySound("FireDamage", transform.position);
-			}
-			else if (damageType == 64)
-			{
-				Debug.Log("sdfgg");
-				GManager.instance.PlaySound("ThunderDamage", transform.position);
-			}
-		}
 
 		#endregion
 
@@ -1058,11 +983,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public void attackEffect()
 		{
-			if (!string.IsNullOrEmpty(GManager.instance.useAtValue.attackEffect.AssetGUID))
-			{
+		//	if (!string.IsNullOrEmpty(GManager.instance.useAtValue.attackEffect.AssetGUID))
+		//	{
 
-				Addressables.InstantiateAsync(GManager.instance.useAtValue.attackEffect, eController.transform);
-			}
+		//		Addressables.InstantiateAsync(GManager.instance.useAtValue.attackEffect, eController.transform);
+		//	}
 		}
 
 
@@ -1107,63 +1032,24 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 
 
-		/// <summary>
-		/// エフェクトを発生させるメソッド。
-		/// エフェクトを発生させる瞬間位置を変えてその位置をアニメに利用させる
-		/// あるいはアニメイベントで呼び出したエフェクト自体を動かす
-		/// </summary>
-		public void EffectController(string name)
-		{
-			//Debug.Log("あああ");
-			Transform place = eController.transform;
-			Addressables.InstantiateAsync(name, place.position, place.rotation);
-
-		}
-		public void AnimeSound(string useSoundName)
-		{
-
-			GManager.instance.PlaySound(useSoundName, transform.position);
 
 
-		}
-		public void AnimeChaise(string useSoundName)
-		{
 
-			GManager.instance.FollowSound(useSoundName, transform);
-
-		}
-
-		/// <summary>
-		/// 戦技とかでなる特殊な音を指定
-		/// </summary>
-		/// <param name="useSoundNum"></param>
-		/// <param name="isChase"></param>
-
-		public void WeaponSound(int useSoundNum, bool isChase = false)
-		{
-			if (!isChase)
-			{
-				GManager.instance.PlaySound(GManager.instance.equipWeapon.useSound[useSoundNum], transform.position);
-			}
-			else
-			{
-				GManager.instance.FollowSound(GManager.instance.equipWeapon.useSound[useSoundNum], transform);
-			}
-
-		}
 		public void GuardSound()
 		{
 
 
 			if (GManager.instance.twinHand)
 			{
-				GManager.instance.PlaySound(GManager.instance.equipWeapon.useSound[0], transform.position);
+				MyCode.SoundManager.instance.GuardSound(GManager.instance.equipWeapon.isMetal,GManager.instance.equipWeapon.shieldType,transform.position);
 			}
             else
             {
-				GManager.instance.PlaySound(GManager.instance.equipShield.useSound[0], transform.position);
+				MyCode.SoundManager.instance.GuardSound(GManager.instance.equipShield.isMetal, GManager.instance.equipShield.shieldType, transform.position);
 			}
 		}
+
+
 		/// <summary>
 		/// 燃えてる剣だったりして音が聞こえる場合
 		/// </summary>
@@ -1171,42 +1057,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <param name="isChase"></param>
 		public void LeftSound(int useSoundNum, bool isChase = false)
 		{
-			if (!isChase)
-			{
-				GManager.instance.PlaySound(GManager.instance.equipShield.useSound[useSoundNum], transform.position);
-			}
-			else
-			{
-				GManager.instance.FollowSound(GManager.instance.equipShield.useSound[useSoundNum], transform);
-			}
-		}
-		public void StepSound()
-		{
-			GManager.instance.PlaySound("NAFootStep", transform.position);
-			if (GManager.instance.isWater)
-			{
-				GManager.instance.PlaySound("WaterStep", transform.position);
-			}
-		}
-		/// <summary>
-		/// 通常攻撃の音
-		/// </summary>
-		/// <param name="type"></param>
-		public void SwingSound(int type = 0)
-		{
-			//斬撃刺突打撃を管理
-			if (GManager.instance.useAtValue.type == MyCode.Weapon.AttackType.Stab)
-			{
-				GManager.instance.PlaySound(MyCode.SoundManager.instance.stabSound[type], transform.position);
-			}
-			else
-			{
-				GManager.instance.PlaySound(MyCode.SoundManager.instance.swingSound[type], transform.position);
-			}
-
-			//エンチャしてる場合も
 
 		}
+
 
 
 		#endregion

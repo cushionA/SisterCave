@@ -638,117 +638,7 @@ if (!isDamage)
 
 	public void WeaponGuard()
 	{
-		if (/*&& GManager.instance.equipWeapon.hitLimmit > 0 */!isDamage)
-		{
-
-			GManager.instance.PlaySound(status.guardSound,transform.position);
-
-			isDamage = true;
-			guardHit = true;
-			//GManager.instance.equipWeapon.hitLimmit--;
-
-			//////Debug.log("終了");
-			float damage = 0;//バフデバフ処理用にdamageとして保持する
-			float mValue = GManager.instance.equipWeapon.mValue;
-			//float damage;//バフデバフ処理用にdamageとして保持する
-
-			Equip useEquip;
-			if (!GManager.instance.isShieldAttack)
-			{
-				useEquip = GManager.instance.equipWeapon;
-			}
-			else
-			{
-				useEquip = GManager.instance.equipShield;
-			}
-			if (useEquip.phyAtk > 0)
-			{
-				//斬撃刺突打撃を管理
-				if (GManager.instance.equipWeapon.atType == MyCode.Weapon.AttackType.Slash)
-				{
-					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.Def);
-
-				}
-				else if (GManager.instance.equipWeapon.atType == MyCode.Weapon.AttackType.Stab)
-				{
-					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.pierDef);
-
-				}
-				else if (GManager.instance.equipWeapon.atType == MyCode.Weapon.AttackType.Strike)
-				{
-					damage += (Mathf.Pow(useEquip.phyAtk, 2) * mValue) / (useEquip.phyAtk + status.strDef);
-
-				}
-
-				damage *= (100 - status.phyCut)/100;
-			}
-			//神聖
-			if (useEquip.holyAtk > 0)
-			{
-				damage += (Mathf.Pow(useEquip.holyAtk, 2) * mValue) / (useEquip.holyAtk + status.holyDef) * (100 - status.holyCut)/100;
-
-
-			}
-			//闇
-			if (useEquip.darkAtk > 0)
-			{
-				damage += (Mathf.Pow(useEquip.darkAtk, 2) * mValue) / (useEquip.darkAtk + status.darkDef) * (100 - status.darkCut)/100;
-
-			}
-			//炎
-			if (useEquip.fireAtk > 0)
-			{
-				damage += (Mathf.Pow(useEquip.fireAtk, 2) * mValue) / (useEquip.fireAtk + status.fireDef) * (100 - status.fireCut)/100;
-			}
-			//雷
-			if (useEquip.thunderAtk > 0)
-			{
-				damage += (Mathf.Pow(useEquip.thunderAtk, 2) * mValue) / (useEquip.thunderAtk + status.thunderDef) * (100 - status.thunderCut)/100;
-
-			}
-			//音出し
-
-			//まぁまてや。ガード音にしよう
-			//DamageSound(useEquip.attackType);
-			//////Debug.log($"{ damage * GManager.instance.attackBuff}ダメージ");
-			damage = Mathf.Floor(damage * GManager.instance.attackBuff);
-			hp -= damage;//HP引いてる
-			
-			um.AddStack(damage, this.transform);
-			nowArmor -= (GManager.instance.equipWeapon.shock * 2.5f) * ((100 - status.guardPower) / 100);
-
-			if(GManager.instance.equipWeapon.isLight && status.guardPower >= 50)
-            {
-				GManager.instance.isBounce = true;//受け値50以上で弾く
-
-
-			}
-			ArmorControll();
-			if (isDown) 
-			{
-				
-				if (GManager.instance.equipWeapon.isBlow)
-				{
-					blowM.Set(GManager.instance.equipWeapon.blowPower.x * -direction, GManager.instance.equipWeapon.blowPower.y);
-					blowDown = true;
-				}
-            else
-            {
-				guardBreak = true;
-			}
-			}
-
-			if (hp <= 0)
-			{
-				isDie = true;
-				atBlock.gameObject.SetActive(false);
-				isAnimeStart = false;
-				if (!isGround)
-				{
-					isDown = true;
-				}
-			}
-		}
+	
 	}
 
 	/// <summary>
@@ -766,20 +656,7 @@ if (!isDamage)
 
 			if (GManager.instance.useMagic.phyAtk > 0)
 			{
-				//斬撃刺突打撃を管理
-				if (GManager.instance.useMagic.atType == Magic.AttackType.Slash)
-				{
-					damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.Def);
-				}
-				else if (GManager.instance.useMagic.atType == Magic.AttackType.Stab)
-				{
-					damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.pierDef);
 
-				}
-				else if (GManager.instance.useMagic.atType == Magic.AttackType.Strike)
-				{
-					damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.strDef);
-				}
 			}
 			//神聖
 			if (GManager.instance.useMagic.holyAtk > 0)
@@ -847,82 +724,7 @@ if (!isDamage)
 	}
 	public void PlayerMagicGuard()
 	{
-		if (/*&& GManager.instance.equipWeapon.hitLimmit > 0 */!isDamage)
-		{
-			isDamage = true;
 
-			//GManager.instance.equipWeapon.hitLimmit--;
-			float damage = 0;//バフデバフ処理用にdamageとして保持する
-			float mValue = GManager.instance.useMagic.mValue;
-			//float damage;//バフデバフ処理用にdamageとして保持する
-			if (GManager.instance.useMagic.phyAtk > 0)
-			{
-				//斬撃刺突打撃を管理
-				if (GManager.instance.useMagic.atType == Magic.AttackType.Slash)
-				{ damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.Def); }
-				else if (GManager.instance.useMagic.atType == Magic.AttackType.Stab)
-				{ damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.pierDef); }
-				else if (GManager.instance.useMagic.atType == Magic.AttackType.Strike)
-				{ damage += (Mathf.Pow(GManager.instance.useMagic.phyAtk, 2) * mValue) / (GManager.instance.useMagic.phyAtk + status.strDef); }
-				damage *= (100 - status.phyCut)/100;
-			}
-			//神聖
-			if (GManager.instance.useMagic.holyAtk > 0)
-			{
-				damage += (Mathf.Pow(GManager.instance.useMagic.holyAtk, 2) * mValue) / (GManager.instance.useMagic.holyAtk + status.holyDef) * (100 - status.holyCut)/100;
-			}
-			//闇
-			if (GManager.instance.useMagic.darkAtk > 0)
-			{
-				damage += (Mathf.Pow(GManager.instance.useMagic.darkAtk, 2) * mValue) / (GManager.instance.useMagic.darkAtk + status.darkDef * status.darkCut) * (100 - status.darkCut)/100;
-			}
-			//炎
-			if (GManager.instance.useMagic.fireAtk > 0)
-			{
-				damage += (Mathf.Pow(GManager.instance.useMagic.fireAtk, 2) * mValue) / (GManager.instance.useMagic.fireAtk + status.fireDef) * status.fireCut * (100 - status.fireCut)/100;
-			}
-			//雷
-			if (GManager.instance.useMagic.thunderAtk > 0)
-			{
-				damage += (Mathf.Pow(GManager.instance.useMagic.thunderAtk, 2) * mValue) / (GManager.instance.useMagic.thunderAtk + status.thunderDef) * (100 - status.thunderCut)/100;
-			}
-			damage = Mathf.Floor(damage * GManager.instance.attackBuff);
-			hp -= damage;//HP引いてる
-
-			um.AddStack(damage, this.transform);
-			if (GManager.instance.equipWeapon.isBlow)
-			{
-				nowArmor -= ((GManager.instance.useMagic.shock * 2) * status.guardPower / 100) * 1.2f;
-			}
-			else
-			{
-				nowArmor -= (GManager.instance.useMagic.shock * 2) * ((100 - status.guardPower) / 100);
-			}
-
-			if (nowArmor <= 0)
-			{
-				if (GManager.instance.useMagic.isBlow)
-				{
-					blowM.Set(GManager.instance.useMagic.blowPower.x * -direction, GManager.instance.useMagic.blowPower.y);
-					//rb.AddForce(move, ForceMode2D.Impulse);
-					blowDown = true;
-				}
-
-			else
-				{
-					guardBreak = true;
-				}
-			}
-			if (hp <= 0)
-			{
-				isDie = true;isAnimeStart = false;
-				atBlock.gameObject.SetActive(false);
-				if (!isGround)
-				{
-					isDown = true;
-				}
-			}
-		}
 	}
 	public void SisterMagicDamage()
 	{
@@ -937,16 +739,7 @@ if (!isDamage)
 			float damage = 0;//バフデバフ処理用にdamageとして保持する
 			float mValue = sm.mValue;
 			//float damage;//バフデバフ処理用にdamageとして保持する
-			if (sm.phyAtk > 0)
-			{
-				//斬撃刺突打撃を管理
-				if (sm.atType == Magic.AttackType.Slash)
-				{ damage += (Mathf.Pow(sm.phyAtk, 2) * mValue) / (sm.phyAtk + status.Def); }
-				else if (sm.atType == Magic.AttackType.Stab)
-				{ damage += (Mathf.Pow(sm.phyAtk, 2) * mValue) / (sm.phyAtk + status.pierDef); }
-				else if (sm.atType == Magic.AttackType.Strike)
-				{ damage += (Mathf.Pow(sm.phyAtk, 2) * mValue) / (sm.phyAtk + status.strDef); }
-			}
+
 			//神聖
 			if (sm.holyAtk > 0)
 			{
@@ -967,7 +760,7 @@ if (!isDamage)
 			{
 				damage += (Mathf.Pow(sm.thunderAtk, 2) * mValue) / (sm.thunderAtk + status.thunderDef);
 			}
-			DamageSound(sm.attackType);
+
 			damage = Mathf.Floor(damage * SManager.instance.sisStatus.attackBuff);
 			hp -= damage;
 
@@ -1021,13 +814,7 @@ if (!isDamage)
 			//float damage;//バフデバフ処理用にdamageとして保持する
 			if (SManager.instance.useMagic.phyAtk > 0)
 			{
-				//斬撃刺突打撃を管理
-				if (SManager.instance.useMagic.atType == Magic.AttackType.Slash)
-				{ damage += (Mathf.Pow(SManager.instance.useMagic.phyAtk, 2) * mValue) / (SManager.instance.useMagic.phyAtk + status.Def); }
-				else if (SManager.instance.useMagic.atType == Magic.AttackType.Stab)
-				{ damage += (Mathf.Pow(SManager.instance.useMagic.phyAtk, 2) * mValue) / (SManager.instance.useMagic.phyAtk + status.pierDef); }
-				else if (SManager.instance.useMagic.atType == Magic.AttackType.Strike)
-				{ damage += (Mathf.Pow(SManager.instance.useMagic.phyAtk, 2) * mValue) / (SManager.instance.useMagic.phyAtk + status.strDef); }
+
 
 				damage *= (100 - status.phyCut)/100;
 			}
@@ -1301,7 +1088,7 @@ if (!isDamage)
 			damage = Mathf.Floor(damage * attackBuff);
 			//Debug.Log($"ガード時のダメージ{damage}");
 			GManager.instance.hp -= damage * attackBuff;
-			GManager.instance.PlaySound(useEquip.useSound[0], transform.position);
+
 			if (!GManager.instance.equipWeapon.twinHand)
 			{
 
@@ -2805,7 +2592,7 @@ if (!isDamage)
 		atV.isCombo = status.atValue[attackNumber].isCombo;
 		atV.escapePercentage = status.atValue[attackNumber].escapePercentage;
 		atV.parryResist = status.atValue[attackNumber].parryResist;
-		atV.attackEffect = status.atValue[attackNumber].attackEffect;
+	//	atV.attackEffect = status.atValue[attackNumber].attackEffect;
 	}
 
 
@@ -2989,46 +2776,7 @@ if (!isDamage)
 	/// <param name="damageType"></param>
 	void DamageSound(byte damageType)
     {
-		if (damageType == 1)
-		{
-			GManager.instance.PlaySound("SlashDamage", transform.position);
-		}
-		else if (damageType == 2)
-		{
-			GManager.instance.PlaySound("StabDamage", transform.position);
-		}
-		else if (damageType == 4)
-		{
-			if (!heavy)
-			{
-			//	Debug.Log("チキン");
-				GManager.instance.PlaySound("StrikeDamage", transform.position);
-			}
-            else
-            {
-				GManager.instance.PlaySound("HeavyStrikeDamage", transform.position);
-				heavy = false;
-			}
-		}
-		else if (damageType == 8)
-		{
-			GManager.instance.PlaySound("HolyDamage", transform.position);
-		}
-		else if (damageType == 16)
-		{
-			GManager.instance.PlaySound("DarkDamage", transform.position);
-		}
-		else if (damageType == 32)
-		{
 
-			
-			GManager.instance.PlaySound("FireDamage", transform.position);
-		}
-		else if (damageType == 64)
-		{
-			Debug.Log("sdfgg");
-			GManager.instance.PlaySound("ThunderDamage", transform.position);
-		}
 	}
 
 
@@ -3092,28 +2840,6 @@ if (!isDamage)
 		GManager.instance.PlaySound(useName, transform.position);
 	}
 
-	public void SwingSound(int type = 0)
-	{
-		//斬撃刺突打撃を管理
-		if (atV.type == EnemyStatus.AttackType.Stab)
-		{
-			GManager.instance.PlaySound( MyCode.SoundManager.instance.stabSound[type], transform.position);
-		}
-		else
-		{
-			GManager.instance.PlaySound( MyCode.SoundManager.instance.swingSound[type], transform.position);
-		}
-
-		//エンチャしてる場合も
-
-	}
-	public void FistSound(int type = 0)
-	{
-			GManager.instance.PlaySound( MyCode.SoundManager.instance.fistSound[type], transform.position);
-		
-		//エンチャしてる場合も
-
-	}
 
 	public void DisParriableAct()
     {
@@ -3135,7 +2861,7 @@ if (!isDamage)
 	public void attackEffect()
 	{
 		// Debug.Log($"アイイイイイイ{atEffect.SubObjectName}");
-		Addressables.InstantiateAsync(atV.attackEffect, effectController.transform);
+	//	Addressables.InstantiateAsync(atV.attackEffect, effectController.transform);
 	}
 
 	public void BattleFlip(float direction)

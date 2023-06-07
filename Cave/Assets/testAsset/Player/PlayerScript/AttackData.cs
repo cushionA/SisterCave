@@ -43,15 +43,13 @@ public class AttackData
 	/// 攻撃属性
 	/// </summary>
 	[HideInInspector]
-	public byte _attackType;//アーマー削り
+	public MoreMountains.CorgiEngine.AtEffectCon.Element _attackType;
 
 	/// <summary>
-	/// 攻撃属性
+	/// 物理攻撃属性
 	/// </summary>
 	[HideInInspector]
-	public byte _phyType;//アーマー削り
-
-
+	public Equip.AttackType phyType;
 
 
 	/// <summary>

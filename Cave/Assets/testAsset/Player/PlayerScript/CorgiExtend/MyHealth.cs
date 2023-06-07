@@ -353,12 +353,12 @@ namespace MoreMountains.CorgiEngine
                 {
 
                     //斬撃刺突打撃を管理
-                    if (_damageData._attackType == 0)
+                    if (_damageData.phyType == Equip.AttackType.Slash)
                     {
                         damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def) * ((100 - _defData.phyCut) / 100);
 
                     }
-                    else if (_damageData._attackType == 2)
+                    else if (_damageData.phyType == Equip.AttackType.Stab)
                     {
                         damage += (Mathf.Pow(_damageData.phyAtk * mValue, 2)) / (_damageData.phyAtk + _defData.pierDef) * ((100 - _defData.phyCut) / 100);
                         stab = true;
@@ -416,12 +416,12 @@ namespace MoreMountains.CorgiEngine
                 {
 
                     //斬撃刺突打撃を管理
-                    if (_damageData._attackType == 0)
+                    if (_damageData.phyType ==  Equip.AttackType.Slash)
                     {
                         damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def);
 
                     }
-                    else if (_damageData._attackType == 2)
+                    else if (_damageData.phyType ==  Equip.AttackType.Stab)
                     {
 
                         damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.pierDef);
@@ -482,13 +482,13 @@ namespace MoreMountains.CorgiEngine
 
                     //アタックデータをセットするメソッドとかほしい
                     //ヒット時ダメージ計算でヒット時やるか
-                    eData.DamageSound(_damageData._attackType, _damageData.isHeavy);
+                    DamageSound(_damageData._attackType, _damageData.isHeavy);
 
 
                 }
                 else if (_defender == MyDamageOntouch.TypeOfSubject.Player)
                 {
-                    pCon.DamageSound(_damageData._attackType, _damageData.isHeavy);
+                    DamageSound(_damageData._attackType, _damageData.isHeavy);
                 }
                 else if (_defender == MyDamageOntouch.TypeOfSubject.Magic)
                 {
@@ -525,6 +525,13 @@ namespace MoreMountains.CorgiEngine
 
         }
 
+        /// <summary>
+        /// スタンしてるかどうかを確認
+        /// </summary>
+        /// <param name="shock"></param>
+        /// <param name="isBlow"></param>
+        /// <param name="isBack"></param>
+        /// <returns></returns>
         public MyWakeUp.StunnType ArmorCheck(float shock, bool isBlow, bool isBack)
         {
 
@@ -556,6 +563,52 @@ namespace MoreMountains.CorgiEngine
 
             return result;
         }
+
+
+
+        public EffectControllAbility.SelectState GetStanState()
+        {
+            int stanSt = 0;
+            if (_character != null)
+            {
+               
+                // Debug.Log($"だの{stunnState}");
+                if (_defender == MyDamageOntouch.TypeOfSubject.Player)
+                {
+                    stanSt = pCon._wakeup.GetStanState();
+                }
+                else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
+                {
+
+
+                   stanSt  = eData._wakeup.GetStanState();
+
+
+                }
+            }
+
+            //fall
+            if(stanSt == 1)
+            {
+                return EffectControllAbility.SelectState.Faltter;
+            }
+            //blow
+            else if (stanSt == 4)
+            {
+                return EffectControllAbility.SelectState.Blow;
+            }
+            //gb
+            else if (stanSt == 3)
+            {
+                return EffectControllAbility.SelectState.GBreake;
+            }
+            else if (stanSt == 7)
+            {
+                return EffectControllAbility.SelectState.BlowDead;
+            }
+            return EffectControllAbility.SelectState.Null;
+        }
+
 
         /// <summary>
         /// 敵の場合はプレイヤーの方を向く、立ち上がり時
@@ -734,6 +787,54 @@ namespace MoreMountains.CorgiEngine
 
         }
 
+
+        /// <summary>
+        /// エンチャ時はエンチャントタイプを参照
+        /// </summary>
+        /// <param name="damageType"></param>
+        public void DamageSound(AtEffectCon.Element damageType, bool heavy)
+        {
+            if (damageType == AtEffectCon.Element.slash)
+            {
+                GManager.instance.PlaySound("SlashDamage", transform.position);
+            }
+            else if (damageType == AtEffectCon.Element.stab)
+            {
+                GManager.instance.PlaySound("StabDamage", transform.position);
+            }
+            else if (damageType == AtEffectCon.Element.strike)
+            {
+                if (!heavy)
+                {
+                    //	Debug.Log("チキン");
+                    GManager.instance.PlaySound("StrikeDamage", transform.position);
+                }
+                else
+                {
+                    GManager.instance.PlaySound("HeavyStrikeDamage", transform.position);
+                    heavy = false;
+                }
+            }
+            else if (damageType == AtEffectCon.Element.holy)
+            {
+                GManager.instance.PlaySound("HolyDamage", transform.position);
+            }
+            else if (damageType == AtEffectCon.Element.dark)
+            {
+                GManager.instance.PlaySound("DarkDamage", transform.position);
+            }
+            else if (damageType == AtEffectCon.Element.fire)
+            {
+
+
+                GManager.instance.PlaySound("FireDamage", transform.position);
+            }
+            else if (damageType == AtEffectCon.Element.thunder)
+            {
+
+                GManager.instance.PlaySound("ThunderDamage", transform.position);
+            }
+        }
         public void Die()
         {
 

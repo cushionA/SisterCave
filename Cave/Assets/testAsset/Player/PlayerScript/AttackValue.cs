@@ -1,9 +1,45 @@
 ﻿using UnityEngine;
 using UnityEngine.AddressableAssets;
+using static Equip;
+
 [System.Serializable] //これを書くとinspectorに表示される。
 
 public class AttackValue
 {
+
+    /// <summary>
+    /// アクションの強度など
+    /// </summary>
+    public enum AttackLevel
+    {
+        Weak,
+        Normal,
+        Strong,
+        Fatal,
+        Special
+    }
+
+    /// <summary>
+    /// モーションのタイプ
+    /// 音の判定に使う
+    /// </summary>
+    public enum MotionType
+    {
+        slash,
+        stab,
+        strike,
+        shoot
+    }
+
+    /// <summary>
+    /// どんなエフェクトや音をもらうか
+    /// </summary>
+    public AttackLevel EffectLevel;
+
+    /// <summary>
+    /// どんなモーションであるか
+    /// </summary>
+    public MotionType motionType;
 
     /// <summary>
     /// モーション値
@@ -28,16 +64,12 @@ public class AttackValue
     public bool isBlow;
     [Header("弾かれるかどうか")]
     public bool isLight;
-    [Header("攻撃タイプ")]
-    public MyCode.Weapon.AttackType type;
+
     [Header("吹っ飛ばす力")]
      public Vector2 blowPower;
     [Header("スタミナ消費")]
     public int useStamina;
 
-    [Header("攻撃エフェクト")]
-  // [AssetReferenceUILabelRestriction("AttackEffect")]
-    public AssetReference attackEffect;
 
     /// <summary>
     /// 盾の攻撃力を参照する攻撃かどうか
@@ -98,4 +130,10 @@ public class AttackValue
     /// </summary>
     public bool backAttack;
 
+
+    [Tooltip("攻撃のメイン属性")]
+    public MoreMountains.CorgiEngine.AtEffectCon.Element mainElement;
+
+    [Tooltip("攻撃の物理属性")]
+    public AttackType phyElement;
 }

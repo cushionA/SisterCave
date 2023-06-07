@@ -90,10 +90,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		 [HideInInspector]
 		public int judgeSequence;
 
-		/// <summary>
-		/// 詠唱中つかう音
-		/// </summary>
-		string castSound = "NormalCastLoop1";
 
 		/// <summary>
 		/// 詠唱の音鳴らすサイン
@@ -142,6 +138,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		//ビット演算でクールタイムを破棄する
 		int _skipCondition;
 
+		public AtEffectCon atEf;
+
 
 
 		//protected RewiredCorgiEngineInputManager _inputManager;
@@ -163,10 +161,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		[HideInInspector]
 		public float holyATFactor = 1;
 
-		/// <summary>
-		/// 魔法使用待機中のエフェクト
-		/// </summary>
-		public GameObject castEffect;
+
 
 		/// <summary>
 		/// 弾丸生成中にターゲットが消えてもいいように位置を覚えておく
@@ -185,7 +180,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			sister.nowMove = sister.priority;
 
 			//Brainじゃないんですわ
-			sb = GetComponent<BrainAbility>();
+			sb = _character.FindAbility<BrainAbility>();
+			atEf = _character.FindAbility<AtEffectCon>();
 		}
 
 
@@ -231,11 +227,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					recoverTime = 0;
 				}
 			}
+
+			//限界量は超えないように
 			if (sb.mp > sb.maxMp)
 			{
 				sb.mp = sb.maxMp;
 
 			}
+
+			//攻撃処理
 			if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
 			{
 			//	
@@ -246,9 +246,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//戦闘中、かつ位置についているなら
 			else if (sb.nowState == BrainAbility.SisterState.戦い)
 			{
-				//戦闘開始時にフラグをきれいにしておきます
-
-				//戦闘開始時の初期化終わったなら
 
 				//何も魔法ないなら戻る
 				if (sb.status.equipMagic == null)
@@ -271,11 +268,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				
 				if (_condition.CurrentState != CharacterStates.CharacterConditions.Moving)
 				{
-				//	Debug.Log($"ss{sister.nowMove}");
 				
 					//Disenableならクールタイムを待つ
-					
 					CoolTimeWait();
+
 　　　　　　　　　　targetJudge += _controller.DeltaTime;
 
 					//位置についていないか、クールタイム消化中でなおかつスキップコンディションもないなら
@@ -285,7 +281,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     }
 
                     bool reset = false;
-					//一定時間経過で戦闘思考を、なしでない限りは優先する状態に戻す
+					//一定時間経過で戦闘思考を、行動がなしでない限りは優先する状態に戻す
 					if (stateJudge >= sister.stateResetRes && sister.priority != SisterParameter.MoveType.なし)
 					{
 						//ステートリセット
@@ -479,55 +475,31 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					
 					soundStart = false;
 					disEnable = true;
-					//GManager.instance.StopSound(castSound, 0.5f);
+
 					_movement.ChangeState(CharacterStates.MovementStates.Attack);
 					waitCast = 0;
 
 					actionNum = (int)SManager.instance.useMagic.FireType;
-					Addressables.InstantiateAsync(SManager.instance.useMagic.castBreak, sb.firePosition.position, sb.firePosition.rotation);
-					if (castEffect != null)
-					{
-						Vector3 pos = new Vector3(transform.position.x, transform.position.y, -100);
-						castEffect.transform.position = pos;
-						Addressables.ReleaseInstance(castEffect);
-						castEffect = null;
-					}
+					atEf.CastEnd(SManager.instance.useMagic.magicLevel, SManager.instance.useMagic.magicElement);
+
 					//ここからの処理ではアニメーションイベントを使う
 				}
 				//詠唱中なら
-				else if(waitCast > 0.3)
+				else if(waitCast > 0.3 && !soundStart)
 				{
-
-					//sb.//(SManager.instance.useMagic.castAnime);
-					if (!soundStart)
-					{
-						 CastCircle().Forget();
-
-						GManager.instance.PlaySound(castSound, transform.position);
-						
-						soundStart = true;
-					}
+				    CastCircle();
 				}
 			}
 			//Mp足りないかターゲット消えたなら
 			else
 			{
-				//	詠唱中止。敵が死んで消えたりとか
-				GManager.instance.StopSound(castSound, 0.5f);
-
-
 				//とりあえずカメラから消す
-				Debug.Log("れｃ");
-				Vector3 pos = new Vector3(transform.position.x, transform.position.y, -100);
-                 castEffect.transform.position = pos;
-					Addressables.ReleaseInstance(castEffect);
-					castEffect = null;
-			//	}
+				atEf.CastStop(SManager.instance.useMagic.magicLevel, SManager.instance.useMagic.magicElement);
+
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 				actionNum = 0;
 				waitCast = 0;
-			//	Debug.Log("adedwdwadwd");
 				return;
 			}
 		}
@@ -540,13 +512,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <returns></returns>
 		public int RandomValue(int X, int Y, bool setSeed = false, int seed = 0)
 		{
-			//Random rnd = new UnityEngine.Random();
 
-			/*	if (setSeed)
-				{
-					Random.InitState(seed);
-				}*/
-			//MyRandom random = new MyRandom();
 			return UnityEngine.Random.Range(X, Y + 1);
 
 		}
@@ -563,57 +529,40 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 			//	Debug.Log($"ddddd{coolTime}ｄｄ{waitCast}d{SManager.instance.useMagic}");
 				waitCast += _controller.DeltaTime;
-				//sb.//("Stand");
+
 				//逃げる
 				sb.PositionJudge();
+
 				if (waitCast >= coolTime + 0.5f)
 				{
 					disEnable = false;
 					_skipCondition = 0;
 					waitCast = 0;
-					//SManager.instance.target.MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(3);
 					
 				}
 			}
 
 		}
 
-		/// <summary>
-		/// 攻撃時アニメイベント
-		/// 詠唱完了時、射撃モーションにて一度呼ぶ
-		/// 魔法レベルと属性で音判断
-		/// </summary>
-		public void EventFire()
-		{
 
-			fireStart = true;
-			//待てこれキャストサウンド介する必要ある？
-			//普通に判断して普通に入れよ
-		//	FireSoundJudge();
-		}
 
 		/// <summary>
 		/// 詠唱モーションのアニメイベント
 		/// 詠唱中のために音とエフェクトをセット
 		/// 使用する魔法を引数にして魔法レベルと属性で見る
 		/// 詠唱の音やエフェクト変えたいならここでいじる
-		public async UniTaskVoid CastCircle()
+		public void CastCircle()
 		{
-
-			Vector3 posi = new Vector3(transform.position.x, transform.position.y - 11, 40);
-			//発生位置をPlayer
-			castEffect = await Addressables.InstantiateAsync(SManager.instance.useMagic.castEffect, posi, Quaternion.Euler(-98,0,0));
-			//	}
-
+			atEf.CastStart(SManager.instance.useMagic.magicLevel, SManager.instance.useMagic.magicElement);
 			float dir = Mathf.Sign(SManager.instance.target.transform.position.x - transform.position.x);
 			sb.SisFlip(dir);
-
+			soundStart = true;
 
 		}
 
 
 		/// <summary>
-		/// 外部から中断させる
+		/// 外部から魔法中断させる
 		/// </summary>
 		public void MagicEnd()
 		{
@@ -622,18 +571,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//disEnable = false;
 			stateJudge = 0;
 			waitCast = 0;
-			//とりあえずカメラから消す
-							
-			if (castEffect != null)
-			{
 
-				Vector3 pos = new Vector3(transform.position.x, transform.position.y, -100);
-				castEffect.transform.position = pos;
-				Addressables.ReleaseInstance(castEffect);
-				castEffect = null;
+			//エフェクト消す
+			if (soundStart)
+			{
+				atEf.CastStop(SManager.instance.useMagic.magicLevel, SManager.instance.useMagic.magicElement);
 			}
 
-			//Debug.Log("ffggrfe");
 			actionNum = 0;
 			_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 			_movement.ChangeState(CharacterStates.MovementStates.Idle);
@@ -660,7 +604,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		void MagicUse(int hRandom, int vRandom)
 		{
 	//		Debug.Log($"なまえ{SManager.instance.useMagic.name}標的{SManager.instance.target}動作{sister.nowMove}");
-			if (!fireStart || delayNow)
+			if ( delayNow)
 			{
 				return;
 			}
@@ -679,6 +623,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			bCount += 1;
 			//弾の発射というか生成位置
 			Vector3 goFire = sb.firePosition.position;
+
+
 			//弾が一発目なら
 			if (bCount == 1)
 			{
@@ -699,7 +645,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					actionNum = 0;
 					_movement.ChangeState(CharacterStates.MovementStates.Idle);
 					SManager.instance.useMagic = null;
-					fireStart = false;
 
 					return;
                 }
@@ -755,12 +700,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//即座に発生する弾丸の一発目なら
 			if (SManager.instance.useMagic.delayTime == 0 || bCount == 1)
 			{
-				Addressables.InstantiateAsync(SManager.instance.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.useMagic.startRotation));
+				atEf.BulletCall(SManager.instance.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.useMagic.startRotation), SManager.instance.useMagic.flashEffect);
 			}
 			//2発目以降の弾で生成中じゃないなら（～秒後に発生とかをやる）
 			else if (bCount > 1 && !delayNow)
 			{
-				DelayInstantiate(SManager.instance.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.useMagic.startRotation)).Forget();
+				DelayInstantiate(SManager.instance.useMagic.effects, goFire, Quaternion.Euler(SManager.instance.useMagic.startRotation), SManager.instance.useMagic.flashEffect).Forget();
 			}
 
 
@@ -776,7 +721,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				actionNum = 0;
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				SManager.instance.useMagic = null;
-				fireStart = false;
+
 
 				//弾丸全部出し終わったらロックカーソルを黄色に戻す
 				if (SManager.instance.restoreTarget != null && SManager.instance.target != GManager.instance.Player) 
@@ -904,7 +849,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						if (i == sister.supportPlan.Length - 1 && !disEnable)
 						{
 							SupportAct(sister.supportPlan[i]);
-							Debug.Log($"df{i}");
 							judgeSequence = i;
 						}
 						else if (SupportJudge(sister.supportPlan[i]))
@@ -912,7 +856,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 							SupportAct(sister.supportPlan[i]);
 							judgeSequence = i;
-							Debug.Log($"ff{i}");
 							break;
 						}
 					}
@@ -925,7 +868,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						SupportAct(sister.supportPlan[judgeSequence]);
 
-						Debug.Log($"ff");
 					}
 				}		
 
@@ -1009,7 +951,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
 							{
-								Debug.Log($"zz");
+
 								AttackStateChange(act);
 								return null;
 							}
@@ -1368,7 +1310,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						magicCanList = new List<SisMagic>();
 						for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 						{
-							if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].atType == Magic.AttackType.Slash)
+							if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].magicElement == AtEffectCon.Element.slash)
 							{
 								magicCanList.Add(SManager.instance.attackMagi[i]);
 								break;
@@ -1381,7 +1323,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						magicCanList = new List<SisMagic>();
 						for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 						{
-							if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].atType == Magic.AttackType.Stab)
+							if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].magicElement == AtEffectCon.Element.stab)
 							{
 								magicCanList.Add(SManager.instance.attackMagi[i]);
 								break;
@@ -1394,7 +1336,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						magicCanList = new List<SisMagic>();
 						for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 						{
-							if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].atType == Magic.AttackType.Strike)
+							if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].magicElement == AtEffectCon.Element.strike)
 							{
 								magicCanList.Add(SManager.instance.attackMagi[i]);
 								break;
@@ -2911,14 +2853,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-		void FireSoundJudge()
-		{
-			GManager.instance.PlaySound("NormalCastEnd", transform.position);
-		}
+
 
 		#endregion
 
 
+		/// <summary>
+		/// 敵がいないとき全てリセット
+		/// </summary>
 		void castCheck()
 		{
 
@@ -2927,18 +2869,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
 				waitCast = 0;
-				//とりあえずカメラから消す
 
-				if (castEffect != null)
-				{
+				atEf.CastStop(SManager.instance.useMagic.magicLevel, SManager.instance.useMagic.magicElement);
 
-					Vector3 pos = new Vector3(transform.position.x, transform.position.y, -100);
-					castEffect.transform.position = pos;
-					Addressables.ReleaseInstance(castEffect);
-					castEffect = null;
-				}
-
-			//	Debug.Log("dsdffg");
 				actionNum = 0;
 
 				waitCast = 0;
@@ -2949,11 +2882,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-		async UniTaskVoid DelayInstantiate(object key, Vector3 position, Quaternion rotation, Transform parent = null, bool trackHandle = true)
+		async UniTaskVoid DelayInstantiate(ParticleSystem key, Vector3 position, Quaternion rotation,ParticleSystem flash)
 		{
 			delayNow = true;
 			await UniTask.Delay(TimeSpan.FromSeconds(SManager.instance.useMagic.delayTime));
-			await Addressables.InstantiateAsync(key, position, rotation, parent);
+			atEf.BulletCall(key, position, rotation, flash);
 			delayNow = false;
 		}
 
@@ -2993,16 +2926,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 				if (soundStart)
 				{
+					atEf.CastStop(SManager.instance.useMagic.magicLevel, SManager.instance.useMagic.magicElement);
 					soundStart = false;
-					GManager.instance.StopSound(castSound, 0.5f);
-					if (castEffect != null)
-					{
-						Vector3 pos = new Vector3(transform.position.x, transform.position.y, -100);
-						castEffect.transform.position = pos;
-						Addressables.ReleaseInstance(castEffect);
-						castEffect = null;
-					}
-					FireSoundJudge();
+
 				}
 
 				stateJudge = 0;
