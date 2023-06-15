@@ -40,6 +40,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1565067910743402228}
+  - component: {fileID: 703539463}
+  - component: {fileID: 703539464}
   m_Layer: 0
   m_Name: PublicEffector
   m_TagString: Untagged
@@ -62,6 +64,46 @@ Transform:
   m_Father: {fileID: 1565067911019777830}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: -98, y: 0, z: 0}
+--- !u!114 &703539463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565067910743402231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59dfbc0f4f3a98b4ebf4ad40fc3f43aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolName: Attack
+  matchPoolScale: 0
+  matchPoolLayer: 0
+  dontReparent: 0
+  _dontDestroyOnLoad: 0
+  logMessages: 0
+  _perPrefabPoolOptions: []
+  maxParticleDespawnTime: 300
+--- !u!114 &703539464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565067910743402231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59dfbc0f4f3a98b4ebf4ad40fc3f43aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolName: Magic
+  matchPoolScale: 0
+  matchPoolLayer: 0
+  dontReparent: 0
+  _dontDestroyOnLoad: 0
+  logMessages: 0
+  _perPrefabPoolOptions: []
+  maxParticleDespawnTime: 300
 --- !u!1 &1565067910807337794
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +360,8 @@ GameObject:
   - component: {fileID: 8241581805875267644}
   - component: {fileID: 7197382449795674532}
   - component: {fileID: 419419624693578176}
-  - component: {fileID: 962871510}
+  - component: {fileID: 707233704861360858}
+  - component: {fileID: 962871523}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -458,7 +501,7 @@ MonoBehaviour:
   AutomaticallySetPhysicsSettings: 0
   StandingOn: {fileID: 0}
   UpdateMode: 0
-  NumberOfHorizontalRays: 8
+  NumberOfHorizontalRays: 4
   NumberOfVerticalRays: 8
   RayOffsetHorizontal: 0.05
   RayOffsetVertical: 0.05
@@ -708,6 +751,7 @@ MonoBehaviour:
   CameraTargetSpeed: 5
   AdditionalAbilityNodes:
   - {fileID: 8653742047863948500}
+  - {fileID: 8653742047863948500}
   FlipModelOnDirectionChange: 1
   ModelFlipValue: {x: -1, y: 1, z: 1}
   RotateModelOnDirectionChange: 0
@@ -716,10 +760,11 @@ MonoBehaviour:
   CharacterHealth: {fileID: 483781304963825599}
   SendStateChangeEvents: 1
   SendStateUpdateEvents: 1
-  AirborneDistance: 0.5
-  AirborneMinimumTime: 0.1
+  AirborneDistance: 0.3
+  AirborneMinimumTime: 0.3
   CharacterBrain: {fileID: 0}
   banIdle: 0
+  nowGround: 0
 --- !u!114 &8241581805875267644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -806,7 +851,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   anotherLock: 0
---- !u!114 &962871510
+--- !u!114 &707233704861360858
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -823,32 +868,38 @@ MonoBehaviour:
   AbilityPermitted: 1
   BlockingMovementStates: 
   BlockingConditionStates: 
-  isPlayer: 0
+  isPlayer: 1
   _health: {fileID: 0}
   particlesPool: {fileID: 1565067911407996919}
-  _stateList:
-  - _useState: 1
-    _stateEffects: []
-    _stateSounds:
-    - _useSound: 
-      _playType: 0
-      _isFollow: 0
-      _matchAnime: 0
-  - _useState: 0
-    _stateEffects: []
-    _stateSounds: []
-  - _useState: 0
-    _stateEffects: []
-    _stateSounds: []
-  - _useState: 0
-    _stateEffects: []
-    _stateSounds: []
-  - _useState: 0
-    _stateEffects: []
-    _stateSounds: []
-  - _useState: 0
-    _stateEffects: []
-    _stateSounds: []
+  _stateList: []
+  isMetal: 1
+  bodySize: 1
+  sizeMultipler: 1
+  effecter: {fileID: 1565067911442096951}
+  iss: 0
+--- !u!114 &962871523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565067911019777824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be2bccbccaf349f47801df93e850aff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AbilityStartFeedbacks: {fileID: 0}
+  AbilityStopFeedbacks: {fileID: 0}
+  AbilityPermitted: 1
+  BlockingMovementStates: 
+  BlockingConditionStates: 
+  isPlayer: 0
+  _health: {fileID: 0}
+  atPool: {fileID: 703539463}
+  magicPool: {fileID: 0}
+  sizeMultipler: 1
+  effectPosi: {fileID: 1565067911442096951}
 --- !u!1 &1565067911114424061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1135,35 +1186,7 @@ MonoBehaviour:
   dontReparent: 0
   _dontDestroyOnLoad: 0
   logMessages: 0
-  _perPrefabPoolOptions:
-  - prefab: {fileID: 0}
-    preloadAmount: 1
-    preloadTime: 0
-    preloadFrames: 2
-    preloadDelay: 0
-    limitInstances: 0
-    limitAmount: 100
-    limitFIFO: 0
-    cullDespawned: 0
-    cullAbove: 50
-    cullDelay: 60
-    cullMaxPerPass: 5
-    _logMessages: 0
-    spawnPool: {fileID: 0}
-  - prefab: {fileID: 0}
-    preloadAmount: 1
-    preloadTime: 0
-    preloadFrames: 2
-    preloadDelay: 0
-    limitInstances: 0
-    limitAmount: 100
-    limitFIFO: 0
-    cullDespawned: 0
-    cullAbove: 50
-    cullDelay: 60
-    cullMaxPerPass: 5
-    _logMessages: 0
-    spawnPool: {fileID: 0}
+  _perPrefabPoolOptions: []
   maxParticleDespawnTime: 300
 --- !u!1 &1565067911482489018
 GameObject:

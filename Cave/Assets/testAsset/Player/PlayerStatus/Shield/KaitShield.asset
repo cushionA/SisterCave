@@ -102,6 +102,13 @@ MonoBehaviour:
   darkAtk: 0
   fireAtk: 0
   thunderAtk: 0
+  phyCut: 100
+  holyCut: 55
+  darkCut: 30
+  fireCut: 40
+  thunderCut: 30
+  guardPower: 70
+  shock: 0
   phyBase:
   - 70
   - 90
@@ -132,45 +139,6 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  needPower: 1
-  needSkill: 1
-  needInt: 0
-  phyCut: 100
-  holyCut: 55
-  darkCut: 30
-  fireCut: 40
-  thunderCut: 30
-  guardPower: 70
-  phyCutSet:
-  - 100
-  - 100
-  - 100
-  - 100
-  - 100
-  holyCutSet:
-  - 55
-  - 55
-  - 55
-  - 55
-  - 55
-  darkCutSet:
-  - 30
-  - 30
-  - 30
-  - 30
-  - 30
-  fireCutSet:
-  - 40
-  - 40
-  - 40
-  - 45
-  - 45
-  thunderCutSet:
-  - 30
-  - 30
-  - 33
-  - 35
-  - 35
   powerCurve:
   - serializedVersion: 2
     m_Curve: []
@@ -249,6 +217,36 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  phyCutSet:
+  - 100
+  - 100
+  - 100
+  - 100
+  - 100
+  holyCutSet:
+  - 55
+  - 55
+  - 55
+  - 55
+  - 55
+  darkCutSet:
+  - 30
+  - 30
+  - 30
+  - 30
+  - 30
+  fireCutSet:
+  - 40
+  - 40
+  - 40
+  - 45
+  - 45
+  thunderCutSet:
+  - 30
+  - 30
+  - 33
+  - 35
+  - 35
   guardPowerSet:
   - 40
   - 45
@@ -258,35 +256,34 @@ MonoBehaviour:
   parryStart: 0.1
   parryTime: 5
   parryRecover: 25
-  shock: 0
+  shieldType: 0
+  isMetal: 0
+  needPower: 1
+  needSkill: 1
+  needInt: 0
   artsMP:
   - 7
   - 7
-  useSound:
-  - MetalNGuard
-  atType: 0
-  _weight: 0
+  _weight: 3
+  ExistSound: 
+  _useList: []
+  _usePrefab: []
+  AttackPrefab: []
   back:
   - {fileID: -6357838179149488024, guid: 1860425645c00dc4dac5cef33565c3a1, type: 3}
   - {fileID: 5933913999138112031, guid: 1860425645c00dc4dac5cef33565c3a1, type: 3}
-  guardAnime: OGuard
-  isParry: 0
   weaponArts: 0
   artsValue:
-  - x: 1
+  - EffectLevel: 4
+    motionType: 2
+    x: 1
     y: 20
     z: 39
     isCombo: 0
     isBlow: 1
     isLight: 0
-    type: 2
     blowPower: {x: 80, y: 12}
     useStamina: 20
-    attackEffect:
-      m_AssetGUID: 
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.15
@@ -297,20 +294,19 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 1
-  - x: 1
+    backAttack: 0
+    mainElement: 2
+    phyElement: 2
+  - EffectLevel: 4
+    motionType: 2
+    x: 1
     y: 20
     z: 39
     isCombo: 0
     isBlow: 1
     isLight: 0
-    type: 2
     blowPower: {x: 80, y: 12}
     useStamina: 20
-    attackEffect:
-      m_AssetGUID: 
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     isShield: 0
     _hitLimit: 1
     _moveDuration: 0.15
@@ -321,6 +317,9 @@ MonoBehaviour:
     lockAttack: 0
     superArmor: 0
     guardAttack: 1
+    backAttack: 0
+    mainElement: 2
+    phyElement: 2
   artsAnime:
   - {fileID: 7400000, guid: e6a62f903a042874ba6d2b1b70f5361c, type: 2}
   - {fileID: 7400000, guid: e6a62f903a042874ba6d2b1b70f5361c, type: 2}

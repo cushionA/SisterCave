@@ -36,7 +36,7 @@ MonoBehaviour:
   ShortDescription: 
   Description: 
   Icon: {fileID: 0}
-  Prefab: {fileID: 0}
+  Prefab: {fileID: 4686689675348675432, guid: f51b8be1e443bff43b9c9f5379e9a059, type: 3}
   DropProperties:
     Shape: 0
     NormalToSpawnPlane: {x: 0, y: 1, z: 0}
@@ -88,9 +88,9 @@ MonoBehaviour:
   UseDefaultSoundsIfNull: 1
   _sortNumber: 0
   selectable: 0
-  magicLevel: 1
-  magicElement: 0
-  phyElement: 0
+  magicLevel: 0
+  magicElement: 5
+  phyElement: 1
   mType: 0
   phyBase: 0
   holyBase: 0
@@ -146,11 +146,27 @@ MonoBehaviour:
   recoverAmount: 0
   castTime: 2.3
   useMP: 30
-  effects: {fileID: 0}
+  effects: {fileID: 4886187089378423622, guid: f51b8be1e443bff43b9c9f5379e9a059, type: 3}
   flashEffect: {fileID: 0}
   hitEffect: {fileID: 0}
   childM: {fileID: 0}
-  _usePrefab: []
+  _usePrefab:
+  - prefab: {fileID: 4684203917027223196, guid: f51b8be1e443bff43b9c9f5379e9a059,
+      type: 3}
+    preloadAmount: 4
+    preloadTime: 0
+    preloadFrames: 0
+    preloadDelay: 0
+    limitInstances: 0
+    limitAmount: 0
+    limitFIFO: 0
+    cullDespawned: 0
+    cullAbove: 0
+    cullDelay: 0
+    cullMaxPerPass: 0
+    _logMessages: 0
+    originalScal: {x: 0, y: 0, z: 0}
+    spawnPool: {fileID: 0}
   _moveSt:
     fireType: 1
     lifeTime: 5

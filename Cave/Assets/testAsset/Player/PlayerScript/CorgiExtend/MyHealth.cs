@@ -269,6 +269,9 @@ namespace MoreMountains.CorgiEngine
             //死亡処理
             if (CurrentHealth <= 0)
             {
+
+                GManager.instance.PlaySound("Kill",transform.position);
+
                 // ヘルスを0にします。（ヘルスバーに便利です。）
                 CurrentHealth = 0;
 
@@ -844,6 +847,8 @@ namespace MoreMountains.CorgiEngine
             }
             else if (_defender == MyDamageOntouch.TypeOfSubject.Enemy)
             {
+                
+
                 if (SManager.instance.target == this.gameObject)
                 {
                     SManager.instance.target = null;

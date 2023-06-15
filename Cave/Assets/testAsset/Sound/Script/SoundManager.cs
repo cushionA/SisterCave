@@ -78,6 +78,9 @@ namespace MyCode
 
         #endregion
 
+        #region フィールド
+
+
         /// <summary>
         /// エフェクトを生成するクラス
         /// オブジェクトプール機能
@@ -326,18 +329,8 @@ namespace MyCode
         [SoundGroup]
         public String[] metalGuardSound;
 
-        //リストじゃない奴は素の文で書いてもらお
+        //リストじゃない奴はハードコーディングで書いてもらお
 
-        [SerializeField, Header("ブロッキング、パリィの音")]
-        [Foldout("動きのサウンド")]
-        [Header("ブロッキングの音")]
-        [SoundGroup]
-        public string blockingSound;
-
-        [Foldout("動きのサウンド")]
-        [Header("パリィの音")]
-        [SoundGroup]
-        public string parrySound;
 
 
 
@@ -463,6 +456,10 @@ namespace MyCode
 
         #endregion
 
+        #endregion
+
+        public bool isis;
+
         void Awake()
         {
             if (instance == null)
@@ -475,6 +472,8 @@ namespace MyCode
                 Destroy(this.gameObject);
             }
         }
+
+
 
 
         //いらないやつ
@@ -531,13 +530,13 @@ namespace MyCode
         /// <param name="prevE"></param>
         /// <param name="sizeMultipler"></param>
         /// <returns></returns>
-        public PreviousEffect GeneralEffectPlay(Transform pos,SelectState state, SizeTag _size,MyCharacter.GroundFeature ground,PreviousEffect prevE,float sizeMultipler)
+        public PreviousEffect GeneralEffectPlay(Transform pos,SelectState state, SizeTag _size,MyCharacter.GroundFeature ground,PreviousEffect prevE,float sizeMultipler,bool isRight)
         {
             //前の条件と一致するなら判断を行わない
             if (prevE.state == (int)state)
             {
 
-                Transform tran = null;
+                ParticleSystem ef = null;
 
                 //地面使うステートではisStrongか否かでエフェクト生成の代わりに水しぶきとか上げていく
                 //地面のエフェクト
@@ -549,11 +548,11 @@ namespace MyCode
                     {
                         if (prevE.isStrong)
                         {
-                            tran = _generalPool.Spawn("WaterDrop", pos.position, pos.rotation).transform;
+                          //  ef = _generalPool.Spawn("WaterDrop", pos.position, pos.rotation);
                         }
                         else
                         {
-                            tran = _generalPool.Spawn("WaterPiller", pos.position, pos.rotation).transform;
+                        //    ef = _generalPool.Spawn("WaterPiller", pos.position, pos.rotation);
                         }
                     }
                     else if (ground == MyCharacter.GroundFeature.Grass)
@@ -570,27 +569,26 @@ namespace MyCode
                 }
 
                 //それ以外
-                else
+                else if(prevE.prefab.Length > 0)
                 {
-                    tran = _generalPool.Spawn(particles[prevE.prefab], pos.position, pos.rotation).transform;
+                    ef = _generalPool.Spawn(particles[prevE.prefab], pos.position, pos.rotation);
                 }
 
 
                 //サイズ変更
-                Vector3 Scale = tran.localScale;
+                Vector3 Scale = ef.transform.localScale;
 
                 if (sizeMultipler != 1)
                 {
 
                     Scale *= sizeMultipler;
-                    tran.localScale = Scale;
                 }
                 //キャラが左向いてるなら反対に
-                if (transform.localScale.x < 0)
+                if (!isRight)
                 {
                     Scale.x = Scale.x * -1;
                 }
-                tran.localScale = Scale;
+                ef.transform.localScale = Scale;
 
 
                 return prevE;
@@ -658,20 +656,15 @@ namespace MyCode
                         ground = MyCharacter.GroundFeature.Nomal;
                         prevE.groundUse = false;
                     }
-                    else if (state == SelectState.Dead)
-                    {
-                        container = "Dead";
-                        ground = MyCharacter.GroundFeature.Nomal;
-                        prevE.groundUse = false;
-                    }
+
                 }
 
-                
 
-                //音を再生
-               
-                Transform tran =  _generalPool.Spawn(particles[container], pos.position, pos.rotation).transform;
-                Vector3 Scale = tran.localScale;
+
+                //エフェクトを再生
+
+                ParticleSystem ef = _generalPool.Spawn(particles[container], pos.position, pos.rotation);
+                Vector3 Scale = ef.transform.localScale;
 
 
                 if (sizeMultipler != 1)
@@ -679,14 +672,14 @@ namespace MyCode
                     
                     
                     Scale *= sizeMultipler;
-                    tran.localScale = Scale;
+                  //  tran.localScale = Scale;
                 }
                 //キャラが左向いてるなら反対に
-                if (transform.localScale.x < 0)
+                if (!isRight)
                 {
                     Scale.x = Scale.x * -1;
                 }
-                tran.localScale = Scale;
+                ef.transform.localScale = Scale;
 
                 //前の情報を初期化
                 prevE.prefab = container;
@@ -718,6 +711,7 @@ namespace MyCode
 
                 else
                 {
+
                     GManager.instance.PlaySound(prevS.name, pos.position);
                 }
 
@@ -793,11 +787,11 @@ namespace MyCode
                     {
                         if (isMetal)
                         {
-                            container = armorShakeSound[(int)_size];
+                            container = armorWalkSound[(int)_size];
                         }
                         else
                         {
-                            container = shakeSound[(int)_size];
+                           container = bareWalkSound[(int)_size]; 
                         }
                     }
                     else if (state == SelectState.Crouching)//地形アリ、変わらない
@@ -819,11 +813,11 @@ namespace MyCode
                     {
                         if (isMetal)
                         {
-                            container = armorJumpSound[(int)_size];
+                            container = armorJumpSound[0];
                         }
                         else
                         {
-                            container = jumpSound[(int)_size];
+                            container = jumpSound[0];
                         }
                         strong = true;
                         prevS.useMultipler = false;
@@ -854,7 +848,7 @@ namespace MyCode
                         prevS.groundUse = false;
                     }
                 }
-                else
+                else if (num <= 13)
                 {
                     if (state == SelectState.Rolling)//地形アリ、変わる
                     {
@@ -886,35 +880,48 @@ namespace MyCode
                     {
                         if (isMetal)
                         {
-                            container = armorWalkSound[(int)_size];
+                            container = armorWalkSound[0];
                         }
                         else
                         {
-                            container = bareWalkSound[(int)_size];
+                            container = bareWalkSound[0];
                         }
                     }
-                    else if (state == SelectState.Parry)//地形無し、変わらない
+                }
+                else
+                {
+
+                    if (state == SelectState.Parry)//地形無し、変わらない
                     {
-                        container = parrySound;
+                        container = "ParrySuccess";
                         ground = MyCharacter.GroundFeature.Nomal;
                         prevS.groundUse = false;
                         prevS.useMultipler = false;
                     }
                     else if (state == SelectState.justGuard)//地形無し、変わらない
                     {
-                        container = blockingSound;
+                        container = "Blocking";
                         ground = MyCharacter.GroundFeature.Nomal;
                         prevS.groundUse = false;
                         prevS.useMultipler = false;
                     }
-                    else if (state == SelectState.Dead)
+                    else if (state == SelectState.Wakeup)
                     {
-                        container = "DeadSound";
+                        if (isMetal)
+                        {
+                            container = armorShakeSound[1];
+                        }
+                        else
+                        {
+                            container = shakeSound[1];
+                        }
                         ground = MyCharacter.GroundFeature.Nomal;
                         prevS.groundUse = false;
                         prevS.useMultipler = false;
                     }
+
                 }
+                
 
                 //音を再生
                 if (prevS.useMultipler)
@@ -960,23 +967,46 @@ namespace MyCode
             //強い落下
             if(state == SelectState.Attack || state == SelectState.Wakeup || _size == SizeTag.big)
             {
-
-
-
                 if (isMetal)
                 {
+                    GManager.instance.PlaySound("NALanding",pos.position);
+                }
+                //エフェクト
+                if (ground == MyCharacter.GroundFeature.Nomal)
+                {
 
-                    return;
+
+                }
+                //水音とエフェクト？
+                else
+                {
+                   // GManager.instance.PlaySound("WaterSound", pos.position);
                 }
             }
             //ふつうの落下
             else
             {
+
                 if (isMetal)
                 {
-                    return;
+                    GManager.instance.PlaySound("NALanding", pos.position);
+                }
+                else
+                {
+
                 }
 
+                //エフェクト
+                if (ground == MyCharacter.GroundFeature.Nomal)
+                {
+
+
+                }
+                //水音とエフェクト？
+                else
+                {
+
+                }
 
             }
 
@@ -1011,31 +1041,43 @@ namespace MyCode
             {
 
                 GManager.instance.PlaySound("stanSound", pos.position);
-
+                /*
                 if (sizeMultipler != 1)
                 {
                     Transform tran = _generalPool.Spawn(particles["Stan"], pos.position, pos.rotation, pos).transform;
                     Vector3 Scale = tran.localScale;
                     Scale *= sizeMultipler;
                     tran.localScale = Scale;
-                }
+                }*/
             }
 
             if (state == SelectState.GBreake)
             {
                 GManager.instance.PlaySound("GuardBreake", pos.position);
                 //gbエフェクトも
+                /*
                 if (sizeMultipler != 1)
                 {
                     Transform tran = _generalPool.Spawn(particles["GuardBreake"], pos.position, pos.rotation, pos).transform;
                     Vector3 Scale = tran.localScale;
                     Scale *= sizeMultipler;
                     tran.localScale = Scale;
-                }
+                }*/
             }
 
         }
 
+
+        /// <summary>
+        /// 死の音とエフェクト
+        /// </summary>
+        /// <param name="pos"></param>
+        public void DeathEffect(Vector3 pos)
+        {
+            _generalPool.Spawn(particles["Death"],pos, particles["Death"].transform.rotation);
+            
+            GManager.instance.PlaySound("FadeSound", pos);
+        }
 
 
 
@@ -1062,9 +1104,11 @@ namespace MyCode
             {
                 //斬撃
                 if (motion == 0)
-                {                    
+                {
+                    Debug.Log($"ｓ{level}");
                     //共通エフェクトは追跡するって判断で
-                   GManager.instance.PlaySound(slashSe[level], pos.position);
+
+                    GManager.instance.PlaySound(slashSe[level], pos.position);
                     ef = _generalPool.Spawn(slashEf[level], pos.position, pos.rotation, pos);
                 }
                 //刺突
@@ -1076,6 +1120,7 @@ namespace MyCode
                 //打撃
                 else if(motion == 3)
                 {
+                    Debug.Log($"あ{level}");
                     GManager.instance.PlaySound(strikeSe[level], pos.position);
                     ef = _generalPool.Spawn(strikeEf[level], pos.position, pos.rotation, pos);
                 }
@@ -1202,6 +1247,149 @@ namespace MyCode
 
 
         /// <summary>
+        /// 武器の音とエフェクト
+        /// 基本の攻撃モーションにつくやつ
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <param name="level">これアタックタイプ？</param>
+        /// <param name="element"></param>
+        /// <param name="subElement"></param>
+        public void GAttackS(Vector3 pos, int level, int element, int motion, float sizeMultipler)
+        {
+
+
+            //サブ属性がないなら
+            if (element < 3)
+            {
+                //斬撃
+                if (motion == 0)
+                {
+                    Debug.Log($"ｓ{level}");
+                    //共通エフェクトは追跡するって判断で
+
+                    GManager.instance.PlaySound(slashSe[level], pos);
+                    //ef = _generalPool.Spawn(slashEf[level], pos, pos.rotation, pos);
+                }
+                //刺突
+                else if (motion == 1)
+                {
+                    GManager.instance.PlaySound(stabSe[level], pos);
+                    //ef = _generalPool.Spawn(stabEf[level], pos, pos.rotation, pos);
+                }
+                //打撃
+                else if (motion == 3)
+                {
+                    Debug.Log($"あ{level}");
+                    GManager.instance.PlaySound(strikeSe[level], pos);
+                    //ef = _generalPool.Spawn(strikeEf[level], pos, pos.rotation, pos);
+                }
+            }
+            else
+            {
+                //斬撃
+                if (motion == 0)
+                {
+                    //聖
+                    if (element == 3)
+                    {
+                        GManager.instance.PlaySound(slashSe[level], pos);
+                        GManager.instance.PlaySound(holySe[level], pos);
+                        //ef = _generalPool.Spawn(slashHoly[level], pos, pos.rotation, pos);
+                    }
+                    //闇
+                    else if (element == 4)
+                    {
+                        GManager.instance.PlaySound(slashSe[level], pos);
+                        GManager.instance.PlaySound(darkSe[level], pos);
+                        //ef = _generalPool.Spawn(slashDark[level], pos, pos.rotation, pos);
+                    }
+                    //炎
+                    else if (element == 5)
+                    {
+                        GManager.instance.PlaySound(slashSe[level], pos);
+                        GManager.instance.PlaySound(fireSe[level], pos);
+                        //ef = _generalPool.Spawn(slashFire[level], pos, pos.rotation, pos);
+                    }
+                    //雷
+                    else
+                    {
+                        GManager.instance.PlaySound(slashSe[level], pos);
+                        GManager.instance.PlaySound(thunderSe[level], pos);
+                        //ef = _generalPool.Spawn(slashThunder[level], pos, pos.rotation, pos);
+                    }
+                }
+                //刺突
+                else if (motion == 1)
+                {
+                    //聖
+                    if (element == 3)
+                    {
+                        GManager.instance.PlaySound(stabSe[level], pos);
+                        GManager.instance.PlaySound(holySe[level], pos);
+                        //ef = _generalPool.Spawn(stabHoly[level], pos, pos.rotation, pos);
+                    }
+                    //闇
+                    else if (element == 4)
+                    {
+                        GManager.instance.PlaySound(stabSe[level], pos);
+                        GManager.instance.PlaySound(darkSe[level], pos);
+                        //ef = _generalPool.Spawn(stabDark[level], pos, pos.rotation, pos);
+                    }
+                    //炎
+                    else if (element == 5)
+                    {
+                        GManager.instance.PlaySound(stabSe[level], pos);
+                        GManager.instance.PlaySound(fireSe[level], pos);
+                        //ef = _generalPool.Spawn(stabFire[level], pos, pos.rotation, pos);
+                    }
+                    //雷
+                    else
+                    {
+                        GManager.instance.PlaySound(stabSe[level], pos);
+                        GManager.instance.PlaySound(thunderSe[level], pos);
+                        //ef = _generalPool.Spawn(stabThunder[level], pos, pos.rotation, pos);
+                    }
+                }
+                //打撃
+                else if (motion == 2)
+                {
+                    //聖
+                    if (element == 3)
+                    {
+                        GManager.instance.PlaySound(strikeSe[level], pos);
+                        GManager.instance.PlaySound(holySe[level], pos);
+                        //ef = _generalPool.Spawn(strikeHoly[level], pos, pos.rotation, pos);
+                    }
+                    //闇
+                    else if (element == 4)
+                    {
+                        GManager.instance.PlaySound(strikeSe[level], pos);
+                        GManager.instance.PlaySound(darkSe[level], pos);
+                        //ef = _generalPool.Spawn(strikeDark[level], pos, pos.rotation, pos);
+                    }
+                    //炎
+                    else if (element == 5)
+                    {
+                        GManager.instance.PlaySound(strikeSe[level], pos);
+                        GManager.instance.PlaySound(fireSe[level], pos);
+                        //ef = _generalPool.Spawn(strikeFire[level], pos, pos.rotation, pos);
+                    }
+                    //雷
+                    else
+                    {
+                        GManager.instance.PlaySound(strikeSe[level], pos);
+                        GManager.instance.PlaySound(thunderSe[level], pos);
+                        //ef = _generalPool.Spawn(strikeThunder[level], pos, pos.rotation, pos);
+                    }
+                }
+            }
+
+        }
+
+
+
+
+        /// <summary>
         /// 攻撃時のパリィ不可エフェクトなどを出す
         /// </summary>
         /// <param name="type"></param>
@@ -1215,14 +1403,14 @@ namespace MyCode
 
                 if (sizeMultipler != 1)
                 {
-                    Transform tran = _generalPool.Spawn(particles["DisenableParry"], pos.position, pos.rotation, pos).transform;
+                    Transform tran = _generalPool.Spawn(particles["DisParry"], pos.position, pos.rotation, pos).transform;
                     Vector3 Scale = tran.localScale;
                     Scale *= sizeMultipler;
                     tran.localScale = Scale;
                 }
                 else
                 {
-                    _generalPool.Spawn(particles["DisenableParry"], pos.position, pos.rotation, pos);
+                    _generalPool.Spawn(particles["DisParry"], pos.position, pos.rotation, pos);
                 }
             }
 
@@ -1299,7 +1487,7 @@ namespace MyCode
         /// 完成
         /// </summary>
         /// <param name="inst"></param>
-        public void CastEfClear(Transform inst, int magicLevel, AtEffectCon.Element element, Transform pos)
+        public void CastEfClear(Transform inst, int magicLevel, AtEffectCon.Element element)
         {
 
             _generalPool.Despawn(inst);
@@ -1310,48 +1498,48 @@ namespace MyCode
             {
                 if (element == AtEffectCon.Element.slash)
                 {
-                    _generalPool.Spawn(slashActiEffect[magicLevel], pos.position, pos.rotation);
+                    _generalPool.Spawn(slashActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(slashCast[magicLevel], isStop: true);
-                    GManager.instance.PlaySound(slashActivate[magicLevel], pos.position);
+                    GManager.instance.PlaySound(slashActivate[magicLevel], inst.position);
                 }
                 else if (element == AtEffectCon.Element.stab)
                 {
-                    _generalPool.Spawn(stabActiEffect[magicLevel], pos.position, pos.rotation);
+                    _generalPool.Spawn(stabActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(stabCast[magicLevel], isStop: true);
-                    GManager.instance.PlaySound(stabActivate[magicLevel], pos.position);
+                    GManager.instance.PlaySound(stabActivate[magicLevel], inst.position);
                 }
                 else if (element == AtEffectCon.Element.strike)
                 {
-                    _generalPool.Spawn(strikeActiEffect[magicLevel], pos.position, pos.rotation);
+                    _generalPool.Spawn(strikeActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(strikeCast[magicLevel], isStop: true);
-                    GManager.instance.PlaySound(strikeActivate[magicLevel], pos.position);
+                    GManager.instance.PlaySound(strikeActivate[magicLevel], inst.position);
                 }
                 else if (element == AtEffectCon.Element.holy)
                 {
-                    _generalPool.Spawn(holyActiEffect[magicLevel], pos.position, pos.rotation);
+                    _generalPool.Spawn(holyActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(holyCast[magicLevel],isStop: true);
-                    GManager.instance.PlaySound(holyActivate[magicLevel], pos.position);
+                    GManager.instance.PlaySound(holyActivate[magicLevel], inst.position);
                 }
             }
             else
             {
                 if (element == AtEffectCon.Element.dark)
                 {
-                    _generalPool.Spawn(darkActiEffect[magicLevel], pos.position, pos.rotation);
+                    _generalPool.Spawn(darkActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(darkCast[magicLevel], isStop: true);
-                    GManager.instance.PlaySound(darkActivate[magicLevel], pos.position);
+                    GManager.instance.PlaySound(darkActivate[magicLevel], inst.position);
                 }
                 else if (element == AtEffectCon.Element.fire)
                 {
-                    _generalPool.Spawn(fireActiEffect[magicLevel], pos.position, pos.rotation);
+                    _generalPool.Spawn(fireActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(fireCast[magicLevel], isStop: true);
-                    GManager.instance.PlaySound(fireActivate[magicLevel], pos.position);
+                    GManager.instance.PlaySound(fireActivate[magicLevel], inst.position);
                 }
                 else if (element == AtEffectCon.Element.thunder)
                 {
-                    _generalPool.Spawn(thunderActiEffect[magicLevel], pos.position, pos.rotation);
+                    _generalPool.Spawn(thunderActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(thunderCast[magicLevel], isStop: true);
-                    GManager.instance.PlaySound(thunderActivate[magicLevel], pos.position);
+                    GManager.instance.PlaySound(thunderActivate[magicLevel], inst.position);
                 }
                 else if (element == AtEffectCon.Element.none)
                 {

@@ -100,6 +100,13 @@ MonoBehaviour:
   darkAtk: 0
   fireAtk: 0
   thunderAtk: 0
+  phyCut: 50
+  holyCut: 20
+  darkCut: 20
+  fireCut: 20
+  thunderCut: 20
+  guardPower: 25
+  shock: 39
   phyBase:
   - 200
   - 160
@@ -130,45 +137,6 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  needPower: 1
-  needSkill: 1
-  needInt: 0
-  phyCut: 50
-  holyCut: 20
-  darkCut: 20
-  fireCut: 20
-  thunderCut: 20
-  guardPower: 25
-  phyCutSet:
-  - 50
-  - 50
-  - 50
-  - 55
-  - 60
-  holyCutSet:
-  - 20
-  - 25
-  - 25
-  - 30
-  - 35
-  darkCutSet:
-  - 20
-  - 25
-  - 25
-  - 30
-  - 35
-  fireCutSet:
-  - 20
-  - 25
-  - 25
-  - 30
-  - 35
-  thunderCutSet:
-  - 20
-  - 25
-  - 25
-  - 30
-  - 35
   powerCurve:
   - serializedVersion: 2
     m_Curve:
@@ -661,6 +629,36 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  phyCutSet:
+  - 50
+  - 50
+  - 50
+  - 55
+  - 60
+  holyCutSet:
+  - 20
+  - 25
+  - 25
+  - 30
+  - 35
+  darkCutSet:
+  - 20
+  - 25
+  - 25
+  - 30
+  - 35
+  fireCutSet:
+  - 20
+  - 25
+  - 25
+  - 30
+  - 35
+  thunderCutSet:
+  - 20
+  - 25
+  - 25
+  - 30
+  - 35
   guardPowerSet:
   - 25
   - 30
@@ -670,23 +668,89 @@ MonoBehaviour:
   parryStart: 0.15
   parryTime: 0.15
   parryRecover: 40
-  shock: 39
+  shieldType: 0
+  isMetal: 1
+  needPower: 1
+  needSkill: 1
+  needInt: 0
   artsMP:
   - 5
   - 10
-  useSound:
-  - MetalSGuard
-  atType: 2
-  _weight: 0
+  _weight: 2
+  ExistSound: 
   _useList:
-  - _useState: 0
+  - _useState: 1
     generalEffect: 0
     _stateEffects: []
-    generalSound: 0
+    generalSound: 1
     _stateSounds: []
-  _usePrefab:
-  - prefab: {fileID: 0}
-    preloadAmount: 0
+  - _useState: 3
+    generalEffect: 0
+    _stateEffects:
+    - _useEffect: {fileID: 2759937417337572829, guid: 18079abcfda9b4643917d91159f5e5b5,
+        type: 3}
+      _emitType: 1
+      _emitPosition: {fileID: 0}
+      _isFollow: 0
+      _matchAnime: 0
+      ignoreDirection: 0
+      isUsed: 0
+    generalSound: 0
+    _stateSounds:
+    - _useSound: DashSoundE
+      _playType: 1
+      _isFollow: 0
+      _matchAnime: 0
+      isUsed: 0
+  - _useState: 5
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  - _useState: 6
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  - _useState: 10
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  - _useState: 12
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  - _useState: 13
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  - _useState: 15
+    generalEffect: 1
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  - _useState: 16
+    generalEffect: 1
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  - _useState: 24
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  - _useState: 4
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  usePrefab:
+  - prefab: {fileID: 2759937417352745137, guid: 18079abcfda9b4643917d91159f5e5b5,
+      type: 3}
+    preloadAmount: 3
     preloadTime: 0
     preloadFrames: 0
     preloadDelay: 0
@@ -700,20 +764,7 @@ MonoBehaviour:
     _logMessages: 0
     originalScal: {x: 0, y: 0, z: 0}
     spawnPool: {fileID: 0}
-  AttackEffect:
-  - callNum: 0
-    effect:
-      _useEffect: {fileID: 0}
-      _emitType: 0
-      _emitPosition: {fileID: 0}
-      _isFollow: 0
-      _matchAnime: 0
-      ignoreDirection: 0
-    sound:
-      _useSound: 
-      _playType: 0
-      _isFollow: 0
-      _matchAnime: 0
+  AttackEffect: []
   AttackPrefab: []
   isTwin: 0
   isMagic: 0
@@ -752,18 +803,16 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  mValue: 1
-  atAromor: 20
   chargeRes: 1.3
   sValue:
-  - EffectLevel: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 0.65
     y: 5
     z: 5
     isCombo: 0
     isBlow: 0
     isLight: 1
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 13
     isShield: 0
@@ -778,15 +827,15 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
-  - EffectLevel: 0
+    phyElement: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 0.7
     y: 8
     z: 8
     isCombo: 0
     isBlow: 0
     isLight: 1
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 13
     isShield: 0
@@ -801,16 +850,16 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
+    phyElement: 0
   bValue:
-  - EffectLevel: 0
+  - EffectLevel: 1
+    motionType: 1
     x: 1
     y: 10
     z: 10
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 1
     blowPower: {x: 0, y: 0}
     useStamina: 18
     isShield: 0
@@ -825,15 +874,15 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
-  - EffectLevel: 0
+    phyElement: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 1.05
     y: 13
     z: 15
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 18
     isShield: 0
@@ -848,16 +897,16 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
+    phyElement: 0
   chargeValue:
-  - EffectLevel: 0
+  - EffectLevel: 1
+    motionType: 1
     x: 1.2
     y: 15
     z: 15
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 1
     blowPower: {x: 0, y: 0}
     useStamina: 23
     isShield: 0
@@ -871,16 +920,16 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-    mainElement: 0
-    subElement: 0
-  - EffectLevel: 0
+    mainElement: 1
+    phyElement: 1
+  - EffectLevel: 1
+    motionType: 0
     x: 1.25
     y: 15
     z: 15
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 23
     isShield: 0
@@ -895,16 +944,16 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
+    phyElement: 0
   airValue:
-  - EffectLevel: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 0.6
     y: 5
     z: 7
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 12
     isShield: 0
@@ -919,15 +968,15 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
-  - EffectLevel: 0
+    phyElement: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 0.65
     y: 6
     z: 7
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 12
     isShield: 0
@@ -942,16 +991,16 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
+    phyElement: 0
   strikeValue:
-  - EffectLevel: 0
+  - EffectLevel: 4
+    motionType: 0
     x: 1.1
     y: 15
     z: 15
     isCombo: 0
     isBlow: 1
     isLight: 0
-    type: 0
     blowPower: {x: 100, y: 0}
     useStamina: 25
     isShield: 0
@@ -966,16 +1015,16 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
+    phyElement: 0
   twinSValue:
-  - EffectLevel: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 0.8
     y: 10
     z: 10
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 15
     isShield: 0
@@ -990,15 +1039,15 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
-  - EffectLevel: 0
+    phyElement: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 0.83
     y: 11
     z: 11
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 15
     isShield: 0
@@ -1013,15 +1062,15 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
-  - EffectLevel: 0
+    phyElement: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 0.88
     y: 12
     z: 12
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 10
     isShield: 0
@@ -1036,16 +1085,16 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
+    phyElement: 0
   twinBValue:
-  - EffectLevel: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 1.15
     y: 13
     z: 13
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 20
     isShield: 0
@@ -1060,15 +1109,15 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
-  - EffectLevel: 0
+    phyElement: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 1.2
     y: 13
     z: 14
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 20
     isShield: 0
@@ -1083,16 +1132,16 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
+    phyElement: 0
   twinChargeValue:
-  - EffectLevel: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 1.35
     y: 16
     z: 18
     isCombo: 0
     isBlow: 1
     isLight: 0
-    type: 0
     blowPower: {x: 30, y: 90}
     useStamina: 25
     isShield: 0
@@ -1107,15 +1156,15 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
-  - EffectLevel: 0
+    phyElement: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 0.95
     y: 20
     z: 9
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 28
     isShield: 0
@@ -1130,16 +1179,16 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
+    phyElement: 0
   twinAirValue:
-  - EffectLevel: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 0.75
     y: 8
     z: 8
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 15
     isShield: 0
@@ -1154,15 +1203,15 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
-  - EffectLevel: 0
+    phyElement: 0
+  - EffectLevel: 1
+    motionType: 0
     x: 0.75
     y: 8
     z: 8
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 0
     blowPower: {x: 0, y: 0}
     useStamina: 15
     isShield: 0
@@ -1177,16 +1226,16 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
+    phyElement: 0
   twinStrikeValue:
-  - EffectLevel: 0
+  - EffectLevel: 4
+    motionType: 1
     x: 1.15
     y: 15
     z: 20
     isCombo: 0
     isBlow: 1
     isLight: 0
-    type: 0
     blowPower: {x: 100, y: 0}
     useStamina: 30
     isShield: 0
@@ -1200,17 +1249,17 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-    mainElement: 0
-    subElement: 0
+    mainElement: 1
+    phyElement: 1
   artsValue:
-  - EffectLevel: 0
+  - EffectLevel: 4
+    motionType: 2
     x: 0.35
     y: 15
     z: 50
     isCombo: 0
     isBlow: 0
     isLight: 0
-    type: 2
     blowPower: {x: 0, y: 0}
     useStamina: 20
     isShield: 0
@@ -1224,16 +1273,16 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-    mainElement: 0
-    subElement: 0
-  - EffectLevel: 0
+    mainElement: 2
+    phyElement: 2
+  - EffectLevel: 2
+    motionType: 0
     x: 1.35
     y: 20
     z: 15
     isCombo: 0
     isBlow: 1
     isLight: 0
-    type: 0
     blowPower: {x: 120, y: 40}
     useStamina: 25
     isShield: 0
@@ -1248,13 +1297,8 @@ MonoBehaviour:
     guardAttack: 0
     backAttack: 0
     mainElement: 0
-    subElement: 0
-  isLight: 0
+    phyElement: 0
   twinHand: 0
-  isBlow: 1
-  isCombo: 0
-  blowPower: {x: 0, y: 0}
-  guardSpeed: 0
   _useContoroller:
   - {fileID: 22100000, guid: 78097b11b1d9cf645a57cafe12dd669f, type: 2}
   - {fileID: 22100000, guid: 02093cf5a372a854bb0e17eb2aaf36e8, type: 2}

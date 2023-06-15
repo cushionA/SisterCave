@@ -93,7 +93,7 @@ public struct FireJob : IJobParallelForTransform
 				
 				break;
 		}
-	//	Debug.Log($"どぇ{result[0]}");
+
 
 	}
 
@@ -151,7 +151,7 @@ public struct FireJob : IJobParallelForTransform
 
 			//進行角度にとぶ
 			result[0] = direction * speed;
-			Debug.Log($"ffrefrf{result[0].x}");
+
 
 		}
 		else
@@ -196,13 +196,7 @@ public struct FireJob : IJobParallelForTransform
 					result[0] = Vector3.zero;
 					return;
 				}
-                if (!homing)
-                {
-					//方向は一致してる
-					//方向自体が途中で変わってる？
-				//	Debug.Log($"ｓｆ{homingAngle.eulerAngles.z}ededded{_transform.rotation.eulerAngles.z}");
 
-                }
 				float angle = _transform.rotation.eulerAngles.z + _status.angle;
 				// 角度から単位ベクトル
 				Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
@@ -221,10 +215,10 @@ public struct FireJob : IJobParallelForTransform
 				//でも進む角度と向きが違う
 				//角度だけどっかで変わってる？
 				//フレーム遅延のせいで前のフレームのresult受け取ってるはありそう
-				//Debug.Log($"ｓｆ{homingAngle.eulerAngles.z == s}");
+
 			}
 
-			//zホーミングって結局追尾する角度に制限かけるってことだよね
+			//zホーミングは追尾する角度に制限かけるってこと
 			//完全追尾なら１８０度回転できるところを１２０度までとかって制限つけてる
 			/*	else if (_status.moveType == 2)
 				{

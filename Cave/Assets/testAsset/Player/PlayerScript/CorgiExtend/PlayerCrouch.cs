@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using MoreMountains.Tools;
+using Cysharp.Threading.Tasks;
+using System;
 
 namespace MoreMountains.CorgiEngine
 {
@@ -58,6 +60,9 @@ namespace MoreMountains.CorgiEngine
 		protected int _crouchingAnimationParameter;
 		protected int _crawlingAnimationParameter;
 		protected bool _wasInATunnelLastFrame;
+
+		//しゃがみ移動としゃがみを高速で切り替えるのを防ぐ
+		bool crawlingLock;
 
 		/// <summary>
 		/// On Start(), we set our tunnel flag to false
@@ -165,16 +170,22 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected virtual void DetermineState()
 		{
-			float threshold = (_inputManager != null) ? _inputManager.Threshold.x : 0f;
+			//float threshold = (_inputManager != null) ? _inputManager.Threshold.x : 0f;
 
 			if ((_movement.CurrentState == CharacterStates.MovementStates.Crouching) || (_movement.CurrentState == CharacterStates.MovementStates.Crawling))
 			{
-				if ((Mathf.Abs(_horizontalInput) > threshold) && (CrawlAuthorized))
+				if ((Mathf.Abs(_horizontalInput) > 0) && (CrawlAuthorized) && !crawlingLock)
 				{
 					_movement.ChangeState(CharacterStates.MovementStates.Crawling);
 				}
 				else
 				{
+					//しゃがみ移動やめたならしばらくしゃがみ移動不可に
+					if(_movement.CurrentState == CharacterStates.MovementStates.Crawling)
+                    {
+						crawlingLock = true;
+						UnLock().Forget();
+                    }
 					_movement.ChangeState(CharacterStates.MovementStates.Crouching);
 				}
 			}
@@ -276,6 +287,19 @@ namespace MoreMountains.CorgiEngine
 		protected virtual void RecalculateRays()
 		{
 			_character.RecalculateRays();
+		}
+
+
+		async UniTaskVoid UnLock(bool isFirst = true)
+		{
+			var token = this.GetCancellationTokenOnDestroy();
+			//指定秒数待つ
+			await UniTask.Delay(TimeSpan.FromSeconds(1.5), cancellationToken: token);
+
+			//ボタン離してたらロック解除
+
+			crawlingLock = false;
+
 		}
 
 		/// <summary>

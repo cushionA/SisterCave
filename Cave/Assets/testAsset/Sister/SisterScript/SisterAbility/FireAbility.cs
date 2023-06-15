@@ -1,14 +1,8 @@
+using Cysharp.Threading.Tasks;
+using MoreMountains.Tools;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using Cysharp.Threading.Tasks;
-using System;
-using UnityEngine.UI;
-using System.Collections;
-using MoreMountains.Tools;
-using MoreMountains.Feedbacks;
-using Rewired.Integration.CorgiEngine;
-using DarkTonic.MasterAudio;
 
 
 /// 攻撃中は場所変えないようにする。中断でエフェクト残る
@@ -26,13 +20,13 @@ using DarkTonic.MasterAudio;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
-	/// <summary>
-	/// 普通に状況判断して動くためのスクリプト
-	/// ワープ、攻撃、コンビネーション（各動作は分ける？）は別スクリプトに
-	/// あるいはコンビネーションは主人公に持たせる？
-	/// 流れとしては判断、詠唱、攻撃状態に遷移しモーション変化、アニメーションイベント、魔法使用、アニメーションイベントで終了
-	/// </summary>
-	[AddComponentMenu("Corgi Engine/Character/Abilities/FireAbility")]
+    /// <summary>
+    /// 普通に状況判断して動くためのスクリプト
+    /// ワープ、攻撃、コンビネーション（各動作は分ける？）は別スクリプトに
+    /// あるいはコンビネーションは主人公に持たせる？
+    /// 流れとしては判断、詠唱、攻撃状態に遷移しモーション変化、アニメーションイベント、魔法使用、アニメーションイベントで終了
+    /// </summary>
+    [AddComponentMenu("Corgi Engine/Character/Abilities/FireAbility")]
 	public class FireAbility : MyAbillityBase
 	{
 
@@ -182,6 +176,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//Brainじゃないんですわ
 			sb = _character.FindAbility<BrainAbility>();
 			atEf = _character.FindAbility<AtEffectCon>();
+
+			SManager.instance.MagicEffectSet(atEf);
 		}
 
 

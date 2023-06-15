@@ -222,7 +222,7 @@ public class Equip : Item
 
     [Foldout("サウンドとエフェクト")]
     [Header("通常ムーブエフェクトのプレハブ")]
-    public PrefabPool[] _usePrefab;
+    public PrefabPool[] usePrefab;
 
 
     [Foldout("サウンドとエフェクト")]

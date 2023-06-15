@@ -1,15 +1,10 @@
-using System.Collections;
+using DarkTonic.MasterAudio;
 using System.Collections.Generic;
 using UnityEngine;
-using MoreMountains.Tools;
-using UnityEditor;
-using DarkTonic.MasterAudio;
 
 [System.Serializable]
 public class EffectCondition
 {
-
-
     //定義
     #region
 
@@ -55,6 +50,13 @@ public class EffectCondition
         /// 親の方向無視するなら
         /// </summary>
         public bool ignoreDirection;
+
+        /// <summary>
+        /// このエフェクトが既に使われたかどうか
+        /// ループやリピートで使う
+        /// </summary>
+        [HideInInspector]
+        public bool isUsed;
     }
 
 
@@ -78,6 +80,12 @@ public class EffectCondition
         [Tooltip(" 再生スピードがアニメの再生速度の影響を受けるかどうか")]
         public bool _matchAnime;
 
+        /// <summary>
+        /// この音声が既に使われたかどうか
+        /// ループやリピートで使う
+        /// </summary>
+        [HideInInspector]
+        public bool isUsed;
     }
 
     #endregion

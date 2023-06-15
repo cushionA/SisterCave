@@ -1,16 +1,16 @@
-using UnityEngine;
-using System.Collections;
+using Cysharp.Threading.Tasks;
 using MoreMountains.Tools;
-using Rewired.Integration.CorgiEngine;
-using DarkTonic.MasterAudio;
+using System;
+using UnityEngine;
+
 namespace MoreMountains.CorgiEngine
 {
-	/// <summary>
-	/// Add this component to a character and it'll be able to run
-	/// Animator parameters : Running
-	/// </summary>
-	//[AddComponentMenu("Corgi Engine/Character/Abilities/Character Run")]
-	public class PlayerRunning : MyAbillityBase
+    /// <summary>
+    /// Add this component to a character and it'll be able to run
+    /// Animator parameters : Running
+    /// </summary>
+    //[AddComponentMenu("Corgi Engine/Character/Abilities/Character Run")]
+    public class PlayerRunning : MyAbillityBase
 	{
 		/// This method is only used to display a helpbox text at the beginning of the ability's inspector
 		public override string HelpBoxText() { return "This component allows your character to change speed (defined here) when pressing the run button."; }
@@ -46,6 +46,12 @@ namespace MoreMountains.CorgiEngine
 
 		//回避判定のためのボタン押し時間
 		float pressTime;
+
+		/// <summary>
+		/// スタミナ切れ時に一秒ダッシュを禁止する
+		/// </summary>
+		bool isStaminaLock;
+
 
 		/// <summary>
 		///　ここで、パラメータを初期化する必要があります。
@@ -88,6 +94,15 @@ namespace MoreMountains.CorgiEngine
 
 			if ((_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed) && _horizontalInput != 0)
 			{
+				if (pressTime == 0)
+				{
+					pressTime = Time.time;
+				}
+				//スタミナ切れしたらしばらく走れない。壁にぶつかってる時も走れない？
+                if (isStaminaLock || (_controller.State.IsCollidingLeft) || (_controller.State.IsCollidingRight))
+                {
+					return;
+                }
 				RunStart();
 				
 			}
@@ -96,16 +111,26 @@ namespace MoreMountains.CorgiEngine
 				RunStop();
 			//	Debug.Log($"{pressTime}秒");
 				//指定した時間以内にボタンが離されていたら回避
-				if(pressTime < avoidBuffer)
+				if(Time.time - pressTime < avoidBuffer && pressTime > 0)
                 {
+					//Debug.Log($"sdddsds{Time.time - pressTime < avoidBuffer}wdwww{pressTime}dddd{Time.time - pressTime}");
 					roll.actRoll = true;
 					
                 }
 				pressTime = 0;
 			}
+			//スタミナ切れ
 			else if ((_horizontalInput == 0 || GManager.instance.stamina <= 0) && _movement.CurrentState == CharacterStates.MovementStates.Running)
             {
 				RunStop();
+
+				if (GManager.instance.stamina <= 0)
+				{
+					isStaminaLock = true;
+
+					//ロックは時限解除
+					UnLock().Forget();
+				}
 			}
 
 				if (AutoRun)
@@ -127,12 +152,7 @@ namespace MoreMountains.CorgiEngine
 		{
 			base.ProcessAbility();
 			HandleRunningExit();
-			//走っている時、のコード
-			//スタミナ減らしたりできるよぉ？
-			if(_movement.CurrentState == CharacterStates.MovementStates.Running)
-            {
-				pressTime += _controller.DeltaTime;
-			}
+
 		}
 
 		/// <summary>
@@ -142,7 +162,7 @@ namespace MoreMountains.CorgiEngine
 		{
 
 
-			// if we're running and not grounded, we change our state to Falling
+			// 落下
 			if (!_controller.State.IsGrounded && (_movement.CurrentState == CharacterStates.MovementStates.Running) && _startFeedbackIsPlaying)
 			{
 
@@ -245,6 +265,34 @@ namespace MoreMountains.CorgiEngine
 			RegisterAnimatorParameter(_runningAnimationParameterName, AnimatorControllerParameterType.Bool, out _runningAnimationParameter);
 		}
 
+
+		async UniTaskVoid UnLock(bool isFirst = true)
+        {
+			var token = this.GetCancellationTokenOnDestroy();
+
+			if (isFirst)
+			{
+				//指定秒数待つ
+				await UniTask.Delay(TimeSpan.FromSeconds(3), cancellationToken: token);
+			}
+            else
+            {
+				await UniTask.Delay(TimeSpan.FromSeconds(1), cancellationToken: token);
+			}
+
+			//ボタン離してたらロック解除
+            if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.Off)
+            {
+                isStaminaLock = false;
+            }
+			//離してないならまだロック
+            else
+            {
+				UnLock(false).Forget();
+            }
+		}
+
+
 		/// <summary>
 		/// At the end of each cycle, we send our Running status to the character's animator
 		/// </summary>
@@ -272,6 +320,10 @@ namespace MoreMountains.CorgiEngine
 				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _runningAnimationParameter, false, _character._animatorParameters, _character.PerformAnimatorSanityChecks);
 			}
 		}
+
+
+
+
 	}
 }
 

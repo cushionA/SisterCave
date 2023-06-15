@@ -25,14 +25,16 @@ public class MyInstanceHandlerDelegate : MonoBehaviour
 
 	public GameObject InstantiateDelegate(GameObject location, Vector3 pos, Quaternion rot)
 	{
-		Debug.Log("Using my own instantiation delegate on prefab '" + location + "'!");
+		Debug.Log("Using my own instantiation delegate on prefab '" + location.name + "'!");
 
-		return Addressables.InstantiateAsync( location, pos,rot).Result;
+		return Addressables.InstantiateAsync(location.name, pos,rot).WaitForCompletion();
+
+		
 	}
 
 	public void DestroyDelegate(GameObject instance)
 	{
-		Debug.Log("Using my own destroy delegate on '" + instance.name + "'!");
+		//Debug.Log("Using my own destroy delegate on '" + instance.name + "'!");
 
 		Addressables.ReleaseInstance(instance);
 	}

@@ -25,9 +25,6 @@ MonoBehaviour:
   fireDef: 20
   thunderDef: 70
   Armor: 35
-  useSound: []
-  footStepSound: 
-  walkSound: 
   Atk: 0
   phyAtk: 100
   holyAtk: 0
@@ -42,6 +39,7 @@ MonoBehaviour:
   guardPower: 100
   judgePace: 0.8
   isMetal: 0
+  shieldType: 0
   _bodySize: 0
   addSpeed: {x: 300, y: 0}
   patrolSpeed: {x: 10, y: 0}
@@ -77,7 +75,9 @@ MonoBehaviour:
   atkDisplay: 0
   defDisplay: 0
   atValue:
-  - mValue: 1
+  - EffectLevel: 0
+    motionType: 2
+    mValue: 1
     aditionalArmor: 0
     shock: 20
     isBlow: 0
@@ -91,11 +91,6 @@ MonoBehaviour:
     parryResist: 0
     suppleNumber: 0
     escapePercentage: 65
-    attackEffect:
-      m_AssetGUID: 
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     _hitLimit: 1
     _moveDuration: 0.2
     _moveDistance: 15
@@ -106,7 +101,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - mValue: 1
+    mainElement: 0
+    phyElement: 0
+  - EffectLevel: 0
+    motionType: 2
+    mValue: 1
     aditionalArmor: 0
     shock: 20
     isBlow: 0
@@ -120,11 +119,6 @@ MonoBehaviour:
     parryResist: 0
     suppleNumber: 0
     escapePercentage: 0
-    attackEffect:
-      m_AssetGUID: 
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     _hitLimit: 1
     _moveDuration: 0.2
     _moveDistance: 15
@@ -135,7 +129,11 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
-  - mValue: 1.2
+    mainElement: 0
+    phyElement: 0
+  - EffectLevel: 0
+    motionType: 2
+    mValue: 1.2
     aditionalArmor: 20
     shock: 30
     isBlow: 0
@@ -149,11 +147,6 @@ MonoBehaviour:
     parryResist: 0
     suppleNumber: 0
     escapePercentage: 10
-    attackEffect:
-      m_AssetGUID: 
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     _hitLimit: 1
     _moveDuration: 0.2
     _moveDistance: 25
@@ -164,6 +157,8 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    phyElement: 0
   parriable: 0
   unBaind: 1
   attackType: 0

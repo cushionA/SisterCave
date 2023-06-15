@@ -437,7 +437,7 @@ public class GManager : MonoBehaviour
       skill = pStatus.skill + equipCore.additionalSkill;
     //　魔法力。賢さ
       _int = pStatus._int + equipCore.additionalInt;
-    capacityWeight = pStatus.initialWeight + pStatus.weightCurve.Evaluate(Endurance + power/2) + equipCore.additionalWeight;
+    capacityWeight = pStatus.initialWeight + (pStatus.weightCurve.Evaluate(Endurance + power/2) * 100) + equipCore.additionalWeight;
         Armor = equipCore.additionalArmor;
         maxHp = pStatus.initialHp + pStatus.HpCurve.Evaluate(Vitality) + equipCore.additionalHp;
         maxMp = pStatus.initialMp + pStatus.MpCurve.Evaluate(pStatus.capacity) + equipCore.additionalMp;
@@ -493,6 +493,7 @@ public class GManager : MonoBehaviour
 
         SetParameter();
         ActionSet();
+
         if (setWeapon[0] != null)
         {
             SetAtk(setWeapon[0]);
@@ -516,7 +517,7 @@ public class GManager : MonoBehaviour
 
         SetMagicAssist();
         SetMagicAtk();
-
+        EffectPackage();
     }
 
     /// <summary>
@@ -594,8 +595,8 @@ public class GManager : MonoBehaviour
         equipWeight += equipWeapon._weight;
         equipWeight += equipShield._weight;
 
-
         float weightState = equipWeight / capacityWeight;
+
         if (weightState <= 0.3 && weightState >= 0)
         {
             pStatus.moveSpeed = lightSpeed;
@@ -635,6 +636,7 @@ public class GManager : MonoBehaviour
             stRatio = overStRatio;
             pStatus._weightState = PlayerStatus.PlayerWeightState.重量オーバー;
         }
+       // Debug.Log($"あああああ{pStatus._weightState}{pStatus.dashSpeed}");
     }
 
 
@@ -1145,20 +1147,33 @@ public class GManager : MonoBehaviour
         {       
             List<EffectCondition> _newList;
 
+            _newList = new List<EffectCondition>();
+            _newPrefab = new List<PrefabPool>();
+
             //武器
             if (equipWeapon._useList.Any())
             {
-                _newList = new List<EffectCondition>(equipWeapon._useList);
-                _newPrefab = new List<PrefabPool>(equipWeapon._usePrefab);
+                _newList.AddRange(equipWeapon._useList);
+             //   _newPrefab = new List<PrefabPool>(equipWeapon.usePrefab);
+ 
+
+               for (int i = 0;i < equipWeapon.usePrefab.Length;i++)
+                {
+                    PrefabPool pool = new PrefabPool();
+                    pool.prefab = equipWeapon.usePrefab[i].prefab;
+                    pool.preloadAmount = equipWeapon.usePrefab[i].preloadAmount;
+                   
+                   _newPrefab.Add(pool);
+
+                }
+
+               // _newPrefab.AddRange(equipWeapon.usePrefab);
             }
-            else
-            {
-                _newList = new List<EffectCondition>();
-                _newPrefab = new List<PrefabPool>();
-            }
+            Debug.Log($"wer{_newPrefab.Count}");
+
 
             //シールド
-            if (equipShield._useList.Any())
+            if (equipShield._useList!= null&& equipShield._useList.Any())
             {
                 //newリストが空なら
                 if (!_newList.Any())
@@ -1204,14 +1219,22 @@ public class GManager : MonoBehaviour
                     }
                 }
 
-                if (equipShield._usePrefab.Any())
+                if (equipShield.usePrefab.Any())
                 {
-                    _newPrefab.AddRange(equipShield._usePrefab);
+                    for (int i = 0; i < equipShield.usePrefab.Length; i++)
+                    {
+                        PrefabPool pool = new PrefabPool();
+                        pool.prefab = equipShield.usePrefab[i].prefab;
+                        pool.preloadAmount = equipShield.usePrefab[i].preloadAmount;
+
+                        _newPrefab.Add(pool);
+
+                    }
                 }
             }
 
             //コア
-            if (equipCore._useList.Any())
+            if (equipCore._useList != null && equipCore._useList.Any())
             {
                 //newリストが空なら
                 if (!_newList.Any())
@@ -1258,7 +1281,15 @@ public class GManager : MonoBehaviour
                 }
                 if (equipCore._usePrefab.Any())
                 {
-                    _newPrefab.AddRange(equipCore._usePrefab);
+                    for (int i = 0; i < equipCore._usePrefab.Count; i++)
+                    {
+                        PrefabPool pool = new PrefabPool();
+                        pool.prefab = equipCore._usePrefab[i].prefab;
+                        pool.preloadAmount = equipCore._usePrefab[i].preloadAmount;
+
+                        _newPrefab.Add(pool);
+
+                    }
                 }
             }
 
@@ -1322,10 +1353,12 @@ public class GManager : MonoBehaviour
             }
             */
             #endregion
-
+          //  Debug.Log($"werwr{_newPrefab[0].prefab.name}");
             ec.ResorceReset(_newList,_newPrefab);
-            _newPrefab.Clear();
+
+           // _newPrefab.Clear();
         }
+
 
         AtEffectCon ac = Player.MMGetComponentNoAlloc<AtEffectCon>();
 
@@ -1333,10 +1366,19 @@ public class GManager : MonoBehaviour
         {
             List<MoreMountains.CorgiEngine.AtEffectCon.EffectAndSound> _newList;
             //武器
-            if (equipWeapon.AttackEffect.Any())
+            if (equipWeapon.AttackEffect != null  && equipWeapon.AttackEffect.Any())
             {
                 _newList = new List<AtEffectCon.EffectAndSound>(equipWeapon.AttackEffect);
-                _newPrefab = new List<PrefabPool>(equipWeapon.AttackPrefab);
+                _newPrefab = new List<PrefabPool>();
+                for (int i = 0; i < equipWeapon.AttackPrefab.Length; i++)
+                {
+                    PrefabPool pool = new PrefabPool();
+                    pool.prefab = equipWeapon.AttackPrefab[i].prefab;
+                    pool.preloadAmount = equipWeapon.AttackPrefab[i].preloadAmount;
+
+                    _newPrefab.Add(pool);
+
+                }
             }
             else
             {
@@ -1351,9 +1393,17 @@ public class GManager : MonoBehaviour
 
             }
 
-            if (equipShield._usePrefab.Any())
+            if (equipShield.AttackPrefab.Any())
             {
-                _newPrefab.AddRange(equipShield.AttackPrefab);
+                for (int i = 0; i < equipShield.AttackPrefab.Length; i++)
+                {
+                    PrefabPool pool = new PrefabPool();
+                    pool.prefab = equipShield.AttackPrefab[i].prefab;
+                    pool.preloadAmount = equipShield.AttackPrefab[i].preloadAmount;
+
+                    _newPrefab.Add(pool);
+
+                }
             }
             ac.ATResorceReset(_newList,_newPrefab);
             _newPrefab.Clear();
@@ -1461,7 +1511,7 @@ public class GManager : MonoBehaviour
 
     public void PlaySound(string sType, Vector3 sourceTrans, float volumePercentage = 1f, float? pitch = null, float delaySoundTime = 0f, string variationName = null, double? timeToSchedulePlay = null, bool isRemember = false)
     {
-
+       // Debug.Log("ｄｄｄ");
         if (isRemember)
         {
             MasterAudio.PlaySound3DAtVector3(sType, sourceTrans, volumePercentage, pitch, delaySoundTime, variationName, timeToSchedulePlay);

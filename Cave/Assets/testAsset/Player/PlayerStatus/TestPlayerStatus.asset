@@ -25,21 +25,18 @@ MonoBehaviour:
   fireDef: 70
   thunderDef: 70
   Armor: 1
-  useSound: []
-  footStepSound: 
-  walkSound: 
   PlayerLevel: 1
   initialHp: 480
   initialMp: 30
   initialStamina: 60
-  initialWeight: 0
+  initialWeight: 1
   earnedSoul: 0
   maxStamina: 40
   stamina: 40
   Vitality: 9
   Endurance: 25
   capacity: 90
-  power: 5
+  power: 20
   skill: 8
   _int: 1
   equipCore: {fileID: 11400000, guid: 7ca4f5657ac8d5440a0b0fdb9c5c4122, type: 2}
@@ -139,15 +136,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  capacityWeight: 1
+  capacityWeight: 100
   equipArmor: {fileID: 0}
-  itemDictionary:
-    m_keys: []
-    m_values: 
   guardSpeed: 180
-  moveSpeed: 110
-  dashSpeed: 130
-  avoidRes: 0.5
+  moveSpeed: 0
+  dashSpeed: 0
+  avoidRes: 0
   avoidSpeed: 1.2
   addSpeed: {x: 0, y: 0}
   jumpMove: 0
@@ -158,4 +152,4 @@ MonoBehaviour:
   avoidCool: 0.2
   firstGravity: 150
   downRes: 1
-  _weightState: 0
+  _weightState: 3

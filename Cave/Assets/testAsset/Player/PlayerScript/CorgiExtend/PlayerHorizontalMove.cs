@@ -156,7 +156,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 			_horizontalMovement = _horizontalInput;
-//Debug.Log($"ÇÕÇÎÅ[{_horizontalInput}");
+
 			if ((AirControl < 1f) && !_controller.State.IsGrounded)
 			{
 			
@@ -226,7 +226,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			{
 				canFlip = false;
 			}
-           //           Debug.Log($"Ç†Ç¢ÇÁ{_character.IsFacingRight}Ç¶{canFlip}Ç†{FlipCharacterToFaceDirection}Ç≈{_horizontalMovement}");
+
 			// If the value of the horizontal axis is positive, the character must face right.
 			if (_horizontalMovement > InputThreshold)
 			{
@@ -277,6 +277,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				&&(_movement.CurrentState != CharacterStates.MovementStates.Nostate)
 				&& (_controller.TimeAirborne >= _character.AirborneMinimumTime))
 			{
+				Debug.Log("ÇÜÇÜ");
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 			}
 
@@ -284,6 +285,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			if ((_movement.CurrentState == CharacterStates.MovementStates.moving || _movement.CurrentState == CharacterStates.MovementStates.Running)
 			&& (_normalizedHorizontalSpeed == 0))
 			{
+
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				PlayAbilityStopFeedbacks();
 			}
@@ -397,7 +399,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					}
 					else if(_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
 					{
-						//Debug.Log("ÇÌÇΩÇµÇ™ÇÌÇÈÇ§Ç≤Ç¥Ç¢Ç‹ÇµÇΩ");
 						_movement.ChangeState(CharacterStates.MovementStates.Idle);
 					}
 				}

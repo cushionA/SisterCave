@@ -433,7 +433,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			base.ProcessAbility();
 			Brain();
-			ActionSound();
+
 			LoseSightWait();
 		//	Debug.Log($"かどうか{_animator.name}");
 
@@ -1648,7 +1648,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			dispary.transform.localScale = Scale;
 			dispary.transform.rotation = Quaternion.Euler(-10, 0, 0);
-			Addressables.InstantiateAsync("DisParriableEffect", dispary.transform);
+		//	Addressables.InstantiateAsync("DisParriableEffect", dispary.transform);
 		}
 
 		//ヘルスのために攻撃状態か否かを返す
@@ -1741,116 +1741,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		#region
 
-		public virtual void FlySound()
-	{
-		if ((_movement.CurrentState == CharacterStates.MovementStates.Flying || _movement.CurrentState == CharacterStates.MovementStates.FastFlying)
-				&& _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
-		{
-			GManager.instance.PlaySound(status.walkSound, transform.position);
-
-		}
-		else
-		{
-			GManager.instance.StopSound(status.walkSound, 0.5f);
-		}
-	}
-
-	public void MoveSound(int type)
-	{
-		if (status.kind != EnemyStatus.KindofEnemy.Fly)
-		{
-			if (!isAggressive)
-			{
-				GManager.instance.PlaySound(status.footStepSound, transform.position);
-			}
-			else
-			{
-				if (ground == EnemyStatus.MoveState.accessDash || ground == EnemyStatus.MoveState.leaveDash)
-				{
-					if (status.isMetal)
-					{
-						GManager.instance.PlaySound(MyCode.SoundManager.instance.armorFootSound[type], transform.position);
-					}
-					else
-					{
-						GManager.instance.PlaySound(MyCode.SoundManager.instance.bareFootSound[type], transform.position);
-					}
-				}
-				else
-				{
-					if (status.isMetal)
-					{
-						GManager.instance.PlaySound(MyCode.SoundManager.instance.armorWalkSound[type], transform.position);
-					}
-					else
-					{
-						GManager.instance.PlaySound(MyCode.SoundManager.instance.bareWalkSound[type], transform.position);
-					}
-				}
-			}
-			if (isWater)
-			{
-				//水の足音
-			}
-		}
-
-	}
-
-		/// <summary>
-		/// 現在の状況に合わせたサウンドを提供します
-		/// 移動とスタン以外
-		/// 固有の音に変えたい場合はオーバーライド
-		/// プレイヤーに移植してもいい
-		/// </summary>
-		/// <param name="i">これはバリエーションある場合のパラメータ</param>
-		public void ActionSound(int i = 0)
-		{
-            if (_controller.State.JustGotGrounded)
-            {
-				MyCode.SoundManager.instance.ShakeSound(status.isMetal, status._bodySize, transform);
-			}
-
-			if (status.kind == EnemyStatus.KindofEnemy.Fly)
-			{
-				if (!flyNow && (_condition.CurrentState != CharacterStates.CharacterConditions.Dead && _condition.CurrentState != CharacterStates.CharacterConditions.Stunned))
-				{
-				//	Debug.Log("あいいいい");
-					GManager.instance.FollowSound(status.walkSound, transform);
-					flyNow = true;
-					return;
-				}
-                else if (flyNow && (_condition.CurrentState == CharacterStates.CharacterConditions.Dead || _condition.CurrentState == CharacterStates.CharacterConditions.Stunned))
-				{
-			//		Debug.Log("いいいい");
-					GManager.instance.StopSound(status.walkSound, 0.5f);
-					flyNow = false;
-					return;
-				}
-			}
-			if(lastState == _movement.CurrentState || _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
-            {
-				return;
-            }
-			lastState = _movement.CurrentState;
-			//Debug.Log($"sf{_movement.CurrentState}");
-			if (_movement.CurrentState == CharacterStates.MovementStates.Rolling)
-			{
-				//これはFlyとかで分けるか
-				//GManager.instance.PlaySound(MyCode.SoundManager.instance.armorRollSound[1], transform.position);
-			}
-			else if (_movement.CurrentState == CharacterStates.MovementStates.Jumping || _movement.CurrentState == CharacterStates.MovementStates.DoubleJumping)
-			{
-				MyCode.SoundManager.instance.JumpSound(status.isMetal, status._bodySize, transform);
-			}
-			else if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.Crouching)
-			{
-				MyCode.SoundManager.instance.ShakeSound(status.isMetal,MyCode.SoundManager.SizeTag.small,transform);
-			}
 
 
-		}
-
-
+	
 		public void GuardSound()
         {
 			MyCode.SoundManager.instance.GuardSound(status.isMetal, status.shieldType, transform.position);
@@ -3254,8 +3147,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	protected void MattControllStart(int controllNumber = 0)
 	{
 		materialSet = 1;
-
-		if (controllNumber != mattControllNum)
+	 MyCode.SoundManager.instance.DeathEffect(effectController.transform.position);
+			if (controllNumber != mattControllNum)
 		{
 			jumpTime = 0;
 			controllTarget = null;

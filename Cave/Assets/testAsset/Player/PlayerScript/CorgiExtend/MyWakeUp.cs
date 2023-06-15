@@ -191,6 +191,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     }
                     else
                     {
+
                         nowType = 8;
 
                     }
@@ -237,7 +238,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="type"></param>
         public void StartStunn(StunnType type)
         {
-      //      Debug.Log("‚“‚“‚“‚“");
+
 
                 _condition.ChangeState(CharacterStates.CharacterConditions.Stunned);
                 _characterHorizontalMovement.SetHorizontalMove(0);
@@ -268,6 +269,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
                 else if (type == StunnType.NDie)
                 {
+
                 _health._blowNow = true;
                 _controller.SetForce(Vector2.zero);
                     nowType = 6;

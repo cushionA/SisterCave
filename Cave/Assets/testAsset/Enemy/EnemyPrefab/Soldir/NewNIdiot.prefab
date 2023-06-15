@@ -354,7 +354,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: 4183750157347429340, guid: a37449e343f43bd41a10ac9348ae3c63,
+  m_Sprite: {fileID: 2277214146281120595, guid: a37449e343f43bd41a10ac9348ae3c63,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -382,8 +382,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 5547195327024022051}
   m_Bounds:
-    m_Center: {x: 0.019969463, y: -0.00011962652, z: 0}
-    m_Extent: {x: 1.3799999, y: 0.7388, z: 0}
+    m_Center: {x: 0.11672115, y: 0.021722674, z: 0}
+    m_Extent: {x: 1.4782798, y: 0.75655997, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -399,9 +399,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0
-  m_labelHash: 0
-  m_SpriteKey: -2.5047024e+32
+  m_CategoryHash: 5.049859e-23
+  m_labelHash: 1.8734923e-37
+  m_SpriteKey: 0.0061819493
 --- !u!1 &632160508275046767
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,8 +950,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 1616116392383828555, guid: a37449e343f43bd41a10ac9348ae3c63,
-    type: 3}
+  m_Sprite: {fileID: 211025452635836285, guid: a37449e343f43bd41a10ac9348ae3c63, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -978,8 +977,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 4692754038187829407}
   m_Bounds:
-    m_Center: {x: 0.029894292, y: 0.00000059604645, z: 0}
-    m_Extent: {x: 0.33998072, y: 1.7199979, z: 0}
+    m_Center: {x: 0.0048950315, y: 0.0049991608, z: 0}
+    m_Extent: {x: 0.3199786, y: 1.7, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -995,9 +994,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0
-  m_labelHash: 0
-  m_SpriteKey: -1.4023277e-31
+  m_CategoryHash: 2.6313093e-29
+  m_labelHash: 0.000000021120304
+  m_SpriteKey: 3.9479064e-17
 --- !u!1 &1837820772122328562
 GameObject:
   m_ObjectHideFlags: 0
@@ -1703,9 +1702,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0
-  m_labelHash: 0
-  m_SpriteKey: -8.173334e+13
+  m_CategoryHash: 2.6182188e-37
+  m_labelHash: 0.0000000015304741
+  m_SpriteKey: 2.401927e-25
 --- !u!1 &3082641420050948493
 GameObject:
   m_ObjectHideFlags: 0
@@ -3053,8 +3052,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0
-  m_labelHash: 0
+  m_CategoryHash: 1.8249247e-17
+  m_labelHash: 1.2186372e-24
   m_SpriteKey: 2.0719737e-19
 --- !u!1 &4764025882163570536
 GameObject:
@@ -3570,9 +3569,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0
-  m_labelHash: 0
-  m_SpriteKey: 8.2415794e+23
+  m_CategoryHash: 2.3683408e-10
+  m_labelHash: 5.2352823e-27
+  m_SpriteKey: 2.4219825e-15
 --- !u!1 &6103128846166722904
 GameObject:
   m_ObjectHideFlags: 0
@@ -4307,6 +4306,8 @@ GameObject:
   - component: {fileID: 7080401917474185498}
   - component: {fileID: 7080401917474185503}
   - component: {fileID: 7662507517359617361}
+  - component: {fileID: 7347436714312755850}
+  - component: {fileID: 4723839526786284218}
   m_Layer: 10
   m_Name: NewNIdiot
   m_TagString: Enemy
@@ -4354,7 +4355,7 @@ MonoBehaviour:
   BlockingConditionStates: 
   isPlayer: 0
   _health: {fileID: 0}
-  effectController: {fileID: 0}
+  effectController: {fileID: 7080401916363508855}
   firePosition: {fileID: 0}
   dispary: {fileID: 0}
   cameraRendered: 0
@@ -4363,6 +4364,8 @@ MonoBehaviour:
   isAggressive: 0
   bulletDirection: 0
   atV:
+    EffectLevel: 0
+    motionType: 0
     mValue: 0
     aditionalArmor: 0
     shock: 0
@@ -4377,11 +4380,6 @@ MonoBehaviour:
     parryResist: 0
     suppleNumber: 0
     escapePercentage: 0
-    attackEffect:
-      m_AssetGUID: 
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 0
     _hitLimit: 1
     _moveDuration: 0.2
     _moveDistance: 10
@@ -4392,6 +4390,8 @@ MonoBehaviour:
     superArmor: 0
     guardAttack: 0
     backAttack: 0
+    mainElement: 0
+    phyElement: 0
   ground: 6
   air: 6
   dogPile: {fileID: 0}
@@ -4428,6 +4428,7 @@ MonoBehaviour:
   _flying: {fileID: 0}
   _guard: {fileID: 0}
   _wakeup: {fileID: 7080401917474185498}
+  _atEf: {fileID: 7347436714312755850}
   _attack: {fileID: 7979082222389611166}
   _damage: {fileID: 7080401916363508858}
   _sensor: {fileID: 7979082222389611165}
@@ -4511,7 +4512,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &7080401917474185517
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4528,7 +4529,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!61 &7080401917474185502
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4787,6 +4789,7 @@ MonoBehaviour:
   AirborneMinimumTime: 0.1
   CharacterBrain: {fileID: 0}
   banIdle: 0
+  nowGround: 0
 --- !u!114 &7662507517359617361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4803,6 +4806,75 @@ MonoBehaviour:
   normalStrength: 5
   normalSmoothing: 1
   computingNormal: 0
+--- !u!114 &7347436714312755850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7080401917474185493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be2bccbccaf349f47801df93e850aff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AbilityStartFeedbacks: {fileID: 0}
+  AbilityStopFeedbacks: {fileID: 0}
+  AbilityPermitted: 1
+  BlockingMovementStates: 
+  BlockingConditionStates: 
+  isPlayer: 0
+  _health: {fileID: 0}
+  atPool: {fileID: 0}
+  magicPool: {fileID: 0}
+  sizeMultipler: 1
+  effectPosi: {fileID: 7080401916363508852}
+--- !u!114 &4723839526786284218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7080401917474185493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 012a3ab9661778648aa5635cfd63b6a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AbilityStartFeedbacks: {fileID: 0}
+  AbilityStopFeedbacks: {fileID: 0}
+  AbilityPermitted: 1
+  BlockingMovementStates: 
+  BlockingConditionStates: 
+  isPlayer: 0
+  _health: {fileID: 0}
+  particlesPool: {fileID: 0}
+  _stateList:
+  - _useState: 1
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  - _useState: 3
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  - _useState: 6
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  - _useState: 24
+    generalEffect: 0
+    _stateEffects: []
+    generalSound: 1
+    _stateSounds: []
+  isMetal: 0
+  bodySize: 0
+  sizeMultipler: 1
+  effecter: {fileID: 7080401916363508852}
+  iss: 0
 --- !u!1 &7230899291126140028
 GameObject:
   m_ObjectHideFlags: 0
@@ -6391,7 +6463,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -3665766139420019038, guid: a37449e343f43bd41a10ac9348ae3c63,
+  m_Sprite: {fileID: -1788218726168810505, guid: a37449e343f43bd41a10ac9348ae3c63,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -6419,8 +6491,8 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 4137982925036601584}
   m_Bounds:
-    m_Center: {x: 0.01990825, y: 0.019999862, z: 0}
-    m_Extent: {x: 0.8800008, y: 1.0200001, z: 0}
+    m_Center: {x: 0.035013616, y: 0.12477881, z: 0}
+    m_Extent: {x: 0.7050798, y: 0.96498054, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
@@ -6436,9 +6508,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0
-  m_labelHash: 0
-  m_SpriteKey: 50967.43
+  m_CategoryHash: 0.04429719
+  m_labelHash: 5.6514085e-20
+  m_SpriteKey: 1.810449e-10
 --- !u!1 &9126518357662982705
 GameObject:
   m_ObjectHideFlags: 0

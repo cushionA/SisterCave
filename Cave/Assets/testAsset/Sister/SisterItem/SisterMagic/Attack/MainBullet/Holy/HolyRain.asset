@@ -36,7 +36,7 @@ MonoBehaviour:
   ShortDescription: 
   Description: 
   Icon: {fileID: 0}
-  Prefab: {fileID: 0}
+  Prefab: {fileID: 100002, guid: d86f1d752fbf0a849bbceaef7590af0c, type: 3}
   DropProperties:
     Shape: 0
     NormalToSpawnPlane: {x: 0, y: 1, z: 0}
@@ -88,31 +88,19 @@ MonoBehaviour:
   UseDefaultSoundsIfNull: 1
   _sortNumber: 0
   selectable: 1
-  mType: 0
-  atType: 2
   magicLevel: 0
+  magicElement: 3
+  phyElement: 0
+  mType: 0
   phyBase: 0
   holyBase: 120
   darkBase: 0
   fireBase: 0
   thunderBase: 0
-  phyAtk: 0
-  holyAtk: 120
-  darkAtk: 0
-  fireAtk: 0
-  thunderAtk: 0
-  displayAtk: 0
+  displayAtk: 120
   recoverBase: 0
-  recoverAmount: 0
-  castTime: 4
-  useMP: 25
-  effectTime: 0
-  effectNow: 0
-  effects:
-    m_AssetGUID: d86f1d752fbf0a849bbceaef7590af0c
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  shock: 2
+  mValue: 1
   powerCurve:
     serializedVersion: 2
     m_Curve: []
@@ -149,10 +137,51 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shock: 2
-  mValue: 1
-  _hitLimit: 1
-  penetration: 0
+  effectTime: 0
+  phyAtk: 0
+  holyAtk: 120
+  darkAtk: 0
+  fireAtk: 0
+  thunderAtk: 0
+  recoverAmount: 0
+  castTime: 4
+  useMP: 25
+  effects: {fileID: 19881220, guid: d86f1d752fbf0a849bbceaef7590af0c, type: 3}
+  flashEffect: {fileID: 0}
+  hitEffect: {fileID: 198074104398807022, guid: e96482c459afbc14ea18f40c2e2f30cc,
+    type: 3}
+  childM: {fileID: 0}
+  _usePrefab:
+  - prefab: {fileID: 4831422832165140, guid: e96482c459afbc14ea18f40c2e2f30cc, type: 3}
+    preloadAmount: 18
+    preloadTime: 0
+    preloadFrames: 0
+    preloadDelay: 0
+    limitInstances: 0
+    limitAmount: 0
+    limitFIFO: 0
+    cullDespawned: 0
+    cullAbove: 0
+    cullDelay: 0
+    cullMaxPerPass: 0
+    _logMessages: 0
+    originalScal: {x: 0, y: 0, z: 0}
+    spawnPool: {fileID: 0}
+  - prefab: {fileID: 4831422832165140, guid: e96482c459afbc14ea18f40c2e2f30cc, type: 3}
+    preloadAmount: 9
+    preloadTime: 0
+    preloadFrames: 0
+    preloadDelay: 0
+    limitInstances: 0
+    limitAmount: 0
+    limitFIFO: 0
+    cullDespawned: 0
+    cullAbove: 0
+    cullDelay: 0
+    cullMaxPerPass: 0
+    _logMessages: 0
+    originalScal: {x: 0, y: 0, z: 0}
+    spawnPool: {fileID: 0}
   _moveSt:
     fireType: 3
     lifeTime: 8
@@ -167,39 +196,25 @@ MonoBehaviour:
     isRotate: 0
     bulletScaleV: {x: 0, y: 0}
     bulletScaleA: {x: 0, y: 0}
-  delayTime: 0
-  isChild: 0
-  isBlow: 0
-  cBlow: 0
   isChaice: 0
-  blowPower: {x: 0, y: 0}
   bulletNumber: 18
   VRandom: 15
   HRandom: 70
-  castEffect:
-    m_AssetGUID: df5eeaefb9c8168468981f3f8a76febb
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  castBreak:
-    m_AssetGUID: 0f99d88e486595b4d8132ebc81364051
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  delayTime: 0
+  startRotation: {x: 0, y: 0, z: 0}
+  effectNow: 0
+  isChild: 0
+  penetration: 0
+  isBlow: 0
+  cBlow: 0
+  _hitLimit: 1
+  blowPower: {x: 0, y: 0}
   fireSound: SHolyBulletFly
   moveSound: 
   existSound: 
   hitSound: HolyBulletBreak
   FireType: 4
   castType: 4
-  hitEffect:
-    m_AssetGUID: e96482c459afbc14ea18f40c2e2f30cc
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  isHit: 0
-  attackType: 8
-  startRotation: {x: 0, y: 0, z: 0}
   sType: 0
   isExprode: 0
   isSlip: 0

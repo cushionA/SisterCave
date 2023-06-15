@@ -1098,41 +1098,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//  (_currentStateName);
 		}
 
-        /// <summary>
-        /// アニメイベント
-		/// 音
-        /// </summary>
-        #region
-        public void StepSound(int type)
-		{
-			if (type == 0)
-			{
-				GManager.instance.PlaySound("LightFootStep", transform.position);
-			}
-			else
-			{
-				GManager.instance.PlaySound("LightWalkStep", transform.position);
-			}
-			if (GManager.instance.isWater)
-			{
-				GManager.instance.PlaySound("WaterStep", transform.position);
-			}
-		}
-		public void AnimeSound(string useSoundName)
-		{
 
-			GManager.instance.PlaySound(useSoundName, transform.position);
-
-
-		}
-		public void AnimeChaise(string useSoundName)
-		{
-
-			GManager.instance.FollowSound(useSoundName, transform);
-
-		}
-
-        #endregion
 
         /// <summary>
         /// ステート変化前の処理

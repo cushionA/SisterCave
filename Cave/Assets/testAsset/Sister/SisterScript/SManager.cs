@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.CorgiEngine;
 using MoreMountains.Tools;
+using PathologicalGames;
+using System.Linq;
+
 public class SManager : MonoBehaviour
 {
     public static SManager instance = null;
@@ -85,7 +88,13 @@ public class SManager : MonoBehaviour
         MagicClassify();
         //SetMagicAtk();
     }
+    
+    #region 魔法設定
 
+    /// <summary>
+    /// 魔法の攻撃力を設定
+    /// 表示火力もここで設定するか
+    /// </summary>
     public void SetMagicAtk()
     {
         if (useMagic.mType == SisMagic.MagicType.Attack)
@@ -117,6 +126,12 @@ public class SManager : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 回復量セット
+    /// </summary>
+    /// <param name="s"></param>
+    /// <returns></returns>
     public float SetRecoverAmount(SisMagic s)
     {
         if (useMagic.mType == SisMagic.MagicType.Recover)
@@ -126,10 +141,12 @@ public class SManager : MonoBehaviour
         }
         return useMagic.recoverAmount;
     }
-            /// <summary>
-            /// 魔法の分類
-            /// </summary>
-      public void MagicClassify()
+
+
+    /// <summary>
+    /// 魔法の分類
+    /// </summary>
+    public void MagicClassify()
     {
         attackMagi.Clear();
         supportMagi.Clear();
@@ -158,25 +175,56 @@ public class SManager : MonoBehaviour
         }
     }
 
-    /*   public void GetEnemyCondition()
-       {
-           if (targetList == targetRecord)
-           {
-               return;
-           }
-           else
-           {
-               //最初は絶対こっち
-               //ターゲットの状態を取得
-               targetRecord = targetList;
-               targetCondition.Clear();
-               foreach (GameObject e in targetRecord)
-               {
-                   targetCondition.Add(e.MMGetComponentNoAlloc<EnemyBase>());
-               }
-           }
-       }*/
+    /// <summary>
+    /// 魔法装備変更時にエフェクトを積みなおす
+    /// </summary>
+    /// <param name="ac"></param>
+    public void MagicEffectSet(AtEffectCon ac)
+    {
+       // AtEffectCon ac = Sister.MMGetComponentNoAlloc<AtEffectCon>();
+        List<PrefabPool> _newPrefab = new List<PrefabPool>();
 
+        //魔法の設定
+        if (sisStatus.equipMagic.Any())
+        {
+            for (int i = 0; i < sisStatus.equipMagic.Count; i++)
+            {
+
+                //使用する魔法のエフェクトをパッキング
+                for (int s = 0; s < sisStatus.equipMagic[i]._usePrefab.Length; s++)
+                {
+
+                    _newPrefab.Add(sisStatus.equipMagic[i]._usePrefab[s]);
+                }
+
+                //ここから子弾見ていく
+                Magic magi = sisStatus.equipMagic[i];
+
+                //子どもがなくなるまで
+                while (magi.childM != null)
+                {
+                    for (int s = 0; s < magi.childM._usePrefab.Length; s++)
+                    {
+
+                        _newPrefab.Add(sisStatus.equipMagic[i]._usePrefab[s]);
+                    }
+                    magi = magi.childM;
+                }
+
+                ac.MagicResorceReset(_newPrefab);
+
+                _newPrefab.Clear();
+            }
+        }
+        else
+        {
+            ac.MagicResorceReset(null);
+        }
+
+        //ここからコンビネーションエフェクトも格納？
+    }
+
+    #endregion
 
 
     public void BattleEndCheck()

@@ -38,7 +38,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 1c003d6d35cfade4baaed1b2a8dbee23
-    m_Address: Assets/testAsset/Player/PlayerAnime/Sprite/BackKnight.psb
+    m_Address: BackKnight
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 25a490c83fdc31440b48e20cb0d57940
@@ -46,7 +46,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 272f82b456988f841a605404175904b1
-    m_Address: Assets/testAsset/Player/PlayerAnime/Sprite/FrontKnight.psb
+    m_Address: FrontKnight
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 2985d91485c08544e843aa68e806e1d4
@@ -302,7 +302,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: a0f301f7e9a527d4491013dec467c237
-    m_Address: Assets/testAsset/Enemy/EnemyAnime/Idiot/Sprite/NanameIdiot.psb
+    m_Address: NanameIdiot
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 913b864aa0fdc4147beca01a59df5744
@@ -438,11 +438,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 566b689ca17ec49468e42d895239a5e9
-    m_Address: Assets/testAsset/Effects/Effect/SisterHeal/RecoverEffect.prefab
+    m_Address: RecoverEffect
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: e96482c459afbc14ea18f40c2e2f30cc
-    m_Address: Assets/testAsset/Effects/Effect/Bullet/SHolyBulletHit.prefab
+    m_Address: SHolyBulletHit
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 4a41b5634bab68c4ea16ff802625ba15
@@ -450,11 +450,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 612e5edbf1e28934cbb9eaedbdb4f5b2
-    m_Address: Assets/testAsset/Enemy/EnemyAnime/ScorpionKight/Sprite/SideScorpionKnight.psb
+    m_Address: SideScorpionKnight
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 6eac1d8858f9a5d48a30b93f38e870a5
-    m_Address: Assets/testAsset/Enemy/EnemyAnime/ScorpionKight/Sprite/NanameScorpionKnight.psb
+    m_Address: NanameScorpionKnight
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 2d958b056b42bc5439d89207c3130757
@@ -745,8 +745,8 @@ MonoBehaviour:
     m_Address: Assets/testAsset/Sound/Magic/Other/Cast/NormalCastLoop1.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 00da3d6e6c982024096c104b8494b5c7
-    m_Address: Assets/testAsset/Effects/Effect/Magic/Mazzle/Holy/SmallHMazzle.prefab
+  - m_GUID: a87d0cc788a238e4c92c9ba516349e8e
+    m_Address: BlockingEffect
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 36c5eaf1b5f26244283b275bc5499d08
@@ -766,7 +766,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: ded30f2e21296b94f94c3031c340a989
-    m_Address: Assets/testAsset/Effects/Effect/Magic/Hit/Lightning/Explosion/JetExplosion.prefab
+    m_Address: JetExplosion
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 9b409b2e65af3cf44b3fc61491dce714
@@ -820,7 +820,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 8ab19f8120b84bb4ea000c5fb7782241
-    m_Address: Assets/UltimateTextDamage/Prefabs/TextDamageManager_UI.prefab
+    m_Address: TextDamageManager_UI
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: ce2ad0639a113fa48b1d116eebbfe137
@@ -836,21 +836,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 1409b5d0e3a22d34a95e1cf178dc0273
-    m_Address: Assets/testAsset/Effects/Effect/AttackEffect/NormalAttack/Slash/VerticalSlash.prefab
+    m_Address: VerticalSlash
     m_ReadOnly: 0
     m_SerializedLabels:
     - AttackEffect
   - m_GUID: f315a38a9c056f64b8bca44fe9689f06
-    m_Address: Assets/testAsset/Effects/Effect/AttackEffect/NormalAttack/Stab/NormalStab.prefab
+    m_Address: NormalStab
     m_ReadOnly: 0
     m_SerializedLabels:
     - AttackEffect
   - m_GUID: 7f9db16e38fbd114fa303102028b4e92
-    m_Address: Assets/testAsset/Effects/Effect/AttackEffect/Special/ForceSlash/ForceNSlash.prefab
+    m_Address: ForceNSlash
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 2dd5e642c1aeda842bf7ff1b80deead5
-    m_Address: Assets/testAsset/Effects/Effect/AttackEffect/Special/ForceStab/ForceNStab.prefab
+    m_Address: ForceNStab
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 3fb36971383b2dc4e994b245d632b845
@@ -942,7 +942,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: dea6be2b28f522147a7a84546d290f91
-    m_Address: Assets/testAsset/Enemy/EnemyPrefab/Fly/Porter.prefab
+    m_Address: Porter
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 6abe4262e88242c4e91c02b553b1d5c9
@@ -954,11 +954,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 02a8c377c414f034aaf8424ca8f69d70
-    m_Address: Assets/testAsset/Enemy/EnemyPrefab/Knight/TestScorpionKight .prefab
+    m_Address: 'TestScorpionKight '
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 9fee4d18ab9b05a498045b7e345dded2
-    m_Address: Assets/testAsset/Enemy/EnemyPrefab/Soldir/NewNIdiot.prefab
+    m_Address: NewNIdiot
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 1b62cf18bd8effd449e667f64e0c8cc4
@@ -1018,7 +1018,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: e538db99ca5776842baaa2dbecd60175
-    m_Address: Assets/testAsset/UI/Rewired Input Manager.prefab
+    m_Address: Rewired Input Manager
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 503813d282098fb46936710f053bb835
@@ -1083,6 +1083,50 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: 37c6e5e57dfe6ed41a37f81dcf48bf9c
     m_Address: Assets/testAsset/Sister/SisterItem/SisterMagic/Attack/MainBullet/Fire/FireNeedle.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dcc7e9fb1487db242a0837de3cadc8a4
+    m_Address: Assets/testAsset/Sound/Common/Down/stanSound.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 740ca3a2693107b42a4a1d898338f3f2
+    m_Address: Assets/testAsset/Sound/Common/Down/GuardBreake.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 49ee7fba09da804468744abf92fde516
+    m_Address: Assets/testAsset/Sound/Common/Down/FadeSound.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3301390957a6e2e4da1ffd0c23416797
+    m_Address: Assets/testAsset/Sound/Common/Down/Kill.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d48a03673e3295b4695bcf011fe63c91
+    m_Address: DeathEffect
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3d30d28f48c161c4b8a0c36e5f560b58
+    m_Address: DispariableEffect
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c2e81e9985be0824cade631e1c4c9b5a
+    m_Address: Assets/testAsset/Sister/SisterItem/SisterMagic/Heal/SmallHeal.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3961c7f7b91bfeb4dba6fed1cc9bc9d8
+    m_Address: ParryEffectB
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 99589d7a66dff5640bea526f6c696888
+    m_Address: DashEffect
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 18079abcfda9b4643917d91159f5e5b5
+    m_Address: AlterDash
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 18658979165da7944ac8ab268f52b5ca
+    m_Address: DashSoundE
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

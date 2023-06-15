@@ -16,7 +16,8 @@ public class AttackValue
         Normal,
         Strong,
         Fatal,
-        Special
+        Special,
+        SEOnly
     }
 
     /// <summary>

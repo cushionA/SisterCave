@@ -99,12 +99,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			base.Initialization();
 			anim = _animator;
-           
-			ParameterSet(GManager.instance.pStatus);
+
 			
 		//	SetComponennt();
 			GManager.instance.StatusSetting();
-            if (!GManager.instance.twinHand)
+           
+			ParameterSet(GManager.instance.pStatus);
+
+			//Background analysis of asset and meta files has been disabled, because this project seems too large. Do not warn me again 
+
+			if (!GManager.instance.twinHand)
             {
 				GManager.instance.AnimationSetting();
 				//Debug.Log($"asidk");
@@ -990,46 +994,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		//	}
 		}
 
-
-		/// <summary>
-		/// 現在の状況に合わせたサウンドを提供します
-		/// スタン以外
-		/// </summary>
-		/// <param name="i">これはバリエーションある場合のパラメータ</param>
-		public void MoveSound(int i = 0)
-        {
-			//Debug.Log($"sf{_movement.CurrentState}");
-			if (_movement.CurrentState == CharacterStates.MovementStates.moving || _movement.CurrentState == CharacterStates.MovementStates.GuardMove ||
-				_movement.CurrentState == CharacterStates.MovementStates.Crawling)
-            {
-				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorFootSound[1], transform.position);
-				if (GManager.instance.isWater)
-				{
-					GManager.instance.PlaySound("WaterStep", transform.position);
-				}
-			}
-			else if (_movement.CurrentState == CharacterStates.MovementStates.Running)
-			{
-				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorFootSound[1], transform.position);
-			}
-			else if (_movement.CurrentState == CharacterStates.MovementStates.Rolling)
-			{
-				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorRollSound[1], transform.position);
-			}
-			else if (_movement.CurrentState == CharacterStates.MovementStates.Jumping || _movement.CurrentState== CharacterStates.MovementStates.DoubleJumping)
-			{
-				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorJumpSound[1], transform.position);
-			}
-			else if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.Crouching)
-			{
-				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorShakeSound[0], transform.position);
-			}
-			//攻撃時は体が少し揺れる
-			else if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
-			{
-				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorShakeSound[0], transform.position);
-			}
-		}
 
 
 

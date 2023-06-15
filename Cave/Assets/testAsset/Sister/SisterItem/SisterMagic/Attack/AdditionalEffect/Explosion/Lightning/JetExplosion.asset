@@ -88,31 +88,19 @@ MonoBehaviour:
   UseDefaultSoundsIfNull: 1
   _sortNumber: 0
   selectable: 0
-  mType: 0
-  atType: 0
   magicLevel: 0
+  magicElement: 6
+  phyElement: 0
+  mType: 0
   phyBase: 0
   holyBase: 0
   darkBase: 0
   fireBase: 0
   thunderBase: 300
-  phyAtk: 0
-  holyAtk: 0
-  darkAtk: 0
-  fireAtk: 0
-  thunderAtk: 350
   displayAtk: 500
   recoverBase: 0
-  recoverAmount: 0
-  castTime: 0
-  useMP: 0
-  effectTime: 0
-  effectNow: 0
-  effects:
-    m_AssetGUID: ded30f2e21296b94f94c3031c340a989
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  shock: 80
+  mValue: 1.5
   powerCurve:
     serializedVersion: 2
     m_Curve: []
@@ -149,10 +137,36 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shock: 80
-  mValue: 1.5
-  _hitLimit: 1
-  penetration: 1
+  effectTime: 0
+  phyAtk: 0
+  holyAtk: 0
+  darkAtk: 0
+  fireAtk: 0
+  thunderAtk: 350
+  recoverAmount: 0
+  castTime: 0
+  useMP: 0
+  effects: {fileID: 8269646903969781328, guid: ded30f2e21296b94f94c3031c340a989, type: 3}
+  flashEffect: {fileID: 0}
+  hitEffect: {fileID: 0}
+  childM: {fileID: 0}
+  _usePrefab:
+  - prefab: {fileID: 8269646903969781343, guid: ded30f2e21296b94f94c3031c340a989,
+      type: 3}
+    preloadAmount: 2
+    preloadTime: 0
+    preloadFrames: 0
+    preloadDelay: 0
+    limitInstances: 0
+    limitAmount: 0
+    limitFIFO: 0
+    cullDespawned: 0
+    cullAbove: 0
+    cullDelay: 0
+    cullMaxPerPass: 0
+    _logMessages: 0
+    originalScal: {x: 0, y: 0, z: 0}
+    spawnPool: {fileID: 0}
   _moveSt:
     fireType: 4
     lifeTime: 0.5
@@ -167,39 +181,25 @@ MonoBehaviour:
     isRotate: 0
     bulletScaleV: {x: 0, y: 0}
     bulletScaleA: {x: 0, y: 0}
-  delayTime: 0
-  isChild: 1
-  isBlow: 1
-  cBlow: 0
   isChaice: 0
-  blowPower: {x: 190, y: 40}
   bulletNumber: 1
   VRandom: 0
   HRandom: 0
-  castEffect:
-    m_AssetGUID: 
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  castBreak:
-    m_AssetGUID: 
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  delayTime: 0
+  startRotation: {x: 0, y: 0, z: 0}
+  effectNow: 0
+  isChild: 1
+  penetration: 1
+  isBlow: 1
+  cBlow: 0
+  _hitLimit: 1
+  blowPower: {x: 190, y: 40}
   fireSound: LightningJetExplode
   moveSound: 
   existSound: 
   hitSound: 
   FireType: 0
   castType: 0
-  hitEffect:
-    m_AssetGUID: 
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  isHit: 0
-  attackType: 64
-  startRotation: {x: 0, y: 0, z: 0}
   sType: 0
   isExprode: 1
   isSlip: 0

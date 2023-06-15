@@ -64,25 +64,6 @@ public abstract class CharacterStatus : ScriptableObject
     //[HideInInspector] public float defBuff;防御力は直接加算
 
 
-    [Header("使用する音声")]
-    [SoundGroup]
-    ///<Summary>
-    ///　使用する音声のリスト。
-    ///　Status.useSound[i]という形でアニメイベントで指定
-    ///</Summary>
-    public List<string> useSound;
-    [Header("足音の音声")]
-    [SoundGroup]
-    ///<Summary>
-    ///　使用する音声
-    ///</Summary>
-    public string footStepSound;
 
-    [Header("歩く音声")]
-    [SoundGroup]
-    ///<Summary>
-    ///　使用する音声
-    ///</Summary>
-    public string walkSound;
 
 }

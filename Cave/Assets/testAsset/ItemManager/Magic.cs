@@ -9,8 +9,9 @@ using UnityEngine.AddressableAssets;
 
 public class Magic : Item
 {
-	//定義
-    #region
+
+
+    #region 定義
 
 	/// <summary>
 	/// 魔法のタイプ
@@ -135,8 +136,8 @@ public class Magic : Item
     #endregion
 
 
-	//内部情報
-    #region
+
+    #region 内部情報
     [Header("装備画面で選択できるか(子弾は無理)")]
 	public bool selectable = true;
 
@@ -239,8 +240,8 @@ public class Magic : Item
 
 
 
-    //エフェクト関連
-    #region
+    
+    #region エフェクト関連
 
     [Foldout("エフェクト関連")]
 	[Header("射撃オブジェクト")]
@@ -278,8 +279,7 @@ public class Magic : Item
     #endregion
 
 
-	//弾丸の動きについて
-    #region
+    #region 弾丸の動きについて
 
 
 	[Foldout("挙動設定")]
@@ -326,10 +326,9 @@ public class Magic : Item
 	///</Sammary>>
 	public Vector3 startRotation;
 
-#endregion
+	#endregion
 
-
-    [HideInInspector] public bool effectNow;//効果中かどうか
+	[HideInInspector] public bool effectNow;//効果中かどうか
 
 
     //弾丸の性質

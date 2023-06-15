@@ -69,6 +69,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             public AttackValue.MotionType type;
         }
 
+        [Serializable]
         public struct EffectAndSound
         {
             [Header("使用するエフェクト")]
@@ -114,6 +115,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// エフェクトのサイズ倍率
         /// </summary>
         public float sizeMultipler = 1;
+
+
+        [SerializeField]
+        Transform effectPosi;
 
         #endregion
 
@@ -168,14 +173,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="type"></param>
         public void EffectPrepare(AttackValue.AttackLevel level, int adType, Element element, AttackValue.MotionType type)
         {
+
             if (adType != 0)
             {
-                MyCode.SoundManager.instance.AdditionalEffect(adType,transform,sizeMultipler);
+                MyCode.SoundManager.instance.AdditionalEffect(adType,effectPosi,sizeMultipler);
             }
             //通常攻撃
+            _useData.level = level;
             if (level != AttackValue.AttackLevel.Special)
             {
-                _useData.level = level;
+                
                 _useData.adType = adType;
                 _useData.element = element;
                 _useData.type = type;
@@ -192,33 +199,46 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //通常攻撃
             if (_useData.level != AttackValue.AttackLevel.Special)
             {
-                MyCode.SoundManager.instance.GeneralAttack(transform,(int)_useData.level,(int)_useData.element,(int)_useData.type,sizeMultipler);
+                //音だけ
+                if (_useData.level == AttackValue.AttackLevel.SEOnly)
+                {
+                    MyCode.SoundManager.instance.GAttackS(effectPosi.position, (int)_useData.level, (int)_useData.element, (int)_useData.type, sizeMultipler);
+                }
+                //エフェクト付き
+                else
+                {
+                    MyCode.SoundManager.instance.GeneralAttack(effectPosi, (int)_useData.level, (int)_useData.element, (int)_useData.type, sizeMultipler);
+                }
             }
             else
             {
-                for (int i = 0;i < useList.Count;i++)
+                if (useList != null && useList.Any())
                 {
-                    if(useList[i].callNumber == num)
+                    for (int i = 0; i < useList.Count; i++)
                     {
-                        if(useList[i].sound != null)
+                        if (useList[i].callNumber == num)
                         {
-                            GManager.instance.PlaySound(useList[i].sound, transform.position);
-                        }
-                        if(useList[i].particle != null)
-                        {
-                            if (useList[i].isFollow)
+                            if (useList[i].sound != null)
                             {
-                                atPool.Spawn(useList[i].particle, transform.position, transform.rotation, transform);
+                                GManager.instance.PlaySound(useList[i].sound, effectPosi.position);
                             }
-                            else
+                            if (useList[i].particle != null)
                             {
-                                atPool.Spawn(useList[i].particle, transform.position, transform.rotation);
+                                if (useList[i].isFollow)
+                                {
+                                    atPool.Spawn(useList[i].particle, effectPosi.position, effectPosi.rotation, effectPosi);
+                                }
+                                else
+                                {
+                                    atPool.Spawn(useList[i].particle, effectPosi.position, effectPosi.rotation);
+                                }
                             }
+
                         }
 
                     }
-
                 }
+
 
             }
         }
@@ -238,12 +258,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         public void CastStart(AttackValue.AttackLevel level, Element element)
         {
-            castEffect = MyCode.SoundManager.instance.CastEfCall((int)level, element, transform);
+            castEffect = MyCode.SoundManager.instance.CastEfCall((int)level, element, effectPosi);
         }
 
         public void CastEnd(AttackValue.AttackLevel level, Element element)
         {
-            MyCode.SoundManager.instance.CastEfClear(castEffect,(int)level,element,transform);
+            MyCode.SoundManager.instance.CastEfClear(castEffect,(int)level,element);
             castEffect = null;
         }
 
@@ -283,7 +303,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="_newPrefab"></param>
         public void ATResorceReset(List<EffectAndSound> _newList,List<PrefabPool> _newPrefab)
         {
-            useList.Clear(); 
+            if (useList != null)
+            {
+                useList.Clear();
+            }
             
             if (_newList.Any())
             {
@@ -301,7 +324,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             for (int i = 0; i < _newPrefab.Count; i++)
             {
-                atPool.CreatePrefabPool(_newPrefab[i]);
+                atPool.CreatePrefabPool(atPool.ObjectSetting(_newPrefab[i]));
             }
         }
 
@@ -320,7 +343,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             for (int i = 0; i < _newPrefab.Count; i++)
             {
-                magicPool.CreatePrefabPool(_newPrefab[i]);
+                magicPool.CreatePrefabPool(magicPool.ObjectSetting(_newPrefab[i]));
             }
         }
 
