@@ -15,7 +15,7 @@ C:/Users/tatuk/Documents/SisterCave/Cave
 -logFile
 Logs/AssetImportWorker6.log
 -srvPort
-57889
+59212
 Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
 C:/Users/tatuk/Documents/SisterCave/Cave
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -47,11 +47,11 @@ C:/Users/tatuk/Documents/SisterCave/Cave
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [10172] Host "[IP] 192.168.0.9 [Port] 0 [Flags] 2 [Guid] 2717403490 [EditorId] 2717403490 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-TOOOMAN3) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [6956] Host "[IP] 192.168.0.9 [Port] 0 [Flags] 2 [Guid] 414663222 [EditorId] 414663222 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-TOOOMAN3) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
 
-Player connection [10172] Host "[IP] 192.168.0.9 [Port] 0 [Flags] 2 [Guid] 2717403490 [EditorId] 2717403490 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-TOOOMAN3) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [6956] Host "[IP] 192.168.0.9 [Port] 0 [Flags] 2 [Guid] 414663222 [EditorId] 414663222 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-TOOOMAN3) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
 
-Refreshing native plugins compatible for Editor in 313.65 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 335.95 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2021.3.25f1 (68ef2c4f8861)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/Resources/UnitySubsystems
@@ -75,82 +75,82 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56352
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56812
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
-Registered in 0.008818 seconds.
+Registered in 0.010871 seconds.
 Native extension for UWP target not found
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
-Refreshing native plugins compatible for Editor in 295.75 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 324.42 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.808 seconds
+- Completed reload, in  0.904 seconds
 Domain Reload Profiling:
-	ReloadAssembly (808ms)
-		BeginReloadAssembly (71ms)
+	ReloadAssembly (905ms)
+		BeginReloadAssembly (80ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (643ms)
-			LoadAssemblies (70ms)
+		EndReloadAssembly (720ms)
+			LoadAssemblies (78ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (100ms)
+			SetupTypeCache (107ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (27ms)
-			SetupLoadedEditorAssemblies (461ms)
+			RebuildScriptCaches (28ms)
+			SetupLoadedEditorAssemblies (518ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (15ms)
+				InitializePlatformSupportModulesInManaged (19ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (296ms)
+				RefreshPlugins (324ms)
 				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (107ms)
-				ProcessInitializeOnLoadMethodAttributes (43ms)
+				ProcessInitializeOnLoadAttributes (125ms)
+				ProcessInitializeOnLoadMethodAttributes (48ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.017203 seconds.
+Registered in 0.017848 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for UWP target not found
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
-Refreshing native plugins compatible for Editor in 313.93 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 359.61 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  4.835 seconds
+- Completed reload, in  5.214 seconds
 Domain Reload Profiling:
-	ReloadAssembly (4836ms)
-		BeginReloadAssembly (113ms)
+	ReloadAssembly (5215ms)
+		BeginReloadAssembly (129ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (5ms)
+			DisableScriptedObjects (6ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (17ms)
-		EndReloadAssembly (4595ms)
-			LoadAssemblies (114ms)
+			CreateAndSetChildDomain (21ms)
+		EndReloadAssembly (4952ms)
+			LoadAssemblies (135ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (500ms)
+			SetupTypeCache (553ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (150ms)
-			SetupLoadedEditorAssemblies (3780ms)
+			RebuildScriptCaches (178ms)
+			SetupLoadedEditorAssemblies (4041ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (13ms)
+				InitializePlatformSupportModulesInManaged (14ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (314ms)
-				BeforeProcessingInitializeOnLoad (140ms)
-				ProcessInitializeOnLoadAttributes (3193ms)
-				ProcessInitializeOnLoadMethodAttributes (111ms)
+				RefreshPlugins (360ms)
+				BeforeProcessingInitializeOnLoad (164ms)
+				ProcessInitializeOnLoadAttributes (3383ms)
+				ProcessInitializeOnLoadMethodAttributes (112ms)
 				AfterProcessingInitializeOnLoad (8ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
@@ -158,21 +158,175 @@ Domain Reload Profiling:
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
 Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
 Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
-Refreshing native plugins compatible for Editor in 4.44 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 3.81 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 9393 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 133 unused Assets / (4.2 MB). Loaded Objects now: 9917.
+Unloading 9394 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 132 unused Assets / (4.1 MB). Loaded Objects now: 9921.
 Memory consumption went from 0.52 GB to 0.52 GB.
-Total: 7.825800 ms (FindLiveObjects: 0.821800 ms CreateObjectMapping: 1.013600 ms MarkObjects: 4.954000 ms  DeleteObjects: 1.035400 ms)
+Total: 5.864000 ms (FindLiveObjects: 0.692000 ms CreateObjectMapping: 0.795100 ms MarkObjects: 3.545900 ms  DeleteObjects: 0.830400 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.015683 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 4.03 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+AllIn12DRenderer is missing RendererFeatures
+This could be due to missing scripts or compile error.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object,UnityEngine.Object)
+UnityEngine.Debug:LogError (object,UnityEngine.Object)
+UnityEngine.Rendering.Universal.ScriptableRendererData:ValidateRendererFeatures () (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs:185)
+UnityEngine.Rendering.Universal.ScriptableRendererData:OnValidate () (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs:80)
+
+(Filename: Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs Line: 185)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  3.887 seconds
+Domain Reload Profiling:
+	ReloadAssembly (3888ms)
+		BeginReloadAssembly (179ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (9ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (71ms)
+		EndReloadAssembly (3590ms)
+			LoadAssemblies (131ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (521ms)
+			ReleaseScriptCaches (3ms)
+			RebuildScriptCaches (73ms)
+			SetupLoadedEditorAssemblies (2754ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (14ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (4ms)
+				BeforeProcessingInitializeOnLoad (122ms)
+				ProcessInitializeOnLoadAttributes (2476ms)
+				ProcessInitializeOnLoadMethodAttributes (125ms)
+				AfterProcessingInitializeOnLoad (12ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (37ms)
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Refreshing native plugins compatible for Editor in 8.81 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8930 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 107 unused Assets / (3.9 MB). Loaded Objects now: 9935.
+Memory consumption went from 488.4 MB to 484.5 MB.
+Total: 5.570900 ms (FindLiveObjects: 0.670800 ms CreateObjectMapping: 0.713400 ms MarkObjects: 3.369500 ms  DeleteObjects: 0.816100 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.016080 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 6.09 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+AllIn12DRenderer is missing RendererFeatures
+This could be due to missing scripts or compile error.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object,UnityEngine.Object)
+UnityEngine.Debug:LogError (object,UnityEngine.Object)
+UnityEngine.Rendering.Universal.ScriptableRendererData:ValidateRendererFeatures () (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs:185)
+UnityEngine.Rendering.Universal.ScriptableRendererData:OnValidate () (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs:80)
+
+(Filename: Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs Line: 185)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  3.863 seconds
+Domain Reload Profiling:
+	ReloadAssembly (3864ms)
+		BeginReloadAssembly (177ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (7ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (67ms)
+		EndReloadAssembly (3558ms)
+			LoadAssemblies (133ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (508ms)
+			ReleaseScriptCaches (2ms)
+			RebuildScriptCaches (79ms)
+			SetupLoadedEditorAssemblies (2736ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (14ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (6ms)
+				BeforeProcessingInitializeOnLoad (119ms)
+				ProcessInitializeOnLoadAttributes (2466ms)
+				ProcessInitializeOnLoadMethodAttributes (120ms)
+				AfterProcessingInitializeOnLoad (9ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (37ms)
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Refreshing native plugins compatible for Editor in 10.23 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8930 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 106 unused Assets / (3.9 MB). Loaded Objects now: 9950.
+Memory consumption went from 488.4 MB to 484.6 MB.
+Total: 5.560400 ms (FindLiveObjects: 0.645100 ms CreateObjectMapping: 0.682100 ms MarkObjects: 3.339900 ms  DeleteObjects: 0.892500 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
@@ -187,26 +341,20 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 101410.497169 seconds.
-  path: Assets/testAsset/Player/PlayerStatus/Wepon/LongSword.asset
-  artifactKey: Guid(af72b4c4636be7b47a2e1957726ddcee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/testAsset/Player/PlayerStatus/Wepon/LongSword.asset using Guid(af72b4c4636be7b47a2e1957726ddcee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '571ef8ec6450a2cfd7155fd512e08ed0') in 0.287517 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 30.356950 seconds.
-  path: Assets/MagicArsenal/Effects/Materials/Missiles/Fire/FireRing.mat
-  artifactKey: Guid(7c707bedfbf7942459e20471e6f8d740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/MagicArsenal/Effects/Materials/Missiles/Fire/FireRing.mat using Guid(7c707bedfbf7942459e20471e6f8d740) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '99cb02a3d7418fc376080c186bde5a13') in 0.179692 seconds 
+  Time since last request: 11791.582348 seconds.
+  path: Assets/testAsset/Effects/Effect/SisterAction/WarpCircle.prefab
+  artifactKey: Guid(c859afd12a13c0f48924a87897050601) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Effects/Effect/SisterAction/WarpCircle.prefab using Guid(c859afd12a13c0f48924a87897050601) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5fd6b0bb997fecc596c1634850c61a25') in 0.241985 seconds 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.016271 seconds.
+Registered in 0.016379 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for UWP target not found
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
-Refreshing native plugins compatible for Editor in 6.00 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 3.91 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 AllIn12DRenderer is missing RendererFeatures
 This could be due to missing scripts or compile error.
@@ -220,48 +368,263 @@ UnityEngine.Rendering.Universal.ScriptableRendererData:OnValidate () (at Library
 (Filename: Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs Line: 185)
 
 Mono: successfully reloaded assembly
-- Completed reload, in  3.777 seconds
+- Completed reload, in  3.982 seconds
 Domain Reload Profiling:
-	ReloadAssembly (3778ms)
-		BeginReloadAssembly (184ms)
+	ReloadAssembly (3983ms)
+		BeginReloadAssembly (189ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (12ms)
+			DisableScriptedObjects (9ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (74ms)
-		EndReloadAssembly (3479ms)
+			CreateAndSetChildDomain (79ms)
+		EndReloadAssembly (3671ms)
 			LoadAssemblies (125ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (491ms)
+			SetupTypeCache (526ms)
 			ReleaseScriptCaches (2ms)
-			RebuildScriptCaches (69ms)
-			SetupLoadedEditorAssemblies (2648ms)
+			RebuildScriptCaches (79ms)
+			SetupLoadedEditorAssemblies (2793ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (17ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (6ms)
-				BeforeProcessingInitializeOnLoad (112ms)
-				ProcessInitializeOnLoadAttributes (2360ms)
-				ProcessInitializeOnLoadMethodAttributes (141ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (4ms)
+				BeforeProcessingInitializeOnLoad (114ms)
+				ProcessInitializeOnLoadAttributes (2520ms)
+				ProcessInitializeOnLoadMethodAttributes (127ms)
 				AfterProcessingInitializeOnLoad (11ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (47ms)
+			AwakeInstancesAfterBackupRestoration (52ms)
 Platform modules already initialized, skipping
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
 Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
-Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
-Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
 Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
 Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
-Refreshing native plugins compatible for Editor in 9.19 ms, found 5 plugins.
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Refreshing native plugins compatible for Editor in 9.63 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 8938 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 107 unused Assets / (3.9 MB). Loaded Objects now: 10018.
-Memory consumption went from 491.9 MB to 488.0 MB.
-Total: 5.863900 ms (FindLiveObjects: 0.696500 ms CreateObjectMapping: 0.770200 ms MarkObjects: 3.452900 ms  DeleteObjects: 0.943500 ms)
+Unloading 8937 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 106 unused Assets / (3.9 MB). Loaded Objects now: 10017.
+Memory consumption went from 491.7 MB to 487.8 MB.
+Total: 6.720000 ms (FindLiveObjects: 0.708400 ms CreateObjectMapping: 0.752500 ms MarkObjects: 4.267600 ms  DeleteObjects: 0.990500 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 44.561644 seconds.
+  path: Assets/testAsset/Effects/Effect/SisterAction/WarpCircle.prefab
+  artifactKey: Guid(c859afd12a13c0f48924a87897050601) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Effects/Effect/SisterAction/WarpCircle.prefab using Guid(c859afd12a13c0f48924a87897050601) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '78680bb25c88fbf9b66e8c359785327a') in 0.214719 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 40.441068 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Prefabs/Props/1WayPlatform3D.prefab
+  artifactKey: Guid(d235d887305d7944b9dd215173dc4f12) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Prefabs/Props/1WayPlatform3D.prefab using Guid(d235d887305d7944b9dd215173dc4f12) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8b4a6b99491e2a20d52230a9372f3626') in 0.424782 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMTools/Tools/MMAchievements/Prefabs/AchievementDisplay.prefab
+  artifactKey: Guid(bf6e65de4f70a4dcf99ceb68e999d287) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/ThirdParty/MoreMountains/MMTools/Tools/MMAchievements/Prefabs/AchievementDisplay.prefab using Guid(bf6e65de4f70a4dcf99ceb68e999d287) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'af8d496b551a09c514ad3758e97610b9') in 0.013653 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000073 seconds.
+  path: Assets/AnyPortrait/Editor/Images/Anim_PlayBarHead.png
+  artifactKey: Guid(99b0f970493779a4abfdb4d78c3cf19d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Editor/Images/Anim_PlayBarHead.png using Guid(99b0f970493779a4abfdb4d78c3cf19d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '787dde5452ba5dbe09163b6dc1f39269') in 0.046325 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.041031 seconds.
+  path: Assets/Rewired/Documentation/Html/files/images/controlmapper_inspector_player-options.png
+  artifactKey: Guid(37a7a4d4500c9484e8ad50ae0f8cad90) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Documentation/Html/files/images/controlmapper_inspector_player-options.png using Guid(37a7a4d4500c9484e8ad50ae0f8cad90) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f0dfa333e171eaf656c747bf5766f1e') in 0.036720 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Ferr/2DTerrain/Examples/Assets/GooPlayer.prefab
+  artifactKey: Guid(5341b97540614344baa449dd89da06ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ferr/2DTerrain/Examples/Assets/GooPlayer.prefab using Guid(5341b97540614344baa449dd89da06ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fc5b77ce0d381fa8ad3a7903445f455c') in 0.070962 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/ProCamera2D/Examples/TopDownShooter/Materials/Player.mat
+  artifactKey: Guid(14b7e71a903b74a098bd198681671e11) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ProCamera2D/Examples/TopDownShooter/Materials/Player.mat using Guid(14b7e71a903b74a098bd198681671e11) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9544f3e4370aeb4f5eda8fb61a42eabf') in 0.032280 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/2D Rope System/Audio/Player-jump2.wav
+  artifactKey: Guid(fc55d077383484ac0ad66aa17fcd746f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Rope System/Audio/Player-jump2.wav using Guid(fc55d077383484ac0ad66aa17fcd746f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b4943e656c0d4897a4a14dce7be3b91e') in 0.048189 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/testAsset/Player/Prefab/Player.prefab
+  artifactKey: Guid(31cad7b75aca0a244975c871dce8ffeb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/Prefab/Player.prefab using Guid(31cad7b75aca0a244975c871dce8ffeb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f45d516d20683af7bd04343674a9663b') in 0.241274 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Rewired/Internal/Data/Controllers/HardwareMaps/Joysticks/GoogleNexusPlayerGamepad.asset
+  artifactKey: Guid(0b6c51a2bf6a17248be8a58431acf8a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Internal/Data/Controllers/HardwareMaps/Joysticks/GoogleNexusPlayerGamepad.asset using Guid(0b6c51a2bf6a17248be8a58431acf8a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8cc3d24c7417dea370c91847a8366041') in 0.036473 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/CorgiEngine/Demos/LevelSelection/Sprites/level-map-minimal-4players.png
+  artifactKey: Guid(97a175a81807a764d89b4926ecc91faf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/LevelSelection/Sprites/level-map-minimal-4players.png using Guid(97a175a81807a764d89b4926ecc91faf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4a9d3a86d682ae43e033df11c1a04cba') in 0.031088 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Shared/Prefabs/Player.prefab
+  artifactKey: Guid(6fcc382533eeddd4cb59b9e20acca545) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Shared/Prefabs/Player.prefab using Guid(6fcc382533eeddd4cb59b9e20acca545) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '953e5bad4ecfdcf62d5927f778c3f721') in 0.471883 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/2D Rope System/Audio/Player-jump3.wav
+  artifactKey: Guid(dafa1cc4eb8714341a7c595abfba35d8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Rope System/Audio/Player-jump3.wav using Guid(dafa1cc4eb8714341a7c595abfba35d8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3a2fe8c4711ef251dba37d72d53489b0') in 0.014996 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/2D Rope System/Prefabs/player.prefab
+  artifactKey: Guid(339b8cf267693ae4fa826744ebdb85ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/2D Rope System/Prefabs/player.prefab using Guid(339b8cf267693ae4fa826744ebdb85ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '232648778b7c038e1ea0804cbef0922e') in 0.063679 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 6.750725 seconds.
+  path: Assets/testAsset/Player/PlayerAnime
+  artifactKey: Guid(b517ef33810c5f84ab8eeb32a3b6105f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime using Guid(b517ef33810c5f84ab8eeb32a3b6105f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '66842c952e280fbfc5143a47d907cd88') in 0.007315 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 3.015252 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime
+  artifactKey: Guid(2526f604ab86b064f81b41a44a1c94fc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime using Guid(2526f604ab86b064f81b41a44a1c94fc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dfbc38cf479a3eff7c5c77189b70a37e') in 0.006940 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 2.640000 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/PlayerBaseClip
+  artifactKey: Guid(bbb79439c277cc54e94846f8c8fc1073) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/PlayerBaseClip using Guid(bbb79439c277cc54e94846f8c8fc1073) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3599272b987d27da88b1078907a5f3fa') in 0.011030 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.840452 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/PlayerBaseClip/AdditionalAction
+  artifactKey: Guid(3a29ddbb6f3460f41997854a4acb2663) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/PlayerBaseClip/AdditionalAction using Guid(3a29ddbb6f3460f41997854a4acb2663) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '876ac3b05f7b4fd7169422777058fe53') in 0.009826 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 2.065841 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/PlayerBaseClip/AttackAnime
+  artifactKey: Guid(93ef00fda41ebd84685eec54acd8d5ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/PlayerBaseClip/AttackAnime using Guid(93ef00fda41ebd84685eec54acd8d5ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '704d336640b402af336ee23f1dc36fab') in 0.007423 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 3.777602 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/AnimationController
+  artifactKey: Guid(e03cc65afecf7114e93848f28cb51014) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/AnimationController using Guid(e03cc65afecf7114e93848f28cb51014) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3a5d3283bac62619b3a5db6537fa2111') in 0.007907 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.065556 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/AnimationController/Test.overrideController
+  artifactKey: Guid(02093cf5a372a854bb0e17eb2aaf36e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/AnimationController/Test.overrideController using Guid(02093cf5a372a854bb0e17eb2aaf36e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd54a8acecf7d1ebffc803565e38963da') in 0.134714 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.319756 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/AnimationController/LongSword.controller
+  artifactKey: Guid(d8f95866c996df149b096a0c658c22f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/AnimationController/LongSword.controller using Guid(d8f95866c996df149b096a0c658c22f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3e141fcccd5ec4f6b6e189461ede3282') in 0.230791 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.673223 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/AnimationController/PlayerMoveBase.controller
+  artifactKey: Guid(f80cc58c8fbb67f4e9acabe22dc9fa83) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/AnimationController/PlayerMoveBase.controller using Guid(f80cc58c8fbb67f4e9acabe22dc9fa83) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '20bffd5360b32d93415898ed79e896af') in 0.017282 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.015796 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 3.91 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+AllIn12DRenderer is missing RendererFeatures
+This could be due to missing scripts or compile error.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object,UnityEngine.Object)
+UnityEngine.Debug:LogError (object,UnityEngine.Object)
+UnityEngine.Rendering.Universal.ScriptableRendererData:ValidateRendererFeatures () (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs:185)
+UnityEngine.Rendering.Universal.ScriptableRendererData:OnValidate () (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs:80)
+
+(Filename: Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs Line: 185)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  3.925 seconds
+Domain Reload Profiling:
+	ReloadAssembly (3926ms)
+		BeginReloadAssembly (192ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (13ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (74ms)
+		EndReloadAssembly (3617ms)
+			LoadAssemblies (137ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (502ms)
+			ReleaseScriptCaches (2ms)
+			RebuildScriptCaches (74ms)
+			SetupLoadedEditorAssemblies (2769ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (14ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (4ms)
+				BeforeProcessingInitializeOnLoad (109ms)
+				ProcessInitializeOnLoadAttributes (2500ms)
+				ProcessInitializeOnLoadMethodAttributes (129ms)
+				AfterProcessingInitializeOnLoad (12ms)
+				EditorAssembliesLoaded (1ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (44ms)
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Refreshing native plugins compatible for Editor in 9.43 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8937 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 106 unused Assets / (3.8 MB). Loaded Objects now: 10118.
+Memory consumption went from 492.6 MB to 488.7 MB.
+Total: 5.971600 ms (FindLiveObjects: 0.681200 ms CreateObjectMapping: 0.735200 ms MarkObjects: 3.658600 ms  DeleteObjects: 0.895800 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 

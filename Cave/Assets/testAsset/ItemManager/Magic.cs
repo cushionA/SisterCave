@@ -326,7 +326,7 @@ public class Magic : Item
 	///</Sammary>>
 	public Vector3 startRotation;
 
-	#endregion
+#endregion
 
 	[HideInInspector] public bool effectNow;//効果中かどうか
 

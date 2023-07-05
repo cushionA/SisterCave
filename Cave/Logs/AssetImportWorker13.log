@@ -1,0 +1,611 @@
+Using pre-set license
+Built from '2021.3/staging' branch; Version is '2021.3.25f1 (68ef2c4f8861) revision 6876972'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'ja' Physical Memory: 16222 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2021.3.25f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker13
+-projectPath
+C:/Users/tatuk/Documents/SisterCave/Cave
+-logFile
+Logs/AssetImportWorker13.log
+-srvPort
+59212
+Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
+C:/Users/tatuk/Documents/SisterCave/Cave
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [10788] Host "[IP] 192.168.0.9 [Port] 0 [Flags] 2 [Guid] 591264677 [EditorId] 591264677 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-TOOOMAN3) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+
+Player connection [10788] Host "[IP] 192.168.0.9 [Port] 0 [Flags] 2 [Guid] 591264677 [EditorId] 591264677 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-TOOOMAN3) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+
+Refreshing native plugins compatible for Editor in 341.57 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.3.25f1 (68ef2c4f8861)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/tatuk/Documents/SisterCave/Cave/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2070 Super (ID=0x1ed1)
+    Vendor:   NVIDIA
+    VRAM:     8003 MB
+    Driver:   31.0.15.2656
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56756
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
+Registered in 0.010933 seconds.
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 341.76 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.944 seconds
+Domain Reload Profiling:
+	ReloadAssembly (945ms)
+		BeginReloadAssembly (82ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (747ms)
+			LoadAssemblies (84ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (114ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (27ms)
+			SetupLoadedEditorAssemblies (537ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (17ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (342ms)
+				BeforeProcessingInitializeOnLoad (1ms)
+				ProcessInitializeOnLoadAttributes (127ms)
+				ProcessInitializeOnLoadMethodAttributes (50ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.017945 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 361.21 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  5.360 seconds
+Domain Reload Profiling:
+	ReloadAssembly (5361ms)
+		BeginReloadAssembly (111ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (18ms)
+		EndReloadAssembly (5098ms)
+			LoadAssemblies (151ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (611ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (177ms)
+			SetupLoadedEditorAssemblies (4102ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (12ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (361ms)
+				BeforeProcessingInitializeOnLoad (170ms)
+				ProcessInitializeOnLoadAttributes (3435ms)
+				ProcessInitializeOnLoadMethodAttributes (110ms)
+				AfterProcessingInitializeOnLoad (13ms)
+				EditorAssembliesLoaded (1ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
+Refreshing native plugins compatible for Editor in 6.85 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 9394 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 132 unused Assets / (4.1 MB). Loaded Objects now: 9921.
+Memory consumption went from 0.52 GB to 0.52 GB.
+Total: 5.967100 ms (FindLiveObjects: 0.714600 ms CreateObjectMapping: 0.861900 ms MarkObjects: 3.499700 ms  DeleteObjects: 0.889900 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 12942.333176 seconds.
+  path: Assets/Rewired/Internal/Data/Controllers/HardwareMaps/Joysticks/ThrustmasterScoreA.asset
+  artifactKey: Guid(a651c1f2b3c166240955b7d410965076) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Rewired/Internal/Data/Controllers/HardwareMaps/Joysticks/ThrustmasterScoreA.asset using Guid(a651c1f2b3c166240955b7d410965076) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '64df9f09a77216ccb3fa08518eb5856e') in 0.070155 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/AnyPortrait/Demo/PirateGame/PirateGame_Score3.png
+  artifactKey: Guid(57162fff0c147c144b37999e83932b5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Demo/PirateGame/PirateGame_Score3.png using Guid(57162fff0c147c144b37999e83932b5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '43b37a293647e8d1a1db45955ca65a43') in 0.109271 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/AnyPortrait/Demo/PirateGame/PirateGame_Score6.png
+  artifactKey: Guid(2c5d1ad645814fe40b8668a430ece76d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Demo/PirateGame/PirateGame_Score6.png using Guid(2c5d1ad645814fe40b8668a430ece76d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f88691e17badc8abb1d48490673453ff') in 0.054354 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/testAsset/Enemy/EnemyAnime/ScorpionKight/Sprite/SideScorpionKnight.psb
+  artifactKey: Guid(612e5edbf1e28934cbb9eaedbdb4f5b2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Enemy/EnemyAnime/ScorpionKight/Sprite/SideScorpionKnight.psb using Guid(612e5edbf1e28934cbb9eaedbdb4f5b2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '943389e7cbd0e537faadc25cf8a10f0c') in 0.410475 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/AnyPortrait/Demo/PirateGame/PirateGame_Score1.png
+  artifactKey: Guid(e6222d700b261384095cd21473ea23b2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Demo/PirateGame/PirateGame_Score1.png using Guid(e6222d700b261384095cd21473ea23b2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3ea29dc335d3831e3ea0805582f86bd6') in 0.020827 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/testAsset/Enemy/EnemyPrefab/Knight/TestScorpionKight .prefab
+  artifactKey: Guid(02a8c377c414f034aaf8424ca8f69d70) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Enemy/EnemyPrefab/Knight/TestScorpionKight .prefab using Guid(02a8c377c414f034aaf8424ca8f69d70) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2af0bdd9ba77e025cd1be519e40d6fc2') in 1.376306 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.015555 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 4.05 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+AllIn12DRenderer is missing RendererFeatures
+This could be due to missing scripts or compile error.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object,UnityEngine.Object)
+UnityEngine.Debug:LogError (object,UnityEngine.Object)
+UnityEngine.Rendering.Universal.ScriptableRendererData:ValidateRendererFeatures () (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs:185)
+UnityEngine.Rendering.Universal.ScriptableRendererData:OnValidate () (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs:80)
+
+(Filename: Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs Line: 185)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  3.914 seconds
+Domain Reload Profiling:
+	ReloadAssembly (3915ms)
+		BeginReloadAssembly (235ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (10ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (102ms)
+		EndReloadAssembly (3533ms)
+			LoadAssemblies (160ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (539ms)
+			ReleaseScriptCaches (2ms)
+			RebuildScriptCaches (82ms)
+			SetupLoadedEditorAssemblies (2640ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (16ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (4ms)
+				BeforeProcessingInitializeOnLoad (115ms)
+				ProcessInitializeOnLoadAttributes (2362ms)
+				ProcessInitializeOnLoadMethodAttributes (133ms)
+				AfterProcessingInitializeOnLoad (10ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (42ms)
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Refreshing native plugins compatible for Editor in 11.63 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8937 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 106 unused Assets / (3.8 MB). Loaded Objects now: 10077.
+Memory consumption went from 492.0 MB to 488.2 MB.
+Total: 6.093000 ms (FindLiveObjects: 0.687900 ms CreateObjectMapping: 0.736400 ms MarkObjects: 3.724000 ms  DeleteObjects: 0.943700 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 124.415138 seconds.
+  path: Assets/MagicArsenal/Effects/Prefabs/Walls/Straight Wall/ArcaneWall.prefab
+  artifactKey: Guid(3e131aa0e7d8b43429a09642f5d0bbaf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MagicArsenal/Effects/Prefabs/Walls/Straight Wall/ArcaneWall.prefab using Guid(3e131aa0e7d8b43429a09642f5d0bbaf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2b4f479cd4e519751f62406cb4627367') in 0.292895 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/MagicArsenal/Effects/Textures/lightning_new_bolt.png
+  artifactKey: Guid(f0873378ad619d84dbaf1e997133a893) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MagicArsenal/Effects/Textures/lightning_new_bolt.png using Guid(f0873378ad619d84dbaf1e997133a893) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd28ce744d701e56711bdebb48cc2e8c5') in 0.026537 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/testAsset/Effects/Material/Materials 1/Missiles/Lightning/LightningArcNew.mat
+  artifactKey: Guid(036b5aed088d84d48afb4acab1c1650c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Effects/Material/Materials 1/Missiles/Lightning/LightningArcNew.mat using Guid(036b5aed088d84d48afb4acab1c1650c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1f03a829843e1bab2881aa40a7542d9f') in 0.038676 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/AnyPortrait/Editor/Images/ProSkin/Modifier_AddNewMod.png
+  artifactKey: Guid(4701621f69fc04c4ba3a77d950d7d16a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Editor/Images/ProSkin/Modifier_AddNewMod.png using Guid(4701621f69fc04c4ba3a77d950d7d16a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f34b22118429aa313fbedf7c0a5b4197') in 0.017621 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Hit.fbx
+  artifactKey: Guid(14f4b1a391cb57442ac7e11f94add395) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Hit.fbx using Guid(14f4b1a391cb57442ac7e11f94add395) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '79a20c0ec1f74d9cf31390f5781561b4') in 0.028904 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@CrouchedIdle.fbx
+  artifactKey: Guid(07c86412e66f3884ba87bec4bf7880a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@CrouchedIdle.fbx using Guid(07c86412e66f3884ba87bec4bf7880a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'defd7ca84c9a203852f0dc3b34918406') in 0.377116 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/MagicArsenal/Effects/Materials/Missiles/Lightning/LightningArcNew2.mat
+  artifactKey: Guid(93e6cd69ae7a0e746b7cd725e132df75) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MagicArsenal/Effects/Materials/Missiles/Lightning/LightningArcNew2.mat using Guid(93e6cd69ae7a0e746b7cd725e132df75) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2bfbea4d2a456d28a3da749382eb8f17') in 0.028953 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/testAsset/Effects/Material/Materials 1/Modular/lightning_new_arcs_2x2(Modular).mat
+  artifactKey: Guid(2c0b025696ad7c546abf305250924353) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Effects/Material/Materials 1/Modular/lightning_new_arcs_2x2(Modular).mat using Guid(2c0b025696ad7c546abf305250924353) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '052c1039682a4de736d8f411af2c39a1') in 0.020135 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/RainMaker/Demo/New Terrain.asset
+  artifactKey: Guid(ad080ee1067846b4fae6efc824b8cfbc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RainMaker/Demo/New Terrain.asset using Guid(ad080ee1067846b4fae6efc824b8cfbc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '535ed23c70bdc0b87e3db58bcc44afb6') in 0.097352 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000039 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@CrouchedWalking.fbx
+  artifactKey: Guid(e298460755bc9c645a9a61f805608aee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@CrouchedWalking.fbx using Guid(e298460755bc9c645a9a61f805608aee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '72116c4adc10b5788460caa700bb0def') in 0.018748 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/testAsset/Effects/Material/Materials 1/Modular/lightning_new_glow2(Modular).mat
+  artifactKey: Guid(3b1d3e436092edf40a51c949c56477d7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Effects/Material/Materials 1/Modular/lightning_new_glow2(Modular).mat using Guid(3b1d3e436092edf40a51c949c56477d7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5ce5e7314f9a6f3eb921114907139eca') in 0.028589 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/testAsset/Effects/Material/Materials 1/Modular/lightning_new_glow(Modular).mat
+  artifactKey: Guid(00e1929bd7435dc45aab921fbdd74bdf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Effects/Material/Materials 1/Modular/lightning_new_glow(Modular).mat using Guid(00e1929bd7435dc45aab921fbdd74bdf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3cbc25427c136b8353ba0ed545596b75') in 0.017514 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/AnyPortrait/Editor/Images/Modifier_AddNewMod.png
+  artifactKey: Guid(5984be8ad684329449f4f245547fdd46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Editor/Images/Modifier_AddNewMod.png using Guid(5984be8ad684329449f4f245547fdd46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd3995035b512caa9cfbdfa61f4069794') in 0.017639 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/testAsset/Effects/Material/Materials 1/Modular/lightning_new_bolt(Modular).mat
+  artifactKey: Guid(51764a000e852564186edbdbcb48996d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Effects/Material/Materials 1/Modular/lightning_new_bolt(Modular).mat using Guid(51764a000e852564186edbdbcb48996d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '03ce38077792c08f3bf822523beec397') in 0.019962 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/MagicArsenal/Effects/Materials/Modular/lightning_new_arc(Modular).mat
+  artifactKey: Guid(df489825dda9f514d8fe0bf1b181b8db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MagicArsenal/Effects/Materials/Modular/lightning_new_arc(Modular).mat using Guid(df489825dda9f514d8fe0bf1b181b8db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e1b937def5ec85c0d828f6bdd1e5ffa9') in 0.019853 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@ClimbingLadderIdle.fbx
+  artifactKey: Guid(4d0b7e3faf91b73419b57c4b0746feea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@ClimbingLadderIdle.fbx using Guid(4d0b7e3faf91b73419b57c4b0746feea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7f7174b86d7019707b444d6b144c7b4a') in 0.012320 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/AnyPortrait/Editor/Images/HierarchyIcon_MakeNewPortrait.png
+  artifactKey: Guid(0867861452e38b040a697876c19d3724) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/AnyPortrait/Editor/Images/HierarchyIcon_MakeNewPortrait.png using Guid(0867861452e38b040a697876c19d3724) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0fa14f093b0cacc5421c052897ddec91') in 0.019512 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@HangingIdle.fbx
+  artifactKey: Guid(a1fc2badc06385e42b97412d2c23e4dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@HangingIdle.fbx using Guid(a1fc2badc06385e42b97412d2c23e4dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '24eefacfb36088a675148ec6e0d312b5') in 0.013911 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/MagicArsenal/Effects/Materials/Modular/lightning_new_arcs_2x2(Modular).mat
+  artifactKey: Guid(5762132fb29d14d4e9347bf410f1489f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MagicArsenal/Effects/Materials/Modular/lightning_new_arcs_2x2(Modular).mat using Guid(5762132fb29d14d4e9347bf410f1489f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '872b3e31a9896ffbafbddc01081c5749') in 0.019493 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Death.fbx
+  artifactKey: Guid(f1711d9cea0c22d46987e05a4308acb2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Death.fbx using Guid(f1711d9cea0c22d46987e05a4308acb2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bd03cfa894678dd8f8c4ab3de418e7d4') in 0.014986 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/MagicArsenal/Effects/Materials/Missiles/Lightning/LightningArcNew.mat
+  artifactKey: Guid(98e162a01c5c0314f9a25dbd535f32e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MagicArsenal/Effects/Materials/Missiles/Lightning/LightningArcNew.mat using Guid(98e162a01c5c0314f9a25dbd535f32e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'db349b238a912d86bcb29a3edac5f9d9') in 0.019536 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/MagicArsenal/Effects/Materials/Modular/lightning_new_glow2(Modular).mat
+  artifactKey: Guid(55e3417e34d166e48b1842d8e7459e53) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MagicArsenal/Effects/Materials/Modular/lightning_new_glow2(Modular).mat using Guid(55e3417e34d166e48b1842d8e7459e53) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '00cdaaa74e1ae238a22fc65c3edd35eb') in 0.020379 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 7.673910 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Idle.fbx
+  artifactKey: Guid(c0d05ce750935d145b12ecdfd7af5220) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Idle.fbx using Guid(c0d05ce750935d145b12ecdfd7af5220) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7c152dfef1dfb4b7f147ab0d7a0afbaf') in 0.012836 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Land.fbx
+  artifactKey: Guid(4a669769dc91f544ab106051980ae967) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Land.fbx using Guid(4a669769dc91f544ab106051980ae967) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '59bfde3ccb3ed60c4585642a638b997f') in 0.013916 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000035 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@LookShoulder.fbx
+  artifactKey: Guid(fc2ed0e2f6e67d8449c20e98ace0d441) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@LookShoulder.fbx using Guid(fc2ed0e2f6e67d8449c20e98ace0d441) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'acb095c63addc845bcaf9a57e7b3336a') in 0.013636 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.646189 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Running.fbx
+  artifactKey: Guid(df02f74aac203b1429bd17a0e3459831) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Running.fbx using Guid(df02f74aac203b1429bd17a0e3459831) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '896295f17c8d011fc80993c6ef051dde') in 0.015915 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000043 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Wobbling.fbx
+  artifactKey: Guid(4974940b80a78584f9f5d1d1fbfe3923) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Wobbling.fbx using Guid(4974940b80a78584f9f5d1d1fbfe3923) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8def8e999e0c99a9566b87226962fffd') in 0.013111 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000037 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Walking.fbx
+  artifactKey: Guid(7c2dc12c214fd704085970f6171070fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi3D/Models/NewCorgi3D/NewCorgi@Walking.fbx using Guid(7c2dc12c214fd704085970f6171070fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '185093e404eb217f8a667d291619e114') in 0.010486 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/CorgiEngine/Demos/Minimal/Prefabs/MovingPlatforms/OneWayMovingPlatform.prefab
+  artifactKey: Guid(de14462abe6298a4d8abf57c78e3050e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Minimal/Prefabs/MovingPlatforms/OneWayMovingPlatform.prefab using Guid(de14462abe6298a4d8abf57c78e3050e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a3384b1e1fe5d3a5e21f6f5fe21b421c') in 0.027002 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/CorgiEngine/Demos/Corgi2D/Prefabs/Environment/Props/OneWayPlatform.prefab
+  artifactKey: Guid(1728643822bf69f40be89249196b150d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Corgi2D/Prefabs/Environment/Props/OneWayPlatform.prefab using Guid(1728643822bf69f40be89249196b150d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6548577978de211aa12bb120f1d354fd') in 0.018619 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/CorgiEngine/Demos/Minimal/Prefabs/OneWayPlatforms/OneWayPlatform300x25.prefab
+  artifactKey: Guid(212f46edd9183c240bd2e021d387f6a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Minimal/Prefabs/OneWayPlatforms/OneWayPlatform300x25.prefab using Guid(212f46edd9183c240bd2e021d387f6a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2dab3e879f0d526c78f29fb3759bfa00') in 0.019074 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000046 seconds.
+  path: Assets/CorgiEngine/Demos/Minimal/Prefabs/OneWayPlatforms/OneWayPlatform500x25.prefab
+  artifactKey: Guid(34b1c539aa10dbf46aebfc829037d0c3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/CorgiEngine/Demos/Minimal/Prefabs/OneWayPlatforms/OneWayPlatform500x25.prefab using Guid(34b1c539aa10dbf46aebfc829037d0c3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '55f056526a9247455066982cd1c83425') in 0.046616 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/testAsset/Enemy/EnemyPrefab/Soldir/NewNIdiot.prefab
+  artifactKey: Guid(9fee4d18ab9b05a498045b7e345dded2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Enemy/EnemyPrefab/Soldir/NewNIdiot.prefab using Guid(9fee4d18ab9b05a498045b7e345dded2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3ba619c4155bfbd048472da1c00789be') in 0.136057 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/12 - Demo Isometric/Resources/Sprites/stoneWallArchway_E.png
+  artifactKey: Guid(3c94e476d360f704a8be3d33b19fbfc0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/12 - Demo Isometric/Resources/Sprites/stoneWallArchway_E.png using Guid(3c94e476d360f704a8be3d33b19fbfc0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4703affe49f44761072ebf05bfe8be5e') in 0.049456 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/ARPG Effects/Materials/Loot/runeword05.mat
+  artifactKey: Guid(f89f27c87d23bef42a40baf8a9797200) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ARPG Effects/Materials/Loot/runeword05.mat using Guid(f89f27c87d23bef42a40baf8a9797200) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd9987b8e766206a9b6049961cbf7f356') in 0.027535 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/ARPG Effects/Textures/runeword02.png
+  artifactKey: Guid(a6b4bfbdbc0ab3a42bdaffa3d594d984) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ARPG Effects/Textures/runeword02.png using Guid(a6b4bfbdbc0ab3a42bdaffa3d594d984) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '64fbab1ac51ae7c8ab742d9721bc7274') in 0.017060 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/ARPG Effects/Materials/Loot/runeword03.mat
+  artifactKey: Guid(815176d121108164b97ce8cc31e0f4ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ARPG Effects/Materials/Loot/runeword03.mat using Guid(815176d121108164b97ce8cc31e0f4ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a67ebfa90066a618583df892172b81af') in 0.074137 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/ARPG Effects/Textures/runeword03.png
+  artifactKey: Guid(ba792042e66b8c047a9b391c5af19191) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ARPG Effects/Textures/runeword03.png using Guid(ba792042e66b8c047a9b391c5af19191) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '95d439e298704b3cd0ac8b8fb92abcb3') in 0.016290 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/12 - Demo Isometric/Resources/Sprites/stoneWallWindow_W.png
+  artifactKey: Guid(63c424ec7f0a5344eb6aeefc2b390794) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/12 - Demo Isometric/Resources/Sprites/stoneWallWindow_W.png using Guid(63c424ec7f0a5344eb6aeefc2b390794) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '16779d245440b42f8fc18cfdb5427f1b') in 0.036751 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.015858 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 4.74 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+AllIn12DRenderer is missing RendererFeatures
+This could be due to missing scripts or compile error.
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object,UnityEngine.Object)
+UnityEngine.Debug:LogError (object,UnityEngine.Object)
+UnityEngine.Rendering.Universal.ScriptableRendererData:ValidateRendererFeatures () (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs:185)
+UnityEngine.Rendering.Universal.ScriptableRendererData:OnValidate () (at Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs:80)
+
+(Filename: Library/PackageCache/com.unity.render-pipelines.universal@12.1.11/Runtime/ScriptableRendererData.cs Line: 185)
+
+Mono: successfully reloaded assembly
+- Completed reload, in  3.917 seconds
+Domain Reload Profiling:
+	ReloadAssembly (3918ms)
+		BeginReloadAssembly (188ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (9ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (76ms)
+		EndReloadAssembly (3601ms)
+			LoadAssemblies (127ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (497ms)
+			ReleaseScriptCaches (3ms)
+			RebuildScriptCaches (84ms)
+			SetupLoadedEditorAssemblies (2741ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (15ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (5ms)
+				BeforeProcessingInitializeOnLoad (114ms)
+				ProcessInitializeOnLoadAttributes (2478ms)
+				ProcessInitializeOnLoadMethodAttributes (121ms)
+				AfterProcessingInitializeOnLoad (8ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (46ms)
+Platform modules already initialized, skipping
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Refreshing native plugins compatible for Editor in 10.57 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8937 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 106 unused Assets / (3.8 MB). Loaded Objects now: 10168.
+Memory consumption went from 492.5 MB to 488.7 MB.
+Total: 6.020000 ms (FindLiveObjects: 0.772600 ms CreateObjectMapping: 0.780300 ms MarkObjects: 3.527300 ms  DeleteObjects: 0.938400 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 

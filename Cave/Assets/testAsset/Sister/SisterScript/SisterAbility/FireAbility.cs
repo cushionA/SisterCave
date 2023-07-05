@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using MoreMountains.Tools;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -96,9 +97,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		int bCount;
 		float recoverTime;
 
-		List<GameObject> targetCanList;
-		List<EnemyAIBase> targetCanStatus;
-		List<SisMagic> magicCanList;
+		List<int> targetCanList;
+
+		List<int> magicCanList;
 
 
 
@@ -914,6 +915,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// <param name="condition"></param>
 		public GameObject TargetSelect(AttackJudge condition, FireCondition act)
 		{
+
+			//最初にリストをクリア
+			targetCanList.Clear();
+
 			//Debug.Log($"判断番号{judgeSequence}");
 			//		bool testes = false;
 			//	targetJudge = 0;
@@ -934,9 +939,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						return null;
 					}
-					targetCanList = new List<GameObject>(SManager.instance.targetList);
-					targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-					return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+
+					//9999は全ての意
+					targetCanList.Add(9999);
+
+					return SecondTargetJudge(condition);
 
 				//-----------------------------------------------------------------------------------------------------
 				case AttackJudge.TargetJudge.プレイヤーのHPが規定値に達した際:
@@ -955,15 +962,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							{
 								return null;
 							}
-							targetCanList = new List<GameObject>(SManager.instance.targetList);
-							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+
+							//9999は全ての意
+							targetCanList.Add(9999);
+
+							return SecondTargetJudge(condition);
 						}
 					}
 					else
 					{
-						//		Debug.Log($"あああ{sb.pc.HPRatio()}と{condition.percentage / 100}");
-						//Debug.Log($"あああ{condition.percentage / 100f}");
+
 						if (sb.pc.HPRatio() <= condition.percentage / 100f)
 						{
 
@@ -980,9 +988,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 								return null;
 							}
 
-							targetCanList = new List<GameObject>(SManager.instance.targetList);
-							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+							//9999は全ての意
+							targetCanList.Add(9999);
+
+							return SecondTargetJudge(condition);
 						}
 					}
 					break;
@@ -1003,9 +1012,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							{
 								return null;
 							}
-							targetCanList = new List<GameObject>(SManager.instance.targetList);
-							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+							//9999は全ての意
+							targetCanList.Add(9999);
+
+							return SecondTargetJudge(condition);
 						}
 					}
 					else
@@ -1024,25 +1034,29 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 								return null;
 							}
 
-							targetCanList = new List<GameObject>(SManager.instance.targetList);
-							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+							//9999は全ての意
+							targetCanList.Add(9999);
+
+							return SecondTargetJudge(condition);
 						}
 					}
 					break;
 				//-----------------------------------------------------------------------------------------------------
 				case AttackJudge.TargetJudge.プレイヤーが状態異常にかかった時://未実装
 															  //	ランダムバリュー使ってレコードから指定
-					targetCanList = new List<GameObject>(SManager.instance.targetList);
-					targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-					return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+
+					//9999は全ての意
+					targetCanList.Add(9999);
+
+					return SecondTargetJudge(condition);
 					
 				//-----------------------------------------------------------------------------------------------------
 				case AttackJudge.TargetJudge.状態異常にかかってる敵://未実装
 														 //	ランダムバリュー使ってレコードから指定
-					targetCanList = new List<GameObject>(SManager.instance.targetList);
-					targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-					return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+
+					//9999は全ての意
+					targetCanList.Add(9999);
+					return SecondTargetJudge(condition);
 					
 				//-----------------------------------------------------------------------------------------------------
 				case AttackJudge.TargetJudge.自分のMPが規定値に達した際:
@@ -1060,9 +1074,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							{
 								return null;
 							}
-							targetCanList = new List<GameObject>(SManager.instance.targetList);
-							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+
+							//9999は全ての意
+							targetCanList.Add(9999);
+							return SecondTargetJudge(condition);
 						}
 					}
 					else
@@ -1080,17 +1095,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							{
 								return null;
 							}
-							targetCanList = new List<GameObject>(SManager.instance.targetList);
-							targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
-							return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+
+							//9999は全ての意
+							targetCanList.Add(9999);
+							return SecondTargetJudge(condition);
 						}
 					}
 					break;
 				//-----------------------------------------------------------------------------------------------------
 				case AttackJudge.TargetJudge.強敵の存在:
 					//強敵を優先
-					targetCanList = new List<GameObject>();
-					targetCanStatus = new List<EnemyAIBase>();
+					
+					
 					if (condition.highOrLow)
 					{
 						for (int i = 0; i < SManager.instance.targetList.Count; i++)
@@ -1107,9 +1123,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 								{
 									return null;
 								}
-								targetCanList.Add(SManager.instance.targetList[i]);
+								targetCanList.Add(i);
 								//break;
-								targetCanStatus.Add(SManager.instance.targetCondition[i]);
+								
 							}
 						}
 					}
@@ -1130,13 +1146,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 								{
 									return null;
 								}
-								targetCanList.Add(SManager.instance.targetList[i]);
+								targetCanList.Add(i);
 								//break;
-								targetCanStatus.Add(SManager.instance.targetCondition[i]);
+								
 							}
 						}
 					}
-					return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+					return SecondTargetJudge(condition);
 					//ここに二次処理三次処理をCanListを引数に開始
 
 				
@@ -1144,8 +1160,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				case AttackJudge.TargetJudge.敵タイプ:
 					//   Soldier,//陸の雑兵
 
-					targetCanList = new List<GameObject>();
-					targetCanStatus = new List<EnemyAIBase>();
+
+					
 
 					//選ぶ敵タイプがすべてと選択されてるなら
 					if (condition.percentage == 0b00011111)
@@ -1161,11 +1177,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							return null;
 						}
-						targetCanList = new List<GameObject>(SManager.instance.targetList);
-						targetCanStatus = new List<EnemyAIBase>(SManager.instance.targetCondition);
 
 
-						return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+						//9999は全ての意
+						targetCanList.Add(9999);
+
+						return SecondTargetJudge(condition);
 						//break;
 					}
 					else
@@ -1191,8 +1208,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 									{
 										return null;
 									}
-									targetCanList.Add(SManager.instance.targetList[i]);
-									targetCanStatus.Add(SManager.instance.targetCondition[i]);
+									targetCanList.Add(i);
+									
 									continue;
 								}
 							}
@@ -1212,8 +1229,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 									{
 										return null;
 									}
-									targetCanList.Add(SManager.instance.targetList[i]);
-									targetCanStatus.Add(SManager.instance.targetCondition[i]);
+									targetCanList.Add(i);
+									
 									continue;
 								}
 							}
@@ -1233,8 +1250,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 									}
 									//	siroko++;
 									//		Debug.Log($"今の数字{siroko}");
-									targetCanList.Add(SManager.instance.targetList[i]);
-									targetCanStatus.Add(SManager.instance.targetCondition[i]);
+									targetCanList.Add(i);
+									
 									continue;
 								}
 							}
@@ -1254,8 +1271,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 									}
 									//	siroko++;
 									//		Debug.Log($"今の数字{siroko}");
-									targetCanList.Add(SManager.instance.targetList[i]);
-									targetCanStatus.Add(SManager.instance.targetCondition[i]);
+									targetCanList.Add(i);
+									
 									continue;
 								}
 							}
@@ -1273,13 +1290,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 									{
 										return null;
 									}
-									targetCanList.Add(SManager.instance.targetList[i]);
-									targetCanStatus.Add(SManager.instance.targetCondition[i]);
+									targetCanList.Add(i);
+									
 									continue;
 								}
 							}
 						}
-						return SecondTargetJudge(targetCanList, condition, targetCanStatus);
+						return SecondTargetJudge(condition);
 					}
 
 					
@@ -1298,103 +1315,103 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 			if (condition.UseMagic == null)
 			{
-
+				magicCanList.Clear();
 				switch (condition.condition)
 				{
 					case FireCondition.ActJudge.斬撃属性:
 
-						magicCanList = new List<SisMagic>();
+						
 						for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 						{
 							if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].magicElement == AtEffectCon.Element.slash)
 							{
-								magicCanList.Add(SManager.instance.attackMagi[i]);
+								magicCanList.Add(i);
 								break;
 							}
 						}
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.刺突属性:
-						magicCanList = new List<SisMagic>();
+						
 						for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 						{
 							if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].magicElement == AtEffectCon.Element.stab)
 							{
-								magicCanList.Add(SManager.instance.attackMagi[i]);
+								magicCanList.Add(i);
 								break;
 							}
 						}
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.打撃属性:
-						magicCanList = new List<SisMagic>();
+						
 						for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 						{
 							if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].magicElement == AtEffectCon.Element.strike)
 							{
-								magicCanList.Add(SManager.instance.attackMagi[i]);
+								magicCanList.Add(i);
 								break;
 							}
 						}
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.聖属性:
-						magicCanList = new List<SisMagic>();
+						
 						for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 						{
 							if (SManager.instance.attackMagi[i].holyBase > 0)
 							{
-								magicCanList.Add(SManager.instance.attackMagi[i]);
+								magicCanList.Add(i);
 								break;
 							}
 						}
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.闇属性:
-						magicCanList = new List<SisMagic>();
+						
 						for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 						{
 							if (SManager.instance.attackMagi[i].darkBase > 0)
 							{
-								magicCanList.Add(SManager.instance.attackMagi[i]);
+								magicCanList.Add(i);
 								break;
 							}
 						}
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.炎属性:
 
-						magicCanList = new List<SisMagic>();
+						
 						for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 						{
 							if (SManager.instance.attackMagi[i].fireBase > 0)
 							{
-								magicCanList.Add(SManager.instance.attackMagi[i]);
+								magicCanList.Add(i);
 								break;
 							}
 						}
 						//Debug.Log($"asgd{magicCanList[0].name}");
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.雷属性:
 						//Debug.Log($"ssssss");
-						magicCanList = new List<SisMagic>();
+						
 						for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
 						{
 							if (SManager.instance.attackMagi[i].thunderBase > 0)
 							{
 								//		Debug.Log($"第二段階{SManager.instance.attackMagi[i].name}");
-								magicCanList.Add(SManager.instance.attackMagi[i]);
+								magicCanList.Add(i);
 								break;
 							}
 						}
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.毒属性:
@@ -1402,18 +1419,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (SManager.instance.attackMagi[i].thunderBase >= 0)
 							{
-								magicCanList.Add(SManager.instance.attackMagi[i]);
+								magicCanList.Add(i);
 								break;
 							}
 						}
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.属性指定なし:
 
-						magicCanList = new List<SisMagic>(SManager.instance.attackMagi);
+						magicCanList.Add(9999);
 
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.移動速度低下攻撃://未実装
@@ -1421,11 +1438,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (SManager.instance.attackMagi[i].thunderBase >= 0)
 							{
-								magicCanList.Add(SManager.instance.attackMagi[i]);
+								magicCanList.Add(i);
 								break;
 							}
 						}
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.攻撃力低下攻撃://未実装
@@ -1433,11 +1450,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (SManager.instance.attackMagi[i].thunderBase >= 0)
 							{
-								magicCanList.Add(SManager.instance.attackMagi[i]);
+								magicCanList.Add(i);
 								break;
 							}
 						}
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 					//-----------------------------------------------------------------------------------------------------
 					case FireCondition.ActJudge.防御力低下攻撃://未実装
@@ -1445,11 +1462,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (SManager.instance.attackMagi[i].thunderBase >= 0)
 							{
-								magicCanList.Add(SManager.instance.attackMagi[i]);
+								magicCanList.Add(i);
 								break;
 							}
 						}
-						secondATMagicJudge(magicCanList, condition);
+						secondATMagicJudge( condition);
 						break;
 				}
 			}
@@ -1614,7 +1631,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						if (!SManager.instance.supportMagi[i].effectNow && SManager.instance.supportMagi[i].sType == condition.needSupport)
 						{
-							magicCanList.Add(SManager.instance.supportMagi[i]);
+							magicCanList.Add(i);
 						}
 					}
 					return magicCanList != null ? true : false;
@@ -1629,65 +1646,41 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		public void SupportAct(SupportCondition condition)
 		{
-			if (sister.nowMove != SisterParameter.MoveType.支援)
+			if (sister.nowMove != SisterParameter.MoveType.支援 || !SManager.instance.supportMagi.Any() || condition.ActBase == SupportCondition.MagicJudge.なにもしない)
 			{
 				return;
-
-
-			}
-			List<SisMagic> candidate;
-			List<int> removeNumber = new List<int>();
-			if (magicCanList != null)
-			{
-				candidate = magicCanList;
-			}
-			else
-			{
-				candidate = new List<SisMagic>(SManager.instance.supportMagi);
 			}
 
+			
 
-			if (condition.UseMagic != null)
+			if (condition.UseMagic == null)
 			{
+				magicCanList.Clear();
 
-				if (condition.ActBase == SupportCondition.MagicJudge.なにもしない)
+				if (condition.ActBase == SupportCondition.MagicJudge.回復ステートに)
 				{
-					magicCanList = null;
-
-				}
-				//-----------------------------------------------------------------------------------------------------
-				else if (condition.ActBase == SupportCondition.MagicJudge.回復ステートに)
-				{
-					magicCanList = null;
 					SupportStateChange(condition.ActBase);
 				}
 				else if (condition.ActBase == SupportCondition.MagicJudge.攻撃ステートに)
 				{
-					magicCanList = null;
 					SupportStateChange(condition.ActBase);
 
 				}
 				else if (condition.ActBase == SupportCondition.MagicJudge.各種支援魔法)
 				{
 
-					for (int i = 0; i < candidate.Count; i++)
+					for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
 					{
-						if (candidate[i].sType != condition.useSupport)
+						//使用したい支援のタイプにそぐうなら
+						if (SManager.instance.supportMagi[i].sType == condition.useSupport)
 						{
-							removeNumber.Add(i);
+							magicCanList.Add(i);
 						}
 					}
 				}
 
-				if (removeNumber.Count != 0)
-				{
-					for (int i = 0; i < removeNumber.Count; i++)
-					{
-						candidate.Remove(candidate[removeNumber[i] - i]);
-						//targetCanStatus.Remove(statusList[removeNumber[i] - i]);
-					}
-				}
-				if (candidate.Count == 0)
+
+				if (SManager.instance.supportMagi.Count == 0)
 				{
 					return;
 				}
@@ -1695,9 +1688,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				{
 					if (condition.nextCondition == SupportCondition.AdditionalJudge.指定なし)
 					{
-						SManager.instance.useMagic = candidate[0];
-						condition.UseMagic = candidate[0];
-						magicCanList = null;
+						SManager.instance.useMagic = SManager.instance.supportMagi[magicCanList[0]];
+						condition.UseMagic = SManager.instance.supportMagi[magicCanList[0]];
+						magicCanList.Clear();
 					}
 					else
 					{
@@ -1706,22 +1699,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (condition.upDown)
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].useMP > candidate[selectNumber].useMP)
+									if (selectNumber == 150 || SManager.instance.supportMagi[magicCanList[i]].useMP > SManager.instance.supportMagi[selectNumber].useMP)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 
 								}
 							}
 							else
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].useMP < candidate[selectNumber].useMP)
+									if (selectNumber == 150 ||  SManager.instance.supportMagi[magicCanList[i]].useMP < SManager.instance.supportMagi[selectNumber].useMP)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 								}
 							}
@@ -1730,22 +1723,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (condition.upDown)
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].castTime > candidate[selectNumber].castTime)
+									if (selectNumber == 150 ||  SManager.instance.supportMagi[magicCanList[i]].castTime > SManager.instance.supportMagi[selectNumber].castTime)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 
 								}
 							}
 							else
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].castTime < candidate[selectNumber].castTime)
+									if (selectNumber == 150 ||  SManager.instance.supportMagi[magicCanList[i]].castTime < SManager.instance.supportMagi[selectNumber].castTime)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 								}
 							}
@@ -1754,22 +1747,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (condition.upDown)
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].effectTime > candidate[selectNumber].effectTime)
+									if (selectNumber == 150 ||  SManager.instance.supportMagi[magicCanList[i]].effectTime > SManager.instance.supportMagi[selectNumber].effectTime)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 
 								}
 							}
 							else
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].effectTime < candidate[selectNumber].effectTime)
+									if (selectNumber == 150 ||  SManager.instance.supportMagi[magicCanList[i]].effectTime < SManager.instance.supportMagi[selectNumber].effectTime)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 								}
 							}
@@ -1778,27 +1771,27 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (condition.upDown)
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].mValue > candidate[selectNumber].mValue)
+									if (selectNumber == 150 ||  SManager.instance.supportMagi[magicCanList[i]].mValue > SManager.instance.supportMagi[selectNumber].mValue)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 
 								}
 							}
 							else
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].mValue < candidate[selectNumber].mValue)
+									if (selectNumber == 150 ||  SManager.instance.supportMagi[magicCanList[i]].mValue < SManager.instance.supportMagi[selectNumber].mValue)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 								}
 							}
 						}
-						SManager.instance.useMagic = candidate[selectNumber];
+						SManager.instance.useMagic = SManager.instance.supportMagi[selectNumber];
 
 					}
 				}
@@ -1973,70 +1966,59 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 
 
-			if (sister.nowMove != SisterParameter.MoveType.回復 && sb.nowState == BrainAbility.SisterState.戦い)
+			if (sister.nowMove != SisterParameter.MoveType.回復 && sb.nowState == BrainAbility.SisterState.戦い || condition.ActBase == RecoverCondition.MagicJudge.なにもしない)
 			{
 				//	judgeSequence = 0;
-				return;
-			}
-			if (condition.ActBase == RecoverCondition.MagicJudge.なにもしない)
-			{
-				magicCanList = null;
 				return;
 			}
 			//-----------------------------------------------------------------------------------------------------
 			else if (condition.ActBase == RecoverCondition.MagicJudge.支援ステートに)
 			{
-				magicCanList = null;
 				RecoverStateChange(condition.ActBase);
 				return;
 			}
 			else if (condition.ActBase == RecoverCondition.MagicJudge.攻撃ステートに)
 			{
-				magicCanList = null;
 				RecoverStateChange(condition.ActBase);
 				return;
 			}
 
-			List<SisMagic> candidate = new List<SisMagic>(SManager.instance.recoverMagi);
-			List<int> removeNumber = new List<int>();
 
 
 			if (condition.UseMagic == null)
 			{
+				magicCanList.Clear();
 
-				if (condition.useSupport != SisMagic.SupportType.なし)
-				{
-					for (int i = 0; i < candidate.Count; i++)
-					{
-						if (candidate[i].sType != condition.useSupport)
-						{
-							removeNumber.Add(i);
-							//Debug.Log($"調べます{candidate[i].name}");
-						}
-					}
-				}
-				if (removeNumber.Count != 0)
-				{
-					for (int i = 0; i < removeNumber.Count; i++)
-					{
-						candidate.Remove(candidate[removeNumber[i] - i]);
-						//targetCanStatus.Remove(statusList[removeNumber[i] - i]);
-					}
-				}
-				if (candidate.Count == 0)
+
+				if (SManager.instance.recoverMagi.Count == 0)
 				{
 					
 					SManager.instance.useMagic = null;
 					return;
 				}
-				else
+
+				if (condition.useSupport != SisMagic.SupportType.なし)
+				{
+					for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
+					{
+						//指定する特殊効果があるなら
+						if (SManager.instance.recoverMagi[i].sType == condition.useSupport)
+						{
+							magicCanList.Add(i);
+							//Debug.Log($"調べます{SManager.instance.recoverMagi[i].name}");
+						}
+					}
+				}
+
+
+				if(!magicCanList.Any())
 				{
 					if (condition.nextCondition == RecoverCondition.AdditionalJudge.指定なし)
 					{
-						SManager.instance.useMagic = candidate[0];
+						SManager.instance.useMagic = SManager.instance.recoverMagi[magicCanList[0]];
 
-						condition.UseMagic = candidate[0];
-						magicCanList = null;
+						condition.UseMagic = SManager.instance.recoverMagi[magicCanList[0]];
+						magicCanList.Clear();
 
 					}
 					else
@@ -2046,22 +2028,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (condition.upDown)
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].useMP > candidate[selectNumber].useMP)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[magicCanList[i]]].useMP > SManager.instance.recoverMagi[selectNumber].useMP)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 
 								}
 							}
 							else
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].useMP < candidate[selectNumber].useMP)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].useMP < SManager.instance.recoverMagi[selectNumber].useMP)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 								}
 							}
@@ -2070,22 +2052,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (condition.upDown)
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].castTime > candidate[selectNumber].castTime)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[magicCanList[i]]].castTime > SManager.instance.recoverMagi[selectNumber].castTime)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 
 								}
 							}
 							else
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].castTime < candidate[selectNumber].castTime)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].castTime < SManager.instance.recoverMagi[selectNumber].castTime)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 								}
 							}
@@ -2094,22 +2076,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (condition.upDown)
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].regeneAmount > candidate[selectNumber].regeneAmount)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].regeneAmount > SManager.instance.recoverMagi[selectNumber].regeneAmount)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 
 								}
 							}
 							else
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].regeneAmount < candidate[selectNumber].regeneAmount)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].regeneAmount < SManager.instance.recoverMagi[selectNumber].regeneAmount)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 								}
 							}
@@ -2118,22 +2100,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (condition.upDown)
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].regeneAmount * candidate[i].effectTime > candidate[selectNumber].regeneAmount * candidate[selectNumber].effectTime)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].regeneAmount * SManager.instance.recoverMagi[magicCanList[i]].effectTime > SManager.instance.recoverMagi[selectNumber].regeneAmount * SManager.instance.recoverMagi[selectNumber].effectTime)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 
 								}
 							}
 							else
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].regeneAmount * candidate[i].effectTime < candidate[selectNumber].regeneAmount * candidate[selectNumber].effectTime)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].regeneAmount * SManager.instance.recoverMagi[magicCanList[i]].effectTime < SManager.instance.recoverMagi[selectNumber].regeneAmount * SManager.instance.recoverMagi[selectNumber].effectTime)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 								}
 							}
@@ -2142,22 +2124,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (condition.upDown)
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].effectTime > candidate[selectNumber].effectTime)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].effectTime > SManager.instance.recoverMagi[selectNumber].effectTime)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 
 								}
 							}
 							else
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].effectTime < candidate[selectNumber].effectTime)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].effectTime < SManager.instance.recoverMagi[selectNumber].effectTime)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 								}
 							}
@@ -2166,47 +2148,48 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							if (condition.upDown)
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].recoverBase > candidate[selectNumber].recoverBase)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].recoverBase > SManager.instance.recoverMagi[selectNumber].recoverBase)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 
 								}
 							}
 							else
 							{
-								for (int i = 0; i < candidate.Count; i++)
+								for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 								{
-									if (selectNumber == 150 || candidate[i].recoverBase < candidate[selectNumber].recoverBase)
+									if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].recoverBase < SManager.instance.recoverMagi[selectNumber].recoverBase)
 									{
-										selectNumber = i;
+										selectNumber = magicCanList[i];
 									}
 								}
 							}
 						}
 						else if (condition.nextCondition == RecoverCondition.AdditionalJudge.状態異常回復)
 						{
-							for (int i = 0; i < candidate.Count; i++)
+							for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
 							{
-								if (selectNumber == 150 || candidate[i].cureCondition)
+								if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].cureCondition)
 								{
-									selectNumber = i;
+									selectNumber = magicCanList[i];
 									break;
 								}
 
 							}
 
 						}
-						SManager.instance.useMagic = candidate[selectNumber];
-						condition.UseMagic = candidate[selectNumber];
+						SManager.instance.useMagic = SManager.instance.recoverMagi[selectNumber];
+						condition.UseMagic = SManager.instance.recoverMagi[selectNumber];
 					}
 				}
 			}
 			else
 			{
 				SManager.instance.useMagic = condition.UseMagic;
+				magicCanList.Clear();
 			}
 
 			SManager.instance.target = GManager.instance.Player;
@@ -2233,23 +2216,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		/// <param name="targetList"></param>
 		/// <param name="condition"></param>
-		/// <param name="statusList"></param>
-		GameObject SecondTargetJudge(List<GameObject> targetList, AttackJudge condition, List<EnemyAIBase> statusList)
+		/// <param name="SManager.instance.targetCondition"></param>
+		GameObject SecondTargetJudge(AttackJudge condition)
 		{
 
 			//	Debug.Log($"sddf{targetCanList[0].name}");
 			//	Debug.Log($"sdgs{targetList[0].name}");
 
 
-			if (targetList.Count == 0 || targetList == null)
+			if (targetCanList.Count == 0 || targetCanList == null)
 			{
-				targetCanList = null;
-				targetCanStatus = null;
 				return null;
 			}
-			else if (targetList.Count >= 1)
+			else if (targetCanList.Count >= 1)
 			{
-				List<int> removeNumber = new List<int>();
 
 				if (condition.wp != AttackJudge.WeakPoint.指定なし)
 				{
@@ -2257,113 +2237,95 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					///属性判断
 					/// </Summary>
 					#region
-					if (condition.wp != AttackJudge.WeakPoint.斬撃属性)
-					{
-						for (int i = 0; i < targetList.Count; i++)
-						{
-							if (!statusList[i].status.wp.Contains(EnemyStatus.WeakPoint.Slash))
-							{
-								removeNumber.Add(i);
-							}
-						}
 
-					}
-					else if (condition.wp != AttackJudge.WeakPoint.刺突属性)
+					if ((int)condition.wp < 4)
 					{
-						for (int i = 0; i < targetList.Count; i++)
+						if (condition.wp != AttackJudge.WeakPoint.斬撃属性)
 						{
-							if (!statusList[i].status.wp.Contains(EnemyStatus.WeakPoint.Stab))
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								removeNumber.Add(i);
+								if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Slash))
+								{
+									targetCanList.Remove(targetCanList[i]);
+								}
 							}
-						}
 
-					}
-					else if (condition.wp != AttackJudge.WeakPoint.打撃属性)
-					{
-						for (int i = 0; i < targetList.Count; i++)
+						}
+						else if (condition.wp != AttackJudge.WeakPoint.刺突属性)
 						{
-							if (!statusList[i].status.wp.Contains(EnemyStatus.WeakPoint.Strike))
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								removeNumber.Add(i);
+								if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Stab))
+								{
+									targetCanList.Remove(targetCanList[i]);
+								}
+							}
+
+						}
+						else if (condition.wp != AttackJudge.WeakPoint.打撃属性)
+						{
+							for (int i = 0; i < targetCanList.Count; i++)
+							{
+								if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Strike))
+								{
+									targetCanList.Remove(targetCanList[i]);
+								}
 							}
 						}
 					}
-					else if (condition.wp != AttackJudge.WeakPoint.打撃属性)
+
+					else
 					{
-						for (int i = 0; i < targetList.Count; i++)
+						if (condition.wp != AttackJudge.WeakPoint.炎属性)
 						{
-							if (!statusList[i].status.wp.Contains(EnemyStatus.WeakPoint.Strike))
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								removeNumber.Add(i);
+								if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Fire))
+								{
+									targetCanList.Remove(targetCanList[i]);
+								}
+							}
+						}
+						else if (condition.wp != AttackJudge.WeakPoint.雷属性)
+						{
+							for (int i = 0; i < targetCanList.Count; i++)
+							{
+								if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Thunder))
+								{
+									targetCanList.Remove(targetCanList[i]);
+								}
+							}
+						}
+						else if (condition.wp != AttackJudge.WeakPoint.聖属性)
+						{
+							for (int i = 0; i < targetCanList.Count; i++)
+							{
+								if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Holy))
+								{
+									targetCanList.Remove(targetCanList[i]);
+								}
+							}
+						}
+						else if (condition.wp != AttackJudge.WeakPoint.闇属性)
+						{
+							for (int i = 0; i < targetCanList.Count; i++)
+							{
+								if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Dark))
+								{
+									targetCanList.Remove(targetCanList[i]);
+								}
 							}
 						}
 					}
-					else if (condition.wp != AttackJudge.WeakPoint.炎属性)
-					{
-						for (int i = 0; i < targetList.Count; i++)
-						{
-							if (!statusList[i].status.wp.Contains(EnemyStatus.WeakPoint.Fire))
-							{
-								removeNumber.Add(i);
-							}
-						}
-					}
-					else if (condition.wp != AttackJudge.WeakPoint.雷属性)
-					{
-						for (int i = 0; i < targetList.Count; i++)
-						{
-							if (!statusList[i].status.wp.Contains(EnemyStatus.WeakPoint.Thunder))
-							{
-								removeNumber.Add(i);
-							}
-						}
-					}
-					else if (condition.wp != AttackJudge.WeakPoint.聖属性)
-					{
-						for (int i = 0; i < targetList.Count; i++)
-						{
-							if (!statusList[i].status.wp.Contains(EnemyStatus.WeakPoint.Holy))
-							{
-								removeNumber.Add(i);
-							}
-						}
-					}
-					else if (condition.wp != AttackJudge.WeakPoint.闇属性)
-					{
-						for (int i = 0; i < targetList.Count; i++)
-						{
-							if (!statusList[i].status.wp.Contains(EnemyStatus.WeakPoint.Dark))
-							{
-								removeNumber.Add(i);
-							}
-						}
-					}
-					else if (condition.wp != AttackJudge.WeakPoint.毒属性)
-					{
-						for (int i = 0; i < targetList.Count; i++)
-						{
-							if (!statusList[i].status.wp.Contains(EnemyStatus.WeakPoint.Poison))
-							{
-								removeNumber.Add(i);
-							}
-						}
-					}
-					for (int i = 0; i < removeNumber.Count; i++)
-					{
-						//[removeNumber[i] - i]はこれまで配列の中から消した分を差し引いて指定してる
-						//i=2なら少なくとも二個の要素が消えてるのでその分インデックスが変わる
-						targetList.Remove(targetList[removeNumber[i] - i]);
-						statusList.Remove(statusList[removeNumber[i] - i]);
-					}
-					removeNumber = null;
+
+
 					#endregion
 
 				}
 
 			}
 
-			if (targetList.Count == 0 || targetList == null)
+			if (targetCanList.Count == 0 || targetCanList == null)
 			{
 				
 				return null;
@@ -2382,21 +2344,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						if (condition.upDown)
 						{
-							for (int i = 0; i < targetList.Count; i++)
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || statusList[i]._health.CurrentHealth > statusList[selectNumber]._health.CurrentHealth)
+								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]]._health.CurrentHealth > SManager.instance.targetCondition[selectNumber]._health.CurrentHealth)
 								{
-									selectNumber = i;
+									selectNumber = targetCanList[i];
 								}
 							}
 						}
 						else
 						{
-							for (int i = 0; i < targetList.Count; i++)
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || statusList[i]._health.CurrentHealth < statusList[selectNumber]._health.CurrentHealth)
+								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]]._health.CurrentHealth < SManager.instance.targetCondition[selectNumber]._health.CurrentHealth)
 								{
-									selectNumber = i;
+									selectNumber = targetCanList[i];
 								}
 							}
 						}
@@ -2405,21 +2367,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						if (condition.upDown)
 						{
-							for (int i = 0; i < targetList.Count; i++)
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || statusList[i].status.atkDisplay > statusList[selectNumber].status.atkDisplay)
+								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status.atkDisplay > SManager.instance.targetCondition[selectNumber].status.atkDisplay)
 								{
-									selectNumber = i;
+									selectNumber = targetCanList[i];
 								}
 							}
 						}
 						else
 						{
-							for (int i = 0; i < targetList.Count; i++)
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || statusList[i].status.atkDisplay < statusList[selectNumber].status.atkDisplay)
+								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status.atkDisplay < SManager.instance.targetCondition[selectNumber].status.atkDisplay)
 								{
-									selectNumber = i;
+									selectNumber = targetCanList[i];
 								}
 							}
 						}
@@ -2428,21 +2390,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						if (condition.upDown)
 						{
-							for (int i = 0; i < targetList.Count; i++)
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || statusList[i].status.defDisplay > statusList[selectNumber].status.defDisplay)
+								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status.defDisplay > SManager.instance.targetCondition[selectNumber].status.defDisplay)
 								{
-									selectNumber = i;
+									selectNumber = targetCanList[i];
 								}
 							}
 						}
 						else
 						{
-							for (int i = 0; i < targetList.Count; i++)
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || statusList[i].status.defDisplay < statusList[selectNumber].status.defDisplay)
+								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status.defDisplay < SManager.instance.targetCondition[selectNumber].status.defDisplay)
 								{
-									selectNumber = i;
+									selectNumber = targetCanList[i];
 								}
 							}
 						}
@@ -2451,21 +2413,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						if (condition.upDown)
 						{
-							for (int i = 0; i < targetList.Count; i++)
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || targetList[i].transform.position.y > targetList[selectNumber].transform.position.y)
+								if (selectNumber == 150 || SManager.instance.targetList[targetCanList[i]].transform.position.y > SManager.instance.targetList[selectNumber].transform.position.y)
 								{
-									selectNumber = i;
+									selectNumber = targetCanList[i];
 								}
 							}
 						}
 						else
 						{
-							for (int i = 0; i < targetList.Count; i++)
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || targetList[i].transform.position.y < targetList[selectNumber].transform.position.y)
+								if (selectNumber == 150 || SManager.instance.targetList[targetCanList[i]].transform.position.y < SManager.instance.targetList[selectNumber].transform.position.y)
 								{
-									selectNumber = i;
+									selectNumber = targetCanList[i];
 								}
 							}
 						}
@@ -2476,46 +2438,42 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						if (condition.upDown)
 						{
 							//近い
-							for (int i = 0; i < targetList.Count; i++)
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || Mathf.Abs(targetList[i].transform.position.x - this.gameObject.transform.position.x) < distance)
+								if (selectNumber == 150 || Mathf.Abs( SManager.instance.targetList[targetCanList[i]].transform.position.x - this.gameObject.transform.position.x) < distance)
 								{
-									selectNumber = i;
-									distance = Mathf.Abs(targetList[i].transform.position.x - this.gameObject.transform.position.x);
+									selectNumber = targetCanList[i];
+									distance = Mathf.Abs(SManager.instance.targetList[targetCanList[i]].transform.position.x - this.gameObject.transform.position.x);
 								}
 							}
 						}
 						else
 						{
 							//遠い
-							for (int i = 0; i < targetList.Count; i++)
+							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || Mathf.Abs(targetList[i].transform.position.x - this.gameObject.transform.position.x) > distance)
+								if (selectNumber == 150 || Mathf.Abs(SManager.instance.targetList[targetCanList[i]].transform.position.x - this.gameObject.transform.position.x) > distance)
 								{
-									selectNumber = i;
-									distance = Mathf.Abs(targetList[i].transform.position.x - this.gameObject.transform.position.x);
+									selectNumber = targetCanList[i];
+									distance = Mathf.Abs(SManager.instance.targetList[targetCanList[i]].transform.position.x - this.gameObject.transform.position.x);
 								}
 							}
 						}
 					}
-					targetCanList = null;
-					targetCanStatus = null;
 
 					if (SManager.instance.target != null)
 					{
-						targetList[selectNumber].MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(2);
+						SManager.instance.targetCondition[selectNumber].TargetEffectCon(2);
 					}
-					return targetList[selectNumber];
+					return SManager.instance.targetList[selectNumber];
 				}
 				else
 				{
 					if (SManager.instance.target != null)
 					{
-						targetList[0].MMGetComponentNoAlloc<EnemyAIBase>().TargetEffectCon(2);
+						SManager.instance.targetCondition[0].TargetEffectCon(2);
 					}
-					targetCanList = null;
-					targetCanStatus = null;
-					return targetList[0];
+					return SManager.instance.targetList[0];
 				}
 
 			}
@@ -2526,10 +2484,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// 
 		/// </summary>
 		/// <param name="magicList"></param>
-		void secondATMagicJudge(List<SisMagic> magicList, FireCondition condition)
+		void secondATMagicJudge(FireCondition condition)
 		{
 			//	Debug.Log($"初期状態{magicList[0].name}");
-			if (magicList.Count == 0)
+			if (magicCanList.Count == 0)
 			{
 				return;
 			}
@@ -2539,107 +2497,102 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				//第一条件
 				if (condition.firstCondition != FireCondition.FirstCondition.指定なし)
 				{
-					List<int> removeNumber = new List<int>();
+
 					if (condition.firstCondition == FireCondition.FirstCondition.敵を吹き飛ばす)
 					{
-						for (int i = 0; i < magicList.Count; i++)
+						for (int i = 0; i < magicCanList.Count; i++)
 						{
-							if (!magicList[i].isBlow && !magicList[i].cBlow)
+							if (! SManager.instance.attackMagi[magicCanList[i]].isBlow && !SManager.instance.attackMagi[magicCanList[i]].cBlow)
 							{
 								//Debug.Log("削除");
-								removeNumber.Add(i);
+								magicCanList.Remove(magicCanList[i]);
 							}
 						}
 					}
 					//-----------------------------------------------------------------------------------------------------
 					else if (condition.firstCondition == FireCondition.FirstCondition.範囲攻撃)
 					{
-						for (int i = 0; i < magicList.Count; i++)
+						for (int i = 0; i < magicCanList.Count; i++)
 						{
-							if (!magicList[i].isExprode)
+							if (!SManager.instance.attackMagi[magicCanList[i]].isExprode)
 							{
-								removeNumber.Add(i);
+								magicCanList.Remove(magicCanList[i]);
 							}
 						}
 						//break;
 					}
 					else if (condition.firstCondition == FireCondition.FirstCondition.貫通する)
 					{
-						for (int i = 0; i < magicList.Count; i++)
+						for (int i = 0; i < magicCanList.Count; i++)
 						{
-							if (!magicList[i].penetration)
+							if (!SManager.instance.attackMagi[magicCanList[i]].penetration)
 							{
-								removeNumber.Add(i);
+								magicCanList.Remove(magicCanList[i]);
 							}
 						}
 						//break;
 					}
 					else if (condition.firstCondition == FireCondition.FirstCondition.追尾する)
 					{
-						for (int i = 0; i < magicList.Count; i++)
+						for (int i = 0; i < magicCanList.Count; i++)
 						{
-							if (magicList[i]._moveSt.fireType == Magic.FIREBULLET.ANGLE || magicList[i]._moveSt.fireType == Magic.FIREBULLET.RAIN)
+							if (SManager.instance.attackMagi[magicCanList[i]]._moveSt.fireType == Magic.FIREBULLET.ANGLE || SManager.instance.attackMagi[magicCanList[i]]._moveSt.fireType == Magic.FIREBULLET.RAIN)
 							{
-								removeNumber.Add(i);
+								magicCanList.Remove(magicCanList[i]);
 							}
 						}
 						//break;
 					}
 					else if (condition.firstCondition == FireCondition.FirstCondition.設置攻撃)
 					{
-						for (int i = 0; i < magicList.Count; i++)
+						for (int i = 0; i < magicCanList.Count; i++)
 						{
-							if (magicList[i]._moveSt.speedV != 0)
+							if (SManager.instance.attackMagi[magicCanList[i]]._moveSt.speedV != 0)
 							{
-								removeNumber.Add(i);
+								magicCanList.Remove(magicCanList[i]);
 							}
 						}
 						//break;
 					}
 					else if (condition.firstCondition == FireCondition.FirstCondition.追尾する)
 					{
-						for (int i = 0; i < magicList.Count; i++)
+						for (int i = 0; i < magicCanList.Count; i++)
 						{
-							if (magicList[i]._moveSt.fireType == Magic.FIREBULLET.ANGLE || magicList[i]._moveSt.fireType == Magic.FIREBULLET.RAIN)
+							if (SManager.instance.attackMagi[magicCanList[i]]._moveSt.fireType == Magic.FIREBULLET.ANGLE || SManager.instance.attackMagi[magicCanList[i]]._moveSt.fireType == Magic.FIREBULLET.RAIN)
 							{
-								removeNumber.Add(i);
+								magicCanList.Remove(magicCanList[i]);
 							}
 						}
 						//break;
 					}
 					else if (condition.firstCondition == FireCondition.FirstCondition.範囲攻撃)
 					{
-						for (int i = 0; i < magicList.Count; i++)
+						for (int i = 0; i < magicCanList.Count; i++)
 						{
-							if (magicList[i]._moveSt.fireType == Magic.FIREBULLET.RAIN)
+							if (SManager.instance.attackMagi[magicCanList[i]]._moveSt.fireType == Magic.FIREBULLET.RAIN)
 							{
-								removeNumber.Add(i);
+								magicCanList.Remove(magicCanList[i]);
 							}
 						}
 						//break;
 					}
 					else if (condition.firstCondition == FireCondition.FirstCondition.サーチ攻撃)
 					{
-						for (int i = 0; i < magicList.Count; i++)
+						for (int i = 0; i < magicCanList.Count; i++)
 						{
-							if (!magicList[i].isChaice)
+							if (!SManager.instance.attackMagi[magicCanList[i]].isChaice)
 							{
-								removeNumber.Add(i);
+								magicCanList.Remove(magicCanList[i]);
 							}
 						}
 						//break;
 					}
-					for (int i = 0; i < removeNumber.Count; i++)
-					{
-						magicList.Remove(magicList[removeNumber[i] - i]);
-						//targetCanStatus.Remove(statusList[removeNumber[i] - i]);
-					}
 				}
 			}
 
-			if (magicList.Count == 0)
+			if (magicCanList.Count == 0)
 			{
-				Debug.Log("帰れ");
+				
 				return;
 			}
 			else
@@ -2648,9 +2601,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				if (condition.nextCondition == FireCondition.AdditionalCondition.指定なし)
 				{
 
-					SManager.instance.useMagic = magicList[0];
-					condition.UseMagic = magicList[0];
-					magicCanList = null;
+					SManager.instance.useMagic = SManager.instance.attackMagi[0];
+					condition.UseMagic = SManager.instance.attackMagi[0];
+					magicCanList.Clear();
 				}
 				else
 				{
@@ -2659,22 +2612,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						if (condition.upDown)
 						{
-							for (int i = 0; i < magicList.Count; i++)
+							for (int i = 0; i < magicCanList.Count; i++)
 							{
-								if (selectNumber == 150 || magicList[i].useMP > magicList[selectNumber].useMP)
+								if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].useMP > SManager.instance.attackMagi[selectNumber].useMP)
 								{
-									selectNumber = i;
+									selectNumber = magicCanList[i];
 								}
 
 							}
 						}
 						else
 						{
-							for (int i = 0; i < magicList.Count; i++)
+							for (int i = 0; i < magicCanList.Count; i++)
 							{
-								if (selectNumber == 150 || magicList[i].useMP < magicList[selectNumber].useMP)
+								if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].useMP < SManager.instance.attackMagi[selectNumber].useMP)
 								{
-									selectNumber = i;
+									selectNumber = magicCanList[i];
 								}
 							}
 						}
@@ -2683,22 +2636,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						if (condition.upDown)
 						{
-							for (int i = 0; i < magicList.Count; i++)
+							for (int i = 0; i < magicCanList.Count; i++)
 							{
-								if (selectNumber == 150 || magicList[i].displayAtk > magicList[selectNumber].displayAtk)
+								if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].displayAtk > SManager.instance.attackMagi[selectNumber].displayAtk)
 								{
-									selectNumber = i;
+									selectNumber = magicCanList[i];
 								}
 
 							}
 						}
 						else
 						{
-							for (int i = 0; i < magicList.Count; i++)
+							for (int i = 0; i < magicCanList.Count; i++)
 							{
-								if (selectNumber == 150 || magicList[i].displayAtk < magicList[selectNumber].displayAtk)
+								if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].displayAtk < SManager.instance.attackMagi[selectNumber].displayAtk)
 								{
-									selectNumber = i;
+									selectNumber = magicCanList[i];
 								}
 							}
 						}
@@ -2707,11 +2660,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						if (condition.upDown)
 						{
-							for (int i = 0; i < magicList.Count; i++)
+							for (int i = 0; i < magicCanList.Count; i++)
 							{
-								if (selectNumber == 150 || magicList[i].bulletNumber > magicList[selectNumber].bulletNumber)
+								if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].bulletNumber > SManager.instance.attackMagi[selectNumber].bulletNumber)
 								{
-									selectNumber = i;
+									selectNumber = magicCanList[i];
 								}
 
 							}
@@ -2719,11 +2672,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						}
 						else
 						{
-							for (int i = 0; i < magicList.Count; i++)
+							for (int i = 0; i < magicCanList.Count; i++)
 							{
-								if (selectNumber == 150 || magicList[i].bulletNumber < magicList[selectNumber].bulletNumber)
+								if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].bulletNumber < SManager.instance.attackMagi[selectNumber].bulletNumber)
 								{
-									selectNumber = i;
+									selectNumber = magicCanList[i];
 								}
 							}
 						}
@@ -2732,22 +2685,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						if (condition.upDown)
 						{
-							for (int i = 0; i < magicList.Count; i++)
+							for (int i = 0; i < magicCanList.Count; i++)
 							{
-								if (selectNumber == 150 || magicList[i].shock > magicList[selectNumber].shock)
+								if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].shock > SManager.instance.attackMagi[selectNumber].shock)
 								{
-									selectNumber = i;
+									selectNumber = magicCanList[i];
 								}
 
 							}
 						}
 						else
 						{
-							for (int i = 0; i < magicList.Count; i++)
+							for (int i = 0; i < magicCanList.Count; i++)
 							{
-								if (selectNumber == 150 || magicList[i].shock < magicList[selectNumber].shock)
+								if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].shock < SManager.instance.attackMagi[selectNumber].shock)
 								{
-									selectNumber = i;
+									selectNumber = magicCanList[i];
 								}
 							}
 						}
@@ -2756,30 +2709,30 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					{
 						if (condition.upDown)
 						{
-							for (int i = 0; i < magicList.Count; i++)
+							for (int i = 0; i < magicCanList.Count; i++)
 							{
-								if (selectNumber == 150 || magicList[i].castTime > magicList[selectNumber].castTime)
+								if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].castTime > SManager.instance.attackMagi[selectNumber].castTime)
 								{
-									selectNumber = i;
+									selectNumber = magicCanList[i];
 								}
 
 							}
 						}
 						else
 						{
-							for (int i = 0; i < magicList.Count; i++)
+							for (int i = 0; i < magicCanList.Count; i++)
 							{
-								if (selectNumber == 150 || magicList[i].castTime < magicList[selectNumber].castTime)
+								if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].castTime < SManager.instance.attackMagi[selectNumber].castTime)
 								{
-									selectNumber = i;
+									selectNumber = magicCanList[i];
 								}
 							}
 						}
 					}
 
-					SManager.instance.useMagic = magicList[selectNumber];
-					condition.UseMagic = magicList[selectNumber];
-					magicCanList = null;
+					SManager.instance.useMagic = SManager.instance.attackMagi[selectNumber];
+					condition.UseMagic = SManager.instance.attackMagi[selectNumber];
+					magicCanList.Clear();
 				}
 			}
 		}

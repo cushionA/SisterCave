@@ -685,7 +685,7 @@ MonoBehaviour:
     generalSound: 1
     _stateSounds: []
   - _useState: 3
-    generalEffect: 0
+    generalEffect: 1
     _stateEffects:
     - _useEffect: {fileID: 2759937417337572829, guid: 18079abcfda9b4643917d91159f5e5b5,
         type: 3}
@@ -695,7 +695,14 @@ MonoBehaviour:
       _matchAnime: 0
       ignoreDirection: 0
       isUsed: 0
-    generalSound: 0
+    - _useEffect: {fileID: 19879292, guid: c859afd12a13c0f48924a87897050601, type: 3}
+      _emitType: 6
+      _emitPosition: {fileID: 0}
+      _isFollow: 0
+      _matchAnime: 0
+      ignoreDirection: 0
+      isUsed: 0
+    generalSound: 1
     _stateSounds:
     - _useSound: DashSoundE
       _playType: 1
@@ -1298,7 +1305,7 @@ MonoBehaviour:
     backAttack: 0
     mainElement: 0
     phyElement: 0
-  twinHand: 0
+  twinHand: 1
   _useContoroller:
   - {fileID: 22100000, guid: 78097b11b1d9cf645a57cafe12dd669f, type: 2}
   - {fileID: 22100000, guid: 02093cf5a372a854bb0e17eb2aaf36e8, type: 2}

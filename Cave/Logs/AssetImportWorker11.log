@@ -1,0 +1,349 @@
+Using pre-set license
+Built from '2021.3/staging' branch; Version is '2021.3.25f1 (68ef2c4f8861) revision 6876972'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'ja' Physical Memory: 16222 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2021.3.25f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker11
+-projectPath
+C:/Users/tatuk/Documents/SisterCave/Cave
+-logFile
+Logs/AssetImportWorker11.log
+-srvPort
+59212
+Successfully changed project path to: C:/Users/tatuk/Documents/SisterCave/Cave
+C:/Users/tatuk/Documents/SisterCave/Cave
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [5404] Host "[IP] 192.168.0.9 [Port] 0 [Flags] 2 [Guid] 695874533 [EditorId] 695874533 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-TOOOMAN3) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+
+Player connection [5404] Host "[IP] 192.168.0.9 [Port] 0 [Flags] 2 [Guid] 695874533 [EditorId] 695874533 [Version] 1048832 [Id] WindowsEditor(7,LAPTOP-TOOOMAN3) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+
+Refreshing native plugins compatible for Editor in 324.96 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.3.25f1 (68ef2c4f8861)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/tatuk/Documents/SisterCave/Cave/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2070 Super (ID=0x1ed1)
+    Vendor:   NVIDIA
+    VRAM:     8003 MB
+    Driver:   31.0.15.2656
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56440
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.25f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
+Registered in 0.009350 seconds.
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 330.49 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.886 seconds
+Domain Reload Profiling:
+	ReloadAssembly (886ms)
+		BeginReloadAssembly (77ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (706ms)
+			LoadAssemblies (76ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (110ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (27ms)
+			SetupLoadedEditorAssemblies (512ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (17ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (331ms)
+				BeforeProcessingInitializeOnLoad (1ms)
+				ProcessInitializeOnLoadAttributes (121ms)
+				ProcessInitializeOnLoadMethodAttributes (42ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.019531 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for UWP target not found
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 327.20 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  5.480 seconds
+Domain Reload Profiling:
+	ReloadAssembly (5480ms)
+		BeginReloadAssembly (122ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (7ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (25ms)
+		EndReloadAssembly (5231ms)
+			LoadAssemblies (123ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (532ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (162ms)
+			SetupLoadedEditorAssemblies (4362ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (14ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (327ms)
+				BeforeProcessingInitializeOnLoad (152ms)
+				ProcessInitializeOnLoadAttributes (3725ms)
+				ProcessInitializeOnLoadMethodAttributes (136ms)
+				AfterProcessingInitializeOnLoad (8ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'MoreMountains/MMRipple': fallback shader 'Particle/AlphaBlended' not found
+Shader 'CartoonCoffee/Particle Additive': fallback shader '2' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Shader 'Custom/RainShader': fallback shader 'Particles/Alpha Blended' not found
+Shader 'Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)': fallback shader 'Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)' not found
+Shader 'CartoonCoffee/Particle Basic': fallback shader '2' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Refreshing native plugins compatible for Editor in 6.38 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 9394 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 132 unused Assets / (4.1 MB). Loaded Objects now: 9921.
+Memory consumption went from 0.52 GB to 0.52 GB.
+Total: 5.863600 ms (FindLiveObjects: 0.734400 ms CreateObjectMapping: 0.837400 ms MarkObjects: 3.404200 ms  DeleteObjects: 0.886800 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 12437.595031 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordFall.anim
+  artifactKey: Guid(683853b0239472544a02ebd86e657ae6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordFall.anim using Guid(683853b0239472544a02ebd86e657ae6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'eb3cac2794b7cc2e9107f8f362451464') in 0.043300 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000041 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordAAttack1.anim
+  artifactKey: Guid(814ef5f1fa0a65142b0af61624b52967) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordAAttack1.anim using Guid(814ef5f1fa0a65142b0af61624b52967) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e53daaa1b95218d7d56c62f1d0c17381') in 0.014813 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordGuardMove.anim
+  artifactKey: Guid(ac5e51546262665498b0947855257870) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordGuardMove.anim using Guid(ac5e51546262665498b0947855257870) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b0e1f5de789ae99412cdb3f04d8422b2') in 0.012091 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000018 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordFalter.anim
+  artifactKey: Guid(3b8be5f22a8966740a14eca9a323a4f3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordFalter.anim using Guid(3b8be5f22a8966740a14eca9a323a4f3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'df4b58b262a23aaaf61f89fc58b62bf2') in 0.012103 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordDown.anim
+  artifactKey: Guid(1d6e7603ce136b34aa71ecb307fe616b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordDown.anim using Guid(1d6e7603ce136b34aa71ecb307fe616b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1ac2dae50f43ba864536ca67cf96cbbb') in 0.012227 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.285053 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordParry.anim
+  artifactKey: Guid(cbd03125a5c50e649a305f0a96acc0ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordParry.anim using Guid(cbd03125a5c50e649a305f0a96acc0ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dde4f4e0026f8efbb40f0ae6029f9ce5') in 0.015795 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.172624 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordCharge1.anim
+  artifactKey: Guid(d79234dc5c9ce0a4dbbab08d77ea1c59) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordCharge1.anim using Guid(d79234dc5c9ce0a4dbbab08d77ea1c59) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '575c53c2f609c2ac2b90f09c81689749') in 0.011782 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 3.538781 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordBlow.anim
+  artifactKey: Guid(4611a5daadb9a81469eb678aeb4a6019) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordBlow.anim using Guid(4611a5daadb9a81469eb678aeb4a6019) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '818dac6904779c56767d8f7691356eaa') in 0.010548 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.350432 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordBlock.anim
+  artifactKey: Guid(f3af05aa850541349a5dbc52805f3bb0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordBlock.anim using Guid(f3af05aa850541349a5dbc52805f3bb0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e16dd05561c5371ceeceaa4fc8a34675') in 0.009798 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.379658 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordBAttack2.anim
+  artifactKey: Guid(1357cdb3596fd8745b4887ae4a417c44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordBAttack2.anim using Guid(1357cdb3596fd8745b4887ae4a417c44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '79ab48d9e9a45532036bea194bebd500') in 0.015340 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.327841 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordBAttack1.anim
+  artifactKey: Guid(dea2d09f71bacdf46b8749ecf77d8c9b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordBAttack1.anim using Guid(dea2d09f71bacdf46b8749ecf77d8c9b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1f0fa35903a43e4039dd7afcc2cb454a') in 0.013114 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.344419 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordAvoid.anim
+  artifactKey: Guid(be91fe811901f874cbe5b90159c1bb3a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordAvoid.anim using Guid(be91fe811901f874cbe5b90159c1bb3a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6bd05b3a5085ed95ac09ea7595ab1d6c') in 0.013557 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.482958 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordBAttack2.anim
+  artifactKey: Guid(b1d8a72c8ac7673418239047a03b5533) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordBAttack2.anim using Guid(b1d8a72c8ac7673418239047a03b5533) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'df38c627ab552f31a68c697af29e4027') in 0.013635 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.549854 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordGuardMove.anim
+  artifactKey: Guid(25a490c83fdc31440b48e20cb0d57940) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordGuardMove.anim using Guid(25a490c83fdc31440b48e20cb0d57940) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'eef65b30e7f417e917653fb738e3dede') in 0.010212 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.060258 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordDash.anim
+  artifactKey: Guid(a23c635454012e54682f6f10e76fc981) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordDash.anim using Guid(a23c635454012e54682f6f10e76fc981) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '32bffe7ae940dfb5cc19ef4e46710fd6') in 0.010428 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.718611 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordCharge2.anim
+  artifactKey: Guid(c82967f0fb8c74b41a73e15ef8bffa1a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordCharge2.anim using Guid(c82967f0fb8c74b41a73e15ef8bffa1a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '521e0731c788480fbf17ffb3915bdf0e') in 0.011289 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.238386 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordCAttack2.anim
+  artifactKey: Guid(fad86d4f821058f459dc02dbe55713b0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordCAttack2.anim using Guid(fad86d4f821058f459dc02dbe55713b0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '162aba3325041a888e3db4466779b7c8') in 0.017189 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.339383 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordCAttack1.anim
+  artifactKey: Guid(358d79598f613f34e8092b5770e04b2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordCAttack1.anim using Guid(358d79598f613f34e8092b5770e04b2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7a85e96a5cb4f26763a4b767994e3bc9') in 0.013813 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.097744 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordBlow.anim
+  artifactKey: Guid(869aee9071b78b343a5ad25915801ee4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordBlow.anim using Guid(869aee9071b78b343a5ad25915801ee4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '69d1601aa063565a5bc1533de2cf0f32') in 0.010908 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.382446 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordBlock.anim
+  artifactKey: Guid(195cbeaa470944b4e9197d4c62d1ed97) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordBlock.anim using Guid(195cbeaa470944b4e9197d4c62d1ed97) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b0ec590d3fac8af19a13fd5f32899568') in 0.009824 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.048416 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordBAttack1.anim
+  artifactKey: Guid(b8c9c967071262a498a384f99bf8869d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordBAttack1.anim using Guid(b8c9c967071262a498a384f99bf8869d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d442dcf812d42384eb32f53c5625ee1') in 0.013928 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.500072 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordAvoid.anim
+  artifactKey: Guid(911f317b9edc8a04297a6277078f62ec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordAvoid.anim using Guid(911f317b9edc8a04297a6277078f62ec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f06169bbf0897a344f6f59f4dcc89cea') in 0.009892 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.366297 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordArts1.anim
+  artifactKey: Guid(cb6a0e7edea7fb34cad4b2c545bb23c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/TLongSwordArts1.anim using Guid(cb6a0e7edea7fb34cad4b2c545bb23c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f46ee4ed33bcbdbc8067324a73ba4d75') in 0.013552 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 3.258449 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordStand.anim
+  artifactKey: Guid(310258a3113ebc742864f860031b7dd7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordStand.anim using Guid(310258a3113ebc742864f860031b7dd7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c7eea920809029d212e93584bd4b50f') in 0.011209 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 2.312454 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordSquat.anim
+  artifactKey: Guid(091e580bd054eb64e9575caa28ccdaa5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordSquat.anim using Guid(091e580bd054eb64e9575caa28ccdaa5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd598c313af5dd324bfe6781bfdaadcf7') in 0.010093 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.440219 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordSAttack2.anim
+  artifactKey: Guid(92c693397f86245438697868607afe18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordSAttack2.anim using Guid(92c693397f86245438697868607afe18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ac97594e7f3aec3a85b20331c92897fd') in 0.012598 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.501570 seconds.
+  path: Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordSAttack1.anim
+  artifactKey: Guid(d52557e516ae7b640b8861f0739cb320) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/testAsset/Player/PlayerAnime/LongSwordAnime/OLongSwordSAttack1.anim using Guid(d52557e516ae7b640b8861f0739cb320) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a8e47a72f753427c19bdb7501df43105') in 0.014006 seconds 
