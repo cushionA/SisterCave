@@ -657,6 +657,7 @@ namespace MoreMountains.CorgiEngine
 			{
 				return;
 			}
+
 			_jumpButtonPressed = false;
 			_jumpButtonReleased = true;
 			_movement.ChangeState(CharacterStates.MovementStates.Idle);

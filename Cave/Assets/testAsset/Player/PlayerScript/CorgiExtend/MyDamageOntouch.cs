@@ -17,8 +17,15 @@ namespace MoreMountains.CorgiEngine
         [Header("このオブジェクトが魔法であるか")]
         TypeOfSubject _attacker;
 
-        EnemyAIBase eData;
-        protected PlyerController pCon;
+        [SerializeField]
+        ControllAbillity _cCon;
+
+        /// <summary>
+        /// 所有者
+        /// </summary>
+        [SerializeField]
+        new GameObject Owner;
+
         [SerializeField]
         protected new MyHealth _health;
         protected new MyHealth _colliderHealth;
@@ -53,27 +60,10 @@ namespace MoreMountains.CorgiEngine
         {
             base.Awake();
 
-            if (_attacker == TypeOfSubject.Enemy)
-            {
-                Owner = transform.root.gameObject;
-                
-                eData = Owner.GetComponent<EnemyAIBase>();
-                //アタックデータをセットするメソッドとかほしい
-                //ヒット時ダメージ計算でヒット時やるか
-            }
-            else if (_attacker == TypeOfSubject.Player)
-            {
-                Owner = GManager.instance.Player;
-                pCon = Owner.GetComponent<PlyerController>();
-            }
-            else if (_attacker == TypeOfSubject.Magic)
-            {
-                Owner = this.gameObject;
-            }
-            else
-            {
 
-            }
+           
+
+
             DamageTakenInvincibilityDuration = 0.15f;
             DamageCausedKnockbackType = KnockbackStyles.AddForce;
             DamageCausedKnockbackDirection = CausedKnockbackDirections.BasedOnOwnerPosition;
@@ -83,58 +73,51 @@ namespace MoreMountains.CorgiEngine
         }
         protected override void OnCollideWithDamageable(Health health)
         {
-         //   Debug.Log($"知りた");
+
+
+
+
             //背後に当たったかどうかを確認するためのアタリハンテイ検査座標
             float basePosition = 0;
-      //      Debug.Log($"asdf{_attacker}");
+
+
             //与えるダメージを計算
-            if (_attacker == TypeOfSubject.Enemy)
-            {
-              
-                eData.DamageCalc();
-                basePosition = transform.position.x;
-            }
-            else if (_attacker == TypeOfSubject.Player)
-            {
-                pCon.DamageCalc(GManager.instance.useAtValue.isShield);
+
+                _cCon.DamageCalc();
                 basePosition = transform.position.x;
 
-            }
-            else if (_attacker == TypeOfSubject.Magic)
-            {
-                basePosition = transform.position.x;
-
-            }
-            else
-            {
-                basePosition = transform.position.x;
-                //罠のダメージ
-            }
+            float enemyPosi = _colliderHealth.transform.position.x;
             bool back = false;
-            //当たったやつが右にいるかどうか
-            bool isRight = false; ;
+            bool isRight = false;
+
+            //敵が向いてる方向
+            int enemyDirection = (int)Mathf.Sign(_colliderHealth.transform.localScale.x);
+
 
             //ダメージ判定のxの中心と被弾した相手のローカルスケールの正負で確認
             //当たったやつが右で当てたやつが左
-            if ((basePosition <= _colliderHealth.transform.position.x && _colliderHealth.transform.localScale.x > 0) ||
+            if ((basePosition <= enemyPosi && enemyDirection > 0) ||
                 //当たったやつが
-                (basePosition > _colliderHealth.transform.position.x && _colliderHealth.transform.localScale.x < 0))
+                (basePosition > enemyPosi && enemyDirection < 0))
             {
 
-                isRight = basePosition < _colliderHealth.transform.position.x;
+                isRight = basePosition < enemyPosi;
 
                 back = true;
                 _attackData.shock *= 1.05f;
             }
             else
             {
-          //      Debug.Log($"fh{basePosition}{_colliderHealth.transform.position.x}");
-                isRight = basePosition < _colliderHealth.transform.position.x;
+          //      Debug.Log($"fh{basePosition}{enemyPosi}");
+                isRight = basePosition < enemyPosi;
                 back = false;
             }
+
             //アーマー削りを整数に
             _attackData.shock = Mathf.Floor(_attackData.shock);
-            //isRight = (Owner.transform.position.x <= transform.position.x) ? true : false;
+            
+            
+            
             // 衝突した相手が CorgiController の場合、ノックバック力を適用する
             _colliderCorgiController = health.gameObject.MMGetComponentNoAlloc<CorgiController>();
 
@@ -147,7 +130,9 @@ namespace MoreMountains.CorgiEngine
                 //パリィが発生したなら
 
                 bool ParryDown = false;
-                if(_attacker == TypeOfSubject.Enemy)
+
+                //プレイヤーかエネミーならパリィ
+                if((int)_attacker <= 1)
                 {
                     //スタミナ回復
 
@@ -155,10 +140,10 @@ namespace MoreMountains.CorgiEngine
 
                     //敵がプレイヤーに攻撃した時、ダウンするかをはかる。
                     ParryDown = _health.ParryArmorCheck();
-
-                }
-                //敵以外パリィされたらスタン
+               //敵以外パリィされたらスタン
  　　　　　　　 ParryStunn(ParryDown);
+                }
+ 
                 //パリィした相手はボーナス
 
                     _colliderHealth.ParryStart(ParryDown);
@@ -178,15 +163,31 @@ namespace MoreMountains.CorgiEngine
                 MMFreezeFrameEvent.Trigger(Mathf.Abs(FreezeFramesOnHitDuration));
             }
 
+            GameObject attacker = null;
+            //ヘルスに渡す攻撃者のオブジェクトを考える
+            if(_attacker == TypeOfSubject.Magic)
+            {
+
+            }
+            else if (_attacker == TypeOfSubject.Gimic)
+            {
+
+            }
+            else
+            {
+                attacker = transform.root.gameObject;
+            }
+
 
             // ぶつかったものにダメージを与える。
             //フリッカーは明滅時間だからダメージ後無敵時間と同じでいい
-            _colliderHealth.Damage(_attackData, gameObject, InvincibilityDuration, InvincibilityDuration, _damageDirection,back,stunnState);
+            _colliderHealth.Damage(_attackData, attacker, InvincibilityDuration, InvincibilityDuration, _damageDirection,back,stunnState);
 
             if (_colliderHealth.CurrentHealth <= 0)
             {
                 OnKill?.Invoke();
             }
+
             //ここでヘルスから被ダメージ計算呼ぶ？
 
             SelfDamage(DamageTakenEveryTime + DamageTakenDamageable);
@@ -233,7 +234,7 @@ namespace MoreMountains.CorgiEngine
         /// <param name="collider"></param>
         protected override void Colliding(Collider2D collider)
         {
-          //  Debug.Log("最高");
+
             if (!this.isActiveAndEnabled)
             {
                 return;
@@ -255,14 +256,7 @@ namespace MoreMountains.CorgiEngine
             //ここまで対象外を弾く
 
             _collidingCollider = collider;
-            _colliderHealth = collider.gameObject.MMGetComponentNoAlloc<MyHealth>();
 
-            //ここでヘルスの無敵確認するか
-            if (_colliderHealth.InvulnerableCheck())
-            {
-             //   Debug.Log($"{this.gameObject.name}が{collider.transform.gameObject.name}");
-                return;
-            }
 
             //含んでないなら
             if (_restoreHealth.Count != 0)
@@ -270,8 +264,10 @@ namespace MoreMountains.CorgiEngine
                 collideNum = 100;
                 for (int i = 0;i<_restoreHealth.Count;i++)
                 {
-                    if (_restoreHealth[i] == _colliderHealth)
+                    //ゲームオブジェクトがキャッシュしてるものなら
+                    if (_restoreHealth[i].gameObject == collider.gameObject)
                     {
+                        _colliderHealth = _restoreHealth[i];
                         collideNum = i;
                         break;
                     }
@@ -279,6 +275,7 @@ namespace MoreMountains.CorgiEngine
                 //含まれてない場合
                 if (collideNum == 100)
                 {
+                    _colliderHealth = collider.gameObject.MMGetComponentNoAlloc<MyHealth>();
                     _restoreHealth.Add(_colliderHealth);
                     collideNum = _restoreHealth.Count - 1;
                      _restoreCount.Add(0);
@@ -286,9 +283,17 @@ namespace MoreMountains.CorgiEngine
             }
             else
             {
+                _colliderHealth = collider.gameObject.MMGetComponentNoAlloc<MyHealth>();
                 _restoreHealth.Add(_colliderHealth);
                 collideNum = 0;
                 _restoreCount.Add(0);
+            }
+
+            //ここでヘルスの無敵確認するか
+            if (_colliderHealth.InvulnerableCheck())
+            {
+                //   Debug.Log($"{this.gameObject.name}が{collider.transform.gameObject.name}");
+                return;
             }
 
             if (_restoreCount[collideNum] >= _attackData._hitLimit)
@@ -398,25 +403,8 @@ namespace MoreMountains.CorgiEngine
         public void ParryStunn(bool isDown = false)
         {
 
-                if (_attacker == TypeOfSubject.Enemy)
-                {
-                    if (isDown)
-                    {
-                        eData._wakeup.StartStunn(MyWakeUp.StunnType.Parried);
-                    }
-                }
-                else if (_attacker == TypeOfSubject.Player)
-                {
-                    pCon._wakeup.StartStunn(MyWakeUp.StunnType.Parried);
-                }
-                else if (_attacker == TypeOfSubject.Magic)
-                {
 
-                }
-                else
-                {
-
-                }
+            _cCon.StartStun(MyWakeUp.StunnType.Parried);
             
         }
 

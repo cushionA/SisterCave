@@ -6,6 +6,7 @@ using MoreMountains.Feedbacks;
 using UnityEngine.AddressableAssets;
 using Rewired.Integration.CorgiEngine;
 using DarkTonic.MasterAudio;
+using System.Runtime.CompilerServices;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -29,6 +30,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected const string _parryParameterName = "ParryState";
         protected int _parryAnimationParameter;
 
+        /// <summary>
+        /// animatorがパリィモーションなのかジャスガモーションなのか判断するための数値
+        /// </summary>
         int parryNumber = 0;
 
         /// <summary>
@@ -125,7 +129,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             if ((defenceTime >= GManager.instance.equipShield.parryStart || GManager.instance.blocking)  && !_health._parryNow)
                             {
                           
-                                GManager.instance.PlaySound("ParryStart", GManager.instance.Player.transform.position);
+                                GManager.instance.PlaySound("ParryStart", GManager.instance.PlayerPosition);
                                 ParryJudgeStart();
                                 defenceTime = GManager.instance.equipShield.parryStart;
                                 blocking = false;
@@ -144,7 +148,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                             if ((defenceTime >= GManager.instance.equipWeapon.parryStart || GManager.instance.blocking) && !_health._parryNow)
                             {
-                                GManager.instance.PlaySound("ParryStart", GManager.instance.Player.transform.position);
+                                GManager.instance.PlaySound("ParryStart", GManager.instance.PlayerPosition);
                                 ParryJudgeStart();
                                 defenceTime = GManager.instance.equipWeapon.parryStart;
                                 GManager.instance.blocking = false;
@@ -200,13 +204,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             _health._parryNow = true;
             
         }
+
+        /// <summary>
+        /// ジャスガ判定を消し去る
+        /// </summary>
         public void ParryJudgeEnd()
         {
             _health._parryNow = false;
         }
 
-
-        public void ParryStart(int num = 2)
+        /// <summary>
+        /// ジャストガード
+        /// 敵がアーマーブレイクしてるならパリィ開始
+        /// </summary>
+        /// <param name="siBreake"></param>
+        public void ParryStart(bool isBreake)
         {
          //   Debug.Log($"ｊｃｌ7{_movement.CurrentState}");
             
@@ -214,15 +226,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
  
             //レイヤーも回避レイヤーに
             //スタミナ回復とかも持たせるか
-            parryNumber = num;
-            if(num == 1 && isPlayer)
+            
+            if(!isBreake)// && isPlayer)
             {
+                parryNumber = 1;
                 _movement.ChangeState(CharacterStates.MovementStates.justGuard);
                 blocking = true;
               //  GManager.instance.PlaySound(MyCode.SoundManager.instance.blockingSound, transform.position);
             }
             else
             {
+                parryNumber = 2;
                 _movement.ChangeState(CharacterStates.MovementStates.Parry);
                 blocking = false;
               //  GManager.instance.PlaySound(MyCode.SoundManager.instance.parrySound, transform.position);

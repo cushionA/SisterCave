@@ -157,11 +157,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public float sizeMultipler = 1;
 
 
-        [Header("エフェクト生成箇所")]
+        [Header("エフェクト生成ポイント")]
         /// <summary>
         ///どこでエフェクトを生成するか
         /// </summary>
-        public Transform effecter;
+        public Transform[] effecter;
+
 
         #endregion
 
@@ -183,6 +184,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <summary>
         /// 今現在利用中の素材を管理するためのリスト
         /// </summary>
+        [SerializeField]
         List<EffectCondition.StateEffect> _waitEffect = new List<EffectCondition.StateEffect>();
 
         /// <summary>
@@ -199,12 +201,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <summary>
         /// 共通設定の再生を行う際にどう再生するか示す
         /// </summary>
-        EffectCondition.EmitType generalEType;
+        [SerializeField]
+        EffectCondition.EmitType generalEType = EffectCondition.EmitType.None;
 
         /// <summary>
         /// 共通設定の再生を行う際にどう再生するか示す
         /// </summary>
-        EffectCondition.EmitType generalSType;
+        EffectCondition.EmitType generalSType = EffectCondition.EmitType.None;
 
 
         //前回の再生情報を保存することで毎回条件判断を繰り返さないようにするキャッシュ
@@ -226,6 +229,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// 共通エフェクトをすでに利用したかどうか
         /// </summary>
         bool pubEUsed;
+
+
+        /// <summary>
+        /// 一度だけ使えるキー
+        /// 状態が変化するときに変わる
+        /// </summary>
+        int oneTimeKey = 0;
 
 
         #endregion
@@ -288,7 +298,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
                 //着地音とエフェクトを使用する
                 //落下攻撃中や吹き飛ばしからの着地の場合音やエフェクトが変わる
-                MyCode.SoundManager.instance.GotGround(effecter,_useState,isMetal,bodySize,_character.nowGround);
+                MyCode.SoundManager.instance.GotGround(effecter[0],_useState,isMetal,bodySize,_character.nowGround);
             }
         }
 
@@ -320,8 +330,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void OnMMEvent(MMStateChangeEvent<CharacterStates.CharacterConditions> eventType)
         {
             //状態が変化したのなら新しい状態で再生要素を探す。
-            StateSelect(CharacterStates.MovementStates.Nostate,eventType.NewState);
-            
+            if (eventType.Target == this.gameObject)
+            {
+                StateSelect(CharacterStates.MovementStates.Nostate, eventType.NewState);
+            }
         }
 
         /// <summary>
@@ -330,11 +342,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="eventType"></param>
         public void OnMMEvent(MMStateChangeEvent<CharacterStates.MovementStates> eventType)
         {
+            if (eventType.Target == this.gameObject) 
+            {
+                //状態が変化したのなら新しい状態で再生要素を探す。
+                StateSelect(eventType.NewState);
 
-           //状態が変化したのなら新しい状態で再生要素を探す。
-           StateSelect(eventType.NewState);
-
-
+            }
         }
 
         #endregion
@@ -361,7 +374,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 newState = (SelectState)_mState;
             }
 
-
+           // Debug.Log($"むかし{_movement.PreviousState}いま{_movement.CurrentState}");
             //状態異常のステートは動作のステートに優先するので
             //状態異常があるのならuseStateを上書き
 
@@ -369,19 +382,19 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (_cState == CharacterStates.CharacterConditions.Stunned)
             {
                 SelectState container;
-                container = _health.GetStanState();
+                container = _health.GetStunState();
 
                 if(container == SelectState.Null)
                 {
                     return;
                 }
                 newState = container;
-                MyCode.SoundManager.instance.StanEffect(effecter,newState,_condition.PreviousState == CharacterStates.CharacterConditions.Stunned,sizeMultipler);
+                MyCode.SoundManager.instance.StanEffect(effecter[0],newState,_condition.PreviousState == CharacterStates.CharacterConditions.Stunned,sizeMultipler);
                 
             }
             else if (_cState == CharacterStates.CharacterConditions.Dead)
             {
-               newState = _health.GetStanState() == SelectState.BlowDead ? SelectState.BlowDead : SelectState.Dead;
+               newState = _health.GetStunState() == SelectState.BlowDead ? SelectState.BlowDead : SelectState.Dead;
             }
 
             if(newState == SelectState.Null || _useState == newState)
@@ -398,6 +411,19 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //現在の時間を記録。リピート処理に使う
             waitTimer = Time.time;
 
+            //乱数を記録して現在の状態を固有のものに
+            int keyNum = RandomValue(0,100);
+            if (keyNum == oneTimeKey)
+            {
+                oneTimeKey *= 2;
+            }
+            else
+            {
+                oneTimeKey = keyNum;
+            }
+
+ 
+           
             //現在のステートに基づき使用できる要素があるか探す
             UseSelect(_useState);
         }
@@ -409,6 +435,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             for (int i = 0; i < _stateList.Count;i++)
             {
+
+ 
+
                 //リスト内のEffectconditionの使用するステートが現在のステートに合致するなら
                 if (state == _stateList[i]._useState)
                 {
@@ -526,7 +555,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (generalEType != EffectCondition.EmitType.Soon || generalEType != EffectCondition.EmitType.Repeat)
             {
                 //再生すると同時に使用した素材の情報を保持して次回の再生に使う
-                prevE = MyCode.SoundManager.instance.GeneralEffectPlay(effecter,_state,bodySize,_character.nowGround,prevE,sizeMultipler,transform.localScale.x > 0);
+                prevE = MyCode.SoundManager.instance.GeneralEffectPlay(effecter[0],_state,bodySize,_character.nowGround,prevE,sizeMultipler,transform.localScale.x > 0);
             }
 
         }
@@ -576,7 +605,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             if (generalSType != EffectCondition.EmitType.Soon || generalSType != EffectCondition.EmitType.Repeat)
             {
-                prevS =  MyCode.SoundManager.instance.GeneralSoundPlay(effecter,_state, speedMultipler, isMetal, bodySize, _character.nowGround,prevS);
+                prevS =  MyCode.SoundManager.instance.GeneralSoundPlay(effecter[0],_state, speedMultipler, isMetal, bodySize, _character.nowGround,prevS);
             }
         }
 
@@ -598,10 +627,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //共通素材を使用した場合の後処理
             if (generalEType != EffectCondition.EmitType.None)
             {
+                
+                Debug.Log($"あｄｆげｇｄ{generalEType}{_movement.PreviousState}");
                 //ステートの終わりに使用する素材であるのなら
                 if (generalEType == EffectCondition.EmitType.End)
                 {
-                    prevE = MyCode.SoundManager.instance.GeneralEffectPlay(effecter,_useState,  bodySize, _character.nowGround,prevE,sizeMultipler, transform.localScale.x > 0);
+                    prevE = MyCode.SoundManager.instance.GeneralEffectPlay(effecter[0],_useState,  bodySize, _character.nowGround,prevE,sizeMultipler, transform.localScale.x > 0);
 
                 }
                 generalEType = EffectCondition.EmitType.None;
@@ -610,8 +641,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 pubEUsed = false;
             }
            // 固有素材を使用した場合の後処理
-            else
-            {
                 //再生中、待機中のエフェクトが一つでもあるなら
                 if (_waitEffect.Any())
                 {
@@ -641,7 +670,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     _loopEffect.Clear();
                 }
 
-            }
+
         }
 
         /// <summary>
@@ -655,7 +684,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 if (generalSType == EffectCondition.EmitType.End)
                 {
-                    prevS = MyCode.SoundManager.instance.GeneralSoundPlay(effecter, _useState, speedMultipler, isMetal, bodySize, _character.nowGround, prevS);
+                    prevS = MyCode.SoundManager.instance.GeneralSoundPlay(effecter[0], _useState, speedMultipler, isMetal, bodySize, _character.nowGround, prevS);
                 }
 
                 generalSType = EffectCondition.EmitType.None;
@@ -706,6 +735,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void EffectStartEvent(int number)
         {
 
+      
 
             //これがノンじゃないなら共通で再生
             if (generalEType != EffectCondition.EmitType.None)
@@ -718,12 +748,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                 pubEUsed = true;
 
-                prevE = MyCode.SoundManager.instance.GeneralEffectPlay(effecter,_useState,   bodySize, _character.nowGround,prevE,sizeMultipler, transform.localScale.x > 0);
+                prevE = MyCode.SoundManager.instance.GeneralEffectPlay(effecter[0],_useState,   bodySize, _character.nowGround,prevE,sizeMultipler, transform.localScale.x > 0);
 
                 //リピート処理を開始
                 if (generalEType == EffectCondition.EmitType.Repeat || generalEType == EffectCondition.EmitType.WaitRepeat)
                 {
-                    GeneralERepeat(effecter, _useState, speedMultipler, isMetal, bodySize, _character.nowGround, prevS, Time.time - waitTimer).Forget();
+                    GeneralERepeat(effecter[0], _useState, speedMultipler, isMetal, bodySize, _character.nowGround, prevS, Time.time - waitTimer, oneTimeKey).Forget();
                 }
             }
             else
@@ -733,6 +763,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 {
                     return;
                 }
+
 
                 _waitEffect[number].isUsed = true;
 
@@ -752,7 +783,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 if (_waitEffect[number]._emitType == EffectCondition.EmitType.Repeat || _waitEffect[number]._emitType == EffectCondition.EmitType.WaitRepeat)
                 {
                     //繰り返す素材の再生始動
-                    EffectRepeat(_waitEffect[number], Time.time - waitTimer, _useState).Forget();
+                    EffectRepeat(_waitEffect[number], Time.time - waitTimer, _useState, oneTimeKey).Forget();
                 }
             }
         }
@@ -777,13 +808,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                 pubSUsed = true;
 
-                prevS = MyCode.SoundManager.instance.GeneralSoundPlay(effecter,_useState, speedMultipler, isMetal, bodySize, _character.nowGround,prevS);
+                prevS = MyCode.SoundManager.instance.GeneralSoundPlay(effecter[0],_useState, speedMultipler, isMetal, bodySize, _character.nowGround,prevS);
 
 
                 if (generalSType == EffectCondition.EmitType.Repeat || generalSType == EffectCondition.EmitType.WaitRepeat)
                 {
 
-                    GeneralSRepeat(effecter, _useState, speedMultipler, isMetal, bodySize, _character.nowGround, prevS, Time.time - waitTimer).Forget();
+                    GeneralSRepeat(effecter[0], _useState, speedMultipler, isMetal, bodySize, _character.nowGround, prevS, Time.time - waitTimer,oneTimeKey).Forget();
                 }
             }
             else
@@ -805,7 +836,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 if (type == EffectCondition.EmitType.Repeat || type == EffectCondition.EmitType.WaitRepeat)
                 {
                     //繰り返す素材の再生始動
-                    SoundRepeat(_waitSound[number], Time.time - waitTimer, _useState).Forget();
+                    SoundRepeat(_waitSound[number], Time.time - waitTimer, _useState, oneTimeKey).Forget();
                 }
 
             }
@@ -823,12 +854,27 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
         /// <summary>
+        /// XとYの間で乱数を出す
+        /// 乱数はリピート処理で確認のために使う
+        /// </summary>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <returns></returns>
+        public int RandomValue(int X, int Y)
+        {
+
+            return UnityEngine.Random.Range(X, Y + 1);
+
+        }
+
+
+        /// <summary>
         /// エフェクトのステータスに合わせて適切に生成する
         /// </summary>
         ParticleSystem EffectSpawn(EffectCondition.StateEffect effect)
         {
             //エフェクトを出したい場所を指定しないなら標準のエフェクト生成地点を使う
-            Transform posi = effect._emitPosition != null ? effect._emitPosition : effecter;
+            Transform posi = effecter[effect._emitPosition];
 
                   ParticleSystem ef;
             //アニメの再生速度に合わせないなら
@@ -838,7 +884,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 
                 if (effect._isFollow)
                 {
-                    ef = particlesPool.Spawn(effect._useEffect,posi.position, posi.rotation, posi);
+                    ef = particlesPool.ControlSpawn(effect._useEffect,posi.position, posi.rotation, posi);
                 }
                 else
                 {
@@ -852,7 +898,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 if (effect._isFollow)
                 {
-                    ef = particlesPool.Spawn(effect._useEffect, posi.position, posi.rotation, posi);
+                    ef = particlesPool.ControlSpawn(effect._useEffect, posi.position, posi.rotation, posi);
                 }
                 else
                 {
@@ -905,7 +951,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 if (sound._isFollow)
                 {
-                    GManager.instance.FollowSound(sound._useSound, effecter, pitch: speedMultipler);
+                    GManager.instance.FollowSound(sound._useSound, effecter[0], pitch: speedMultipler);
                 }
                 else
                 {
@@ -919,43 +965,49 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <summary>
         /// ステートにとどまるかぎりエフェクトを繰り返す
         /// </summary>
-        /// <param name="effect"></param>
-        /// <param name="waitTime"></param>
-        /// <param name="_state"></param>
+        /// <param name="effect">使用するエフェクトの情報</param>
+        /// <param name="waitTime">再生間隔</param>
+        /// <param name="_state">現在の状態</param>
         /// <returns></returns>
-        async UniTaskVoid EffectRepeat(EffectCondition.StateEffect effect, float waitTime, SelectState _state)
+        async UniTaskVoid EffectRepeat(EffectCondition.StateEffect effect, float waitTime, SelectState _state,int key)
         {
 
             var token = this.GetCancellationTokenOnDestroy();
 
-            
+
             //指定秒数待つ
             await UniTask.Delay(TimeSpan.FromSeconds(waitTime), cancellationToken: token);
-            
 
-            //リピートしてる音源のステートが維持されてる限りは繰り返し続ける
-            if (_state == _useState)
-            {
+
+            //リピートしてるエフェクトのステートが維持されてる限りは繰り返し続ける
+            //同じ状態でも乱数が変わっていて、一度状態が更新されてるなら排除
+            if (_state == _useState && oneTimeKey == key)
+            { 
                 EffectSpawn(effect);
-                EffectRepeat(effect, waitTime, _state).Forget();
+                EffectRepeat(effect, waitTime, _state,key).Forget();
             }
+
+
         }
 
 
 
-        async UniTaskVoid GeneralERepeat(Transform pos, SelectState state, float multipler, bool isMetal, MyCode.SoundManager.SizeTag _size, MyCharacter.GroundFeature ground, MyCode.SoundManager.PreviousSound prevS, float waitTime)
+        async UniTaskVoid GeneralERepeat(Transform pos, SelectState state, float multipler, bool isMetal, MyCode.SoundManager.SizeTag _size, MyCharacter.GroundFeature ground, MyCode.SoundManager.PreviousSound prevS, float waitTime,int key)
         {
             var token = this.GetCancellationTokenOnDestroy();
 
             //指定秒数待つ
-            await UniTask.Delay(TimeSpan.FromSeconds(waitTime), cancellationToken: token);
+            await (UniTask.Delay(TimeSpan.FromSeconds(waitTime), cancellationToken: token));
 
-            //リピートしてる音源のステートが維持されてる限りは繰り返し続ける
-            if (state == _useState)
+            //リピートしてるエフェクトのステートが維持されてる限りは繰り返し続ける
+            //同じ状態でも乱数が変わっていて、一度状態が更新されてるなら排除
+            if (state == _useState && oneTimeKey == key)
             {
-                prevE = MyCode.SoundManager.instance.GeneralEffectPlay(effecter, _useState, bodySize, _character.nowGround, prevE, sizeMultipler, transform.localScale.x > 0);
-                GeneralERepeat(pos, state, multipler, isMetal, _size, ground, prevS, waitTime).Forget();
+               
+                prevE = MyCode.SoundManager.instance.GeneralEffectPlay(effecter[0], _useState, bodySize, _character.nowGround, prevE, sizeMultipler, transform.localScale.x > 0);
+                GeneralERepeat(pos, state, multipler, isMetal, _size, ground, prevS, waitTime,key).Forget();
             }
+
         }
 
 
@@ -967,23 +1019,24 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="waitTime"></param>
         /// <param name="_state"></param>
         /// <returns></returns>
-        async UniTaskVoid SoundRepeat(EffectCondition.StateSound sound, float waitTime, SelectState _state)
+        async UniTaskVoid SoundRepeat(EffectCondition.StateSound sound, float waitTime, SelectState _state,int key)
         {
 
             var token = this.GetCancellationTokenOnDestroy();
 
             //指定秒数待つ
             await UniTask.Delay(TimeSpan.FromSeconds(waitTime),cancellationToken:token);
-            
+
             //リピートしてる音源のステートが維持されてる限りは繰り返し続ける
-            if (_state == _useState)
+            //同じ状態でも乱数が変わっていて、一度状態が更新されてるなら排除
+            if (_state == _useState && oneTimeKey == key)
             {
                 SoundPlay(sound);
-                SoundRepeat(sound,waitTime,_state).Forget();
+                SoundRepeat(sound,waitTime,_state,key).Forget();
             }
         }
 
-        async UniTaskVoid GeneralSRepeat(Transform pos, SelectState state, float multipler, bool isMetal, MyCode.SoundManager.SizeTag _size, MyCharacter.GroundFeature ground, MyCode.SoundManager.PreviousSound prevS,float waitTime)
+        async UniTaskVoid GeneralSRepeat(Transform pos, SelectState state, float multipler, bool isMetal, MyCode.SoundManager.SizeTag _size, MyCharacter.GroundFeature ground, MyCode.SoundManager.PreviousSound prevS,float waitTime,int key)
         {
             var token = this.GetCancellationTokenOnDestroy();
 
@@ -991,10 +1044,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             await UniTask.Delay(TimeSpan.FromSeconds(waitTime), cancellationToken: token);
 
             //リピートしてる音源のステートが維持されてる限りは繰り返し続ける
-            if (state == _useState)
+            //同じ状態でも乱数が変わっていて、一度状態が更新されてるなら排除
+            if (state == _useState && oneTimeKey == key)
             {            
-                prevS = MyCode.SoundManager.instance.GeneralSoundPlay(effecter, _useState, speedMultipler, isMetal, bodySize, _character.nowGround, prevS);
-                GeneralSRepeat(pos,state,multipler,isMetal,_size,ground,prevS,waitTime).Forget();
+                prevS = MyCode.SoundManager.instance.GeneralSoundPlay(effecter[0], _useState, speedMultipler, isMetal, bodySize, _character.nowGround, prevS);
+                GeneralSRepeat(pos,state,multipler,isMetal,_size,ground,prevS,waitTime,key).Forget();
             }
         }
 

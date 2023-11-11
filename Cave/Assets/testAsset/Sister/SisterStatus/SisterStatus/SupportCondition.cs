@@ -1,6 +1,6 @@
 using UnityEngine;
 [System.Serializable]
-public class SupportCondition
+public class SupportCondition:SisterConditionBase
 {
 
     /// <summary>
@@ -36,10 +36,12 @@ public class SupportCondition
     [HideInInspector]
     public enum MagicJudge
     {
-        各種支援魔法,
         攻撃ステートに,
+        支援ステートを継続,
         回復ステートに,
-        なにもしない
+        なにもしない,
+        各種支援魔法
+
 
     }
     public MagicJudge ActBase= MagicJudge.なにもしない;

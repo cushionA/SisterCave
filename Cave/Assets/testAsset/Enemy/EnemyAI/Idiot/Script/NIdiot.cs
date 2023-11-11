@@ -47,12 +47,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         {
                             //SetAttackNumber(0);
                             //attackNumber = 0;
-                            Attack(true);
+                       //     Attack(true);
                         }
                         else if (RandomValue(1, 100) <= 60)
                         {
                            // Debug.Log("連続攻撃");
-                            Attack(true, 1);
+                     //       Attack(true, 1);
                         }
                         attackChanceTime = 0.0f;
 
@@ -67,7 +67,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 if (isMovable)
                 {
                    // Debug.Log($"ｄｓｆｓｆｓｆ");
-                    AgrMove();
+                   // AgrMove();
                 }
                 else
                 {
@@ -78,7 +78,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             else if (!isAggressive)
             {
                 //  PatrolFly();
-                PatrolMove();
+               // PatrolMove();
             }
 
 

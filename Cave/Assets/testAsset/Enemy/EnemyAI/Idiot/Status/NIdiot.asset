@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 832aa2b1771573b45a71909acaa2b710, type: 3}
   m_Name: NIdiot
   m_EditorClassIdentifier: 
-  isPoison: 0
-  isParalyze: 0
+  characterType: 0
   level: 1
   maxHp: 600
   maxMp: 30
@@ -25,6 +24,7 @@ MonoBehaviour:
   fireDef: 20
   thunderDef: 70
   Armor: 35
+  dropItem: []
   Atk: 0
   phyAtk: 100
   holyAtk: 0
@@ -41,9 +41,8 @@ MonoBehaviour:
   isMetal: 0
   shieldType: 0
   _bodySize: 0
-  addSpeed: {x: 300, y: 0}
   patrolSpeed: {x: 10, y: 0}
-  waitDistance: {x: 15, y: 0}
+  waitDistance: {x: 60, y: 0}
   waitRes: 1
   combatSpeed: {x: 20, y: 0}
   agrDistance:
@@ -52,7 +51,6 @@ MonoBehaviour:
   adjust: 7
   escapeDistance: {x: 200, y: 150}
   chaseRes: 23
-  jumpPower: 150
   jumpRes: 0.4
   jumpCool: 12
   jumpLimit: 0
@@ -60,20 +58,12 @@ MonoBehaviour:
   avoidRes: 0.4
   avoidCool: 12
   firstGravity: 180
-  downRes: 1
-  velocityMin: {x: -1000, y: -1000}
-  velocityMax: {x: 1000, y: 1000}
+  money: 0
+  strong: 0
   enemyFire:
   - {fileID: 11400000, guid: 931b7a03fcabaf9489c54ec0349f2d01, type: 2}
-  money: 0
-  dropItem: []
-  strong: 0
-  boss: 0
-  kind: 0
   wp: 05000000
   serectableNumber: 01000000
-  atkDisplay: 0
-  defDisplay: 0
   atValue:
   - EffectLevel: 0
     motionType: 2
@@ -103,6 +93,7 @@ MonoBehaviour:
     backAttack: 0
     mainElement: 0
     phyElement: 0
+    endCondition: 0
   - EffectLevel: 0
     motionType: 2
     mValue: 1
@@ -131,6 +122,7 @@ MonoBehaviour:
     backAttack: 0
     mainElement: 0
     phyElement: 0
+    endCondition: 0
   - EffectLevel: 0
     motionType: 2
     mValue: 1.2
@@ -159,8 +151,18 @@ MonoBehaviour:
     backAttack: 0
     mainElement: 0
     phyElement: 0
-  parriable: 0
+    endCondition: 0
+  AttackCondition: []
+  attackFrquency: 0
+  modeChangeCondition: []
+  hateBehaivior:
+    TargetChangeTime: 0
+    priorityTarget: []
+    hateEffect:
+    - _influence: 2
+      isHigh: 0
+    attackLockCount: 0
+    level: 0
+    _event: 0
   unBaind: 1
-  attackType: 0
   disparriableScale: {x: 0, y: 0, z: 0}
-  guardSound: 

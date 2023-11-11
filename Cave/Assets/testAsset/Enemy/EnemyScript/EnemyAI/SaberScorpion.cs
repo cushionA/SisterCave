@@ -48,19 +48,20 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 {
 
                     //モーション中振り向けちゃう問題はこのテストモードだけ
-                    Attack(true, tesnum);
+                   // Attack(true, tesnum);
 
                  //   test = false;
                 }
                 else
                 {
+                    //攻撃しないまま二秒経過したら
                     if (attackChanceTime >= 2 && !atV.isCombo)
                     {
                         if (Mathf.Abs(distance.x) >= 45)
                         {
                             if (RandomValue(1, 100) <= 35)
                             {
-                                Attack(true, 5);
+                           //     Attack(true, 5);
                             }
                             attackChanceTime = 0.0f;
                         }
@@ -68,7 +69,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         {
                             if (RandomValue(1, 100) <= 55)
                             {
-                                Attack(true, 4);
+                            //    Attack(true, 4);
                             }
                             rareAttack = false;
                             attackChanceTime = 0.0f;
@@ -80,12 +81,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             {
                                 //SetAttackNumber(0);
                                 //attackNumber = 0;
-                                Attack(true, 1);
+                           //     Attack(true, 1);
                             }
                             else if (RandomValue(1, 100) <= 60)
                             {
                                 //   Debug.Log("連続攻撃");
-                                Attack(true, 2);
+                            //    Attack(true, 2);
 
                             }
                             else
@@ -103,27 +104,32 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
 
 
-                    
+                 //動ける状態なら
                 if(isMovable)
                 {
+                    //停止中はガード
                     if ((ground == EnemyStatus.MoveState.stay))
                     {
                         _guard.ActGuard();
                     }
+                    //移動開始した場合ガード解除
                     else
                     {
                         _guard.GuardEnd();
                     }
                     
-                    AgrMove();
+                    //戦闘中の移動
+                    //マスターデータの設定に従い間合いを維持する
+                //    AgrMove();
                 }
 
                 
             }
             else if (!isAggressive)
             {
-                //  PatrolFly();
-                PatrolMove();
+                //非戦闘時の移動
+                //マスターデータの設定に従い巡回する
+           //     PatrolMove();
             }
 
             //  AirJump(direX * status.combatSpeed.x / 2);

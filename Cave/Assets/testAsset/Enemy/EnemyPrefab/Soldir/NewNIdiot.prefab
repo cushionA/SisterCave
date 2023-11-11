@@ -138,7 +138,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.0000013113022, y: 0.01999998, z: 0}
     m_Extent: {x: 0.34000134, y: 1.8400003, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &342122272598523910
@@ -245,7 +244,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.026380002, y: 0.019219875, z: 0}
     m_Extent: {x: 0.7763801, y: 2.84814, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &442129864823033921
@@ -384,7 +382,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.11672115, y: 0.021722674, z: 0}
     m_Extent: {x: 1.4782798, y: 0.75655997, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!114 &35763363672765145
@@ -402,6 +399,7 @@ MonoBehaviour:
   m_CategoryHash: 5.049859e-23
   m_labelHash: 1.8734923e-37
   m_SpriteKey: 0.0061819493
+  m_SpriteHash: 1003131379
 --- !u!1 &632160508275046767
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,7 +571,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.0035598278, y: 0, z: 0}
     m_Extent: {x: 1.0035596, y: 3.1799996, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &1029734784205818121
@@ -979,7 +976,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.0048950315, y: 0.0049991608, z: 0}
     m_Extent: {x: 0.3199786, y: 1.7, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!114 &3975206318946960318
@@ -997,6 +993,7 @@ MonoBehaviour:
   m_CategoryHash: 2.6313093e-29
   m_labelHash: 0.000000021120304
   m_SpriteKey: 3.9479064e-17
+  m_SpriteHash: 607522983
 --- !u!1 &1837820772122328562
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,7 +1098,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.019969463, y: 0.025272071, z: 0}
     m_Extent: {x: 0.41984034, y: 0.96880007, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &2018982336978372477
@@ -1408,7 +1404,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.034020066, y: 0.0052275658, z: 0}
     m_Extent: {x: 1.13598, y: 3.1093397, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &2750369758871439853
@@ -1547,7 +1542,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.0071799755, y: 0.0063476562, z: 0}
     m_Extent: {x: 1.9515803, y: 2.26986, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &2874564599449466183
@@ -1687,7 +1681,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.029969811, y: 0.003572464, z: 0}
     m_Extent: {x: 0.78000045, y: 0.9688999, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!114 &8189072626759704035
@@ -1705,6 +1698,7 @@ MonoBehaviour:
   m_CategoryHash: 2.6182188e-37
   m_labelHash: 0.0000000015304741
   m_SpriteKey: 2.401927e-25
+  m_SpriteHash: 378842125
 --- !u!1 &3082641420050948493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1873,7 +1867,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.009968907, y: 0.00000035762787, z: 0}
     m_Extent: {x: 0.3399995, y: 1.8600004, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &3390095726363720675
@@ -2108,7 +2101,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.01953888, y: 0.030700088, z: 0}
     m_Extent: {x: 1.0195999, y: 0.8992999, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &3749891010541483688
@@ -2245,7 +2237,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0, y: 0.027900338, z: 0}
     m_Extent: {x: 1.46, y: 0.6177001, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &4056624144253407284
@@ -2384,7 +2375,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.006199956, y: 0.015200138, z: 0}
     m_Extent: {x: 1.9137602, y: 2.37208, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &4147392956564469178
@@ -2522,7 +2512,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.019968957, y: 0.019612432, z: 0}
     m_Extent: {x: 0.35995993, y: 1.7996196, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &4478966004017675832
@@ -2602,6 +2591,25 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -2621,6 +2629,7 @@ PolygonCollider2D:
       - {x: 3, y: 0}
       - {x: 48.112938, y: 152.59471}
       - {x: -48.112938, y: 152.59471}
+  m_UseDelaunayMesh: 0
 --- !u!50 &3925900778316418601
 Rigidbody2D:
   serializedVersion: 4
@@ -2638,6 +2647,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 0
   m_CollisionDetection: 0
@@ -2895,7 +2910,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: -0.000030517578, y: 0.015919685, z: 0}
     m_Extent: {x: 1.2600001, y: 3.5647197, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &4730731228800828259
@@ -3037,7 +3051,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.021699905, y: 0.014199793, z: 0}
     m_Extent: {x: 1.4783003, y: 0.75419986, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!114 &765139243460473940
@@ -3055,6 +3068,7 @@ MonoBehaviour:
   m_CategoryHash: 1.8249247e-17
   m_labelHash: 1.2186372e-24
   m_SpriteKey: 2.0719737e-19
+  m_SpriteHash: 544513424
 --- !u!1 &4764025882163570536
 GameObject:
   m_ObjectHideFlags: 0
@@ -3210,7 +3224,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.019958377, y: 0.020004034, z: 0}
     m_Extent: {x: 0.3799945, y: 2.4199986, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &5018064558705384831
@@ -3446,7 +3459,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.009968162, y: 0.0063672066, z: 0}
     m_Extent: {x: 0.36000115, y: 1.8736408, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &6086428159754656703
@@ -3554,7 +3566,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: -0.00000020861626, y: -0.0031597614, z: 0}
     m_Extent: {x: 0.3199599, y: 1.6968404, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!114 &555914892443684395
@@ -3572,6 +3583,7 @@ MonoBehaviour:
   m_CategoryHash: 2.3683408e-10
   m_labelHash: 5.2352823e-27
   m_SpriteKey: 2.4219825e-15
+  m_SpriteHash: 657360305
 --- !u!1 &6103128846166722904
 GameObject:
   m_ObjectHideFlags: 0
@@ -3793,7 +3805,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.000059843063, y: 0.0020399094, z: 0}
     m_Extent: {x: 2.1572194, y: 2.7379603, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &6390178336062551897
@@ -3933,7 +3944,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.0035194159, y: 0.0153000355, z: 0}
     m_Extent: {x: 1.0331202, y: 3.6195402, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &6564492336005625847
@@ -4102,7 +4112,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.024429679, y: 0.0000076293945, z: 0}
     m_Extent: {x: 1.7726603, y: 2.3316, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &6858108439572247543
@@ -4212,6 +4221,25 @@ CircleCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -4228,6 +4256,25 @@ BoxCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -4454,6 +4501,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -4541,6 +4594,25 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -4873,8 +4945,10 @@ MonoBehaviour:
   isMetal: 0
   bodySize: 0
   sizeMultipler: 1
-  effecter: {fileID: 7080401916363508852}
-  iss: 0
+  effecter:
+  - {fileID: 7080401916363508852}
+  _waitEffect: []
+  generalEType: 7
 --- !u!1 &7230899291126140028
 GameObject:
   m_ObjectHideFlags: 0
@@ -5079,7 +5153,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.019979417, y: 0.01999998, z: 0}
     m_Extent: {x: 0.3799808, y: 2.4200006, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &7662045152451455574
@@ -5186,7 +5259,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.019800186, y: -0.0026597977, z: 0}
     m_Extent: {x: 1.1598003, y: 2.15734, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &7686571920613664687
@@ -5326,7 +5398,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.00090944767, y: 0, z: 0}
     m_Extent: {x: 1.03334, y: 3.6399999, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &7979082222389611157
@@ -5872,7 +5943,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.01999998, y: 0.0034880638, z: 0}
     m_Extent: {x: 0.6600001, y: 2.8965197, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &8259834590911756569
@@ -6045,7 +6115,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.014249563, y: 0.016279936, z: 0}
     m_Extent: {x: 0.8942803, y: 3.6444006, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &8393539576201490128
@@ -6183,7 +6252,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.029739946, y: 0.030047476, z: 0}
     m_Extent: {x: 0.41969997, y: 1.0116398, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &8798496921597831905
@@ -6290,7 +6358,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.019999802, y: 0.03430009, z: 0}
     m_Extent: {x: 0.6600003, y: 2.915701, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!1 &8812388810060341593
@@ -6493,7 +6560,6 @@ MonoBehaviour:
   m_Bounds:
     m_Center: {x: 0.035013616, y: 0.12477881, z: 0}
     m_Extent: {x: 0.7050798, y: 0.96498054, z: 0}
-  m_UseBatching: 1
   m_AlwaysUpdate: 1
   m_AutoRebind: 0
 --- !u!114 &1582463928708367209
@@ -6511,6 +6577,7 @@ MonoBehaviour:
   m_CategoryHash: 0.04429719
   m_labelHash: 5.6514085e-20
   m_SpriteKey: 1.810449e-10
+  m_SpriteHash: 793186204
 --- !u!1 &9126518357662982705
 GameObject:
   m_ObjectHideFlags: 0

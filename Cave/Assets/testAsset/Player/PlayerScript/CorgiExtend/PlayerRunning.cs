@@ -53,6 +53,7 @@ namespace MoreMountains.CorgiEngine
 		bool isStaminaLock;
 
 
+
 		/// <summary>
 		///　ここで、パラメータを初期化する必要があります。
 		/// </summary>
@@ -92,45 +93,62 @@ namespace MoreMountains.CorgiEngine
 			*/
 			#endregion
 
-			if ((_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed) && _horizontalInput != 0)
+			if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown || _inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
 			{
 				if (pressTime == 0)
 				{
 					pressTime = Time.time;
 				}
-				//スタミナ切れしたらしばらく走れない。壁にぶつかってる時も走れない？
-                if (isStaminaLock || (_controller.State.IsCollidingLeft) || (_controller.State.IsCollidingRight))
+				//スタミナ切れしたらしばらく走れない。
+                if (isStaminaLock)
                 {
 					return;
                 }
-				RunStart();
+
+				if (_horizontalInput != 0)
+				{
+					Debug.Log("おにく");
+					RunStart();
+				}
 				
 			}
 			if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
 			{
-				RunStop();
-			//	Debug.Log($"{pressTime}秒");
+
+
+				if (_movement.CurrentState == CharacterStates.MovementStates.Running && Time.time - pressTime > avoidBuffer)
+				{
+					DelayRunSttop().Forget();
+				}
+
 				//指定した時間以内にボタンが離されていたら回避
-				if(Time.time - pressTime < avoidBuffer && pressTime > 0)
+				if(Time.time - pressTime < avoidBuffer)
                 {
-					//Debug.Log($"sdddsds{Time.time - pressTime < avoidBuffer}wdwww{pressTime}dddd{Time.time - pressTime}");
+					Debug.Log($"sdddsds{Time.time - pressTime < avoidBuffer}wdwww{pressTime}dddd{Time.time - pressTime}");
 					roll.actRoll = true;
-					
-                }
-				pressTime = 0;
+					pressTime = 0;
+				}
+
+				
 			}
 			//スタミナ切れ
 			else if ((_horizontalInput == 0 || GManager.instance.stamina <= 0) && _movement.CurrentState == CharacterStates.MovementStates.Running)
             {
+
 				RunStop();
 
-				if (GManager.instance.stamina <= 0)
+
+				if (GManager.instance.stamina <= 0 && !isStaminaLock)
 				{
+					
+					Debug.Log("あjjjjj");
 					isStaminaLock = true;
 
 					//ロックは時限解除
 					UnLock().Forget();
 				}
+
+
 			}
 
 				if (AutoRun)
@@ -141,6 +159,7 @@ namespace MoreMountains.CorgiEngine
 				}
 				else
 				{
+					
 					_inputManager.RunButton.State.ChangeState(MMInput.ButtonStates.ButtonUp);
 					RunStop();
 				}
@@ -150,6 +169,15 @@ namespace MoreMountains.CorgiEngine
 		//Update
 		public override void ProcessAbility()
 		{
+			if (isPlayer)
+			{
+			//	Debug.Log($"すたみな{isStaminaLock}");
+                if (isStaminaLock)
+                {
+					Debug.Log($"あああｆｇｇｈ{_movement.CurrentState == CharacterStates.MovementStates.Running}");
+                }
+			
+			}
 			base.ProcessAbility();
 			HandleRunningExit();
 
@@ -169,14 +197,15 @@ namespace MoreMountains.CorgiEngine
 				_movement.ChangeState(CharacterStates.MovementStates.Falling);
 				StopFeedbacks();
 			}
-
-			// if we're not moving fast enough, we go back to idle
+			/*
+			 if we're not moving fast enough, we go back to idle
 			if ((Mathf.Abs(_controller.Speed.x) < RunSpeed / 10) && (_movement.CurrentState == CharacterStates.MovementStates.Running) && _startFeedbackIsPlaying)
 			{
+				Debug.Log("あaaaaaaaaaa");
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				StopFeedbacks();
 			}
-
+			*/
 			if ((!_controller.State.IsGrounded) && _startFeedbackIsPlaying)
 			{
 				StopFeedbacks();
@@ -265,7 +294,11 @@ namespace MoreMountains.CorgiEngine
 			RegisterAnimatorParameter(_runningAnimationParameterName, AnimatorControllerParameterType.Bool, out _runningAnimationParameter);
 		}
 
-
+		/// <summary>
+		/// 少し待ってスタミナロック解除
+		/// </summary>
+		/// <param name="isFirst"></param>
+		/// <returns></returns>
 		async UniTaskVoid UnLock(bool isFirst = true)
         {
 			var token = this.GetCancellationTokenOnDestroy();
@@ -292,6 +325,27 @@ namespace MoreMountains.CorgiEngine
             }
 		}
 
+		/// <summary>
+		/// ちょっとダッシュボタン離しちゃったとかでもダッシュ継続できるように
+		/// </summary>
+		/// <returns></returns>
+		async UniTaskVoid DelayRunSttop()
+		{
+			var token = this.GetCancellationTokenOnDestroy();
+
+
+			await UniTask.Delay(TimeSpan.FromSeconds(0.03), cancellationToken: token);
+
+			//少し待ってボタン押されてないなら
+            if (_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.Off)
+			{
+				RunStop();
+				pressTime = 0;
+            }
+
+		}
+
+
 
 		/// <summary>
 		/// At the end of each cycle, we send our Running status to the character's animator
@@ -313,6 +367,7 @@ namespace MoreMountains.CorgiEngine
 			base.ResetAbility();
 			if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
 			{
+				Debug.Log("jjghfhf");
 				RunStop();
 			}
 			if (_animator != null)

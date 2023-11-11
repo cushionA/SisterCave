@@ -685,24 +685,32 @@ MonoBehaviour:
     generalSound: 1
     _stateSounds: []
   - _useState: 3
-    generalEffect: 1
+    generalEffect: 0
     _stateEffects:
     - _useEffect: {fileID: 2759937417337572829, guid: 18079abcfda9b4643917d91159f5e5b5,
         type: 3}
       _emitType: 1
-      _emitPosition: {fileID: 0}
+      _emitPosition: 0
       _isFollow: 0
       _matchAnime: 0
       ignoreDirection: 0
       isUsed: 0
     - _useEffect: {fileID: 19879292, guid: c859afd12a13c0f48924a87897050601, type: 3}
       _emitType: 6
-      _emitPosition: {fileID: 0}
+      _emitPosition: 0
       _isFollow: 0
       _matchAnime: 0
       ignoreDirection: 0
       isUsed: 0
-    generalSound: 1
+    - _useEffect: {fileID: 198656579941637848, guid: 3961c7f7b91bfeb4dba6fed1cc9bc9d8,
+        type: 3}
+      _emitType: 0
+      _emitPosition: 1
+      _isFollow: 1
+      _matchAnime: 0
+      ignoreDirection: 1
+      isUsed: 0
+    generalSound: 0
     _stateSounds:
     - _useSound: DashSoundE
       _playType: 1
@@ -771,6 +779,7 @@ MonoBehaviour:
     _logMessages: 0
     originalScal: {x: 0, y: 0, z: 0}
     spawnPool: {fileID: 0}
+    controller: {fileID: 0}
   AttackEffect: []
   AttackPrefab: []
   isTwin: 0

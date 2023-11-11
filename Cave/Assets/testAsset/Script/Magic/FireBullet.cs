@@ -52,7 +52,7 @@ public class FireBullet : MonoBehaviour
 
 
 	// === 外部パラメータ ======================================
-	[System.NonSerialized] Transform owner;
+	[System.NonSerialized] GameObject owner;
 
 
 
@@ -83,10 +83,7 @@ public class FireBullet : MonoBehaviour
 	bool isAct;	
 	float effectWait;//サポートや回復が再度効果を現すまで
     
-		/// <summary>
-	/// 初期化されてますか？
-	/// </summary>
-	bool _initialized;
+
 	
 	/// <summary>
 	/// すでに衝突したもの
@@ -161,78 +158,35 @@ public class FireBullet : MonoBehaviour
 
     private void OnEnable()
     {
-        if(_user == MasicUser.Player || _user == MasicUser.Sister)
-        {
-			InitializePlayerBullet();
-        }
+
+	　　InitializeBullet();
+
+
+
 		myTransform = new TransformAccessArray(0);
 		myTransform.Add(transform);
 		result = new NativeArray<Vector3>(1, Allocator.Persistent);
 		job.result = result;
-
 	}
 
 
     // === コード（Monobehaviour基本機能の実装） ================
-    async void Start()
+    void Start()
 	{
-		Func<bool> s = () => 
-		{
-			//初期化が完了したかどうかをはかるだけの処理
-			//初期化完了は発射側がやる
-			return _initialized;
-		};
-		_damage.CollidRestoreResset();
+
+		//最初だけやる処理--------------------------------------------------------------
+
+		//ヒット可能回数をセット
 		_damage._attackData._hitLimit = em._hitLimit;
-		//初期化完了が真を返すまで待つ
-
-		var token = this.GetCancellationTokenOnDestroy();
-		await UniTask.WaitUntil(s,cancellationToken:token);
-
-		fireTime = 0;
-
 		if (this.gameObject != null)
 		{
 			col = this.gameObject.MMGetComponentNoAlloc<Collider2D>();
 		}
-
-
-
-
-
-
-
-
-		//Debug.Log($"標的{gameObject.name}");
-
-
-
-		// 存在してる間のサウンドがあるなら
-		if (em.existSound != null)
-		{
-			loud = true;
-			isExPlay = true;
-		}
-
-
-		GManager.instance.PlaySound(em.fireSound, transform.position);
-
-		//	hitSound = em.hitSound != null ? true : false;
-		
-
-
-		if (em.isChild)
-		{
-			Vector3 setScale = transform.localScale;
-			if (direction < 0)
-			{
-				setScale.x = -setScale.x;
-			}
-			transform.localScale = setScale;
-
-		}
-		if(this.gameObject != null)
-		DamageCalc();
+		//ジョブの初期化
+		//一度だけでいい
+		job = new FireJob
+		{ _status = em._moveSt };
+		//-------------------------------------------------------------------------
 
 
 
@@ -262,7 +216,6 @@ public class FireBullet : MonoBehaviour
 		isAct = false;
 		effectWait = 0;//サポートや回復が再度効果を現すまで
 
-		_initialized = false;
 		collisionList.Clear();
 		
 		//ここまで初期化
@@ -277,11 +230,7 @@ public class FireBullet : MonoBehaviour
 	{
 
         Debug.Log($"名前{this.gameObject.name}標的{target == null}");
-		//初期化してないなら戻りましょう
-        if (!_initialized)
-        {
-			return;
-        }
+
 
 		fireTime += Time.fixedDeltaTime;
 		if (collisionList.Count > 0)
@@ -430,7 +379,7 @@ public class FireBullet : MonoBehaviour
 	public void InitializeNextBullet(GameObject _owner, GameObject _target, int _direction,AtEffectCon con)
 	{
 
-		owner = _owner.transform;
+		owner = _owner;
 		target = _target;
 		//使用者に従って
 		if (_user == MasicUser.Child)
@@ -449,41 +398,76 @@ public class FireBullet : MonoBehaviour
 
 		atEf = con;
 
-		//初期化完了
-		_initialized = true;
+
 	}
 
-    void InitializePlayerBullet()
+    void InitializeBullet()
     {
 
-
+		//まずバフを確認とターゲット設定
 		//使用者に従って
 		if (_user == MasicUser.Player)
 		{
-			owner = GManager.instance.Player.transform;
+			owner = GManager.instance.Player;
 			//武器の威力修正でやる？
-			owner.gameObject.MMGetComponentNoAlloc<PlyerController>().BuffCalc(this);
+			owner.MMGetComponentNoAlloc<PlyerController>().BuffCalc(this);
 
 		}
 		else if (_user == MasicUser.Sister)
 		{
-			owner = SManager.instance.Sister.transform;
+			owner = SManager.instance.Sister;
 			target = SManager.instance.restoreTarget;
-			FireAbility fa = owner.gameObject.MMGetComponentNoAlloc<FireAbility>();
+			FireAbility fa = owner.MMGetComponentNoAlloc<FireAbility>();
 			fa.BuffCalc(this);
 			atEf = fa.atEf;
 
 			_healTag = "Player";
+			em._moveSt.angle = SManager.instance.useAngle;
 		}
 
-		em._moveSt.angle = SManager.instance.useAngle;
-		job = new FireJob
-		{ _status = em._moveSt };
 
+
+
+		//弾の存在時間などのステータス初期化
+		fireTime = 0;
+		//当たり判定初期化
+		_damage.CollidRestoreResset();
+
+		//Debug.Log($"標的{gameObject.name}");
+
+		//発射音
+		GManager.instance.PlaySound(em.fireSound, transform.position);
+
+		// 存在してる間のサウンドがあるなら
+		if (em.existSound != null)
+		{
+			loud = true;
+			isExPlay = true;
+		}
+
+
+
+		//子の弾丸なら親の方向で向きを変える
+		if (em.isChild)
+		{
+			Vector3 setScale = transform.localScale;
+			if (direction < 0)
+			{
+				setScale.x = -setScale.x;
+			}
+			transform.localScale = setScale;
+		}
+
+		//この弾丸のダメージを算出
+		if (this.gameObject != null)
+			DamageCalc();
+
+
+
+		//ジョブの初期化
 		job.Initialize(target.transform.position, transform.position);
 
-		
-		_initialized = true;
+
 	}
 
 
@@ -504,7 +488,7 @@ public class FireBullet : MonoBehaviour
 
 
 		// オーナーチェック。あるかどうか、Nullなら戻る
-		if (owner == other.gameObject.transform || isAct || other == null)
+		if (owner == other.gameObject || isAct || other == null)
 		{
 			//Debug.Log($"衝突{owner == other.gameObject.transform}{isAct}{other != null}");// {gameObject.name}");
 			return;

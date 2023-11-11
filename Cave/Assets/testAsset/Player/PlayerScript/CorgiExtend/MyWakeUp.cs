@@ -239,10 +239,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void StartStunn(StunnType type)
         {
 
-
+                _movement.ChangeState(CharacterStates.MovementStates.Idle);
                 _condition.ChangeState(CharacterStates.CharacterConditions.Stunned);
                 _characterHorizontalMovement.SetHorizontalMove(0);
-               // _movement.ChangeState(CharacterStates.MovementStates.Idle);
+                
                 _characterHorizontalMovement.ReadInput = false;
                 if (type == StunnType.Falter)
                 {
@@ -306,7 +306,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-        public int GetStanState()
+        public int GetStunState()
         {
             return nowType;
         }

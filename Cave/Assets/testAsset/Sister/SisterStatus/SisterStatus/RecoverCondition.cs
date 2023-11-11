@@ -1,6 +1,6 @@
 using UnityEngine;
 [System.Serializable]
-public class RecoverCondition
+public class RecoverCondition:SisterConditionBase
 {
     /// <summary>
     /// これは魔法を使用した後再判定を行わずに使うためのキャッシュ
@@ -34,16 +34,10 @@ public class RecoverCondition
     public bool highOrLow;//その項目が以上か以下か。
     //  public byte WeakPointJudge;
 
-    [HideInInspector]
-    public enum MagicJudge
-    {
-        治癒魔法,
-        攻撃ステートに,
-        支援ステートに,
-        なにもしない
 
-    }
-    public MagicJudge ActBase = MagicJudge.なにもしない;
+
+
+    public AttackJudge.UseAction ActBase = AttackJudge.UseAction.なにもしない;
     [Tooltip("支援効果で回復魔法を検索する場合に使う")]
     public SisMagic.SupportType useSupport = SisMagic.SupportType.なし;
 

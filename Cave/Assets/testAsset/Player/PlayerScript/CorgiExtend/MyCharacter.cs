@@ -23,6 +23,7 @@ namespace MoreMountains.CorgiEngine
 		/// associated input manager
 		public new RewiredCorgiEngineInputManager  LinkedInputManager { get; protected set; }
 
+
 		protected  MyAbillityBase[] _myAbilities;
 
 		[HideInInspector]

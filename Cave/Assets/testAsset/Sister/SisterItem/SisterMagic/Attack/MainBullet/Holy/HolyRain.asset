@@ -153,21 +153,6 @@ MonoBehaviour:
   childM: {fileID: 0}
   _usePrefab:
   - prefab: {fileID: 4831422832165140, guid: e96482c459afbc14ea18f40c2e2f30cc, type: 3}
-    preloadAmount: 18
-    preloadTime: 0
-    preloadFrames: 0
-    preloadDelay: 0
-    limitInstances: 0
-    limitAmount: 0
-    limitFIFO: 0
-    cullDespawned: 0
-    cullAbove: 0
-    cullDelay: 0
-    cullMaxPerPass: 0
-    _logMessages: 0
-    originalScal: {x: 0, y: 0, z: 0}
-    spawnPool: {fileID: 0}
-  - prefab: {fileID: 4831422832165140, guid: e96482c459afbc14ea18f40c2e2f30cc, type: 3}
     preloadAmount: 9
     preloadTime: 0
     preloadFrames: 0
@@ -182,12 +167,29 @@ MonoBehaviour:
     _logMessages: 0
     originalScal: {x: 0, y: 0, z: 0}
     spawnPool: {fileID: 0}
+    controller: {fileID: 0}
+  - prefab: {fileID: 400002, guid: d86f1d752fbf0a849bbceaef7590af0c, type: 3}
+    preloadAmount: 9
+    preloadTime: 0
+    preloadFrames: 0
+    preloadDelay: 0
+    limitInstances: 0
+    limitAmount: 0
+    limitFIFO: 0
+    cullDespawned: 0
+    cullAbove: 0
+    cullDelay: 0
+    cullMaxPerPass: 0
+    _logMessages: 0
+    originalScal: {x: 0, y: 0, z: 0}
+    spawnPool: {fileID: 0}
+    controller: {fileID: 0}
   _moveSt:
     fireType: 3
     lifeTime: 8
     speedV: 1
     speedA: 400
-    angle: -45.35973
+    angle: 0
     homingTime: 0
     homingAngleV: 0
     homingAngleA: 0

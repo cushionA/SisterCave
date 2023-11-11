@@ -8,6 +8,22 @@ public class EnemyValue
 {
 
     /// <summary>
+    /// 攻撃の終了条件
+    /// </summary>
+    public enum AttackEndCondition
+    {
+        モーション終了,
+        着地か時間経過,
+        移動か時間経過,
+        ヒットかモーション終了,
+        ヒットか時間経過,
+        補足行動の終了
+        
+    }
+
+
+
+    /// <summary>
     /// どんなエフェクトや音をもらうか
     /// 攻撃の威力レベル
     /// </summary>
@@ -56,7 +72,7 @@ public class EnemyValue
     ///<summary>
     ///この確率で攻撃後退く
     ///</summary>
-    public float escapePercentage;
+    public int escapePercentage;
 
 
     /// <summary>
@@ -117,4 +133,11 @@ public class EnemyValue
 
     [Tooltip("攻撃の物理属性")]
     public Equip.AttackType phyElement;
+
+
+    /// <summary>
+    /// 落下攻撃中や突進など攻撃を終わらせたくないときに
+    /// 終了条件を表す
+    /// </summary>
+    public AttackEndCondition endCondition;
 }

@@ -6,6 +6,8 @@ using MoreMountains.Feedbacks;
 using UnityEngine.AddressableAssets;
 using Rewired.Integration.CorgiEngine;
 using DarkTonic.MasterAudio;
+using static CombatManager;
+using UnityEngine.UIElements;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -18,7 +20,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	/// ・各メソッドでは状態変化と移動方向だけ指定
     /// </summary>
     [AddComponentMenu("Corgi Engine/Character/Abilities/BrainAbility")]
-    public class BrainAbility : MyAbillityBase
+    public class BrainAbility : ControllAbillity
     {
         /// このメソッドは、ヘルプボックスのテキストを表示するためにのみ使用されます。
         /// 能力のインスペクタの冒頭にある
@@ -461,6 +463,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				PatrolMove();
 
 			}
+
 		}
 		/// <summary>
 		/// 今の立ち位置が正しいかどうか確かめるために攻撃後に呼ぶ
@@ -1077,6 +1080,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//Debug.Log($"当たったもの{onHitRay.transform.gameObject.name}");
 			return onHitRay.point.y;
 		}
+
+
 		bool CheckEnd(string Name)
 		{
 
@@ -1150,6 +1155,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 
 
+
+		/// <summary>
+		/// 移動などのデータをセット
+		/// 最初に呼ぶ
+		/// </summary>
+		/// <param name="status"></param>
 		protected void ParameterSet(SisterStatus status)
 		{
 			///<summary>
@@ -1198,10 +1209,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 
 
-		public void Flip(int direction)
-		{
 
-		}
 		/// <summary>
 		///  必要なアニメーターパラメーターがあれば、アニメーターパラメーターリストに追加します。
 		/// </summary>
@@ -1221,5 +1229,226 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 
 
-	}
+
+		/// <summary>
+		/// 自分のデータを送る
+		/// </summary>
+		/// <param name="num"></param>
+		/// <exception cref="System.NotImplementedException"></exception>
+        public override void TargetDataSet(int num)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void TargetDataAdd()
+        {
+
+            TargetData imfo = new TargetData();
+
+            imfo._baseData = status._charaData;
+
+            imfo._condition.targetPosition = myPosition;
+            imfo._condition.hpRatio = _health.CurrentHealth / status.maxHp;
+            imfo._condition.isBuffOn = false;
+            imfo._condition.isDebuffOn = false;
+
+            imfo.targetObj = this.gameObject;
+
+
+            EnemyManager.instance._targetList.Add(imfo);
+        }
+
+        public override void TargetListChange(int deletEnemy)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override int ReturnID()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void CommandEvent(EnemyStatus.TargetingEvent _event, int level, int targetNum, int commanderID)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void GuardReport()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void BuffCalc(FireBullet _fire)
+        {
+            throw new System.NotImplementedException();
+        }
+
+
+		/// <summary>
+		/// 魔力回復
+		/// </summary>
+		void MPRecover()
+		{
+            //行動してないとき魔力回復
+            if (_condition.CurrentState != CharacterStates.CharacterConditions.Moving)
+            {
+                recoverTime += _controller.DeltaTime;
+                if (recoverTime >= 2.5 && mp < maxMp)
+                {
+                    //クールタイム中は魔力回復1.2倍
+                    float recoverAmo = disEnable ? SManager.instance.sisStatus.mpRecover * 1.2f : SManager.instance.sisStatus.mpRecover;
+
+                    mp += (recoverAmo + SManager.instance.sisStatus.additionalRecover);
+                    recoverTime = 0;
+                }
+            }
+
+            //限界量は超えないように
+            if (mp > maxMp)
+            {
+                mp = maxMp;
+
+            }
+        }
+
+		/// <summary>
+		/// パリィ判定は魔法によって出す？
+		/// </summary>
+		/// <param name="isBreake"></param>
+		/// <exception cref="System.NotImplementedException"></exception>
+        public override void ParryStart(bool isBreake)
+        {
+            throw new System.NotImplementedException();
+        }
+
+		/// <summary>
+		/// これがダメージ音になるのか
+		/// </summary>
+        public override void GuardSound()
+        {
+
+        }
+
+
+		/// <summary>
+		/// アーマーの耐久値が少しずつ回復するようにする？
+		/// </summary>
+        public override void ArmorReset()
+        {
+            
+        }
+
+
+        public override void StartStun(MyWakeUp.StunnType stunState)
+        {
+
+        }
+
+		/// <summary>
+		/// 魔力削り？
+		/// </summary>
+		/// <param name="shock"></param>
+		/// <param name="isBlow"></param>
+		/// <param name="isBack"></param>
+		/// <returns></returns>
+        public override MyWakeUp.StunnType ArmorControll(float shock, bool isBlow, bool isBack)
+        {
+            throw new System.NotImplementedException();
+        }
+
+
+		/// <summary>
+		/// 死以外はなし
+		/// HPを見て確認してね
+		/// </summary>
+		/// <returns></returns>
+		/// <exception cref="System.NotImplementedException"></exception>
+        public override int GetStunState()
+        {
+
+        }
+
+		/// <summary>
+		/// アーマーは魔力でしょ？
+		/// 魔法しか使わないし呼ばれることはない
+		/// </summary>
+		/// <returns></returns>
+        public override bool ParryArmorJudge()
+        {
+			return false;
+        }
+
+		/// <summary>
+		/// 空中ダウンを判定
+		/// 常にfalse
+		/// </summary>
+		/// <param name="stunnState"></param>
+		/// <returns></returns>
+		/// <exception cref="System.NotImplementedException"></exception>
+        public override bool AirDownJudge(MyWakeUp.StunnType stunnState)
+        {
+			return false;
+        }
+
+		/// <summary>
+		/// 最終的なダメージを計算
+		/// 常にガード状態
+		/// </summary>
+
+        public override void DamageCalc()
+        {
+            throw new System.NotImplementedException();
+        }
+
+		/// <summary>
+		/// 防御力を計算
+		/// </summary>
+		/// <exception cref="System.NotImplementedException"></exception>
+        public override void DefCalc()
+        {
+            throw new System.NotImplementedException();
+        }
+
+
+		/// <summary>
+		/// 死亡モーション開始
+		/// </summary>
+		/// <param name="stunnState"></param>
+        public override void DeadMotionStart(MyWakeUp.StunnType stunnState)
+        {
+
+        }
+
+
+		/// <summary>
+		/// ダメージ受けた時にイベントを飛ばせる
+		/// 攻撃してきたやつをスタンしやすい状態にするか、あるいはプレイヤーを強化するか
+		/// </summary>
+		/// <param name="isStunn"></param>
+		/// <param name="enemy"></param>
+		/// <exception cref="System.NotImplementedException"></exception>
+        public override void DamageEvent(bool isStunn, GameObject enemy)
+        {
+            throw new System.NotImplementedException();
+        }
+
+		/// <summary>
+		/// ダメージ受けたことを通知？
+		/// </summary>
+		/// <param name="isBack"></param>
+		/// <exception cref="System.NotImplementedException"></exception>
+        public override void HitReport(bool isBack)
+        {
+            throw new System.NotImplementedException();
+        }
+
+		/// <summary>
+		/// バリアが消えて一定時間消える
+		/// </summary>
+		/// <exception cref="System.NotImplementedException"></exception>
+        public override void Die()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }

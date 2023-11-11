@@ -226,7 +226,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             {
                                 if (useList[i].isFollow)
                                 {
-                                    atPool.Spawn(useList[i].particle, effectPosi.position, effectPosi.rotation, effectPosi);
+                                    atPool.ControlSpawn(useList[i].particle, effectPosi.position, effectPosi.rotation, effectPosi);
                                 }
                                 else
                                 {

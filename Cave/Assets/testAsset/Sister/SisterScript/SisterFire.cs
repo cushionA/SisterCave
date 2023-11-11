@@ -473,7 +473,7 @@ public class SisterFire : MonoBehaviour
 					{
 						for (int i = 0; i < targetList.Count; i++)
 						{
-							if (selectNumber == 150 || statusList[i].status.atkDisplay > statusList[selectNumber].status.atkDisplay)
+							if (selectNumber == 150 || statusList[i].status._charaData.displayAtk > statusList[selectNumber].status._charaData.displayAtk)
 							{
 								selectNumber = i;
 							}
@@ -483,7 +483,7 @@ public class SisterFire : MonoBehaviour
 					{
 						for (int i = 0; i < targetList.Count; i++)
 						{
-							if (selectNumber == 150 || statusList[i].status.atkDisplay < statusList[selectNumber].status.atkDisplay)
+							if (selectNumber == 150 || statusList[i].status._charaData.displayAtk < statusList[selectNumber].status._charaData.displayAtk)
 							{
 								selectNumber = i;
 							}
@@ -496,7 +496,7 @@ public class SisterFire : MonoBehaviour
 					{
 						for (int i = 0; i < targetList.Count; i++)
 						{
-							if (selectNumber == 150 || statusList[i].status.defDisplay > statusList[selectNumber].status.defDisplay)
+							if (selectNumber == 150 || statusList[i].status._charaData.displayDef > statusList[selectNumber].status._charaData.displayDef)
 							{
 								selectNumber = i;
 							}
@@ -506,7 +506,7 @@ public class SisterFire : MonoBehaviour
 					{
 						for (int i = 0; i < targetList.Count; i++)
 						{
-							if (selectNumber == 150 || statusList[i].status.defDisplay < statusList[selectNumber].status.defDisplay)
+							if (selectNumber == 150 || statusList[i].status._charaData.displayDef < statusList[selectNumber].status._charaData.displayDef)
 							{
 								selectNumber = i;
 							}

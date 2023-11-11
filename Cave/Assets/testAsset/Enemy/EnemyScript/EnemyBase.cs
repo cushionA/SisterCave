@@ -213,14 +213,7 @@ public class EnemyBase : MonoBehaviour
 	{
 		initialLayer = this.gameObject.layer;
 		ArmorReset();
-		if (status.kind != EnemyStatus.KindofEnemy.Fly)
-		{
-			GravitySet(status.firstGravity);//重力設定
-		}
-        else
-        {
-			GravitySet(0);//重力設定
-		}
+
 	//	rb = this.gameObject.GetComponent<Rigidbody2D>();
 		startPosition = transform.position;
 		firstDirection = transform.localScale;
@@ -254,161 +247,7 @@ public class EnemyBase : MonoBehaviour
 
 	}
 
-	protected virtual void FixedUpdate()
-	{
-	
 
-		if (rb.IsTouching(EnemyManager.instance.filter))
-		{
-			isGround = true;
-
-		}
-
-		else
-		{
-
-			RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 2, EnemyManager.instance.rayFilter);
-			if (hit && isGround)
-			{
-
-
-				isGround = true;
-
-
-			}
-			else
-			{
-
-				isGround = false;
-				//}
-			}
-		}
-
-	//	Debug.Log($"知り");
-		if (!cameraRendered)
-        {
-			if (!status.unBaind)
-			{
-			//	Debug.Log("停止");
-				//縛られないなら先に
-				return;
-			}
-        }
-	//	Debug.Log($"知りたい");
-		if (status.kind != EnemyStatus.KindofEnemy.Fly)
-		{
-			if (isDown || !isGround || guardHit || isAvoid || isAttack || isJump || guardBreak || isDie)
-			{
-				isMovable = false;
-			}
-            else
-            {
-				isMovable = true;
-            }
-		}
-        else
-        {
-			if (isDown || guardHit || isAvoid || isAttack || isJump || guardBreak || isDie)
-			{
-				isMovable = false;
-			}
-			else
-			{
-				isMovable = true;
-			}
-		}
-		//Debug.Log($"知りたいのだ");
-		if (dogPile != null)
-		{
-			basePosition = dogPile.transform.position;
-			baseDirection = dogPile.transform.localScale;
-		}
-		else
-		{
-			basePosition = startPosition;
-			baseDirection = firstDirection;
-
-		}
-
-		targetPosition = GManager.instance.Player.transform.position;
-		
-		distance = targetPosition - (Vector2)transform.position;
-		//Debug.Log($"知りたいのだ{targetPosition.x}");
-		direction = distance.x >= 0 ? 1 : -1;//距離が正、または0の時1。そうでないとき-1。方向
-		directionY = distance.y >= 0 ? 1 : -1;//弓構えるときのアニメの判定	にも使えそう
-
-		////////Debug.log($"ジャンプ中{nowJump}");
-		////////Debug.log($"回避中{isAvoid}");
-		if (isAggressive)
-        {
-			posiReset = true;
-			Serch.SetActive(false);
-			Serch2.SetActive(false);
-
-			targetPosition = GManager.instance.Player.transform.position;
-
-			EscapeCheck();
-
-			//TriggerJump();
-		}
-
-		else if (!isAggressive)
-        {
-
-
-			PositionReset();
-
-		}
-/*		if (isJump && !nowJump)
-		{
-			jumpTime += Time.fixedDeltaTime;
-			if (jumpTime >= jumpCool)
-			{
-				isJump = false;
-				jumpTime = 0;
-			}
-		}
-		if (isAvoid)
-		{
-			avoidTime += Time.fixedDeltaTime;
-			if (avoidTime >= avoidCool)
-			{
-				isAvoid = false;
-				avoidTime = 0;
-			}
-		}*/
-	//	SetVelocity();
-		HitCheck();
-		WaitAttack();
-		ArmorRecover();
-		DamageAvoid();
-		EnemyFall();
-		GuardBreak();
-		Parry();
-		NockBack();
-		Blow();
-		Down();
-		Die();
-		MaterialControll();
-		if (insert)
-		{
-			//SisMagic sm = collision.gameObject.GetComponent<SisMagic>();
-		//	Debug.Log($"偵察m{sm.name}");
-			SisterMagicDamage();
-
-			if (!isAggressive)
-			{
-				Serch.SetActive(false);
-				Serch2.SetActive(false);
-				isAggressive = true;
-				Flip(direction);
-			}
-			//Debug.Log($"収支{sm.name}");
-			//	lastHit = 
-			insert = false;
-		}
-
-	}
 	public void ActionFire(int i,float random = 0.0f)
 	{//ランダムに入れてもいいけど普通に入れてもいい
 		i = i < 0 ? 0 : i;
@@ -438,14 +277,7 @@ public class EnemyBase : MonoBehaviour
     {
 
 
-		if (rb.velocity.x > status.velocityMax.x || rb.velocity.x < status.velocityMin.x)
-        {
-			Mathf.Clamp(rb.velocity.x, status.velocityMin.x, status.velocityMax.x);
-		}
-		if (rb.velocity.y > status.velocityMax.y || rb.velocity.y < status.velocityMin.y)
-		{
-			Mathf.Clamp(rb.velocity.y, status.velocityMin.y, status.velocityMax.y);
-		}
+
 
 	}
 
@@ -1181,145 +1013,14 @@ if (!isDamage)
 	/// </summary>
 	public void PositionReset()
 	{
-		if (posiReset && !isDown && !isStop && !isDie)
-		{
-			if (transform.position.x <= basePosition.x)
-			{
-				if (transform.position.y <= basePosition.y)
-				{
-					Flip(1);
-					if (((transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)
-						&& (transform.position.y >= basePosition.y - 5 && transform.position.y <= basePosition.y + 5) &&
-						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
-							(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
-					{
-						//("Stand");
-						//スタートが地面だから大丈夫。落ちてくる系のやつにはDogpileを与えてやれ
-						rb.velocity = Vector2.zero;
-						posiReset = false;
-						isRight = true;
-						transform.localScale = baseDirection;
-					}
-                    else
-                    {
-						////(status.motionIndex[dogPile == null ? "歩き":"走り"]);
-						move.Set(status.addSpeed.x * ((dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x) - rb.velocity.x),(status.addSpeed.y * (dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y)) - rb.velocity.y);
-						rb.AddForce(move);
-						//rb.AddForce(move(0, ;
-						//($"{(dogPile == null ? "Move" : "Dash")}");
-					}
-				}
-				else if (transform.position.y >= basePosition.y)
-				{
-					Flip(1);
-					if (((transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)
-						&& (transform.position.y >= basePosition.y - 5 && transform.position.y <= basePosition.y + 5) &&
-						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
-							(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
-					{
-						//("Stand");
-						rb.velocity = Vector2.zero;
-						posiReset = false;
-						isRight = true;
-						transform.localScale = baseDirection;
-					}
-                    else
-                    {
-						move.Set(status.addSpeed.x * ((dogPile == null ? status.patrolSpeed.x : status.combatSpeed.x) - rb.velocity.x), (status.addSpeed.y * (dogPile == null ? -status.patrolSpeed.y : -status.combatSpeed.y)) - rb.velocity.y);
-						rb.AddForce(move);
-						//rb.AddForce(move(0);
-						//($"{(dogPile == null ? "Move" : "Dash")}");
-					}
-				}
-			}
-			else if (transform.position.x >= basePosition.x)
-			{
-				if (transform.position.y <= basePosition.y)
-				{
-					Flip(-1);
-					if (((transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)
-						&& (transform.position.y >= basePosition.y - 5 && transform.position.y <= basePosition.y + 5) &&
-						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
-						(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
-					{
-						//("Stand");
-						rb.velocity = Vector2.zero;
-						posiReset = false;
-						isRight = true;
-						transform.localScale = baseDirection;
-					}
-                    else
-                    {
-						//($"{(dogPile == null ? "Move" : "Dash")}");
-						move.Set(status.addSpeed.x * ((dogPile == null ? -status.patrolSpeed.x : -status.combatSpeed.x) - rb.velocity.x),(status.addSpeed.y * (dogPile == null ? status.patrolSpeed.y : status.combatSpeed.y)) - rb.velocity.y);
-						rb.AddForce(move);
-						//rb.AddForce(move(0, ();
-					}
-				}
-				else if (transform.position.y >= basePosition.y)
-				{
-					Flip(-1);
-					if (((transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)
-						&& (transform.position.y >= basePosition.y - 5 && transform.position.y <= basePosition.y + 5) &&
-						(status.kind == EnemyStatus.KindofEnemy.Fly)) || ((status.kind != EnemyStatus.KindofEnemy.Fly) &&
-						(transform.position.x >= basePosition.x - 5 && transform.position.x <= basePosition.x + 5)))
-					{
-						//("Stand");
-						rb.velocity = Vector2.zero;
-						posiReset = false;
-						isRight = true;
-						transform.localScale = baseDirection;
-					}
-                    else
-                    {
-						//($"{(dogPile == null ? "Move" : "Dash")}");
-						move.Set(status.addSpeed.x * ((dogPile == null ? -status.patrolSpeed.x : -status.combatSpeed.x) - rb.velocity.x),(status.addSpeed.y * (dogPile == null ? -status.patrolSpeed.y : -status.combatSpeed.y)) - rb.velocity.y);
-						rb.AddForce(move);
-						//rb.AddForce(move(0, );
-					}
-				}
-			}
-
-		}
+		
+	
 	}
 	/// <summary>
 	/// 待機中の哨戒行動
 	/// </summary>
 	public void PatrolMove()
     {
-
-		if (!isStop && !posiReset && !nowJump && !isDown && !isDie) {
-			if (transform.position.x <= startPosition.x + status.waitDistance.x && isRight)
-			{
-				//("Move");
-				Flip(1);
-				move.Set(status.addSpeed.x * (status.patrolSpeed.x - rb.velocity.x), 0);
-				rb.AddForce(move);
-
-			}
-			else if (transform.position.x >= startPosition.x - status.waitDistance.x && !isRight)
-			{
-				//("Move");
-				Flip(-1);
-				move.Set(status.addSpeed.x * (-status.patrolSpeed.x - rb.velocity.x), 0);
-				rb.AddForce(move);
-			}
-			else
-			{
-				//("Stand");
-					////////Debug.log("ああああ");
-					waitTime += Time.fixedDeltaTime;
-                    move.Set(0, rb.velocity.y);
-				    rb.velocity = move;
-					if (waitTime >= status.waitRes)
-					{
-						isRight = !isRight;
-						waitTime = 0.0f;
-					//	//////Debug.log("ああああ");
-					
-				}
-			}
-		}
     }
 
 	/// <summary>
@@ -1331,25 +1032,7 @@ if (!isDamage)
 		if (!isStop && !posiReset && !nowJump && !isDown && !isDie)
 		{
 
-			if (transform.position.y <= startPosition.y + status.waitDistance.y && isUp)
-			{
-				move.Set(0, status.addSpeed.y * (status.patrolSpeed.y - rb.velocity.y));
-				rb.AddForce(move);
-				//("Move");
-			}
-			else if(transform.position.y >= startPosition.y - status.waitDistance.y && !isUp)
-			{
-				move.Set(0, status.addSpeed.y * (-status.patrolSpeed.y - rb.velocity.y));
-				rb.AddForce(move);
-				//("Move");
-			}
-            else
-            {
-				isUp = !isUp;
-				move.Set(rb.velocity.x, 0);
-				rb.velocity = move;
-				//("Move");
-			}
+
 		}
 	}
 
@@ -1424,168 +1107,6 @@ if (!isDamage)
 	public void AgrMove(int disIndex = 0)
     {
 
-		//if()
-		stateJudge += Time.fixedDeltaTime;
-		#region//判断
-		if ((ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && ground != EnemyStatus.MoveState.escape)
-		//escapeだけはスクリプトから動かす
-		{
-            if (attackComp && RandomValue(0,100) <= atV.escapePercentage)
-            {
-				if (status.agrDistance[disIndex].x <= 30)
-				{
-					ground = EnemyStatus.MoveState.leaveWalk;
-				}
-				else if(Mathf.Abs((Mathf.Abs(distance.x) / status.agrDistance[disIndex].x)) >= 0.6)
-				{
-					ground = EnemyStatus.MoveState.leaveDash;
-					
-				}
-                  
-			}
-			//20パーセントの確率で停止以外に
-			else if (((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust) && RandomValue(0,100) >= 40) || guardHit)
-			{
-				
-				ground = EnemyStatus.MoveState.stay;
-			//	flipWaitTime = 10;
-			}
-			else if (Mathf.Abs(distance.x) > status.agrDistance[disIndex].x)//近づく方じゃね？
-			{
-				if (Mathf.Abs(distance.x) <= status.walkDistance.x || isGuard)
-				{
-					ground = EnemyStatus.MoveState.accessWalk;
-				}
-				else
-				{
-					ground = EnemyStatus.MoveState.accessDash;
-				}
-			}
-			else if (Mathf.Abs(distance.x) < status.agrDistance[disIndex].x)//遠ざかる
-			{
-				//歩き距離なら敵を見たまま撃つ
-				//動かない弓兵とかは移動速度ゼロに
-				if (Mathf.Abs((Mathf.Abs(distance.x) - status.agrDistance[disIndex].x)) <= status.walkDistance.x / 2 || isGuard)
-				{
-					ground = EnemyStatus.MoveState.leaveWalk;
-				}
-				else
-				{
-					ground = EnemyStatus.MoveState.leaveDash;
-				}
-			}
-			stateJudge = 0;
-			attackComp = false;
-		}
-		#endregion
-
-		if (!isStop && !nowJump && !isAvoid && !isDown && isGround && !isDie && !isAttack)
-		{
-			move.y = 0;
-    /*        if (isGuard)
-            {
-                if (ground == EnemyStatus.MoveState.stay)
-                {
-					//("Guard");
-					BattleFlip(direction);
-					move.Set(0, rb.velocity.y);
-
-					rb.velocity = move;
-					isReach = true;
-				}
-				else if (ground == EnemyStatus.MoveState.leaveWalk || ground == EnemyStatus.MoveState.leaveDash)//遠ざかる
-				{
-					//近距離の場合歩き範囲をダッシュで離れるのより大きく
-					//歩き距離なら敵を見たまま撃つ
-					//動かない弓兵とかは移動速度ゼロに
-					BattleFlip(direction);
-					isReach = ground == EnemyStatus.MoveState.leaveWalk;
-					//(status.motionIndex["BackGuard"]);
-					move.Set(status.addSpeed.x * (-direction * status.patrolSpeed.x - rb.velocity.x), 0);
-					rb.AddForce(move);
-				}
-                else
-                {
-					BattleFlip(direction);
-					isReach = (Mathf.Abs(distance.x) - status.agrDistance[disIndex].x) <= status.walkDistance.x ? true : false;
-					move.Set(status.addSpeed.x * (direction * status.patrolSpeed.x - rb.velocity.x), 0);
-					rb.AddForce(move);
-					//("GuardMove");
-				}
-			}*/
-			if (ground == EnemyStatus.MoveState.stay)
-			{
-				if (isGuard)
-				{
-					//("Guard");
-				}
-				else
-				{
-					//("Pose");
-				}
-				BattleFlip(direction);
-				move.x = 0;
-
-			//Debug.Log($"ねずみ{blowM.x}");
-				rb.velocity = move;
-				isReach = true;
-			}
-			else if (ground == EnemyStatus.MoveState.accessWalk)
-			{
-				BattleFlip(direction);
-				isReach = (Mathf.Abs(distance.x) - status.agrDistance[disIndex].x) <= status.walkDistance.x ? true : false;
-				move.Set(status.addSpeed.x * (direction * status.patrolSpeed.x - rb.velocity.x), 0);
-				rb.AddForce(move);
-				
-				if (isGuard)
-				{
-					//("GuardMove");
-				}
-				else
-				{
-					//("Move");
-				}
-			}
-			else if (ground == EnemyStatus.MoveState.accessDash) 
-			{
-				BattleFlip(direction);
-				isReach = false;
-				//("Dash");
-				move.Set(status.addSpeed.x * (direction * status.combatSpeed.x - rb.velocity.x),0);
-				rb.AddForce(move);
-                if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
-                {
-					ground = EnemyStatus.MoveState.accessWalk;
-					stateJudge = 0.0f;
-				}
-			}
-			else if (ground == EnemyStatus.MoveState.leaveWalk)//遠ざかる
-			{
-				//近距離の場合歩き範囲をダッシュで離れるのより大きく
-				//歩き距離なら敵を見たまま撃つ
-				//動かない弓兵とかは移動速度ゼロに
-					BattleFlip(direction);
-					isReach = true;
-				if (!isGuard)
-				{
-					//("BackMove");
-				}
-                else
-                {
-					//("BackGuard");
-				}
-				move.Set(status.addSpeed.x * (-direction * status.patrolSpeed.x - rb.velocity.x), 0);
-				rb.AddForce(move);
-			}
-				else if(ground == EnemyStatus.MoveState.leaveDash)
-				{
-					//("Dash");
-					BattleFlip(-direction);
-					isReach = false;
-				move.Set(status.addSpeed.x * (-direction * status.combatSpeed.x - rb.velocity.x),0);
-				rb.AddForce(move);
-				}
-			}
 	}
 	
 	/// <summary>
@@ -1593,279 +1114,7 @@ if (!isDamage)
 	/// </summary>
 	public void AgrFly(int disIndex = 0)
 	{
-		stateJudge += Time.fixedDeltaTime;
-		#region//判断
-		if ((ground == EnemyStatus.MoveState.wakeup || stateJudge >= status.judgePace) && ground != EnemyStatus.MoveState.escape && !isDown)
-		//escapeだけはスクリプトから動かす
-		{
 
-			bool isSet = false;
-
-			//この場合はパーセンテージは分けるのに使おう
-			if (attackComp && atV.escapePercentage > 0)
-			{
-				if (atV.escapePercentage % 2 == 0)
-				{
-					ground = EnemyStatus.MoveState.leaveWalk;
-
-					air = atV.escapePercentage == 2 ? EnemyStatus.MoveState.leaveWalk : EnemyStatus.MoveState.stay;
-
-				}
-				else
-				{
-					ground = EnemyStatus.MoveState.leaveDash;
-					air = atV.escapePercentage == 1 ? EnemyStatus.MoveState.leaveDash : EnemyStatus.MoveState.stay;
-				}
-				isSet = true;
-			}
-			//20パーセントの確率で停止以外に
-			else if ((Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)|| guardHit)
-			{
-
-				ground = EnemyStatus.MoveState.stay;
-				//	flipWaitTime = 10;
-			}
-			else if (Mathf.Abs(distance.x) > status.agrDistance[disIndex].x)//近づく方じゃね？
-			{
-				if (Mathf.Abs(distance.x) <= status.walkDistance.x || isGuard)
-				{
-					ground = EnemyStatus.MoveState.accessWalk;
-				}
-				else
-				{
-					ground = EnemyStatus.MoveState.accessDash;
-				}
-			}
-			else if (Mathf.Abs(distance.x) < status.agrDistance[disIndex].x)//遠ざかる
-			{
-				//歩き距離なら敵を見たまま撃つ
-				//動かない弓兵とかは移動速度ゼロに
-				if (Mathf.Abs((Mathf.Abs(distance.x) - status.agrDistance[disIndex].x)) <= status.walkDistance.x / 2 || isGuard)
-				{
-					ground = EnemyStatus.MoveState.leaveWalk;
-				}
-				else
-				{
-					ground = EnemyStatus.MoveState.leaveDash;
-				}
-			}
-
-			//縦
-			if (!isSet)
-			{
-				//条件まとめ
-				//超下にいるとき     lvD
-				//超上にいる時       acD
-				//ちょい下にいるとき lvW
-				//ちょい上にいるとき acW
-				//動かなくていいとき stay
-
-				//現在のプレイヤー高度と合わせて目標高度を割りだす。
-				float targetHigh = - distance.y;
-
-				if ((targetHigh <= status.agrDistance[disIndex].y + status.adjust && targetHigh >= status.agrDistance[disIndex].y - status.adjust) || guardHit)
-				{
-
-					air = EnemyStatus.MoveState.stay;
-					//	flipWaitTime = 10;
-				}
-				else if (targetHigh <= status.agrDistance[disIndex].y)//近づく方じゃね？
-				{
-					if (status.agrDistance[disIndex].y - targetHigh <= status.walkDistance.y || isGuard)
-					{
-						air = EnemyStatus.MoveState.accessWalk;
-					}
-					else
-					{
-						air = EnemyStatus.MoveState.accessDash;
-					}
-				}
-				else if (targetHigh > status.agrDistance[disIndex].y)//遠ざかる
-				{
-					//歩き距離なら敵を見たまま撃つ
-					//動かない弓兵とかは移動速度ゼロに
-					if (targetHigh - status.agrDistance[disIndex].y <= status.walkDistance.y || isGuard)
-					{
-						air = EnemyStatus.MoveState.leaveWalk;
-					}
-					else
-					{
-						air = EnemyStatus.MoveState.leaveDash;
-					}
-				}
-			}
-			stateJudge = 0;
-			attackComp = false;
-			//	Debug.Log($"空{air}陸{ground}");
-			//	Debug.Log($"空{distance.y}");
-			//状態切り替え時には振り向くように
-			flipWaitTime = 3;
-		}
-		#endregion
-
-
-
-
-		if (!isStop && !nowJump && !isAvoid && !isDown && !isDie && !isAttack)
-		{
-
-			VerTicalMoveJudge();
-
-
-
-
-			if (ground == EnemyStatus.MoveState.stay)
-			{
-				if (isGuard)
-				{
-					//("Guard");
-				}
-				else
-				{
-					//("Pose");
-				}
-				BattleFlip(direction);
-				//move.x = 0;
-				move.Set(status.addSpeed.x * (0 - rb.velocity.x), move.y);
-				//Debug.Log($"ねずみ{blowM.x}");
-				//rb.velocity = move;
-				isReach = true;
-				if (air == EnemyStatus.MoveState.stay)
-				{
-					rb.velocity = Vector2.zero;
-				}
-				else
-				{
-					rb.AddForce(move);
-				}
-			}
-			else if (ground == EnemyStatus.MoveState.accessWalk)
-			{
-				BattleFlip(direction);
-				isReach = (Mathf.Abs(distance.x) - status.agrDistance[disIndex].x) <= status.walkDistance.x ? true : false;
-				move.Set(status.addSpeed.x * (direction * status.patrolSpeed.x - rb.velocity.x), move.y);
-				rb.AddForce(move);
-
-				if (isGuard)
-				{
-					//("GuardMove");
-				}
-				else
-				{
-					//("Move");
-				}
-			}
-			else if (ground == EnemyStatus.MoveState.accessDash)
-			{
-				BattleFlip(direction);
-				isReach = false;
-				//("Dash");
-				move.Set(status.addSpeed.x * (direction * status.combatSpeed.x - rb.velocity.x), move.y);
-				rb.AddForce(move);
-				if (Mathf.Abs(distance.x) <= status.agrDistance[disIndex].x + status.adjust && Mathf.Abs(distance.x) >= status.agrDistance[disIndex].x - status.adjust)
-				{
-					ground = EnemyStatus.MoveState.accessWalk;
-					stateJudge = 0.0f;
-				}
-			}
-			else if (ground == EnemyStatus.MoveState.leaveWalk)//遠ざかる
-			{
-				//近距離の場合歩き範囲をダッシュで離れるのより大きく
-				//歩き距離なら敵を見たまま撃つ
-				//動かない弓兵とかは移動速度ゼロに
-				BattleFlip(direction);
-				isReach = true;
-				if (!isGuard)
-				{
-					//("BackMove");
-				}
-				else
-				{
-					//("BackGuard");
-				}
-				move.Set(status.addSpeed.x * (-direction * status.patrolSpeed.x - rb.velocity.x), move.y);
-				rb.AddForce(move);
-			}
-			else if (ground == EnemyStatus.MoveState.leaveDash)
-			{
-				//Debug.Log("ｊｊ");
-				//("Dash");
-				BattleFlip(-direction);
-				isReach = false;
-				move.Set(status.addSpeed.x * (-direction * status.combatSpeed.x - rb.velocity.x), move.y);
-				rb.AddForce(move);
-			}
-		}
-
-		/*		float judgeDistance = transform.position.y - targetPosition.y;
-
-				if (!isStop && !nowJump && !isAvoid && !isDown && !isDie)
-				{
-					//("Move");
-					if (judgeDistance　== status.agrDistance[disIndex].y)//ゆとりの範疇なら我慢
-					{
-						move.Set(rb.velocity.x,0);
-						rb.velocity = move;
-					}
-					else if (judgeDistance < status.agrDistance[disIndex].y)//距離はなす
-					{
-						if (judgeDistance >= (status.agrDistance[disIndex].y - status.walkDistance.y))
-						{
-							if (Mathf.Abs(rb.velocity.y) >=  status.patrolSpeed.y)
-							{
-								move.Set(0,-status.addSpeed.y);
-								rb.AddForce(move);
-							}
-							else if (Mathf.Abs(rb.velocity.y) <= status.patrolSpeed.y)
-							{
-								move.Set(0, status.addSpeed.y);
-								rb.AddForce(move);
-							}
-						}
-						else
-						{
-							if (Mathf.Abs(rb.velocity.y) >= status.combatSpeed.y)
-							{
-								move.Set(0, -status.addSpeed.y);
-								rb.AddForce(move);
-							}
-							else if (Mathf.Abs(rb.velocity.y) <= status.combatSpeed.y)
-							{
-								move.Set(0, status.addSpeed.y);
-								rb.AddForce(move);
-							}
-						}
-					}
-					else if (judgeDistance > status.agrDistance[disIndex].y)//距離近づく
-					{
-						if (judgeDistance <= (status.agrDistance[disIndex].y + status.walkDistance.y))
-						{
-							if (Mathf.Abs(rb.velocity.y) >= status.patrolSpeed.y)
-							{
-								move.Set(0, status.addSpeed.y);
-								rb.AddForce(move);
-							}
-							else if (Mathf.Abs(rb.velocity.y) <= status.patrolSpeed.y)
-							{
-								move.Set(0, -status.addSpeed.y);
-								rb.AddForce(move);
-							}
-						}
-						else
-						{
-							if (Mathf.Abs(rb.velocity.y) >= status.combatSpeed.y)
-							{
-								move.Set(0, status.addSpeed.y);
-								rb.AddForce(move);
-							}
-							if (Mathf.Abs(rb.velocity.y) <= status.combatSpeed.y)
-							{
-								move.Set(0, -status.addSpeed.y);
-								rb.AddForce(move);
-							}
-						}
-					}
-				}*/
 	}
 	/// <summary>
 	/// 回避。方向指定も可能だが戦闘時に限りdirectionで前方。-directionで後ろに
@@ -1950,32 +1199,7 @@ if (!isDamage)
 
 	public void EnemyFall()
 	{
-		if (status.kind == EnemyStatus.KindofEnemy.Fly)
-		{
-			if (!isGround && (blowDown || isDie))
-			{
-			//	Debug.Log("v");
-				GravitySet(status.firstGravity);
-			}
-			else
-			{
-			//	Debug.Log("vvv");
-				GravitySet(0);
-			}
-		}
-        else
-        {
-			if (!isGround && !isAttack && !isJump && !isDown)
-			{
-					//("Fall");
 
-			}
-			else if (isJump)
-            {
-				//("Jump");
-			}
-			
-		}
 	}
 
 	/// <summary>
@@ -1989,7 +1213,7 @@ if (!isDamage)
 			if (isJump)
 			{
 				jumpTime += Time.fixedDeltaTime;
-				move.Set(jumpMove * EnemyManager.instance.jMove.Evaluate(jumpTime), jumpSpeed * EnemyManager.instance.jPower.Evaluate(jumpTime));
+				//move.Set(jumpMove * EnemyManager.instance.jMove.Evaluate(jumpTime), jumpSpeed * EnemyManager.instance.jPower.Evaluate(jumpTime));
 				rb.AddForce(move);
 				//("Jump");
 				if (isGround && jumpTime > 0.1)//ここJumpRessとかにしてもいいかもね
@@ -2046,7 +1270,7 @@ if (!isDamage)
 			{
 				//("Jump");
 				jumpTime += Time.fixedDeltaTime;
-				move.Set(jumpMove * EnemyManager.instance.jMove.Evaluate(jumpTime), jumpSpeed * EnemyManager.instance.jPower.Evaluate(jumpTime));
+				//move.Set(jumpMove * EnemyManager.instance.jMove.Evaluate(jumpTime), jumpSpeed * EnemyManager.instance.jPower.Evaluate(jumpTime));
 				rb.AddForce(move);
 				if (jumpTime > 1)
 				{//
@@ -2330,7 +1554,7 @@ if (!isDamage)
 							isAnimeStart = false;
 							return;
                         }
-						AllStop(status.downRes);
+					//	AllStop(status.downRes);
 						//Debug.Log("醤油");
 						
 					}
@@ -2844,34 +2068,7 @@ if (!isDamage)
 
 	protected void VerTicalMoveJudge()
     {
-		if(air == EnemyStatus.MoveState.stay)
-        {
-			move.Set(0, status.addSpeed.y * (0 - rb.velocity.y));
-			//move.y = 0;
-        }
-        else if(air == EnemyStatus.MoveState.accessDash)
-        {
-			move.Set(0,status.addSpeed.y * (status.combatSpeed.y - rb.velocity.y));
-			//move.y = ;
 
-		}
-		else if(air == EnemyStatus.MoveState.accessWalk)
-
-		{
-			move.Set(0, status.addSpeed.y * (status.patrolSpeed.y - rb.velocity.y));
-		//	move.y = status.addSpeed.y * (status.patrolSpeed.y - rb.velocity.y);
-		}
-		else if(air == EnemyStatus.MoveState.leaveDash)
-		{
-			move.Set(0,status.addSpeed.y * (-status.combatSpeed.y - rb.velocity.y));
-			//move.y = ;
-		}
-		else if (air == EnemyStatus.MoveState.leaveWalk)
-
-		{
-			move.Set(0,status.addSpeed.y * (-status.patrolSpeed.y - rb.velocity.y));
-			//move.y = ;
-		}
 	}
 
 	protected void MaterialControll()

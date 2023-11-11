@@ -97,9 +97,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		int bCount;
 		float recoverTime;
 
-		List<int> targetCanList;
+		List<int> targetCanList = new List<int>();
 
-		List<int> magicCanList;
+		List<int> magicCanList = new List<int>();
 
 
 
@@ -211,31 +211,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//Debug.Log($"チェック{MathF.Floor(waitCast)}");
 
 
-			//行動してないとき魔力回復
-			if (_condition.CurrentState != CharacterStates.CharacterConditions.Moving)
-			{
-				recoverTime += _controller.DeltaTime;
-				if (recoverTime >= 2.5 && sb.mp < sb.maxMp)
-				{
-					//クールタイム中は魔力回復1.2倍
-					float recoverAmo = disEnable ? SManager.instance.sisStatus.mpRecover * 1.2f : SManager.instance.sisStatus.mpRecover;
 
-					sb.mp += (recoverAmo + SManager.instance.sisStatus.additionalRecover);
-					recoverTime = 0;
-				}
-			}
-
-			//限界量は超えないように
-			if (sb.mp > sb.maxMp)
-			{
-				sb.mp = sb.maxMp;
-
-			}
 
 			//攻撃処理
 			if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
 			{
-			//	
+
 				MagicUse(SManager.instance.useMagic.HRandom, SManager.instance.useMagic.VRandom);
 				return;
 			}
@@ -1196,7 +1177,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							if ((condition.percentage & 0b00000001) == 0b00000001)
 							{
 
-								if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Soldier)
+								if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Soldier)
 								{
 									if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
 									{
@@ -1217,7 +1198,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							if ((condition.percentage & 0b00000010) == 0b00000010)
 							{
 							//	Debug.Log($"数を教えてね{SManager.instance.targetCondition == null}{SManager.instance.targetCondition.Count}と{i}");
-								if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Fly)
+								if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Fly)
 								{
 									if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
 									{
@@ -1236,7 +1217,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							}
 							if ((condition.percentage & 0b00000100) == 0b00000100)
 							{
-								if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Shooter)
+								if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Shooter)
 								{
 									if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
 									{
@@ -1257,7 +1238,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							}
 							if ((condition.percentage & 0b00001000) == 0b00001000)
 							{
-								if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Knight)
+								if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Knight)
 								{
 									if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
 									{
@@ -1278,7 +1259,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 							}
 							if ((condition.percentage & 0b00010000) == 0b00010000)
 							{
-								if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Trap)
+								if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Trap)
 								{
 									if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
 									{
@@ -1588,7 +1569,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 						if ((0b00000001 & condition.percentage) == 0b00000001)
 						{
-							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Soldier)
+							if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Soldier)
 							{
 								return true;
 							}
@@ -1596,28 +1577,28 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						//test = 0b01000000;
 						else if ((0b00000010 & condition.percentage) == 0b00000010)
 						{
-							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Fly)
+							if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Fly)
 							{
 								return true;
 							}
 						}
 						else if ((0b00000100 & condition.percentage) == 0b00000100)
 						{
-							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Shooter)
+							if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Shooter)
 							{
 								return true;
 							}
 						}
 						else if ((0b00001000 & condition.percentage) == 0b00001000)
 						{
-							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Knight)
+							if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Knight)
 							{
 								return true;
 							}
 						}
 						else if ((0b00010000 & condition.percentage) == 0b00010000)
 						{
-							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Trap)
+							if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Trap)
 							{
 								return true;
 							}
@@ -1906,7 +1887,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 						if ((0b00000001 & condition.percentage) == 0b00000001)
 						{
-							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Soldier)
+							if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Soldier)
 							{
 								return true;
 							}
@@ -1914,28 +1895,28 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						//test = 0b01000000;
 						else if ((0b00000010 & condition.percentage) == 0b00000010)
 						{
-							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Fly)
+							if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Fly)
 							{
 								return true;
 							}
 						}
 						else if ((0b00000100 & condition.percentage) == 0b00000100)
 						{
-							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Shooter)
+							if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Shooter)
 							{
 								return true;
 							}
 						}
 						else if ((0b00001000 & condition.percentage) == 0b00001000)
 						{
-							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Knight)
+							if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Knight)
 							{
 								return true;
 							}
 						}
 						else if ((0b00010000 & condition.percentage) == 0b00010000)
 						{
-							if (SManager.instance.targetCondition[i].status.kind == EnemyStatus.KindofEnemy.Trap)
+							if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Trap)
 							{
 								return true;
 							}
@@ -2369,7 +2350,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status.atkDisplay > SManager.instance.targetCondition[selectNumber].status.atkDisplay)
+								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status._charaData.displayAtk > SManager.instance.targetCondition[selectNumber].status._charaData.displayAtk)
 								{
 									selectNumber = targetCanList[i];
 								}
@@ -2379,7 +2360,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status.atkDisplay < SManager.instance.targetCondition[selectNumber].status.atkDisplay)
+								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status._charaData.displayAtk < SManager.instance.targetCondition[selectNumber].status._charaData.displayAtk)
 								{
 									selectNumber = targetCanList[i];
 								}
@@ -2392,7 +2373,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status.defDisplay > SManager.instance.targetCondition[selectNumber].status.defDisplay)
+								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status._charaData.displayDef > SManager.instance.targetCondition[selectNumber].status._charaData.displayDef)
 								{
 									selectNumber = targetCanList[i];
 								}
@@ -2402,7 +2383,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 						{
 							for (int i = 0; i < targetCanList.Count; i++)
 							{
-								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status.defDisplay < SManager.instance.targetCondition[selectNumber].status.defDisplay)
+								if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status._charaData.displayDef < SManager.instance.targetCondition[selectNumber].status._charaData.displayDef)
 								{
 									selectNumber = targetCanList[i];
 								}

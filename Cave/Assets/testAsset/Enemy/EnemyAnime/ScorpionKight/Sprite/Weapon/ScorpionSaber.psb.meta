@@ -30,11 +30,13 @@ ScriptedImporter:
     convertToNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
     isReadable: 0
     streamingMipmaps: 1
     streamingMipmapsPriority: 0
     vTOnly: 0
-    ignoreMasterTextureLimit: 0
+    ignoreMipmapLimit: 0
     nPOTScale: 1
     sRGBTexture: 1
     spriteMode: 2
@@ -97,7 +99,6 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
     spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData:
@@ -1015,7 +1016,6 @@ ScriptedImporter:
     - {x: 81, y: 37}
     - {x: 82, y: 29}
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 4, y: 4}
     spritePosition: {x: 216, y: 29}
   - name: Side
@@ -3009,7 +3009,6 @@ ScriptedImporter:
     - {x: 181, y: 19}
     - {x: 182, y: 23}
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 4, y: 880}
     spritePosition: {x: 49, y: 215}
   - name: Front
@@ -4351,7 +4350,6 @@ ScriptedImporter:
     - {x: 34, y: 121}
     - {x: 38, y: 122}
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 4, y: 516}
     spritePosition: {x: 45, y: 108}
   rigSpriteImportData:
@@ -5266,7 +5264,6 @@ ScriptedImporter:
     - {x: 8, y: 81}
     - {x: 82, y: 21}
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
     spritePosition: {x: 0, y: 0}
   - name: ScorpionSaber_1
@@ -7294,7 +7291,6 @@ ScriptedImporter:
     - {x: 184, y: 80}
     - {x: 78, y: 185}
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 0, y: 872}
     spritePosition: {x: 0, y: 0}
   - name: ScorpionSaber_2
@@ -8348,7 +8344,6 @@ ScriptedImporter:
     - {x: 94, y: 43}
     - {x: 95, y: 38}
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 0, y: 506}
     spritePosition: {x: 0, y: 0}
   characterData:
@@ -8383,6 +8378,7 @@ ScriptedImporter:
       order: 0
     dimension: {x: 0, y: 0}
     characterGroups: []
+    pivot: {x: 0, y: 0}
     boneReadOnly: 0
   sharedRigSpriteImportData: []
   sharedRigCharacterData:
@@ -8390,10 +8386,12 @@ ScriptedImporter:
     parts: []
     dimension: {x: 0, y: 0}
     characterGroups: []
+    pivot: {x: 0, y: 0}
     boneReadOnly: 0
   platformSettings:
   - name: DefaultTexturePlatform
     overridden: 0
+    ignorePlatformSupport: 0
     maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
@@ -8405,6 +8403,7 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   - name: Standalone
     overridden: 0
+    ignorePlatformSupport: 0
     maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
@@ -8416,6 +8415,7 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   - name: Windows Store Apps
     overridden: 0
+    ignorePlatformSupport: 0
     maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
@@ -8427,6 +8427,7 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   - name: Android
     overridden: 0
+    ignorePlatformSupport: 0
     maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
@@ -8438,6 +8439,7 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   - name: WebGL
     overridden: 0
+    ignorePlatformSupport: 0
     maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
@@ -8457,6 +8459,8 @@ ScriptedImporter:
   paperDollMode: 0
   keepDupilcateSpriteName: 0
   skeletonAssetReferenceID: 
+  padding: 4
+  spriteSizeExpand: 0
   spriteCategoryList:
     categories: []
   spritePackingTag: 
@@ -8545,6 +8549,9 @@ ScriptedImporter:
     isVisible: 0
   sharedRigPSDLayers: []
   pSDLayerImportSetting: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  spriteSizeExpandChanged: 0
   generateGOHierarchy: 0
   textureAssetName: ScorpionSaber Texture
   prefabAssetName: ScorpionSaber Prefab

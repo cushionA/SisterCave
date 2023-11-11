@@ -1109,20 +1109,20 @@ namespace MyCode
                     //ã§í ÉGÉtÉFÉNÉgÇÕí«ê’Ç∑ÇÈÇ¡ÇƒîªífÇ≈
 
                     GManager.instance.PlaySound(slashSe[level], pos.position);
-                    ef = _generalPool.Spawn(slashEf[level], pos.position, pos.rotation, pos);
+                    ef = _generalPool.ControlSpawn(slashEf[level], pos.position, pos.rotation,pos);
                 }
                 //éhìÀ
                 else if (motion == 1)
                 {
                     GManager.instance.PlaySound(stabSe[level], pos.position);
-                    ef = _generalPool.Spawn(stabEf[level], pos.position, pos.rotation, pos);
+                    ef = _generalPool.ControlSpawn(stabEf[level], pos.position, pos.rotation, pos);
                 }
                 //ë≈åÇ
                 else if(motion == 3)
                 {
-                    Debug.Log($"Ç†{level}");
+                  //  Debug.Log($"Ç†{level}");
                     GManager.instance.PlaySound(strikeSe[level], pos.position);
-                    ef = _generalPool.Spawn(strikeEf[level], pos.position, pos.rotation, pos);
+                    ef = _generalPool.ControlSpawn(strikeEf[level], pos.position, pos.rotation, pos);
                 }
             }
             else
@@ -1135,28 +1135,28 @@ namespace MyCode
                     {
                         GManager.instance.PlaySound(slashSe[level], pos.position);
                         GManager.instance.PlaySound(holySe[level], pos.position);
-                        ef = _generalPool.Spawn(slashHoly[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(slashHoly[level], pos.position, pos.rotation, pos);
                     }
                     //à≈
                     else if (element == 4)
                     {
                         GManager.instance.PlaySound(slashSe[level], pos.position);
                         GManager.instance.PlaySound(darkSe[level], pos.position);
-                        ef = _generalPool.Spawn(slashDark[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(slashDark[level], pos.position, pos.rotation, pos);
                     }
                     //âä
                     else if (element == 5)
                     {
                         GManager.instance.PlaySound(slashSe[level], pos.position);
                         GManager.instance.PlaySound(fireSe[level], pos.position);
-                        ef = _generalPool.Spawn(slashFire[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(slashFire[level], pos.position, pos.rotation, pos);
                     }
                     //óã
                     else
                     {
                         GManager.instance.PlaySound(slashSe[level], pos.position);
                         GManager.instance.PlaySound(thunderSe[level], pos.position);
-                        ef = _generalPool.Spawn(slashThunder[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(slashThunder[level], pos.position, pos.rotation, pos);
                     }
                 }
                 //éhìÀ
@@ -1167,28 +1167,28 @@ namespace MyCode
                     {
                         GManager.instance.PlaySound(stabSe[level], pos.position);
                         GManager.instance.PlaySound(holySe[level], pos.position);
-                        ef = _generalPool.Spawn(stabHoly[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(stabHoly[level], pos.position, pos.rotation, pos);
                     }
                     //à≈
                     else if (element == 4)
                     {
                         GManager.instance.PlaySound(stabSe[level], pos.position);
                         GManager.instance.PlaySound(darkSe[level], pos.position);
-                        ef = _generalPool.Spawn(stabDark[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(stabDark[level], pos.position, pos.rotation, pos);
                     }
                     //âä
                     else if (element == 5)
                     {
                         GManager.instance.PlaySound(stabSe[level], pos.position);
                         GManager.instance.PlaySound(fireSe[level], pos.position);
-                        ef = _generalPool.Spawn(stabFire[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(stabFire[level], pos.position, pos.rotation, pos);
                     }
                     //óã
                     else
                     {
                         GManager.instance.PlaySound(stabSe[level], pos.position);
                         GManager.instance.PlaySound(thunderSe[level], pos.position);
-                        ef = _generalPool.Spawn(stabThunder[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(stabThunder[level], pos.position, pos.rotation, pos);
                     }
                 }
                 //ë≈åÇ
@@ -1199,28 +1199,28 @@ namespace MyCode
                     {
                         GManager.instance.PlaySound(strikeSe[level], pos.position);
                         GManager.instance.PlaySound(holySe[level], pos.position);
-                        ef = _generalPool.Spawn(strikeHoly[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(strikeHoly[level], pos.position, pos.rotation, pos);
                     }
                     //à≈
                     else if (element == 4)
                     {
                         GManager.instance.PlaySound(strikeSe[level], pos.position);
                         GManager.instance.PlaySound(darkSe[level], pos.position);
-                        ef = _generalPool.Spawn(strikeDark[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(strikeDark[level], pos.position, pos.rotation, pos);
                     }
                     //âä
                     else if (element == 5)
                     {
                         GManager.instance.PlaySound(strikeSe[level], pos.position);
                         GManager.instance.PlaySound(fireSe[level], pos.position);
-                        ef = _generalPool.Spawn(strikeFire[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(strikeFire[level], pos.position, pos.rotation, pos);
                     }
                     //óã
                     else
                     {
                         GManager.instance.PlaySound(strikeSe[level], pos.position);
                         GManager.instance.PlaySound(thunderSe[level], pos.position);
-                        ef = _generalPool.Spawn(strikeThunder[level], pos.position, pos.rotation, pos);
+                        ef = _generalPool.ControlSpawn(strikeThunder[level], pos.position, pos.rotation, pos);
                     }
                 }
             }
@@ -1231,7 +1231,7 @@ namespace MyCode
                 Vector3 ls = ef.transform.localScale;
 
                 //ÉLÉÉÉâÇ™ç∂å¸Ç¢ÇƒÇÈÇ»ÇÁîΩëŒÇ…
-                if (pos.localScale.x < 0)
+                if (pos.root.localScale.x < 0)
                 {
                     ls.x = ls.x * -1;
                 }
@@ -1242,6 +1242,7 @@ namespace MyCode
                     ls *= sizeMultipler;
                 }
                 ef.transform.localScale = ls;
+                Debug.Log($"Ç§ÇÒÇøÇÒÇøÇÒÇ§ÇÒÇøÇÒÇøÇÒ{ls.x}");
             }
         }
 
@@ -1403,14 +1404,14 @@ namespace MyCode
 
                 if (sizeMultipler != 1)
                 {
-                    Transform tran = _generalPool.Spawn(particles["DisParry"], pos.position, pos.rotation, pos).transform;
+                    Transform tran = _generalPool.ControlSpawn(particles["DisParry"], pos.position, pos.rotation, pos).transform;
                     Vector3 Scale = tran.localScale;
                     Scale *= sizeMultipler;
                     tran.localScale = Scale;
                 }
                 else
                 {
-                    _generalPool.Spawn(particles["DisParry"], pos.position, pos.rotation, pos);
+                    _generalPool.ControlSpawn(particles["DisParry"], pos.position, pos.rotation, pos);
                 }
             }
 
@@ -1440,22 +1441,22 @@ namespace MyCode
                 if (element == AtEffectCon.Element.slash)
                 {
                     GManager.instance.PlaySound(slashCast[magicLevel], pos.position);
-                     return _generalPool.Spawn(slashCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
+                     return _generalPool.ControlSpawn(slashCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
                 else if (element == AtEffectCon.Element.stab)
                 {
                     GManager.instance.PlaySound(stabCast[magicLevel], pos.position);
-                    return _generalPool.Spawn(stabCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
+                    return _generalPool.ControlSpawn(stabCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
                 else if (element == AtEffectCon.Element.strike)
                 {
                     GManager.instance.PlaySound(strikeCast[magicLevel], pos.position);
-                    return _generalPool.Spawn(strikeCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
+                    return _generalPool.ControlSpawn(strikeCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
                 else if (element == AtEffectCon.Element.holy)
                 {
                     GManager.instance.PlaySound(holyCast[magicLevel], pos.position);
-                    return _generalPool.Spawn(holyCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
+                    return _generalPool.ControlSpawn(holyCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
             }
             else
@@ -1463,18 +1464,18 @@ namespace MyCode
                 if (element == AtEffectCon.Element.dark)
                 {
                     GManager.instance.PlaySound(darkCast[magicLevel], pos.position);
-                    return _generalPool.Spawn(darkCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
+                    return _generalPool.ControlSpawn(darkCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
                 else if (element == AtEffectCon.Element.fire)
                 {
                     
                     GManager.instance.PlaySound(fireCast[magicLevel], pos.position);
-                    return _generalPool.Spawn(fireCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
+                    return _generalPool.ControlSpawn(fireCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
                 else if (element == AtEffectCon.Element.thunder)
                 {
                     GManager.instance.PlaySound(thunderCast[magicLevel], pos.position);
-                    return _generalPool.Spawn(thunderCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
+                    return _generalPool.ControlSpawn(thunderCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
                
             }

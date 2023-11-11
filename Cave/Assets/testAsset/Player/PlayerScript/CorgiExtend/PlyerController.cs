@@ -7,11 +7,14 @@ using UnityEngine.AddressableAssets;
 using MoreMountains.CorgiEngine;
 using Guirao.UltimateTextDamage;
 using MoreMountains.Tools;
+using static AnyPortrait.apMaterialSet;
+using UnityEditor.U2D.Animation;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
-	public class PlyerController : MyAbillityBase
-{
+	public class PlyerController : ControllAbillity 
+	{ 
+
     //必要な処理書き出し
     //攻撃受けた時のダメージ回避。重力変化。
     //ステータス設定とかダメージ倍率などの管理、被弾時攻撃時のCalc系の処理
@@ -115,12 +118,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			}
 			ArmorReset();
 
-			//	rb = this.gameObject.GetComponent<Rigidbody2D>();
+			//	rb = this.gameObject._character.FindAbility<Rigidbody2D>();
 			GManager.instance.HPReset();
 
 			//_characterHorizontalMovement.FlipCharacterToFaceDirection = false;
-			//parentMatt = GetComponent<SpriteRenderer>().material;
-			//td = GetComponent<TargetDisplay>();
+			//parentMatt = _character.FindAbility<SpriteRenderer>().material;
+			//td = _character.FindAbility<TargetDisplay>();
 		}
 
 
@@ -411,10 +414,26 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		}
 
 
+        public override ConditionData ConditionDataSet()
+        {
+            ConditionData _data = new ConditionData();
+
+			//    _data.hpRatio = _health.CurrentHealth / status.maxHp;
+			return _data;
+        }
 
 
-		//汎用行動の判断
-		protected override void HandleInput()
+        public override CharacterStatus.CharacterData CharacterDataSet()
+        {
+            CharacterStatus.CharacterData _data = new CharacterStatus.CharacterData();
+
+            //    _data.hpRatio = _health.CurrentHealth / status.maxHp;
+            return _data;
+        }
+
+
+        //汎用行動の判断
+        protected override void HandleInput()
 		{
 
 			//	Debug.Log($"ｄｄｋｄｌ{_inputManager.CombinationButton.State.CurrentState}");
@@ -447,29 +466,52 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorShakeSound[2], transform.position);
 			}
 		}
+
+
+        #region イベント関係
+
+
+        /// <summary>
+        /// ターゲットリストから削除されたエネミーを消し去る
+        /// そしてヘイトリストやらを調整
+        /// プレイヤーはなんか別の処理入れてもいいかもな
+        /// あと敵の死を通知するメソッドとしても使える
+        /// </summary>
+        /// <param name="deletEnemy"></param>
+        public override void TargetListChange(int deleteEnemy)
+		{
+
+		}
+
+        #endregion
+
+
+        #region 体力・ダメージ関連
+
+
+        public override void DamageEvent(bool isStun, GameObject enemy)
+		{
+
+		}
+
+        /// <summary>
+        /// 死亡アニメーションを再生する
+        /// 吹っ飛んで死ぬのか普通に死ぬのか
+        /// </summary>
+        /// <param name="stunState"></param>
+        public override void DeadMotionStart(MyWakeUp.StunnType stunState)
+        {
+            _wakeup.StartStunn(stunState);
+        }
+        ///現在の体力
+        public int ReturnHealth()
+        {
+			return (int)_health.CurrentHealth;
+        }
         public void HPReset()
         {
 			_health.CurrentHealth = GManager.instance.pStatus.maxHp;
         }
-		/// <summary>
-		/// 重力設定
-		/// </summary>
-		/// <param name="gravity"></param>
-		public void GravitySet(float gravity)
-		{
-			//rb.gravityScale = gravity;
-			_controller.DefaultParameters.Gravity = -gravity;
-		}
-
-		///ダメージ計算関連
-        #region
-
-		///現在の体力
-		public int ReturnHealth()
-        {
-			return (int)_health.CurrentHealth;
-        }
-
 
        public void testReset()
         {
@@ -481,25 +523,44 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			SManager.instance.Sister.transform.position = new Vector2(187.8f, transform.position.y + 10);
 			if (SManager.instance.Sister.activeSelf)
 			{
-			SManager.instance.Sister.MMGetComponentNoAlloc<BrainAbility>().MPReset();
+			SManager.instance.Sister.GetComponent<BrainAbility>().MPReset();
 			}
 
 
 		}
+		/// <summary>
+		/// 死亡時の処理
+		/// </summary>
+        public override void Die()
+        {
+			testReset();
+        }
+
+        #endregion
+
+
+
+
+
+        ///ダメージ計算関連
+        #region
+
+
 
         /// <summary>
         /// ダメージ計算
         /// </summary>
         /// <param name="isFriend">真なら味方</param>
-        public void DamageCalc(bool isShield)
+        public override void DamageCalc()
 	{
 		//GManager.instance.isDamage = true;
 		//useEquip.hitLimmit--;
 		//mValueはモーション値
 
 			Equip useEquip;
-			
-			
+			bool isShield = GManager.instance.useAtValue.isShield;
+
+
             if (isShield)
             {
 				useEquip = GManager.instance.equipShield;
@@ -564,92 +625,57 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		_damage._attackData.blowPower.Set(GManager.instance.useAtValue.blowPower.x, GManager.instance.useAtValue.blowPower.y);
 	}
 
-	/// <summary>
-	/// 自分のダメージ中フラグ立ててこちらの防御力を教えてあげるの
-	/// </summary>
-	public void DefCalc(bool isTwinHand)
-	{
-		//	Debug.Log("あああああぢいいぢぢぢぢｄ");
-			Equip useEquip;
+        /// <summary>
+        /// 自分のダメージ中フラグ立ててこちらの防御力を教えてあげるの
+        /// </summary>
+        public override void DefCalc()
+        {
+            bool isTwinHand = !GManager.instance.twinHand;
+            //	Debug.Log("あああああぢいいぢぢぢぢｄ");
+            Equip useEquip;
             if (isTwinHand)
-			{
-				useEquip = GManager.instance.equipShield;
-			}
-			else
-			{
-				useEquip = GManager.instance.equipWeapon;
-			}
+            {
+                useEquip = GManager.instance.equipShield;
+            }
+            else
+            {
+                useEquip = GManager.instance.equipWeapon;
+            }
 
 
-			_health.InitialHealth = (int)GManager.instance.maxHp;
-		_health._defData.Def = GManager.instance.Def;
-		_health._defData.pierDef = GManager.instance.pierDef;
-		_health._defData.strDef = GManager.instance.strDef;
-		_health._defData.fireDef = GManager.instance.fireDef;
-		_health._defData.holyDef = GManager.instance.holyDef;
-		_health._defData.darkDef = GManager.instance.darkDef;
 
-		_health._defData.phyCut = useEquip.phyCut;
-		_health._defData.fireCut = useEquip.fireCut;
-		_health._defData.holyCut = useEquip.holyCut;
-		_health._defData.darkCut = useEquip.darkCut;
 
-		_health._defData.guardPower = useEquip.guardPower;
+            _health.InitialHealth = (int)GManager.instance.maxHp;
+            _health._defData.Def = GManager.instance.Def;
+            _health._defData.pierDef = GManager.instance.pierDef;
+            _health._defData.strDef = GManager.instance.strDef;
+            _health._defData.fireDef = GManager.instance.fireDef;
+            _health._defData.holyDef = GManager.instance.holyDef;
+            _health._defData.darkDef = GManager.instance.darkDef;
 
-		isDamage = true;
+            _health._defData.phyCut = useEquip.phyCut;
+            _health._defData.fireCut = useEquip.fireCut;
+            _health._defData.holyCut = useEquip.holyCut;
+            _health._defData.darkCut = useEquip.darkCut;
 
-		if (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned)
-		{
-			_health._defData.isDangerous = true;
+            _health._defData.guardPower = useEquip.guardPower;
 
-		}
-			_health._defData.attackNow = _movement.CurrentState == CharacterStates.MovementStates.Attack ? true : false;
+            isDamage = true;
 
-		}
+            if (_condition.CurrentState == CharacterStates.CharacterConditions.Stunned)
+            {
+                _health._defData.isDangerous = true;
 
-		public void GuardReport()
+            }
+            _health._defData.attackNow = _movement.CurrentState == CharacterStates.MovementStates.Attack ? true : false;
+
+        }
+
+        public override void GuardReport()
         {
 			_health._defData.isGuard = _movement.CurrentState == CharacterStates.MovementStates.Guard ? true : false;
 		}
 
-		public void ArmorRecover()
-		{
-			//	Debug.Log($"今のアーマー{nowArmor}");
-			if (_condition.CurrentState != CharacterStates.CharacterConditions.Stunned && !isDamage && _movement.CurrentState != CharacterStates.MovementStates.Attack)
-			{
-				recoverTime += _controller.DeltaTime;
-				if (recoverTime >= 15 || nowArmor > GManager.instance.Armor)
-				{
-					ArmorReset();
-					recoverTime = 0.0f;
-					lastArmor = 1;
-					//	lastArmor = nowArmor; 
-				}
-				else if (nowArmor < GManager.instance.Armor && recoverTime >= 3 * lastArmor)
-				{
-					//recoverTime = 0.0f;
-					nowArmor += GManager.instance.Armor / 6;
-					lastArmor++;
-				}
-			}
-			else
-			{
-				recoverTime = 0.0f;
-				lastArmor = 1;
-				isDamage = false;
-			}
-
-		}
-
-
-
-		/// <summary>
-		/// アーマーをリセット
-		/// </summary>
-		public void ArmorReset()
-		{
-			nowArmor = GManager.instance.Armor;
-		}
 
 		/// <summary>
 		/// 全てのアビリティをキャンセル
@@ -664,17 +690,27 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-		#endregion
+        /// <summary>
+        /// 攻撃がヒットした時にどのようにヒットしたかを含めて教える
+        /// </summary>
+        /// <param name="isBack">当てた相手が自分の後ろにいる時は真</param>
+        public override void HitReport(bool isBack)
+        {
 
-		//ステータス関連
-		#region
+        }
 
 
-		/// <summary>
-		/// バフの数値を与える
-		/// 弾丸から呼ぶ
-		/// </summary>
-		public void BuffCalc(FireBullet _fire)
+        #endregion
+
+        //
+        #region　ステータス関連
+
+
+        /// <summary>
+        /// バフの数値を与える
+        /// 弾丸から呼ぶ
+        /// </summary>
+        public override void BuffCalc(FireBullet _fire)
         {
 		  _fire.attackFactor = attackFactor;
 		  _fire.fireATFactor = fireATFactor;
@@ -721,118 +757,238 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         #endregion
 
-
+		/// <summary>
+		/// いやインスペクタでやれよ
+		/// </summary>
         public void SetComponennt()
         {
-			_jump = GetComponent<PlayerJump>();
-			_running = GetComponent<PlayerRunning>();
-			_rolling  = GetComponent<PlayerRoll>();
-			_attack = GetComponent<WeaponAbillity>();
-			_guard = GetComponent<GuardAbillity>();
-			_wakeup = GetComponent<MyWakeUp>();
+			_jump = _character.FindAbility<PlayerJump>();
+			_running = _character.FindAbility<PlayerRunning>();
+			_rolling  = _character.FindAbility<PlayerRoll>();
+			_attack = _character.FindAbility<WeaponAbillity>();
+			_guard = _character.FindAbility<GuardAbillity>();
+			_wakeup = _character.FindAbility<MyWakeUp>();
 			_damage = GetComponentInParent<MyDamageOntouch>();
 		}
 
-		//攻防関連
-        #region
+
+        #region アーマー関連
+
+        public void ArmorRecover()
+        {
+            //	Debug.Log($"今のアーマー{nowArmor}");
+            if (_condition.CurrentState != CharacterStates.CharacterConditions.Stunned && !isDamage && _movement.CurrentState != CharacterStates.MovementStates.Attack)
+            {
+                recoverTime += _controller.DeltaTime;
+                if (recoverTime >= 15 || nowArmor > GManager.instance.Armor)
+                {
+                    ArmorReset();
+                    recoverTime = 0.0f;
+                    lastArmor = 1;
+                    //	lastArmor = nowArmor; 
+                }
+                else if (nowArmor < GManager.instance.Armor && recoverTime >= 3 * lastArmor)
+                {
+                    //recoverTime = 0.0f;
+                    nowArmor += GManager.instance.Armor / 6;
+                    lastArmor++;
+                }
+            }
+            else
+            {
+                recoverTime = 0.0f;
+                lastArmor = 1;
+                isDamage = false;
+            }
+
+        }
 
 
-		/// <summary>
-		/// アーマー値に応じてイベントとばす
-		/// スタン攻撃中断もここで
-		/// </summary>
-		public MyWakeUp.StunnType ArmorControll(float shock, bool isDown, bool isBack,bool isShield)
-		{
-			MyWakeUp.StunnType result = 0;
-			Equip useEquip;
-			if (isShield)
-			{
-				useEquip = GManager.instance.equipShield;
-			}
-			else
-			{
-				useEquip = GManager.instance.equipWeapon;
-			}
-			if (_movement.CurrentState != CharacterStates.MovementStates.Attack)
-			{
-				GManager.instance.useAtValue.y = 0;
-			}
-			if ((_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove) && isBack)
-			{
 
-				_guard.GuardEnd();
-			}
+        /// <summary>
+        /// アーマーをリセット
+        /// </summary>
+        public override void ArmorReset()
+        {
+            nowArmor = GManager.instance.Armor;
+        }
 
-			if (!isBack && (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove || _health._guardAttack))
-			{
-				if (!_health._guardAttack) 
-				{
-					_guard.GuardHit();
-				}
-				GManager.instance.stamina -= (shock * 3) * (1 - (useEquip.guardPower / 100));
+        /// <summary>
+        /// アーマー値に応じてイベントとばす
+        /// スタン攻撃中断もここで
+        /// </summary>
+        public override MyWakeUp.StunnType ArmorControll(float shock, bool isDown, bool isBack)
+        {
+            bool isShield = !GManager.instance.twinHand;
+            MyWakeUp.StunnType result = 0;
+            Equip useEquip;
+            if (isShield)
+            {
+                useEquip = GManager.instance.equipShield;
+            }
+            else
+            {
+                useEquip = GManager.instance.equipWeapon;
+            }
+            if (_movement.CurrentState != CharacterStates.MovementStates.Attack)
+            {
+                GManager.instance.useAtValue.y = 0;
+            }
+            if ((_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove) && isBack)
+            {
+
+                _guard.GuardEnd();
+            }
+
+            if (!isBack && (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove || _health._guardAttack))
+            {
+                if (!_health._guardAttack)
+                {
+                    _guard.GuardHit();
+                }
+                GManager.instance.stamina -= (shock * 3) * (1 - (useEquip.guardPower / 100));
                 if (GManager.instance.stamina <= 0)
                 {
-					if (!_health._guardAttack)
-					{
-						_guard.GuardEnd();
-					}
-					
-					nowArmor = -1;
+                    if (!_health._guardAttack)
+                    {
+                        _guard.GuardEnd();
+                    }
+
+                    nowArmor = -1;
                 }
-			}
-			else
-			{
-				if (GManager.instance.useAtValue.y == 0)
-				{
-					nowArmor -= shock;
+            }
+            else
+            {
+                if (GManager.instance.useAtValue.y == 0)
+                {
+                    nowArmor -= shock;
 
-				}
-				else
-				{
-					//攻撃アーマーの数値がアーマー削りより大きいならアーマーの数値は変わらない。
-					//攻撃アーマーの数値引いた分アーマー削りでアーマーを削る
-					nowArmor -= (shock - GManager.instance.useAtValue.y) < 0 ? 0 : (shock - GManager.instance.useAtValue.y);
-					//攻撃アーマーも一応削る
-					GManager.instance.useAtValue.y = (GManager.instance.useAtValue.y - shock) < 0 ? 0 : GManager.instance.useAtValue.y - shock;
+                }
+                else
+                {
+                    //攻撃アーマーの数値がアーマー削りより大きいならアーマーの数値は変わらない。
+                    //攻撃アーマーの数値引いた分アーマー削りでアーマーを削る
+                    nowArmor -= (shock - GManager.instance.useAtValue.y) < 0 ? 0 : (shock - GManager.instance.useAtValue.y);
+                    //攻撃アーマーも一応削る
+                    GManager.instance.useAtValue.y = (GManager.instance.useAtValue.y - shock) < 0 ? 0 : GManager.instance.useAtValue.y - shock;
 
-				}
-			}
+                }
+            }
 
-			if (nowArmor <= 0)
-			{
-				if (isDown)
-				{
-					//Debug.Log($"ｓｓｓｓｓｓｓｓｓｓｓ{_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove}");
-					result = (MyWakeUp.StunnType.Down);
-				}
-				else
-				{
+            if (nowArmor <= 0)
+            {
+                if (isDown)
+                {
+                    //Debug.Log($"ｓｓｓｓｓｓｓｓｓｓｓ{_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove}");
+                    result = (MyWakeUp.StunnType.Down);
+                }
+                else
+                {
 
-					if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
-					{
-						result = MyWakeUp.StunnType.GuardBreake;
-					}
-					//パリィは別発生
-					else
-					{
-						result = MyWakeUp.StunnType.Falter;
+                    if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
+                    {
+                        result = MyWakeUp.StunnType.GuardBreake;
+                    }
+                    //パリィは別発生
+                    else
+                    {
+                        result = MyWakeUp.StunnType.Falter;
 
-					}
+                    }
 
-				}
+                }
 
-			}
-			else
-			{
-				result = MyWakeUp.StunnType.notStunned;
-			}
-
-
-			return result;
-		}
+            }
+            else
+            {
+                result = MyWakeUp.StunnType.notStunned;
+            }
 
 
-        //ヘルスのために攻撃状態か否かを返す
+            return result;
+        }
+
+        /// <summary>
+        /// 現在のスタン状況を返す
+        /// </summary>
+        /// <returns></returns>
+        public override int GetStunState()
+        {
+            return _wakeup.GetStunState();
+        }
+
+
+
+        /// <summary>
+		/// 自分がパリィされた時アーマーブレイクするかどうかを伝える
+        /// プレイヤーはジャスガ一発でパリィにする？
+        /// </summary>
+        public override bool ParryArmorJudge()
+        {
+            return true;
+            /*
+            nowArmor -= Mathf.Ceil(status.Armor * ((100 - atV.parryResist) / 100));
+
+            if (nowArmor <= 0)
+            {
+                AttackEnd(true);
+                //	_wakeup.StartStunn(MyWakeUp.StunnType.Parried);
+                return true;
+            }
+            else
+            {
+                Debug.Log($"あと{nowArmor}");
+                return false;
+            }*/
+        }
+
+        /// <summary>
+        /// 空中で攻撃を受けた時ダウンするかどうかの判断
+        /// </summary>
+        /// <param name="stunnState"></param>
+        /// <returns></returns>
+        public override bool AirDownJudge(MyWakeUp.StunnType stunnState)
+        {
+            if (stunnState == MyWakeUp.StunnType.Falter)
+            {
+                //      stunnState = MyWakeUp.StunnType.Down;
+                //吹き飛ばし処理
+                return true;
+            }
+            else if (stunnState == MyWakeUp.StunnType.notStunned)
+            {
+                //攻撃中でなければ
+                if (!AttackCheck())
+                {
+                    return true;
+                    //吹き飛ばし処理
+                }
+                //攻撃中なら吹き飛ばない
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region　攻撃関連
+
+
+
+
+        /// <summary>
+        /// ヘルスのために攻撃状態か否かを返す
+        /// アーマー0の攻撃は落とされてもいいかも
+        /// それは普通に特殊ダウンしなくても攻撃で削られるかな
+        /// </summary>
+        /// <returns></returns>
+        //
         public bool AttackCheck()
         {
 			return _movement.CurrentState == CharacterStates.MovementStates.Attack;
@@ -878,12 +1034,28 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		}
 
-
-		public void ParryStart(int num)
+		/// <summary>
+		/// パリィモーション開始
+		/// </summary>
+		/// <param name="isBreake"></param>
+		public override void ParryStart(bool isBreake)
 		{
-			_parry.ParryStart(num);
+
+            if (!GManager.instance.equipWeapon.twinHand)
+            {
+                GManager.instance.stamina += GManager.instance.equipShield.parryRecover;
+            }
+            else
+            {
+                GManager.instance.stamina += GManager.instance.equipWeapon.parryRecover;
+            }
+            _parry.ParryStart(isBreake);
 			_guard.GuardEnd();
 		}
+
+
+
+
 
         #endregion
 
@@ -895,10 +1067,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			_weapon.Continue();
 
         }
+
         #endregion
 
 		//プレイヤー制御
         #region
+
+		/// <summary>
+		/// 重力設定
+		/// </summary>
+		/// <param name="gravity"></param>
+		public void GravitySet(float gravity)
+		{
+			//rb.gravityScale = gravity;
+			_controller.DefaultParameters.Gravity = -gravity;
+		}
 
         /// <summary>
         /// 外側から向きを変える。
@@ -949,6 +1132,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			_controller.SetForce(Vector2.zero);
         }
 
+
+        public override void StartStun(MyWakeUp.StunnType stunState)
+        {
+            GravitySet(GManager.instance.pStatus.firstGravity);
+            MoveReset();
+            _wakeup.StartStunn(stunState);
+        }
+
+
         #endregion
 
         //状態確認
@@ -972,6 +1164,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
         }
 
+		/// <summary>
+		/// 体力が何割あるか知らせる
+		/// </summary>
+		/// <returns></returns>
 		public float HPRatio()
         {
 		    return _health.CurrentHealth / _health.MaximumHealth;
@@ -999,7 +1195,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-		public void GuardSound()
+		public override void GuardSound()
 		{
 
 

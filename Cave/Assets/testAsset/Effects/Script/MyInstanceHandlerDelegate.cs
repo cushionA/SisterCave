@@ -12,8 +12,8 @@ public class MyInstanceHandlerDelegate : MonoBehaviour
 	private void Awake()
 	{
 		// 早急にGlobal PoolManagerデリゲートを設定する。これらは常に利用可能です。
-		InstanceHandler.InstantiateDelegates += this.InstantiateDelegate;
-		InstanceHandler.DestroyDelegates += this.DestroyDelegate;
+		InstanceHandler.InstantiateDelegates = this.InstantiateDelegate;
+		InstanceHandler.DestroyDelegates = this.DestroyDelegate;
 	}
 
 	private void Start()
@@ -25,7 +25,7 @@ public class MyInstanceHandlerDelegate : MonoBehaviour
 
 	public GameObject InstantiateDelegate(GameObject location, Vector3 pos, Quaternion rot)
 	{
-		Debug.Log("Using my own instantiation delegate on prefab '" + location.name + "'!");
+		//Debug.Log("Using my own instantiation delegate on prefab '" + location.name + "'!");
 
 		return Addressables.InstantiateAsync(location.name, pos,rot).WaitForCompletion();
 

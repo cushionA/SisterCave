@@ -136,7 +136,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 			//base.ProcessAbility();
 
 			HandleHorizontalMovement();
-			DetectWalls();
+		//	DetectWalls();
 		}
 
 		/// <summary>
@@ -192,10 +192,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		/// </summary>
 		protected virtual void HandleHorizontalMovement()
 		{
+
 			// if we're not walking anymore, we stop our walking sound
 			if ((_movement.CurrentState != CharacterStates.MovementStates.moving) && _startFeedbackIsPlaying)
 			{
 				StopStartFeedbacks();
+
 			}
 
 
@@ -277,7 +279,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				&&(_movement.CurrentState != CharacterStates.MovementStates.Nostate)
 				&& (_controller.TimeAirborne >= _character.AirborneMinimumTime))
 			{
-				Debug.Log("ÇÜÇÜ");
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
 			}
 
@@ -368,13 +369,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 				return;
 			}
 
+
+			//ï«à»äOÇÃìGÇ‡åüèoÇ∑ÇÈÇ©ÇÁÇ‚ÇﬂÇÎ
+			/*
 			if ((_movement.CurrentState == CharacterStates.MovementStates.moving) || (_movement.CurrentState == CharacterStates.MovementStates.Running))
 			{
 				if ((_controller.State.IsCollidingLeft) || (_controller.State.IsCollidingRight))
 				{
+					Debug.Log("Ç†gggggggggggghhhhhhhh");
 					_movement.ChangeState(CharacterStates.MovementStates.Idle);
 				}
-			}
+			}*/
 		}
 
 		/// <summary>
@@ -399,6 +404,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 					}
 					else if(_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
 					{
+
 						_movement.ChangeState(CharacterStates.MovementStates.Idle);
 					}
 				}

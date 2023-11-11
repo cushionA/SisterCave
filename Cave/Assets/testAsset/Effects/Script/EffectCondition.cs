@@ -36,7 +36,7 @@ public class EffectCondition
         public EmitType _emitType = EmitType.Soon;
 
         [Tooltip("エフェクトが出てくる場所")]
-        public Transform _emitPosition;
+        public byte _emitPosition = 0;
 
         [Tooltip("エフェクトが出たあとついてくるか")]
         public bool _isFollow;

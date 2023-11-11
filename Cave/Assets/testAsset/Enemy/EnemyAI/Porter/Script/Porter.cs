@@ -34,7 +34,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                 attackChanceTime += _controller.DeltaTime;
 
-                    AgrFly(moveType);
+                   // AgrFly();
                 if (attackChanceTime >= 6)
                 {
                     
@@ -64,13 +64,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         //SetAttackNumber(0);
                         //attackNumber = 0;
 
-                        if (targetPosition.x > transform.position.x)
+                        if (transform.position.x > transform.position.x)
                         {
-                            Attack(true, 2);
+                         //   Attack(true, 2);
                         }
                         else
                         {
-                            Attack(true, 1);
+                       //     Attack(true, 1);
                         }
                        // Debug.Log($"‚„‚„{moveType}");
 
@@ -123,7 +123,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             else if (!isAggressive)
             {
               
-                PatrolFly();
+                //PatrolFly();
                 //PatrolMove();
             }
 

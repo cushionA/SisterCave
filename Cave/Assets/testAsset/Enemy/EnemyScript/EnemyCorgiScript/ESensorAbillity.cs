@@ -131,7 +131,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             if (se.Detections.Count != 0)
             {
-                brain.StartCombat();
+                brain.StartCombat(se.GetNearestDetection());
             }
 
             //サーチタイプ、近いやつ優先とか色々つけてターゲット切り替えるのありかもですm
@@ -235,11 +235,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         /// <summary>
         ///     トリガーセンサーから呼び出すもの
+        ///     見つけたオブジェクトを出してくれる
         /// </summary>
-        public void FindEnemy()
+        public void FindEnemy(GameObject enemy)
         {
         //    Debug.Log("機能してます");
-            brain.StartCombat();
+            brain.StartCombat(enemy);
             RangeChange();
             //即座にポジション判断できるように
 
@@ -258,8 +259,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             if (brain.isAggressive)
             {
-                range.Circle.Radius = aggresiveRange;
+                // range.Circle.Radius = aggresiveRange;
 
+                //戦闘中はセンサーいらないです
+                range.Circle.Radius = 0;
                 if (_sight != null)
                     _sight.SetActive(false);
             }

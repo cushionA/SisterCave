@@ -17,6 +17,12 @@ public class GManager : MonoBehaviour
     public static GManager instance = null;
 
     public GameObject Player;
+
+    /// <summary>
+    /// time.Timeを記録
+    /// </summary>
+    public float nowTime;
+
     //プレイヤーオブジェクト
     public PlayerStatus pStatus;
     //プレイヤーのステータスを取得
@@ -239,6 +245,15 @@ public class GManager : MonoBehaviour
     [HideInInspector] public float nockBack;//ガードした時に下がる数値
     [HideInInspector] public bool  twinHand;//片手かどうか。真なら両手
 
+    /// <summary>
+    /// プレイヤーの位置
+    /// </summary>
+    Vector2 PlayerPosi;
+
+    /// <summary>
+    /// プレイヤーの位置
+    /// </summary>
+    public Vector2 PlayerPosition { get => PlayerPosi; }
 
     public int shit;
 
@@ -375,12 +390,20 @@ public class GManager : MonoBehaviour
             //こいつらはゲームの最初に入れるべきでは
             isSoundFirst = true;
         }
+
+        nowTime = Time.time;
+        PlayerPosi = Player.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-       // Debug.Log($"フラグの効果{pc.isAvoid}");
+        //プレイヤーの位置を更新
+        PlayerPosi = Player.transform.position;
+        nowTime = Time.time;
+
+
+        // Debug.Log($"フラグの効果{pc.isAvoid}");
         // DamageAvoid();
         if (statusChange)
         {
@@ -388,6 +411,7 @@ public class GManager : MonoBehaviour
             statusChange = false;
         }
 
+        /*
         //状態異常
         if (pStatus.isParalyze || pStatus.isPoison)
         {
@@ -397,6 +421,7 @@ public class GManager : MonoBehaviour
         {
             badCondition = false;
         }
+        */
 
         StaminaRecover();
         hp = pc.ReturnHealth();
@@ -1169,7 +1194,7 @@ public class GManager : MonoBehaviour
 
                // _newPrefab.AddRange(equipWeapon.usePrefab);
             }
-            Debug.Log($"wer{_newPrefab.Count}");
+       //     Debug.Log($"wer{_newPrefab.Count}");
 
 
             //シールド
@@ -1433,8 +1458,10 @@ public class GManager : MonoBehaviour
                 //使用する魔法のエフェクトをパッキング
                 for (int s = 0; s < equipMagic[i]._usePrefab.Length; s++)
                 {
-
-                    _newPrefab.Add(equipMagic[i]._usePrefab[s]);
+                    PrefabPool pool = new PrefabPool();
+                    pool.prefab = equipMagic[i]._usePrefab[s].prefab;
+                    pool.preloadAmount = equipMagic[i]._usePrefab[s].preloadAmount;
+                    _newPrefab.Add(pool);
                 }
 
                 //ここから子弾見ていく
@@ -1445,8 +1472,10 @@ public class GManager : MonoBehaviour
                 {
                     for (int s = 0; s < magi.childM._usePrefab.Length; s++)
                     {
-
-                        _newPrefab.Add(equipMagic[i]._usePrefab[s]);
+                        PrefabPool pool = new PrefabPool();
+                        pool.prefab = magi.childM._usePrefab[s].prefab;
+                        pool.preloadAmount = magi.childM._usePrefab[s].preloadAmount;
+                        _newPrefab.Add(pool);
                     }
                     magi = magi.childM;
                 }
