@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Net.Sockets;
+using MoreMountains.CorgiEngine;
 
 [System.Serializable] //これを書くとinspectorに表示される。
 public class AttackJudge:SisterConditionBase
@@ -10,29 +12,50 @@ public class AttackJudge:SisterConditionBase
     #region 定義
 
 
-    public enum FirstCondition
+    /// <summary>
+    /// 攻撃魔法使用の挙動設定
+    /// </summary>
+    public enum AttackWaitCondition
     {
-        敵を吹き飛ばす,
-        貫通する,
-        設置攻撃,
-        範囲攻撃,
-        追尾する,
-        サーチ攻撃,
-        指定なし
+        即時発射,
+        任意の秒数条件を待って発射,
+        任意の秒数条件を待ってキャンセル
+    }
 
+    /// <summary>
+    /// 攻撃魔法使用で待つ条件
+    /// </summary>
+    public enum WaitCondition
+    {
+        stun,//ターゲットのスタンを待つ
+        attack,//ターゲットへのプレイヤーの攻撃を待つ
+        range,//射程距離に入るのを待つ
+        hit,//射線通るのを待つ
+        enemyAttack,//敵が攻撃しようとするのを待つ
     }
 
 
-
-    public enum AdditionalCondition
+    /// <summary>
+    /// 攻撃前に待機するかの条件
+    /// </summary>
+    public struct AttackWaitSetting
     {
-        //  敵の弱点,//状態異常含む
-        発射数,
-        詠唱時間,
-        攻撃力,
-        削り値,
-        MP使用量,
-        指定なし
+        [Header("何かを待ってから攻撃するか")]
+        public AttackWaitCondition waitCondition;
+
+
+        [Header("待機する条件")]
+        public WaitCondition waitEvent;
+
+        [Header("待つ秒数")]
+        public float waitTime;
+
+        /// <summary>
+        /// ヘイトを向けてきた敵がいたらターゲット切り替えて撃つかどうか
+        /// </summary>
+        [Header("待機中攻撃してくる敵に標的を変えるか")]
+        public bool targetHateChange;
+
     }
 
 
@@ -84,35 +107,27 @@ public class AttackJudge:SisterConditionBase
       }*/
 
 
-
-
-
     //ここからはターゲット設定後の挙動---------------------------------------------------
 
 
-    public UseAction condition = UseAction.なにもしない;
+
+
+
 
     //[HideInInspector] public int percentage;
     //   [HideInInspector] public bool highOrLow;//その項目が以上か以下か。
     //  public byte WeakPointJudge;
 
 
-    Element useElement;
-
-
-    public FirstCondition firstCondition = FirstCondition.指定なし;
-
     /// <summary>
-    /// 真なら含まないのを選ぶ
-    /// 爆発しないとか
+    /// 使う魔法の属性
+    /// これが攻撃に固有の行動選択条件
     /// </summary>
-    public bool notContain;
+    public AtEffectCon.Element useElement;
 
-    public AdditionalCondition secondCondition = AdditionalCondition.指定なし;
 
-    [Tooltip("低い方か多い方か。あるほうかでない方か。Falseでないほう")]
-    public bool secondUpDown;//あるいは低い方か多い方か。Falseでないほう
-
+    [Header("攻撃前の待機挙動を決める")]
+    public AttackWaitSetting waitSetting;
 
 
 }

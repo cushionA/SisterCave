@@ -112,7 +112,83 @@ public class Magic : Item
 		public Vector2 bulletScaleA;
 	}
 
-	public enum FIRETYPE
+
+
+	//でもこれってシスターさんの判断のためにあるなら
+	//Sismagicにだけ持たせておけばよくない？
+    #region 魔法の性質
+
+    /// <summary>
+    /// 攻撃魔法の特性
+    /// </summary>
+    [Flags]
+    public enum BulletType
+    {
+        敵を吹き飛ばす = 1 << 0,
+        貫通する = 1 << 1,
+        設置攻撃 = 1 << 2,
+        範囲攻撃 = 1 << 3,//雨
+        追尾する = 1 << 4,
+        サーチ攻撃 = 1 << 5,
+        爆発 = 1 << 6,
+        指定なし =0
+
+    }
+
+
+
+    /// <summary>
+    /// サポート効果の一覧
+    /// </summary>
+    [Flags]
+    public enum SupportType
+    {
+        攻撃強化 = 1 << 0,
+        防御強化 = 1 << 1,
+        ダメージカット = 1 << 2,
+        ダメージアップ = 1 << 3,
+        エンチャント = 1 << 4,
+        アクション強化 = 1 << 5,
+        バリア = 1 << 6,
+        サテライト = 1 << 7,//周りにとどまって敵を攻撃
+        オブジェクト設置 = 1 << 8,//火柱のようなダメージオブジェクトを配置して守る
+        エリア効果 = 1 << 9,//敵だけ押し返す風とか
+        一度だけ無敵 = 1 << 10,//一発だけ耐えるバリア
+        召喚 = 1 << 11,//おとりや味方を召喚。敵でも味方でもない無差別攻撃の邪神的なの呼び出してもいいかも
+        なし = 0
+    }
+
+
+
+    /// <summary>
+    /// 回復の付属効果の一覧
+    /// </summary>
+    [Flags]
+    public enum HealEffectType
+    {
+        リジェネ = 1 << 0,
+        毒解除 = 1 << 1,
+        浸食解除 = 1 << 2,
+        凍結解除 = 1 << 3,//凍結は拘束
+        虚弱系状態異常解 = 1 << 4,//毒、スタミナ回復低下、ガード性能低下、アーマー低下、状態異常耐性減少、攻防低下
+        妨害系状態異常解除 = 1 << 5,//浸食、凍結、沈黙、ヘイト上昇、移動速度低下、被・与ダメージ干渉
+        全状態異常解除 = 1 << 6,//すべて解除
+        MP回復 = 1 << 7,
+        ふんばり = 1 << 8,//HP1で残る
+        スタミナとアーマーリセット = 1 << 9,//スタミナとアーマー回復
+        復活 = 1 << 10,//死亡時一度だけよみがえる。何度でも使えるけど総MPまで大幅に削る
+        なし = 0
+    }
+
+
+    #endregion
+
+
+
+    /// <summary>
+    /// 発動モーションのタイプ
+    /// </summary>
+    public enum FIRETYPE
 	{
 		NoCast,
 		Short,
@@ -123,6 +199,9 @@ public class Magic : Item
 		Special
 	}
 
+	/// <summary>
+	/// 詠唱モーションのタイプ
+	/// </summary>
 	public enum CASTTYPE
 	{
 		NoCast,
@@ -189,6 +268,9 @@ public class Magic : Item
 	[Foldout("内部ステータス")]
 	public float shock;//アーマー削り
 
+	/// <summary>
+	/// これは攻撃じゃないなら0のまま
+	/// </summary>
 	[Foldout("内部ステータス")]
 	[Header("モーション値")]
     public float mValue;
@@ -203,6 +285,11 @@ public class Magic : Item
 	[Foldout("内部ステータス")]
 	public AnimationCurve intCurve;
 
+	/// <summary>
+	/// もしかしたらEventObject的なコンポーネントに
+	/// 効果時間とかは委託するかも
+	/// なんでこれはソート用の情報
+	/// </summary>
 	[Foldout("内部ステータス")]
 	[Header("効果時間")]
     public float effectTime;//効果時間
@@ -240,51 +327,16 @@ public class Magic : Item
 
 
 
-    
-    #region エフェクト関連
-
-    [Foldout("エフェクト関連")]
-	[Header("射撃オブジェクト")]
-    ///<summary>
-    ///生成する弾丸オブジェクト
-    ///</summary>
-    public ParticleSystem effects;
-
-	[Foldout("エフェクト関連")]
-	[Header("発射時のエフェクト")]
-	/// <summary>
-	/// いわゆるマズルフラッシュ
-	/// </summary>
-	public ParticleSystem flashEffect;
-
-	[Foldout("エフェクト関連")]
-	[Header("ヒット時のエフェクト")]
-	/// <summary>
-	/// こちらに爆発処理とか乗せる
-	/// </summary>
-	public ParticleSystem hitEffect;
-
-	[Foldout("エフェクト関連")]
-	/// <summary>
-	/// 子弾丸の魔法
-	/// </summary>
-	public Magic childM;
-
-
-	[Foldout("エフェクト関連")]
-	[Tooltip("ヒット時とかのエフェクトも含むので配列")]
-	[Header("この魔法のエフェクトのプレハブ")]
-	public PrefabPool[] _usePrefab;
-
-    #endregion
 
 
     #region 弾丸の動きについて
+    [Header("弾丸の動きの設定")]
 
-
-	[Foldout("挙動設定")]
+    [Foldout("挙動設定")]
 	[Header("弾丸の動きの設定")]
 	public BMoveStatus _moveSt;
+
+
 
 	[Foldout("挙動設定")]
 	[Header("位置をサーチして発生するか")]
@@ -382,8 +434,72 @@ public class Magic : Item
 
 
 
-	//サウンド、アニメーション設定
+	//弾丸が持っている効果
 	#region
+
+	[Header("弾丸の追加効果")]
+
+	
+	[EnumFlags]
+	[Header("攻撃の特徴")]
+	//何も指定しないと指定なしになるようにUIを工夫
+	public BulletType bulletFeature = BulletType.指定なし;
+
+    [EnumFlags]
+    [Header("サポート効果")]
+	public SupportType supportEffect = SupportType.なし;
+
+    [EnumFlags]
+    [Header("回復エフェクト")]
+	public HealEffectType healEffect = HealEffectType.なし;
+
+    #endregion
+
+
+    
+    #region エフェクト関連
+
+    [Foldout("エフェクト関連")]
+	[Header("射撃オブジェクト")]
+    ///<summary>
+    ///生成する弾丸オブジェクト
+    ///</summary>
+    public ParticleSystem effects;
+
+	[Foldout("エフェクト関連")]
+	[Header("発射時のエフェクト")]
+	/// <summary>
+	/// いわゆるマズルフラッシュ
+	/// </summary>
+	public ParticleSystem flashEffect;
+
+	[Foldout("エフェクト関連")]
+	[Header("ヒット時のエフェクト")]
+	/// <summary>
+	/// こちらに爆発処理とか乗せる
+	/// </summary>
+	public ParticleSystem hitEffect;
+
+	[Foldout("エフェクト関連")]
+	/// <summary>
+	/// 子弾丸の魔法
+	/// </summary>
+	public Magic childM;
+
+
+	[Foldout("エフェクト関連")]
+	[Tooltip("ヒット時とかのエフェクトも含むので配列")]
+	[Header("この魔法のエフェクトのプレハブ")]
+	public PrefabPool[] _usePrefab;
+
+    #endregion
+
+
+
+    //サウンド、アニメーション設定
+    #region
+    [Header("サウンド、アニメ設定")]
+	
 
 	[Foldout("サウンド・アニメ設定")]
 	[Header("発生サウンド")]

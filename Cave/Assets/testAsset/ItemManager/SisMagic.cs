@@ -6,17 +6,7 @@ public class SisMagic : Magic
 {
 
 
-    [HideInInspector]
-    public enum SupportType
-    {
-        攻撃強化,
-        防御強化,
-        エンチャント,
-        アクション強化,
-        バリア,
-        リジェネ,
-        なし
-    }
+
     public SupportType sType;
 
     [Header("爆発するかどうか")]

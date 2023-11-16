@@ -1,4 +1,5 @@
 using MoreMountains.CorgiEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,20 +36,107 @@ public abstract class ControllAbillity : MyAbillityBase
         public float hpRatio;
 
         /// <summary>
+        /// 体力の数値
+        /// </summary>
+        public float hpNum;
+
+        /// <summary>
         /// MPの割合
         /// </summary>
         public float mpRatio;
 
         /// <summary>
-        /// バフついているか
+        /// ついてるバフを記録
         /// </summary>
-        public bool isBuffOn;
+        public PositiveCondition buffImfo;
 
         /// <summary>
-        /// デバフついているか
+        /// ついているデバフを記録
         /// </summary>
-        public bool isDebuffOn;
+        public NegativeCondition debuffImfo;
+
+
+        public TargettigData target;
     }
+
+    /// <summary>
+    /// ターゲットしてる相手が誰なのかを示すデータ
+    /// </summary>
+    public struct TargettigData
+    {
+        /// <summary>
+        /// 標的の所属
+        /// </summary>
+        public Side targetSide;
+
+        /// <summary>
+        /// 標的の番号
+        /// </summary>
+        public int targetNum;
+    }
+
+    /// <summary>
+    /// どの陣営を表すか
+    /// </summary>
+    public enum Side
+    {
+        Enemy = 1,
+        Player = 2,
+        Other = 3,
+        なし = 0//敵を認識してない
+    }
+
+
+    /// <summary>
+    /// いい効果、いわゆるバフ
+    /// </summary>
+    [Flags]
+
+    public enum PositiveCondition
+    {
+        HP継続回復 = 1,
+        MP継続回復 = 1 << 1,
+        防御力上昇 = 1 << 2,
+        攻撃力上昇 = 1 << 3,
+        被ダメージカット = 1 << 4,
+        与ダメージ増加 = 1 <<5 ,
+        移動速度上昇 = 1 << 6,
+
+        スタミナ回復加速 = 1 << 7,
+        ガード性能上昇 = 1 << 8,
+        アーマー上昇 = 1 << 9,
+        攻撃HP回復 = 1 << 10,
+        撃破HP回復 = 1 << 11,
+        攻撃MP回復 = 1 << 12,
+        撃破MP回復 = 1 << 13,
+        飛び道具バリア = 1 <<14,
+        状態異常耐性上昇 = 1 << 15,//毒とか個別にするかも
+    }
+
+
+    /// <summary>
+    /// 悪い効果、いわゆるデバフ
+    /// </summary>
+    [Flags]
+
+    public enum NegativeCondition
+    {
+        毒 = 1 << 0,//凍結などの状態異常との区別どうする？　蓄積した時ここのデータを見るとか？
+        浸食 = 1 << 1,//MP毒
+        凍結 = 1 << 2,//移動停止
+        沈黙 = 1<<3,//魔術禁止
+        防御力減少 = 1 << 4,
+        攻撃力減少 = 1 << 5,
+        被ダメージ増加 = 1 << 6,
+        与ダメージ減少 = 1 << 7,
+        移動速度低下 = 1 << 8,
+        スタミナ回復減速 = 1 << 9,
+        ガード性能低下 = 1 << 10,
+        アーマー低下 = 1 << 11,
+        ヘイト上昇 = 1 << 12,
+        状態異常耐性減少 = 1 << 13,//毒とか個別にするかも
+    }
+
 
     #endregion
 

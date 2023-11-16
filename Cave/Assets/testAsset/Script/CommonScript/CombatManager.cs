@@ -79,6 +79,11 @@ public class TargetData
         /// UŒ‚ó‘Ô‚Å‚ ‚é‚©
         /// </summary>
         public bool isAgressive;
+
+        /// <summary>
+        /// ¡‚Ç‚Ì“G‚ğƒ^[ƒQƒbƒg‚µ‚Ä‚é‚©
+        /// </summary>
+        public int targetNum;
 }
 
 #endregion

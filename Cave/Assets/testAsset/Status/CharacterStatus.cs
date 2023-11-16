@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 [Serializable]
 public abstract class CharacterStatus : ScriptableObject
 {
@@ -31,6 +32,11 @@ public abstract class CharacterStatus : ScriptableObject
         /// </summary>
         public CharaType _type;
 
+        /// <summary>
+        /// 強い？
+        /// </summary>
+        [Header("強敵かどうか")]
+        public bool isStrong;
 
         /// <summary>
         /// 表示攻撃力
@@ -41,9 +47,23 @@ public abstract class CharacterStatus : ScriptableObject
         /// 表示防御力
         /// </summary>
         public float displayDef;
+
+        /// <summary>
+        /// 攻撃属性を示す列挙型
+        /// ビット演算で見る
+        /// </summary>
+        [EnumFlags]
+        public SisterConditionBase.Element attackElement;
+
+        /// <summary>
+        /// 弱点属性を示す列挙型
+        /// ビット演算で見る
+        /// </summary>
+        [EnumFlags]
+        public SisterConditionBase.Element WeakPoint;
     }
 
-
+    [Flags]
     public enum KindofEnemy
     {
         Soldier,//陸の雑兵
@@ -57,6 +77,7 @@ public abstract class CharacterStatus : ScriptableObject
     /// <summary>
     /// 所属する勢力的なもの
     /// </summary>
+    [Flags]
     public enum CharaType
     {
         Player,
@@ -104,15 +125,18 @@ public abstract class CharacterStatus : ScriptableObject
     /// <summary>
     /// 行動を使用可能なモード
     /// 五つまで
+    /// これもビット演算でやる？　複数選べるよ？
+    /// モード1か2なら…みたいに
     /// </summary>
+    [Flags]
     public enum Mode
     {
-        Mode1,
-        Mode2,
-        Mode3,
-        Mode4,
-        Mode5,
-        AllMode
+        Mode1 = 1 << 0,
+        Mode2 = 1 << 1,
+        Mode3 = 1 << 2,
+        Mode4 = 1 << 3,
+        Mode5 = 1 << 4,
+        AllMode = 1 <<5
     }
     /// <summary>
     /// モードを変える条件
@@ -130,7 +154,9 @@ public abstract class CharacterStatus : ScriptableObject
 
         /// <summary>
         /// 現在のモード
+        /// 複数選択可能
         /// </summary>
+        [EnumFlags]
         [Header("遷移元のモード")]
         public Mode _nowMode;
 
@@ -175,7 +201,6 @@ public abstract class CharacterStatus : ScriptableObject
         public int modeLevel;
 
     }
-
 
 
 

@@ -39,16 +39,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <summary>
         /// ‘®«‚Ì—ñ‹“Œ^
         /// </summary>
+        [Flags]
         public enum Element
         {
-            slash,
-            stab,
-            strike,
-            holy,
-            dark,
-            fire,
-            thunder,
-            none
+            aŒ‚‘®« = 1 << 0,
+            h“Ë‘®« = 1 << 1,
+            ‘ÅŒ‚‘®« = 1 << 2,
+            ¹‘®« = 1 << 3,
+            ˆÅ‘®« = 1 << 4,
+            ‰Š‘®« = 1 << 5,
+            —‹‘®« = 1 << 6,
+            “Å = 1 << 7,
+            ZH = 1 << 8,
+            “€Œ‹ = 1 << 9,
+            ˆÚ“®‘¬“x’á‰ºUŒ‚ = 1 << 10,
+            UŒ‚—Í’á‰ºUŒ‚ = 1 << 11,
+            –hŒä—Í’á‰ºUŒ‚ = 1 << 12,
+            w’è‚È‚µ = 0
         }
 
         public enum AdditionalType
