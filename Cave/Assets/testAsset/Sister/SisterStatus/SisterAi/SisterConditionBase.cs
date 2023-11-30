@@ -20,7 +20,7 @@ public class SisterConditionBase
     /// </summary>
     public enum ActCondition
     {
-        プレイヤーのHPが比率の条件を満たす時,//ここで回復させれば緊急回復になるし、MP多いとかにすれば切り札を運用できる
+        プレイヤーのHPが比率の条件を満たす時,//ここで回復させれば緊急回復になる
         プレイヤーのMPが比率の条件を満たす時,
         自分のHPが比率の条件を満たす時,
         自分のMPが比率の条件を満たす時,
@@ -38,7 +38,7 @@ public class SisterConditionBase
         指定距離にプレイヤーがいる時,
         指定距離に味方がいる時,
 
-
+        //ここから敵関連の条件に
         敵がHP比率の条件を満たす時,
         敵がアーマー値の比率の条件を満たす時,
         敵タイプ,
@@ -48,9 +48,10 @@ public class SisterConditionBase
         特定の弱点の敵がいる時,
         連携中の敵がいる時,
         指定距離に敵がいる時,
-        プレイヤーを狙ってる敵,
-        シスターさんを狙ってる敵,
-        シスターさんとプレイヤー以外を狙う敵,
+        周辺の敵が指定の数である時,//周辺敵密度をセンサーで出す
+        プレイヤーを狙ってる敵がいる,
+        シスターさんを狙ってる敵がいる,//こういうのは自分の番号がターゲットになってる敵が何人いるかを取得する
+        シスターさんとプレイヤー以外を狙う敵がいる,
         指定なし
 
     }
@@ -70,6 +71,16 @@ public class SisterConditionBase
     }
 
     /// <summary>
+    /// ターゲットを強制指定する
+    /// 使わんかも
+    /// </summary>
+    public enum TargetForceSet
+    {
+
+    }
+
+
+    /// <summary>
     /// なにについて調べるのか
     /// 体力とか
     /// </summary>
@@ -86,11 +97,19 @@ public class SisterConditionBase
         armor,
         playerHate,//誰を狙ってるか
         sisterHate,
-        otherHate
+        otherHate,
+        enemyCount//周辺の敵が何体いるか、以上か以下か
     }
 
 
-
+    /// <summary>
+    /// 誰をターゲットにするのか直接指定する
+    /// 回復とか支援で特定の条件でシスターさんやプレイヤーなど
+    /// 対象を直接指定したいときが出てくるよね
+    /// 攻撃時はUIから隠す
+    /// </summary>
+  //  [Header("攻撃以外の時ターゲットを直接指定")]
+  //  public CheckRange targetSelect;
 
 
 
@@ -113,7 +132,8 @@ public class SisterConditionBase
         ターゲットのアーマー値,
         ターゲットのバフ数,
         ターゲットのデバフ数,
-
+        プレイヤー,
+        シスターさん,
         指定なし
     }
 
@@ -122,7 +142,7 @@ public class SisterConditionBase
 
     /// <summary>
     /// 条件の判断方法
-    /// アンドか
+    /// アンドならかつ、ということになるので判定失敗時点で条件判断は失敗
     /// </summary>
     public enum JudgeRuLe
     {
@@ -225,7 +245,7 @@ public class SisterConditionBase
 
     public enum UseAction
     {
-        攻撃行動を継続,
+        攻撃行動に移行,
         支援行動に移行,
         回復行動に移行,
         なにもしない,
@@ -263,6 +283,22 @@ public class SisterConditionBase
 
     #endregion
 
+
+    /// <summary>
+    /// クールタイムをスキップする条件
+    /// 複数選択可能
+    /// </summary>
+    [Flags]
+    public enum SkipCondition
+    {
+        第一条件 = 1<<0,
+        第二条件 = 1 << 1,
+        第三条件 = 1 << 2,
+        第四条件 = 1 << 3,
+        第五条件 = 1 << 4,
+        補欠条件 = 1 << 5,
+        なし= 0
+    }
 
 
 
@@ -341,17 +377,32 @@ public class SisterConditionBase
     /// 使用する行動の射程距離をチェックするか
     /// 使用する距離は決定したターゲット
     /// 設置系は射程距離は無視
+    //・距離チェック失敗した時どうするかとかも入れる？
+    ///　その場合は距離チェックなし、距離チェックしてキャンセル、距離チェックして移動とかenumで入れられるようにするか
     /// </summary>
     [Header("射程距離チェック")]
     public bool rangeCheck;
 
     /// <summary>
     /// 使用する行動のMPをチェックするか
-    /// これあると一番MP消費高い魔術とかでも制限が出てくるから毎回使う魔術変わってキャッシュ意味なくなるよね？
+    /// これあると一番MP消費高い魔術とかでも制限が出てくるから毎回使う魔術変わってキャッシュ意味なくなるよね
+    /// 
+    /// これも挙動変えられるようにするか
+    /// mpチェックしてキャンセル、mpチェックして他の使えるやつ使う、mpチェックしてクールタイムに移行とか（クールタイム中は回復速い）
     /// </summary>
     [Header("射程距離チェック")]
     public bool mpCheck;
 
+
+
+    /// <summary>
+    /// 射線が通ってるかどうか
+    /// 視線チェックする
+    /// 
+    /// 未実装
+    /// 敵密度と視線チェックはセンサーアビリティで
+    /// </summary>
+    public bool rayCheck;
 
 
 
@@ -396,12 +447,7 @@ public class SisterConditionBase
     //ここからは各魔法の独自基準で
 
 
-    /// <summary>
-    /// これは魔法を使用した後再判定を行わずに使うためのキャッシュ
-    /// その条件と魔法構成で判断したのは保存しとく
-    ///  五個ある条件一つずつについてるから消すのは装備とAI設定しなおしたときだけ
-    /// </summary>
-    [HideInInspector] public SisMagic UseMagic;
+
 
     public bool AutoWait;//自動で使用魔法の使用MPが回復するクールタイムを作る
 
@@ -416,4 +462,13 @@ public class SisterConditionBase
     //つかわないかもたぶん
     [Header("行動後この条件で判断を繰り返す回数")]
     public int reJudgeCount = 0;
+
+
+    //UIチェックボックス入れて数字変える
+    [Header("クールタイムをスキップする条件")]
+    [Tooltip("第一1,第二2,第三4,第四8,第五16,問わず0")]
+    [EnumFlags]
+    /// </summary>
+    public SkipCondition skipList;
+
 }

@@ -371,6 +371,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 			//•ÇˆÈŠO‚Ì“G‚àŒŸo‚·‚é‚©‚ç‚â‚ß‚ë
+			//‚·‚êˆá‚¦‚È‚­‚È‚é
 			/*
 			if ((_movement.CurrentState == CharacterStates.MovementStates.moving) || (_movement.CurrentState == CharacterStates.MovementStates.Running))
 			{

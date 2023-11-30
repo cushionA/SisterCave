@@ -1,4 +1,5 @@
 ﻿using DarkTonic.MasterAudio;
+using MoreMountains.CorgiEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -53,14 +54,14 @@ public abstract class CharacterStatus : ScriptableObject
         /// ビット演算で見る
         /// </summary>
         [EnumFlags]
-        public SisterConditionBase.Element attackElement;
+        public AtEffectCon.Element attackElement;
 
         /// <summary>
         /// 弱点属性を示す列挙型
         /// ビット演算で見る
         /// </summary>
         [EnumFlags]
-        public SisterConditionBase.Element WeakPoint;
+        public AtEffectCon.Element WeakPoint;
     }
 
     [Flags]

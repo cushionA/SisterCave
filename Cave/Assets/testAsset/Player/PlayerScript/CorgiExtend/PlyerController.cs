@@ -1149,7 +1149,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //ê^Ç»ÇÁí‚é~íÜ
         public float NowSpeed()
         {
-			return Mathf.Abs(_controller.Speed.x);
+			return _controller.Speed.x;
         }
 
 		public bool CheckPLayerNeutral()

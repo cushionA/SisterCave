@@ -76,6 +76,9 @@ public class EnemyManager : CombatManager
 
 
 
+
+
+
     #region 色、タグ、ダメージテキスト
     [HideInInspector] public string PMagicTag = "PlayerMagic";
     [HideInInspector] public string SMagicTag = "SisAttack";
@@ -96,20 +99,7 @@ public class EnemyManager : CombatManager
 
     #region　プレイヤー陣営のデータ関連
 
-    /// <summary>
-    /// 標的候補のデータ
-    /// データが連続してるから配列に入れてる
-    /// アクセスはやし
-    /// シスターさんたちも使えるようにするか
-    /// </summary>
-    public new List<TargetData> _targetList;
 
-
-    /// <summary>
-    /// 魔物たち専用味方リスト
-    /// ここからイベント飛ばしたり
-    /// </summary>
-    public new List<EnemyAIBase> AllyList;
 
 
 
@@ -134,155 +124,27 @@ public class EnemyManager : CombatManager
         {
             Destroy(this.gameObject);
         }
+
+        
+    }
+
+
+    private void Start()
+    {
+        //敵側のマネージャーを参照
+        TargetManagerInstance = SManager.instance;
     }
 
 
     #region ターゲットリスト管理
 
-    /// <summary>
-    /// ターゲットリストを作成する
-    /// 以後このリストの内容が変更されるまで使う
-    /// NPCが消えたり洗脳魔法とけたり
-    /// </summary>
-    public override void SetTargetList()
-    {
-        count = SManager.instance.AllyList.Count;
 
 
-            _targetList = new List<TargetData>(count);
-
-        TargetListUpdate();
-    }
-
-    /// <summary>
-    /// リストをアプデする
-    /// 基本的にターゲットリストの内容は変わらない
-    /// なんでヘイトの配列に関しては勝手にエネミー側でやってくれ
-    /// </summary>
-    public override void TargetListUpdate()
-    {
-
-        if (count > 0)
-        {
-
-            for (int i = 0; i < count; i++)
-            {
 
 
-                SManager.instance.AllyList[i].TargetDataSet(i);
-
-            }
-
-        }
-
-    }
 
 
-    /// <summary>
-    /// ターゲットセットするときにエネミーが呼び出すメソッド
-    /// データ管理に必要
-    /// </summary>
-    /// <param name="newTarget"></param>
-    /// <param name="prevTarget"></param>
-    /// <param name="_event"></param>
-    /// <param name="level"></param>
-    /// <param name="isFirst"></param>
-    public override void TargetSet(int newTarget,int prevTarget, TargetingEvent _event,int level,int id,bool isFirst)
-    {
-        //初回はターゲットナンバーが絶対ゼロなので
-        //マイナスにならないように
-        if (isFirst) 
-        {
-            //旧ターゲットから減らす
-            _targetList[prevTarget].targetingCount[level]--;
-            _targetList[prevTarget].targetAllCount--;
-        }
 
-        //敵視加算
-        _targetList[newTarget].targetingCount[level]++;
-        _targetList[prevTarget].targetAllCount++;
-
-        
-        //イベントあるならイベント開始
-        if (_event != TargetingEvent.なし)
-        {
-            int count = AllyList.Count;
-            for (int i =0; i < count;i++)
-            {
-                AllyList[i].CommandEvent(_event,newTarget,level,id);
-            }
-        }
-    }
-
-    /// <summary>
-    /// ゲームオブジェクトからナンバーを獲得
-    /// </summary>
-    /// <param name="enemy"></param>
-    /// <returns></returns>
-
-    public override int GetTargetNumber(GameObject enemy)
-    {
-
-        int count = _targetList.Count;
-
-        //なんもなかったらとりあえずプレイヤー狙おうという意味も込めた0
-        int target=0;
-
-        for (int i = 0; i < count; i++)
-        {
-            //ターゲットいたら
-            if (enemy == _targetList[i].targetObj)
-            {
-                target = i;
-                break;
-            }
-        }
-
-        return target;
-    }
-
-
-    /// <summary>
-    /// 敵要素の削除に応じて
-    /// ターゲットリストの並び替えを行う
-    /// キャラにもそれを反映
-    /// </summary>
-    /// <param name="deleteEnemy">消される敵の番号</param>
-    public override void TargetListSort(int deleteEnemy)
-    {
-        /* for(int i = deleteEnemy ;i< count + sCount;i++)
-         {
-             //最後なら
-             if (i == count + sCount-1)
-             {
-                 _targetList.RemoveAt(i);
-                 break;
-             }
-
-             //消え去るエネミーを参照している敵からは
-             //タゲ外す
-             if (i == deleteEnemy)
-             {
-
-             }
-
-             //次の要素を一つ前に
-             _targetList[i] = _targetList[i + 1];
-
-             //そのままdeleteEnemyをRemoveの引数にすると
-             //配列のサイズ変更にタイムラグがある可能性がある？
-             //いやそのままRemoveでいい
-         }
-        */
-
-        _targetList.RemoveAt(deleteEnemy);
-
-        int aCount = AllyList.Count;
-        for (int i = 0; i < aCount; i++)
-        {
-            AllyList[i].TargetListChange(deleteEnemy);
-        }
-    }
 
 
 
@@ -294,55 +156,6 @@ public class EnemyManager : CombatManager
 
 
 
-    /// <summary>
-    /// バトルに参加する敵がマネージャーの管理下に入る
-    /// 
-    /// これisAggressiveではなくセグメントから管理するか
-    /// 非戦闘状態の敵もシスターさんたちにとっては攻撃対象ですから
-    /// それか距離だな
-    /// あるいはisRenderで管理開始して？　画面外で非アクティブになったら消える？
-    /// </summary>
-    /// <param name="_inst"></param>
-    public override int JoinBattle(EnemyAIBase _inst)
-    {
-
-
-        //IDを発行
-        int newID = UnityEngine.Random.Range(1, 300);
-        bool isUnique = false;
-            int count = AllyList.Count;
-        while (!isUnique)
-        {
-
-
-
-            for (int i = 0; i < count; i++)
-            {
-                if (AllyList[i].ReturnID() == newID)
-                {
-                    isUnique = false;
-                    newID = UnityEngine.Random.Range(1, 300);
-                    break;
-                }
-                //最後まで行けたら真
-                else if (i == count - 1)
-                {
-                    isUnique = true;
-                }
-            }
-        }
-
-
-        //ID発行したら仲間
-        AllyList.Add(_inst);
-
-        //さらにシスターさんのターゲットリストも更新
-        AllyList[count].TargetDataAdd();
-
-
-        //IDを差し上げる
-        return newID;
-    }
 
 
     /// <summary>
@@ -354,60 +167,15 @@ public class EnemyManager : CombatManager
     /// あとは洗脳で抜けたりもするか
     /// 寝返る場合のフラグも引数に入れる？個別に用意するか、メソッド
     /// </summary>
+
     /// <param name="_inst"></param>
-    public override void EndBattle(EnemyAIBase _inst)
+    public override void EndBattle(ControllAbillity _inst)
     {
         AllyList.Remove(_inst);
     }
 
-    /// <summary>
-    /// 死んだエネミーが呼び出すためのメソッド
-    /// 攻撃的エネミーのリスト排除から死亡状態の保存まで行う
-    /// </summary>
-    public override void Die(int ID,EnemyAIBase inst)
-    {
-
-        int num = AllyList.IndexOf(inst);
-
-        //攻撃的オブジェクトのリストから破棄
-        //不意打ち一撃死亡の場合は処理分ける？
-        AllyList.RemoveAt(num);
-
-        //ここから敵のターゲットリスト並び替え
-        SManager.instance.TargetListSort(num);
 
 
-        //ここから味方が死んだとかイベント飛ばす？
-        //殺した相手にヘイトが向くとか
-        //強いやつだったら逃げるとか
-
-    }
-
-    /// <summary>
-    /// 同じターゲットを敵視してる
-    /// 同レベル、あるいは上レベルの味方が何人いるか
-    /// </summary>
-    /// <returns></returns>
-    public override int TargettingCount(int level,int target)
-    {
-        //この回数だけ繰り返す
-        int count = 4 - level;
-
-        //absoluteは邪魔されない
-        if(count == 1)
-        {
-            return 0;
-        }
-
-        int sum = 0;
-
-        for (int i = level; i <= count; i++)
-        {
-            sum += _targetList[target].targetingCount[i];
-        }
-
-        return sum;
-    }
 
 
     /// <summary>

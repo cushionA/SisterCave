@@ -6,6 +6,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SisterParameter", menuName = "CreateSisterParameter")]
 public class SisterParameter : ScriptableObject
 {
+    #region 定義
+
+
+
+    #endregion
+
+
     [Header("作戦名")]
     public string oparationName;
 
@@ -62,10 +69,10 @@ public class SisterParameter : ScriptableObject
         支援,
         なし
     }
+
     [Header("どのタイプの魔法を優先するか")]
     public MoveType priority;
-    [Header("現在どのタイプの魔法を使おうとしてるのか")]
-    [HideInInspector] public MoveType nowMove;
+
 
     #region//nowStateが攻撃の時
 
@@ -75,22 +82,9 @@ public class SisterParameter : ScriptableObject
 /// </summary>
     public AttackJudge[] targetCondition = new AttackJudge[5];//判断条件セット
 
-    /// <summary>
-    /// 攻撃魔法選択
-    /// </summary>
-    public FireCondition[] AttackCondition = new FireCondition[6];//一個目の条件に当てはまるやつ
 
 
-    //UIチェックボックス入れて数字変える
-    [Header("クールタイムをスキップする条件")]
-    [Tooltip("第一1,第二2,第三4,第四8,第五16,問わず0")]
-    /// <summary>
-    /// 第一、1000000
-    //  第二、0100000
-    //　第三、0010000
-    //　第四、00010000
-    /// </summary>
-    public int[] atSkipList = new int[6];
+ 
 
     #endregion
 
@@ -98,7 +92,7 @@ public class SisterParameter : ScriptableObject
 
     public SupportCondition[] supportPlan = new SupportCondition[6];
 
-    public int[] sSkipList = new int[6];
+
 
 
 
@@ -108,14 +102,17 @@ public class SisterParameter : ScriptableObject
     public RecoverCondition[] recoverCondition = new RecoverCondition[6];//一個目の条件に当てはまるやつ
 
 
-    public int[] hSkipList = new int[6];
 
     #endregion
 
     public RecoverCondition[] nRecoverCondition = new RecoverCondition[3];//一個目の条件に当てはまるやつ
 
 
-    public int[] ahSkipList = new int[3];
+    /// <summary>
+    /// 戦闘中の動きの設定
+    /// </summary>
+    [Header("戦闘中の動きの設定")]
+    public SisterMoveSetting sisterMoveSetting;
 
 
 }

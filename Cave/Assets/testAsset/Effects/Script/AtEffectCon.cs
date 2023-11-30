@@ -55,6 +55,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             ˆÚ“®‘¬“x’á‰ºUŒ‚ = 1 << 10,
             UŒ‚—Í’á‰ºUŒ‚ = 1 << 11,
             –hŒä—Í’á‰ºUŒ‚ = 1 << 12,
+            ã“_‘®« = 1 << 13,//“G‚Ìã“_‘®«‚ğƒT[ƒ`‚µ‚Ä‘ã‚í‚è‚Ég‚¤
             w’è‚È‚µ = 0
         }
 

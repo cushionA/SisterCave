@@ -29,7 +29,7 @@ public class SManager : CombatManager
     [HideInInspector]public float closestEnemy;
     [HideInInspector] public GameObject playObject;
 
-
+    public Vector2 sisterPosition;
 
 
 
@@ -73,28 +73,7 @@ public class SManager : CombatManager
     public UniTask _addAsync => uniTaskCompletionSource.Task;
 
 
-    #region　敵のデータ関連
-
-    /// <summary>
-    /// 標的候補のデータ
-    /// データが連続してるから配列に入れてる
-    /// アクセスはやし
-    /// シスターさんたちも使えるようにするか
-    /// </summary>
-    public new List<TargetData> _targetList;
-
-
-    /// <summary>
-    /// プレイヤー側専用味方リスト
-    /// ここからイベント飛ばしたり
-    /// </summary>
-    public new List<ControllAbillity> AllyList;
-
-
-
-
-    #endregion
-
+ 
 
 
     private void Awake()
@@ -110,8 +89,14 @@ public class SManager : CombatManager
         }
     }
 
+    private void Start()
+    {
+        //敵側のマネージャーを参照
+        TargetManagerInstance = EnemyManager.instance;
+    }
 
-    
+
+
     #region 魔法設定
 
     /// <summary>
@@ -269,26 +254,178 @@ public class SManager : CombatManager
         }
     }
 
-    public void GetClosestEnemyX()
+
+    #region シスターさんの移動判断に使う
+
+    /// <summary>
+    /// ターゲットリストから一番近い、あるいは遠い敵を返す
+    /// パラメータが真なら遠い敵を返す
+    /// </summary>
+    /// <param name="isFar"></param>
+    /// <returns></returns>
+    public TargetData GetClosestEnemy(bool isFar = false)
     {
+        Vector2 container = Vector2.zero;
 
-        if(targetList.Count != 0)
-        closestEnemy = targetList[0].transform.position.x;
 
+        //距離の二乗を求めて遠近判断すると
+        //平方根が走らないからエコだよ
+        container.MMSetY(Vector2.SqrMagnitude(sisterPosition-_targetList[0]._condition.targetPosition));
+
+        int count = _targetList.Count;
+
+        if(count > 1)
+        {
+            float distance;
+            //0はもう済ませてる
+            for (int i = 1;i< count;i++)
+            {
+                distance = Vector2.SqrMagnitude(sisterPosition - _targetList[i]._condition.targetPosition);
+
+                //遠い方がいい、isFarなら遠ければ入れ替え
+                //近い方がいいなら近ければ入れ替え
+                if (isFar ? (container.y < distance) : (container.y > distance))
+                {
+                    container.Set(i,distance);
+                }
+            }
+        }
+
+        //条件に合う敵を返す
+        return _targetList[(int)container.x];
     }
 
- /*   private void FixedUpdate()
+    /// <summary>
+    /// ターゲットリストで一番高い敵を返す
+    /// パラメータが真なら低い敵を返す
+    /// </summary>
+    /// <param name="isLow"></param>
+    /// <returns></returns>
+    public TargetData GetHighestEnemy(bool isLow = false)
     {
-        if (isDEEEp)
+        Vector2 container = Vector2.zero;
+
+
+        //距離の二乗を求めて遠近判断すると
+        //平方根が走らないからエコだよ
+        container.MMSetY(_targetList[0]._condition.targetPosition.y);
+
+        int count = _targetList.Count;
+
+        if (count > 1)
         {
-            EnemyDeath(NIdoit);
-            isDEEEp = false;
+            //どの高度にいるか
+            float point;
+            //0はもう済ませてる
+            for (int i = 1; i < count; i++)
+            {
+                point = _targetList[i]._condition.targetPosition.y;
+
+                //低い方がいい、isLowなら低ければ入れ替え
+                //高い方がいいなら高ければ入れ替え
+                if (isLow ? (container.y > point) : (container.y < point))
+                {
+                    container.Set(i, point);
+                }
+            }
         }
-    }*/
+
+        //条件に合う敵を返す
+        return _targetList[(int)container.x];
+    }
 
 
     /// <summary>
+    /// 一番強い敵を返すメソッド
+    /// </summary>
+    /// <param name="isFar"></param>
+    /// <returns></returns>
+    public TargetData GetStrongestEnemy()
+    {
+
+        int count = _targetList.Count;
+
+        int useNum = 0;
+
+        if (count > 1)
+        {
+
+            //0はもう済ませてる
+            for (int i = 0; i < count; i++)
+            {
+                //仮にまだ強敵が見つかってないなら強敵かボスで上書き
+                if (useNum == 0)
+                {
+                    if (_targetList[i]._baseData._type == CharacterStatus.CharaType.Boss || _targetList[i]._baseData.isStrong)
+                    {
+                        useNum = i;
+                    }
+
+                }
+                //仮に初期化済みならボスしか上書きできない
+                else if (_targetList[i]._baseData._type == CharacterStatus.CharaType.Boss)
+                {
+                    //ボスならそれを返す
+                    //そしてもう続ける意味もない
+                    return _targetList[i];
+
+                }
+            }
+        }
+
+        return _targetList[useNum];
+
+    }
+
+
+    /// <summary>
+    /// 指定のポイントからどちらに行けば敵が少ないかを見る
+    /// 真なら左側が敵多い
+    /// </summary>
+    public bool MoreEnemySide(float basePoint)
+    {
+
+        int count = _targetList.Count();
+
+
+        int left = 0;
+
+        //基準より左のやつを数える
+        for(int i = 0; i < count; i++)
+        {
+            //ベースポイントより左ならカウント
+            if (_targetList[i]._condition.targetPosition.x < basePoint)
+            {
+                left++;
+            }
+
+        }
+
+        //左の方が敵の数多いなら左サイドを返す
+        return left > (count - left);
+
+
+    }
+
+    #endregion
+
+    /*   private void FixedUpdate()
+       {
+           if (isDEEEp)
+           {
+               EnemyDeath(NIdoit);
+               isDEEEp = false;
+           }
+       }*/
+
+
+    #region 旧ターゲット関連
+
+    /// <summary>
     /// ターゲットとそのAIを格納して黄色マークつけてあげる
+    /// 
+    /// 黄色マークつける機能だけ残して
+    /// 
     /// </summary>
     /// <param name="target"></param>
     public void TargetAdd(List<GameObject> next)
@@ -409,6 +546,8 @@ public class SManager : CombatManager
         }
     }
 
+
+
     /// <summary>
     /// 逃げるべき標的の位置を教える
     /// </summary>
@@ -461,254 +600,22 @@ public class SManager : CombatManager
         }
     }
 
-
+#endregion
 
 
     #region ターゲットリスト管理
 
-    /// <summary>
-    /// ターゲットリストを作成する
-    /// 以後このリストの内容が変更されるまで使う
-    /// NPCが消えたり洗脳魔法とけたり
-    /// これ使う機会ありません
-    /// TargetAddでやってくださいそうしよう
-    /// </summary>
-    public override void SetTargetList()
-    {
-        count = EnemyManager.instance.AllyList.Count;
 
 
-        _targetList = new List<TargetData>(count);
-
-        TargetListUpdate();
-    }
-
-    /// <summary>
-    /// リストをアプデする
-    /// 基本的にターゲットリストの内容は変わらない
-    /// なんでヘイトの配列に関しては勝手にエネミー側でやってくれ
-    /// </summary>
-    public override void TargetListUpdate()
-    {
-
-        if (count > 0)
-        {
-
-            for (int i = 0; i < count; i++)
-            {
-
-                EnemyManager.instance.AllyList[i].TargetDataSet(i);
-
-            }
-
-        }
-
-    }
-
-
-    /// <summary>
-    /// ターゲットセットするときにエネミーが呼び出すメソッド
-    /// データ管理に必要
-    /// </summary>
-    /// <param name="newTarget"></param>
-    /// <param name="prevTarget"></param>
-    /// <param name="_event"></param>
-    /// <param name="level"></param>
-    /// <param name="isFirst"></param>
-    public override void TargetSet(int newTarget, int prevTarget, TargetingEvent _event, int level, int id, bool isFirst)
-    {
-        //初回はターゲットナンバーが絶対ゼロなので
-        //マイナスにならないように
-        if (isFirst)
-        {
-            //旧ターゲットから減らす
-            _targetList[prevTarget].targetingCount[level]--;
-            _targetList[prevTarget].targetAllCount--;
-        }
-
-        //敵視加算
-        _targetList[newTarget].targetingCount[level]++;
-        _targetList[prevTarget].targetAllCount++;
-
-
-        //イベントあるならイベント開始
-        //でも多分こっちにはコマンドイベント…あるか
-        //NPCとかは特に、複数だと
-        if (_event != TargetingEvent.なし)
-        {
-            int count = AllyList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                AllyList[i].CommandEvent(_event, newTarget, level, id);
-            }
-        }
-    }
-
-    /// <summary>
-    /// ゲームオブジェクトからナンバーを獲得
-    /// </summary>
-    /// <param name="enemy"></param>
-    /// <returns></returns>
-
-    public override int GetTargetNumber(GameObject enemy)
-    {
-
-        int count = _targetList.Count;
-
-        //なんもなかったらとりあえずプレイヤー狙おうという意味も込めた0
-        int target = 0;
-
-        for (int i = 0; i < count; i++)
-        {
-            //ターゲットいたら
-            if (enemy == _targetList[i].targetObj)
-            {
-                target = i;
-                break;
-            }
-        }
-
-        return target;
-    }
-
-
-    /// <summary>
-    /// 敵要素の削除に応じて
-    /// ターゲットリストの並び替えを行う
-    /// キャラにもそれを反映
-    /// </summary>
-    /// <param name="deleteEnemy">消される敵の番号</param>
-    public override void TargetListSort(int deleteEnemy)
-    {
-        /* for(int i = deleteEnemy ;i< count + sCount;i++)
-         {
-             //最後なら
-             if (i == count + sCount-1)
-             {
-                 _targetList.RemoveAt(i);
-                 break;
-             }
-
-             //消え去るエネミーを参照している敵からは
-             //タゲ外す
-             if (i == deleteEnemy)
-             {
-
-             }
-
-             //次の要素を一つ前に
-             _targetList[i] = _targetList[i + 1];
-
-             //そのままdeleteEnemyをRemoveの引数にすると
-             //配列のサイズ変更にタイムラグがある可能性がある？
-             //いやそのままRemoveでいい
-         }
-        */
-
-        _targetList.RemoveAt(deleteEnemy);
-
-        int aCount = AllyList.Count;
-        for (int i = 0; i < aCount; i++)
-        {
-            AllyList[i].TargetListChange(deleteEnemy);
-        }
-    }
-
-
-
-    #endregion
-
-
-
-    #region 味方管理用メソッド
 
 
 
     /// <summary>
-    /// バトルに参加するキャラがマネージャーの管理下に入る
-    /// Sマネジャーでは最初にプレイヤーとシスターさんが入る
-    /// </summary>
-    /// <param name="_inst"></param>
-    public override int JoinBattle(EnemyAIBase _inst)
-    {
-
-        //IDを発行
-        int newID = UnityEngine.Random.Range(1, 300);
-        bool isUnique = false;
-        int count = AllyList.Count;
-        while (!isUnique)
-        {
-
-
-
-            for (int i = 0; i < count; i++)
-            {
-                //かぶった時点でブレイク
-                if (AllyList[i].ReturnID() == newID)
-                {
-                    isUnique = false;
-                    newID = UnityEngine.Random.Range(1, 300);
-                    break;
-                }
-                //最後まで行けたら真
-                else if (i == count - 1)
-                {
-                    isUnique = true;
-                }
-            }
-        }
-
-
-        //ID発行したら仲間
-        AllyList.Add(_inst);
-
-        //さらに敵のターゲットリストも更新
-        AllyList[count].TargetDataAdd();
-
-
-        //IDを差し上げる
-        return newID;
-    }
-
-
-    /// <summary>
-    /// マネージャーの管理下から出る
-    /// これ必要か？
-    /// たとえ戦闘状態解除されても相手の標的であることはかわらないよね
-    /// 死以外ではマネージャーから抜けれない？
-    /// あるいはセグメント抜けるまで？
-    /// </summary>
-    /// <param name="_inst"></param>
-    public override void EndBattle(EnemyAIBase _inst)
-    {
-        AllyList.Remove(_inst);
-    }
-
-    /// <summary>
-    /// 死んだエネミーが呼び出すためのメソッド
-    /// 攻撃的エネミーのリスト排除から死亡状態の保存まで行う
-    /// </summary>
-    public override void Die(int ID, EnemyAIBase inst)
-    {
-        int num = AllyList.IndexOf(inst);
-
-        //攻撃的オブジェクトのリストから破棄
-        //不意打ち一撃死亡の場合は処理分ける？
-        AllyList.RemoveAt(num);
-
-        //ここから敵のターゲットリスト並び替え
-        EnemyManager.instance.TargetListSort(num);
-
-
-        //ここから味方が死んだとかイベント飛ばす？
-        //殺した相手にヘイトが向くとか
-        //強いやつだったら逃げるとか
-
-    }
-
-    /// <summary>
+    /// オーバーライドする
+    /// 
     /// 同じターゲットを敵視してる
-    /// 同レベル、あるいは上レベルの味方が何人いるか
+    /// 同レベル、あるいは上レベルの味方が何人いるか数える
+    /// こっちはもうちょい単純でいいかも
     /// </summary>
     /// <returns></returns>
     public override int TargettingCount(int level, int target)
@@ -731,6 +638,38 @@ public class SManager : CombatManager
 
         return sum;
     }
+
+
+
+
+
+
+    #endregion
+
+
+
+    #region 味方管理用メソッド
+
+
+
+
+
+    /// <summary>
+    /// マネージャーの管理下から出る
+    /// これ必要か？
+    /// たとえ戦闘状態解除されても相手の標的であることはかわらないよね
+    /// 死以外ではマネージャーから抜けれない？
+    /// あるいはセグメント抜けるまで？
+    /// </summary>
+    /// <param name="_inst"></param>
+    public override void EndBattle(EnemyAIBase _inst)
+    {
+        AllyList.Remove(_inst);
+    }
+
+
+
+
 
 
     /// <summary>

@@ -11,6 +11,7 @@ using Unity.Mathematics;
 using MonKey.Extensions;
 using static EnemyStatus;
 using static CombatManager;
+using static RenownedGames.ApexEditor.SerializedMember;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -29,7 +30,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
     /// プレイヤーがセグメント離れたらトークン停止してスリープ？
     /// 
     /// </summary>
-    public class EnemyAIBase : ControllAbillity
+    public class EnemyAIBase : NPCControllerAbillity
     {
 
         #region 実装
@@ -54,7 +55,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             /// </summary>
             public int targetNum;
 
-
+            public int targetID;
 
         }
 
@@ -835,11 +836,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
                                 //交戦距離と敵との距離の差を出す
-                                float jDistance = Math.Abs(Vector2.Distance(myPosition, EnemyManager.instance._targetList[s]._condition.targetPosition));
+                                float jDistance = Vector2.SqrMagnitude(myPosition - EnemyManager.instance._targetList[s]._condition.targetPosition);
 
                                 //交戦距離より先
                                 //実際の距離の方が大きいなら以遠になる
-                                if (status.hateBehaivior.hateEffect[i].isHigh && Vector2.Distance(Vector2.zero, status.agrDistance[nowMode]) - jDistance < 0)
+                                if (status.hateBehaivior.hateEffect[i].isHigh && Vector2.SqrMagnitude(Vector2.zero - status.agrDistance[nowMode]) - jDistance < 0)
                                 {
                                     for (int t = 0; t < 3; t++)
                                     {
@@ -854,7 +855,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                                 }
 
                                 //以内
-                                else if (!status.hateBehaivior.hateEffect[i].isHigh && Vector2.Distance(Vector2.zero, status.agrDistance[nowMode]) - jDistance >= 0)
+                                else if (!status.hateBehaivior.hateEffect[i].isHigh && Vector2.SqrMagnitude(Vector2.zero - status.agrDistance[nowMode]) - jDistance >= 0)
                                 {
                                     for (int t = 0; t < 3; t++)
                                     {
@@ -875,7 +876,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             {
 
                                 //交戦距離と敵との距離の差を出す
-                                float jDistance = Math.Abs(Vector2.Distance(myPosition, EnemyManager.instance._targetList[s]._condition.targetPosition));
+                                float jDistance = Math.Abs(Vector2.SqrMagnitude(myPosition - EnemyManager.instance._targetList[s]._condition.targetPosition));
 
                                 //遠い順
                                 if (status.hateBehaivior.hateEffect[i].isHigh)
@@ -981,8 +982,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             if (status.hateBehaivior.hateEffect[i]._influence == EnemyStatus.HateInfluence.強化状態)
                             {
                                 isFair = true;
-                                //高い順
-                                if (status.hateBehaivior.hateEffect[i].isHigh && EnemyManager.instance._targetList[s]._condition.isBuffOn)
+                                //高い順。バフあり
+                                if (status.hateBehaivior.hateEffect[i].isHigh && EnemyManager.instance._targetList[s]._condition.buffImfo != 0)
                                 {
                                     bool isEnd = true;
                                     for (int t = 0; t < 3; t++)
@@ -1002,8 +1003,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                                     }
                                 }
 
-                                //低い順
-                                else if(!status.hateBehaivior.hateEffect[i].isHigh && !EnemyManager.instance._targetList[s]._condition.isBuffOn)
+                                //低い順。バフなし
+                                else if(!status.hateBehaivior.hateEffect[i].isHigh && EnemyManager.instance._targetList[s]._condition.buffImfo == 0)
                                 {
                                     bool isEnd = true;
                                     for (int t = 0; t < 3; t++)
@@ -1028,7 +1029,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                                 isFair = true;
 
                                 //高い順
-                                if (status.hateBehaivior.hateEffect[i].isHigh && EnemyManager.instance._targetList[s]._condition.isDebuffOn)
+                                if (status.hateBehaivior.hateEffect[i].isHigh && EnemyManager.instance._targetList[s]._condition.debuffImfo != 0)
                                 {
                                     bool isEnd = true;
                                     for (int t = 0; t < 3; t++)
@@ -1048,8 +1049,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                                     }
                                 }
 
-                                //低い順
-                                else if (!status.hateBehaivior.hateEffect[i].isHigh && !EnemyManager.instance._targetList[s]._condition.isDebuffOn)
+                                //低い順。デバフなし
+                                else if (!status.hateBehaivior.hateEffect[i].isHigh && EnemyManager.instance._targetList[s]._condition.debuffImfo == 0)
                                 {
                                     bool isEnd = true;
                                     for (int t = 0; t < 3; t++)
@@ -1185,7 +1186,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
             //ターゲットをマネージャーに報告
-            EnemyManager.instance.TargetSet(utillityCount,targetImfo.targetNum,status.hateBehaivior._event,(int)status.hateBehaivior.level,myID,isFirst);
+            //そしてターゲットのIDをゲット
+            targetImfo.targetID = EnemyManager.instance.TargetSet(utillityCount,targetImfo.targetNum,status.hateBehaivior._event,(int)status.hateBehaivior.level,myID,isFirst);
 
             //ターゲット決定後の処理
             //ターゲット決定メソッドをマネージャーから呼び出したり
@@ -1206,7 +1208,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                 //距離を見て、条件満たすなら攻撃お控えモードにチェンジ
                 //お控えフラグ立てて次のモード変更で抑制
-                attackStop = (EnemyManager.instance.AttackStopCheck(targetImfo.targetNum, (int)status.hateBehaivior.level, Vector2.Distance(Vector2.zero, distance), needCount,myID));
+                attackStop = (EnemyManager.instance.AttackStopCheck(targetImfo.targetNum, (int)status.hateBehaivior.level, Vector2.SqrMagnitude(Vector2.zero - distance), needCount,myID));
 
 
             }
@@ -1327,7 +1329,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 int changeMode = 100;
 
                 //直線距離
-                float realDistance = Vector2.Distance(myPosition,targetImfo.targetPosition);
+                float realDistance = Vector2.SqrMagnitude(myPosition - targetImfo.targetPosition);
 
                 for (int i =0;i< modeCount;i++)
                 {
@@ -1367,6 +1369,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         continue;
                     }
 
+                    //以上の条件全てに当てはまらなかったら暫定候補に
                     changeMode = i;
                 }
 
@@ -1410,7 +1413,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //チェックの主体の方が距離が遠いなら
             //同じは多分自分だからノーカンで
-            return cDistance > Math.Abs(Vector2.Distance(Vector2.zero,distance));
+            return cDistance > Vector2.SqrMagnitude(distance);
 
         }
 
@@ -1483,8 +1486,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             TargetSet(true).Forget();
 
-            //バトルに参加しIDをゲット
-            myID = EnemyManager.instance.JoinBattle(this);
+            //バトルに参加
+            EnemyManager.instance.JoinBattle(this);
 
         }
 
@@ -1514,7 +1517,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// 攻撃受けた後のイベント
         /// Enemyは敵のゲームオブジェクト
         /// </summary>
-        public override void DamageEvent(bool isStun,GameObject enemy)
+        public override void DamageEvent(bool isStun, GameObject enemy, int damage, bool back)
         {
 
             if (!isAggressive)
@@ -1599,13 +1602,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// あと敵の死を通知するメソッドとしても使える
         /// </summary>
         /// <param name="deletEnemy"></param>
-        public override void TargetListChange(int deleteEnemy)
+        public override void TargetListChange(int deleteEnemy,int deadID)
         {
             //ヘイトリストから削除
             _hateList.RemoveAt(deleteEnemy);
 
             //ターゲット消えたならターゲット変更
-            if(targetImfo.targetNum == deleteEnemy)
+            if(targetImfo.targetID == deadID)
             {
                 targetImfo.targetNum = 99;
             }
@@ -2369,14 +2372,19 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
         /// <summary>
-        /// 毎フレーム送る自分のデータ
+        /// 毎フレーム使用
+        /// 自分のデータを送信
         /// </summary>
         /// <param name="num"></param>
-        public override void TargetDataSet(int num)
+        public override void TargetDataUpdate(int num)
         {
             SManager.instance._targetList[num]._condition.hpRatio =_health.CurrentHealth / status.maxHp;
 
-
+            SManager.instance._targetList[num]._condition.targetPosition = myPosition;
+            SManager.instance._targetList[num]._condition.hpRatio = _health.CurrentHealth / status.maxHp;
+            SManager.instance._targetList[num]._condition.hpNum = _health.CurrentHealth;
+            SManager.instance._targetList[num]._condition.isBuffOn = false;
+            SManager.instance._targetList[num]._condition.isDebuffOn = false;
         }
 
         /// <summary>
@@ -2384,7 +2392,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// ターゲットデータの追加
         /// </summary>
         /// <param name="data"></param>
-        public override void  TargetDataAdd()
+        public override void  TargetDataAdd(int newID)
         {
 
             TargetData imfo = new TargetData();
@@ -2393,11 +2401,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             imfo._condition.targetPosition = myPosition;
             imfo._condition.hpRatio = _health.CurrentHealth / status.maxHp;
+            imfo._condition.hpNum = _health.CurrentHealth;
             imfo._condition.isBuffOn = false;
             imfo._condition.isDebuffOn = false;
 
             imfo.targetObj = this.gameObject;
 
+            imfo.targetID = newID;
+
+            //ID割り当て
+            myID = newID;
 
             SManager.instance._targetList.Add(imfo);
         }
@@ -2518,9 +2531,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <summary>
         /// 現在ガード中かどうかを知らせる
         /// </summary>
-        public override void GuardReport()
+        public override bool GuardReport()
         {
-            _health._defData.isGuard = _movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove;
+            return _movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove;
         }
 
         /// <summary>
@@ -3208,9 +3221,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
                     //戻る場所との距離を出す
-                    float returnDis = Vector2.Distance(myPosition, basePosition);
+                    //二乗で
+                    float returnDis = Vector2.SqrMagnitude(myPosition - basePosition);
 
-                    if (returnDis <= 5)
+                    if (returnDis <= 25)
                     {
                         _flying.SetHorizontalMove(0);
                         _flying.SetVerticalMove(0);

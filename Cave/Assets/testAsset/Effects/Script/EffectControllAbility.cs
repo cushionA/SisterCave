@@ -741,6 +741,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (generalEType != EffectCondition.EmitType.None)
             {
                 //すでに共通素材を利用したなら戻る
+                //アニメイベントが飛ばないよう複数設定しても何度も同じエフェクトは呼べない
                 if (pubEUsed)
                 {
                     return;
@@ -759,6 +760,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             else
             {
                 //使用済みエフェクトなら戻る
+                //アニメイベントが飛ばないよう複数設定しても何度も同じエフェクトは呼べない
                 if (_waitEffect == null || !_waitEffect.Any() || _waitEffect[number].isUsed)
                 {
                     return;

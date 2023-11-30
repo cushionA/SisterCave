@@ -148,15 +148,16 @@ public abstract class ControllAbillity : MyAbillityBase
 
     /// <summary>
     /// キャラクターの状態をマネージャーにセット
-    /// ずっと
+    /// ずっと呼び続ける
     /// </summary>
-    public abstract void TargetDataSet(int num);
+    public abstract void TargetDataUpdate(int num);
 
     /// <summary>
     /// キャラクターの状態をマネージャーに追加
     /// 最初だけ
     /// </summary>
-    public abstract void TargetDataAdd();
+    public abstract void TargetDataAdd(int newID);
+
 
     /// <summary>
     /// ターゲットリストから削除されたエネミーを消し去る
@@ -165,7 +166,7 @@ public abstract class ControllAbillity : MyAbillityBase
     /// あと敵の死を通知するメソッドとしても使える
     /// </summary>
     /// <param name="deletEnemy"></param>
-    public abstract void TargetListChange(int deletEnemy);
+    public abstract void TargetListChange(int deletEnemy,int deadID);
 
 
     /// <summary>
@@ -175,18 +176,23 @@ public abstract class ControllAbillity : MyAbillityBase
     /// <returns></returns>
     public abstract int ReturnID();
 
-
     /// <summary>
-    /// 味方がターゲットを決定した際
-    /// イベントを持ってたら飛ばす
+    /// 味方が狙うターゲットを決定した際
+    /// 指揮するイベントを持ってたら飛ばす
+    /// コンバットマネージャーを通じて仲間に通達が行く
+    /// でも敵側でしか実装しないかも
     /// </summary>
     public abstract void CommandEvent(TargetingEvent _event, int level, int targetNum, int commanderID);
+
 
     #endregion
 
     #region ダメージ計算関連
 
-    public abstract void GuardReport();
+    /// <summary>
+    /// 現在このキャラがガード中かどうかを知らせる
+    /// </summary>
+    public abstract bool GuardReport();
 
     /// <summary>
     /// バフの数値を与える
@@ -201,6 +207,7 @@ public abstract class ControllAbillity : MyAbillityBase
     public abstract void ArmorReset();
 
     public abstract void StartStun(MyWakeUp.StunnType stunState);
+
     public abstract MyWakeUp.StunnType ArmorControll(float shock, bool isBlow, bool isBack);
 
     public abstract int GetStunState();
@@ -249,9 +256,11 @@ public abstract class ControllAbillity : MyAbillityBase
     //public OnReviveDelegate OnRevive;
 
     /// <summary>
-    /// ダメージ受けた後に呼び出される処理
+    /// こちらがダメージ受けた後に呼び出される処理
+    /// スタンしてるか、ダメージをどれくらい受けたか
+    /// 誰に攻撃されたか、背後から攻撃を受けたかなどがわかる
     /// </summary>
-    public abstract void DamageEvent(bool isStunn,GameObject enemy);
+    public abstract void DamageEvent(bool isStunn,GameObject enemy,int damage,bool back);
 
 
 
@@ -264,9 +273,10 @@ public abstract class ControllAbillity : MyAbillityBase
     //public OnHitDelegate OnKill;
 
     /// <summary>
-    /// 攻撃がヒットした時にどのようにヒットしたかを含めて教える
+    /// 自分の攻撃がヒットした時にどのようにヒットしたかを含めて教える
+    /// こちらが攻撃を当てた時
     /// </summary>
-    /// <param name="isBack">当てた相手が自分の後ろにいる時は真</param>
+    /// <param name="isBack">当てた相手が背中向けてたら真/param>
     public abstract void HitReport(bool isBack);
 
 

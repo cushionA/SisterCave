@@ -27,6 +27,12 @@ using UnityEngine.UI;
 	//　信仰。これがあるからシスターさんの魔法は威力が高い
 	public float faith = 1;
 
+	/// <summary>
+	/// MPの自動回復はここから引いていく
+	/// </summary>
+	[Header("MPの総量")]
+	public float mpStorage;
+
 	[Header("MPの回復量")]
 	public int mpRecover = 3;
 
@@ -86,7 +92,7 @@ using UnityEngine.UI;
 	///<summary>
 	///戦闘中にプレイヤーがこれだけ離れてたらワープするという距離
 	///</summary>
-	public Vector2 warpDistance;
+	public float warpDistance;
 
 
 	[Header("歩く速さ")]
@@ -99,12 +105,6 @@ using UnityEngine.UI;
 	public float dashSpeed;
 
 
-	[Header("警戒状態の維持距離")]
-	///<summary>
-	///そばにくっついていく距離。-1くらい？
-	///</summary>
-	public float patrolDistance;
-
 	[Header("警戒で歩く距離")]
 	///<summary>
 	///この距離まで来たら歩く
@@ -112,10 +112,21 @@ using UnityEngine.UI;
 	public float walkDistance;
 
 
+	[Header("警戒状態の維持距離")]
+	///<summary>
+	///そばにくっつく時の距離。-1くらい？
+	///止まる
+	///</summary>
+	public float patrolDistance;
+
+
+
+
 
 	[Header("のんびりの維持距離")]
 	///<summary>
-	///くっついていく距離。-1くらい？少しくらい離れても走らない
+	///これくらいの範囲内のときは遊んでいい
+	///自由に動いてもいい
 	///</summary>
 	public float playDistance;
 
@@ -127,8 +138,15 @@ using UnityEngine.UI;
 	public float waitRes;
 
 
+    [Header("警戒状態の維持距離")]
+    ///<summary>
+    ///一番近い敵の距離がこの範囲の外に出たら
+	///戦闘終了する
+    ///</summary>
+    public float battleEndDistance;
 
-	[Header("停止範囲")]
+
+    [Header("停止範囲")]
 	///<summary>
 	///目的距離にゆとり持たせる。
 	///</summary>

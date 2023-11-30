@@ -8,7 +8,6 @@ using UnityEngine.AddressableAssets;
 using static CombatManager;
 using static SisterMoveSetting;
 using static SisterParameter;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
@@ -37,8 +36,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
     /// ・攻撃中は影響しない
     /// 
     /// </summary>
-    [AddComponentMenu("Corgi Engine/Character/Abilities/BrainAbility")]
-    public class BrainAbillity : NPCControllerAbillity
+    [AddComponentMenu("Corgi Engine/Character/Abilities/EditBrain")]
+    public class EditBrain : NPCControllerAbillity
     {
 
         #region 定義
@@ -46,7 +45,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         /// <summary>
         /// 現在の状態
-        /// これによって挙動が変わる
+        /// これによって動きが変わる
         /// </summary>
         public enum SisterState
         {
@@ -58,7 +57,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         /// <summary>
         /// 現在の移動方式
-        /// のんびりや警戒、環境物反応など状況に応じた判断で移動モードと移動方向だけを決める
+        /// のんびりや警戒、環境物反応など
+        /// 状況に応じた判断で移動モードと移動方向だけを決める
         /// 戦闘時は走りと停止だけ
         /// そして共通の移動メソッドを利用して移動する
         /// </summary>
@@ -86,6 +86,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public float patrolTime;
 
 
+        public PlyerController pc;
+
 
 
         #region 挙動管理情報
@@ -110,12 +112,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         TargetData nowTarget;
 
         //[HideInInspector]
-        /// <summary>
-        /// 現在どのような状態にあるか
-        /// 戦闘中であるか、警戒しているかなど
-        /// </summary>
         public SisterState nowState = SisterState.のんびり;
-
+        
         [HideInInspector] public MoveState nowMove = MoveState.最初;
 
 
@@ -126,17 +124,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
         // === キャッシュ ======================================
-
-        /// <summary>
-        /// プレイヤーの挙動を管理するクラス
-        /// </summary>
-        public PlyerController pc;
-
         // === アビリティ ==========================================
 
         #region
 
-        
+
+
+        //横移動は継承もとにある
 
         public PlayerJump _jump;
 
@@ -232,10 +226,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //ステータス
         //hpはヘルスでいい
         public float maxHp;
-
-        /// <summary>
-        /// 最大MP
-        /// </summary>
         [HideInInspector]
         public float maxMp;
 
@@ -246,10 +236,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         float mpStorage;
 
 
-        /// <summary>
-        /// MP
-        /// 魔法に使う
-        /// </summary>
         [HideInInspector]
         public float mp;
 
@@ -264,10 +250,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-
+        
 
         /// <summary>
-        ///　ここでパラメータを初期化
+        ///　ここで、パラメータを初期化する必要があります。
         /// </summary>
         protected override void Initialization()
         {
@@ -283,9 +269,26 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
+        /// <summary>
+        /// 1フレームごとに、しゃがんでいるかどうか、まだしゃがんでいるべきかをチェックします
+        /// </summary>
+        public override void ProcessAbility()
+        {
+            base.ProcessAbility();
+            GManager.instance.sisMpSlider.value = mp / maxMp;
+            Brain();
+        }
 
 
 
+
+
+
+        public void Brain()
+        {
+
+            JumpController();
+        }
 
 
 
@@ -323,6 +326,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     //イベントオブジェクトを消す
                     eventObject = null;
 
+                    //攻撃モジュールに戦闘開始を伝える
+                    _fire.StateInitialize(true);
 
                     //戦闘センサー起動
                     _sensor.BattleStart();
@@ -341,10 +346,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                     //攻撃状態解除判断メソッド起動
                     BattleEndJudge().Forget();
-
-                    //行動傾向を変えてから
-                    //攻撃モジュールに戦闘開始を伝える
-                    _fire.StateInitialize(true);
 
                 }
             }
@@ -377,10 +378,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
                     //次警戒なら警戒時限解除メソッドを起動
-                    if (nextState == SisterState.警戒)
+                    if(nextState == SisterState.警戒)
                     {
                         //警戒状態の時限解除
-                        PatrolEndJudge(isFirst: true).Forget();
+                        PatrolEndJudge(isFirst:true).Forget();
                     }
 
                     //状態変更
@@ -395,20 +396,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <summary>
         /// 戦闘中の行動モードを変更する
         /// 同時に移動に使用する情報も入れ替える
-        /// 
-        /// FireAbirityからも呼ばれる
         /// </summary>
         /// <param name="nextMode"></param>
-        public void CombatModeChange(MoveType nextMode)
+        void CombatModeChange(MoveType nextMode)
         {
             nowMode = nextMode;
 
-            if (nextMode == MoveType.攻撃)
+            if(nextMode == MoveType.攻撃)
             {
                 //移動ステータスを設定
                 moveStatus = parameter.sisterMoveSetting.AttackMoveSetting;
             }
-            else if (nextMode == MoveType.支援)
+            else if(nextMode == MoveType.支援)
             {
                 //移動ステータスを設定
                 moveStatus = parameter.sisterMoveSetting.SupportMoveSetting;
@@ -493,18 +492,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
 
 
-        /// <summary>
-        /// 攻撃可能かどうかを調べるためのメソッド
-        /// fireAbillityが使う
-        /// </summary>
-        /// <returns></returns>
-        public bool AttackableCheck()
-        {
-            //停止している、つまり戦闘中のポジションの変更が
-            //終わっているなら行動可能
-            return nowMove == MoveState.停止;
-        }
-
         #region 戦闘状態解除メソッド
 
 
@@ -517,14 +504,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         private async UniTaskVoid BattleEndJudge()
         {
             //一秒待つ
-            await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: moveJudgeCancel.Token);
+            await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken:moveJudgeCancel.Token) ;
 
             //敵がゼロになるか
             //最短距離にいる敵との距離が戦闘終了距離以遠になったら
             if (BattleEndCondition())
             {
                 //さらに三秒待って
-                await UniTask.Delay(TimeSpan.FromSeconds(3f), cancellationToken: moveJudgeCancel.Token);
+                await UniTask.Delay(TimeSpan.FromSeconds(3f),cancellationToken: moveJudgeCancel.Token);
 
                 //それでも条件を満たしていたら
                 if (BattleEndCondition())
@@ -605,11 +592,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         ///
         ///・
         ///・fireAbillityでターゲットにするのは周辺センサーで獲得した敵だけにするか
-        ///  従来のようなターゲットのリストとそこに含まれる敵だけを抽出して攻撃する？
-        ///  いまは戦闘モードで戦闘に参加してる敵だけが攻撃対象
-        /// 
+        ///・fireAbillityとの連携
         ///・一回行動するまでは再移動しない？
-        ///・ヘルス関連処理改善するか
+        ///・ヘルス関連処理改善するかぁ？
 
 
         ///実装要素
@@ -626,7 +611,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// ・敵発見時の行動　
         /// 
 
-        ///　処理の流れのまとめ
+        ///　流れのまとめ
         ///
         ///まず最初に移動判断
         ///移動判断から移動（ワープか徒歩）
@@ -640,11 +625,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         ///・壁（穴）激突
         ///・再移動条件
 
-        ///移動後に使うイベント
+        ///移動後に使うやつ
         ///・再移動判断
         ///・ダメージイベント
 
-
+        ///悩んでること
+        ///・最初はどういう風に処理をスタートさせるか。いきなり移動判断開始で、移動後から攻撃を始める？
+        ///・ポジションについたのをどう表現するか。enumの状態かフラグか
+        ///・移動終了後の処理
 
 
 
@@ -682,8 +670,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
             }
 
-
-
             //移動挟むとダメージリセット
             totalDamage = 0;
 
@@ -695,7 +681,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //ここから移動先の場所を決める
             //オプションと距離で決めて、移動開始したら範囲で待つ
             //x軸の位置決定
-            float standPosition = StandPositionSet(nowTarget._condition.targetPosition.x, moveStatus.keepDistance, moveStatus.moveOption);
+            float standPosition = StandPositionSet(nowTarget._condition.targetPosition.x,moveStatus.keepDistance,moveStatus.moveOption);
 
 
             //ワープするかどうか
@@ -708,22 +694,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (moveStatus.warpCondition.condition != RejudgeCondition.判定しない)
             {
                 //ワープするかどうか
-                useWarp = MoveStartJudgeExe(nowTarget, moveStatus.warpCondition);
+                useWarp = MoveStartJudgeExe(nowTarget,moveStatus.warpCondition);
             }
 
             //停止中だと魔法が使えちゃうので別のにする
             //これでFireAbillityをロック
             nowMove = MoveState.最初;
-
-
-            //もし通常状態じゃないならそれまで移動開始を待つ
-            if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
-            {
-                await UniTask.WaitUntil(() => _condition.CurrentState == CharacterStates.CharacterConditions.Normal, cancellationToken: moveJudgeCancel.Token);
-            }
-
-            //nowMoveを変更してあるのでもうfireAbillityには邪魔されない
-            //移動開始
 
             //ワープ使うならワープメソッド
             if (useWarp)
@@ -733,7 +709,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //使わないなら通常移動
             else
             {
-                NormalCombatMove(standPosition, moveStatus.MoveStopCondition, false, true).Forget();
+                NormalCombatMove(standPosition, moveStatus.MoveStopCondition,false,true).Forget();
             }
 
         }
@@ -748,7 +724,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <returns></returns>
         TargetData TargetSelect(MarkCharacterCondition condition)
         {
-            if (condition == MarkCharacterCondition.プレイヤー)
+            if(condition == MarkCharacterCondition.プレイヤー)
             {
                 return SManager.instance._targetList[0];
             }
@@ -766,7 +742,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 int count = SManager.instance._targetList.Count;
 
                 //ランダムな敵を
-                return SManager.instance._targetList[_fire.RandomValue(0, count - 1)];
+               return SManager.instance._targetList[_fire.RandomValue(0, count - 1)];
 
             }
             else if (condition == MarkCharacterCondition.強敵)
@@ -799,17 +775,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// それだけなので移動条件とかはいらない
         /// あと標的の距離が絡む条件があったらその敵死亡したら再判断するイベントかフラグ飛ばさないとね
         /// </summary>
-        bool JudgeMoveStart(TargetData target, RejudgeStruct[] condition, bool isOrJudge)
+        bool JudgeMoveStart(TargetData target, RejudgeStruct[] condition,bool isOrJudge)
         {
             //ステータスを設定
             moveStatus = parameter.sisterMoveSetting.AttackMoveSetting;
 
-            //確率で条件判断が失敗する
             //100じゃないならパーセント判断してね
-            if (condition[0].percentage != 100)
+            if ( condition[0].percentage != 100)
             {
                 //確率検査は開幕で頼む
-                if (condition[0].percentage > _fire.RandomValue(0, 100))
+                if (condition[0].percentage > _fire.RandomValue(0,100))
                 {
                     return false;
                 }
@@ -818,7 +793,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //一個でも適合する条件があったよってこと
             bool isMatch = false;
 
-            for (int i = 0; i < 3; i++)
+            for(int i=0; i< 3; i++)
             {
                 //条件判断
                 if (MoveStartJudgeExe(target, condition[i]))
@@ -848,7 +823,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
 
                 //ターゲットいないなら真を返してね
-                if (nowTarget == null)
+                if(nowTarget == null)
                 {
                     return true;
                 }
@@ -860,7 +835,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                 //パーセンテージがゼロ以上なら距離が以上離れた時
                 //以下なら以内に入った時
-                return condition.value > 0 ? distance > baseDistance : baseDistance > distance;
+                 return condition.value > 0 ? distance > baseDistance : baseDistance > distance ;
             }
             else if (condition.condition == RejudgeCondition.敵に狙われた時)
             {
@@ -906,7 +881,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             else if (condition.condition == RejudgeCondition.移動後に指定のダメージを受けた時)
             {
                 //移動後のダメージを記録してるので判断
-                return condition.value > 0 ? totalDamage >= Mathf.Abs(condition.value) : totalDamage <= Mathf.Abs(condition.value);
+                return condition.value > 0 ?  totalDamage >= Mathf.Abs(condition.value) : totalDamage <= Mathf.Abs(condition.value);
             }
 
             return false;
@@ -928,7 +903,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="setDistance"></param>
         /// <param name="condition"></param>
         /// <returns></returns>
-        float StandPositionSet(float xPosition, float setDistance, PositionJudgeOption condition)
+        float StandPositionSet(float xPosition,float setDistance, PositionJudgeOption condition)
         {
 
             //プラス
@@ -944,14 +919,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             bool isLeft = false;
 
             //近い方に行く
-            if (condition == PositionJudgeOption.オプション無し)
+            if(condition == PositionJudgeOption.オプション無し)
             {
                 usePosition = SManager.instance.sisterPosition.x;
                 //マイナスの方が距離が近い（数値が小さい）ならマイナスを渡す
                 isLeft = Mathf.Abs(plusPosition - usePosition) > Mathf.Abs(minusPosition - usePosition);
 
             }
-            else if (condition == PositionJudgeOption.プレイヤーの近くの位置に行く)
+            else if(condition == PositionJudgeOption.プレイヤーの近くの位置に行く)
             {
                 usePosition = GManager.instance.PlayerPosition.x;
 
@@ -988,7 +963,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 //左の方が壁が近いか
                 isLeft = WallDistanceCheck();
             }
-            else if (condition == PositionJudgeOption.壁が遠い方に行く)
+            else if(condition == PositionJudgeOption.壁が遠い方に行く)
             {
                 //左の方が壁が遠いか
                 isLeft = !WallDistanceCheck();
@@ -1009,7 +984,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         bool WallDistanceCheck()
         {
             Vector2 basePosition = SManager.instance.sisterPosition;
-
+            
             //右の壁までの距離、一応最初は一万入れておく
             float distanceR = 10000f;
 
@@ -1063,13 +1038,13 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //真も偽もそのまま戦うなら処理しない
             //ついでに今が移動中なら呼ばないようにもすべき
-            if (moveStatus.damageFalseEvent == DamageMoveEvent.そのまま戦う && moveStatus.damageTrueEvent == DamageMoveEvent.そのまま戦う)
+            if(moveStatus.damageFalseEvent == DamageMoveEvent.そのまま戦う && moveStatus.damageTrueEvent == DamageMoveEvent.そのまま戦う)
             {
                 return;
             }
 
             //背後攻撃の場合だけisBackで見る
-            bool isTrue = (moveStatus.damageCondition.condition != RejudgeCondition.背後からの攻撃を受けた時) ? MoveStartJudgeExe(nowTarget, moveStatus.damageCondition) : isBack;
+            bool isTrue = (moveStatus.damageCondition.condition != RejudgeCondition.背後からの攻撃を受けた時) ? MoveStartJudgeExe(nowTarget,moveStatus.damageCondition) : isBack;
 
             //パーセンテージが100以下で条件真なら確率チェックを
             if (isTrue && moveStatus.damageCondition.percentage < 100)
@@ -1080,7 +1055,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             DamageMoveEvent useEvent = isTrue ? moveStatus.damageTrueEvent : moveStatus.damageFalseEvent;
 
             //使用するイベントがそのまま戦うならリターン
-            if (useEvent == DamageMoveEvent.そのまま戦う)
+            if(useEvent == DamageMoveEvent.そのまま戦う)
             {
                 return;
             }
@@ -1112,14 +1087,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 float escapePoint = EscapePointSerch(false);
 
                 //ワープと同じ番号ならワープ
-                if (eventNum == (int)DamageMoveEvent.緊急逃走ワープ)
+                if(eventNum == (int)DamageMoveEvent.緊急逃走ワープ)
                 {
                     WarpMoveAct(escapePoint);
                 }
                 //ワープじゃないなら
                 else
                 {
-                    NormalCombatMove(escapePoint, moveStatus.MoveStopCondition, true, true).Forget();
+                    NormalCombatMove(escapePoint,moveStatus.MoveStopCondition,true,true).Forget();
                 }
 
             }
@@ -1142,7 +1117,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             else if (eventNum <= (int)DamageMoveEvent.ランダムにモードチェンジ)
             {
                 //ランダムとそれ以外で分けるよ
-                if (eventNum == (int)DamageMoveEvent.ランダムにモードチェンジ)
+                if(eventNum == (int)DamageMoveEvent.ランダムにモードチェンジ)
                 {
 
                 }
@@ -1173,8 +1148,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         float EscapePointSerch(bool reverseEscape)
         {
-            float basePosition = SManager.instance.sisterPosition.x;
-
+                float basePosition = SManager.instance.sisterPosition.x;
+            
             //逆に逃げる指定ないなら
             if (!reverseEscape)
             {
@@ -1250,14 +1225,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         /// <param name="useEvent"></param>
         /// <param name="isReverse">すでに逆側に移動中であるか。延々とワープとか移動繰り返したくないよね</param>
-        void WallCollisionEventExe(WallCollisionEvent useEvent, bool isEscape, bool isReverse)
+        void WallCollisionEventExe(WallCollisionEvent useEvent,bool isEscape,bool isReverse)
         {
-            if (useEvent == WallCollisionEvent.停止)
+            if(useEvent == WallCollisionEvent.停止)
             {
                 //移動終了処理
                 return;
             }
-            else if ((int)useEvent <= (int)WallCollisionEvent.反対側にワープ)
+            else if((int)useEvent <= (int)WallCollisionEvent.反対側にワープ)
             {
                 //すでに反対側に移動中なら停止処理
                 if (isReverse)
@@ -1284,14 +1259,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     standPosition += (SManager.instance.sisterPosition.x < standPosition) ? moveStatus.keepDistance : -moveStatus.keepDistance;
                 }
 
-                if (useEvent == WallCollisionEvent.反対側にワープ)
+                if(useEvent == WallCollisionEvent.反対側にワープ)
                 {
                     WarpMoveAct(standPosition);
                 }
                 else
                 {
                     //戻っていってるからisReverseは真
-                    NormalCombatMove(standPosition, moveStatus.MoveStopCondition, isEscape, isReverse = true).Forget();
+                    NormalCombatMove(standPosition,moveStatus.MoveStopCondition,isEscape,isReverse = true).Forget();
                 }
 
             }
@@ -1323,7 +1298,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
             //なにか壁にぶつかってるなら
-            if (_controller.CurrentWallCollider != null)
+            if(_controller.CurrentWallCollider != null)
             {
                 return true;
             }
@@ -1331,7 +1306,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             // レイキャストを発射する位置を決める
             //自分より少し前からレイキャストをする
-            if (_character.IsFacingRight)
+            if(_character.IsFacingRight)
             {
                 //右向いてるなら少し右に
                 holeCheckPoint.Set(SManager.instance.sisterPosition.x + (_controller.Bounds.x / 2 + 20f), (SManager.instance.sisterPosition.y));
@@ -1387,7 +1362,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         ///<param name="isEscape">逃走しているかどうか。壁に当たった時の条件が判断されない</param>
         ///<param name="isReverse"></param>
         ///<param name="isFirst"></param>
-        async UniTaskVoid NormalCombatMove(float standPosition, RejudgeStruct stopCondition, bool isEscape, bool isReverse, bool isFirst = false)
+        async UniTaskVoid NormalCombatMove(float standPosition,RejudgeStruct stopCondition,bool isEscape,bool isReverse,bool isFirst = false)
         {
             //最初じゃないなら
             if (!isFirst)
@@ -1401,17 +1376,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
             //停止条件満たしてないならダッシュ
-            if (!StopConditionJudge(distance, moveStatus.adjustRange, stopCondition))
-            {
+            if (!StopConditionJudge(distance, moveStatus.adjustRange,stopCondition))
+            {  
 
                 //穴見つけたり壁にぶつかったりしたら
                 if (CheckWallAndHole())
                 {
                     //ひとまず停止
-                    MoveAct(MoveState.停止, 0);
+                    MoveAct(MoveState.停止,0);
 
 
-                    WallCollisionEventJudge(isEscape, isReverse);
+                        WallCollisionEventJudge(isEscape,isReverse);
 
                     return;
                 }
@@ -1421,7 +1396,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 MoveAct(MoveState.走り, direction: distance >= 0 ? 1 : -1);
 
                 //再帰呼び出し
-                NormalCombatMove(standPosition, stopCondition, isReverse, isEscape).Forget();
+                NormalCombatMove(standPosition,stopCondition,isReverse,isEscape).Forget();
             }
             //満たしたなら
             else
@@ -1583,7 +1558,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //一瞬停止
             _controller.SetForce(Vector2.zero);
-
+            
             //ここでアニメーション再生
             //同時に、エフェクトを呼ぶアニメーションイベントによりエフェクトを呼ばれる
 
@@ -1628,7 +1603,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             totalDamage = 0;
 
             //移動終了したならここで魔法が使えるようにしていく
-
+            
             //移動した後は現在の移動を停止にする
             nowMove = MoveState.停止;
 
@@ -1664,7 +1639,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //あるなら距離か停止条件か
             else
             {
-                return (Mathf.Abs(distance) <= adjust) || MoveStartJudgeExe(nowTarget, stopCondition);
+                return (Mathf.Abs(distance) <= adjust) || MoveStartJudgeExe(nowTarget,stopCondition);
             }
         }
 
@@ -1766,23 +1741,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-                //同じ向きで、なおかつ走ってるなら
-                //プレイヤーと進行方向一致なら追いかける
-                if (((playerSpeed > 0 && _character.IsFacingRight) || (playerSpeed < 0 && !_character.IsFacingRight)) && Mathf.Abs(playerSpeed) >= 100)
-                {
+                    //同じ向きで、なおかつ走ってるなら
+                    //プレイヤーと進行方向一致なら追いかける
+                    if (((playerSpeed > 0 && _character.IsFacingRight) || (playerSpeed < 0 && !_character.IsFacingRight)) && Mathf.Abs(playerSpeed) >= 100)
+                    {
 
-                    //走ってるなら走りで追いかける
-                    return MoveState.走り;
+                        //走ってるなら走りで追いかける
+                            return MoveState.走り;
 
-                }
-                else if (distance > status.patrolDistance)
-                {
-                    return MoveState.歩き;
-                }
-                else
-                {
-                    return MoveState.停止;
-                }
+                    }
+                    else  if (distance > status.patrolDistance)
+                    {
+                        return MoveState.歩き;
+                    }
+                    else
+                    {
+                        return MoveState.停止;
+                    }
 
 
             }
@@ -1810,7 +1785,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //停止状態ならまた走り出すには結構離れないといけないので
             //処理分ける
             //止まってるっていうことは十分に接近したということだから
-            if (nowMove == MoveState.停止)
+            if(nowMove == MoveState.停止)
             {
                 //一度止まったら遊んでいい範囲を出るまで
                 //止まったまま
@@ -1831,7 +1806,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 //近くに寄ったら止まるか歩くか
                 if (distance <= status.patrolDistance + status.adjust)
                 {
-                    return MoveState.停止;
+                        return MoveState.停止;
 
                 }
                 //遊んでていい距離の中で、プレイヤーにくっついてないとき
@@ -1898,24 +1873,24 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         /// <param name="condition"></param>
         /// <param name="direction"></param>
-        void MoveAct(MoveState condition, int direction)
+        void MoveAct(MoveState condition,int direction)
         {
 
             //通常時以外、そして地に足ついていなければ停止になって戻る
-            if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal || !_controller.State.IsGrounded)
+            if(_condition.CurrentState != CharacterStates.CharacterConditions.Normal || !_controller.State.IsGrounded)
             {
                 _characterHorizontalMovement.SetHorizontalMove(0);
                 _controller.SetHorizontalForce(0);
 
                 //ここでは移動データは触らない。攻撃が暴発するかも
-                // nowMove = MoveState.停止;
+               // nowMove = MoveState.停止;
                 return;
             }
-            //振り向き
-            SisFlip(direction);
+                //振り向き
+                SisFlip(direction);
 
             //停止時は止まった後方向転換する
-            if (condition == MoveState.停止)
+           if(condition == MoveState.停止)
             {
                 _characterHorizontalMovement.SetHorizontalMove(0);
                 _controller.SetHorizontalForce(0);
@@ -1935,7 +1910,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (nowMove == condition)
             {
 
-                return;
+                  return;
             }
 
             if (condition == MoveState.歩き)
@@ -1964,7 +1939,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //方向が右で右向いてるなら振り向かない
             //左向いてて方向が左ならやはり振り向かない
             //direが0なら戻る
-            if ((dire > 0 && _character.IsFacingRight) || (dire < 0 && !_character.IsFacingRight) || dire == 0)
+            if ((dire > 0 && _character.IsFacingRight) || (dire < 0 && !_character.IsFacingRight)|| dire == 0)
             {
                 return;
             }
@@ -1982,14 +1957,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         async UniTaskVoid DistanceKeepWarp()
         {
-            await UniTask.WaitUntil(() => (Vector2.SqrMagnitude(GManager.instance.PlayerPosition - SManager.instance.sisterPosition)) > Mathf.Pow(status.warpDistance, 2),
+            await UniTask.WaitUntil(()=> (Vector2.SqrMagnitude(GManager.instance.PlayerPosition - SManager.instance.sisterPosition)) > Mathf.Pow(status.warpDistance,2),
                 cancellationToken: moveJudgeCancel.Token);
 
             //もし今通常状態じゃないなら
-            if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+            if(_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
             {
                 //通常状態になるまで待って
-                await UniTask.WaitUntil(() => _condition.CurrentState == CharacterStates.CharacterConditions.Normal, cancellationToken: moveJudgeCancel.Token);
+                await UniTask.WaitUntil(() => _condition.CurrentState == CharacterStates.CharacterConditions.Normal,cancellationToken: moveJudgeCancel.Token);
             }
 
             Vector2 warpPoint = GManager.instance.PlayerPosition;
@@ -2281,7 +2256,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
 
             //現在警戒状態なら
-            if (nowState == SisterState.警戒)
+            if(nowState == SisterState.警戒)
             {
                 //警戒オブジェクト以外の報告は受け付けない
                 if (!isDanger)
@@ -2326,7 +2301,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             EnemyManager.instance._targetList[num]._condition.hpRatio = mp / status.maxMp;
 
             EnemyManager.instance._targetList[num]._condition.buf = false;
-            EnemyManager.instance._targetList[num]._condition.de = false;
+            EnemyManager.instance._targetList[num]._condition.de= false;
         }
 
 
@@ -2370,7 +2345,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         /// <param name="deletEnemy"></param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public override void TargetListChange(int deletEnemy, int deadID)
+        public override void TargetListChange(int deletEnemy,int deadID)
         {
             //ターゲットと一致したら再判断を行う
             if (nowTarget.targetID == deadID)
@@ -2378,7 +2353,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 //キャンセル
                 moveJudgeCancel.Cancel();
                 moveJudgeCancel = new CancellationTokenSource();
-
+                
                 //強制的に再判断
                 CombatMoveJudge(true).Forget();
 
@@ -2511,7 +2486,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //mpから半分カットしたショックを引く
             //ここのカット率はステータスで上下してもいいかも
-            mp -= (shock / 2);
+            mp -= (shock/2);
 
             //0以下なら0に
             mp = mp < 0 ? 0 : mp;
@@ -2599,12 +2574,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="isStunn"></param>
         /// <param name="enemy"></param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public override void DamageEvent(bool isStunn, GameObject enemy, int damage, bool back)
+        public override void DamageEvent(bool isStunn, GameObject enemy,int damage,bool back)
         {
             //これポジションについた戦闘中だけにしてね
             if (nowState == SisterState.戦い && nowMove == MoveState.停止)
             {
-
+                
                 //トータルダメージを追加
                 totalDamage += damage;
 
@@ -2639,7 +2614,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             throw new System.NotImplementedException();
         }
 
-        #endregion
+#endregion
 
     }
 }

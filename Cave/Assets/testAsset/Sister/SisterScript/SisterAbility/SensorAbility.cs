@@ -3,12 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Tools;
 using Micosmo.SensorToolkit;
+using System.Threading;
+using System;
+using System.Linq;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
     /// <summary>
-    /// シスターさんのセンサー
-    /// 視界センサーだけはコライダーのオブジェクトから発信
+    /// 必要な機能
+    /// 
+    /// ・周囲のものを検出
+    /// ・戦闘時などの状態変化で範囲や感知するタグレイヤーも変わる
+    /// ・物体は取得しない。数は取得する。敵がいくらいたかどうかだけ知らせる
+    /// ・パルスはマニュアルで発動
+    /// ・シスターさんは環境物にも反応する
+    /// ・射線が通ってるかの確認もできるように
+    /// ・あとできればワープする場所の障害物のチェックとかも
+    /// 
+    /// 範囲変更メソッド、パルス起動メソッド
+    /// 非戦闘時の継続センサー、戦闘時の目的センサー（周辺敵数、射線判断など）
+    /// センサーの機能調べなおそ
+    /// 
+    /// 仕様
+    /// ・範囲センサーとトリガーセンサーで検知した敵にさらに視線センサーで検知していく
+    /// ・この両者を統合するのがBooleanセンサーで、これは入力を受けるのみでパルスはしない
     /// </summary>
     [AddComponentMenu("Corgi Engine/Character/Abilities/SensorAbility")]
     public class SensorAbility : MyAbillityBase
@@ -17,59 +35,113 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// 能力のインスペクタの冒頭にある
         public override string HelpBoxText() { return "シスターさんのセンサー"; }
 
-        //   [Header("武器データ")]
-        /// declare your parameters here
-        ///WeaponHandle参考にして 
 
         
         [SerializeField]
-        /// <summary>
-        /// 視界のコライダー
+        ///<summary>
+        ///視線チェックに使うセンサー
+        /// 戦闘時はオフに
         /// </summary>
-        GameObject _sight;
+        LOSSensor2D rangeSight;
 
-        LOSSensor2D _sightSensor;
+        [SerializeField]
+        ///<summary>
+        ///視線チェックに使うセンサー
+        /// これはトリガー用
+        /// </summary>
+        LOSSensor2D triggerSight;
 
+        /// <summary>
+        /// 範囲センサー
+        /// これはパルスしない
+        /// 
+        /// 範囲を変えるためだけに持つ
+        /// </summary>
+        [SerializeField]
         RangeSensor2D range;
 
-        //--------------------------------------------------------------------------
-        //フィールドサーチに必要なパラメーター
+
+        /// <summary>
+        /// 統合用のセンサー
+        /// 
+        /// >ブール センサーをパルスする必要はありません。
+        /// >入力センサーのイベントをサブスクライブし、入力信号が変更されるとすぐに更新します。
+        /// </summary>
         [SerializeField]
-        LOSSensor2D se;
-        //  string dangerTag = "Danger";
-        [SerializeField] BrainAbility sister;
+        BooleanSensor sensor;
+
+
+        //--------------------------------------------------------------------------
+
+
+
         /// <summary>
         /// 周囲のオブジェクト検索でパルスを飛ばす範囲
         /// </summary>
         [SerializeField] float fieldRange = 70;
+
+
         //これは共通
         [SerializeField] float pulseWait = 3;
-        float pulseTime;
-        bool isSerch;
 
 
-        //-----------------------------------------------------------------------
-        //エネミーサーチ。視界センサーに必要なパラメーター
-
-        //危険物はトラップエリアの入り口とかにおく？
-        //危険フラグ立ててその間は動かないとか新しく待機ステート作って待機させるとか
-
-        //  public float SerchRadius;
-        [SerializeField]
-        private LayerMask layerMask;
 
         //-----------------------------------------------------------------------
+
         //戦闘中のセンサー、アグレッシブサーチのパラメーター
         /// <summary>
         /// 戦闘中パルスを飛ばす範囲
         /// </summary>
         [SerializeField] float aggresiveRange = 150;
 
-        private readonly UniTaskCompletionSource
-            uniTaskCompletionSource = new UniTaskCompletionSource();
 
-        public UniTask SerchAsync => uniTaskCompletionSource.Task;
-        
+        /// <summary>
+        /// 戦闘中に使う敵の数
+        /// </summary>
+        int enemyCount;
+
+
+        /// <summary>
+        /// トリガー（視野）センサーを使うか
+        /// </summary>
+        bool useTrigger;
+
+        /// <summary>
+        /// 範囲センサーを使うか
+        /// </summary>
+        bool useRange;
+
+
+        /// <summary>
+        /// 敵数カウントのプロパティ
+        /// </summary>
+        public int EnemyCount {  get => enemyCount; private set => enemyCount = value; }
+
+
+        /// <summary>
+        /// キャンセルトークン
+        /// </summary>
+        CancellationTokenSource sensorCancel;
+
+        //----------------------------------------------------------------------- センサー設定
+
+
+        /// <summary>
+        /// シスターさんなら環境サーチやら
+        /// 戦闘中のカウントやらなんやら必要になる
+        /// </summary>
+        [SerializeField]
+        bool isSister;
+
+
+        /// <summary>
+        /// 敵を見つけたら教えてあげるやつ
+        /// </summary>
+        [SerializeField]
+        NPCControllerAbillity charaController;
+
+        //-----------------------------------------------------------------------
+
 
 
 
@@ -78,129 +150,206 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         protected override void Initialization()
         {
-            base.Initialization();
-            _sightSensor = _sight.MMGetComponentNoAlloc<LOSSensor2D>();
-            range = (RangeSensor2D)se.InputSensor;
-            RangeChange();
-        }
 
-        /// <summary>
-        /// 1フレームごとに、しゃがんでいるかどうか、まだしゃがんでいるべきかをチェックします
-        /// </summary>
-        public override void ProcessAbility()
-        {
-            base.ProcessAbility();
-            DoSomething();
+            //各センサーを使うか確認
+            useRange = rangeSight != null;
+            useTrigger = triggerSight != null;
 
-        }
-
-
-
-        /// <summary>
-        /// 押し込んでいる場合は、いくつかの条件を満たしているかどうかをチェックして、アクションを実行できるかどうかを確認します。
-        /// </summary>
-        protected virtual void DoSomething()
-        {
-            // if the ability is not permitted
-            if (!AbilityPermitted)
+            if (isSister)
             {
-                // we do nothing and exit
-                return;
+                SisterSensor().Forget();
             }
-
-            if(sister.nowState != BrainAbility.SisterState.戦い)
+            else
             {
-                FieldSerch();
+                NormalSensor().Forget() ;
             }
         }
+
+
+
+
+
+
+        #region センサー群
 
         /// <summary>
         /// 戦闘中のセンサー
-        /// FireAbillityから呼び出して使う
+        /// 一秒に一回周囲の敵数を測る
+        /// 戦闘モード突入時に必要なら呼ぶ
         /// </summary>
-        #region
-        public async void AggresiveSerch()
+        async UniTaskVoid AggresiveSerch()
         {
+            //一秒ごとに
+            await UniTask.Delay(TimeSpan.FromSeconds(1),cancellationToken: sensorCancel.Token);
 
-                //Debug.Log("機能してますよー");
-                SensorPulse();
+            UseSensor();
 
-                
-            SManager.instance.TargetAdd(se.GetDetectionsByDistance(SManager.instance.enemyTag));
-            await SManager.instance._addAsync;
-         //   Debug.Log("ｓでｆ");
-            //処理終了通知
-            uniTaskCompletionSource.TrySetResult();
-                    //isSerchがつくと勝手にSマネージャーが敵リストの面倒を見てくれる
+            //数を数えて教えてあげる
+            enemyCount = sensor.GetDetections(SManager.instance.enemyTag).Count;
+
+            //繰り返し
+            AggresiveSerch().Forget();
         }
-        public void SerchEnemy()
+
+
+
+        /// <summary>
+        /// 通常時に使うセンサー
+        /// エネミーが使う敵を探すだけのセンサー
+        /// </summary>
+        /// <returns></returns>
+        async UniTaskVoid NormalSensor()
         {
-            //距離が近い順に敵を並び替える
-            SensorPulse();
-            SManager.instance.InitialAdd(se.GetDetectionsByDistance(SManager.instance.enemyTag));
+            //指定時間待機する
+            await UniTask.Delay(TimeSpan.FromSeconds(pulseWait), cancellationToken: sensorCancel.Token);
+
+            //パルスする
+            UseSensor();
+
+            //センサーでなにか見つけたなら報告
+            if (sensor.GetDetections().Any())
+            {
+                charaController.FindEnemy();
+
+            }
+            //何もないなら繰り返し
+            else
+            {
+                NormalSensor().Forget();
+            }
+
         }
+
+
+        async UniTaskVoid SisterSensor()
+        {
+            //指定時間待機する
+            await UniTask.Delay(TimeSpan.FromSeconds(pulseWait), cancellationToken: sensorCancel.Token);
+
+            //パルスする
+            UseSensor();
+
+            bool battleStart = false;
+
+            //何か見つけたらしわけしろ
+            if (sensor.GetDetections().Any())
+            {
+                battleStart = SortingDetectObjects();
+            }
+
+            //戦闘開始なら
+            if (battleStart)
+            {
+                enemyCount = 0;
+                //範囲変更
+                range.Circle.Radius = aggresiveRange;
+                AggresiveSerch().Forget();
+            }
+            else
+            {
+                //再呼び出し
+                SisterSensor().Forget();
+            }
+
+
+        }
+
+
+
+
         #endregion
+
+
+        #region キャラが使うメソッド
+
+        /// <summary>
+        /// 戦闘開始時に呼び出される
+        /// 通常センサーを停止して必要なら戦闘センサーを起動する
+        /// 
+        /// 攻撃とか受けて戦闘開始した時に色々止めるのに必要
+        /// </summary>
+        public void BattleStart()
+        {
+            sensorCancel.Cancel();
+            sensorCancel = new CancellationTokenSource();
+
+            //戦闘センサーが必要なのは現状シスターさんだけ
+            if (isSister)
+            {
+                enemyCount = 0;
+
+                //範囲変更
+                range.Circle.Radius = aggresiveRange;
+                AggresiveSerch().Forget();
+            }
+
+        }
+
+
+        /// <summary>
+        /// 戦闘終了、通常センサーを呼び出す
+        /// </summary>
+        public void BattleEnd()
+        {
+
+
+            //戦闘センサーがあるのでここだけキャンセルがいる
+            if (isSister)
+            {
+                sensorCancel.Cancel();
+                sensorCancel = new CancellationTokenSource();
+                range.Circle.Radius = fieldRange;
+
+                SisterSensor().Forget();
+            }
+            else
+            {
+                NormalSensor().Forget();
+            }
+        }
+
+
+
+
+
+        #endregion
+
 
         /// <summary>
         /// FieldSerch系統
         /// </summary>
         #region
-        void FieldSerch()
+
+
+        /// <summary>
+        /// 見つけたものを仕分けする
+        /// シスターさん専用
+        /// </summary>
+        /// <param name="collision"></param>
+        bool SortingDetectObjects()
         {
 
-            if (!isSerch) 
-            {
-                pulseTime += _controller.DeltaTime;
-                if (pulseTime >= pulseWait)
-                {
-                    //Debug.Log("機能してますよー");
-                    SensorPulse();
-                    isSerch = true;
-                    pulseTime = 0;
-                }
-            }
-            else if (isSerch)
-            {
-                DetectObject();
-                isSerch = false;
-            }
-        }
+            bool findEnemy = false; 
 
-        public void DetectObject()
-        {
             //敵タグがあるなら
-            if (se.GetDetections(SManager.instance.enemyTag).Count >= 1)
+            if (sensor.GetDetections(SManager.instance.enemyTag).Any())
             {
-                Debug.Log("La");
-                RangeChange();
-                SerchEnemy();
-                sister.StateChange(BrainAbility.SisterState.戦い);
-                
-                SManager.instance.GetClosestEnemyX();
-
-
-                sister.reJudgeTime = 150;
+                findEnemy = true;
+                charaController.FindEnemy();
             }
             //危険タグがあるなら警戒
-            else if (se.GetDetections(SManager.instance.dangerTag).Count >= 1)
+            else if (sensor.GetDetections(SManager.instance.dangerTag).Any())
             {
-                sister.nowState = BrainAbility.SisterState.警戒;
-                //この辺は移動条件の初期化
-                //ビフォーナンバー0で最初ってこと。ステートナンバー3で停止から始まる
-
-                sister.reJudgeTime = 0;
-                sister.changeable = true;
-                SManager.instance.playObject = null;
-                sister.isPlay = false;
+                charaController.ReportObject(true,sensor.GetNearestDetection(SManager.instance.dangerTag));
             }
-            //遊びタグがあって遊んでないなら
-            else if (se.GetDetections(SManager.instance.reactionTag).Count >= 1 && !sister.isPlay)
+            //環境物タグがあったら
+            else if (sensor.GetDetections(SManager.instance.reactionTag).Any())
             {
-                SManager.instance.playObject = se.GetNearestDetectionToPoint(SManager.instance.Sister.transform.position);
-                sister.isPlay = true;
-                sister.playPosition = SManager.instance.playObject.transform.position.x;
-                sister.playDirection = SManager.instance.playObject.transform.localScale.x;
+                charaController.ReportObject(false, sensor.GetNearestDetection(SManager.instance.reactionTag));
             }
+            //何もないなら何もないを返す
+            charaController.ReportObject(false, null);
+            return findEnemy;
         }
 
         #endregion
@@ -208,100 +357,31 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
+
+
+
+
         /// <summary>
-        /// これをセンサーのコライダーから呼び出すか
+        /// センサー処理
         /// </summary>
-        /// <param name="collision"></param>
-        public void FindObject()
+        void UseSensor()
         {
-            GameObject obj = _sightSensor.GetNearestDetection();
-
-            GameObject pick = null;
-            for (int i= 0; i < _sightSensor.Detections.Count;i++)
+            //トリガーセンサーを使うなら
+            if (useTrigger)
             {
-                pick  = _sightSensor.GetDetections()[i];
-
-                //危険物があったらそっち優先
-                if (pick.tag == SManager.instance.dangerTag)
-                {
-                    obj = pick;
-                    continue;
-                }
-                //敵のオブジェクトがあったらそっち最優先
-                if (pick.tag == SManager.instance.enemyTag)
-                {
-                    obj = pick;
-                    break;
-                }
+                triggerSight.Pulse();
             }
 
-            if (obj.tag == SManager.instance.enemyTag)
+            //範囲センサーを使うなら
+            if (useRange)
             {
-                if (sister.nowState != BrainAbility.SisterState.戦い)
-                {
-                    sister.StateChange(BrainAbility.SisterState.戦い);
-                    RangeChange();
-                    //即座にポジション判断できるように
-
-                    SerchEnemy();
-                    //isSerchがつくと勝手にSマネージャーが敵リストの面倒を見てくれる
-                    pulseTime = 0;
-                    SManager.instance.GetClosestEnemyX();
-
-                    //検索はAgrSerchに任せる。いや入れていい。最初に検知されるのは近いやつだしどうせすぐ更新される
-                }
-            }
-            else if (obj.tag == SManager.instance.dangerTag)
-            {
-
-                if (sister.nowState == BrainAbility.SisterState.のんびり)
-                {
-                    sister.nowState = BrainAbility.SisterState.警戒;
-
-
-                    sister.changeable = true;
-                    SManager.instance.playObject = null;
-                    sister.isPlay = false;
-                }
-            }
-            else if (obj.tag == SManager.instance.reactionTag)
-            {
-                if (sister.nowState == BrainAbility.SisterState.のんびり)
-                {
-                    SManager.instance.playObject = se.GetNearestDetectionToPoint(SManager.instance.Sister.transform.position);
-                    sister.isPlay = true;
-                    sister.playPosition = SManager.instance.playObject.transform.position.x;
-                    sister.playDirection = SManager.instance.playObject.transform.localScale.x;
-                }
-            }
-
-        }
-
-        public void RangeChange()
-        {
-            
-            if(sister.nowState == BrainAbility.SisterState.戦い)
-            {
-               
-                range.Circle.Radius = aggresiveRange;
-                if (_sight != null)
-                    _sight.SetActive(false);
-            }
-            else
-            {
-                range.Circle.Radius = fieldRange;
-                if (_sight != null)
-                    _sight.SetActive(true);
+                //入力センサーまで一括で
+                rangeSight.PulseAll();
             }
 
         }
 
 
-        void SensorPulse()
-        {
-            range.Pulse();
-            se.Pulse();
-        }
 
 
     }

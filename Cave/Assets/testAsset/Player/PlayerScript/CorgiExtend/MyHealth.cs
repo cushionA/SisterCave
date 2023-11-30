@@ -278,7 +278,7 @@ namespace MoreMountains.CorgiEngine
             {
                 //スタンしてるかどうかで処理を分けれる
                 //敵のゲームオブジェクトも渡します
-                _charaCon.DamageEvent(stunnState == MyWakeUp.StunnType.notStunned,instigator);
+                _charaCon.DamageEvent(stunnState == MyWakeUp.StunnType.notStunned,instigator,damage,back);
             }
         }
 
@@ -655,10 +655,12 @@ namespace MoreMountains.CorgiEngine
             _charaCon.Die();
         }
 
-
+        /// <summary>
+        /// ガードしてるかを確認する
+        /// </summary>
         public void GuardReport()
         {
-            _charaCon.GuardReport();
+            _defData.isGuard = _charaCon.GuardReport();
         }
         /// <summary>
         /// Allows the character to take damage

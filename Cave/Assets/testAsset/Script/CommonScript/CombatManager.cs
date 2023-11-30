@@ -7,7 +7,7 @@ using static CharacterStatus;
 using static ControllAbillity;
 using static EnemyStatus;
 
-public abstract class CombatManager : MonoBehaviour
+public class CombatManager : MonoBehaviour
 {
 
 
@@ -20,27 +20,9 @@ public abstract class CombatManager : MonoBehaviour
 
 
 /// <summary>
-/// 敵情報パック
-/// 敵配列を作ってそこから情報を獲得する感じ
-/// そのデータが敵配列の何番目なのかと言うのを記録しておくことで順番入れ替わってもいい
 /// 
-/// 位置、種類、HP割合、MP割合、バフついてるか、デバフか、攻撃力、防御力
-/// 何体の敵にタゲ取られてるか、レベルごとに管理
-/// あとは本体への参照をどうするかな
-/// ゲームオブジェクトのリストを出そう。そこでintでリストに結びつける？
-/// でもシスターさんが並べ替えちゃうよね
-/// どうしよう
-/// センサーで取得したゲームオブジェクトをDictionaryにツッコんでその分だけ敵視するか？
-/// シスターさんの場合な
-/// 
-/// これってEnemy側からするとプレイヤーたちだよな
-/// 
-/// 
-/// 敵はほぼ追わないようにする？
-/// 決めた範囲だけ、セグメントだけ
-/// セグメントはでない。そんな追いかけてくるゲーム無かったろ
-/// セグメントから離れたら子オブジェクトから切り離される
-/// シスターさんと味方はSManagerにアクセスしろよ。NPCマネージャーに変えて
+/// 戦闘関連の情報をまとめて管理するクラス
+/// 敵やプレイヤー側など陣営に一つずつこのクラスを継承したクラスを用意する
 /// </summary>
 public class TargetData
 {
@@ -67,6 +49,7 @@ public class TargetData
 
     /// <summary>
     /// 合計何人にターゲットにされてるか
+    /// これを利用して今何人に見られてるかを問い合わせ可能
     /// </summary>
     public int targetAllCount;
 
@@ -84,6 +67,12 @@ public class TargetData
         /// 今どの敵をターゲットしてるか
         /// </summary>
         public int targetNum;
+
+        /// <summary>
+        /// 個体判別用のID
+        /// 死亡時の関係整理などに使う
+        /// </summary>
+        public int targetID;
 }
 
 #endregion
@@ -107,10 +96,10 @@ public List<TargetData> _targetList;
 
 
 /// <summary>
-/// 魔物たち専用味方リスト
+/// 専用味方リスト
 /// ここからイベント飛ばしたり
 /// </summary>
-public List<EnemyAIBase> AllyList;
+public List<ControllAbillity> AllyList;
 
 
 
@@ -120,6 +109,12 @@ public List<EnemyAIBase> AllyList;
 /// </summary>
 protected int count;
 
+
+    /// <summary>
+    /// 敵側のコンバットマネージャー
+    /// データをやり取りする
+    /// </summary>
+    protected CombatManager TargetManagerInstance;
 
     #endregion
 
@@ -132,35 +127,154 @@ protected int count;
     /// ターゲットリストを作成する
     /// 以後このリストの内容が変更されるまで使う
     /// NPCが消えたり洗脳魔法とけたり
-    /// ここでどうやって情報の順番を保証するか
-    /// ヘイトとかも全部バラバラになる
-    /// 敵が死んだりしたのを通知して参照変えるか
+    /// これ使う機会ありません
+    /// TargetAddでやってくださいそうしよう
     /// </summary>
-    public abstract void SetTargetList();
+    public void SetTargetList()
+    {
+        count = EnemyManager.instance.AllyList.Count;
+
+
+        _targetList = new List<TargetData>(count);
+
+        TargetListUpdate();
+    }
 
 
     /// <summary>
+    /// オーバーライドしない
+    /// 
     /// リストをアプデする
-    /// 基本的にターゲットリストの内容は変わらない
-    /// なんでヘイトの配列に関しては勝手にエネミー側でやってくれ
+    ///敵側のマネージャーに働きかけて、そちらのAllyリストから
+    ///こっちのターゲットリストを埋めてもらう
+    ///
     /// </summary>
-    public abstract void TargetListUpdate();
+    public void TargetListUpdate()
+    {
+
+        if (count > 0)
+        {
+
+            for (int i = 0; i < count; i++)
+            {
+                //敵の友軍リストを通じて指示して
+                //敵のターゲットデータを更新させる
+                TargetManagerInstance.AllyList[i].TargetDataUpdate(i);
+
+            }
+
+        }
+    }
+
+
+    //こちらの味方死にましたよイベントとそちらのあなた狙われてますよイベント
+    //あと何人にヘイト向けられてるかのカウンターをうまく機能に組み込みたい
+    //そしてシスターさんのターゲティングも
+    //まぁ別にプレイヤー側は人数で攻撃制限とかしないからカウントの方法はもっと単純でいいかも
+    //そちらのあなた狙われてますよイベントはいらないか
+    //自分のターゲットデータに今何人に狙われてますよカウントがあるからそっちを調べればいい
 
 
     /// <summary>
+    /// オーバーライドしない
+    /// 
     /// ターゲットセットするときにエネミーが呼び出すメソッド
-    /// どれをターゲットにするのかをこちらに伝える
     /// データ管理に必要
+    /// 誰を狙ってたか、誰に狙いを変えたかなど
+    /// ターゲットを報告したらIDを返してあげる
     /// </summary>
     /// <param name="newTarget"></param>
     /// <param name="prevTarget"></param>
     /// <param name="_event"></param>
     /// <param name="level"></param>
     /// <param name="isFirst"></param>
-    public abstract void TargetSet(int newTarget, int prevTarget, TargetingEvent _event, int level, int id, bool isFirst);
+    public int TargetSet(int newTarget, int prevTarget, TargetingEvent _event, int level, int id, bool isFirst)
+    {
+        //初回はターゲットナンバーが絶対ゼロなので
+        //マイナスにならないように
+        if (isFirst)
+        {
+            //旧ターゲットから減らす
+            _targetList[prevTarget].targetingCount[level]--;
+            _targetList[prevTarget].targetAllCount--;
+        }
+
+        //敵視加算
+        _targetList[newTarget].targetingCount[level]++;
+        _targetList[prevTarget].targetAllCount++;
 
 
-    public abstract int GetTargetNumber(GameObject enemy);
+
+        //指令イベントあるならイベント開始
+        if (_event != TargetingEvent.なし)
+        {
+            int count = AllyList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                AllyList[i].CommandEvent(_event, newTarget, level, id);
+            }
+        }
+
+        //IDを返してあげる
+        return _targetList[newTarget].targetID;
+    }
+
+    /// <summary>
+    /// オーバーライドしない
+    /// 
+    /// 敵IDからナンバーを獲得
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <returns></returns>
+
+    public int GetTargetNumber(GameObject triggerEnemy)
+    {
+
+        int count = _targetList.Count;
+
+        //なんもなかったらとりあえずプレイヤー狙おうという意味も込めた0
+        int target = 0;
+
+        for (int i = 0; i < count; i++)
+        {
+            
+            //ターゲットいたら
+            if (triggerEnemy == _targetList[i].targetObj)
+            {
+                target = i;
+                break;
+            }
+        }
+
+        return target;
+    }
+
+
+    /// <summary>
+    /// オーバーライドしない
+    /// 
+    /// 敵要素の削除に応じて敵の戦闘マネージャーから呼び出される
+    /// 敵がこっちの仲間死にましたよと教えてくれる形
+    /// こちら側のターゲットリストの並び替えを行う
+    /// キャラにもそれを反映
+    /// </summary>
+    /// <param name="deleteEnemy">消される敵の番号</param>
+    public void TargetListSort(int deleteEnemy)
+    {
+
+        //死亡した敵のIDも渡す
+        //これによって現在ターゲティングしてる敵が
+        int deadID = _targetList[deleteEnemy].targetID;
+
+        _targetList.RemoveAt(deleteEnemy);
+
+        int aCount = AllyList.Count;
+        for (int i = 0; i < aCount; i++)
+        {
+            AllyList[i].TargetListChange(deleteEnemy, deadID);
+        }
+
+    }
 
 
 
@@ -171,57 +285,146 @@ protected int count;
     #region 味方管理用メソッド
 
 
-
     /// <summary>
-    /// バトルに参加する敵がマネージャーの
-    /// 管理下に入る
+    /// バトルに参加する敵がマネージャーの管理下に入る
+    /// 
+    /// これisAggressiveではなくセグメントから管理するか
+    /// 非戦闘状態の敵もシスターさんたちにとっては攻撃対象
+    /// それか距離
+    /// あるいはisRenderで管理開始して？　画面外で非アクティブになったら消える？
+    /// 
+    /// 共通化可能
     /// </summary>
     /// <param name="_inst"></param>
-    public abstract int JoinBattle(EnemyAIBase _inst);
+    public void JoinBattle(ControllAbillity _inst)
+    {
+
+
+        //IDを発行
+        int newID = UnityEngine.Random.Range(1, 300);
+        bool isUnique = false;
+        int count = AllyList.Count;
+        while (!isUnique)
+        {
+
+
+
+            for (int i = 0; i < count; i++)
+            {
+                if (AllyList[i].ReturnID() == newID)
+                {
+                    isUnique = false;
+                    newID = UnityEngine.Random.Range(1, 300);
+                    break;
+                }
+                //最後まで行けたら真
+                else if (i == count - 1)
+                {
+                    isUnique = true;
+                }
+            }
+        }
+
+
+        //ID発行したら仲間
+        AllyList.Add(_inst);
+
+        //ターゲットリストも更新
+        //Smanagerに自分の情報を渡す
+        AllyList[count].TargetDataAdd(newID);
+
+    }
+
 
     /// <summary>
     /// マネージャーの管理下から出る
+    /// これいらないかも
+    /// たとえ戦闘状態解除されても相手の標的であることはかわらないよね
+    /// 死以外ではマネージャーから抜けれない？
+    /// あるいはセグメント抜けるまで
+    /// あとは洗脳で抜けたりもするか
+    /// 寝返る場合のフラグも引数に入れる？個別に用意するか、メソッド
     /// </summary>
     /// <param name="_inst"></param>
-    public abstract void EndBattle(EnemyAIBase _inst);
+    public virtual void EndBattle(ControllAbillity _inst)
+    {
+
+    }
+
+
+
 
     /// <summary>
+    /// オーバーライドしない
+    /// 
     /// 死んだエネミーが呼び出すためのメソッド
     /// 攻撃的エネミーのリスト排除から死亡状態の保存まで行う
     /// </summary>
-    public abstract void Die(int ID, EnemyAIBase inst);
+    public void Die(int ID, EnemyAIBase inst)
+    {
+        int num = AllyList.IndexOf(inst);
+
+        //攻撃的オブジェクトのリストから破棄
+        //不意打ち一撃死亡の場合は処理分ける？
+        AllyList.RemoveAt(num);
+
+        //ここから敵のターゲットリスト並び替え
+        TargetManagerInstance.TargetListSort(num);
+
+
+        //ここから味方が死んだとかイベント飛ばす？
+        //殺した相手にヘイトが向くとか
+        //強いやつだったら逃げるとか
+
+    }
+
+
+
 
     /// <summary>
+    /// オーバーライドする
+    /// 
     /// 同じターゲットを敵視してる
-    /// 同レベル、あるいは上レベルの味方が何人いるか
+    /// 同レベル、あるいは上レベルの味方が何人いるか数える
     /// </summary>
     /// <returns></returns>
-    public abstract int TargettingCount(int level, int target);
+    public virtual int TargettingCount(int level, int target)
+    {
+        //この回数だけ繰り返す
+        int count = 4 - level;
+
+        //absoluteは邪魔されない
+        if (count == 1)
+        {
+            return 0;
+        }
+
+        int sum = 0;
+
+        for (int i = level; i <= count; i++)
+        {
+            sum += _targetList[target].targetingCount[i];
+        }
+
+        return sum;
+    }
+
+
 
 
     /// <summary>
     /// 攻撃停止する可動かを判断する
+    /// オーバーライドする
     /// </summary>
     /// <returns></returns>
-    public abstract bool AttackStopCheck(int target, int level, float cDistance, int needCount, int id);
-
-    public abstract void TargetListSort(int deleteEnemy);
-
-    #endregion
-
-
-    #region 敵陣営のマネージャーとの連携
-
-
-    /// <summary>
-    /// こちら側のAllyListから敵に送信する
-    /// 敵のターゲットリストに情報を入れる
-    /// でもこれだといまのターゲットリストの順番が保証されないよね
-    /// 特に敵側のエネミーが死んだ時とか
-    /// </summary>
-   // public abstract void SendData();
+    public virtual bool AttackStopCheck(int target, int level, float cDistance, int needCount, int id)
+    {
+        return false;
+    }
 
 
     #endregion
+
+
 
 }

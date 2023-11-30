@@ -20,6 +20,17 @@ using static SisterConditionBase;
 /// それぞれの条件に魔法を入れる
 /// なかったら判断して探す
 /// 止まり木に触れてAIいじる画面に行くと一旦条件魔法を白紙にする
+/// 
+///
+///改修必要な部分
+///・Brainから呼ばれるイベントを追加するかも
+///・攻撃の条件待機を積めてない。待機条件を発射段階で取得するためにuseNumはやっぱ持ってないとダメかも
+///・MP判断や射程距離判断、アーマー判断をうまく詰めてない
+///・射撃メソッドのランダム周りの使用は修正必要
+///・連携アクションと仲良くするために頑張らないと。中断と再開の仕様なー
+///・要修正とか未実装で検索したらダメなとこ出てくるよ
+///
+///
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -29,7 +40,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
     /// あるいはコンビネーションは主人公に持たせる？
     /// 流れとしては判断、詠唱、攻撃状態に遷移しモーション変化、アニメーションイベント、魔法使用、アニメーションイベントで終了
     /// </summary>
-    [AddComponentMenu("Corgi Engine/Character/Abilities/FireAbility")]
+    [AddComponentMenu("Corgi Engine/Character/Abilities/EditFire")]
     public class EditFire : MyAbillityBase
     {
 
@@ -56,53 +67,33 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         [HideInInspector]
         public BrainAbility sb;
 
+
+
         /// <summary>
         /// クールタイム待機のため専用のフラグ
         /// </summary>
         bool disEnable;
 
 
-        List<SisMagic> useSupport;//未使用の支援
-        List<float> effectiveTime;//支援魔法、リジェネ、攻撃の時間をはかる
-        /// <summary>
-        /// 詠唱時間待ち
-        /// </summary>
-        [HideInInspector]
-        public float waitCast;
 
+
+        /// <summary>
+        /// 今の行動のクールタイムを記録
+        /// </summary>
         float coolTime;
+
         /// <summary>
         /// 攻撃、回復、などの優先行動を入れ替える
         /// </summary>
         float stateJudge = 30;
 
-        /// <summary>
-        /// 敵検知、判断の時間計測
-        /// </summary>
-        float targetJudge = 30;
-
-        /// <summary>
-        /// 何個目の条件でターゲット見つけたかを確認する
-        /// </summary>
-        [HideInInspector]
-        public int judgeSequence;
 
 
         /// <summary>
-        /// 詠唱の音鳴らすサイン
-        /// 1はまだ再生してない。2は再生中。3は終わり
-        /// これ現在が詠唱中ならで良くね？
+        /// ターゲットや魔法の候補を格納するリスト
         /// </summary>
-        bool soundStart;
-        /// <summary>
-        /// 撃つ弾丸の数
-        /// </summary>
-        int bCount;
-        float recoverTime;
+        List<int> candidateList = new List<int>();
 
-        List<int> targetCanList = new List<int>();
-
-        List<int> magicCanList = new List<int>();
 
 
 
@@ -110,6 +101,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// 何番目の詠唱なのか
         /// </summary>
         int actionNum;
+
 
         [SerializeField] CombinationAbility ca;
 
@@ -121,24 +113,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-
-        bool fireStart;
-
-        /// <summary>
-        /// 戦闘開始時の初期化のためのフラグ
-        /// </summary>
-        [HideInInspector]
-        public bool isReset;
-        //回復時間
-        float healJudge;
-
-
-        /// <summary>
-        /// 弾丸生成の最中かどうか
-        /// </summary>
-        bool delayNow;
         //ビット演算でクールタイムを破棄する
-        int _skipCondition;
+        SisterConditionBase.SkipCondition skipCondition = SkipCondition.なし;
 
         public AtEffectCon atEf;
 
@@ -194,228 +170,97 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             sister.nowMove = sister.priority;
 
             //Brainじゃないんですわ
-            sb = _character.FindAbility<BrainAbility>();
-            atEf = _character.FindAbility<AtEffectCon>();
+            //インスペクタでやれ
+    //        sb = _character.FindAbility<BrainAbility>();
+      //      atEf = _character.FindAbility<AtEffectCon>();
 
             SManager.instance.MagicEffectSet(atEf);
         }
 
 
-        /// <summary>
-        /// 1フレームごとに、しゃがんでいるかどうか、まだしゃがんでいるべきかをチェックします
-        /// </summary>
-        public override void ProcessAbility()
+
+
+        //戦闘開始時や終了時に呼ばれて動くメソッド
+        //ここから攻撃の判断などが呼ばれる
+        //FireAbillityはあくまで攻撃を専門とするBrainの補助機能
+        //なんでこれ以外のイベントは持たない
+        //Brainが必要とするなら持つこともあるけど
+        //でもこれをBrain側から呼ぶだけ
+        #region　管理メソッド
+
+        ///<sumary>
+        /// 状態ごとの初期化項目
+        /// Brainが戦闘開始、終了の判断を下したときとかに呼ばれる
+        /// じゃあここでターゲット判断開始とかトークンの初期化とか入れるか
+        /// </sumary>
+        public void StateInitialize(bool battle)
         {
-            base.ProcessAbility();
+            //戦闘開始
+            if (battle)
+            {
+
+                //処理停止してトークン入れ替え
+                magicCancel.Cancel();
+                magicCancel = new CancellationTokenSource();
+
+                //道中回復などの詠唱中ならエフェクトを消す
+                if (_movement.CurrentState == CharacterStates.MovementStates.Cast)
+                {
+                    atEf.CastStop(SManager.instance.useMagic.magicLevel, SManager.instance.useMagic.magicElement);
+
+                }
+
+                //クールタイムの終了
+                disEnable = false;
+
+                //優先状態に状態変化
+                SisterStateChange((int)sister.priority);
+                //ステート管理開始
+                StateController().Forget();
 
 
-            FireAct();
+                //戦闘判断開始
+                CombatMoveJudge().Forget();
+            }
+            //非戦闘
+            //回復判断
+            else
+            {
+
+                //処理停止してトークン入れ替え
+                magicCancel.Cancel();
+                magicCancel = new CancellationTokenSource();
+
+                //回復に行動変化
+                SisterStateChange((int)SisterParameter.MoveType.回復);
+
+                //詠唱中ならエフェクトを消す
+                if (_movement.CurrentState == CharacterStates.MovementStates.Cast)
+                {
+                    atEf.CastStop(SManager.instance.useMagic.magicLevel, SManager.instance.useMagic.magicElement);
+
+                }
+
+                //変数の初期化
+                stateJudge = 0;
+                coolTime = 0;
+                disEnable = false;
+
+                if (_condition.CurrentState == CharacterStates.CharacterConditions.Moving)
+                {
+                    _movement.ChangeState(CharacterStates.MovementStates.Idle);
+                    _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+                }
+
+                //道中回復判断開始
+                HealingJudge().Forget();
+
+
+            }
         }
 
+        #endregion
 
-        /// <summary>
-        /// 攻撃の実行
-        /// なるべく非同期
-        /// これはすてる
-        /// </summary>
-         void FireAct()
-        {
-
-
-
-            //攻撃処理
-            //非同期で詠唱を待つ？
-            //コンビネーション差し込みどうするよ
-            //コンビネーション中じゃないならを差し込む？
-            //キャンセルトークンは死亡時に消すようにするか
-            if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
-            {
-
-                //MagicUse(SManager.instance.useMagic.HRandom, SManager.instance.useMagic.VRandom);
-                return;
-            }
-
-
-
-
-            //戦闘中、かつ位置についているなら
-            else if (sb.nowState == BrainAbility.SisterState.戦い)
-            {
-
-                //何も魔法ないなら戻る
-                if (sb.status.equipMagic == null)
-                {
-                    return;
-                }
-
-
-
-                //ターゲットが消えたら詠唱やめる
-                castCheck();
-
-
-
-                stateJudge += _controller.DeltaTime;
-
-                ///ターゲットと使用魔法設定
-                //クールタイム中でもスキップ条件があるなら動く
-                #region
-
-                //通常状態じゃないなら戻れ
-                if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
-                {
-                    return;
-                }
-
-
-                    //位置についていないか、クールタイム消化中でなおかつスキップコンディションもないなら
-                    if ((disEnable && _skipCondition == 0) || !sb.nowPosition)
-                    {
-                        return;
-                    }
-
-                    bool reset = false;
-
-
-                //これはプライオリティがあるなら最初に一定時間ごとにモードリセットする非同期を呼ぶ
-                    //一定時間経過で戦闘思考を、行動がなしでない限りは優先する状態に戻す
-                    if (stateJudge >= sister.stateResetRes && sister.priority != SisterParameter.MoveType.なし)
-                    {
-                        //ステートリセット
-                        sister.nowMove = sister.priority;
-                        stateJudge = 0.0f;
-                        reset = true;
-                    }
-
-
-
-                    //時間経過かターゲット消滅かステートチェンジで再判断
-                    if (targetJudge >= sister.targetResetRes + 2 || SManager.instance.target == null || reset)
-                    {
-
-                    }
-                    TargetReset(reset);
-
-                #endregion
-
-                //ちゃんとターゲットと使用魔法が設定されているかのチェック
-                //それが終われば発射
-
-                if (SManager.instance.target != null && SManager.instance.useMagic != null)
-                {
-                    //MPないなら逃げて
-                    if (sb.mp < SManager.instance.useMagic.useMP)
-                    {
-                        sb.PositionJudge();
-                        return;
-                    }
-
-                    //	bool isWrong = false;
-                    //使用魔法が攻撃で、かつターゲットが敵である。
-                    if (SManager.instance.useMagic.mType == SisMagic.MagicType.Attack)
-                    {
-                        if (sister.nowMove != SisterParameter.MoveType.攻撃)
-                        {
-                            return;
-                        }
-
-                        coolTime = sister.attackCT[judgeSequence];
-                        _skipCondition = sister.atSkipList[judgeSequence];
-                    }
-                    else if (SManager.instance.useMagic.mType == SisMagic.MagicType.Recover)
-                    {
-                        if (sister.nowMove != SisterParameter.MoveType.回復)
-                        {
-                            return;
-                            //isWrong = true;
-                        }
-                        coolTime = sister.healCT[judgeSequence];
-                        _skipCondition = sister.hSkipList[judgeSequence];
-                    }
-                    else
-                    {
-                        if (sister.nowMove != SisterParameter.MoveType.支援)
-                        {
-                            return;
-                        }
-                        coolTime = sister.supportCT[judgeSequence];
-                        _skipCondition = sister.sSkipList[judgeSequence];
-                    }
-
-
-
-                    //ターゲットがいて使用する魔法もあって使用魔法とターゲットもかみ合っているなら
-
-                    ActionFire();
-
-                }
-
-
-            }
-
-            //現在戦い中じゃないなら
-            else if (sb.nowState != BrainAbility.SisterState.戦い)
-            {
-                //一応リセットと戦闘開始時にリセットしてもらえるよう仕込み
-
-
-                if (sister.autoHeal && !disEnable)
-                {
-                    //bool healAct = false;
-
-
-                    if (_condition.CurrentState != CharacterStates.CharacterConditions.Moving)
-                    {
-                        healJudge += _controller.DeltaTime;
-                        if (healJudge >= 3f)
-                        {
-
-                            for (int i = 0; i < sister.recoverCondition.Length; i++)
-                            {
-                                if (disEnable && (_skipCondition & (int)Mathf.Pow(2, i)) != (int)Mathf.Pow(2, i))
-                                {
-                                    continue;
-                                }
-                                if (HealJudge(sister.nRecoverCondition[i]))
-                                {
-                                    RecoverAct(sister.nRecoverCondition[i]);
-                                    judgeSequence = i;
-
-                                    break;
-                                }
-                            }
-
-
-                            healJudge = 0;
-                        }
-                        else if (healJudge < 3f)
-                        {
-
-                            SManager.instance.target = null;
-                        }
-                    }
-                    if (SManager.instance.target != null && SManager.instance.useMagic != null)
-                    {
-
-                        if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
-                        {
-                            //		Debug.Log("hhhhhhj");
-                            actionNum = (int)SManager.instance.useMagic.castType;
-                            _movement.ChangeState(CharacterStates.MovementStates.Cast);
-                            _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
-                        }
-                        coolTime = sister.autHealCT[judgeSequence];
-                        _skipCondition = sister.ahSkipList[judgeSequence];
-
-                        ActionFire();
-                    }
-                }
-
-            }
-
-
-
-        }
 
 
 
@@ -434,7 +279,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //クールタイム時(disenable)は最初のターゲット絞り込み条件判断の内容を変える
         //完成したら色々形整えようか
         //あと平常時の回復はどうしよ
-
+        //少し時間待ち→判断→詠唱→攻撃→クールタイム待つ→判断　　のループ
+        //クールタイムと少し時間待ちは結合
+        //問題は連携をハサミこんだ時だね
 
 
 
@@ -447,6 +294,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //終了後ステートチェンジ判定
         #region 新攻撃メソッド
 
+
+        #region 詠唱と攻撃
+
         /// <summary>
         /// 詠唱管理メソッド
         /// 詠唱完了したら攻撃状態に入ってモーション遷移
@@ -455,6 +305,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public async UniTaskVoid CastMagic()
         {
             
+            //ここまできたらdisenableをfalseにして前のクールタイム待ちを終了しておく
+            //disenがfalseになると止まるからさ
             if (disEnable)
             {
 
@@ -509,6 +361,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="vRandom"></param>
         async UniTaskVoid UseMagic(TargetData target,SisMagic useMagic)
         {
+
+
 
             //(特殊アクションなどで)使用する魔法のMPがないか、標的がいないなら戻る
             if (target.targetObj == null || useMagic.useMP > sb.mp)
@@ -661,13 +515,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //ステートチェンジしないならクールタイムやる？
             else
             {
-                CoolTimeWait().Forget();
+                CoolTimeWait(coolTime).Forget();
             }
+
+
+            //魔法使用後現在の立ち位置が間違ってないかを判定
+            //ここちゃんと立ち位置あってると判断で来てからターゲット判断とか呼ぼう。awaitして
+            sb.PositionJudge();
+
+            //クールタイム呼び出し、あるいはステートチェンジしたら判断メソッドを呼び出す
+            CombatMoveJudge().Forget();
 
         }
 
 
-
+        #endregion
 
 
 
@@ -690,23 +552,28 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <summary>
         ///魔力回復などのために行動ごとにクールタイム設定可能 
         /// </summary>
-       async UniTaskVoid CoolTimeWait()
+       async UniTaskVoid CoolTimeWait(float coolTime)
         {
 
-                //魔法使用後現在の立ち位置が間違ってないかを判定
-                sb.PositionJudge();
+
 
             //時間待つ
-            await UniTask.Delay(TimeSpan.FromSeconds(coolTime + 0.5),cancellationToken:magicCancel.Token);
+            //最低でも1秒
+            //それかdisenableが解除されたら進む
+            await UniTask.WhenAny(UniTask.Delay(TimeSpan.FromSeconds(coolTime + 1),cancellationToken:magicCancel.Token),
+                UniTask.WaitUntil(()=> !disEnable,cancellationToken:magicCancel.Token));
 
-            if (_condition.CurrentState == CharacterStates.CharacterConditions.Moving)
+            //すでにdisenable解除されてるなら余計なことせず戻る
+            if (!disEnable)
             {
-                await UniTask.WaitUntil(() => _condition.CurrentState != CharacterStates.CharacterConditions.Moving,cancellationToken: magicCancel.Token);
+                return;
             }
 
+
+
                     disEnable = false;
-                    _skipCondition = 0;
-                    waitCast = 0;
+                    skipCondition= SkipCondition.なし;
+          
 
 
 
@@ -745,7 +612,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
         /// <summary>
-        /// ちゃんとターゲットが存在するかどうかを問い合わせる
+        /// ちゃんとターゲットと魔法のデータが存在するかどうかを問い合わせる
         /// そして返す
         /// </summary>
         /// <returns></returns>
@@ -796,15 +663,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
 
 
-        /// <summary>
-        /// MPが魔法使用できないほど減少して、なおかつMP支払い前であるかどうかを確認するメソッド
-        /// </summary>
-        public bool MPCheck()
-        {
 
-            return (SManager.instance.useMagic.useMP > sb.mp && bCount < 2);
-
-        }
 
 
 
@@ -833,2003 +692,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             return rad * Mathf.Rad2Deg;
         }
 
-        #region 旧設定
 
-        ///<summary>
-        ///標的と行動を再設定する
-        ///リセット時は攻撃の場合ターゲット消してJudgeSequenceを変える
-        ///他だとシーケンスだけ入れ替える
-        /// </summary>
-        void TargetReset(bool _reset)
-        {
-            //攻撃ステートで
-            if (sister.nowMove == SisterParameter.MoveType.攻撃)
-            {
-
-
-                if (_reset)
-                {
-                    SManager.instance.target = null;
-                    judgeSequence = 0;
-                }
-
-
-                //ターゲットがいないならターゲットを探します。
-                if (SManager.instance.target == null)
-                {
-
-                    //五番目までやる
-                    //五番目までだから長さから1引いてる
-                    //スキップコンディションを見る処理
-                    for (int i = 0; i < sister.targetCondition.Length; i++)
-                    {
-                        //	int skiCheck =  (int)Mathf.Pow(2, i)
-                        //0乗は１
-                        //クールタイム中で、なおかつスキップコンディションに当てはまらないなら処理を飛ばす。
-                        //シフト演算？
-                        if (disEnable && (_skipCondition & (int)Mathf.Pow(2, i)) != (int)Mathf.Pow(2, i))
-                        {
-                            continue;
-                        }
-
-                        SManager.instance.target = TargetSelect(sister.targetCondition[i], sister.AttackCondition[i]);
-
-                        if (SManager.instance.target != null)
-                        {
-                            //	Debug.Log($"{SManager.instance.target.name}");
-                            judgeSequence = i;
-                            break;
-                        }
-
-
-                    }
-                    //	Debug.Log($"s2");
-
-
-
-                    //それでもターゲットがいなかったら補足行動
-                    if (SManager.instance.target == null && !disEnable)
-                    {
-                        if (sister.AttackCondition[5].condition == FireCondition.ActJudge.回復行動に移行 || sister.AttackCondition[5].condition == FireCondition.ActJudge.支援行動に移行)
-                        {
-                            SisterStateChange((int)sister.AttackCondition[5].condition);
-                            return;
-                        }
-                        else if (sister.AttackCondition[5].condition != FireCondition.ActJudge.なにもしない)
-                        {
-                            SManager.instance.target = SManager.instance.targetList[RandomValue(0, SManager.instance.targetList.Count - 1)];
-                            judgeSequence = 5;
-                        }
-                    }
-
-                    //EnemyRecordとtargetConditionは一致してる。
-                    //敵情報更新
-                }
-
-                if (SManager.instance.target != null)
-                {
-
-                    //クールタイム消化できてなくてリセットじゃないならダメ
-                    if (!_reset && disEnable)
-                    {
-                        return;
-                    }
-
-                    AttackAct(sister.AttackCondition[judgeSequence]);
-
-                }
-
-
-            }
-
-
-
-
-
-
-
-
-            //支援の時は対象は決まってるので条件に当てはまる状況か
-            //そして当てはまる支援があるかを調べる
-            else if (sister.nowMove == SisterParameter.MoveType.支援)
-            {
-                SManager.instance.target = GManager.instance.Player;
-
-                //リセットなら判断しなおす
-                if (_reset)
-                {
-
-                    for (int i = 0; i < sister.supportPlan.Length; i++)
-                    {
-                        if (disEnable && (_skipCondition & (int)Mathf.Pow(2, i)) != (int)Mathf.Pow(2, i))
-                        {
-                            continue;
-                        }
-
-                        //	クールタイム中ではなく最後の条件なら無条件でここは通す
-                        if (i == sister.supportPlan.Length - 1 && !disEnable)
-                        {
-                            SupportAct(sister.supportPlan[i]);
-                            judgeSequence = i;
-                        }
-                        else if (SupportJudge(sister.supportPlan[i]))
-                        {
-
-                            SupportAct(sister.supportPlan[i]);
-                            judgeSequence = i;
-                            break;
-                        }
-                    }
-                }
-
-                //リセットじゃないなら同じJudgeSequenceで判断
-                else
-                {
-                    if (SupportJudge(sister.supportPlan[judgeSequence]))
-                    {
-                        SupportAct(sister.supportPlan[judgeSequence]);
-
-                    }
-                }
-
-            }
-            //支援と同じ
-            else if (sister.nowMove == SisterParameter.MoveType.回復)
-            {
-                SManager.instance.target = GManager.instance.Player;
-
-                if (_reset)
-                {
-                    for (int i = 0; i < sister.recoverCondition.Length; i++)
-                    {
-                        if (disEnable && (_skipCondition & (int)Mathf.Pow(2, i)) != (int)Mathf.Pow(2, i))
-                        {
-                            continue;
-                        }
-
-                        //	クールタイム中ではなく最後の条件なら無条件でここは通す
-                        if (i == sister.recoverCondition.Length - 1 && !disEnable)
-                        {
-                            RecoverAct(sister.recoverCondition[i]);
-                            judgeSequence = i;
-                        }
-                        else if (HealJudge(sister.recoverCondition[i]))
-                        {
-                            RecoverAct(sister.recoverCondition[i]);
-                            judgeSequence = i;
-
-                            break;
-                        }
-                    }
-                }
-                //リセットじゃないなら同じJudgeSequenceで判断
-                else
-                {
-                    if (HealJudge(sister.recoverCondition[judgeSequence]))
-                    {
-                        RecoverAct(sister.recoverCondition[judgeSequence]);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 攻撃ステートでターゲットを決定
-        /// </summary>
-        /// <param name="condition"></param>
-        public GameObject TargetSelect(AttackJudge condition, FireCondition act)
-        {
-
-            //最初にリストをクリア
-            targetCanList.Clear();
-
-
-            switch (condition.condition)
-            {
-
-                //指定なしはプレイヤーのヘイトで決めるか？
-                //攻撃とかされたとき内部的にもっとく
-
-                //-----------------------------------------------------------------------------------------------------
-                case AttackJudge.TargetJudge.指定なし:
-                    //	ランダムバリュー使ってレコードから指定
-
-                    if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                    {
-                        
-                        SisterStateChange((int)act.condition);
-                        return null;
-                    }
-                    else if (act.condition == FireCondition.ActJudge.なにもしない)
-                    {
-                        return null;
-                    }
-
-                    //9999は全ての意
-                    targetCanList.Add(9999);
-
-                    return SecondTargetJudge(condition);
-
-                //-----------------------------------------------------------------------------------------------------
-
-                case AttackJudge.TargetJudge.プレイヤーのHPが規定値に達した際:
-                    //	ランダムバリュー使ってレコードから指定
-                    if (condition.highOrLow)
-                    {
-                        if (sb.pc.HPRatio() >= condition.percentage / 100f)
-                        {
-                            if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                            {
-
-                                SisterStateChange((int)act.condition);
-                                return null;
-                            }
-                            else if (act.condition == FireCondition.ActJudge.なにもしない)
-                            {
-                                return null;
-                            }
-
-                            //9999は全ての意
-                            targetCanList.Add(9999);
-
-                            return SecondTargetJudge(condition);
-                        }
-                    }
-                    else
-                    {
-
-                        if (sb.pc.HPRatio() <= condition.percentage / 100f)
-                        {
-
-                            if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                            {
-                                //kuroko++;
-                                //Debug.Log($"朝顔{sister.nowMove}");
-
-                                SisterStateChange((int)act.condition);
-                                return null;
-                            }
-                            else if (act.condition == FireCondition.ActJudge.なにもしない)
-                            {
-                                return null;
-                            }
-
-                            //9999は全ての意
-                            targetCanList.Add(9999);
-
-                            return SecondTargetJudge(condition);
-                        }
-                    }
-                    break;
-                //-----------------------------------------------------------------------------------------------------
-                case AttackJudge.TargetJudge.プレイヤーのMPが規定値に達した際:
-                    //	ランダムバリュー使ってレコードから指定
-                    if (condition.highOrLow)
-                    {
-                        if (GManager.instance.mp / GManager.instance.maxMp >= condition.percentage / 100f)
-                        {
-                            if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                            {
-
-                                SisterStateChange((int)act.condition);
-                                return null;
-                            }
-                            else if (act.condition == FireCondition.ActJudge.なにもしない)
-                            {
-                                return null;
-                            }
-                            //9999は全ての意
-                            targetCanList.Add(9999);
-
-                            return SecondTargetJudge(condition);
-                        }
-                    }
-                    else
-                    {
-                        if (GManager.instance.mp / GManager.instance.maxMp <= condition.percentage / 100f)
-                        {
-
-                            if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                            {
-
-                                SisterStateChange((int)act.condition);
-                                return null;
-                            }
-                            else if (act.condition == FireCondition.ActJudge.なにもしない)
-                            {
-                                return null;
-                            }
-
-                            //9999は全ての意
-                            targetCanList.Add(9999);
-
-                            return SecondTargetJudge(condition);
-                        }
-                    }
-                    break;
-                //-----------------------------------------------------------------------------------------------------
-                case AttackJudge.TargetJudge.プレイヤーが状態異常にかかった時://未実装
-                                                              //	ランダムバリュー使ってレコードから指定
-
-                    //9999は全ての意
-                    targetCanList.Add(9999);
-
-                    return SecondTargetJudge(condition);
-
-                //-----------------------------------------------------------------------------------------------------
-                case AttackJudge.TargetJudge.状態異常にかかってる敵://未実装
-                                                         //	ランダムバリュー使ってレコードから指定
-
-                    //9999は全ての意
-                    targetCanList.Add(9999);
-                    return SecondTargetJudge(condition);
-
-                //-----------------------------------------------------------------------------------------------------
-                case AttackJudge.TargetJudge.自分のMPが規定値に達した際:
-                    if (condition.highOrLow)
-                    {
-                        if (sb.mp / SManager.instance.sisStatus.maxMp >= condition.percentage / 100f)
-                        {
-                            if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                            {
-
-                                SisterStateChange((int)act.condition);
-                                return null;
-                            }
-                            else if (act.condition == FireCondition.ActJudge.なにもしない)
-                            {
-                                return null;
-                            }
-
-                            //9999は全ての意
-                            targetCanList.Add(9999);
-                            return SecondTargetJudge(condition);
-                        }
-                    }
-                    else
-                    {
-
-                        if (sb.mp / SManager.instance.sisStatus.maxMp <= condition.percentage / 100f)
-                        {
-                            if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                            {
-
-                                SisterStateChange((int)act.condition);
-                                return null;
-                            }
-                            else if (act.condition == FireCondition.ActJudge.なにもしない)
-                            {
-                                return null;
-                            }
-
-                            //9999は全ての意
-                            targetCanList.Add(9999);
-                            return SecondTargetJudge(condition);
-                        }
-                    }
-                    break;
-                //-----------------------------------------------------------------------------------------------------
-                case AttackJudge.TargetJudge.強敵の存在:
-                    //強敵を優先
-
-
-                    if (condition.highOrLow)
-                    {
-                        for (int i = 0; i < SManager.instance.targetList.Count; i++)
-                        {
-                            if (SManager.instance.targetCondition[i].status.strong)
-                            {
-                                if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                                {
-
-                                    SisterStateChange((int)act.condition);
-                                    return null;
-                                }
-                                else if (act.condition == FireCondition.ActJudge.なにもしない)
-                                {
-                                    return null;
-                                }
-                                targetCanList.Add(i);
-                                //break;
-
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 0; i < SManager.instance.targetList.Count; i++)
-                        {
-
-                            if (!SManager.instance.targetCondition[i].status.strong)
-                            {
-                                if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                                {
-
-                                    SisterStateChange((int)act.condition);
-                                    return null;
-                                }
-                                else if (act.condition == FireCondition.ActJudge.なにもしない)
-                                {
-                                    return null;
-                                }
-                                targetCanList.Add(i);
-                                //break;
-
-                            }
-                        }
-                    }
-                    return SecondTargetJudge(condition);
-                //ここに二次処理三次処理をCanListを引数に開始
-
-
-                //-----------------------------------------------------------------------------------------------------
-                case AttackJudge.TargetJudge.敵タイプ:
-                    //   Soldier,//陸の雑兵
-
-
-
-
-                    //選ぶ敵タイプがすべてと選択されてるなら
-                    if (condition.percentage == 0b00011111)
-                    {
-
-                        if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                        {
-
-                            SisterStateChange((int)act.condition);
-                            return null;
-                        }
-                        else if (act.condition == FireCondition.ActJudge.なにもしない)
-                        {
-                            return null;
-                        }
-
-
-                        //9999は全ての意
-                        targetCanList.Add(9999);
-
-                        return SecondTargetJudge(condition);
-                        //break;
-                    }
-                    else
-                    {
-                        //int test;
-                        for (int i = 0; i < SManager.instance.targetList.Count; i++)
-                        {
-                            //test = ;
-
-
-                            if ((condition.percentage & 0b00000001) == 0b00000001)
-                            {
-
-                                if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Soldier)
-                                {
-                                    if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                                    {
-
-                                        SisterStateChange((int)act.condition);
-                                        return null;
-                                    }
-                                    else if (act.condition == FireCondition.ActJudge.なにもしない)
-                                    {
-                                        return null;
-                                    }
-                                    targetCanList.Add(i);
-
-                                    continue;
-                                }
-                            }
-                            //test = 0b01000000;
-                            if ((condition.percentage & 0b00000010) == 0b00000010)
-                            {
-                                //	Debug.Log($"数を教えてね{SManager.instance.targetCondition == null}{SManager.instance.targetCondition.Count}と{i}");
-                                if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Fly)
-                                {
-                                    if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                                    {
-
-                                        SisterStateChange((int)act.condition);
-                                        return null;
-                                    }
-                                    else if (act.condition == FireCondition.ActJudge.なにもしない)
-                                    {
-                                        return null;
-                                    }
-                                    targetCanList.Add(i);
-
-                                    continue;
-                                }
-                            }
-                            if ((condition.percentage & 0b00000100) == 0b00000100)
-                            {
-                                if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Shooter)
-                                {
-                                    if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                                    {
-
-                                        SisterStateChange((int)act.condition);
-                                        return null;
-                                    }
-                                    else if (act.condition == FireCondition.ActJudge.なにもしない)
-                                    {
-                                        return null;
-                                    }
-                                    //	siroko++;
-                                    //		Debug.Log($"今の数字{siroko}");
-                                    targetCanList.Add(i);
-
-                                    continue;
-                                }
-                            }
-                            if ((condition.percentage & 0b00001000) == 0b00001000)
-                            {
-                                if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Knight)
-                                {
-                                    if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                                    {
-
-                                        SisterStateChange((int)act.condition);
-                                        return null;
-                                    }
-                                    else if (act.condition == FireCondition.ActJudge.なにもしない)
-                                    {
-                                        return null;
-                                    }
-                                    //	siroko++;
-                                    //		Debug.Log($"今の数字{siroko}");
-                                    targetCanList.Add(i);
-
-                                    continue;
-                                }
-                            }
-                            if ((condition.percentage & 0b00010000) == 0b00010000)
-                            {
-                                if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Trap)
-                                {
-                                    if (act.condition == FireCondition.ActJudge.回復行動に移行 || act.condition == FireCondition.ActJudge.支援行動に移行)
-                                    {
-
-                                        SisterStateChange((int)act.condition);
-                                        return null;
-                                    }
-                                    else if (act.condition == FireCondition.ActJudge.なにもしない)
-                                    {
-                                        return null;
-                                    }
-                                    targetCanList.Add(i);
-
-                                    continue;
-                                }
-                            }
-                        }
-                        return SecondTargetJudge(condition);
-                    }
-
-
-                    //-----------------------------------------------------------------------------------------------------
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// 攻撃ステートで使用魔法を決定
-        /// </summary>
-        /// <param name="condition"></param>
-        public void AttackAct(FireCondition condition)
-        {
-
-
-            if (condition.UseMagic == null)
-            {
-                magicCanList.Clear();
-                switch (condition.condition)
-                {
-                    case FireCondition.ActJudge.斬撃属性:
-
-
-                        for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].magicElement == AtEffectCon.Element.slash)
-                            {
-                                magicCanList.Add(i);
-                                break;
-                            }
-                        }
-                        secondATMagicJudge(condition);
-                        break;
-                    //-----------------------------------------------------------------------------------------------------
-                    case FireCondition.ActJudge.刺突属性:
-
-                        for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].magicElement == AtEffectCon.Element.stab)
-                            {
-                                magicCanList.Add(i);
-                                break;
-                            }
-                        }
-                        secondATMagicJudge(condition);
-                        break;
-                    //-----------------------------------------------------------------------------------------------------
-                    case FireCondition.ActJudge.打撃属性:
-
-                        for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[i].phyBase > 0 && SManager.instance.attackMagi[i].magicElement == AtEffectCon.Element.strike)
-                            {
-                                magicCanList.Add(i);
-                                break;
-                            }
-                        }
-                        secondATMagicJudge(condition);
-                        break;
-                    //-----------------------------------------------------------------------------------------------------
-                    case FireCondition.ActJudge.聖属性:
-
-                        for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[i].holyBase > 0)
-                            {
-                                magicCanList.Add(i);
-                                break;
-                            }
-                        }
-                        secondATMagicJudge(condition);
-                        break;
-                    //-----------------------------------------------------------------------------------------------------
-                    case FireCondition.ActJudge.闇属性:
-
-                        for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[i].darkBase > 0)
-                            {
-                                magicCanList.Add(i);
-                                break;
-                            }
-                        }
-                        secondATMagicJudge(condition);
-                        break;
-                    //-----------------------------------------------------------------------------------------------------
-                    case FireCondition.ActJudge.炎属性:
-
-
-                        for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[i].fireBase > 0)
-                            {
-                                magicCanList.Add(i);
-                                break;
-                            }
-                        }
-                        //Debug.Log($"asgd{magicCanList[0].name}");
-                        secondATMagicJudge(condition);
-                        break;
-                    //-----------------------------------------------------------------------------------------------------
-                    case FireCondition.ActJudge.雷属性:
-                        //Debug.Log($"ssssss");
-
-                        for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[i].thunderBase > 0)
-                            {
-                                //		Debug.Log($"第二段階{SManager.instance.attackMagi[i].name}");
-                                magicCanList.Add(i);
-                                break;
-                            }
-                        }
-                        secondATMagicJudge(condition);
-                        break;
-                    //-----------------------------------------------------------------------------------------------------
-                    case FireCondition.ActJudge.毒属性:
-                        for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[i].thunderBase >= 0)
-                            {
-                                magicCanList.Add(i);
-                                break;
-                            }
-                        }
-                        secondATMagicJudge(condition);
-                        break;
-                    //-----------------------------------------------------------------------------------------------------
-                    case FireCondition.ActJudge.属性指定なし:
-
-                        magicCanList.Add(9999);
-
-                        secondATMagicJudge(condition);
-                        break;
-                    //-----------------------------------------------------------------------------------------------------
-                    case FireCondition.ActJudge.移動速度低下攻撃://未実装
-                        for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[i].thunderBase >= 0)
-                            {
-                                magicCanList.Add(i);
-                                break;
-                            }
-                        }
-                        secondATMagicJudge(condition);
-                        break;
-                    //-----------------------------------------------------------------------------------------------------
-                    case FireCondition.ActJudge.攻撃力低下攻撃://未実装
-                        for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[i].thunderBase >= 0)
-                            {
-                                magicCanList.Add(i);
-                                break;
-                            }
-                        }
-                        secondATMagicJudge(condition);
-                        break;
-                    //-----------------------------------------------------------------------------------------------------
-                    case FireCondition.ActJudge.防御力低下攻撃://未実装
-                        for (int i = 0; i < SManager.instance.attackMagi.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[i].thunderBase >= 0)
-                            {
-                                magicCanList.Add(i);
-                                break;
-                            }
-                        }
-                        secondATMagicJudge(condition);
-                        break;
-                }
-            }
-            else
-            {
-
-                if (condition.condition == FireCondition.ActJudge.回復行動に移行 || condition.condition == FireCondition.ActJudge.支援行動に移行)
-                {
-
-                    SisterStateChange((int)condition.condition);
-                    return;
-                }
-                else if (condition.condition == FireCondition.ActJudge.なにもしない)
-                {
-                    return;
-                }
-                SManager.instance.useMagic = condition.UseMagic;
-            }
-        }
-
-        public bool SupportJudge(SupportCondition condition)
-        {
-
-            switch (condition.sCondition)
-            {
-                /*	case SupportCondition.SupportStatus.かかっていない支援がある:
-						//useSupport = null;
-						for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-						{
-							if (!SManager.instance.supportMagi[i].effectNow)
-							{
-								magicCanList.Add(SManager.instance.supportMagi[i]);
-							}
-						}
-
-						return useSupport != null ? true : false;
-					//break;*/
-
-                //-----------------------------------------------------------------------------------------------------
-                case SupportCondition.SupportStatus.プレイヤーの体力が規定値の時:
-
-                    if (condition.highOrLow)
-                    {
-                        return sb.pc.HPRatio() >= condition.percentage / 100f ? true : false;
-                    }
-                    else
-                    {
-                        return sb.pc.HPRatio() <= condition.percentage / 100f ? true : false;
-                    }
-                //return GManager.instance.hp == GManager.instance.maxHp ? true : false;
-                //-----------------------------------------------------------------------------------------------------
-                case SupportCondition.SupportStatus.プレイヤーのMPが規定値に達した際:
-
-                    if (condition.highOrLow)
-                    {
-                        return GManager.instance.mp / GManager.instance.maxMp >= condition.percentage / 100f ? true : false;
-                    }
-                    else
-                    {
-                        return GManager.instance.mp / GManager.instance.maxMp <= condition.percentage / 100f ? true : false;
-                    }
-                //return GManager.instance.hp == GManager.instance.maxHp ? true : false;
-                //-----------------------------------------------------------------------------------------------------
-                case SupportCondition.SupportStatus.自分のMPが規定値に達した際:
-
-                    if (condition.highOrLow)
-                    {
-                        return sb.mp / SManager.instance.sisStatus.maxMp >= condition.percentage / 100f ? true : false;
-                    }
-                    else
-                    {
-                        return sb.mp / SManager.instance.sisStatus.maxMp <= condition.percentage / 100f ? true : false;
-                    }
-                //return GManager.instance.hp == GManager.instance.maxHp ? true : false;
-                //-----------------------------------------------------------------------------------------------------
-                case SupportCondition.SupportStatus.プレイヤーが状態異常にかかった時:
-
-                    return GManager.instance.badCondition ? true : false;
-                //-----------------------------------------------------------------------------------------------------
-                case SupportCondition.SupportStatus.強敵がいるかどうか:
-                    //強敵を優先
-
-                    if (condition.highOrLow)
-                    {
-                        for (int i = 0; i < SManager.instance.targetList.Count; i++)
-                        {
-                            if (SManager.instance.targetCondition[i].status.strong)
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 0; i < SManager.instance.targetList.Count; i++)
-                        {
-                            if (SManager.instance.targetCondition[i].status.strong)
-                            {
-                                return false;
-                            }
-                        }
-                        return true;
-                    }
-                    return false;
-                //	break;
-                //-----------------------------------------------------------------------------------------------------
-                case SupportCondition.SupportStatus.敵タイプ:
-                    //   Soldier,//陸の雑兵
-                    if ((0b00011111 & condition.percentage) == 0b00011111)
-                    {
-
-                        return true;
-                    }
-                    //int test;
-                    for (int i = 0; i < SManager.instance.targetList.Count; i++)
-                    {
-                        //test = ;
-
-
-                        if ((0b00000001 & condition.percentage) == 0b00000001)
-                        {
-                            if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Soldier)
-                            {
-                                return true;
-                            }
-                        }
-                        //test = 0b01000000;
-                        else if ((0b00000010 & condition.percentage) == 0b00000010)
-                        {
-                            if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Fly)
-                            {
-                                return true;
-                            }
-                        }
-                        else if ((0b00000100 & condition.percentage) == 0b00000100)
-                        {
-                            if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Shooter)
-                            {
-                                return true;
-                            }
-                        }
-                        else if ((0b00001000 & condition.percentage) == 0b00001000)
-                        {
-                            if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Knight)
-                            {
-                                return true;
-                            }
-                        }
-                        else if ((0b00010000 & condition.percentage) == 0b00010000)
-                        {
-                            if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Trap)
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
-                //-----------------------------------------------------------------------------------------------------
-                case SupportCondition.SupportStatus.任意の支援が切れているとき:
-
-                    for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-                    {
-                        if (!SManager.instance.supportMagi[i].effectNow && SManager.instance.supportMagi[i].sType == condition.needSupport)
-                        {
-                            magicCanList.Add(i);
-                        }
-                    }
-                    return magicCanList != null ? true : false;
-                //-----------------------------------------------------------------------------------------------------
-                case SupportCondition.SupportStatus.指定なし:
-                    //	ランダムバリュー使ってレコードから指定
-                    return true;
-                    //-----------------------------------------------------------------------------------------------------
-            }
-            return false;
-        }
-
-        public void SupportAct(SupportCondition condition)
-        {
-            if (sister.nowMove != SisterParameter.MoveType.支援 || !SManager.instance.supportMagi.Any() || condition.ActBase == SupportCondition.MagicJudge.なにもしない)
-            {
-                return;
-            }
-
-
-
-            if (condition.UseMagic == null)
-            {
-                magicCanList.Clear();
-
-                if (condition.ActBase == SupportCondition.MagicJudge.回復ステートに)
-                {
-                    SisterStateChange((int)condition.ActBase);
-                }
-                else if (condition.ActBase == SupportCondition.MagicJudge.攻撃ステートに)
-                {
-                    SisterStateChange((int)condition.ActBase);
-
-                }
-                else if (condition.ActBase == SupportCondition.MagicJudge.各種支援魔法)
-                {
-
-                    for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-                    {
-                        //使用したい支援のタイプにそぐうなら
-                        if (SManager.instance.supportMagi[i].sType == condition.useSupport)
-                        {
-                            magicCanList.Add(i);
-                        }
-                    }
-                }
-
-
-                if (SManager.instance.supportMagi.Count == 0)
-                {
-                    return;
-                }
-                else
-                {
-                    if (condition.nextCondition == SupportCondition.AdditionalJudge.指定なし)
-                    {
-                        SManager.instance.useMagic = SManager.instance.supportMagi[magicCanList[0]];
-                        condition.UseMagic = SManager.instance.supportMagi[magicCanList[0]];
-                        magicCanList.Clear();
-                    }
-                    else
-                    {
-                        int selectNumber = 150;
-                        if (condition.nextCondition == SupportCondition.AdditionalJudge.MP使用量)
-                        {
-                            if (condition.upDown)
-                            {
-                                for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.supportMagi[magicCanList[i]].useMP > SManager.instance.supportMagi[selectNumber].useMP)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.supportMagi[magicCanList[i]].useMP < SManager.instance.supportMagi[selectNumber].useMP)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-                                }
-                            }
-                        }
-                        else if (condition.nextCondition == SupportCondition.AdditionalJudge.詠唱時間)
-                        {
-                            if (condition.upDown)
-                            {
-                                for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.supportMagi[magicCanList[i]].castTime > SManager.instance.supportMagi[selectNumber].castTime)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.supportMagi[magicCanList[i]].castTime < SManager.instance.supportMagi[selectNumber].castTime)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-                                }
-                            }
-                        }
-                        else if (condition.nextCondition == SupportCondition.AdditionalJudge.持続効果時間)
-                        {
-                            if (condition.upDown)
-                            {
-                                for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.supportMagi[magicCanList[i]].effectTime > SManager.instance.supportMagi[selectNumber].effectTime)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.supportMagi[magicCanList[i]].effectTime < SManager.instance.supportMagi[selectNumber].effectTime)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-                                }
-                            }
-                        }
-                        else if (condition.nextCondition == SupportCondition.AdditionalJudge.強化倍率)
-                        {
-                            if (condition.upDown)
-                            {
-                                for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.supportMagi[magicCanList[i]].mValue > SManager.instance.supportMagi[selectNumber].mValue)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.supportMagi[magicCanList[i]].mValue < SManager.instance.supportMagi[selectNumber].mValue)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-                                }
-                            }
-                        }
-                        SManager.instance.useMagic = SManager.instance.supportMagi[selectNumber];
-
-                    }
-                }
-            }
-            else
-            {
-
-                SManager.instance.useMagic = condition.UseMagic;
-            }
-        }
-
-        public bool HealJudge(RecoverCondition condition)
-        {
-
-            //Debug.Log($"回復判断{condition.condition}真なら上{condition.highOrLow}");
-
-            switch (condition.condition)
-            {
-
-                /*	case RecoverCondition.RecoverStatus.かかっていない支援がある:
-						//useSupport = null;
-						for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-						{
-							if (!SManager.instance.supportMagi[i].effectNow)
-							{
-								magicCanList.Add(SManager.instance.supportMagi[i]);
-							}
-						}
-
-						return useSupport != null ? true : false;
-					//break;*/
-
-                //-----------------------------------------------------------------------------------------------------
-                case RecoverCondition.RecoverStatus.プレイヤーのHPが規定値の時:
-
-                    if (condition.highOrLow)
-                    {
-                        return sb.pc.HPRatio() >= condition.percentage / 100f ? true : false;
-                    }
-                    else
-                    {
-                        return sb.pc.HPRatio() <= condition.percentage / 100f ? true : false;
-                    }
-                //return GManager.instance.hp == GManager.instance.maxHp ? true : false;
-                //-----------------------------------------------------------------------------------------------------
-                case RecoverCondition.RecoverStatus.プレイヤーのMPが規定値に達した際:
-
-                    if (condition.highOrLow)
-                    {
-                        return GManager.instance.mp / GManager.instance.maxMp >= condition.percentage / 100f ? true : false;
-                    }
-                    else
-                    {
-                        return GManager.instance.mp / GManager.instance.maxMp <= condition.percentage / 100f ? true : false;
-                    }
-                //return GManager.instance.hp == GManager.instance.maxHp ? true : false;
-                //-----------------------------------------------------------------------------------------------------
-                case RecoverCondition.RecoverStatus.自分のMPが規定値に達した際:
-
-                    if (condition.highOrLow)
-                    {
-                        return sb.mp / SManager.instance.sisStatus.maxMp >= condition.percentage / 100f ? true : false;
-                    }
-                    else
-                    {
-                        return sb.mp / SManager.instance.sisStatus.maxMp <= condition.percentage / 100f ? true : false;
-                    }
-                //return GManager.instance.hp == GManager.instance.maxHp ? true : false;
-                //-----------------------------------------------------------------------------------------------------
-                case RecoverCondition.RecoverStatus.プレイヤーが状態異常にかかった時:
-
-                    return GManager.instance.badCondition ? true : false;
-                //-----------------------------------------------------------------------------------------------------
-                case RecoverCondition.RecoverStatus.強敵がいるかどうか:
-                    //強敵を優先
-
-                    if (condition.highOrLow)
-                    {
-                        for (int i = 0; i < SManager.instance.targetList.Count; i++)
-                        {
-                            if (SManager.instance.targetCondition[i].status.strong)
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 0; i < SManager.instance.targetList.Count; i++)
-                        {
-                            if (SManager.instance.targetCondition[i].status.strong)
-                            {
-                                return false;
-                            }
-                        }
-                        return true;
-                    }
-                    return false;
-                //	break;
-                //-----------------------------------------------------------------------------------------------------
-                case RecoverCondition.RecoverStatus.敵タイプ:
-                    //   Soldier,//陸の雑兵
-                    if ((0b00011111 & condition.percentage) == 0b00011111)
-                    {
-                        return true;
-                    }
-                    //int test;
-                    for (int i = 0; i < SManager.instance.targetList.Count; i++)
-                    {
-                        //test = ;
-
-
-                        if ((0b00000001 & condition.percentage) == 0b00000001)
-                        {
-                            if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Soldier)
-                            {
-                                return true;
-                            }
-                        }
-                        //test = 0b01000000;
-                        else if ((0b00000010 & condition.percentage) == 0b00000010)
-                        {
-                            if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Fly)
-                            {
-                                return true;
-                            }
-                        }
-                        else if ((0b00000100 & condition.percentage) == 0b00000100)
-                        {
-                            if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Shooter)
-                            {
-                                return true;
-                            }
-                        }
-                        else if ((0b00001000 & condition.percentage) == 0b00001000)
-                        {
-                            if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Knight)
-                            {
-                                return true;
-                            }
-                        }
-                        else if ((0b00010000 & condition.percentage) == 0b00010000)
-                        {
-                            if (SManager.instance.targetCondition[i].status._charaData._kind == CharacterStatus.KindofEnemy.Trap)
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
-                //-----------------------------------------------------------------------------------------------------
-                case RecoverCondition.RecoverStatus.任意の支援が切れているとき:
-
-                    for (int i = 0; i < SManager.instance.supportMagi.Count; i++)
-                    {
-                        if (!SManager.instance.supportMagi[i].effectNow && SManager.instance.supportMagi[i].sType == condition.needSupport)
-                        {
-                            return false;
-                        }
-                    }
-                    return true;
-                //-----------------------------------------------------------------------------------------------------
-                case RecoverCondition.RecoverStatus.指定なし:
-                    //	ランダムバリュー使ってレコードから指定
-                    return true;
-                    //-----------------------------------------------------------------------------------------------------
-            }
-            return false;
-        }
-
-        public void RecoverAct(RecoverCondition condition)
-        {
-
-
-            if (sister.nowMove != SisterParameter.MoveType.回復 && sb.nowState == BrainAbility.SisterState.戦い || condition.ActBase == RecoverCondition.MagicJudge.なにもしない)
-            {
-                //	judgeSequence = 0;
-                return;
-            }
-            //-----------------------------------------------------------------------------------------------------
-            else if (condition.ActBase == RecoverCondition.MagicJudge.支援ステートに)
-            {
-                SisterStateChange((int)condition.ActBase);
-                return;
-            }
-            else if (condition.ActBase == RecoverCondition.MagicJudge.攻撃ステートに)
-            {
-                SisterStateChange((int)condition.ActBase);
-                return;
-            }
-
-
-
-            if (condition.UseMagic == null)
-            {
-                magicCanList.Clear();
-
-
-                if (SManager.instance.recoverMagi.Count == 0)
-                {
-
-                    SManager.instance.useMagic = null;
-                    return;
-                }
-
-                if (condition.useSupport != SisMagic.SupportType.なし)
-                {
-                    for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                    {
-                        //指定する特殊効果があるなら
-                        if (SManager.instance.recoverMagi[i].sType == condition.useSupport)
-                        {
-                            magicCanList.Add(i);
-                            //Debug.Log($"調べます{SManager.instance.recoverMagi[i].name}");
-                        }
-                    }
-                }
-
-
-                if (!magicCanList.Any())
-                {
-                    if (condition.nextCondition == RecoverCondition.AdditionalJudge.指定なし)
-                    {
-                        SManager.instance.useMagic = SManager.instance.recoverMagi[magicCanList[0]];
-
-                        condition.UseMagic = SManager.instance.recoverMagi[magicCanList[0]];
-                        magicCanList.Clear();
-
-                    }
-                    else
-                    {
-                        int selectNumber = 150;
-                        if (condition.nextCondition == RecoverCondition.AdditionalJudge.MP使用量)
-                        {
-                            if (condition.upDown)
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[magicCanList[i]]].useMP > SManager.instance.recoverMagi[selectNumber].useMP)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].useMP < SManager.instance.recoverMagi[selectNumber].useMP)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-                                }
-                            }
-                        }
-                        else if (condition.nextCondition == RecoverCondition.AdditionalJudge.詠唱時間)
-                        {
-                            if (condition.upDown)
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[magicCanList[i]]].castTime > SManager.instance.recoverMagi[selectNumber].castTime)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].castTime < SManager.instance.recoverMagi[selectNumber].castTime)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-                                }
-                            }
-                        }
-                        else if (condition.nextCondition == RecoverCondition.AdditionalJudge.リジェネ回復量)
-                        {
-                            if (condition.upDown)
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].regeneAmount > SManager.instance.recoverMagi[selectNumber].regeneAmount)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].regeneAmount < SManager.instance.recoverMagi[selectNumber].regeneAmount)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-                                }
-                            }
-                        }
-                        else if (condition.nextCondition == RecoverCondition.AdditionalJudge.リジェネ総回復量)
-                        {
-                            if (condition.upDown)
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].regeneAmount * SManager.instance.recoverMagi[magicCanList[i]].effectTime > SManager.instance.recoverMagi[selectNumber].regeneAmount * SManager.instance.recoverMagi[selectNumber].effectTime)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].regeneAmount * SManager.instance.recoverMagi[magicCanList[i]].effectTime < SManager.instance.recoverMagi[selectNumber].regeneAmount * SManager.instance.recoverMagi[selectNumber].effectTime)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-                                }
-                            }
-                        }
-                        else if (condition.nextCondition == RecoverCondition.AdditionalJudge.持続効果時間)
-                        {
-                            if (condition.upDown)
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].effectTime > SManager.instance.recoverMagi[selectNumber].effectTime)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].effectTime < SManager.instance.recoverMagi[selectNumber].effectTime)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-                                }
-                            }
-                        }
-                        else if (condition.nextCondition == RecoverCondition.AdditionalJudge.回復量)
-                        {
-                            if (condition.upDown)
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].recoverBase > SManager.instance.recoverMagi[selectNumber].recoverBase)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                                {
-                                    if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].recoverBase < SManager.instance.recoverMagi[selectNumber].recoverBase)
-                                    {
-                                        selectNumber = magicCanList[i];
-                                    }
-                                }
-                            }
-                        }
-                        else if (condition.nextCondition == RecoverCondition.AdditionalJudge.状態異常回復)
-                        {
-                            for (int i = 0; i < SManager.instance.recoverMagi.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.recoverMagi[magicCanList[i]].cureCondition)
-                                {
-                                    selectNumber = magicCanList[i];
-                                    break;
-                                }
-
-                            }
-
-                        }
-                        SManager.instance.useMagic = SManager.instance.recoverMagi[selectNumber];
-                        condition.UseMagic = SManager.instance.recoverMagi[selectNumber];
-                    }
-                }
-            }
-            else
-            {
-                SManager.instance.useMagic = condition.UseMagic;
-                magicCanList.Clear();
-            }
-
-            SManager.instance.target = GManager.instance.Player;
-
-        }
-
-
-        /// <summary>
-        ///　リストを削り、その中から合致する条件の敵を選び出す。
-        /// </summary>
-        /// <param name="targetList"></param>
-        /// <param name="condition"></param>
-        /// <param name="SManager.instance.targetCondition"></param>
-        GameObject SecondTargetJudge(AttackJudge condition)
-        {
-
-            //	Debug.Log($"sddf{targetCanList[0].name}");
-            //	Debug.Log($"sdgs{targetList[0].name}");
-
-
-            if (targetCanList.Count == 0 || targetCanList == null)
-            {
-                return null;
-            }
-            else if (targetCanList.Count >= 1)
-            {
-
-                if (condition.wp != AttackJudge.WeakPoint.指定なし)
-                {
-                    ///<Summary>
-                    ///属性判断
-                    /// </Summary>
-                    #region
-
-                    if ((int)condition.wp < 4)
-                    {
-                        if (condition.wp != AttackJudge.WeakPoint.斬撃属性)
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Slash))
-                                {
-                                    targetCanList.Remove(targetCanList[i]);
-                                }
-                            }
-
-                        }
-                        else if (condition.wp != AttackJudge.WeakPoint.刺突属性)
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Stab))
-                                {
-                                    targetCanList.Remove(targetCanList[i]);
-                                }
-                            }
-
-                        }
-                        else if (condition.wp != AttackJudge.WeakPoint.打撃属性)
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Strike))
-                                {
-                                    targetCanList.Remove(targetCanList[i]);
-                                }
-                            }
-                        }
-                    }
-
-                    else
-                    {
-                        if (condition.wp != AttackJudge.WeakPoint.炎属性)
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Fire))
-                                {
-                                    targetCanList.Remove(targetCanList[i]);
-                                }
-                            }
-                        }
-                        else if (condition.wp != AttackJudge.WeakPoint.雷属性)
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Thunder))
-                                {
-                                    targetCanList.Remove(targetCanList[i]);
-                                }
-                            }
-                        }
-                        else if (condition.wp != AttackJudge.WeakPoint.聖属性)
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Holy))
-                                {
-                                    targetCanList.Remove(targetCanList[i]);
-                                }
-                            }
-                        }
-                        else if (condition.wp != AttackJudge.WeakPoint.闇属性)
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (!SManager.instance.targetCondition[targetCanList[i]].status.wp.Contains(EnemyStatus.WeakPoint.Dark))
-                                {
-                                    targetCanList.Remove(targetCanList[i]);
-                                }
-                            }
-                        }
-                    }
-
-
-                    #endregion
-
-                }
-
-            }
-
-            if (targetCanList.Count == 0 || targetCanList == null)
-            {
-
-                return null;
-
-            }
-
-            ///<summary>
-            ///追加条件判断
-            /// </summary>
-            else
-            {
-                int selectNumber = 150;
-                if (condition.nextCondition != AttackJudge.AdditionalJudge.指定なし)
-                {
-                    if (condition.nextCondition != AttackJudge.AdditionalJudge.敵のHP)
-                    {
-                        if (condition.upDown)
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]]._health.CurrentHealth > SManager.instance.targetCondition[selectNumber]._health.CurrentHealth)
-                                {
-                                    selectNumber = targetCanList[i];
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]]._health.CurrentHealth < SManager.instance.targetCondition[selectNumber]._health.CurrentHealth)
-                                {
-                                    selectNumber = targetCanList[i];
-                                }
-                            }
-                        }
-                    }
-                    else if (condition.nextCondition != AttackJudge.AdditionalJudge.敵の攻撃力)
-                    {
-                        if (condition.upDown)
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status._charaData.displayAtk > SManager.instance.targetCondition[selectNumber].status._charaData.displayAtk)
-                                {
-                                    selectNumber = targetCanList[i];
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status._charaData.displayAtk < SManager.instance.targetCondition[selectNumber].status._charaData.displayAtk)
-                                {
-                                    selectNumber = targetCanList[i];
-                                }
-                            }
-                        }
-                    }
-                    else if (condition.nextCondition != AttackJudge.AdditionalJudge.敵の防御力)
-                    {
-                        if (condition.upDown)
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status._charaData.displayDef > SManager.instance.targetCondition[selectNumber].status._charaData.displayDef)
-                                {
-                                    selectNumber = targetCanList[i];
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.targetCondition[targetCanList[i]].status._charaData.displayDef < SManager.instance.targetCondition[selectNumber].status._charaData.displayDef)
-                                {
-                                    selectNumber = targetCanList[i];
-                                }
-                            }
-                        }
-                    }
-                    else if (condition.nextCondition != AttackJudge.AdditionalJudge.敵の高度)//真なら高い
-                    {
-                        if (condition.upDown)
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.targetList[targetCanList[i]].transform.position.y > SManager.instance.targetList[selectNumber].transform.position.y)
-                                {
-                                    selectNumber = targetCanList[i];
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.targetList[targetCanList[i]].transform.position.y < SManager.instance.targetList[selectNumber].transform.position.y)
-                                {
-                                    selectNumber = targetCanList[i];
-                                }
-                            }
-                        }
-                    }
-                    else if (condition.nextCondition != AttackJudge.AdditionalJudge.敵の距離)
-                    {
-                        float distance = 0;
-                        if (condition.upDown)
-                        {
-                            //近い
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || Mathf.Abs(SManager.instance.targetList[targetCanList[i]].transform.position.x - this.gameObject.transform.position.x) < distance)
-                                {
-                                    selectNumber = targetCanList[i];
-                                    distance = Mathf.Abs(SManager.instance.targetList[targetCanList[i]].transform.position.x - this.gameObject.transform.position.x);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //遠い
-                            for (int i = 0; i < targetCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || Mathf.Abs(SManager.instance.targetList[targetCanList[i]].transform.position.x - this.gameObject.transform.position.x) > distance)
-                                {
-                                    selectNumber = targetCanList[i];
-                                    distance = Mathf.Abs(SManager.instance.targetList[targetCanList[i]].transform.position.x - this.gameObject.transform.position.x);
-                                }
-                            }
-                        }
-                    }
-
-                    if (SManager.instance.target != null)
-                    {
-                        SManager.instance.targetCondition[selectNumber].TargetEffectCon(2);
-                    }
-                    return SManager.instance.targetList[selectNumber];
-                }
-                else
-                {
-                    if (SManager.instance.target != null)
-                    {
-                        SManager.instance.targetCondition[0].TargetEffectCon(2);
-                    }
-                    return SManager.instance.targetList[0];
-                }
-
-            }
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="magicList"></param>
-        void secondATMagicJudge(FireCondition condition)
-        {
-            //	Debug.Log($"初期状態{magicList[0].name}");
-            if (magicCanList.Count == 0)
-            {
-                return;
-            }
-            else
-            {
-                //	Debug.Log("確認");
-                //第一条件
-                if (condition.firstCondition != FireCondition.FirstCondition.指定なし)
-                {
-
-                    if (condition.firstCondition == FireCondition.FirstCondition.敵を吹き飛ばす)
-                    {
-                        for (int i = 0; i < magicCanList.Count; i++)
-                        {
-                            if (!SManager.instance.attackMagi[magicCanList[i]].isBlow && !SManager.instance.attackMagi[magicCanList[i]].cBlow)
-                            {
-                                //Debug.Log("削除");
-                                magicCanList.Remove(magicCanList[i]);
-                            }
-                        }
-                    }
-                    //-----------------------------------------------------------------------------------------------------
-                    else if (condition.firstCondition == FireCondition.FirstCondition.範囲攻撃)
-                    {
-                        for (int i = 0; i < magicCanList.Count; i++)
-                        {
-                            if (!SManager.instance.attackMagi[magicCanList[i]].isExprode)
-                            {
-                                magicCanList.Remove(magicCanList[i]);
-                            }
-                        }
-                        //break;
-                    }
-                    else if (condition.firstCondition == FireCondition.FirstCondition.貫通する)
-                    {
-                        for (int i = 0; i < magicCanList.Count; i++)
-                        {
-                            if (!SManager.instance.attackMagi[magicCanList[i]].penetration)
-                            {
-                                magicCanList.Remove(magicCanList[i]);
-                            }
-                        }
-                        //break;
-                    }
-                    else if (condition.firstCondition == FireCondition.FirstCondition.追尾する)
-                    {
-                        for (int i = 0; i < magicCanList.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[magicCanList[i]]._moveSt.fireType == Magic.FIREBULLET.ANGLE || SManager.instance.attackMagi[magicCanList[i]]._moveSt.fireType == Magic.FIREBULLET.RAIN)
-                            {
-                                magicCanList.Remove(magicCanList[i]);
-                            }
-                        }
-                        //break;
-                    }
-                    else if (condition.firstCondition == FireCondition.FirstCondition.設置攻撃)
-                    {
-                        for (int i = 0; i < magicCanList.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[magicCanList[i]]._moveSt.speedV != 0)
-                            {
-                                magicCanList.Remove(magicCanList[i]);
-                            }
-                        }
-                        //break;
-                    }
-                    else if (condition.firstCondition == FireCondition.FirstCondition.追尾する)
-                    {
-                        for (int i = 0; i < magicCanList.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[magicCanList[i]]._moveSt.fireType == Magic.FIREBULLET.ANGLE || SManager.instance.attackMagi[magicCanList[i]]._moveSt.fireType == Magic.FIREBULLET.RAIN)
-                            {
-                                magicCanList.Remove(magicCanList[i]);
-                            }
-                        }
-                        //break;
-                    }
-                    else if (condition.firstCondition == FireCondition.FirstCondition.範囲攻撃)
-                    {
-                        for (int i = 0; i < magicCanList.Count; i++)
-                        {
-                            if (SManager.instance.attackMagi[magicCanList[i]]._moveSt.fireType == Magic.FIREBULLET.RAIN)
-                            {
-                                magicCanList.Remove(magicCanList[i]);
-                            }
-                        }
-                        //break;
-                    }
-                    else if (condition.firstCondition == FireCondition.FirstCondition.サーチ攻撃)
-                    {
-                        for (int i = 0; i < magicCanList.Count; i++)
-                        {
-                            if (!SManager.instance.attackMagi[magicCanList[i]].isChaice)
-                            {
-                                magicCanList.Remove(magicCanList[i]);
-                            }
-                        }
-                        //break;
-                    }
-                }
-            }
-
-            if (magicCanList.Count == 0)
-            {
-
-                return;
-            }
-            else
-            {
-                //	Debug.Log("第三段階");
-                if (condition.nextCondition == FireCondition.AdditionalCondition.指定なし)
-                {
-
-                    SManager.instance.useMagic = SManager.instance.attackMagi[0];
-                    condition.UseMagic = SManager.instance.attackMagi[0];
-                    magicCanList.Clear();
-                }
-                else
-                {
-                    int selectNumber = 150;
-                    if (condition.nextCondition == FireCondition.AdditionalCondition.MP使用量)
-                    {
-                        if (condition.upDown)
-                        {
-                            for (int i = 0; i < magicCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].useMP > SManager.instance.attackMagi[selectNumber].useMP)
-                                {
-                                    selectNumber = magicCanList[i];
-                                }
-
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < magicCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].useMP < SManager.instance.attackMagi[selectNumber].useMP)
-                                {
-                                    selectNumber = magicCanList[i];
-                                }
-                            }
-                        }
-                    }
-                    else if (condition.nextCondition == FireCondition.AdditionalCondition.攻撃力)
-                    {
-                        if (condition.upDown)
-                        {
-                            for (int i = 0; i < magicCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].displayAtk > SManager.instance.attackMagi[selectNumber].displayAtk)
-                                {
-                                    selectNumber = magicCanList[i];
-                                }
-
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < magicCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].displayAtk < SManager.instance.attackMagi[selectNumber].displayAtk)
-                                {
-                                    selectNumber = magicCanList[i];
-                                }
-                            }
-                        }
-                    }
-                    else if (condition.nextCondition == FireCondition.AdditionalCondition.発射数)
-                    {
-                        if (condition.upDown)
-                        {
-                            for (int i = 0; i < magicCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].bulletNumber > SManager.instance.attackMagi[selectNumber].bulletNumber)
-                                {
-                                    selectNumber = magicCanList[i];
-                                }
-
-                            }
-
-                        }
-                        else
-                        {
-                            for (int i = 0; i < magicCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].bulletNumber < SManager.instance.attackMagi[selectNumber].bulletNumber)
-                                {
-                                    selectNumber = magicCanList[i];
-                                }
-                            }
-                        }
-                    }
-                    else if (condition.nextCondition == FireCondition.AdditionalCondition.削り値)
-                    {
-                        if (condition.upDown)
-                        {
-                            for (int i = 0; i < magicCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].shock > SManager.instance.attackMagi[selectNumber].shock)
-                                {
-                                    selectNumber = magicCanList[i];
-                                }
-
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < magicCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].shock < SManager.instance.attackMagi[selectNumber].shock)
-                                {
-                                    selectNumber = magicCanList[i];
-                                }
-                            }
-                        }
-                    }
-                    else if (condition.nextCondition == FireCondition.AdditionalCondition.詠唱時間)
-                    {
-                        if (condition.upDown)
-                        {
-                            for (int i = 0; i < magicCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].castTime > SManager.instance.attackMagi[selectNumber].castTime)
-                                {
-                                    selectNumber = magicCanList[i];
-                                }
-
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < magicCanList.Count; i++)
-                            {
-                                if (selectNumber == 150 || SManager.instance.attackMagi[magicCanList[i]].castTime < SManager.instance.attackMagi[selectNumber].castTime)
-                                {
-                                    selectNumber = magicCanList[i];
-                                }
-                            }
-                        }
-                    }
-
-                    SManager.instance.useMagic = SManager.instance.attackMagi[selectNumber];
-                    condition.UseMagic = SManager.instance.attackMagi[selectNumber];
-                    magicCanList.Clear();
-                }
-            }
-        }
-
-        #endregion
 
 
 
@@ -2837,8 +700,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //CanList系統は全部一つにまとめられそう
         //だってターゲット設定→魔法判断で明確に流れあるし？
         //MPチェックと射程チェックできてない
-        //ナンバーで取得した魔法とターゲットどうする？
-        //攻撃回復支援の時限ステート切り替えどうしようか
+
 
 
         //改善点
@@ -2850,8 +712,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         #region 新判断用メソッド
 
 
+
+
+
+
+
+        #region　ステート管理部分
+
         /// <summary>
         /// ステート変更
+        /// クールタイムとステート発動は攻撃語択一で呼ばれるので
+        /// クールタイム待ち中にステートが呼び出されることはない
         /// </summary>
         void SisterStateChange(int condition)
         {
@@ -2870,13 +741,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             
             //ステート変化の時間を再変更
             stateJudge = GManager.instance.nowTime;
-
+            //クールタイムもさよなら
+            disEnable = false;
         }
-
-
-
-
-        #region　ステート管理部分
 
         /// <summary>
         /// シスターさんのステートを切り替える機能
@@ -2907,29 +774,41 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// 
         /// ターゲットと使用魔法をintで保持する
         /// </summary>
-        void CombatMoveJudge()
+        async UniTaskVoid CombatMoveJudge()
         {
 
+            //クールタイム中でスキップ条件もないならクールタイム終わるまで待とうね
+            if(disEnable && (int)skipCondition == 0)
+            {
+                await UniTask.WaitUntil(()=> disEnable,cancellationToken:magicCancel.Token);
+            }
 
+            //もし通常状態じゃないならそれまで魔法開始を待つ
+            if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+            {
+                await UniTask.WaitUntil(() => _condition.CurrentState == CharacterStates.CharacterConditions.Normal, cancellationToken: magicCancel.Token);
+            }
 
 
             int useNum;
 
-            if (sister.nowMove == SisterParameter.MoveType.攻撃)
-            {
-                useNum = CheckStart(sister.targetCondition);
-            }
-            else if (sister.nowMove == SisterParameter.MoveType.支援)
-            {
-                useNum = CheckStart(sister.supportPlan);
-            }
-            else
-            {
-                useNum = CheckStart(sister.recoverCondition);
-            }
+
+            //番号獲得
+            useNum = FirstCheck();
 
             if(useNum == 99)
             {
+                //スキップ条件があってクールタイム中なら再帰呼び出し
+                if (disEnable)
+                {
+                    //一秒待って再帰呼び出し
+                    //また条件判断するよ
+                    await UniTask.Delay(TimeSpan.FromSeconds(1),cancellationToken:magicCancel.Token);
+
+
+                    CombatMoveJudge().Forget();
+                }
+
                 return;
             }
 
@@ -2956,22 +835,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if(useCondition.selectAction == UseAction.なにもしない)
             {
                 //初期化して戻る
-                targetCanList.Clear();
-
+                candidateList.Clear();
                 return;
             }
+
 
             //ターゲットの絞り込みを続ける
             //ターゲットの番号を割り出す
             targetNum = TargetSelectStart(useCondition.selectCondition);
-
+            //候補者リストをクリーンナップ
+            candidateList.Clear();
 
             //ここから魔法判断
             //条件に当てはまる魔法がないなら戻る
             if (!MagicJudge(useCondition.bulletCondition))
             {
                 //初期化して戻る
-                targetCanList.Clear();
+                candidateList.Clear();
                 return;
             }
 
@@ -2980,8 +860,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if(!StateSpecificCheck(useNum))
             {
                 //初期化して戻る
-                targetCanList.Clear();
-                magicCanList.Clear();
+                candidateList.Clear();
                 return;
             }
 
@@ -2990,16 +869,80 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (!NecessaryCheck(useCondition.mpCheck, useCondition.rangeCheck))
             {
                 //初期化して戻る
-                targetCanList.Clear();
-                magicCanList.Clear();
+                candidateList.Clear();
                 return;
             }
 
+
+            
+
             //ターゲットに優先順位をつけて選択する
             useMagicNum = MagicSelect(useCondition.magicSort,useCondition.bulletASOder);
+            //候補者リストをクリーンナップ
+            candidateList.Clear();
 
 
 
+            //クールタイム設定
+            if (sister.nowMove == SisterParameter.MoveType.攻撃)
+            {
+                coolTime = sister.targetCondition[useNum].coolTime;
+            }
+            else if(sister.nowMove == SisterParameter.MoveType.支援)
+            {
+                coolTime = sister.supportPlan[useNum].coolTime;
+            }
+            else
+            {
+                coolTime = sister.recoverCondition[useNum].coolTime;
+            }
+
+            //魔法詠唱開始
+            CastMagic().Forget();
+
+        }
+
+
+        #region 最初に呼ばれる行動できるかを判断するコード
+
+        /// <summary>
+        /// 最初に行動条件を満たしているのかを確認する
+        /// Disenable中は スキップ条件を見て値を返す
+        /// </summary>
+        /// <returns></returns>
+        int FirstCheck()
+        {
+
+            if (!disEnable)
+            {
+                if (sister.nowMove == SisterParameter.MoveType.攻撃)
+                {
+                    return NormalCheckStart(sister.targetCondition);
+                }
+                else if (sister.nowMove == SisterParameter.MoveType.支援)
+                {
+                    return NormalCheckStart(sister.supportPlan);
+                }
+                else
+                {
+                    return NormalCheckStart(sister.recoverCondition);
+                }
+            }
+            else
+            {
+                if (sister.nowMove == SisterParameter.MoveType.攻撃)
+                {
+                    return SkipCheckStart(sister.targetCondition);
+                }
+                else if (sister.nowMove == SisterParameter.MoveType.支援)
+                {
+                    return SkipCheckStart(sister.supportPlan);
+                }
+                else
+                {
+                    return SkipCheckStart(sister.recoverCondition);
+                }
+            }
 
         }
 
@@ -3010,7 +953,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        int CheckStart(SisterConditionBase[] condition)
+        int NormalCheckStart(SisterConditionBase[] condition)
         {
             int count = condition.Length;
 
@@ -3026,6 +969,39 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //何も当てはまらないなら99
             return 99;
         }
+
+
+        int SkipCheckStart(SisterConditionBase[] condition)
+        {
+            int count = condition.Length;
+
+
+            //五番目までやる
+            //五番目までだから長さから1引いてる
+            //スキップコンディションを見る処理
+            for (int i = 0; i < count; i++)
+            {
+
+                //0乗は１
+                //クールタイム中で、なおかつスキップコンディションに当てはまらないなら処理を飛ばす。
+                //シフト演算？
+                if (((int)skipCondition & (int)Mathf.Pow(2, i)) != (int)Mathf.Pow(2, i))
+                {
+                    continue;
+                }
+
+                //行動条件と行動を渡して
+                if (ActConditionJudge(condition[i].judgeCondition, condition[i].selectAction))
+                {
+                    return i;
+                }
+
+            }
+            return 99;
+        }
+
+        #endregion
+
 
 
         /// <summary>
@@ -3092,7 +1068,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 return true;
             }
 
-            int magicCount = magicCanList.Count;
+            int magicCount = candidateList.Count;
 
 
 
@@ -3124,7 +1100,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 {
                     //ターゲットの数だけ
                     //リストに候補を追加
-                    magicCanList.Add(i);
+                    candidateList.Add(i);
                 }
 
             }
@@ -3149,16 +1125,16 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 if (sister.nowMove == SisterParameter.MoveType.攻撃)
                 {
-                    checkMagic = SManager.instance.attackMagi[magicCanList[i]];
+                    checkMagic = SManager.instance.attackMagi[candidateList[i]];
 
                 }
                 else if (sister.nowMove == SisterParameter.MoveType.支援)
                 {
-                    checkMagic = SManager.instance.supportMagi[magicCanList[i]];
+                    checkMagic = SManager.instance.supportMagi[candidateList[i]];
                 }
                 else
                 {
-                    checkMagic = SManager.instance.recoverMagi[magicCanList[i]];
+                    checkMagic = SManager.instance.recoverMagi[candidateList[i]];
                 }
 
                 //距離判定
@@ -3175,7 +1151,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     if(checkMagic.useMP > sb.mp)
                     {
                         //i番目の要素を排除
-                        magicCanList.RemoveAt(i);
+                        candidateList.RemoveAt(i);
                         
                     }
                 }
@@ -3184,7 +1160,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
                 //チェック後に要素が残ってれば真
-                return magicCanList.Any();
+                return candidateList.Any();
         }
 
 
@@ -3317,7 +1293,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                                 //プレイヤーを追加
                                 //シスターさんのMPが～の時、かつプレイヤーのHPが50％以上の時、とかもあるから
                                 //回復や支援では直接指定の絞り込みもつけてやるか
-                                targetCanList.Add(0);
+                                candidateList.Add(0);
                             }
 
                         }
@@ -3354,7 +1330,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             //シスターさんを追加
                             //シスターさんのMPが～の時、かつプレイヤーのHPが50％以上の時、とかもあるから
                             //回復や支援では直接指定の絞り込みもつけてやるか
-                            targetCanList.Add(1);
+                            candidateList.Add(1);
 
 
                         }
@@ -3423,7 +1399,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             //当てはまる味方を追加
                             //シスターさんのMPが～の時、かつプレイヤーのHPが50％以上の時、とかもあるから
                             //回復や支援では直接指定の絞り込みもつけてやるか
-                            targetCanList.Add(s);
+                            candidateList.Add(s);
 
 
 
@@ -3481,7 +1457,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             //当てはまる味方を追加
                             //シスターさんのMPが～の時、かつプレイヤーのHPが50％以上の時、とかもあるから
                             //回復や支援では直接指定の絞り込みもつけてやるか
-                            targetCanList.Add(s);
+                            candidateList.Add(s);
 
 
                         }
@@ -3536,7 +1512,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             //当てはまる味方を追加
                             //シスターさんのMPが～の時、かつプレイヤーのHPが50％以上の時、とかもあるから
                             //回復や支援では直接指定の絞り込みもつけてやるか
-                            targetCanList.Add(s);
+                            candidateList.Add(s);
 
 
 
@@ -3546,9 +1522,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         else if (condition[i].rule == JudgeRuLe.and条件 && needRecord)
                         {
                             //含んでない要素をremoveしてもエラーじゃないので
-                        //    if (targetCanList.Contains(s))
+                        //    if (candidateList.Contains(s))
                         //    {
-                                targetCanList.Remove(s);
+                                candidateList.Remove(s);
                         //    }
                         }
 
@@ -3621,7 +1597,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             //プレイヤーを追加
                             //シスターさんのMPが～の時、かつプレイヤーのHPが50％以上の時、とかもあるから
                             //回復や支援では直接指定の絞り込みもつけてやるか
-                            targetCanList.Add(0);
+                            candidateList.Add(0);
                             }
 
                         }
@@ -3658,7 +1634,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                                     //シスターさんを追加
                                     //シスターさんのMPが～の時、かつプレイヤーのHPが50％以上の時、とかもあるから
                                     //回復や支援では直接指定の絞り込みもつけてやるか
-                                    targetCanList.Add(1);
+                                    candidateList.Add(1);
 
 
                             }
@@ -3727,7 +1703,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             //当てはまる味方を追加
                             //シスターさんのMPが～の時、かつプレイヤーのHPが50％以上の時、とかもあるから
                             //回復や支援では直接指定の絞り込みもつけてやるか
-                            targetCanList.Add(s);
+                            candidateList.Add(s);
 
 
 
@@ -3785,7 +1761,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             //当てはまる味方を追加
                             //シスターさんのMPが～の時、かつプレイヤーのHPが50％以上の時、とかもあるから
                             //回復や支援では直接指定の絞り込みもつけてやるか
-                            targetCanList.Add(s);
+                            candidateList.Add(s);
 
 
                         }
@@ -3840,7 +1816,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                             //当てはまる味方を追加
                             //シスターさんのMPが～の時、かつプレイヤーのHPが50％以上の時、とかもあるから
                             //回復や支援では直接指定の絞り込みもつけてやるか
-                            targetCanList.Add(s);
+                            candidateList.Add(s);
 
 
 
@@ -3849,9 +1825,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                         //and条件の時、当てはまらなかった要素を含むならけしておく
                         else if (condition[i].rule == JudgeRuLe.and条件 && needRecord)
                         {
-                            if (targetCanList.Contains(s))
+                            if (candidateList.Contains(s))
                             {
-                                targetCanList.Remove(s);
+                                candidateList.Remove(s);
                             }
                         }
 
@@ -4051,7 +2027,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         int TargetSelectStart(TargetSelectCondition condition)
         {
             //ターゲットの数
-            int targetCount = targetCanList.Count;
+            int targetCount = candidateList.Count;
 
             //指定なし、あるいは一つならリストの最初の要素を返す
             if(condition.SecondCondition == AdditionalJudge.指定なし || targetCount == 1)
@@ -4072,7 +2048,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
             //まずはターゲットリストを整理
-            //空っぽならtargetCanListをリストの全体に設定
+            //空っぽならcandidateListをリストの全体に設定
             if (targetCount == 0)
             {
 
@@ -4096,7 +2072,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 {
                     //ターゲットの数だけ
                     //リストに候補を追加
-                    targetCanList.Add(i);
+                    candidateList.Add(i);
                 }
             }
 
@@ -4162,7 +2138,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     if(result != judgeNum)
                     {
                         //ターゲット候補からの除外を示す99を入れて処理を続ける
-                        targetCanList[i] = 99;
+                        candidateList[i] = 99;
                         continue;
                     }
 
@@ -4357,11 +2333,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 if (MagicCheck(i,condition))
                 {
                     //リストに加えてあげる
-                    magicCanList.Add(i);
+                    candidateList.Add(i);
                 }
             }
 
-            return magicCanList.Any();
+            return candidateList.Any();
 
         }
 
@@ -4423,7 +2399,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //調査対象の魔法の数
             //候補から割り出す
-            int magicCount = magicCanList.Count;
+            int magicCount = candidateList.Count;
 
             //今支援状態か
             bool isSupport = sister.nowMove == SisterParameter.MoveType.支援;
@@ -4453,15 +2429,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 //魔法が当てはまらないなら候補から消す
                 
-                if (!SupportConditionCheck(magicCanList[i],condition,isSupport))
+                if (!SupportConditionCheck(candidateList[i],condition,isSupport))
                 {
                     //i番目の要素をリストから削除
-                    magicCanList.RemoveAt(i);
+                    candidateList.RemoveAt(i);
                 }
             }
 //もし削除したのが反映されず条件判断がうまくいかないなら
 //magicCountをコピーして削除するごとにカウントを減らしてそれが0かで判断してもいい
-            return magicCanList.Any();
+            return candidateList.Any();
 
         }
 
@@ -4509,7 +2485,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //調査対象の魔法の数
             //候補から割り出す
-            int magicCount = magicCanList.Count;
+            int magicCount = candidateList.Count;
 
             //今支援状態か
             bool isSupport = sister.nowMove == SisterParameter.MoveType.支援;
@@ -4539,15 +2515,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
 
                 //魔法が当てはまらないなら候補から消す
-                if (!ElementCheck(magicCanList[i], condition, isSupport))
+                if (!ElementCheck(candidateList[i], condition, isSupport))
                 {
                     //i番目の要素をリストから削除
-                    magicCanList.RemoveAt(i);
+                    candidateList.RemoveAt(i);
                 }
             }
             //もし削除したのが反映されず条件判断がうまくいかないなら
             //magicCountをコピーして削除するごとにカウントを減らしてそれが0かで判断してもいい
-            return magicCanList.Any();
+            return candidateList.Any();
 
         }
 
@@ -4594,7 +2570,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //調査対象の魔法の数
             //候補から割り出す
-            int magicCount = magicCanList.Count;
+            int magicCount = candidateList.Count;
 
             //今支援状態か
             bool isSupport = sister.nowMove == SisterParameter.MoveType.支援;
@@ -4624,15 +2600,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 //魔法が当てはまらないなら候補から消す
 
-                if (!HealConditionCheck(magicCanList[i], condition))
+                if (!HealConditionCheck(candidateList[i], condition))
                 {
                     //リストから削除
-                    magicCanList.RemoveAt(i);
+                    candidateList.RemoveAt(i);
                 }
             }
             //もし削除したのが反映されず条件判断がうまくいかないなら
             //magicCountをコピーして削除するごとにカウントを減らしてそれが0かで判断してもいい
-            return magicCanList.Any();
+            return candidateList.Any();
 
         }
 
@@ -4679,7 +2655,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
 
             //調査対象の魔法の数
-            int magicCount = magicCanList.Count;
+            int magicCount = candidateList.Count;
 
             //指定なし、あるいは一つしかないならリストの最初の要素を返す
             if (condition == MagicSortCondition.指定なし || magicCount == 1)
@@ -4724,7 +2700,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 {
                     //ターゲットの数だけ
                     //リストに候補を追加
-                    magicCanList.Add(i);
+                    candidateList.Add(i);
                 }
 
             }
@@ -4791,18 +2767,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 if (sister.nowMove == SisterParameter.MoveType.攻撃)
             {
                 //魔法の数を入れる
-                data = SManager.instance.attackMagi[magicCanList[num]];
+                data = SManager.instance.attackMagi[candidateList[num]];
 
             }
             else if (sister.nowMove == SisterParameter.MoveType.支援)
             {
                 //魔法の数を入れる
-                data = SManager.instance.supportMagi[magicCanList[num]];
+                data = SManager.instance.supportMagi[candidateList[num]];
             }
             else
             {
                 //魔法の数を入れる
-                data = SManager.instance.recoverMagi[magicCanList[num]];
+                data = SManager.instance.recoverMagi[candidateList[num]];
             }
 
 
@@ -4901,46 +2877,213 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-       #endregion
+        #endregion
 
         #endregion
 
 
-        /// <summary>
-        /// 敵がいないとき全てリセット
+
+
+
+        ///<summary>
+        ///　道中での回復を行う
+        ///　一度全条件で検索してハズレ引いたら五秒間判定おこなわないように
+        ///　それから非戦闘時に回復モードにするのをお忘れなく
         /// </summary>
-        void castCheck()
+        #region　非戦闘時回復用のAI
+
+
+
+
+
+
+        #region　AI判断部分の管理
+
+
+        /// <summary>
+        /// ここで回復を管理する
+        /// </summary>
+        async UniTaskVoid HealingJudge()
         {
 
-            if (_movement.CurrentState == CharacterStates.MovementStates.Cast && SManager.instance.target == null)
+            //クールタイム中でスキップ条件もないならクールタイム終わるまで待とうね
+            if (disEnable && (int)skipCondition == 0)
             {
-                _movement.ChangeState(CharacterStates.MovementStates.Idle);
-                _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
-                waitCast = 0;
+                await UniTask.WaitUntil(() => disEnable, cancellationToken: magicCancel.Token);
+            }
 
-                atEf.CastStop(SManager.instance.useMagic.magicLevel, SManager.instance.useMagic.magicElement);
+            //もし通常状態じゃないならそれまで魔法開始を待つ
+            if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+            {
+                await UniTask.WaitUntil(() => _condition.CurrentState == CharacterStates.CharacterConditions.Normal, cancellationToken: magicCancel.Token);
+            }
 
-                actionNum = 0;
 
-                waitCast = 0;
+            int useNum;
+
+
+            //番号獲得
+            useNum = FirstHealCheck();
+
+            if (useNum == 99)
+            {
+                //スキップ条件があってクールタイム中なら再帰呼び出し
+                if (disEnable)
+                {
+
+                    //  道中回復は四秒待って再帰呼び出し
+                    //また条件判断するよ
+                    await UniTask.Delay(TimeSpan.FromSeconds(4), cancellationToken: magicCancel.Token);
+
+
+                    HealingJudge().Forget();
+                }
+
+                return;
+            }
+
+            //判断に使うデータ
+            //完全にヒールで
+            SisterConditionBase useCondition = sister.nRecoverCondition[useNum];
+            
+
+            //何もしないなら戻る
+            //クールタイムある場合は分岐してもいいかも
+            if (useCondition.selectAction == UseAction.なにもしない)
+            {
+                //初期化して戻る
+                candidateList.Clear();
+                return;
+            }
+
+
+            //ターゲットの絞り込みを続ける
+            //ターゲットの番号を割り出す
+            targetNum = TargetSelectStart(useCondition.selectCondition);
+            candidateList.Clear();
+
+            //ここから魔法判断
+            //条件に当てはまる魔法がないなら戻る
+            if (!MagicJudge(useCondition.bulletCondition))
+            {
+                //初期化して戻る
+                candidateList.Clear();
+                return;
+            }
+
+            //ここから攻撃支援回復ごとに処理がわかれる
+            //当てはまらなかったら戻る
+            if (!HealSpecificCheck(useNum))
+            {
+                //初期化して戻る
+                candidateList.Clear();
+                return;
+            }
+
+
+            //ここでMPと射程距離もチェックする
+            if (!NecessaryCheck(useCondition.mpCheck, useCondition.rangeCheck))
+            {
+                //初期化して戻る
+                candidateList.Clear();
+                return;
+            }
+
+
+
+
+            //ターゲットに優先順位をつけて選択する
+            useMagicNum = MagicSelect(useCondition.magicSort, useCondition.bulletASOder);
+            candidateList.Clear();
+
+
+                coolTime = sister.nRecoverCondition[useNum].coolTime;
+
+
+            //魔法詠唱開始
+            CastMagic().Forget();
+
+        }
+
+
+        #region 最初に呼ばれる行動できるかを判断するコード
+
+        /// <summary>
+        /// 最初に行動条件を満たしているのかを確認する
+        /// Disenable中は スキップ条件を見て値を返す
+        /// </summary>
+        /// <returns></returns>
+        int FirstHealCheck()
+        {
+
+            //ここでは待機回復の条件を使う
+            if (!disEnable)
+            {
+
+                    return NormalCheckStart(sister.nRecoverCondition);
+
+            }
+            else
+            {
+  
+                    return SkipCheckStart(sister.nRecoverCondition);
+
             }
 
         }
 
 
+        #endregion
 
 
-        async UniTaskVoid DelayInstantiate(ParticleSystem key, Vector3 position, Quaternion rotation, ParticleSystem flash)
+
+        /// <summary>
+        /// ステートごとに特化したチェックを行う
+        /// </summary>
+        /// <returns></returns>
+        bool HealSpecificCheck(int useNum)
         {
-            delayNow = true;
-            await UniTask.Delay(TimeSpan.FromSeconds(SManager.instance.useMagic.delayTime));
-            atEf.BulletCall(key, position, rotation, flash);
-            delayNow = false;
+
+
+                RecoverCondition useCondition = sister.nRecoverCondition[useNum];
+
+                //条件が当てはまらないならfalseを返す
+                if (!HealConditionJudge(useCondition.secondActJudge))
+                {
+                    return false;
+                }
+
+                //条件が当てはまらないならfalseを返す
+                return SupportConditionJudge(useCondition.healSupport);
+            
         }
+
+
+        #endregion
+
+
+
+
+
+
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// バフの数値を与える
-        /// 弾丸から呼ぶ
+        /// 弾丸からfireAbillity.BuffCalcuで自分のインスタンスを渡して呼ぶ
+        /// ここで他にもいろいろしちゃう？
         /// </summary>
         public void BuffCalc(FireBullet _fire)
         {
@@ -4951,49 +3094,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             _fire.holyATFactor = holyATFactor;
         }
 
-        ///<summary>
-        ///  Brainとの連携を行う
-        /// </summary>
-        #region
 
-        ///<sumary>
-        /// 状態ごとの初期化項目
-        /// </sumary>
-        public void StateInitialize(bool battle)
-        {
-            if (battle)
-            {
-                judgeSequence = 0;
-                targetJudge = 1000;
-                stateJudge = 1000;
 
-            }
-            else
-            {
-                //これは道中回復開始とそのサウンドを終わらせてる
-
-                if (soundStart)
-                {
-                    atEf.CastStop(SManager.instance.useMagic.magicLevel, SManager.instance.useMagic.magicElement);
-                    soundStart = false;
-
-                }
-
-                stateJudge = 0;
-                coolTime = 0;
-                disEnable = false;
-                _skipCondition = 0;
-                if (_condition.CurrentState == CharacterStates.CharacterConditions.Moving)
-                {
-                    _movement.ChangeState(CharacterStates.MovementStates.Idle);
-                    _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
-                }
-
-                isReset = false;
-            }
-        }
-
-        #endregion
+        #region アニメ関連
 
         /// <summary>
         ///  必要なアニメーターパラメーターがあれば、アニメーターパラメーターリストに追加します。
@@ -5027,6 +3130,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         }
 
 
+        #endregion
 
 
     }
