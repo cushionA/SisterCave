@@ -103,6 +103,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             justGuard,
             Cast,
             Combination,
+            charging,
             Frozen,
             BlowDead,
             Dead,
@@ -263,17 +264,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             
         }
         
-         public override void ProcessAbility()
+        /// <summary>
+        /// 地面についた時呼ばれる
+        /// </summary>
+        protected override void JustGround()
         {
-            base.ProcessAbility();
-
-
-
-
             //着地音をトリガー
             //吹き飛ばされているのなら地面についた時点で起き上がりに状態変更
-            if (_controller.State.JustGotGrounded)
-            {
+
                 //吹き飛ばし中に接地したらちゃんと起き上がりへ
                 if (_useState == SelectState.Blow)
                 {
@@ -281,7 +279,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
                     //前のステートのエフェクトなどを処分
                     EffectCheck();
-                    
+
                     SoundCheck();
                     UseSelect(_useState);
                 }
@@ -298,8 +296,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
                 //着地音とエフェクトを使用する
                 //落下攻撃中や吹き飛ばしからの着地の場合音やエフェクトが変わる
-                MyCode.SoundManager.instance.GotGround(effecter[0],_useState,isMetal,bodySize,_character.nowGround);
-            }
+                MyCode.SoundManager.instance.GotGround(effecter[0], _useState, isMetal, bodySize, _character.nowGround);
+
         }
 
 

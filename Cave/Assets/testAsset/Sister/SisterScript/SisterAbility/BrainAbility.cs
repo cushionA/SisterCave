@@ -799,7 +799,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// それだけなので移動条件とかはいらない
         /// あと標的の距離が絡む条件があったらその敵死亡したら再判断するイベントかフラグ飛ばさないとね
         /// </summary>
-        bool JudgeMoveStart(TargetData target, RejudgeStruct[] condition, bool isOrJudge)
+        bool JudgeMoveStart(TargetData target, in RejudgeStruct[] condition, bool isOrJudge)
         {
             //ステータスを設定
             moveStatus = parameter.sisterMoveSetting.AttackMoveSetting;
@@ -842,7 +842,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <summary>
         /// 実際の判断を行う
         /// </summary>
-        bool MoveStartJudgeExe(TargetData target, RejudgeStruct condition)
+        bool MoveStartJudgeExe(TargetData target, in RejudgeStruct condition)
         {
             if (condition.condition == RejudgeCondition.基準の距離から外れた時)
             {
@@ -1315,8 +1315,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected virtual bool CheckWallAndHole()
         {
             // 地面についている時だけ
-            //ついてないなら戻る
-            if (!_controller.State.IsGrounded)
+            //そして移動中だけ
+            if (!_controller.State.IsGrounded)// && nowMove == MoveState.停止) このロックは動作がおかしくなるのでなくして停止してる時は呼ばないようにするのがいい
             {
                 return false;
             }
@@ -1653,7 +1653,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="adjust">この範囲以内なら目的地に着いたとする数値</param>
         /// <param name="stopCondition">停止条件</param>
         /// <returns></returns>
-        bool StopConditionJudge(float distance, float adjust, RejudgeStruct stopCondition)
+        bool StopConditionJudge(float distance, float adjust, in RejudgeStruct stopCondition)
         {
 
             //停止条件がないなら距離を満たしたかを返す
@@ -1702,27 +1702,41 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //使用する移動方法
             MoveState useState;
 
-            if (nowState == SisterState.のんびり)
-            {
-                //のんびりの時はターゲットが環境物とプレイヤーにわかれる
-                //のでここで判断
-                targetPosition = TargetPointJudge();
 
-                useState = PlayMoveJudge(targetPosition);
+                if (nowState == SisterState.のんびり)
+                {
+                    //のんびりの時はターゲットが環境物とプレイヤーにわかれる
+                    //のでここで判断
+                    targetPosition = TargetPointJudge();
+
+                    useState = PlayMoveJudge(targetPosition);
+
+                }
+                //警戒
+                else
+                {
+                    //警戒時は常にプレイヤーの位置を
+                    targetPosition = GManager.instance.PlayerPosition.x;
+
+                    useState = PatrolMoveJudge(targetPosition);
+                }
+
+
+            //穴見つけたり壁にぶつかったりしたら
+            //停止
+            if (useState != MoveState.停止 && CheckWallAndHole())
+            {
+                useState = MoveState.停止;
 
             }
-            //警戒
-            else
-            {
-                //警戒時は常にプレイヤーの位置を
-                targetPosition = GManager.instance.PlayerPosition.x;
 
 
-                useState = PatrolMoveJudge(targetPosition);
-            }
+
+
 
             //ターゲットの方が右にいるなら1を、そうでないなら-1を返す
             direction = (targetPosition - SManager.instance.sisterPosition.x) >= 0 ? 1 : -1;
+
 
             //移動の情報と方向を入れて移動実行
             MoveAct(useState, direction);
@@ -2302,6 +2316,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //nullが渡された場合は空っぽになる
             eventObject = obj;
+        }
+
+
+        public int GetEnemyCount()
+        {
+            return _sensor.EnemyCount;
         }
 
         #endregion

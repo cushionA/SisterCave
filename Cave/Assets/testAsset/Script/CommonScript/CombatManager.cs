@@ -222,24 +222,59 @@ protected int count;
     /// <summary>
     /// オーバーライドしない
     /// 
-    /// 敵IDからナンバーを獲得
+    /// 敵オブジェクトからナンバーを獲得
+    /// 何番目の配列にいるか
+    /// なにもいなければ-1
     /// </summary>
     /// <param name="enemy"></param>
     /// <returns></returns>
 
-    public int GetTargetNumber(GameObject triggerEnemy)
+    public int GetTargetNumberByObject(GameObject triggerEnemy)
     {
 
         int count = _targetList.Count;
 
-        //なんもなかったらとりあえずプレイヤー狙おうという意味も込めた0
-        int target = 0;
+        //なんもなかったら-1
+        int target = -1;
 
         for (int i = 0; i < count; i++)
         {
             
             //ターゲットいたら
             if (triggerEnemy == _targetList[i].targetObj)
+            {
+                target = i;
+                break;
+            }
+        }
+
+        return target;
+    }
+
+
+    /// <summary>
+    /// オーバーライドしない
+    /// 
+    /// 敵IDからナンバーを獲得
+    /// 何番目の配列にいるかのナンバー
+    /// もしいなければ-1を返す
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <returns></returns>
+
+    public int GetTargetNumberByID(int targetID)
+    {
+
+        int count = _targetList.Count;
+
+        //なんもなかったらとりあえずプレイヤー狙おうという意味も込めた0
+        int target = -1;
+
+        for (int i = 0; i < count; i++)
+        {
+
+            //ターゲットいたら
+            if (targetID == _targetList[i].targetID)
             {
                 target = i;
                 break;

@@ -4,9 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static MoreMountains.CorgiEngine.ConditionAndEffectControllAbility;
 
+
+
+/// <summary>
+/// 廃棄
+/// これは使わないでください
+/// </summary>
 public class MainUI : MonoBehaviour
 {
+
+
     public static MainUI instance = null;
 
     [HideInInspector]public bool selectWindow;
@@ -653,6 +662,10 @@ public class MainUI : MonoBehaviour
 
         isConversation = false;
     }
+
+
+
+
 
 
 }

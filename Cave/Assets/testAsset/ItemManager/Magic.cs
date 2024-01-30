@@ -6,17 +6,135 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-
+using static AttackData;
+using static AttackValueBase;
+using static Equip;
+/// ・プールへのエフェクト追加どうするか（弾丸情報みたいにして配列でまとめるか。魔法の弾丸情報のどれを参照するかみたいなのを番号で持たせとけ）
+/// 
+/// 
+/// ・アイテムとしてのデータ
+/// ・挙動データ（速度、追尾形式、弾丸の生存時間）
+/// ・攻撃力データ（ヒット回数、モーション値、攻撃力）　弾丸所属（攻撃力だけ魔法から持ってくる）
+/// ・エフェクトデータ（フラッシュエフェクト、着弾エフェクト、魔法エフェクト）　弾丸所属（フラッシュエフェクトと着弾エフェクトは）
+/// ・詠唱データ（詠唱時間、モーション指定）　魔法所属
+/// ・バレットコントローラープレハブへの参照　魔法所属
 public class Magic : Item
 {
 
 
     #region 定義
 
+
 	/// <summary>
-	/// 魔法のタイプ
+	/// 弾丸のデータをまとめたもの
+	/// 弾丸がどういう風に動くか
+	/// そして何回ヒットするか
+	/// bulletDataからAttackDataにデータを送れるようにしたい
+	/// そこはもう、少し苦労するか…
 	/// </summary>
-	public enum MagicType
+
+	public class BulletData
+	{
+
+        #region 弾丸の動きについて
+
+        [Header("弾丸の動きの設定")]
+
+        [Foldout("挙動設定")]
+        [Header("弾丸の動きの設定")]
+        public BMoveStatus _moveSt;
+
+
+
+        [Foldout("挙動設定")]
+        [Header("位置をサーチして発生するか")]
+        /// <summary>
+        /// ターゲットの位置に発生するかどうか
+        /// </summary>
+        public bool isChaice;
+
+
+        [Foldout("挙動設定")]
+        [Header("弾丸生成までの時間")]
+        /// <summary>
+        /// これがあると一定秒数待つよ
+		/// 何秒後に生成されるか
+        /// </summary>
+        public float delayTime;
+
+
+        [Header("魔法属性")]
+        /// <summary>
+        /// 弾丸自体の属性
+        /// </summary>
+        public MoreMountains.CorgiEngine.AtEffectCon.Element bulletElement;
+
+        [Foldout("内部ステータス")]
+        public float shock;//アーマー削り
+
+
+        /// <summary>
+        /// これは攻撃じゃないなら0のまま
+        /// </summary>
+        [Foldout("内部ステータス")]
+        [Header("モーション値")]
+        public float mValue;
+
+
+        [Foldout("弾丸の性質")]
+        [Header("吹っ飛ばし力")]
+        /// <summary>
+        /// 吹っ飛ばす力
+        /// これがゼロなら吹き飛ばさない
+        /// </summary>
+        public Vector2 blowPower;
+
+        #endregion
+
+
+        #region エフェクト関連
+
+        [Foldout("エフェクト関連")]
+        [Header("射撃オブジェクト")]
+        ///<summary>
+        ///生成する弾丸オブジェクト
+        ///</summary>
+        public ParticleSystem effects;
+
+        [Foldout("エフェクト関連")]
+        [Header("発射時のエフェクト")]
+        /// <summary>
+        /// いわゆるマズルフラッシュ
+        /// </summary>
+        public ParticleSystem flashEffect;
+
+        [Foldout("エフェクト関連")]
+        [Header("ヒット時のエフェクト")]
+        /// <summary>
+        /// こちらに爆発処理とか乗せる
+        /// </summary>
+        public ParticleSystem hitEffect;
+
+        [Foldout("エフェクト関連")]
+        /// <summary>
+        /// 子弾丸の魔法
+        /// </summary>
+        public Magic childM;
+
+
+        [Foldout("エフェクト関連")]
+        [Tooltip("ヒット時とかのエフェクトも含むので配列")]
+        [Header("この魔法のエフェクトのプレハブ")]
+        public PrefabPool[] _usePrefab;
+
+        #endregion
+    }
+
+
+    /// <summary>
+    /// 魔法のタイプ
+    /// </summary>
+    public enum MagicType
 	{
 		Attack,//攻撃
 		Recover,//回復
@@ -24,10 +142,13 @@ public class Magic : Item
 		help//条件で勝手に発動？
 	}
 
-
+	/// <summary>
+	/// 弾丸の挙動分類
+	/// </summary>
 	public enum FIREBULLET
 	{
-		ANGLE,//角度だけangleで指定できる
+		NOHOMING,//何の誘導もなしに魔法の指定の角度に放たれる。まっすぐ
+		ANGLE,//角度だけtargetの方を向いて飛ぶ
 		HOMING,//完全追尾
 		HOMING_Z,//指定した角度内に標的があるとき追尾。
 		RAIN,//最初に発射地点から標的までの角度を計算してその角度で全弾撃ちおろす
@@ -35,7 +156,7 @@ public class Magic : Item
 	}
 
 	/// <summary>
-	/// 弾丸のステータスで変わんないとこだけまとめる
+	/// 弾丸の移動ステータス
 	/// </summary>
 	 [Serializable]
 	public struct BMoveStatus
@@ -119,7 +240,8 @@ public class Magic : Item
     #region 魔法の性質
 
     /// <summary>
-    /// 攻撃魔法の特性
+    /// 魔法の特性
+	/// 回復魔法とか全般に関して
     /// </summary>
     [Flags]
     public enum BulletType
@@ -147,6 +269,7 @@ public class Magic : Item
         防御強化 = 1 << 1,
         ダメージカット = 1 << 2,
         ダメージアップ = 1 << 3,
+        耐性アップ = 1 << 4,
         エンチャント = 1 << 4,
         アクション強化 = 1 << 5,
         バリア = 1 << 6,
@@ -170,7 +293,7 @@ public class Magic : Item
         毒解除 = 1 << 1,
         浸食解除 = 1 << 2,
         凍結解除 = 1 << 3,//凍結は拘束
-        虚弱系状態異常解 = 1 << 4,//毒、スタミナ回復低下、ガード性能低下、アーマー低下、状態異常耐性減少、攻防低下
+        虚弱系状態異常解除 = 1 << 4,//毒、スタミナ回復低下、ガード性能低下、アーマー低下、状態異常耐性減少、攻防低下
         妨害系状態異常解除 = 1 << 5,//浸食、凍結、沈黙、ヘイト上昇、移動速度低下、被・与ダメージ干渉
         全状態異常解除 = 1 << 6,//すべて解除
         MP回復 = 1 << 7,
@@ -187,6 +310,8 @@ public class Magic : Item
 
     /// <summary>
     /// 発動モーションのタイプ
+	/// 詠唱よりタイプが多い
+	/// 近接系の呪文にも対応
     /// </summary>
     public enum FIRETYPE
 	{
@@ -196,7 +321,9 @@ public class Magic : Item
 		Long,
 		Rain,
 		Set,//置く
-		Special
+        Swing,//振る
+        Pear,//貫く
+        Special
 	}
 
 	/// <summary>
@@ -212,6 +339,9 @@ public class Magic : Item
 		Set,
 		Special
 	}
+
+
+
     #endregion
 
 
@@ -224,19 +354,15 @@ public class Magic : Item
 	/// 魔法のレベル
 	/// </summary>
 	[Header("魔法レベル")]
-	public AttackValue.AttackLevel magicLevel;
+	public AttackValueBase.AttackLevel magicLevel;
 
 	[Header("魔法属性")]
     /// <summary>
-    /// 剣で刺突するときとかはアニメイベントで変える
+    /// 魔法の属性
     /// </summary>
     public MoreMountains.CorgiEngine.AtEffectCon.Element magicElement;
 
-	[Header("物理属性")]
-	/// <summary>
-	/// 剣で刺突するときとかはアニメイベントで変える
-	/// </summary>
-	public Equip.AttackType phyElement;
+
 
 	[Header("魔法の種別。回復など")]
 	public MagicType mType;
@@ -244,46 +370,33 @@ public class Magic : Item
 
 
 
+	[Header("魔法の攻撃力")]
+    public AttackStatus attackStatus;
 
-	[Foldout("内部ステータス")]
-	public float phyBase;//物理攻撃。これが1以上なら斬撃打撃の属性つける
 
-	[Foldout("内部ステータス")]
-	public float holyBase;//光。筋力と賢さが関係。生命力だから
-	[Foldout("内部ステータス")]
-	public float darkBase;//闇。魔力と技量が関係
-	[Foldout("内部ステータス")]
-	public float fireBase;//魔力
-	[Foldout("内部ステータス")]
-	public float thunderBase;//魔力
 
-	[Foldout("内部ステータス")]
-	[Header("表示用攻撃力。Atベースに威力倍率をかけて")]
-	public float displayAtk;
+
+    [Header("弾丸による回復量")]
+	///<summary>
+	/// 弾丸による回復量
+	/// でもこれはイベントオブジェクトみたいなのに乗せるかも
+	/// </summary>
+	public float recoverAmount;
+
 
 	[Foldout("内部ステータス")]
 	[Header("回復の基礎量")]
 	public float recoverBase;//回復
 
+
 	[Foldout("内部ステータス")]
+	[Header("アーマー削り")]
 	public float shock;//アーマー削り
 
-	/// <summary>
-	/// これは攻撃じゃないなら0のまま
-	/// </summary>
-	[Foldout("内部ステータス")]
-	[Header("モーション値")]
-    public float mValue;
 
-	//各能力補正
-	[Foldout("内部ステータス")]
-	public AnimationCurve powerCurve;
 
-	[Foldout("内部ステータス")]
-	public AnimationCurve skillCurve;
 
-	[Foldout("内部ステータス")]
-	public AnimationCurve intCurve;
+
 
 	/// <summary>
 	/// もしかしたらEventObject的なコンポーネントに
@@ -294,21 +407,7 @@ public class Magic : Item
 	[Header("効果時間")]
     public float effectTime;//効果時間
 
-	[Foldout("補正乗せた後の数値インスペクタからいじらない")]
-	public float phyAtk;//物理攻撃。これが1以上なら斬撃打撃の属性つける
-	[Foldout("補正乗せた後の数値インスペクタからいじらない")]
-	public float holyAtk;//光。筋力と賢さが関係。生命力だから
-	[Foldout("補正乗せた後の数値インスペクタからいじらない")]
-	public float darkAtk;//闇。魔力と技量が関係
-	[Foldout("補正乗せた後の数値インスペクタからいじらない")]
-	public float fireAtk;//魔力
-	[Foldout("補正乗せた後の数値インスペクタからいじらない")]
-	public float thunderAtk;//魔力
-	[Foldout("補正乗せた後の数値インスペクタからいじらない")]
-	///<summary>
-	/// 最終的な回復量
-	/// </summary>
-	public float recoverAmount;
+
 
 
 
@@ -323,112 +422,43 @@ public class Magic : Item
 	[Header("消費MP")]
 	public float useMP;//消費MP
 
+
     #endregion
 
 
 
-
-
-    #region 弾丸の動きについて
-    [Header("弾丸の動きの設定")]
-
-    [Foldout("挙動設定")]
-	[Header("弾丸の動きの設定")]
-	public BMoveStatus _moveSt;
+    [Header("弾丸の数")]
+    /// <summary>
+    /// 一度にばらまかれる数
+    /// </summary>
+    public int bulletNumber;
 
 
 
-	[Foldout("挙動設定")]
-	[Header("位置をサーチして発生するか")]
-	/// <summary>
-	/// ターゲットの位置に発生するかどうか
-	/// </summary>
-	public bool isChaice;
-
-	[Foldout("挙動設定")]
-	[Header("弾丸の数")]
-	/// <summary>
-	/// 一度にばらまかれる数
-	/// </summary>
-	public int bulletNumber;
-
-	[Foldout("挙動設定")]
-	[Header("弾丸の縦位置")]
-	/// <summary>
-	/// ばらまかれる際の縦のランダム要素
-	/// </summary>
-	public int VRandom;
-
-	[Foldout("挙動設定")]
-	[Header("弾丸の横位置")]
-	/// <summary>
-	/// ばらまかれる際の横のランダム要素
-	/// </summary>
-	public int HRandom;
-
-	[Foldout("挙動設定")]
-	[Header("弾丸生成までの時間")]
-	/// <summary>
-	/// これがあると一定秒数待つよ
-	/// </summary>
-	public float delayTime = 0f;
-
-	[Foldout("挙動設定")]
-	[Header("初期回転")]
-	///</Sammary>>
-	public Vector3 startRotation;
-
-#endregion
-
-	[HideInInspector] public bool effectNow;//効果中かどうか
 
 
     //弾丸の性質
     #region
 
-	[Foldout("弾丸の性質")]
-	[Header("子弾かどうか")]
-	/// <summary>
-	/// 子弾かどうか
-	/// </summary>
-	public bool isChild;
-
-	[Foldout("弾丸の性質")]
-	[Header("貫通弾")]
-	///<summary>
-	///オンにすれば弾が貫通
-	///</summary>
-	public bool penetration = false;
 
 
-	[Foldout("弾丸の性質")]
-	[Header("吹き飛ばすかどうか")]
-	/// <summary>
-	/// //吹っ飛ばし攻撃
-	/// </summary>
-	public bool isBlow;
 
 	[Foldout("弾丸の性質")]
 	[Header("子弾が吹き飛ばすかどうか")]
-	/// <summary>
-	/// //吹っ飛ばし攻撃
+	///<summary>
+	/// 魔法攻撃の性質
+	/// スパアマついたりする
+	/// あとは魔法にヒット報告機能をつけて
+	/// ヒット報告時にいろんな効果を出す
 	/// </summary>
-	public bool cBlow;
-
-    /// <summary>
-    /// ヒット回数
-    /// </summary>
-    [Foldout("弾丸の性質")]	
-	[Header("ヒット回数")]
-	public int _hitLimit = 1;
+	public AttackFeature magicFeature;
 
 
-	[Foldout("弾丸の性質")]
-	[Header("吹っ飛ばし力")]
-	/// <summary>
-	/// 吹っ飛ばす力
-	/// </summary>
-	public Vector2 blowPower;
+
+
+
+
+
 
 	#endregion
 
@@ -453,46 +483,12 @@ public class Magic : Item
     [Header("回復エフェクト")]
 	public HealEffectType healEffect = HealEffectType.なし;
 
+
+
     #endregion
 
 
-    
-    #region エフェクト関連
 
-    [Foldout("エフェクト関連")]
-	[Header("射撃オブジェクト")]
-    ///<summary>
-    ///生成する弾丸オブジェクト
-    ///</summary>
-    public ParticleSystem effects;
-
-	[Foldout("エフェクト関連")]
-	[Header("発射時のエフェクト")]
-	/// <summary>
-	/// いわゆるマズルフラッシュ
-	/// </summary>
-	public ParticleSystem flashEffect;
-
-	[Foldout("エフェクト関連")]
-	[Header("ヒット時のエフェクト")]
-	/// <summary>
-	/// こちらに爆発処理とか乗せる
-	/// </summary>
-	public ParticleSystem hitEffect;
-
-	[Foldout("エフェクト関連")]
-	/// <summary>
-	/// 子弾丸の魔法
-	/// </summary>
-	public Magic childM;
-
-
-	[Foldout("エフェクト関連")]
-	[Tooltip("ヒット時とかのエフェクトも含むので配列")]
-	[Header("この魔法のエフェクトのプレハブ")]
-	public PrefabPool[] _usePrefab;
-
-    #endregion
 
 
 
@@ -535,7 +531,7 @@ public class Magic : Item
 	/// <summary>
 	// 発動のアニメ
 	/// </summary>
-	public FIRETYPE FireType;
+	public FIRETYPE fireType;
 
 	[Foldout("サウンド・アニメ設定")]
 	[Header("詠唱モーション名")]
@@ -548,7 +544,21 @@ public class Magic : Item
 
 
 
+    #region 発動モーションの移動や踏み込みに関してのデータ
 
+    /// <summary>
+    /// 攻撃移動に関するデータ
+    /// </summary>
+    public AttackMoveData moveData;
+
+	/// <summary>
+	/// 魔法使用で発生するアーマー
+	/// </summary>
+	public float magicArmor;
+
+
+
+    #endregion
 
 
 

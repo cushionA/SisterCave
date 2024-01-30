@@ -4,9 +4,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerMgic", menuName = "PlayerMagic")]
 public class PlayerMagic : Magic
 {
+
+    //攻撃モーションとかの儒法も入れるか
+    //移動距離みたいなのも
+
     /// <summary>
-    /// 矢とかの残弾
+    /// 使用するスタミナ
     /// </summary>
-    public float shootCount;//
-    public float magicAromor;//攻撃するときリストの中からその都度攻撃アーマー設定
+    public int useStamina;
+
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static CharacterStatus;
 using static EnemyStatus;
+using static Equip;
 
 /// <summary>
 /// ヘルスなどで使うキャラクターコントロールに必要なメソッドを積み込む
@@ -138,7 +139,41 @@ public abstract class ControllAbillity : MyAbillityBase
     }
 
 
+    /// <summary>
+    /// 倍率やステータスを操作するときに使う列挙型
+    /// </summary>
+    public enum StatusControlType
+    {
+        ステータス加算,
+        ステータス乗算,
+        倍率加算,
+        倍率乗算
+    }
+
+
+
+
+
+
     #endregion
+
+    //変数
+    //これいらなくね？　もう直接書き変えよう
+    
+    /// <summary>
+    /// 防御関連の値
+    /// 防御計算に使う
+    /// すぐふらふら変わるところとめったに変わらないところがある
+    /// 変わらないのはステート
+    /// </summary>
+    DefenseData myDefData;
+
+    /// <summary>
+    /// 攻撃力関連の値
+    /// めったに変わらない
+    /// </summary>
+    AttackStatus myAtData;
+
 
     #region キャラの制御関連
 
@@ -189,31 +224,98 @@ public abstract class ControllAbillity : MyAbillityBase
 
     #region ダメージ計算関連
 
-    /// <summary>
-    /// 現在このキャラがガード中かどうかを知らせる
-    /// </summary>
-    public abstract bool GuardReport();
+
+    /// 
+    /// 目指す処理
+    /// 
+    /// ・なるべくキャラとヘルスのやり取りを少なく
+    /// ・ヘルス側に共通数値の大半を持たせる
+    /// ・アーマー関連はキャラ側でやる。シスターさんはMPがアーマーだったりするから
+    /// ・ステータス変更時にキャラクターがヘルスやダメージ機能を更新する感じ
+    /// ・防御状態のアーマー開始、攻撃中などは攻撃機能に持たせよう。敵側は攻撃アビリティ、プレイヤーは武器アビリティ
+    /// ・防御状態のスタン状態はスタンアビリティが管理。スタン開始と終了で見る〇
+    /// ・ガード中はガードアビリティと攻撃アビリティ△
+    /// ・バフ関連はバフ適用時に呼ぶ（バフで直接ヘルスとかのデータ書き換えたらよくね？）
+    /// 
+    /// ・これをすると被弾時に何か呼び出したりしなくてよくなる
+    /// ///
+
+
+
+
 
     /// <summary>
-    /// バフの数値を与える
-    /// 弾丸から呼ぶ
+    /// 弾丸にバフの数値を与える
+    /// 弾丸側から呼ぶ
     /// </summary>
-    public abstract void BuffCalc(FireBullet _fire);
+    public abstract AttackData.AttackMultipler BulletBuffCalc();
 
+
+
+    /// <summary>
+    /// ダメージ機能の攻撃バフ（デバフ）の数値を更新
+    /// 変更時のみ呼ぶ
+    /// 倍率で属性無しだと全体倍率の変更
+    /// リバースの時、もし現在バフやデバフが一つもなくなってるなら全部1、あるいは初期値に戻すように
+    /// </summary>
+    /// <param name="type">操作タイプ</param>
+    /// <param name="changeVlue">変更数値</param>
+    /// <param name="isReverse">元に戻す処理かどうか</param>
+    public abstract void AttackStatusUpdate(StatusControlType type,AtEffectCon.Element changeElement,float changeVlue,bool isReverse);
+
+    /// <summary>
+    /// ダメージ機能の防御バフ（デバフ）、ステータスの数値を更新
+    /// 変更時のみ呼ぶ
+    /// 倍率で属性無しだと全体倍率の変更
+    /// リバースの時、もし現在バフやデバフが一つもなくなってるなら全部1、あるいは初期値に戻すように
+    /// </summary>
+    /// <param name="type">操作タイプ</param>
+    /// <param name="changeVlue">変更数値</param>
+    /// <param name="isReverse">元に戻す処理かどうか</param>
+    public abstract void DefStatusUpdate(StatusControlType type, AtEffectCon.Element changeElement, float changeVlue);
+
+
+    /// <summary>
+    /// パリィが成功した時の処理
+    /// モーション開始
+    /// </summary>
+    /// <param name="isBreake"></param>
     public abstract void ParryStart(bool isBreake);
 
+
+    /// <summary>
+    /// ガードの音の処理
+    /// 参照元が違うので処理をわける
+    /// </summary>
     public abstract void GuardSound();
 
+    /// <summary>
+    /// スタン後ヘルスからアーマーを回復させるのに使う
+    /// </summary>
     public abstract void ArmorReset();
 
+    /// <summary>
+    /// スタン時にコントロールアビリティを通じてスタン開始
+    /// </summary>
+    /// <param name="stunState"></param>
     public abstract void StartStun(MyWakeUp.StunnType stunState);
 
+    /// <summary>
+    /// 攻撃食らったとき
+    /// ヘルスから送られたアーマー削りに応じてイベントとばす
+    /// </summary>
     public abstract MyWakeUp.StunnType ArmorControll(float shock, bool isBlow, bool isBack);
 
+    /// <summary>
+    /// スタン時の音とかを出すために
+    /// 現在のスタンが何かを通知する機能
+    /// </summary>
+    /// <returns></returns>
     public abstract int GetStunState();
 
     /// <summary>
-    /// パリィできたかチェック
+    /// 自分がジャスガされた時アーマーブレイクするかどうかを伝える
+    /// プレイヤーはジャスガ一発でパリィにする？
     /// </summary>
     /// <returns></returns>
     public abstract bool ParryArmorJudge();
@@ -225,7 +327,17 @@ public abstract class ControllAbillity : MyAbillityBase
     /// <returns></returns>
     public abstract bool AirDownJudge(MyWakeUp.StunnType stunnState);
 
+
+    /// <summary>
+    /// 自分の攻撃ステータスをダメージ機能に伝える
+    /// </summary>
     public abstract void DamageCalc();
+
+
+
+    /// <summary>
+    /// 自分の防御ステータスをダメージ機能に伝える
+    /// </summary>
     public abstract void DefCalc();
 
 #endregion

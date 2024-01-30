@@ -11,7 +11,7 @@ using System.Linq;
 using System;
 using System.Threading;
 using PathologicalGames;
-
+using static AttackValueBase;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -38,6 +38,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         /// <summary>
         /// 属性の列挙型
+        /// 状態異常は除くか
+        /// 
+        /// 
         /// </summary>
         [Flags]
         public enum Element
@@ -49,12 +52,6 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             闇属性 = 1 << 4,
             炎属性 = 1 << 5,
             雷属性 = 1 << 6,
-            毒 = 1 << 7,
-            浸食 = 1 << 8,
-            凍結 = 1 << 9,
-            移動速度低下攻撃 = 1 << 10,
-            攻撃力低下攻撃 = 1 << 11,
-            防御力低下攻撃 = 1 << 12,
             弱点属性 = 1 << 13,//敵の弱点属性をサーチして代わりに使う
             指定なし = 0
         }
@@ -71,10 +68,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         public struct AttackInfo
         {
-            public AttackValue.AttackLevel level;
+            public AttackLevel level;
             public int adType;
             public Element element;
-            public AttackValue.MotionType type;
+            public MotionType type;
         }
 
         [Serializable]
@@ -176,10 +173,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// 攻撃のデータを取得する
         /// </summary>
         /// <param name="level"></param>
-        /// <param name="adType"></param>
+        /// <param name="adType">追加エフェクト、たとえばパリィ不可とかのエフェクト</param>
         /// <param name="element"></param>
         /// <param name="type"></param>
-        public void EffectPrepare(AttackValue.AttackLevel level, int adType, Element element, AttackValue.MotionType type)
+        public void EffectPrepare(AttackLevel level, int adType, Element element, MotionType type)
         {
 
             if (adType != 0)
@@ -188,7 +185,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             //通常攻撃
             _useData.level = level;
-            if (level != AttackValue.AttackLevel.Special)
+            if (level != AttackLevel.Special)
             {
                 
                 _useData.adType = adType;
@@ -205,10 +202,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void AttackEfEvent(int num = 0)
         {
             //通常攻撃
-            if (_useData.level != AttackValue.AttackLevel.Special)
+            if (_useData.level != AttackLevel.Special)
             {
                 //音だけ
-                if (_useData.level == AttackValue.AttackLevel.SEOnly)
+                if (_useData.level == AttackLevel.SEOnly)
                 {
                     MyCode.SoundManager.instance.GAttackS(effectPosi.position, (int)_useData.level, (int)_useData.element, (int)_useData.type, sizeMultipler);
                 }
@@ -264,23 +261,47 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         #region 魔法エフェクトの再生
 
 
-        public void CastStart(AttackValue.AttackLevel level, Element element)
+        /// <summary>
+        /// 詠唱開始
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="element"></param>
+        public void CastStart(AttackLevel level, Element element)
         {
             castEffect = MyCode.SoundManager.instance.CastEfCall((int)level, element, effectPosi);
         }
 
-        public void CastEnd(AttackValue.AttackLevel level, Element element)
+
+        /// <summary>
+        /// 詠唱完走処理
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="element"></param>
+        public void CastEnd(AttackLevel level, Element element)
         {
             MyCode.SoundManager.instance.CastEfClear(castEffect,(int)level,element);
             castEffect = null;
         }
 
-        public void CastStop(AttackValue.AttackLevel level, Element element)
+        /// <summary>
+        /// 詠唱中断処理
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="element"></param>
+        public void CastStop(AttackLevel level, Element element)
         {
             MyCode.SoundManager.instance.CastStop(castEffect, (int)level, element);
             castEffect = null;
         }
 
+        /// <summary>
+        /// 弾丸をプールから呼び出す処理
+        /// </summary>
+        /// <param name="bullet"></param>
+        /// <param name="pos"></param>
+        /// <param name="rotation"></param>
+        /// <param name="flashEf"></param>
+        /// <returns></returns>
         public Transform BulletCall(ParticleSystem bullet, Vector3 pos, Quaternion rotation, ParticleSystem flashEf = null)
         {
             
@@ -292,6 +313,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             return magicPool.Spawn(bullet,pos,rotation).transform;
         }
 
+        /// <summary>
+        /// 衝突時や寿命終了時に弾丸が消え去り
+        /// プールに戻る処理
+        /// </summary>
+        /// <param name="inst"></param>
         public void BulletClear(Transform inst)
         {
             magicPool.Despawn(inst);

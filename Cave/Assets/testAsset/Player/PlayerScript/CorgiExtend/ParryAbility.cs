@@ -19,7 +19,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// このメソッドは、ヘルプボックスのテキストを表示するためにのみ使用されます。
         /// 能力のインスペクタの冒頭にある
         public override string HelpBoxText() { return "パリィするようになる"; }
-
+        
         [SerializeField]
         GuardAbillity _guard;
         float defenceTime;
@@ -55,6 +55,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             // randomBool = false;
             _initialLayer =  transform.root.gameObject.layer;
 
+
+            
             }
 
         /// <summary>
@@ -201,7 +203,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         public void ParryJudgeStart()
         {
-            _health._parryNow = true;
+            _health._defData.nowParry = true;
             
         }
 
@@ -210,7 +212,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         public void ParryJudgeEnd()
         {
-            _health._parryNow = false;
+            _health._defData.nowParry = false;
         }
 
         /// <summary>

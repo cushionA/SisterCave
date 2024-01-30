@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Micosmo.SensorToolkit;
 using MoreMountains.Tools;
 using System;
 using System.Collections.Generic;
@@ -388,7 +389,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //攻撃開始
             _movement.ChangeState(CharacterStates.MovementStates.Attack);
             //モーションセット
-            actionNum = (int)useMagic.FireType;
+            actionNum = (int)useMagic.fireType;
             //魔力消費
             sb.mp -= useMagic.useMP;
 
@@ -2047,9 +2048,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             {
                 if (condition.content == CheckContent.enemyCount)
                 {
-                    //距離が以下ならHighLowが偽なら真になる
+                    //以下の時以下が偽なら真になる
                     //以上なら真だと真になる
-                    return (data._condition.hpRatio <= condition.percentage) ? !condition.highOrLow : condition.highOrLow;b
+                    return (sb.GetEnemyCount() <= condition.percentage) ? !condition.highOrLow : condition.highOrLow;
                 }
             }
 
@@ -2079,7 +2080,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// 並び替えはいらなそう
         /// </summary>
         /// <param name="sortCondition"></param>
-        int TargetSelectStart(TargetSelectCondition condition)
+        int TargetSelectStart(in TargetSelectCondition condition)
         {
             //ターゲットの数
             int targetCount = candidateList.Count;

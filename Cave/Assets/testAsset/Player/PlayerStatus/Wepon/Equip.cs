@@ -8,7 +8,11 @@ using RenownedGames.Apex;
 using System;
 
 public class Equip : Item
-{    
+{
+
+    #region 定義
+
+
     public enum AttackType
     {
         Slash,//斬撃。ほどほどに通るやつが多い
@@ -18,14 +22,117 @@ public class Equip : Item
 
     public enum GuardType
     {
-        small,//斬撃。ほどほどに通るやつが多い
-        normal,//刺突。弱点のやつと耐えるやつがいる
+        small,
+        normal,
         tower,
         wall
     }
 
+    /// <summary>
+    /// モーションごとの入力タイプ
+    /// 種類は4種類
+    /// 
+    /// ・入力時即時発動
+    /// ・押している間チャージ、チャージ時間経過で発動
+    /// ・押したら一定時間後に発動、しかしボタン押してる間は待機で照準が可能（魔法）
+    /// ・押したら一定時間後に発動、しかしボタン押してる間は待機でチャージ攻撃が出る（待てるのは20秒まで）
+    /// 
+    /// 
+    /// </summary>
+    public enum InputType
+    {
+        normal,
+        chargeAttack,
+        waitableCharge,
+        magic,
+        non//なにも入力されてないとき
 
+    }
 
+    /// <summary>
+    /// 入力に関する情報
+    /// 入力方式と溜め時間
+    /// </summary>
+    public struct InputData
+    {
+        [Header("攻撃の入力タイプ")]
+        public InputType motionInput;
+
+        [Header("モーションのチャージ時間")]
+        public float chargeTime;
+    }
+
+    /// <summary>
+    /// モーションとチャージ攻撃に関するデータ
+    /// </summary>
+    public struct MotionChargeImfo
+    {
+        [Header("技の値")]
+        /// <summary>
+        /// 攻撃のXモーション値、Y追加アーマー、Z強靭削り
+        /// </summary>
+        public AttackValue[] normalValue;
+
+        [Header("チャージした技の値")]
+        /// <summary>
+        /// 武器固有攻撃のXモーション値、Y追加アーマー、Z強靭削り
+        /// </summary>
+        public AttackValue[] chargeValue;
+
+        [Header("入力関連のデータ")]
+        public InputData[] inputData;
+
+        [Header("通常攻撃のコンボ数")]
+        public int normalComboLimit;
+
+        [Header("チャージ攻撃のコンボ数")]
+        public int chargeComboLimit;
+
+    }
+
+    /// <summary>
+    /// ガード時の性能
+    /// ヘルスにそのまま渡す
+    /// </summary>
+    public struct GuardStatus
+    {
+        [Header("物理カット防御力")]
+        public float phyCut;//カット率
+
+        [Header("聖カット防御力")]
+        public float holyCut;//光。
+        [Header("闇カット防御力")]
+        public float darkCut;//闇。
+        [Header("炎カット防御力")]
+        public float fireCut;//魔力
+        [Header("雷カット防御力")]
+        public float thunderCut;//魔力
+
+        [Header("攻撃による盾削りをどれくらい減らせるか")]
+        public float guardPower;//受け値
+    }
+
+    /// <summary>
+    /// 攻撃力のまとめ構造体
+    /// </summary>
+    public struct AttackStatus
+    {
+        [Header("合計攻撃力")]
+        public float Atk;
+
+        [Header("攻撃力")]
+        public float phyAtk;
+        [Header("聖攻撃力")]
+        public float holyAtk;
+        [Header("闇攻撃力")]
+        public float darkAtk;
+        [Header("炎攻撃力")]
+        public float fireAtk;
+        [Header("雷攻撃力")]
+        public float thunderAtk;
+    }
+
+    #endregion
 
     //画像
     #region
@@ -50,28 +157,16 @@ public class Equip : Item
     #region
     /// <summary>
     /// 装備レベル
+    /// 強化によって変動
     /// </summary>
     [HideInInspector] public int wLevel = 0;
 
-    [HideInInspector] public float Atk;
-    //　無属性
-    [HideInInspector] public float phyAtk;
-    //神聖
-    [HideInInspector] public float holyAtk;
-    //闇
-    [HideInInspector] public float darkAtk;
-    //炎
-    [HideInInspector] public float fireAtk;
-    //雷
-    [HideInInspector] public float thunderAtk;
 
+    [Header("攻撃ステータス")]
+    public AttackStatus atStatus;
 
-    [HideInInspector] public float phyCut;//カット率
-    [HideInInspector] public float holyCut;//光。
-    [HideInInspector] public float darkCut;//闇。
-    [HideInInspector] public float fireCut;//魔力
-    [HideInInspector] public float thunderCut;//魔力
-    [HideInInspector] public float guardPower;//受け値
+    [Header("ガード性能")]
+    public GuardStatus guardStatus;
    
     /// <summary>
     /// アーマー削り

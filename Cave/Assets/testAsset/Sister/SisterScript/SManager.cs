@@ -409,6 +409,200 @@ public class SManager : CombatManager
 
     #endregion
 
+    
+    
+    #region プレイヤーのロックオンに使う
+
+
+    /// <summary>
+    /// プレイヤーのロック処理を行う
+    /// ターゲットリストの何番目が送られてくるのか
+    /// </summary>
+    /// <param name="number">今現在ターゲットにしてる番号</param>
+    /// <param name="range">ロックオン限界距離</param>
+    /// <param name="isRight">プレイヤーが右を向いてるか</param>
+    /// <param name="isFar">ロックオン変更先は今の敵より遠いか近いか</param>
+    /// <returns>99は何も相手がいない番号</returns>
+    public int PlayerLockEnemySelect(int number,float range,bool isRight,bool isFar)
+    {
+
+        int count = _targetList.Count;
+
+        Vector2 position = GManager.instance.PlayerPosition;
+
+
+        if (count > 1)
+        { 
+
+                 Vector2 container = Vector2.zero;
+               
+            float distance;
+
+            //最大最小を求める
+            if (number == 99)
+            {
+
+                //xを99に書き変え
+                container.MMSetX(99);
+
+
+                //まず0の敵の判断を行う
+
+                //右か左か
+                //右なら右にいるキャラだけ
+                //プレイヤーのx座標から敵のx座標を引いた数値が0以下になる（＝右にいる）ことの真偽と
+                //右向いてるかどうかフラグが一致しないなら次のループに
+                //向いてる方向にいる敵だけ判断する
+                //0の敵が右にいるかをまずチェック
+                if ((position.x - _targetList[0]._condition.targetPosition.x <= 0) != isRight)
+                {
+                    distance = Vector2.SqrMagnitude(position - _targetList[0]._condition.targetPosition);
+
+                    //距離をクリアできるなら
+                    if (distance <= Mathf.Pow(range, 2))
+                    {
+                    container.Set(0,Vector2.SqrMagnitude(position - _targetList[0]._condition.targetPosition));
+                    }
+
+                }
+
+                //0はもう済ませてる
+                for (int i = 1; i < count; i++)
+                {
+
+                    //向いてる方向にいる敵だけ判断する
+                    if ((position.x - _targetList[i]._condition.targetPosition.x <= 0) != isRight)
+                    {
+                        continue;
+                    }
+
+                    //距離の二乗
+                    distance = Vector2.SqrMagnitude(position - _targetList[i]._condition.targetPosition);
+
+                    //距離検査をクリアできないなら次のループに
+                    if (distance > Mathf.Pow(range, 2))
+                    {
+                        continue;
+                    }
+
+                    //最初のループなら
+                    if (container.x == 99)
+                    {
+                        container.Set(i, distance);
+                    }
+                    //遠い方がいい、isFarなら遠ければ入れ替え
+                    //近い方がいいなら近ければ入れ替え
+                    else if (isFar ? (container.y < distance) : (container.y > distance))
+                    {
+                        container.Set(i, distance);
+                    }
+                }
+
+            }
+            //一つずらす
+            else
+            {
+                //ベースとなる距離を入れる
+                float baseDistance = Vector2.SqrMagnitude(position - _targetList[number]._condition.targetPosition);
+
+                //最初であることを判別するための数値
+                container.MMSetX(999);
+
+                //ループで差を見ていく
+                for (int i = 0; i < count; i++)
+                {
+
+                    //右か左か
+                    //右なら右にいるキャラだけ
+                    //プレイヤーのx座標から敵のx座標を引いた数値が0以下になる（＝右にいる）ことの真偽と
+                    //右向いてるかどうかフラグが一致しないなら次のループに
+                    //向いてる方向にいる敵だけ判断する
+                    //または現在の番号と同じ敵なら
+                    if (i == number || (position.x - _targetList[i]._condition.targetPosition.x <= 0) != isRight)
+                    {
+                        continue;
+                    }
+
+                    //距離の差を入れる
+                    //absしちゃだめ
+                    //遠いか近いかを判断する上で大切だから
+                    distance = Vector2.SqrMagnitude(position - _targetList[i]._condition.targetPosition);
+
+                    //距離検査をクリアできないなら次のループに
+                    if (distance > Mathf.Pow(range, 2))
+                    {
+                        continue;
+                    }
+
+                    //距離を基準距離との差に変換
+                    distance = distance - baseDistance;
+
+                    //最初なら
+                    if (container.x == 999)
+                    {
+                        container.Set(i,Mathf.Abs(distance));
+                    }
+
+                    //距離が基準と同じなら、あるいは近いか遠いかを判断して合格なら
+                    //遠いに当てはまるならisFarが真で(距離‐現在の基準距離)が0以上になる
+                    //近いならマイナスになるはず
+                    else if (distance ==0 || isFar == (distance > 0))
+                    {
+                        //絶対値を取得
+                        distance = Mathf.Abs(distance);
+
+                        //現在の保留値より差が小さいなら
+                        //数値を入れ替え
+                        if(distance <= container.y)
+                        {
+                            //つまり今は自分の向いてる方にいて
+                            //なおかつ基準となる距離より近く（遠く）
+                            //それでいてベースの距離に最も近い敵が選ばれてる
+                        container.Set(i, distance);
+                        }
+
+
+                    }
+                }
+            }
+
+
+
+        //条件に合う敵を返す
+        return (int)container.x;
+
+
+        }
+        //一人だけしか敵がいないなら
+        //方向と範囲だけチェック
+        else
+        {
+            //右か左か
+            //右なら右にいるキャラだけ
+            //プレイヤーのx座標から敵のx座標を引いた数値が0以下になる（＝右にいる）ことの真偽と
+            //右向いてるかどうかフラグが一致するならこいつが唯一のターゲット
+            if ((position.x - _targetList[0]._condition.targetPosition.x <= 0) == isRight)
+            {
+                //距離もクリアするなら
+                if(Vector2.SqrMagnitude(position - _targetList[0]._condition.targetPosition) <= Mathf.Pow(range, 2))
+                {
+                    return 0;
+                }
+
+            }
+
+            //何もターゲットがいない番号
+            return 99;
+        }
+
+
+    }
+
+
+
+    #endregion
+
+
     /*   private void FixedUpdate()
        {
            if (isDEEEp)
@@ -604,9 +798,6 @@ public class SManager : CombatManager
 
 
     #region ターゲットリスト管理
-
-
-
 
 
 

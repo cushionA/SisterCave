@@ -2392,7 +2392,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// ターゲットデータの追加
         /// </summary>
         /// <param name="data"></param>
-        public override void  TargetDataAdd(int newID)
+        public override void TargetDataAdd(int newID)
         {
 
             TargetData imfo = new TargetData();
@@ -2484,16 +2484,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 _damage._attackData.thunderAtk = status.thunderAtk * thunderATFactor;
 
             }
-            _damage._attackData.shock = atV.shock;
-            _damage._attackData.mValue = atV.mValue;
-            _damage._attackData.disParry = atV.disParry;
-            _damage._attackData.attackBuff = attackBuff;
-            //damage = Mathf.Floor(damage * attackBuff);
-            _damage._attackData._parryResist = atV.parryResist;
-            _damage._attackData.isBlow = atV.isBlow;
+            _damage._attackData.actionData = atV.baseData.actionImfo;
 
-            _damage._attackData.isLight = atV.isLight;
-            _damage._attackData.blowPower.Set(atV.blowPower.x, atV.blowPower.y);
+            _damage._attackData.attackBuff = attackBuff;
+
         }
 
         /// <summary>
@@ -2604,38 +2598,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void AttackPrepare()
         {
             //_movement.CurrentState != CharacterStates.MovementStates.Attack = true;
-            atV.coolTime = status.atValue[attackNumber].coolTime;
-            atV.isBlow = status.atValue[attackNumber].isBlow;
-            atV.mValue = status.atValue[attackNumber].mValue;
-            atV.aditionalArmor = status.atValue[attackNumber].aditionalArmor;
-            atV.isLight = status.atValue[attackNumber].isLight;
-            atV.disParry = status.atValue[attackNumber].disParry;
-            atV.blowPower = status.atValue[attackNumber].blowPower;
-            atV.shock = status.atValue[attackNumber].shock;
-            atV.type = status.atValue[attackNumber].type;
-            atV.isCombo = status.atValue[attackNumber].isCombo;
-            atV.escapePercentage = status.atValue[attackNumber].escapePercentage;
-            atV.parryResist = status.atValue[attackNumber].parryResist;
-            //	atV.attackEffect = status.atValue[attackNumber].attackEffect;
-            atV.suppleNumber = status.atValue[attackNumber].suppleNumber;
+            atV = status.atValue[attackNumber];
 
-            //突進用の初期化
-            atV._moveDuration = status.atValue[attackNumber]._moveDuration;
-            atV._moveDistance = status.atValue[attackNumber]._moveDistance;
-            atV._contactType = status.atValue[attackNumber]._contactType;
-            atV.fallAttack = status.atValue[attackNumber].fallAttack;
-            atV.startMoveTime = status.atValue[attackNumber].startMoveTime;
-            atV.lockAttack = status.atValue[attackNumber].lockAttack;
-            atV.backAttack = status.atValue[attackNumber].backAttack;
-
-            atV.mainElement = status.atValue[attackNumber].mainElement;
-            atV.phyElement = status.atValue[attackNumber].phyElement;
-            atV.motionType = status.atValue[attackNumber].motionType;
-            atV.EffectLevel = status.atValue[attackNumber].EffectLevel;
-            atV.endCondition = status.atValue[attackNumber].endCondition;
-
-            //ヒット数制御関連
-            _damage._attackData._hitLimit = status.atValue[attackNumber]._hitLimit;
             _damage.CollidRestoreResset();
 
             _health._superArumor = status.atValue[attackNumber].superArmor;
@@ -4523,7 +4487,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //戦闘開始時はdirectionは０です
 
             //この照合はString、オブジェクト名でしていいかも？
-            targetImfo.targetNum = EnemyManager.instance.GetTargetNumber(TriggerEnemy);
+            targetImfo.targetNum = EnemyManager.instance.GetTargetNumberByObject(TriggerEnemy);
 
             int num = targetImfo.targetNum;
 

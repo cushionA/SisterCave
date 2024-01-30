@@ -111,6 +111,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 		protected float fallTime;
 
+		///<summary>
+		///移動ロックするためのフラグ
+		///メソッドで切り替える
+		/// </summary>
+		protected bool moveLock = false;
+
 
 		/// <summary>
 		/// On Initialization, we set our movement speed to WalkSpeed.
@@ -148,7 +154,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 
 			//base.HandleInput();
-			if (!ReadInput || _condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+			if (!ReadInput || _condition.CurrentState != CharacterStates.CharacterConditions.Normal || moveLock)
 			{
 				//_horizontalMovement = 0;
 				return;
@@ -521,5 +527,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		{
 			return _horizontalMovement;
 		}
-	}
+
+
+		/// <summary>
+		/// 移動をロックする
+		/// </summary>
+		public void MoveLock()
+		{
+			moveLock = true;
+		}
+
+		/// <summary>
+		/// 移動のロック解除する
+		/// </summary>
+        public void MoveUnLock()
+        {
+			moveLock = false;
+        }
+
+    }
 }

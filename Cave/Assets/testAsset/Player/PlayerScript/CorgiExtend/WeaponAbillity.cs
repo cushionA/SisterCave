@@ -1,15 +1,118 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening.Core.Easing;
 using MoreMountains.Tools;
+using System;
+using System.Threading;
+using UnityEditor.Tilemaps;
 using UnityEngine;
+using static Equip;
+using static FunkyCode.Light2D;
+using static Micosmo.SensorToolkit.NavMeshSensor;
+using static UnityEditor.PlayerSettings;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
     /// <summary>
-    /// TODO_DESCRIPTION
+    /// 作り直す
+    /// 
+    /// 入力からパラメータセット、アニメ再生までを引数で値をやり取りする一本の処理にまとめる
+    /// 
+    /// 必要な機能
+    /// ・弱強ため攻撃（最初にボタン押したらそのボタンが離されるまで待機。離されたら秒数数える。押してる間はInputをreturnしないと増え続けちゃう）
+    /// ・杖の場合強で魔法処理（詠唱時間までキャスト状態、キャスト後も押し続けてれば発動しない。それか数秒？　movingだからスタミナは回復しない）
+    /// ・回避でためキャンセル。詠唱もキャンセル。詠唱中は移動キー、あるいは視界変更でロックオン切り替え
+    /// ・アニメーションパラメータを切り替えて各アクションを使用。キャンセル可能ポイントはアニメーションイベントで通知
+    /// ・アニメの終了を待つことで攻撃処理終了
+    /// 
     /// </summary>
   //  [AddComponentMenu("Corgi Engine/Character/Abilities/WeaponAbillity")]
     public class WeaponAbillity : MyAbillityBase
     {
+
+        #region 定義
+
+
+
+        /// <summary>
+        /// 攻撃の種類を表す
+        /// これに加えてチャージしてるかで攻撃の種類を表す
+        /// 1足した数が準備で、2足した数がチャージ
+        /// </summary>
+        public enum ActType
+        {
+            noAttack = 0,//なにもなし
+            sAttack = 1,
+            bAttack = 4,
+            aAttack = 7,//空中弱
+            fAttack = 10,//空中強
+            arts = 13,
+            magic = 16//これに攻撃番号で詠唱の種類を決める。魔法の詠唱タイプなどから決める
+        }
+
+        /// <summary>
+        /// 現在の行動のデータ
+        /// </summary>
+        public struct NowActionData
+        {
+
+            /// <summary>
+            /// なんのアクションか
+            /// </summary>
+            public ActType nowType;
+
+            /// <summary>
+            /// 現在のアクションの状態を表す
+            /// 0ならそのまま、1ならチャージ、2ならチャージアタック
+            /// </summary>
+            public int stateNum;
+
+            /// <summary>
+            /// 何番目のモーションか
+            /// モーションは1から数え始める
+            /// </summary>
+            public int motionNum;
+
+            /// <summary>
+            /// 入力の情報
+            /// </summary>
+            public Equip.InputData inputData;
+
+            /// <summary>
+            /// チャージをいつ開始したかの時間
+            /// </summary>
+            public float chargeStartTime;
+
+            /// <summary>
+            /// コンボ振り切ったか
+            /// </summary>
+            public bool isComboEnd;
+
+            /// <summary>
+            /// 落下攻撃であるかどうか
+            /// </summary>
+            public bool isFall;
+
+            /// <summary>
+            /// 使用する魔法
+            /// </summary>
+            public PlayerMagic useMagic;
+
+            /// <summary>
+            /// この行動で消費するMP
+            /// </summary>
+            public float useMP;
+
+            /// <summary>
+            /// 現在ロックオンしてる敵の番号
+            /// </summary>
+            public int lockEnemy;
+        }
+
+
+
+
+        #endregion
+
 
         /// このメソッドは、ヘルプボックスのテキストを表示するためにのみ使用されます。
         /// 能力のインスペクタの冒頭にある
@@ -30,6 +133,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         protected const string _numberParameterName = "AttackNumber";
         protected int _numberAnimationParameter;
 
+
         [SerializeField]
         //当たり判定が出るまでは振り返り可能にする
         CircleCollider2D _attackCircle;
@@ -40,76 +144,58 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         [SerializeField]
         MyDamageOntouch _damage;
 
+
+        /// <summary>
+        /// 攻撃中の移動機能
+        /// 向いてる方向に従って動く
+        /// 
+        /// 要改善
+        /// 壁検出はいらない、移動処理変えれる
+        /// </summary>
         [SerializeField]
         MyAttackMove _rush;
 
-        public enum ActType
-        {
-            noAttack,//なにもなし
-            sAttack,
-            bAttack,
-            cCharge,
-            cAttack,//チャージ完了
-            aAttack,//空中弱
-            fAttack,//空中強
-            arts,
-            magic
-
-        }
-
-        ActType atType;
+        [SerializeField]
+        PlyerController pc;
 
         /// <summary>
-        /// 事前入力
+        /// 現在ターゲットにしてるオブジェクト
+        /// playerControllerが取ってくれる
         /// </summary>
-        int _preInput;
-
-        float _inputTime;
+        public GameObject targetEnemy;
 
         //内部パラメータ
         #region
         //------------------------------------------内部パラメータ
 
 
-
-
-
-
         /// <summary>
-        /// ため押し時間測る入れ物
+        /// 使用する攻撃のデータ
         /// </summary>
-        float chargeTime;
+        AttackValue useData;
+
+
+
+
         //   float gravity;//重力を入れる
-
-        bool isAirEnd;//空中弱攻撃を二回までに制限
-
-
-        // float delayTime;
-        int attackNumber;
-
-        //現在攻撃の番号がどれか
-        int nowNumber;
-
-        //Animator anim;
-        [HideInInspector] public bool isAttackable;
-        bool smallTrigger;
-        bool bigTrigger;
-        bool artsTrigger;
-        bool MagicTrigger;
-        //連撃のトリガーになる
-
-
-
-        //チャージ中
-
-        bool anyKey;
-
-
+        /// <summary>
+        /// 空中攻撃を無限に出せないようにする
+        /// </summary>
+        bool isAirEnd;
 
         /// <summary>
-        /// コンボ振り切った
+        /// 現在の行動のデータ
         /// </summary>
-        bool isComboEnd;
+        NowActionData nowAction;
+
+
+
+
+
+
+
+
+
 
         //コンボ制限。バリューの数
         int comboLimit;
@@ -117,35 +203,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
 
 
-        float groundTime;
-
-        public float afterJudge = 0.35f;
-
-        //   Rigidbody2D GManager.instance.pm.rb;
-
-        /// <summary>
-        /// ほんとに落ち始めるフラグ
-        /// </summary>
-        bool startFall;
-        // Vector3 theScale = new Vector3();
-        bool isParring;//パリィ中
-                       // Start is called before the first frame update
-
-        /// <summary>
-        /// 真ならチャージを開始する
-        /// </summary>
-        bool isCharging;
-
 
         bool fire1Key;
         bool fire2Key;
         bool artsKey;
-        bool chargeKey;
 
-        /// <summary>
-        /// 着地時とジャンプ時に初期化する
-        /// </summary>
-        bool isgroundReset;
+
 
         /// <summary>
         /// 真のとき振り返り可能
@@ -154,72 +217,53 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         AtEffectCon _atEf;
 
-        #endregion
+        /// <summary>
+        /// 魔法とかを射出する地点
+        /// </summary>
+        [SerializeField]
+        Transform firePosition;
 
         /// <summary>
-        ///　ここで、パラメータを初期化する必要があります。
+        /// 攻撃関連の処理のキャンセルトークン
+        /// 中断時に使う
         /// </summary>
-        protected override void Initialization()
-        {
-            base.Initialization();
-            _atEf = _character.FindAbility<AtEffectCon>();
-            // randomBool = false;
-        }
+        CancellationTokenSource AttackToken;
 
-        int test;
+
+
+        #endregion
+
+
+
+
+
+
+
+
         /// <summary>
         /// 1フレームごとに、しゃがんでいるかどうか、まだしゃがんでいるべきかをチェックします
         /// </summary>
         public override void ProcessAbility()
         {
-
-            base.ProcessAbility();
-
- 
-            //入力に基づいて動作
-            InputReceiver();
-
-            if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
+            //攻撃状態じゃないとき
+            if (_movement.CurrentState != CharacterStates.MovementStates.Attack)
             {
-                AttackFallController();
-                //     NumberControll();
-
-  
-
-
-                if (isAttackable)
+                //毎フレーム地面に今着いたかどうかを確認
+                //または地面から離れたかを確認する
+                if (_controller.State.JustGotGrounded || (_controller.State.WasGroundedLastFrame && !_controller.State.IsGrounded))
                 {
+                    //接地状態が切り替わったら入力リセット
+                    InputReset();
 
-
-
-                    AttackCheck();
-                    AnimationEndReserch();
-
+                    //空中攻撃ももう一度走れるように
+                    isAirEnd = false;
                 }
-
             }
 
-            // Debug.Log($"平常検査、攻撃可能{isAttackable}、移動可能{atType}、行動{_movement.CurrentState}");
-
-
+            //攻撃中の振り向き
+            AttackFlip();
         }
 
-        public override void EarlyProcessAbility()
-        {
-            base.EarlyProcessAbility();
-            if (_controller.State.IsGrounded && !isgroundReset && atType == ActType.aAttack)
-            {
-                attackNumber = 0;
-                isgroundReset = true;
-            }
-            else if (!_controller.State.IsGrounded && isgroundReset && atType != ActType.aAttack)
-            {
-                attackNumber = 0;
-                isgroundReset = false;
-            }
-            
-
-        }
 
 
 
@@ -229,79 +273,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         protected override void HandleInput()
         {
-            //ここで何ボタンが押されているかによって引数渡すか
-            //引数によってチャージ状態にしたり秒数数えたりする
-            //インプットについて調べる
-            //
-            // here as an example we check if we're pressing down
-            // on our main stick/direction pad/keyboard
 
+            //攻撃の入力
+            AttackInput();
 
-            fire1Key = (_inputManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
-            fire2Key = (_inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
-            artsKey = (_inputManager.ArtsButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
-
-            ///攻撃中事前入力をはかる
-            if (_movement.CurrentState == CharacterStates.MovementStates.Attack && !isCharging)
-            {
-                if (fire1Key)
-                {
-                    _preInput = 1;
-                    _inputTime = 0;
-                }
-                else if (fire2Key)
-                {
-                    _preInput = 2;
-                    _inputTime = 0;
-                }
-                else if (artsKey)
-                {
-                    _preInput = 3;
-                    _inputTime = 0;
-                }
-                else
-                {
-                    _inputTime =+Time.deltaTime;
-                    if (_inputTime >= 0.3)
-                    {
-                       _preInput = 0;
-                    }
-                    
-                }
-            }
-
-           // Debug.Log($"ああああ{fire1Key}");
-            if (isCharging)
-            {
-                chargeKey = _inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed;
-            }
-
-            //    
-
-
-            //攻撃終了ェック
-            if (_movement.CurrentState == CharacterStates.MovementStates.Attack && isAttackable)
-            {
-                anyKey = AnyKey();
-
-            }
-
-            //攻撃判定出るまでは振り向ける
-            //移動系の技に入れないかもです
-            //それか攻撃判定出すだけ出すか
-            if (_flipable)
-            { 
-                if (_attackBox.enabled || _attackCircle.enabled)
-                {
-                    _flipable = false;
-                }
-                else if (-1 * _inputManager.PrimaryMovement.x == _character.CharacterModel.transform.localScale.x)
-                {
-                   
-                    _character.Flip();
-                    
-                }
-            }
 
         }
 
@@ -329,453 +304,1526 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
             //今のステートがAttackであるかどうかでBool入れ替えてる
             // MMAnimatorExtensions.UpdateAnimatorBool(_animator, _attackAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Attack), _character._animatorParameters);
-            MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _typeAnimationParameter, (int)atType, _character._animatorParameters);
-            MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _numberAnimationParameter, attackNumber, _character._animatorParameters);
+            MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _typeAnimationParameter, (int)nowAction.nowType + nowAction.stateNum, _character._animatorParameters);
+            MMAnimatorExtensions.UpdateAnimatorInteger(_animator, _numberAnimationParameter, nowAction.motionNum, _character._animatorParameters);
         }
 
 
-
-
-        //アニメーションイベント
-        #region
-        public void Continue()
-        {
-            // GManager.instance.pm.anim.Play("OArts1");
-
-            //Debug.Log("攻撃可能に");
-
-            _health._guardAttack = false;
-            if (atType == ActType.fAttack)
-            {
-                startFall = true;
-            }
-            else
-            {
-                GManager.instance.isArmor = false;
-                isAttackable = true;
-            if(atType == ActType.aAttack)
-                {
-                    _controller.DefaultParameters.Gravity = -GManager.instance.pStatus.firstGravity;
-                }
-            }
-        }
+        #region 入力処理
 
 
 
-        #endregion
-
-        //挙動操作系
-        #region 
-
-        //落下攻撃の落下を制御する
-        void AttackFallController()
-        {
-            //落下攻撃の時
-            if (atType == ActType.fAttack)
-            {
-
-                //もしContinueで落下開始してるなら
-                if (startFall && attackNumber == 1)
-                {
-
-                    // gravity =GManager.instance.pm.gravity * 3f;
-                    //重力1.5倍
-                    _controller.DefaultParameters.Gravity = GManager.instance.pStatus.firstGravity * -20f;
-                }
-                else if(attackNumber == 1)
-                {
-
-                    //落下開始までは無重力で
-                    _controller.DefaultParameters.Gravity = 0;
-                    _controller.SetForce(Vector2.zero);
-                }
-                // 着地したら
-                if (startFall && _controller.State.IsGrounded)
-                {
-               //     Debug.Log("suuuu");
-                    _controller.SetForce(Vector2.zero);
-                    attackNumber = 2;
-                    //重力をもとに戻す
-                    _controller.DefaultParameters.Gravity = -GManager.instance.pStatus.firstGravity;
-
-                    groundTime += _controller.DeltaTime;
-
-                    GManager.instance.isArmor = false;
-
-                    // GManager.instance.pm.jumpTime = 0.0f;
-
-                    //キャンセル可能に
-                    if (groundTime >= 0.1f)
-                    {
-
-                        isAttackable = true;
-                        //GManager.instance.isAttack = false;
-                        //  
-                        // GManager.instance.isArmor = false;
-                        groundTime = 0;
-
-                        attackNumber = 0;
-
-                        smallTrigger = false;
-                        bigTrigger = false;
-
-                        // GManager.instance.pm.jumpTime = 0.0f;
-
-                    }
-                }
-            }
-
-        }
+        /// 新入力処理の流れ
+        /// 
+        /// ・まずボタンを押す
+        /// ・押したボタンに応じて攻撃モーションの入力タイプを取得
+        /// ・タイプに応じてチャージモーションとかをおこなう
+        /// ・入力確定後はチャージかどうかで分岐する
+        /// 
+        /// 
+        /// アニメーションパラメータは攻撃の種類、チャージかどうか、攻撃中か待機中かで決まる
+        /// 攻撃の種類とチャージかどうか、待機中かどうか、全てAttackTypeのintで済ませられるな
+        /// 
+        /// ///
 
 
-        #endregion
+        #region メインの入力の流れ
 
 
-        //管理系
-        #region 
 
-        //入力を受け取る
-        //fire1Keyとかで
-        void InputReceiver()
+        /// <summary>
+        /// 攻撃入力の受付
+        /// 
+        /// 入力受付状態の種類は以下
+        /// 
+        /// ・未攻撃時
+        /// ・攻撃入力検知中（チャージとか。キャンセル入力も受け付ける）
+        /// ・攻撃発動（何も受け付けない）
+        /// ・攻撃後（モーションキャンセル入力受付。落下以外。なんかボタン押したら解除）
+        /// 
+        /// 非同期はやめとこう
+        /// 入力タイプ（押す、押して待つ、押して離すまで）によって処理を分ける
+        /// </summary>
+        void AttackInput()
         {
 
-            // やらない条件
-            if (!AbilityPermitted)
+            //通常状態でなくて、攻撃中でもないなら戻る
+            //もしチャージ中ならキャンセル
+            if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal && _movement.CurrentState != CharacterStates.MovementStates.Attack)
             {
-                // we do nothing and exit
+
+                //攻撃中でなくていま何か入力されてるなら（チャージ中、詠唱中なら）取り消し
+                //つまり非攻撃時のチャージ入力中にノーマルじゃなくなって、つまりスタンとかした時はチャージ状態キャンセルする
+                if (nowAction.inputData.motionInput != Equip.InputType.non)
+                {
+                    ChargeEnd(true);
+                }
+                    return;
+            }
+
+            //攻撃中も入力は読む
+            fire1Key = (_inputManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
+            fire2Key = (_inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
+            artsKey = (_inputManager.ArtsButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
+
+
+
+
+            //でもノーマルじゃないとこの先には行けない
+            if (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+            {
                 return;
             }
 
-            //スタミナ利用可能なら
-            if (GManager.instance.isEnable && atType == ActType.noAttack && _condition.CurrentState == CharacterStates.CharacterConditions.Normal && !GManager.instance.useAtValue.isCombo && !isCharging)
+            //ここでは通常状態、攻撃可能状態以外では入力を処理しない
+            //しかしキャンセル可能時のみは例外で、攻撃の入力や移動によってモーションを終わらせる
+
+            //まだ何も入力されてないなら
+            if(nowAction.inputData.motionInput == Equip.InputType.non)
             {
 
-                //コンボじゃなくてスタミナないなら戻る
-                if (GManager.instance.stamina <= 0 && !GManager.instance.useAtValue.isCombo)
+                InitialInput();
+
+                //まだ何も入力がないなら
+                if (nowAction.inputData.motionInput == Equip.InputType.non)
                 {
-                    smallTrigger = false;
-                    artsTrigger = false;
-                    bigTrigger = false;
-                    attackNumber = 0;
                     return;
                 }
-
-                // 1通常攻撃、2は空中弱、3は強、4は空中強、5は戦技
-                if (fire1Key || smallTrigger)
+                //決まったなら初期化を入れる
+                else
                 {
+                    //移動を停止
+                    _characterHorizontalMovement.SetHorizontalMove(0);
+                    _controller.SetForce(Vector2.zero);
 
-                        smallTrigger = false;
 
-                  //  Debug.Log($"1");
-                    //接地してないなら
-                    if (!_controller.State.IsGrounded)
+                    if(nowAction.nowType == ActType.magic)
                     {
-                        if (!isAirEnd)
+                        //モーション番号ゼロは詠唱無しの魔法なので即時実行
+                        if (nowAction.motionNum == 0)
                         {
-                            atType = ActType.aAttack;
-                            _controller.SetForce(Vector2.zero);
-                            _controller.DefaultParameters.Gravity = -15f;
-                        }
-                        else
-                        {
+                            //魔法開始
+                            MagicAct();
                             return;
                         }
-                    }
-                    else if(_controller.State.IsGrounded)
-                    {
-                        atType = ActType.sAttack;
-                    }
-                    
-                }
-                else if (fire2Key || bigTrigger)
-                {
-                    //7はチャージ中
 
-                    bigTrigger = false;
+                        //チャージ時間を現在にして
+                        nowAction.chargeStartTime = GManager.instance.nowTime;
+
+                        //ステートをチャージ段階に
+                        //魔法でもこれいる？
+                        nowAction.stateNum = 1;
+
+                        //チャージ開始
+                        //引数には魔法かどうかを
+                        ChargeStart(true);
+
+                    }
+                    //ノーマルじゃないなら
+                    else if (nowAction.inputData.motionInput != Equip.InputType.normal)
+                    {
+                        //チャージ時間を現在にして
+                        nowAction.chargeStartTime = GManager.instance.nowTime;
+
+                        //ステートをチャージ段階に
+                        nowAction.stateNum = 1;
+
+                        //チャージ開始
+                        //引数には魔法かどうかを
+                        ChargeStart(false);
+                    }
+                }
+            }
+
+            //ここからは入力タイプ確定後の処理
+            InputController();
+
+        }
+
+
+
+
+        /// <summary>
+        /// 最初に入力を受け取り、それに応じて入力タイプを受け取り
+        /// 後の処理を進める
+        /// 
+        /// ナンバーを指定すると明示的に起動できる
+        /// </summary>
+        void InitialInput(int numSelect = 99)
+        {
+
+
+            if (artsKey || numSelect == 3)
+            {
+                if (_controller.State.IsGrounded)
+                {
+
+                    //MPチェック
+                    if (GManager.instance.twinHand || GManager.instance.equipShield.weaponArts)
+                    {
+                        nowAction.useMP = GManager.instance.equipWeapon.artsMP[nowAction.motionNum];
+                    }
+                    else
+                    {
+                        nowAction.useMP = GManager.instance.equipShield.artsMP[nowAction.motionNum]; 
+                    }
+
+                    //mp足りないなら戻る
+                    if(GManager.instance.mp < nowAction.useMP)
+                    {
+                        return;
+                    }
+
+                        nowAction.nowType = ActType.arts;
+                }
+            }
+            else if (fire2Key || numSelect ==2)
+            {
+                //魔法を使う装備なら
+                if (GManager.instance.equipWeapon.isMagic)
+                {
+                    //使う魔法がないなら戻る
+                    if(pc.useMagic == null)
+                    {
+                        return;
+                    }
+
+                    //MPチェック通過しないなら戻る
+                    //MP消費を出して
+                    nowAction.useMP = pc.useMagic.useMP * GManager.instance.equipWeapon.magicMultipler.mpMultipler;
+
+                    //mp足りないなら戻る
+                    if (GManager.instance.mp < nowAction.useMP)
+                    {
+                        return;
+                    }
+
+                    //nowActionに魔法のデータセット
+                    nowAction.useMagic = pc.useMagic;
+                    MagicDataSet(nowAction.useMagic,true);
+                }
+                //そうでないなら強攻撃
+                else
+                {
                     if (_controller.State.IsGrounded)
                     {
-                        isCharging = true;
-                        atType = ActType.cCharge;
-                        chargeKey = true;
-
+                        nowAction.nowType = ActType.bAttack;
                     }
                     else
                     {
-                        atType = ActType.fAttack;
-
+                        nowAction.nowType = ActType.fAttack;
                     }
                 }
-                else if (artsKey || artsTrigger)
-                {
-                    atType = ActType.arts;
-                    artsTrigger = false;
-                }
 
-                
             }
-            //攻撃中じゃなくてコンボ属性じゃないなら
-            if (GManager.instance.useAtValue.isCombo && _condition.CurrentState == CharacterStates.CharacterConditions.Normal)
+            else if (fire1Key || numSelect == 1)
             {
-
-                //コンボ入力
-                //artsトリガーとかを判断に使うか
-                //コンボになっててかつトリガーあるなら
-            }
-
-            if (isCharging)
-            {
-                _controller.SetHorizontalForce(0);
-                if (chargeKey)
+                if (_controller.State.IsGrounded)
                 {
-                   // 
-                    chargeTime += _controller.DeltaTime;
-                    //チャージ中
-                    atType = ActType.cCharge;
-                    if (chargeTime >= GManager.instance.equipWeapon.chargeRes)
-                    {
-                        isCharging = false;
-
-                        //チャージアタックメソッド発動を一回きりにするために使う
-                        //   chargeTime = 0.0f;
-                        atType = ActType.cAttack;
-                        chargeTime = 0;
-                        _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
-                    }
+                    nowAction.nowType = ActType.sAttack;
                 }
                 else
                 {
-                    //  Debug.Log("ddeferfer");
-                    //一応足す
-                    chargeTime += _controller.DeltaTime;
-                    if (chargeTime >= GManager.instance.equipWeapon.chargeRes)
+                    //空中攻撃出し切ってるならもう終わり
+                    if (isAirEnd)
                     {
-                        atType = ActType.cAttack;
+                        return;
                     }
-                    else
-                    {
-                        atType = ActType.bAttack;
-                    }
-                    isCharging = false;
-                    chargeTime = 0.0f;
-                    _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
-                }
-            }
-
-            if(_controller.State.IsGrounded && isAirEnd)
-            {
-                isAirEnd = false;
-            }
-
-            //攻撃中でなく攻撃状態にある時
-            if (atType != ActType.noAttack && _condition.CurrentState == CharacterStates.CharacterConditions.Normal && atType != ActType.cCharge)
-            {
-                AttackAct();
-            }
-            else if (atType == ActType.cCharge && _condition.CurrentState == CharacterStates.CharacterConditions.Normal)
-            {
-                _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
-            //    attackNumber++;
-                _characterHorizontalMovement.SetHorizontalMove(0);
-               // _movement.ChangeState(CharacterStates.MovementStates.Attack);
-            }
-        }
-
-
-
-
-        private async UniTask AttackEndWait()
-        {
-
-            // モーションを実行(実行後にAnimator更新のため1フレーム待つ)
-            await UniTask.DelayFrame(1);
-
-
-
-            // モーション終了まで待機
-            await UniTask.WaitUntil(() => {
-                var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-                return 1.0f <= stateInfo.normalizedTime;
-            });
-
-            AttackEnd();
-
-        }
-
-
-
-        bool AnyKey()
-        {
-           // Debug.Log($"あええええあ{_inputManager.CheckButtonUsing()}");
-            //Anyは軸も行ける
-            //キーコンフィグで反映されなかったりしたらInputRの参照そろえてないのを確認
-            if (!fire1Key && !fire2Key && !artsKey && _inputManager.CombinationButton.State.CurrentState == MMInput.ButtonStates.Off)
-            {
-                if (_inputManager.CheckButtonUsing())
-                {
-                    return true;
-                }
-                else
-                {
-                    if (_controller.State.IsGrounded && (_horizontalInput != 0 || _verticalInput != 0))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    nowAction.nowType = ActType.aAttack;
                 }
             }
             else
             {
+                return;
+            }
 
-                return false;
+            //チャージ可能か、入力方式を獲得する
+            if(nowAction.nowType != ActType.magic)
+            {
+                nowAction.inputData= GetInputType(nowAction.nowType,GManager.instance.twinHand,nowAction.motionNum);
             }
         }
 
-        async void AnimationEndReserch()
+        /// <summary>
+        /// 入力データを返す
+        /// アクションと両手持ちとモーション番号から
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="isTwinHand"></param>
+        /// <param name="actionNum"></param>
+        /// <returns></returns>
+        Equip.InputData GetInputType(ActType action,bool isTwinHand,int actionNum)
         {
-
-            //モーション終了したかどうかの検査
-
-
-                #region//モーション終了検査
-                if (atType == ActType.fAttack)
-                {
-
-                //落下開始しててすでに着地してるなら
-                if (_controller.State.IsGrounded)
-                    {
-                    // Debug.Log($"pie");
-                    //着地アニメ終わってるなら解放
-                  await  AttackEndWait();
-                    }
-                }
-
-                else if (atType != ActType.cCharge && atType != ActType.noAttack)
-                {
-
-                    await AttackEndWait();
-                }
-                #endregion
-
-
+            if(action == ActType.arts)
+            {
+                //両手持ちか
+                return (isTwinHand || GManager.instance.equipShield.weaponArts) ? GManager.instance.equipWeapon.artsValue.inputData[actionNum] : GManager.instance.equipShield.artsValue.inputData[actionNum];
+            }
+            else if (action == ActType.bAttack)
+            {
+                return isTwinHand ? GManager.instance.equipWeapon.twinBValue.inputData[actionNum] : GManager.instance.equipWeapon.bValue.inputData[actionNum];
+            }
+            else if (action == ActType.sAttack)
+            {
+                return isTwinHand ? GManager.instance.equipWeapon.twinSValue.inputData[actionNum] : GManager.instance.equipWeapon.sValue.inputData[actionNum];
+            }
+            else if (action == ActType.aAttack)
+            {
+                return isTwinHand ? GManager.instance.equipWeapon.twinAirValue.inputData[actionNum] : GManager.instance.equipWeapon.airValue.inputData[actionNum];
+            }
+            else
+            {
+                return isTwinHand ? GManager.instance.equipWeapon.twinStrikeValue.inputData[actionNum] : GManager.instance.equipWeapon.strikeValue.inputData[actionNum];
+            }
         }
 
 
-
-
-
-
-
-        void GroundCheck()
+        /// <summary>
+        /// 入力タイプごとに入力を実行する
+        /// 
+        /// チャージ中は位置が動かないようにする？
+        /// 空中でも回避ボタンでキャンセル可能
+        /// </summary>
+        void InputController()
         {
-
-            test = 5;
-            //何かしらの入力があれば
-            if (anyKey && _preInput == 0)
+            //インプットタイプによって処理を分ける
+            if (nowAction.inputData.motionInput == Equip.InputType.normal)
             {
-
-                AttackEnd();
+                //すぐ実行
+                //攻撃実行
+                AttackAct();
             }
-            //攻撃入力が続けばコンボに
-            else if (_preInput == 1)
+            else if (nowAction.inputData.motionInput == Equip.InputType.chargeAttack)
             {
-                if (atType == ActType.sAttack)
+                ChargeInputExe();
+            }
+            else if (nowAction.inputData.motionInput == Equip.InputType.waitableCharge)
+            {
+                WaitableChargeInputExe();
+            }
+            else if (nowAction.inputData.motionInput == Equip.InputType.magic)
+            {
+
+
+                MagicInputExe();
+            }
+        }
+
+        #endregion
+
+        #region 入力の種類ごとのインプット処理
+
+
+
+
+        /// <summary>
+        /// チャージ入力を実行する
+        /// 入力後指定秒数
+        /// </summary>
+        void ChargeInputExe()
+        {
+            //チャージ中かのチェック
+            if (ChargeCancelJudge())
+            {
+                //チャージ終了なら戻ろうね
+                return;
+            }
+
+
+
+            //チャージタイムを超えたなら
+            if ((GManager.instance.nowTime - nowAction.chargeStartTime) >= nowAction.inputData.chargeTime)
+            {
+                //状態をジャージ終了に変更
+                //攻撃実行
+                //と言っても状態を変えた時点でモーションが再生される
+                //のでChangeStateとかするだけか、攻撃実行は
+                //あと攻撃移動もかな
+                nowAction.stateNum = 2;
+
+                //チャージ終了して攻撃開始
+                ChargeEnd(false);
+            }
+
+            //もし時間を満たしてなくてボタンを離したなら
+            if(!ChargeInputCheck())
+            {
+                //状態を未チャージに
+                nowAction.stateNum = 0;
+                ChargeEnd(false);
+
+                //さらに通常攻撃実行へ移行
+            }
+        }
+
+        /// <summary>
+        /// 待機可能チャージ入力を実行する
+        /// 入力後指定秒数
+        /// </summary>
+        void WaitableChargeInputExe()
+        {
+            //チャージ中かのチェック
+            if (ChargeCancelJudge())
+            {
+                //チャージ終了なら戻ろうね
+                return;
+            }
+
+            //ボタン離すまではチャージ
+            if (!ChargeInputCheck())
+            {
+                //離したときチャージタイムを超えてるなら
+                if ((GManager.instance.nowTime - nowAction.chargeStartTime) >= nowAction.inputData.chargeTime)
                 {
-                  //  Debug.Log($"4連撃{isComboEnd}{attackNumber}");
-                    AttackEnd(1, isComboEnd);
+                    //状態をチャージ終了に変更
+                    //攻撃実行
+                    //と言っても状態を変えた時点でモーションが再生される
+                    //のでChangeStateとかするだけか、攻撃実行は
+                    //あと攻撃移動もかな
+                    nowAction.stateNum = 2;
+
+
+                    //チャージ終了して攻撃開始
+                    ChargeEnd(false);
+
                 }
-                //他の攻撃の後小攻撃きたらattackNumberはリセット
+                //超えてなかったなら
                 else
                 {
+                    //状態を未チャージに
+                    nowAction.stateNum = 0;
+                    ChargeEnd(false);
 
-                    AttackEnd(1, true);
-                }
-            }
-            else if (_preInput == 2)
-            {
-                if (atType == ActType.bAttack || atType == ActType.cAttack)
-                {
-                    AttackEnd(2, isComboEnd);
-                }
-                //他の攻撃の後大攻撃きたらattackNumberはリセット
-                else
-                {
-
-                    AttackEnd(2, true);
+                    //さらに通常攻撃実行へ移行
                 }
 
-            }
-            else if (_preInput == 3)
-            {
-                if (atType == ActType.arts)
-                {
-                    AttackEnd(3, isComboEnd);
-                }
-                //他の攻撃の後戦技きたらattackNumberはリセット
-                else
-                {
-
-                    AttackEnd(3, true);
-                }
             }
         }
-        void AirCheck()
+
+        /// <summary>
+        /// 魔法の入力を実行する
+        /// 入力後指定秒数経過後、ボタンを離すことで発動
+        /// </summary>
+        void MagicInputExe()
         {
-
-            if ((anyKey && _preInput == 0) || _controller.State.IsGrounded)
+            //チャージ中かのチェック
+            if (ChargeCancelJudge())
             {
-                AttackEnd();
-
+                //チャージ終了なら戻ろうね
+                return;
             }
-            else if (_preInput == 1)
-            {
 
-                if (isAirEnd)
-                {
-                    AttackEnd();
-                }
-                else if (atType == ActType.aAttack)
-                {
-                    AttackEnd(1, isComboEnd);
-                }
-                //他の攻撃の後小攻撃きたらattackNumberはリセット
-            }
-            else if (_preInput == 2)
+            //ボタンを離すまでは待機し続ける
+            //ボタン離しても詠唱終了までは勝手に進む
+            if (!ChargeInputCheck())
             {
+                //離したときチャージタイムを超えてるなら
+                if ((GManager.instance.nowTime - nowAction.chargeStartTime) >= nowAction.inputData.chargeTime)
+                {
+                    //状態をジャージ終了に変更
+                    //攻撃実行
+                    //と言っても状態を変えた時点でモーションが再生される
+                    //のでChangeStateとかするだけか、攻撃実行は
+                    //あと攻撃移動もかな
 
-                AttackEnd(2, true);
+                    //ここは魔法は独自処理考えないとな
+                    nowAction.stateNum = 0;
+
+
+                    //チャージ終了して攻撃開始
+                    ChargeEnd(false);
+
+                }
+
             }
         }
-        void AttackCheck()
+
+        #endregion
+
+        #region　共通機能
+
+
+        /// <summary>
+        /// チャージ中、攻撃中に振り向きを行う
+        /// 攻撃判定発生までは振り向けるようにしたい
+        /// そのためにどこで呼べばいいのか…
+        /// </summary>
+        void AttackFlip()
         {
-            if (atType != ActType.aAttack && atType != ActType.fAttack && atType != ActType.noAttack)
+            //攻撃判定でてない攻撃時か、
+            //いやふつうに攻撃アニメーションイベントでこれやるか
+            //それか非同期で攻撃判定出るのを待つことにする、攻撃時に
+            if(_movement.CurrentState == CharacterStates.MovementStates.charging || (_movement.CurrentState == CharacterStates.MovementStates.Attack && _flipable))
             {
-                GroundCheck();
+
+            //左向いてて右に入力されてるなら
+            if(_horizontalInput > 0 && !_character.IsFacingRight)
+            {
+                //振り向く
+                _character.Flip();
+            }
+            //右向いてて左に入力されてるなら
+            else if(_horizontalInput < 0 && _character.IsFacingRight)
+            {
+                //振り向く
+                _character.Flip();
+            }
             }
 
-            //空中連撃入力とキャンセル待ち
-            else if (atType == ActType.aAttack)
+        }
+
+
+
+
+        /// <summary>
+        /// チャージの入力が行われているかのチェック
+        /// </summary>
+        /// <returns></returns>
+        bool ChargeInputCheck()
+        {
+            if (nowAction.nowType == ActType.sAttack || nowAction.nowType == ActType.aAttack)
             {
-               // Debug.Log("あああ");
-                AirCheck();
+                return fire1Key;
+            }
+            //強攻撃か落下攻撃か魔法なら
+            else if (nowAction.nowType == ActType.bAttack || nowAction.nowType == ActType.fAttack || nowAction.nowType == ActType.magic)
+            {
+                return fire2Key;
+            }
+            //固有技なら
+            else if (nowAction.nowType == ActType.arts)
+            {
+                return artsKey;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// チャージ状態か詠唱状態に移行する処理
+        /// 移動ロック
+        /// </summary>
+        /// <param name="isCast"></param>
+        void ChargeStart(bool isCast)
+        {
+            if (isCast)
+            {
+                _movement.ChangeState(CharacterStates.MovementStates.Cast);
+            }
+            else
+            {
+                _movement.ChangeState(CharacterStates.MovementStates.charging);
+            }
+            //移動をロック
+            _characterHorizontalMovement.MoveLock();
+
+            //重力を消す
+            _controller.GravityActive(false);
+
+            //魔法攻撃かロックオン攻撃ならロック処理開始
+            if (nowAction.nowType == ActType.magic || useData.baseData.moveData.lockAttack)
+            {
+                //魔法の射程範囲か攻撃の射程を入れる
+                float range;
+
+                //ロック処理
+                LockOnController(99,range,_character.IsFacingRight).Forget();
             }
 
         }
 
 
         /// <summary>
-        ///  0で終了、1でスモールトリガーで継続、2でビッグトリガー、3でアーツトリガー
-        ///  コンボエンドはisComboEndだけではなくTrueとかをいれても操作としていいね
+        /// 何らかの形でチャージを終える時の処理
+        /// isStopが真なら中止で入力情報は初期化
+        /// 偽なら円満終了で攻撃(魔法)処理開始
+        /// </summary>
+        void ChargeEnd(bool isStop)
+        {
+            //移動をアンロック
+            _characterHorizontalMovement.MoveUnLock();
+
+
+
+            if (isStop)
+            {
+            if (nowAction.nowType == ActType.magic)
+            {
+                //詠唱エフェクト停止
+                _atEf.CastStop(nowAction.useMagic.magicLevel, nowAction.useMagic.magicElement);
+            }
+
+                //入力情報を消去
+                InputReset();
+            //重力を有効化
+            _controller.GravityActive(true);
+
+
+            }
+            else
+            {
+                if (nowAction.nowType == ActType.magic)
+                {
+                    //詠唱エフェクト完走
+                    _atEf.CastEnd(nowAction.useMagic.magicLevel, nowAction.useMagic.magicElement);
+                    //魔法実行
+                    MagicAct();
+                }
+                else
+                {
+                    //攻撃実行
+                    AttackAct();
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// 入力情報を初期化する
+        /// </summary>
+        void InputReset(bool isStop = true)
+        {
+            //入力キャンセル
+            nowAction.inputData.motionInput = Equip.InputType.non;
+
+            if (isStop)
+            {
+                //モーションを0に戻す
+                nowAction.motionNum = 0;
+            }
+            //状態もゼロに
+            nowAction.stateNum = 0;
+
+            //攻撃もしてない
+            nowAction.nowType = ActType.noAttack;
+
+
+
+    }
+
+
+        /// <summary>
+        /// 回避ボタンでチャージキャンセルする機能
+        /// チャージ中は共通で使える
+        /// </summary>
+        bool ChargeCancelJudge()
+        {
+            //詠唱でもチャージでもないならチャージ終了して戻る
+            if(_movement.CurrentState != CharacterStates.MovementStates.Cast && _movement.CurrentState != CharacterStates.MovementStates.charging)
+            {
+                ChargeEnd(true);
+                return true;
+            }
+
+            //もし回避ボタンが押されたら戻る
+            if(_inputManager.AvoidButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
+            {
+                ChargeEnd(true);
+                return true;
+            }
+            return false;
+        }
+
+
+        /// <summary>
+        /// ロックオン処理
+        /// チャージや待機中のみ呼ぶ
+        /// 0.2秒に一回ロック距離や方向、入力に基づいてロックオンする相手を選ぶ
+        /// </summary>
+        async UniTaskVoid LockOnController(int number,float lockRange,bool isRight)
+        {
+
+
+            //詠唱かチャージ中じゃないなら戻る
+            if(_movement.CurrentState != CharacterStates.MovementStates.charging && _movement.CurrentState != CharacterStates.MovementStates.Cast)
+            {
+                //番号が99、つまり最初なら一番近い相手を
+                if(number == 99)
+                {
+                    number = SManager.instance.PlayerLockEnemySelect(99,lockRange, isRight,false);
+                }
+
+                //そして今の番号の敵を設定
+                nowAction.lockEnemy = number;
+
+
+                return;
+            }
+
+            //右向いてたのに左向いてるなら
+            //あるいは左向いてたのに右向いてるなら
+            //とにかく二つのフラグが食い違ってるなら
+            //一番近い敵を再取得
+            if(isRight != _character.IsFacingRight)
+            {
+                isRight = _character.IsFacingRight;
+                number = 99;
+            }
+
+
+
+
+
+
+            //ターゲットリストから一定の距離以内の敵を獲得する
+            //入力が入るたびにそれが次のターゲットに
+            //さらに言うと向いてる方向の敵だけを取得する
+            //逆側の敵をロックオンしたければflipしてね
+            //振り向くと一番近いそっち側の敵に変更される
+
+            //縦入力があれば
+            //または最初なら
+            if (_inputManager.SiteMovement.y != 0 || number == 99)
+            {
+                //上入力か最初（ナンバー99）なら近いやつ
+                if(_inputManager.SiteMovement.y > 0)
+                {
+                    number = SManager.instance.PlayerLockEnemySelect(99, lockRange, isRight, false);
+                }
+                //下入力なら遠いやつ
+                else
+                {
+                    number = SManager.instance.PlayerLockEnemySelect(99, lockRange, isRight, true);
+                }
+
+            }
+            //横入力があれば
+            else if (_inputManager.SiteMovement.x != 0)
+            {
+                //右入力なら一つ近いやつ
+                if (_inputManager.SiteMovement.x > 0)
+                {
+                    number = SManager.instance.PlayerLockEnemySelect(number, lockRange, isRight, false);
+                }
+                //左入力なら一つ遠いやつ
+                else
+                {
+                   number = SManager.instance.PlayerLockEnemySelect(number, lockRange, isRight, false);
+                }
+
+            }
+
+
+            
+            //再帰呼び出しのために0.2秒待つ
+            await UniTask.Delay(TimeSpan.FromSeconds(2.5), cancellationToken: AttackToken.Token);
+
+            //再帰呼び出し
+            LockOnController(number, lockRange, isRight).Forget();
+
+        }
+
+
+
+
+
+
+        #endregion
+
+
+
+
+
+        #endregion
+
+
+        #region 攻撃実行処理・連続コンボ処理
+
+        /// 
+        /// 攻撃状態を始動
+        /// あと振り向き可能にして攻撃判定検出メソッドを呼ぶ
+        /// チャージかどうかで挙動分かれる？
+        /// 別に分かれないか、stateNumでわかれます
+        /// 攻撃移動や攻撃エフェクトの起動も行う
+        /// 
+        /// 魔法実行と攻撃実行の二種類必要
+        /// 
+        /// /// 
+
+
+
+        /// <summary>
+        /// 攻撃の開始と状態の変化
+        /// ここから終了待ちメソッドを呼ぶか
+        /// 落下かどうかで挙動が変わる
+        /// あと落下ならアニメイベントの挙動も変わる
+        /// </summary>
+        void AttackAct()
+        {
+
+            _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+
+            _movement.ChangeState(CharacterStates.MovementStates.Attack);
+
+
+            //攻撃中は重力を消す
+            _controller.GravityActive(false);
+
+            //どの攻撃を呼び出すか
+            #region
+
+            //データをセット
+            AttackPrepare(nowAction.nowType,(nowAction.stateNum == 2),nowAction.motionNum);
+
+
+            //追加エフェクト今のところなさそう
+            int adType = 0;
+
+            //攻撃エフェクト準備
+            //攻撃エフェクト発生アニメイベントを
+            //別途設定する
+            _atEf.EffectPrepare(useData.baseData.EffectLevel, adType, useData.baseData.actionImfo.mainElement, useData.baseData.motionType);
+
+
+            #endregion
+
+
+            nowAction.motionNum++;
+
+            //現在のモーションがコンボ限界なら
+            if (nowAction.motionNum >= comboLimit)
+            {
+            nowAction.isComboEnd = true;
+
+                //同時に空中攻撃なら
+                if(nowAction.nowType == ActType.aAttack)
+                {
+                    //空中攻撃を終了に
+                    isAirEnd = true;
+                }
+            }
+
+            //ロック攻撃なら
+            if (useData.baseData.moveData.lockAttack)
+            {
+
+                targetEnemy = SManager.instance._targetList[nowAction.lockEnemy].targetObj;
+
+                //横の距離
+                float distance = GManager.instance.PlayerPosition.x - targetEnemy.transform.position.x;
+
+
+                //敵との距離が移動範囲内で、ロックオンするなら移動距離を敵の前の位置までに縮める
+                useData.baseData.moveData._moveDistance = (distance < useData.baseData.moveData._moveDistance) ? distance - 10 : useData.baseData.moveData._moveDistance;
+            }
+
+
+
+
+
+            if ((useData.baseData.actionImfo.feature & AttackValueBase.AttackFeature.fallAttack) > 0)
+            {
+                //落下攻撃特性を含むかどうか
+                nowAction.isFall = true;
+
+                //着地モーションがあるので確実にコンボ
+                //着地モーションは攻撃扱いに
+                //ちゃんと設定しとけばこれいらんけどな
+                //いちおうわかりやすくね
+                useData.baseData.isCombo = true;
+            }
+
+            //攻撃移動開始
+            //落下攻撃かどうかで挙動が変わるが、落下自体は武器アビリティが扱う
+            _rush.RushStart(useData.baseData.moveData._moveDuration, useData.baseData.moveData._moveDistance, useData.baseData.moveData._contactType,nowAction.isFall , useData.baseData.moveData.startMoveTime, useData.baseData.moveData.backAttack);
+            
+            GManager.instance.StaminaUse(useData.useStamina);
+            GManager.instance.isStUse = true;
+
+            //ヘルスを攻撃中に
+            _health.HealthStateChange(false, DefenseData.DefState.攻撃中);
+
+            //ヘルスをアーマー付きに
+            _health.HealthStateChange(false, DefenseData.DefState.アーマー付き);
+
+
+
+            //ガード攻撃ならガード判定とスパアマ判定開始
+            if ((useData.baseData.actionImfo.feature & AttackValueBase.AttackFeature.guardAttack) > 0)
+            {
+                //ガード攻撃開始
+                _health.HealthStateChange(false, DefenseData.DefState.ガード中);
+                _health.HealthStateChange(false, DefenseData.DefState.スーパーアーマー);
+            }
+            //スパアマ攻撃ならスパアマ開始
+            else if ((useData.baseData.actionImfo.feature & AttackValueBase.AttackFeature.superArmor) > 0)
+            {
+                //スパアマ開始
+                _health.HealthStateChange(false, DefenseData.DefState.スーパーアーマー);
+            }
+
+            //振り返り可能判断開始
+            AttackFlipEndJudge().Forget();
+        }
+
+
+        /// <summary>
+        /// コンボ攻撃を実行する
+        /// 次にどの攻撃を出すのか
+        /// 現在の攻撃のタイプから次の攻撃を確認
+        /// 今がチャージで次がチャージ攻撃あるなら問答無用でチャージ攻撃
+        /// </summary>
+        void ComboAttackJudge()
+        {
+            //準備
+            ComboAttackPrepare();
+
+            //チャージコンボ攻撃を出す
+            if(nowAction.stateNum == 2 && NextChargiableCheck())
+            {
+                //チャージ状態
+                nowAction.stateNum = 2;
+            }
+            else
+            {
+                //チャージ状態じゃない
+                nowAction.stateNum = 0;
+            }
+
+            //コンボ攻撃実行
+            AttackAct();
+        }
+
+        /// <summary>
+        /// 次の攻撃はチャージ可能かをチェック
+        /// </summary>
+        /// <returns></returns>
+        bool NextChargiableCheck()
+        {
+            //次の入力タイプがふつうじゃないならチャージモーションを出す
+            return GetInputType(nowAction.nowType, GManager.instance.twinHand, nowAction.motionNum).motionInput != InputType.normal;
+        }
+
+
+        //コンボアタックを始めるために必要な処理
+        void ComboAttackPrepare()
+        {
+
+
+            //落下攻撃なら
+            if (nowAction.isFall)
+            {
+                nowAction.isFall = false;
+                //ヘルス状態を戻す
+                AttackHealthStateEnd();
+                //重力も戻す
+                _controller.DefaultParameters.Gravity = -GManager.instance.pStatus.firstGravity;
+            }
+
+        }
+
+
+        #endregion
+
+
+        #region 魔法処理
+
+        /// 
+        /// 
+        /// 詠唱ステートに行ってから発射
+        /// エフェクトやらモーションの情報は使用魔法から取得
+        /// 魔法管理はプレイヤーコントローラーでやらせるか
+        /// 
+        /// 
+
+
+
+
+        ///<sammary>
+        /// 魔法のモーションデータを入れる
+        /// isCast真なら詠唱段階
+        /// あとエフェクトも開始する
+        /// </sammary>
+        void MagicDataSet(PlayerMagic useMagic,bool isCast)
+        {
+            if (isCast)
+            {
+                nowAction.nowType = ActType.magic;
+
+                /// 入力の情報
+                nowAction.inputData.motionInput = InputType.magic;
+
+                //詠唱時間設定
+                //武器の詠唱速度倍率をかける
+                nowAction.inputData.chargeTime = useMagic.castTime * GManager.instance.equipWeapon.magicMultipler.castSpeedMultipler;
+
+                nowAction.motionNum = (int)useMagic.castType;
+                
+                //詠唱エフェクト開始
+                _atEf.CastStart(useMagic.magicLevel,useMagic.magicElement);
+            }
+            else
+            {
+                nowAction.motionNum = (int)useMagic.fireType;
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// 攻撃の開始と状態の変化
+        /// ここから終了待ちメソッドを呼ぶか
+        /// 落下かどうかで挙動が変わる
+        /// あと落下ならアニメイベントの挙動も変わる
+        /// </summary>
+        void MagicAct()
+        {
+            _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+
+            _movement.ChangeState(CharacterStates.MovementStates.Attack);
+
+
+            //魔法攻撃中は重力を消す
+            _controller.GravityActive(false);
+
+            //どの攻撃を呼び出すか
+            #region
+
+            //nowActionに魔法のデータセット
+            MagicDataSet(pc.useMagic, false);
+
+            /// 
+            /// 魔法の攻撃力はどう決めるか
+            /// 弾丸がバフ倍率を親元に尋ねてDamageOnTouchに与える
+            /// 弾丸に能力値で補正を与える方法は？　武器からとればいい
+            /// それか魔法ステータスみたいなのを用意して
+            /// 詠唱速度、威力、削り、mp消費みたいなのをステータスでそれぞれを強化できるようにする
+            /// 補正レベルと能力値で係数が変化する
+            /// 
+            /// 
+            /// ///
+
+
+            //弾丸呼び出しはアニメイベントに任すか？
+
+
+            //追加エフェクト今のところなさそう
+            int adType = 0;
+
+
+            //必要な要素
+            //ロックオンした敵情報(nowActionに。ふつうの攻撃でも弾丸射出攻撃ならおなじことしなくちゃ？)
+            //ロックオン処理
+            //魔法攻撃開始アニメイベント
+            //弾丸射出地点
+            //MP消費は弾丸射出開始にするか
+
+            #endregion
+
+
+
+
+
+
+            //攻撃移動開始
+            //落下攻撃かどうかで挙動が変わるが、落下自体は武器アビリティが扱う
+            _rush.RushStart(nowAction.useMagic.moveData._moveDuration, nowAction.useMagic.moveData._moveDistance, nowAction.useMagic.moveData._contactType, nowAction.isFall, nowAction.useMagic.moveData.startMoveTime, nowAction.useMagic.moveData.backAttack);
+
+            //スタミナどうしようかな
+            GManager.instance.StaminaUse(nowAction.useMagic.useStamina);
+            GManager.instance.isStUse = true;
+
+            //ヘルスを攻撃中に
+            _health.HealthStateChange(false, DefenseData.DefState.攻撃中);
+
+            if (nowAction.useMagic.magicArmor > 0)
+            {
+                //ヘルスをアーマー付きに
+                _health.HealthStateChange(false, DefenseData.DefState.アーマー付き);
+            }
+
+
+            //ガード判定が出る魔法ならガード判定とスパアマ判定開始
+            if ((nowAction.useMagic.magicFeature & AttackValueBase.AttackFeature.guardAttack) > 0)
+            {
+                //ガード攻撃開始
+                _health.HealthStateChange(false, DefenseData.DefState.ガード中);
+                _health.HealthStateChange(false, DefenseData.DefState.スーパーアーマー);
+            }
+            //スパアマ判定が出る魔法ならスパアマ開始
+            else if ((nowAction.useMagic.magicFeature & AttackValueBase.AttackFeature.superArmor) > 0)
+            {
+                //スパアマ開始
+                _health.HealthStateChange(false, DefenseData.DefState.スーパーアーマー);
+            }
+
+            //振り返り可能判断開始
+            AttackFlipEndJudge().Forget();
+        }
+
+
+
+        #endregion
+
+        #region モーション番号と攻撃タイプに基づいて攻撃データを取得
+
+        /// <summary>
+        /// 攻撃の準備
+        /// 魔法とはここで処理が分岐する
+        /// ここまではただの入力待ち受けかな
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="attackNum"></param>
+        void AttackPrepare(ActType type,bool isCharge , int attackNum)
+        {
+            //魔法じゃないなら
+            if (type != ActType.magic)
+            {
+                useData = GetAttackImfo(type, isCharge,attackNum, GManager.instance.twinHand);
+                //ダメージにアクションデータを渡す
+                
+                _damage._attackData.actionData = useData.baseData.actionImfo;
+                //当たり判定の記録をリセット
+                //このへんはdamageOnの攻撃準備メソッドにまとめていいかも
+                _damage.CollidRestoreResset();
+            }
+            else
+            {
+
+            }
+        }
+
+
+
+        ///<summary>
+        ///攻撃するときに呼ぶ
+        /// 攻撃データを返すと同時にコンボ限界も設定する
+        /// </summary>
+        AttackValue GetAttackImfo(ActType type,bool isCharge,int attackNum,bool twinHand)//デフォが斬撃
+        {
+            GManager.instance.isShieldAttack = false;
+            //コンボの最初にコンボ何回繋がるか確認する。
+
+
+            MotionChargeImfo container;
+
+            if (type == ActType.sAttack)
+            {
+                container = twinHand ? GManager.instance.equipWeapon.twinSValue : GManager.instance.equipWeapon.sValue;
+            }
+            else if (type == ActType.bAttack)
+            {
+
+                container = twinHand ? GManager.instance.equipWeapon.twinBValue : GManager.instance.equipWeapon.bValue;
+            }
+            else if (type == ActType.aAttack)
+            {
+                container = twinHand ? GManager.instance.equipWeapon.twinAirValue : GManager.instance.equipWeapon.airValue;
+            }
+            else if (type == ActType.fAttack)
+            {
+
+                container = twinHand ? GManager.instance.equipWeapon.twinStrikeValue : GManager.instance.equipWeapon.strikeValue;
+            }
+            else// if (type == ActType.arts)
+            {
+                //両手持ちか武器優先なら武器
+                //そうでないなら盾
+                container = (twinHand || GManager.instance.equipShield.weaponArts) ? GManager.instance.equipWeapon.artsValue : GManager.instance.equipShield.artsValue;
+            }
+
+            if (!isCharge)
+            {
+                comboLimit = container.normalComboLimit;
+                return container.normalValue[attackNum];
+            }
+            else
+            {
+                comboLimit = container.chargeComboLimit;
+                return container.chargeValue[attackNum];
+            }
+
+        }
+
+
+
+
+        #endregion
+
+
+        #region　攻撃管理用アニメイベント
+
+        /// <summary>
+        /// 攻撃中に呼ばれるアニメイベント
+        /// キャンセル可能点の通知、あるいは落下開始の通知
+        /// </summary>
+        public void Continue()
+        {
+
+            if(nowAction.nowType == ActType.arts)
+            {
+            GManager.instance.MpReduce(nowAction.useMP);
+            }
+
+
+
+                //重力を有効化
+                _controller.GravityActive(true);
+
+
+            //落下攻撃はここで落下開始
+            if (nowAction.isFall)
+            {
+
+
+                //1.4倍の重力をかける
+                _controller.DefaultParameters.Gravity = -GManager.instance.pStatus.firstGravity * 1.4f;
+
+                //落下攻撃終了待ち
+                //時限待機して一定時間経過後解除も付けていいかも
+                //解除後地面についてなかったら着地アニメスルーで
+                FallAttackEndWait().Forget();
+
+            }
+            //それ以外なら攻撃中のアーマーやらを消して
+            //ここからキャンセル可能に
+            else
+            {
+                //ヘルスをもとに戻す
+                AttackHealthStateEnd();
+                
+
+
+                //モーション終了検査を呼ぶ
+                AttackEndWait().Forget();
+
+                //コンボじゃないならキャンセルを呼ぶ
+                if (!useData.baseData.isCombo)
+                {
+                    CancelInputWait().Forget();
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// 攻撃用のヘルスのステートを全解除する
+        /// fallのときは攻撃終了時に呼ぶ
+        /// </summary>
+        void AttackHealthStateEnd()
+        {
+            _health.HealthStateChange(true, DefenseData.DefState.ガード中);
+            _health.HealthStateChange(true, DefenseData.DefState.スーパーアーマー);
+            _health.HealthStateChange(true, DefenseData.DefState.アーマー付き);
+            _health.HealthStateChange(true, DefenseData.DefState.攻撃中);
+        }
+
+
+        /// <summary>
+        /// 攻撃中に呼ばれるアニメイベント
+        /// キャンセル可能点の通知、あるいは落下開始の通知
+        /// </summary>
+        public void MagicContinue()
+        {
+
+                GManager.instance.MpReduce(nowAction.useMP);
+
+            //弾丸呼び出しはアニメイベントに任すか？
+            _atEf.BulletCall(nowAction.useMagic.effects,firePosition.position,firePosition.rotation, nowAction.useMagic.flashEffect);
+
+
+            //重力を有効化
+            _controller.GravityActive(true);
+
+
+            //落下攻撃はここで落下開始
+            if (nowAction.isFall)
+            {
+
+
+                //1.4倍の重力をかける
+                _controller.DefaultParameters.Gravity = -GManager.instance.pStatus.firstGravity * 1.4f;
+
+                //落下攻撃終了待ち
+                //時限待機して一定時間経過後解除も付けていいかも
+                //解除後地面についてなかったら着地アニメスルーで
+                FallAttackEndWait().Forget();
+
+            }
+            //それ以外なら攻撃中のアーマーやらを消して
+            //ここからキャンセル可能に
+            else
+            {
+                //ヘルスをもとに戻す
+                AttackHealthStateEnd();
+
+
+
+                //モーション終了検査を呼ぶ
+                AttackEndWait().Forget();
+
+                //コンボじゃないならキャンセルを呼ぶ
+                if (!useData.baseData.isCombo)
+                {
+                    CancelInputWait().Forget();
+                }
+
+            }
+        }
+
+
+
+
+        #endregion
+
+
+        #region チャージ・攻撃中の振り向き処理
+
+
+        /// <summary>
+        /// 攻撃振り向きが可能な時間の制御をする
+        /// 攻撃判定が出るまでは振り向き可能
+        /// これ単体で動作できる
+        /// 他でフラグ管理しなくていい
+        /// どうせ最初は真だから
+        /// </summary>
+        /// <returns></returns>
+        async UniTaskVoid AttackFlipEndJudge()
+        {
+            //まず最初に振り向き可能に
+            _flipable = true;
+
+            //当たり判定が出るのを待つ
+            await UniTask.WaitUntil(() => (_attackBox.enabled || _attackCircle.enabled),cancellationToken:AttackToken.Token);
+
+            //振り向けなくする
+            _flipable = false;
+
+        }
+
+
+        #endregion
+
+
+
+        #region モーション終了・キャンセル待機
+
+
+
+
+        /// <summary>
+        /// モーションの終了待ちをする
+        /// 攻撃終了
+        /// 自動コンボ派生が必要
+        /// 
+        /// コンボ攻撃では必ずここでモーション終了待ちしてから次につながる
+        /// </summary>
+        /// <returns></returns>
+        private async UniTask AttackEndWait()
+        {
+
+
+            // 現在のモーション終了まで待機
+            await UniTask.WaitUntil(() => {
+                return _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f ;
+            }, cancellationToken: AttackToken.Token);
+
+            //入力された時すでに攻撃状態じゃなかったら戻る
+            if (_movement.CurrentState != CharacterStates.MovementStates.Attack)
+            {
+                return;
+            }
+
+            //コンボなら
+            //チャージしてるかで分岐するよね
+            //現在チャージしてて次にチャージ攻撃があるならチャージか
+            if (useData.baseData.isCombo)
+            {
+                //現在チャージ攻撃か、次もチャージがあるかを調べて
+                //即座に攻撃実行
+                ComboAttackJudge();
+            }
+            else
+            {
+                //攻撃終了
+                AttackEnd();
+            }
+        }
+
+
+
+        /// <summary>
+        /// 入力による攻撃状態のキャンセルを見る
+        /// 自動コンボ攻撃では呼ばれない
+        /// コンティニューで呼ぶ
+        /// </summary>
+        /// <returns></returns>
+        private async UniTaskVoid CancelInputWait()
+        {
+
+            // 入力、あるいはアニメ終了を待つ
+            await UniTask.WaitUntil(() => AnyKey(), cancellationToken: AttackToken.Token);
+
+            //入力された時すでに攻撃状態じゃなかったら戻る
+            if (_movement.CurrentState != CharacterStates.MovementStates.Attack)
+            {
+                return;
+            }
+
+            AttackEnd();
+
+            //魔法だとこのメソッド呼ばれないから安心して判断していい
+
+            ActType nextType = ActType.noAttack;
+
+            //次の入力の番号
+            //これで入力処理の途中から始まる
+            int inputNum = 99;
+
+            //入力された時攻撃ボタンを押してるか
+            if (fire1Key)
+            {
+                inputNum = 1;
+                nextType = _controller.State.IsGrounded ? ActType.sAttack : ActType.aAttack;
+
+                //空中攻撃終了ならキャンセル
+                if (isAirEnd && nextType == ActType.aAttack)
+                {
+                    inputNum = 99;
+                    nextType = ActType.noAttack;
+                }
+            }
+            else if (fire2Key)
+            {
+                inputNum = 2;
+                nextType = _controller.State.IsGrounded ? ActType.bAttack : ActType.fAttack;
+            }
+            else if (artsKey)
+            {
+                inputNum = 3;
+                nextType = ActType.arts;
+            }
+
+            //攻撃しないか別の攻撃をするのだったら番号を戻す
+            if (nextType == ActType.noAttack || nextType != nowAction.nowType)
+            {
+                nowAction.isComboEnd = true;
+            }
+
+
+
+
+            //攻撃終了
+            AttackEnd();
+
+            //攻撃入力あったなら
+            if (inputNum < 4)
+            {
+                //入力に従って次の情報をセット
+                InitialInput(inputNum);
+                //まだ何も入力がないなら
+                if (nowAction.inputData.motionInput == Equip.InputType.non)
+                {
+                    return;
+                }
+                //決まったなら初期化を入れる
+                else
+                {
+                    //移動を停止
+                    _characterHorizontalMovement.SetHorizontalMove(0);
+                    _controller.SetForce(Vector2.zero);
+
+
+                    //ノーマルじゃないなら
+                    if (nowAction.inputData.motionInput != Equip.InputType.normal)
+                    {
+                        //チャージ時間を現在にして
+                        nowAction.chargeStartTime = GManager.instance.nowTime;
+
+                        //ステートをチャージ段階に
+                        nowAction.stateNum = 1;
+
+                        //チャージ開始
+                        //引数には魔法かどうかを
+                        ChargeStart(nowAction.nowType == ActType.magic);
+                    }
+                }
+
+
+            }
+
+        }
+
+        /// <summary>
+        /// 何かボタンがいじられているかを調べる
+        /// </summary>
+        /// <returns></returns>
+        bool AnyKey()
+        {
+
+                if (_inputManager.CheckButtonUsing())
+                {
+                    return true;
+                }
+                else
+                {
+                return (_horizontalInput != 0 || _verticalInput != 0);
+
+                }
+        }
+
+
+        /// <summary>
+        /// 落下後の地面検査するかこれで
+        /// </summary>
+        async UniTaskVoid FallAttackEndWait()
+        {
+
+            
+
+            //地面につくまで待つ
+            //あるいは2.5秒立つまで待つ
+            await UniTask.WhenAny(UniTask.Delay(TimeSpan.FromSeconds(2.5), cancellationToken: AttackToken.Token),
+                UniTask.WaitUntil(() => _controller.State.IsGrounded, cancellationToken: AttackToken.Token));
+
+
+            //地面ついてたら着地モーション
+            if (_controller.State.IsGrounded)
+            {
+                //0.01秒待つ
+                await UniTask.Delay(10, cancellationToken: AttackToken.Token);
+
+                
+                
+                //即座にコンボ（着地モーション）攻撃実行
+                //着地で衝撃波が出る類ならこうなる
+                ComboAttackJudge();
+
+            }
+
+            //そうでないなら（着地出来ずなら）ふつうにそのまま終了
+            //コンボや着地モーションも中断？
+            else
+            {
+                nowAction.isComboEnd = true;
+                AttackEnd();
+            }
+
+        }
+
+
+
+
+
+
+
+
+        #endregion
+
+
+        #region 攻撃終了・中断処理
+
+
+
+        /// <summary>
+        ///  攻撃終了メソッド
         /// </summary>
         /// <param name="conti"></param>
-       public void AttackEnd(int conti = 0, bool comboEnd = true)
+       public void AttackEnd()
         {
-            test = 0;
-            GManager.instance.isAttack = false;
+            
 
-
+            //状態をもとに戻す
            if(_condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
             {
                 if (_controller.State.IsGrounded)
@@ -789,642 +1837,104 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
                 _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
             }
-            isCharging = false;
-            startFall = false;
-            atType = ActType.noAttack; 
-       
-            if (comboEnd)
-            {
-               
 
-                attackNumber = 0;
-                isComboEnd = false;
-                // comboLimit = 0;
-            }
-            if (conti == 1)
-            {
-               
-                smallTrigger = true;
-            }
-            else if (conti == 2)
-            {
-                bigTrigger = true;
-            }
-            else if (conti == 3)
-            {
-                artsTrigger = true;
-            }
-            //もし連撃じゃないなら攻撃番号はリセット
-            _preInput = 0;
-            // Debug.Log($"いあいいｓ{comboEnd}{attackNumber}{bigTrigger}");
-            _health._superArumor = false;
+           //ターゲットを削除
+            targetEnemy = null;
 
-            staminaRecover().Forget();
+           //落下攻撃なら
+            if (nowAction.isFall)
+            { 
+                nowAction.isFall = false;
+                //ヘルス状態を戻す
+                AttackHealthStateEnd();
+                //重力も戻す
+                _controller.DefaultParameters.Gravity = -GManager.instance.pStatus.firstGravity;
+            }
+
+            //コンボ終了だったら番号を戻す
+
+                //入力リセット
+            InputReset(nowAction.isComboEnd);
+
+
+        nowAction.isComboEnd = false;
+
+
+
+        //遅れてスタミナ回復
+        StaminaRecover().Forget();
+
         }
 
-        async UniTaskVoid staminaRecover()
-        {
-            await UniTask.Delay(1000);
-            GManager.instance.isStUse = false;
-        }
-
-        #endregion
-
-
-        //攻撃実行系
-        #region
 
 
         /// <summary>
-        /// 攻撃前の振り向き
+        /// 攻撃後少し待ってスタミナ回復開始
         /// </summary>
-        void AttackFlip()
+        /// <returns></returns>
+        async UniTaskVoid StaminaRecover()
         {
+            await UniTask.Delay(1000, cancellationToken: AttackToken.Token);
 
+            //連続攻撃してなければ回復開始
+            if (_movement.CurrentState != CharacterStates.MovementStates.Attack)
+            {
+                GManager.instance.isStUse = false;
+            }
         }
 
 
         /// <summary>
-        /// 攻撃の開始と
+        /// 主にスタンした時に呼ばれるメソッド
+        /// 行動中止処理を入れておく
+        /// キャンセルトークンも使うか
         /// </summary>
-        void AttackAct()
+        public override void StopAbillity()
         {
-            _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
-            _flipable = true;
-            _characterHorizontalMovement.SetHorizontalMove(0);
-            _movement.ChangeState(CharacterStates.MovementStates.Attack);
-            //攻撃開始、アーマー発生
-            GManager.instance.isArmor = true;
-            GManager.instance.isAttack = true;
-            isAttackable = false;
-            //横移動不可
 
-            //isDisenable = true;
-            //攻撃可能で弱攻撃ボタン押されてて攻撃してなくてスタミナが使えるなら以下の処理
-            //delayTime = 0.0f;
-            //Debug.Log($"1やめろ{attackNumber}");
+            //チャージ終了
+            ChargeEnd(true);
 
-            //どの攻撃を呼び出すか
-            #region
+            //重力を有効化
+            _controller.GravityActive(true);
 
-            //int osixtuko = 1000;
-            _damage.CollidRestoreResset();
 
-            GManager.instance.useAtValue.isShield = false;
-            //落下攻撃かどうか
-            GManager.instance.useAtValue.fallAttack = atType == ActType.fAttack;
-            if (atType == ActType.sAttack)
-            {
-                sAttackPrepare();
-                //osixtuko = 1;
-            }
-            else if (atType == ActType.bAttack)
-            {
-                bAttackPrepare();
-                //osixtuko = 2;
-            }
-            else if (atType == ActType.cAttack)
-            {
-                chargeAttackPrepare();
-                //osixtuko = 3;
-            }
-            else if (atType == ActType.arts)
-            {
-                ArtsPrepare();
-                //osixtuko = 4;
-            }
-            else if (atType == ActType.aAttack)
-            {
 
-                airAttackPrepare();
-                isAirEnd = (attackNumber + 1 == comboLimit);
-            }
-            else if (atType == ActType.fAttack)
+            //ヘルスをもとに戻す
+            AttackHealthStateEnd();
+
+
+            //落下攻撃なら
+            if (nowAction.isFall)
             {
-                strikeAttackPrepare();
-                GManager.instance.fallAttack = true;
-                //Debug.Log("つづくよ２");
-                //osixtuko = 5;
+                nowAction.isFall = false;
+                //ヘルス状態を戻す
+                AttackHealthStateEnd();
+                //重力も戻す
+                _controller.DefaultParameters.Gravity = -GManager.instance.pStatus.firstGravity;
             }
 
-            int adType = 0;
+            //入力リセット
+            InputReset(true);
 
+            nowAction.isComboEnd = false;
 
-
-            _atEf.EffectPrepare(GManager.instance.useAtValue.EffectLevel, adType, GManager.instance.useAtValue.mainElement, GManager.instance.useAtValue.motionType);
-
-
-            #endregion
-            attackNumber++;
-
-            if (attackNumber >= comboLimit && comboLimit != 0)
-            {
-                
-                isComboEnd = true;
-
-            }
-
-            //距離が移動範囲内で、ロックオンするなら距離を変える
-            //ロックオン機能がまだできてない
-           // float moveDistance = (GManager.instance.useAtValue.lockAttack && distance.x < GManager.instance.useAtValue._moveDistance) ? distance.x : GManager.instance.useAtValue._moveDistance;
-
-            _rush.RushStart(GManager.instance.useAtValue._moveDuration, GManager.instance.useAtValue._moveDistance, GManager.instance.useAtValue._contactType, GManager.instance.useAtValue.fallAttack, GManager.instance.useAtValue.startMoveTime, GManager.instance.useAtValue.backAttack);
-            GManager.instance.StaminaUse(GManager.instance.useAtValue.useStamina);
-                GManager.instance.isStUse = true;
-
+            AttackToken.Cancel();
+            AttackToken = new CancellationTokenSource();
         }
 
 
 
-        void Parry()
-        {
 
-            //無敵処理あたり内容書き換える
-            if (GManager.instance.parrySuccess && !isParring)
-            {
-                if (!GManager.instance.blocking)
-                {
-
-                    GManager.instance.PlaySound("ParrySuccess", transform.position);
-                    //  GManager.instance.PlaySound("ParrySuccess2", transform.position);
-                }
-                else if (GManager.instance.blocking)
-                {
-                    //   Debug.Log("s");
-
-                    GManager.instance.PlaySound("Blocking", transform.position);
-                }
-                isParring = true;
-                GManager.instance.guardDisEnable = true;
-                //パリィ
-            }
-            else if (!GManager.instance.blocking && isParring)
-            {
-                // Debug.Log("sssssss");
-                if (!GManager.instance.twinHand)// && CheckEnd("OParry"))
-                {
-                    // Debug.Log("sss");
-                    isParring = false;
-                    GManager.instance.parrySuccess = false;
-                    GManager.instance.pm.SetLayer(11);
-                    GManager.instance.guardDisEnable = false;
-                    // GManager.instance.isDown = false;
-                }
-                if (GManager.instance.twinHand)// && CheckEnd("TParry"))
-                {
-                    isParring = false;
-                    GManager.instance.parrySuccess = false;
-                    GManager.instance.pm.SetLayer(11);
-                    GManager.instance.guardDisEnable = false;
-
-                }
-            }
-            else if (GManager.instance.blocking && isParring)
-            {
-                if (!GManager.instance.twinHand)// && CheckEnd("OBlock"))
-                {
-                    isParring = false;
-                    GManager.instance.parrySuccess = false;
-                    GManager.instance.pm.SetLayer(11);
-                    GManager.instance.guardDisEnable = false;
-                    //GManager.instance.isDown = false;
-                }
-                if (GManager.instance.twinHand)// && CheckEnd("TBlock"))
-                {
-                    isParring = false;
-                    GManager.instance.parrySuccess = false;
-                    GManager.instance.pm.SetLayer(11);
-                    GManager.instance.guardDisEnable = false;
-                }
-            }
-
-        }
 
         #endregion
 
-        //Prepare系統
-        #region
-        //攻撃するときに呼ぶ
-        public void sAttackPrepare()//デフォが斬撃
-        {
-            GManager.instance.isShieldAttack = false;
-            //コンボの最初にコンボ何回繋がるか確認する。
 
-
-
-            //ガード中ならガード解除
-            //ひよおおおおおおおおおおお
-
-            if (!GManager.instance.twinHand)
-            {
-
-                GManager.instance.useAtValue.x = GManager.instance.equipWeapon.sValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipWeapon.sValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipWeapon.sValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.sValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.sValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.sValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.sValue[attackNumber].useStamina;
-
-                comboLimit = GManager.instance.equipWeapon.sValue.Count;
-                _damage._attackData._hitLimit = GManager.instance.equipWeapon.sValue[attackNumber]._hitLimit;
-
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.sValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.sValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.sValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.sValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.sValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.sValue[attackNumber].lockAttack;
-                _health._superArumor = GManager.instance.equipWeapon.sValue[attackNumber].superArmor;
-                _health._guardAttack = GManager.instance.equipWeapon.sValue[attackNumber].guardAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.sValue[attackNumber].backAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.sValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.sValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.sValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.sValue[attackNumber].EffectLevel;
-            }
-            else
-            {
-
-
-                GManager.instance.useAtValue.x = GManager.instance.equipWeapon.twinSValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipWeapon.twinSValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipWeapon.twinSValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.twinSValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.twinSValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.twinSValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinSValue[attackNumber].useStamina;
-
-                comboLimit = GManager.instance.equipWeapon.twinSValue.Count;
-                _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinSValue[attackNumber]._hitLimit;
-
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.twinSValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.twinSValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.twinSValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinSValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinSValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinSValue[attackNumber].lockAttack;
-                _health._superArumor = GManager.instance.equipWeapon.twinSValue[attackNumber].superArmor;
-                _health._guardAttack = GManager.instance.equipWeapon.twinSValue[attackNumber].guardAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.twinSValue[attackNumber].backAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.twinSValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.twinSValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.twinSValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.twinSValue[attackNumber].EffectLevel;
-            }
-        }
-
-        public void bAttackPrepare()//デフォが斬撃。強攻撃
-        {
-            GManager.instance.isShieldAttack = false;
-
-
-            if (!GManager.instance.twinHand)
-            {
-
-                GManager.instance.useAtValue.x = GManager.instance.equipWeapon.bValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipWeapon.bValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipWeapon.bValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.bValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.bValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.bValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.bValue[attackNumber].useStamina;
-
-                comboLimit = GManager.instance.equipWeapon.bValue.Count;
-                _damage._attackData._hitLimit = GManager.instance.equipWeapon.bValue[attackNumber]._hitLimit;
-
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.bValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.bValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.bValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.bValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.bValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.bValue[attackNumber].lockAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.bValue[attackNumber].backAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.bValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.bValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.bValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.bValue[attackNumber].EffectLevel;
-
-                _health._superArumor = GManager.instance.equipWeapon.bValue[attackNumber].superArmor;
-                _health._guardAttack = GManager.instance.equipWeapon.bValue[attackNumber].guardAttack;
-            }
-            else
-            {
-
-
-                GManager.instance.useAtValue.x = GManager.instance.equipWeapon.twinBValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipWeapon.twinBValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipWeapon.twinBValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.twinBValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.twinBValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.twinBValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinBValue[attackNumber].useStamina;
-               // = GManager.instance.equipWeapon.twinBValue[attackNumber].attackEffect;
-                comboLimit = GManager.instance.equipWeapon.twinBValue.Count;
-                _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinBValue[attackNumber]._hitLimit;
-
-                //突進用の初期化
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.twinBValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.twinBValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.twinBValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinBValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinBValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinBValue[attackNumber].lockAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.twinBValue[attackNumber].backAttack;
-                _health._superArumor = GManager.instance.equipWeapon.twinBValue[attackNumber].superArmor;
-                _health._guardAttack = GManager.instance.equipWeapon.twinBValue[attackNumber].guardAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.twinBValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.twinBValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.twinBValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.twinBValue[attackNumber].EffectLevel;
-
-            }
-        }
-
-        public void chargeAttackPrepare()//デフォが斬撃
-        {
-            GManager.instance.isShieldAttack = false;
-
-
-            if (!GManager.instance.twinHand)
-            {
-
-                GManager.instance.useAtValue.x = GManager.instance.equipWeapon.chargeValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipWeapon.chargeValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipWeapon.chargeValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.chargeValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.chargeValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.chargeValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.chargeValue[attackNumber].useStamina;
-               // = GManager.instance.equipWeapon.chargeValue[attackNumber].attackEffect;
-                comboLimit = GManager.instance.equipWeapon.bValue.Count;
-                _damage._attackData._hitLimit = GManager.instance.equipWeapon.chargeValue[attackNumber]._hitLimit;
-
-                //突進用の初期化
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.chargeValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.chargeValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.chargeValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.chargeValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.chargeValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.chargeValue[attackNumber].lockAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.chargeValue[attackNumber].backAttack;
-                _health._superArumor = GManager.instance.equipWeapon.chargeValue[attackNumber].superArmor;
-                _health._guardAttack = GManager.instance.equipWeapon.chargeValue[attackNumber].guardAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.chargeValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.chargeValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.chargeValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.chargeValue[attackNumber].EffectLevel;
-            }
-            else
-            {
-
-                GManager.instance.useAtValue.x = GManager.instance.equipWeapon.twinChargeValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipWeapon.twinChargeValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipWeapon.twinChargeValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.twinChargeValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.twinChargeValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.twinChargeValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinChargeValue[attackNumber].useStamina;
-               // = GManager.instance.equipWeapon.twinChargeValue[attackNumber].attackEffect;
-                comboLimit = GManager.instance.equipWeapon.twinBValue.Count;
-                _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinChargeValue[attackNumber]._hitLimit;
-
-                //突進用の初期化
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.twinChargeValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.twinChargeValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.twinChargeValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinChargeValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinChargeValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinChargeValue[attackNumber].lockAttack;
-                _health._superArumor = GManager.instance.equipWeapon.twinChargeValue[attackNumber].superArmor;
-                _health._guardAttack = GManager.instance.equipWeapon.twinChargeValue[attackNumber].guardAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.twinChargeValue[attackNumber].backAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.twinChargeValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.twinChargeValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.twinChargeValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.twinChargeValue[attackNumber].EffectLevel;
-
-            }
-        }
-        public void airAttackPrepare()//デフォが斬撃
-        {
-
-            GManager.instance.isShieldAttack = false;
-
-
-
-            if (!GManager.instance.twinHand)
-            {
-
-                GManager.instance.useAtValue.x = GManager.instance.equipWeapon.airValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipWeapon.airValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipWeapon.airValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.airValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.airValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.airValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.airValue[attackNumber].useStamina;
-               // = GManager.instance.equipWeapon.airValue[attackNumber].attackEffect;
-                comboLimit = GManager.instance.equipWeapon.airValue.Count;
-                _damage._attackData._hitLimit = GManager.instance.equipWeapon.airValue[attackNumber]._hitLimit;
-
-                //突進用の初期化
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.airValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.airValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.airValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.airValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.airValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.airValue[attackNumber].lockAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.airValue[attackNumber].backAttack;
-                _health._superArumor = GManager.instance.equipWeapon.airValue[attackNumber].superArmor;
-                _health._guardAttack = GManager.instance.equipWeapon.airValue[attackNumber].guardAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.airValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.airValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.airValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.airValue[attackNumber].EffectLevel;
-
-            }
-            else
-            {
-
-                GManager.instance.useAtValue.x = GManager.instance.equipWeapon.twinAirValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipWeapon.twinAirValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipWeapon.twinAirValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.twinAirValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.twinAirValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.twinAirValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinAirValue[attackNumber].useStamina;
-               // = GManager.instance.equipWeapon.twinAirValue[attackNumber].attackEffect;
-                comboLimit = GManager.instance.equipWeapon.twinAirValue.Count;
-                _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinAirValue[attackNumber]._hitLimit;
-
-                //突進用の初期化
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.twinAirValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.twinAirValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.twinAirValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinAirValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinAirValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinAirValue[attackNumber].lockAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.twinAirValue[attackNumber].backAttack;
-                _health._superArumor = GManager.instance.equipWeapon.twinAirValue[attackNumber].superArmor;
-                _health._guardAttack = GManager.instance.equipWeapon.twinAirValue[attackNumber].guardAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.twinAirValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.twinAirValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.twinAirValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.twinAirValue[attackNumber].EffectLevel;
-            }
-        }
-        public void strikeAttackPrepare()//デフォが斬撃
-        {
-
-            GManager.instance.isShieldAttack = false;
-
-
-
-            if (!GManager.instance.twinHand)
-            {
-
-                GManager.instance.useAtValue.x = GManager.instance.equipWeapon.strikeValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipWeapon.strikeValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipWeapon.strikeValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.strikeValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.strikeValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.strikeValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.strikeValue[attackNumber].useStamina;
-               // = GManager.instance.equipWeapon.strikeValue[attackNumber].attackEffect;
-                _damage._attackData._hitLimit = GManager.instance.equipWeapon.strikeValue[attackNumber]._hitLimit;
-
-                //突進用の初期化
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.strikeValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.strikeValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.strikeValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.strikeValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.strikeValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.strikeValue[attackNumber].lockAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.strikeValue[attackNumber].backAttack;
-                _health._superArumor = true;
-                _health._guardAttack = GManager.instance.equipWeapon.strikeValue[attackNumber].guardAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.strikeValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.strikeValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.strikeValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.strikeValue[attackNumber].EffectLevel;
-            }
-            else
-            {
-
-                GManager.instance.useAtValue.x = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].useStamina;
-               // = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].attackEffect;
-                _damage._attackData._hitLimit = GManager.instance.equipWeapon.twinStrikeValue[attackNumber]._hitLimit;
-
-                //突進用の初期化
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.twinStrikeValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.twinStrikeValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.twinStrikeValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].lockAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].backAttack;
-                _health._superArumor = true;
-                _health._guardAttack = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].guardAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.twinStrikeValue[attackNumber].EffectLevel;
-            }
-            comboLimit = 1;
-        }
-
-        public void ArtsPrepare()//デフォが斬撃
-        {
-
-
-            if (!GManager.instance.twinHand && !GManager.instance.equipShield.weaponArts)
-            {
-                GManager.instance.useAtValue.isShield = true;
-
-                GManager.instance.useAtValue.x = GManager.instance.equipShield.artsValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipShield.artsValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipShield.artsValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipShield.artsValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipShield.artsValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipShield.artsValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipShield.artsValue[attackNumber].useStamina;
-                GManager.instance.isShieldAttack = true;
-               // = GManager.instance.equipShield.artsValue[attackNumber].attackEffect;
-                comboLimit = GManager.instance.equipShield.artsValue.Count;
-                _damage._attackData._hitLimit = GManager.instance.equipShield.artsValue[attackNumber]._hitLimit;
-
-                //突進用の初期化
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipShield.artsValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipShield.artsValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipShield.artsValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipShield.artsValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipShield.artsValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipShield.artsValue[attackNumber].lockAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipShield.artsValue[attackNumber].backAttack;
-                _health._superArumor = GManager.instance.equipShield.artsValue[attackNumber].superArmor;
-                _health._guardAttack = GManager.instance.equipShield.artsValue[attackNumber].guardAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipShield.artsValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipShield.artsValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipShield.artsValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipShield.artsValue[attackNumber].EffectLevel;
-            }
-            else
-            {
-                
-
-                GManager.instance.useAtValue.x = GManager.instance.equipWeapon.artsValue[attackNumber].x;
-                GManager.instance.useAtValue.y = GManager.instance.equipWeapon.artsValue[attackNumber].y;
-                GManager.instance.useAtValue.z = GManager.instance.equipWeapon.artsValue[attackNumber].z;
-                GManager.instance.useAtValue.isBlow = GManager.instance.equipWeapon.artsValue[attackNumber].isBlow;
-                GManager.instance.useAtValue.isCombo = GManager.instance.equipWeapon.artsValue[attackNumber].isCombo;
-                GManager.instance.useAtValue.blowPower = GManager.instance.equipWeapon.artsValue[attackNumber].blowPower;
-                GManager.instance.useAtValue.useStamina = GManager.instance.equipWeapon.artsValue[attackNumber].useStamina;
-                GManager.instance.isShieldAttack = false;
-
-                comboLimit = GManager.instance.equipWeapon.artsValue.Count;
-                _damage._attackData._hitLimit = GManager.instance.equipWeapon.artsValue[attackNumber]._hitLimit;
-
-                //突進用の初期化
-                GManager.instance.useAtValue._moveDuration = GManager.instance.equipWeapon.artsValue[attackNumber]._moveDuration;
-                GManager.instance.useAtValue._moveDistance = GManager.instance.equipWeapon.artsValue[attackNumber]._moveDistance;
-                GManager.instance.useAtValue._contactType = GManager.instance.equipWeapon.artsValue[attackNumber]._contactType;
-                GManager.instance.useAtValue.fallAttack = GManager.instance.equipWeapon.artsValue[attackNumber].fallAttack;
-                GManager.instance.useAtValue.startMoveTime = GManager.instance.equipWeapon.artsValue[attackNumber].startMoveTime;
-                GManager.instance.useAtValue.lockAttack = GManager.instance.equipWeapon.artsValue[attackNumber].lockAttack;
-                GManager.instance.useAtValue.backAttack = GManager.instance.equipWeapon.artsValue[attackNumber].backAttack;
-                _health._superArumor = GManager.instance.equipWeapon.artsValue[attackNumber].superArmor;
-                _health._guardAttack = GManager.instance.equipWeapon.artsValue[attackNumber].guardAttack;
-
-                GManager.instance.useAtValue.mainElement = GManager.instance.equipWeapon.artsValue[attackNumber].mainElement;
-                GManager.instance.useAtValue.motionType = GManager.instance.equipWeapon.artsValue[attackNumber].motionType;
-                GManager.instance.useAtValue.phyElement = GManager.instance.equipWeapon.artsValue[attackNumber].phyElement;
-                GManager.instance.useAtValue.EffectLevel = GManager.instance.equipWeapon.artsValue[attackNumber].EffectLevel;
-            }
-        }
-        #endregion
 
 
 
 
     }
-
 
 
 

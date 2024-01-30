@@ -31,6 +31,9 @@ namespace MoreMountains.CorgiEngine
 		//Idleだけじゃなく放置したらなるやつ全般にいいかも
 		public bool banIdle = false;
 
+
+		int abillityCount;
+
 		
 		public enum GroundFeature
         {
@@ -62,14 +65,19 @@ namespace MoreMountains.CorgiEngine
 			//CharacterAbilityを継承するものすべてをGet
 		//	_characterAbilities = this.gameObject.GetComponents<CharacterAbility>();
 			_myAbilities = this.gameObject.GetComponents<MyAbillityBase>();
+
+
 			// ユーザがさらにノードを指定した場合
 			if ((AdditionalAbilityNodes != null) && (AdditionalAbilityNodes.Count > 0))
             {
 				// リストを作成します。
 				//List<CharacterAbility> tempAbilityList = new List<CharacterAbility>();
 				List<MyAbillityBase> abillityList = new List<MyAbillityBase>();
+
+				abillityCount = _myAbilities.Length;
+
 				// ①ですでに発見している能力をすべてリストにしました。
-				for (int i = 0; i < _myAbilities.Length; i++)
+				for (int i = 0; i < abillityCount; i++)
                 {
 					//tempAbilityList.Add(_characterAbilities[i]);
 				//	tempAbilityList.Add((CharacterAbility)_myAbilities[i]);
@@ -77,28 +85,44 @@ namespace MoreMountains.CorgiEngine
 					//_myAbilities[i] = (MyAbillityBase)_characterAbilities[i];
 				}
 
-				// ノードのものを追加する。
-				for (int j = 0; j < AdditionalAbilityNodes.Count; j++)
-                {
-					// CharacterAbility[] tempArray = AdditionalAbilityNodes[j].GetComponentsInChildren<CharacterAbility>();
-					MyAbillityBase[] tempArray = AdditionalAbilityNodes[j].GetComponentsInChildren<MyAbillityBase>();
-					_myAbilities = abillityList.ToArray();
-					foreach (MyAbillityBase ability in tempArray)
-                    {
-						//	Debug.Log($"番号{j}、名前{ability.GetComponent<CharacterAbility>()}");
-						//Debug.Log($"sssss{ability.GetType()}");
 
-                       // tempAbilityList.Add(ability);
-						//MyAbillityBase _alter = (MyAbillityBase)ability;
-						abillityList.Add(ability);
+
+				int nodeCount = AdditionalAbilityNodes.Count;
+
+				//ノードがちゃんとあるならノードアビリティ追加
+				if (nodeCount > 0) 
+				{
+
+					// ノードのアビリティを追加する。
+					for (int j = 0; j < nodeCount; j++)
+					{
+						
+						MyAbillityBase[] tempArray = AdditionalAbilityNodes[j].GetComponentsInChildren<MyAbillityBase>();
+
+
+						//全部加え切ってからでよくね
+						//_myAbilities = abillityList.ToArray();
+
+						abillityCount = tempArray.Length;
+						for(int i = 0;i<abillityCount;i++)
+						{
+							//ノードアビリティ追加
+							abillityList.Add(tempArray[i]);
+						}
 					}
-                }
+				}
 
                _myAbilities = abillityList.ToArray();
-				_characterAbilities = Array.ConvertAll<MyAbillityBase, CharacterAbility>(_myAbilities, ReturnMyAbility);
+				abillityCount = _myAbilities.Length;
+
+				
+				//これ一旦消してみよう
+				//コーギーの純正アビリティとは決別する形で
+				//_characterAbilities = Array.ConvertAll<MyAbillityBase, CharacterAbility>(_myAbilities, ReturnMyAbility);
 				
 				
 			}
+
             _abilitiesCachedOnce = true;
         }
 
@@ -124,6 +148,8 @@ namespace MoreMountains.CorgiEngine
 			{
 				LinkedInputManager = null;
 				InputManager[] foundInputManagers = FindObjectsOfType(typeof(RewiredCorgiEngineInputManager)) as RewiredCorgiEngineInputManager[];
+				
+				
 				foreach (RewiredCorgiEngineInputManager foundInputManager in foundInputManagers)
 				{
 					if (foundInputManager.PlayerID == PlayerID)
@@ -169,9 +195,10 @@ namespace MoreMountains.CorgiEngine
 			{
 				return;
 			}
-			foreach (CharacterAbility ability in _myAbilities)
+
+			for(int i = 0; i < abillityCount; i++)
 			{
-				ability.ResetInput();
+				_myAbilities[i].ResetInput();
 			}
 		}
 
@@ -198,15 +225,16 @@ namespace MoreMountains.CorgiEngine
 			{
 				return;
 			}
-			foreach (MyAbillityBase ability in _myAbilities)
-			{
+
+            for (int i = 0; i < abillityCount; i++)
+            {
 
 
 		//		Debug.Log("asdf");
-				if (ability.enabled && ability.AbilityInitialized)
+				if (_myAbilities[i].enabled && _myAbilities[i].AbilityInitialized)
 				{
 				//	Debug.Log("af");
-					ability.EarlyProcessAbility();
+					_myAbilities[i].EarlyProcessAbility();
 				}
 			}
 		}
@@ -216,18 +244,19 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected override void ProcessAbilities()
 		{
-			//	Debug.Log($"sssss{ability.GetType()}");
+			//	Debug.Log($"sssss{_myAbilities[i].GetType()}");
 
 			//UI出てる時は操作不可
 			if (MainUICon.instance.UIOn && CharacterType == CharacterTypes.Player)
 			{
 				return;
 			}
-			foreach (MyAbillityBase ability in _myAbilities)
-			{
-				if (ability.enabled && ability.AbilityInitialized)
+
+            for (int i = 0; i < abillityCount; i++)
+            {
+				if (_myAbilities[i].enabled && _myAbilities[i].AbilityInitialized)
 				{
-					ability.ProcessAbility();
+					_myAbilities[i].ProcessAbility();
 				}
 			}
 
@@ -243,11 +272,13 @@ namespace MoreMountains.CorgiEngine
 			{
 				return;
 			}
-			foreach (MyAbillityBase ability in _myAbilities)
-			{
-				if (ability.enabled && ability.AbilityInitialized)
+
+
+            for (int i = 0; i < abillityCount; i++)
+            {
+				if (_myAbilities[i].enabled && _myAbilities[i].AbilityInitialized)
 				{
-					ability.LateProcessAbility();
+					_myAbilities[i].LateProcessAbility();
 				}
 			}
 		}
@@ -300,11 +331,11 @@ namespace MoreMountains.CorgiEngine
 				UpdateAnimationRandomNumber();
 				MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _randomAnimationParameter, _animatorRandomNumber, _animatorParameters, PerformAnimatorSanityChecks);
 
-				foreach (MyAbillityBase ability in _myAbilities)
-				{
-					if (ability.enabled && ability.AbilityInitialized)
+                for (int i = 0; i < abillityCount; i++)
+                {
+					if (_myAbilities[i].enabled && _myAbilities[i].AbilityInitialized)
 					{
-						ability.UpdateAnimator();
+						_myAbilities[i].UpdateAnimator();
 					}
 				}
 			}
@@ -356,15 +387,41 @@ namespace MoreMountains.CorgiEngine
 			IsFacingRight = !IsFacingRight;
 
 			// we tell all our abilities we should flip
-			foreach (CharacterAbility ability in _myAbilities)
+			for(int i = 0; i < abillityCount; i++)
 			{
-				if (ability.enabled)
+				if (_myAbilities[i].enabled)
 				{
-					ability.Flip();
+					_myAbilities[i].Flip();
 				}
 			}
 		}
 
+
+
+		/// <summary>
+		/// スタンした時に呼ばれる
+		/// アビリティを停止させる
+		/// 
+		/// 必要そうなのは
+		/// ・ジャンプ
+		/// ・しゃがみ
+		/// ・走り
+		/// ・攻撃
+		/// ・シスターさんの攻撃
+		/// ・敵AI
+		/// ・敵攻撃
+		/// ・ガード
+		/// </summary>
+		public void StunStopAbillity()
+		{
+            for (int i = 0; i < abillityCount; i++)
+            {
+                if (_myAbilities[i].enabled && _myAbilities[i].AbilityInitialized)
+                {
+                    _myAbilities[i].StopAbillity();
+                }
+            }
+        }
 
 	}
 }

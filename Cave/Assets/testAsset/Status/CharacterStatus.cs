@@ -34,6 +34,11 @@ public abstract class CharacterStatus : ScriptableObject
         public CharaType _type;
 
         /// <summary>
+        /// どちらの陣営であるか
+        /// </summary>
+        public CharacterSide side;
+
+        /// <summary>
         /// 強い？
         /// </summary>
         [Header("強敵かどうか")]
@@ -89,6 +94,18 @@ public abstract class CharacterStatus : ScriptableObject
         none//指定なし
     }
 
+
+    /// <summary>
+    /// キャラクターが所属する陣営
+    /// これでアクセスするマネージャーが決まる
+    /// </summary>
+    public enum CharacterSide
+    {
+        Player,
+        Enemy,
+        Other//これは使わない。統一仕様としてOther同士は自分をプレイヤー、敵をエネミーとみなすように
+             //使わないがいましめとして残す。あとプレイヤーはOtherを敵とみなすし敵はプレイヤーとみなす
+    }
 
     public enum AttackType
     {
@@ -204,6 +221,30 @@ public abstract class CharacterStatus : ScriptableObject
     }
 
 
+    /// <summary>
+    /// 防御力のまとめ構造体
+    /// </summary>
+    public struct DefStatus
+    {
+        [Header("無属性防御力。体力で上がる")]
+        public float Def;
+        [Header("刺突防御。筋力で上がる")]
+        public float pierDef;
+        [Header("打撃防御、技量で上がる")]
+        public float strDef;
+        [Header("神聖防御、筋と賢さで上がる")]
+        public float holyDef;
+        [Header("闇防御。賢さで上がる")]
+        public float darkDef;
+        [Header("炎防御。賢さと生命で上がる")]
+        public float fireDef;
+        [Header("雷防御。賢さと持久で上がる")]
+        public float thunderDef;
+
+
+
+    }
+
 
 
     #endregion
@@ -211,6 +252,8 @@ public abstract class CharacterStatus : ScriptableObject
 
     public CharaType characterType;
 
+    [Header("防御ステータス")]
+    public DefStatus deffenceStatus;
 
     //　キャラクターのレベル
     public int level = 1;
@@ -230,20 +273,6 @@ public abstract class CharacterStatus : ScriptableObject
 
 
 
-    //　無属性防御力。体力で上がる
-    public float Def = 70;
-    //刺突防御。筋力で上がる
-    public float pierDef = 70;
-    //打撃防御、技量で上がる
-    public float strDef = 70;
-    //神聖防御、筋と賢さで上がる。
-    public float holyDef = 70;
-    //闇防御。賢さで上がる
-    public float darkDef = 70;
-    //炎防御。賢さと生命で上がる
-    public float fireDef = 70;
-    //雷防御。賢さと持久で上がる。
-    public float thunderDef = 70;
 
 
 

@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using Guirao.UltimateTextDamage;
 using MoreMountains.Tools;
 using UnityEngine;
+using static DefenseData;
 
 namespace MoreMountains.CorgiEngine
 {
@@ -21,17 +22,12 @@ namespace MoreMountains.CorgiEngine
         /// </summary>
         ControllAbillity _charaCon;
 
+        /// <summary>
+        /// ダメージ機能から渡される吹き飛び距離
+        /// </summary>
         [HideInInspector]
         public Vector2 blowVector;
 
-        [HideInInspector]
-        public bool _parryNow;
-
-        [HideInInspector]
-        public bool _guardAttack;
-
-        [HideInInspector]
-        public bool _superArumor;
 
 
         /// <summary>
@@ -155,12 +151,9 @@ namespace MoreMountains.CorgiEngine
             int damage = 0;
 
 
-                //アタックデータをセットするメソッドとかほしい
-                //ヒット時ダメージ計算でヒット時やるか
-                _charaCon.DefCalc();
 
 
-            damage = (int)Calc(_damageData, back);
+            damage = (int)DamageCalc(_damageData, back);
 
         //  Debug.Log($"おせーて{damage}と{CurrentHealth}{stunnState}");
             if (um != null)
@@ -282,7 +275,7 @@ namespace MoreMountains.CorgiEngine
             }
         }
 
-        public float Calc(AttackData _damageData, bool back)
+        public float DamageCalc(AttackData _damageData, bool back)
         {
             bool stab = false;
             //isDamage = true;
@@ -297,175 +290,122 @@ namespace MoreMountains.CorgiEngine
 
             //////Debug.log("終了");
             float damage = 0;//バフデバフ処理用にdamageとして保持する
-            float mValue = _damageData.mValue;
+            float mValue = _damageData.actionData.mValue;
             //float damage;//バフデバフ処理用にdamageとして保持する
 
+            bool isGuard = ((HealthStateJudge(DefState.ガード中)) && !back);
+
             //ガード時
-            if ((_defData.isGuard || _guardAttack) && !back)
-            {  
+            //ガード方向とか見れるようにしたいな
 
-                //ガード時
-                if (_damageData.phyAtk > 0)
+
+            //ガード時
+
+
+            float multipler = 0;
+
+                //斬撃刺突打撃を管理
+                if (ElementalJudge(_damageData.actionData.useElement, AtEffectCon.Element.斬撃属性))
                 {
 
-                    //斬撃刺突打撃を管理
-                    if (_damageData.phyType == Equip.AttackType.Slash)
-                    {
-                        damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def) * ((100 - _defData.phyCut) / 100);
+                //攻撃倍率を防御倍率でかける。ダメージ0.7倍にするバフと攻撃側の1.2倍バフをかけ合わせるみたいな
+                multipler = _damageData.multipler.phyAtkMultipler * _defData.multipler.phyDefMultipler;
+                damage +=CalcuExe(_damageData.attackStatus.phyAtk, _defData.status.Def, mValue, multipler,isGuard ? _defData.guardStatus.phyCut:0);
 
-                    }
-                    else if (_damageData.phyType == Equip.AttackType.Stab)
-                    {
-                        damage += (Mathf.Pow(_damageData.phyAtk * mValue, 2)) / (_damageData.phyAtk + _defData.pierDef) * ((100 - _defData.phyCut) / 100);
-                        stab = true;
-
-                    }
-                    else
-                    {
-                        damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.strDef) * ((100 - _defData.phyCut) / 100);
-                        //	_damageData.phyType = 4;
-                        //						Debug.Log("皿だ");
-
-                    }
-
+                 
                 }
+                if (ElementalJudge(_damageData.actionData.useElement, AtEffectCon.Element.刺突属性))
+                {
+                multipler = _damageData.multipler.phyAtkMultipler * _defData.multipler.phyDefMultipler;
+                damage += CalcuExe(_damageData.attackStatus.phyAtk, _defData.status.pierDef, mValue, multipler, isGuard ? _defData.guardStatus.phyCut : 0);
+
+            }
+                if (ElementalJudge(_damageData.actionData.useElement, AtEffectCon.Element.打撃属性))
+                {
+                multipler = _damageData.multipler.phyAtkMultipler * _defData.multipler.phyDefMultipler;
+                damage += CalcuExe(_damageData.attackStatus.phyAtk, _defData.status.strDef, mValue, multipler, isGuard ? _defData.guardStatus.phyCut : 0);
+
+            }
+
                 //神聖
-                if (_damageData.holyAtk > 0)
+                if (ElementalJudge(_damageData.actionData.useElement, AtEffectCon.Element.聖属性))
                 {
-                    damage += (Mathf.Pow(_damageData.holyAtk, 2) * mValue) / (_damageData.holyAtk + _defData.holyDef) * ((100 - _defData.holyCut) / 100);
+                multipler = _damageData.multipler.holyAtkMultipler * _defData.multipler.holyDefMultipler;
+                damage += CalcuExe(_damageData.attackStatus.holyAtk, _defData.status.holyDef, mValue, multipler, isGuard ? _defData.guardStatus.holyCut : 0);
 
-
-                }
+            }
                 //闇
-                if (_damageData.darkAtk > 0)
+                if (ElementalJudge(_damageData.actionData.useElement, AtEffectCon.Element.闇属性))
                 {
-                    damage += (Mathf.Pow(_damageData.darkAtk, 2) * mValue) / (_damageData.darkAtk + _defData.darkDef) * ((100 - _defData.darkCut) / 100);
-
-                }
+                multipler = _damageData.multipler.darkAtkMultipler * _defData.multipler.darkDefMultipler;
+                damage += CalcuExe(_damageData.attackStatus.darkAtk, _defData.status.darkDef, mValue, multipler, isGuard ? _defData.guardStatus.darkCut : 0);
+            }
                 //炎
-                if (_damageData.fireAtk > 0)
+                if (ElementalJudge(_damageData.actionData.useElement, AtEffectCon.Element.炎属性))
                 {
-                    damage += (Mathf.Pow(_damageData.fireAtk, 2) * mValue) / (_damageData.fireAtk + _defData.fireDef) * ((100 - _defData.fireCut) / 100);
+                multipler = _damageData.multipler.fireAtkMultipler * _defData.multipler.fireDefMultipler;
+                damage += CalcuExe(_damageData.attackStatus.fireAtk, _defData.status.fireDef, mValue, multipler, isGuard ? _defData.guardStatus.fireCut : 0);
 
-                }
+            }
                 //雷
-                if (_damageData.thunderAtk > 0)
+                if (ElementalJudge(_damageData.actionData.useElement, AtEffectCon.Element.雷属性))
                 {
-                    damage += (Mathf.Pow(_damageData.thunderAtk, 2) * mValue) / (_damageData.thunderAtk + _defData.thunderDef) * ((100 - _defData.thunderCut) / 100);
+                multipler = _damageData.multipler.thunderAtkMultipler * _defData.multipler.thunderDefMultipler;
+                damage += CalcuExe(_damageData.attackStatus.thunderAtk, _defData.status.thunderDef, mValue, multipler, isGuard ? _defData.guardStatus.thunderCut : 0);
+            }
 
-                }
 
+            if (isGuard)
+            {
                 //魔法の盾や紗う面ガードしてるギミックではこういうこともあるかも
                 //ヘルスつけてる以上はね
-                 _charaCon.GuardSound();
-
+                _charaCon.GuardSound();
             }
-            else
+
+
+            //刺突カウンター
+            if (HealthStateJudge(DefState.攻撃中) && stab)
             {
-           //     Debug.Log($"ｆｆ{_defData.isGuard}ｄ{!back}");
-                if (_damageData.phyAtk > 0)
-                {
-
-                    //斬撃刺突打撃を管理
-                    if (_damageData.phyType ==  Equip.AttackType.Slash)
-                    {
-                        damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.Def);
-
-                    }
-                    else if (_damageData.phyType ==  Equip.AttackType.Stab)
-                    {
-
-                        damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.pierDef);
-                        stab = true;
-
-                    }
-                    else
-                    {
-                        damage += (Mathf.Pow(_damageData.phyAtk, 2) * mValue) / (_damageData.phyAtk + _defData.strDef);
-                        //	_damageData.phyType = 4;
-                        //						Debug.Log("皿だ");
-                        if (_damageData.shock >= 40)
-                        {
-                            _damageData.isHeavy = true;
-                        }
-
-                    }
-
-                }
-                //神聖
-                if (_damageData.holyAtk > 0)
-                {
-                    damage += (Mathf.Pow(_damageData.holyAtk, 2) * mValue) / (_damageData.holyAtk + _defData.holyDef);
-
-                }
-                //闇
-                if (_damageData.darkAtk > 0)
-                {
-                    damage += (Mathf.Pow(_damageData.darkAtk, 2) * mValue) / (_damageData.darkAtk + _defData.darkDef);
-
-                }
-                //炎
-                if (_damageData.fireAtk > 0)
-                {
-                    damage += (Mathf.Pow(_damageData.fireAtk, 2) * mValue) / (_damageData.fireAtk + _defData.fireDef);
-
-                }
-                //雷
-                if (_damageData.thunderAtk > 0)
-                {
-
-                    damage += (Mathf.Pow(_damageData.thunderAtk, 2) * mValue) / (_damageData.thunderAtk + _defData.thunderDef);
-
-                }
-
-
-                if (back && _defender != MyDamageOntouch.TypeOfSubject.Gimic)
-                {
-                    damage *= 1.08f;
-                    _damageData.shock *= 1.1f;
-                }
-
-                //バックアタック
-
-
-                    //アタックデータをセットするメソッドとかほしい
-                    //ヒット時ダメージ計算でヒット時やるか
-                    DamageSound(_damageData._attackType, _damageData.isHeavy);
-
-                //魔法やオブジェクトには個別のダメージサウンドがあるのでは
-                if (_defender == MyDamageOntouch.TypeOfSubject.Magic)
-                {
-
-                }
-                else
-                {
-                    //オブジェクトがダメージ受ける
-                }
-
+                damage *= 1.15f;
             }
-
-            if (_defData.attackNow && stab)
-            {
-                damage *= 1.1f;
-            }
-            else if (_defData.isDangerous)
+            //スタン時
+            else if (HealthStateJudge(DefState.被ダメージ増大))
             {
                 damage *= 1.2f;
             }
 
-            damage = Mathf.Floor(damage * GManager.instance.attackBuff);
+            multipler = _damageData.multipler.allAtkMultipler * _defData.multipler.allDefMultipler;
+            return Mathf.Floor(damage * multipler);
+
+
+        }
+
+
+        /// <summary>
+        /// 計算実行
+        /// 共通の式で行う
+        /// </summary>
+        /// <param name="atk"></param>
+        /// <param name="def"></param>
+        /// <param name="mValue"></param>
+        /// <param name="guardCut">ガードのカット率。ガードしないなら0</param>
+        /// <param name="multipler"></param>
+        /// <returns></returns>
+        float CalcuExe(float atk,float def,float mValue,float multipler,float guardCut = 0)
+        {
+           return ((Mathf.Pow(atk, 2) * mValue) / (atk + def)) * multipler * ((100 - guardCut) / 100);
+        }
 
 
 
-
-
-
-            //    Debug.Log($"ええ{damage}");
-
-            return Mathf.Floor(damage * GManager.instance.attackBuff);
-
-
-
+        /// <summary>
+        /// 属性が攻撃属性に当てはまるかのビット演算の結果を返してくれるメソッド
+        /// </summary>
+        /// <returns></returns>
+        bool ElementalJudge(AtEffectCon.Element judgeElement,AtEffectCon.Element condition)
+        {
+            //かつで0以上になるか
+            return (judgeElement & condition) > 0;
         }
 
         /// <summary>
@@ -480,7 +420,8 @@ namespace MoreMountains.CorgiEngine
 
             MyWakeUp.StunnType result = MyWakeUp.StunnType.notStunned;
 
-            if (_superArumor || (_guardAttack && !isBack) || shock <= 0)
+            //ガード攻撃はガードとスーパーアーマーをつける
+            if (HealthStateJudge(DefState.スーパーアーマー)  || shock <= 0)
             {
                 result = MyWakeUp.StunnType.notStunned;
             }
@@ -492,6 +433,8 @@ namespace MoreMountains.CorgiEngine
 
             return result;
         }
+
+
 
 
 
@@ -609,15 +552,15 @@ namespace MoreMountains.CorgiEngine
         /// <param name="damageType"></param>
         public void DamageSound(AtEffectCon.Element damageType, bool heavy)
         {
-            if (damageType == AtEffectCon.Element.slash)
+            if (damageType == AtEffectCon.Element.斬撃属性)
             {
                 GManager.instance.PlaySound("SlashDamage", transform.position);
             }
-            else if (damageType == AtEffectCon.Element.stab)
+            else if (damageType == AtEffectCon.Element.刺突属性)
             {
                 GManager.instance.PlaySound("StabDamage", transform.position);
             }
-            else if (damageType == AtEffectCon.Element.strike)
+            else if (damageType == AtEffectCon.Element.打撃属性)
             {
                 if (!heavy)
                 {
@@ -630,21 +573,21 @@ namespace MoreMountains.CorgiEngine
                     heavy = false;
                 }
             }
-            else if (damageType == AtEffectCon.Element.holy)
+            else if (damageType == AtEffectCon.Element.聖属性)
             {
                 GManager.instance.PlaySound("HolyDamage", transform.position);
             }
-            else if (damageType == AtEffectCon.Element.dark)
+            else if (damageType == AtEffectCon.Element.闇属性)
             {
                 GManager.instance.PlaySound("DarkDamage", transform.position);
             }
-            else if (damageType == AtEffectCon.Element.fire)
+            else if (damageType == AtEffectCon.Element.炎属性)
             {
 
 
                 GManager.instance.PlaySound("FireDamage", transform.position);
             }
-            else if (damageType == AtEffectCon.Element.thunder)
+            else if (damageType == AtEffectCon.Element.雷属性)
             {
 
                 GManager.instance.PlaySound("ThunderDamage", transform.position);
@@ -655,13 +598,46 @@ namespace MoreMountains.CorgiEngine
             _charaCon.Die();
         }
 
+
         /// <summary>
-        /// ガードしてるかを確認する
+        /// ヘルスの状態変更するメソッド
+        /// isEndが真なら状態を終わらせる
         /// </summary>
-        public void GuardReport()
+        /// <param name="isEnd"></param>
+        /// <param name="changeState"></param>
+        public void HealthStateChange(bool isEnd, DefState changeState)
         {
-            _defData.isGuard = _charaCon.GuardReport();
+            //消す
+            if (isEnd)
+            {
+                //両方ないやつは消す
+                //チェンジ対象の反転ビットにつける
+                //001001 と　01では桁数変わらない？　動作不良に注意
+                _defData.state &= ~changeState;
+            }
+            //つける
+            else
+            {
+                //どちらか片方あるやつ、の演算
+                //チェンジ対象をつける
+                _defData.state |= changeState;
+            }
+
+
         }
+
+        /// <summary>
+        /// ヘルスの状態が当てはまるかのビット演算の結果を返してくれるメソッド
+        /// </summary>
+        /// <returns></returns>
+        bool HealthStateJudge(DefState judgeState)
+        {
+            //かつで0以上になるか
+            return (_defData.state & judgeState) > 0;
+        }
+
+
+
         /// <summary>
         /// Allows the character to take damage
         /// </summary>

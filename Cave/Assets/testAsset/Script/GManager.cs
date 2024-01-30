@@ -168,8 +168,8 @@ public class GManager : MonoBehaviour
    // public float 
     #endregion
 
-    [HideInInspector]
-    public AttackValue useAtValue;
+  //  [HideInInspector]
+  //  public AttackValue useAtValue;
 
     /// <summary>
     /// 装備とアニメーション管理関連
@@ -672,7 +672,7 @@ public class GManager : MonoBehaviour
         equipWeapon.MagicAssist = equipWeapon.MagicAssistBase + equipWeapon.MAssistCurve[n].Evaluate(_int);
 
         equipWeapon.castSkill = 1;
-        equipWeapon.castSkill -= equipWeapon.CastCurve.Evaluate(skill) / 100;
+        equipWeapon.castSkill -= equipWeapon.CastCurve.Evaluate() / 100;
     }
 
     /// <summary>

@@ -1438,22 +1438,22 @@ namespace MyCode
             //これサポートとデバフ、回復も必要じゃない？
             if ((int)element < 4)
             {
-                if (element == AtEffectCon.Element.slash)
+                if (element == AtEffectCon.Element.斬撃属性)
                 {
                     GManager.instance.PlaySound(slashCast[magicLevel], pos.position);
                      return _generalPool.ControlSpawn(slashCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
-                else if (element == AtEffectCon.Element.stab)
+                else if (element == AtEffectCon.Element.刺突属性)
                 {
                     GManager.instance.PlaySound(stabCast[magicLevel], pos.position);
                     return _generalPool.ControlSpawn(stabCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
-                else if (element == AtEffectCon.Element.strike)
+                else if (element == AtEffectCon.Element.打撃属性)
                 {
                     GManager.instance.PlaySound(strikeCast[magicLevel], pos.position);
                     return _generalPool.ControlSpawn(strikeCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
-                else if (element == AtEffectCon.Element.holy)
+                else if (element == AtEffectCon.Element.聖属性)
                 {
                     GManager.instance.PlaySound(holyCast[magicLevel], pos.position);
                     return _generalPool.ControlSpawn(holyCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
@@ -1461,18 +1461,18 @@ namespace MyCode
             }
             else
             {
-                if (element == AtEffectCon.Element.dark)
+                if (element == AtEffectCon.Element.闇属性)
                 {
                     GManager.instance.PlaySound(darkCast[magicLevel], pos.position);
                     return _generalPool.ControlSpawn(darkCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
-                else if (element == AtEffectCon.Element.fire)
+                else if (element == AtEffectCon.Element.炎属性)
                 {
                     
                     GManager.instance.PlaySound(fireCast[magicLevel], pos.position);
                     return _generalPool.ControlSpawn(fireCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
                 }
-                else if (element == AtEffectCon.Element.thunder)
+                else if (element == AtEffectCon.Element.雷属性)
                 {
                     GManager.instance.PlaySound(thunderCast[magicLevel], pos.position);
                     return _generalPool.ControlSpawn(thunderCEffect[magicLevel], pos.position, pos.rotation,pos).transform;
@@ -1497,25 +1497,25 @@ namespace MyCode
 
             if ((int)element < 4)
             {
-                if (element == AtEffectCon.Element.slash)
+                if (element == AtEffectCon.Element.斬撃属性)
                 {
                     _generalPool.Spawn(slashActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(slashCast[magicLevel], isStop: true);
                     GManager.instance.PlaySound(slashActivate[magicLevel], inst.position);
                 }
-                else if (element == AtEffectCon.Element.stab)
+                else if (element == AtEffectCon.Element.刺突属性)
                 {
                     _generalPool.Spawn(stabActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(stabCast[magicLevel], isStop: true);
                     GManager.instance.PlaySound(stabActivate[magicLevel], inst.position);
                 }
-                else if (element == AtEffectCon.Element.strike)
+                else if (element == AtEffectCon.Element.打撃属性)
                 {
                     _generalPool.Spawn(strikeActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(strikeCast[magicLevel], isStop: true);
                     GManager.instance.PlaySound(strikeActivate[magicLevel], inst.position);
                 }
-                else if (element == AtEffectCon.Element.holy)
+                else if (element == AtEffectCon.Element.聖属性)
                 {
                     _generalPool.Spawn(holyActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(holyCast[magicLevel],isStop: true);
@@ -1524,25 +1524,25 @@ namespace MyCode
             }
             else
             {
-                if (element == AtEffectCon.Element.dark)
+                if (element == AtEffectCon.Element.闇属性)
                 {
                     _generalPool.Spawn(darkActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(darkCast[magicLevel], isStop: true);
                     GManager.instance.PlaySound(darkActivate[magicLevel], inst.position);
                 }
-                else if (element == AtEffectCon.Element.fire)
+                else if (element == AtEffectCon.Element.炎属性)
                 {
                     _generalPool.Spawn(fireActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(fireCast[magicLevel], isStop: true);
                     GManager.instance.PlaySound(fireActivate[magicLevel], inst.position);
                 }
-                else if (element == AtEffectCon.Element.thunder)
+                else if (element == AtEffectCon.Element.雷属性)
                 {
                     _generalPool.Spawn(thunderActiEffect[magicLevel], inst.position, inst.rotation);
                     GManager.instance.StopSound(thunderCast[magicLevel], isStop: true);
                     GManager.instance.PlaySound(thunderActivate[magicLevel], inst.position);
                 }
-                else if (element == AtEffectCon.Element.none)
+                else if (element == AtEffectCon.Element.指定なし)
                 {
 
                 }
@@ -1561,36 +1561,36 @@ namespace MyCode
             _generalPool.Despawn(inst);
             if ((int)element < 4)
             {
-                if (element == AtEffectCon.Element.slash)
+                if (element == AtEffectCon.Element.斬撃属性)
                 {
  
                     GManager.instance.StopSound(slashCast[magicLevel], isStop: true);
 
                 }
-                else if (element == AtEffectCon.Element.stab)
+                else if (element == AtEffectCon.Element.刺突属性)
                 {
                     GManager.instance.StopSound(stabCast[magicLevel], isStop: true);
                 }
-                else if (element == AtEffectCon.Element.strike)
+                else if (element == AtEffectCon.Element.打撃属性)
                 {
                     GManager.instance.StopSound(strikeCast[magicLevel], isStop: true);
                 }
-                else if (element == AtEffectCon.Element.holy)
+                else if (element == AtEffectCon.Element.聖属性)
                 {
                     GManager.instance.StopSound(holyCast[magicLevel], isStop: true);
                 }
             }
             else
             {
-                if (element == AtEffectCon.Element.dark)
+                if (element == AtEffectCon.Element.闇属性)
                 {
                     GManager.instance.StopSound(darkCast[magicLevel], isStop: true);
                 }
-                else if (element == AtEffectCon.Element.fire)
+                else if (element == AtEffectCon.Element.炎属性)
                 {
                     GManager.instance.StopSound(fireCast[magicLevel], isStop: true);
                 }
-                else if (element == AtEffectCon.Element.thunder)
+                else if (element == AtEffectCon.Element.雷属性)
                 {
                     GManager.instance.StopSound(thunderCast[magicLevel], isStop: true);
                 }
@@ -1600,6 +1600,11 @@ namespace MyCode
                 }
             }
         }
+
+
+
+
+
 
         #endregion
 

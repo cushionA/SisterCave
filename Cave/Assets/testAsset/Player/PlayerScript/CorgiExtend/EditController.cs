@@ -12,22 +12,37 @@ using UnityEditor.U2D.Animation;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
-	public class PlyerController : ControllAbillity 
-	{ 
 
-    //必要な処理書き出し
-    //攻撃受けた時のダメージ回避。重力変化。
-    //ステータス設定とかダメージ倍率などの管理、被弾時攻撃時のCalc系の処理
-    //あと会話あたりの処理？
-	protected UltimateTextDamageManager um;
-		[HideInInspector]
-		public Animator anim;
+    /// <summary>
+    /// まずループ処理を全部タスクにする
+    /// </summary>
+    public class EditController : ControllAbillity
+    {
 
+        //必要な処理書き出し
+        //攻撃受けた時のダメージ回避。重力変化。
+        //ステータス設定とかダメージ倍率などの管理、被弾時攻撃時のCalc系の処理
+        //あと会話あたりの処理？
+        protected UltimateTextDamageManager um;
+        [HideInInspector]
+        public Animator anim;
+        /// <summary>
+        /// 攻撃倍率
+        /// </summary>
+        #region
+        [HideInInspector]
+        public float attackFactor = 1;
+        [HideInInspector]
+        public float fireATFactor = 1;
+        [HideInInspector]
+        public float thunderATFactor = 1;
+        [HideInInspector]
+        public float darkATFactor = 1;
+        [HideInInspector]
+        public float holyATFactor = 1;
 
-
-
-
-
+        protected float attackBuff = 1;//攻撃倍率
+        #endregion
 
 
         //新パラメータ
@@ -42,111 +57,103 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         int horizontalDirection;
 
 
-		//横移動は継承もとにあるよん
+        //横移動は継承もとにあるよん
 
 
-		#endregion
-		//内部処理に使うやつ
-		#region
-		protected float recoverTime;//アーマー回復までにかかる時間
-		protected int lastArmor = 1;
-		protected bool isDamage;
-		protected float nowArmor;
+        #endregion
+        //内部処理に使うやつ
+        #region
+        protected float recoverTime;//アーマー回復までにかかる時間
+        protected int lastArmor = 1;
+        protected bool isDamage;
+        protected float nowArmor;
+        #endregion
 
 
+        //プレイヤーのアビリティ管理に使う
+        #region
+        [SerializeField]
+        protected PlayerRoll _rolling;
+        [SerializeField]
+        protected PlayerRunning _running;
+        [SerializeField]
+        protected GuardAbillity _guard;
+        [SerializeField]
+        protected PlayerJump _jump;
+        [SerializeField]
+        protected WeaponAbillity _weapon;
+        public MyWakeUp _wakeup;
+        [SerializeField]
+        protected WeaponAbillity _attack;
+        [SerializeField]
+        protected MyDamageOntouch _damage;
 
-		#endregion
+        [SerializeField]
+        protected PlayerCrouch _squat;
+
+        [SerializeField]
+        protected ParryAbility _parry;
+
+        #endregion
+
+        [SerializeField]
+        GameObject eController;
+
+        [SerializeField]
+        EnemyController eCon;
+
+        protected override void Initialization()
+        {
+            base.Initialization();
+            anim = _animator;
 
 
-		//プレイヤーのアビリティ管理に使う
-		#region
-		[SerializeField]
-		protected PlayerRoll _rolling;
-		[SerializeField]
-		protected PlayerRunning _running;
-		[SerializeField]
-		protected GuardAbillity _guard;
-		[SerializeField]
-		protected PlayerJump _jump;
+            //	SetComponennt();
+            GManager.instance.StatusSetting();
 
-		public MyWakeUp _wakeup;
-		[SerializeField]
-		protected WeaponAbillity _attack;
-		[SerializeField]
-		protected MyDamageOntouch _damage;
+            ParameterSet(GManager.instance.pStatus);
 
-		[SerializeField]
-		protected PlayerCrouch _squat;
+            //Background analysis of asset and meta files has been disabled, because this project seems too large. Do not warn me again 
 
-		[SerializeField]
-		protected ParryAbility _parry;
-
-		#endregion
-
-		[SerializeField]
-		GameObject eController;
-
-		[SerializeField]
-		EnemyController eCon;
-
-		/// <summary>
-		/// こうげき機能で使う魔法
-		/// </summary>
-		[HideInInspector]
-		public PlayerMagic useMagic;
-
-		protected override void Initialization()
-		{
-			base.Initialization();
-			anim = _animator;
-
-			
-		//	SetComponennt();
-			GManager.instance.StatusSetting();
-           
-			ParameterSet(GManager.instance.pStatus);
-
-			//Background analysis of asset and meta files has been disabled, because this project seems too large. Do not warn me again 
-
-			if (!GManager.instance.twinHand)
+            if (!GManager.instance.twinHand)
             {
-				GManager.instance.AnimationSetting();
-				//Debug.Log($"asidk");
-			}
-			ArmorReset();
-
-			//	rb = this.gameObject._character.FindAbility<Rigidbody2D>();
-			GManager.instance.HPReset();
-
-			//_characterHorizontalMovement.FlipCharacterToFaceDirection = false;
-			//parentMatt = _character.FindAbility<SpriteRenderer>().material;
-			//td = _character.FindAbility<TargetDisplay>();
-		}
-
-
-		public void ParameterSet(PlayerStatus status)
-	{
-
-			
-			if(status == null)
-            {
-				Debug.Log("ｓｆｆｇ");
-				return;
+                GManager.instance.AnimationSetting();
+                //Debug.Log($"asidk");
             }
-            else if(_controller == null)
+            ArmorReset();
+
+            //	rb = this.gameObject._character.FindAbility<Rigidbody2D>();
+            GManager.instance.HPReset();
+
+            //_characterHorizontalMovement.FlipCharacterToFaceDirection = false;
+            //parentMatt = _character.FindAbility<SpriteRenderer>().material;
+            //td = _character.FindAbility<TargetDisplay>();
+        }
+
+
+        public void ParameterSet(PlayerStatus status)
+        {
+
+
+            if (status == null)
             {
-				Debug.Log("ｈでｒｈふせｒｌｆｐ＠");
+                Debug.Log("ｓｆｆｇ");
+                return;
+            }
+            else if (_controller == null)
+            {
+                Debug.Log("ｈでｒｈふせｒｌｆｐ＠");
             }
 
-			_health.MaximumHealth = GManager.instance.maxHp;
-			_health.InitialHealth = _health.MaximumHealth;
-			_health.CurrentHealth = _health.MaximumHealth;
+            _health.MaximumHealth = GManager.instance.maxHp;
+            _health.InitialHealth = _health.MaximumHealth;
+            _health.CurrentHealth = _health.MaximumHealth;
 
-			///<summary>
-			///　リスト
-			/// </summary>
-			#region
-			/*
+            ///<summary>
+            ///　リスト
+            /// </summary>
+            #region
+            /*
 		 CharacterJump _characterJump;
 		 PlayerRoll _rolling;
 		 CharacterRun _characterRun;
@@ -156,12 +163,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		 EAttackCon _attack;
 
 			*/
-			#endregion
+            #endregion
 
-			GravitySet(status.firstGravity);
-			_characterHorizontalMovement.MovementSpeed = status.moveSpeed;
-			#region
-			/*
+            GravitySet(status.firstGravity);
+            _characterHorizontalMovement.MovementSpeed = status.moveSpeed;
+            #region
+            /*
 					/// the speed of the character when it's walking
 	[Tooltip("the speed of the character when it's walking")]
 	public float WalkSpeed = 6f;
@@ -234,93 +241,93 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 	[Tooltip("Whether or not the state should be reset to Idle when colliding laterally with a wall")]
 	public bool StopWalkingWhenCollidingWithAWall = false;
 			 */
-			#endregion
-			_characterHorizontalMovement.WalkSpeed = status.moveSpeed;
-			if (_running != null)
-			{
-				_running.RunSpeed = status.dashSpeed;
-			}
+            #endregion
+            _characterHorizontalMovement.WalkSpeed = status.moveSpeed;
+            if (_running != null)
+            {
+                _running.RunSpeed = status.dashSpeed;
+            }
 
 
 
-		if (_rolling != null)
-		{
-			#region
-			/*
-					 /// 何秒転がる
-	[Tooltip("ローリング時間")]
-	public float RollDuration = 0.5f;
-	/// the speed of the roll (a multiplier of the regular walk speed)
-	[Tooltip("転がる速さが通常の歩く速さの何倍か")]
-	public float RollSpeed = 3f;
-	/// if this is true, horizontal input won't be read, and the character won't be able to change direction during a roll
-	[Tooltip("trueの場合、水平方向の入力は読み込まれず、ロール中に方向を変えることはできません。")]
-	public bool BlockHorizontalInput = false;
-	/// if this is true, no damage will be applied during the roll, and the character will be able to go through enemies
-	/// //このパラメーターがかかわる処理を見れば無敵処理がわかる
-	[Tooltip("trueの場合、ロール中にダメージが与えられず、敵をスルーできるようになります。")]
-	public bool PreventDamageCollisionsDuringRoll = false;
+            if (_rolling != null)
+            {
+                #region
+                /*
+                         /// 何秒転がる
+        [Tooltip("ローリング時間")]
+        public float RollDuration = 0.5f;
+        /// the speed of the roll (a multiplier of the regular walk speed)
+        [Tooltip("転がる速さが通常の歩く速さの何倍か")]
+        public float RollSpeed = 3f;
+        /// if this is true, horizontal input won't be read, and the character won't be able to change direction during a roll
+        [Tooltip("trueの場合、水平方向の入力は読み込まれず、ロール中に方向を変えることはできません。")]
+        public bool BlockHorizontalInput = false;
+        /// if this is true, no damage will be applied during the roll, and the character will be able to go through enemies
+        /// //このパラメーターがかかわる処理を見れば無敵処理がわかる
+        [Tooltip("trueの場合、ロール中にダメージが与えられず、敵をスルーできるようになります。")]
+        public bool PreventDamageCollisionsDuringRoll = false;
 
-	//方向
-	[Header("Direction")]
+        //方向
+        [Header("Direction")]
 
-	/// the roll's aim properties
-	[Tooltip("the roll's aim properties")]
-	public MMAim Aim;
-	/// the minimum amount of input required to apply a direction to the roll
-	[Tooltip(" ロールに方向を与えるために必要な最小限の入力量")]
-	public float MinimumInputThreshold = 0.1f;
-	/// if this is true, the character will flip when rolling and facing the roll's opposite direction
-	[Tooltip("これが真なら、キャラクターはロール時に反転し、ロールの反対側を向きます。")]
-	public bool FlipCharacterIfNeeded = true;
+        /// the roll's aim properties
+        [Tooltip("the roll's aim properties")]
+        public MMAim Aim;
+        /// the minimum amount of input required to apply a direction to the roll
+        [Tooltip(" ロールに方向を与えるために必要な最小限の入力量")]
+        public float MinimumInputThreshold = 0.1f;
+        /// if this is true, the character will flip when rolling and facing the roll's opposite direction
+        [Tooltip("これが真なら、キャラクターはロール時に反転し、ロールの反対側を向きます。")]
+        public bool FlipCharacterIfNeeded = true;
 
-	//これコルーチンなんだ
-	public enum SuccessiveRollsResetMethods { Grounded, Time }
+        //これコルーチンなんだ
+        public enum SuccessiveRollsResetMethods { Grounded, Time }
 
-	[Header("Cooldown")]
-	/// the duration of the cooldown between 2 rolls (in seconds)
-	[Tooltip("次のローリングまでに必要な時間")]
-	public float RollCooldown = 1f;
+        [Header("Cooldown")]
+        /// the duration of the cooldown between 2 rolls (in seconds)
+        [Tooltip("次のローリングまでに必要な時間")]
+        public float RollCooldown = 1f;
 
-	[Header("Uses")]
-	/// whether or not rolls can be performed infinitely
-	[Tooltip("無限にローリングできるか")]
-	public bool LimitedRolls = false;
-	/// the amount of successive rolls a character can perform, only if rolls are not infinite
-	[Tooltip("the amount of successive rolls a character can perform, only if rolls are not infinite")]
-	[MMCondition("LimitedRolls", true)]
-	public int SuccessiveRollsAmount = 1;
-	/// the amount of rollss left (runtime value only), only if rolls are not infinite
-	[Tooltip("ローリングの残り回数")]
-	[MMCondition("LimitedRolls", true)]
-	[MMReadOnly]
-	public int SuccessiveRollsLeft = 1;
-	/// when in time reset mode, the duration, in seconds, after which the amount of rolls left gets reset, only if rolls are not infinite
-	[Tooltip("when in time reset mode, the duration, in seconds, after which the amount of rolls left gets reset, only if rolls are not infinite")]
-	[MMCondition("LimitedRolls", true)]
-	public float SuccessiveRollsResetDuration = 2f;
+        [Header("Uses")]
+        /// whether or not rolls can be performed infinitely
+        [Tooltip("無限にローリングできるか")]
+        public bool LimitedRolls = false;
+        /// the amount of successive rolls a character can perform, only if rolls are not infinite
+        [Tooltip("the amount of successive rolls a character can perform, only if rolls are not infinite")]
+        [MMCondition("LimitedRolls", true)]
+        public int SuccessiveRollsAmount = 1;
+        /// the amount of rollss left (runtime value only), only if rolls are not infinite
+        [Tooltip("ローリングの残り回数")]
+        [MMCondition("LimitedRolls", true)]
+        [MMReadOnly]
+        public int SuccessiveRollsLeft = 1;
+        /// when in time reset mode, the duration, in seconds, after which the amount of rolls left gets reset, only if rolls are not infinite
+        [Tooltip("when in time reset mode, the duration, in seconds, after which the amount of rolls left gets reset, only if rolls are not infinite")]
+        [MMCondition("LimitedRolls", true)]
+        public float SuccessiveRollsResetDuration = 2f;
 
-			*/
-			#endregion
+                */
+                #endregion
 
-			_rolling.RollDuration = GManager.instance.pStatus.avoidRes;
+                _rolling.RollDuration = GManager.instance.pStatus.avoidRes;
 
-			//rollSpeedはローリングのスピードが通常移動の何倍か
-			_rolling.RollSpeed = GManager.instance.pStatus.avoidSpeed;
-			_rolling.BlockHorizontalInput = true;
-			_rolling.PreventDamageCollisionsDuringRoll = true;
-			_rolling.RollCooldown = GManager.instance.pStatus.avoidCool;
+                //rollSpeedはローリングのスピードが通常移動の何倍か
+                _rolling.RollSpeed = GManager.instance.pStatus.avoidSpeed;
+                _rolling.BlockHorizontalInput = true;
+                _rolling.PreventDamageCollisionsDuringRoll = true;
+                _rolling.RollCooldown = GManager.instance.pStatus.avoidCool;
 
 
-		}
-			///<summary>
-			///ジャンプ設定
-			/// </summary>
-			#region
-			if (_jump != null)
-			{
-				#region
-				/*
+            }
+            ///<summary>
+            ///ジャンプ設定
+            /// </summary>
+            #region
+            if (_jump != null)
+            {
+                #region
+                /*
 						/// the maximum number of jumps allowed (0 : no jump, 1 : normal jump, 2 : double jump, etc...)
 		[Tooltip("the maximum number of jumps allowed (0 : no jump, 1 : normal jump, 2 : double jump, etc...)")]
 		public int NumberOfJumps = 2;
@@ -385,67 +392,51 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 		public bool CanJumpStop { get; set; }
 
 				 */
-				#endregion
-				_jump.CoyoteTime = GManager.instance.pStatus.jumpCool;
-				_jump.JumpHeight = GManager.instance.pStatus.jumpRes;
-				_jump.NumberOfJumps = GManager.instance.pStatus.jumpLimit;
+                #endregion
+                _jump.CoyoteTime = GManager.instance.pStatus.jumpCool;
+                _jump.JumpHeight = GManager.instance.pStatus.jumpRes;
+                _jump.NumberOfJumps = GManager.instance.pStatus.jumpLimit;
 
-				//ジャンプの速さとかは重力で決まる
-				//ジャンプ中だけHorizontalSpeed変えてもろて
-				//水平移動速度変わる処理入れる、いやいらんか
-				//普通に横移動速度の何割がちょうどいいかで決めよ
-			}
-			#endregion
-
-
-			///<summary>
-			///起き上がり設定
-			///</summary>
-			#region
-			if (_wakeup != null)
-			{
-
-			}
-			#endregion
-
-		}
+                //ジャンプの速さとかは重力で決まる
+                //ジャンプ中だけHorizontalSpeed変えてもろて
+                //水平移動速度変わる処理入れる、いやいらんか
+                //普通に横移動速度の何割がちょうどいいかで決めよ
+            }
+            #endregion
 
 
-        public override ConditionData ConditionDataSet()
-        {
-            ConditionData _data = new ConditionData();
+            ///<summary>
+            ///起き上がり設定
+            ///</summary>
+            #region
+            if (_wakeup != null)
+            {
 
-			//    _data.hpRatio = _health.CurrentHealth / status.maxHp;
-			return _data;
+            }
+            #endregion
+
         }
 
 
-        public override CharacterStatus.CharacterData CharacterDataSet()
-        {
-            CharacterStatus.CharacterData _data = new CharacterStatus.CharacterData();
-
-            //    _data.hpRatio = _health.CurrentHealth / status.maxHp;
-            return _data;
-        }
 
 
         //汎用行動の判断
         protected override void HandleInput()
-		{
+        {
 
-			//	Debug.Log($"ｄｄｋｄｌ{_inputManager.CombinationButton.State.CurrentState}");
+            //	Debug.Log($"ｄｄｋｄｌ{_inputManager.CombinationButton.State.CurrentState}");
 
 
-				if (
-				_movement.CurrentState == CharacterStates.MovementStates.Guard ||
-				_movement.CurrentState == CharacterStates.MovementStates.GuardMove ||
-				_movement.CurrentState == CharacterStates.MovementStates.Warp ||
-				_condition.CurrentState != CharacterStates.CharacterConditions.Normal
-				)
+            if (
+            _movement.CurrentState == CharacterStates.MovementStates.Guard ||
+            _movement.CurrentState == CharacterStates.MovementStates.GuardMove ||
+            _movement.CurrentState == CharacterStates.MovementStates.Warp ||
+            _condition.CurrentState != CharacterStates.CharacterConditions.Normal
+            )
             {
-				return;
+                return;
             }
-			WeaponChange();
+            WeaponChange();
         }
 
 
@@ -456,29 +447,19 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             base.ProcessAbility();
             if (_health.CurrentHealth <= 0)
             {
-				Debug.Log($"死んだ{_condition.CurrentState}");
+                Debug.Log($"死んだ{_condition.CurrentState}");
             }
-			if (_controller.State.JustGotGrounded)
+            if (_controller.State.JustGotGrounded)
             {
-				GManager.instance.PlaySound(MyCode.SoundManager.instance.armorShakeSound[2], transform.position);
-			}
-		}
+                GManager.instance.PlaySound(MyCode.SoundManager.instance.armorShakeSound[2], transform.position);
+            }
+        }
 
 
         #region イベント関係
 
 
-        /// <summary>
-        /// ターゲットリストから削除されたエネミーを消し去る
-        /// そしてヘイトリストやらを調整
-        /// プレイヤーはなんか別の処理入れてもいいかもな
-        /// あと敵の死を通知するメソッドとしても使える
-        /// </summary>
-        /// <param name="deletEnemy"></param>
-        public override void TargetListChange(int deleteEnemy)
-		{
 
-		}
 
         #endregion
 
@@ -486,10 +467,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         #region 体力・ダメージ関連
 
 
-        public override void DamageEvent(bool isStun, GameObject enemy)
-		{
 
-		}
 
         /// <summary>
         /// 死亡アニメーションを再生する
@@ -503,34 +481,36 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         ///現在の体力
         public int ReturnHealth()
         {
-			return (int)_health.CurrentHealth;
+            return (int)_health.CurrentHealth;
         }
         public void HPReset()
         {
-			_health.CurrentHealth = GManager.instance.pStatus.maxHp;
+            _health.CurrentHealth = GManager.instance.pStatus.maxHp;
         }
 
-       public void testReset()
+        public void testReset()
         {
             if (eCon.EnemyExist())
             {
-				eCon.ResetEnemy();
+                eCon.ResetEnemy();
             }
-			transform.position = new Vector2(182.8f,transform.position.y + 10);
-			SManager.instance.Sister.transform.position = new Vector2(187.8f, transform.position.y + 10);
-			if (SManager.instance.Sister.activeSelf)
-			{
-			SManager.instance.Sister.GetComponent<BrainAbility>().MPReset();
-			}
+            transform.position = new Vector2(182.8f, transform.position.y + 10);
+            SManager.instance.Sister.transform.position = new Vector2(187.8f, transform.position.y + 10);
+            if (SManager.instance.Sister.activeSelf)
+            {
+                SManager.instance.Sister.GetComponent<BrainAbility>().MPReset();
+            }
 
 
-		}
-		/// <summary>
-		/// 死亡時の処理
-		/// </summary>
+        }
+
+
+        /// <summary>
+        /// 死亡時の処理
+        /// </summary>
         public override void Die()
         {
-			testReset();
+            testReset();
         }
 
         #endregion
@@ -549,70 +529,78 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         /// <param name="isFriend">真なら味方</param>
         public override void DamageCalc()
-	{
-		//GManager.instance.isDamage = true;
-		//useEquip.hitLimmit--;
-		//mValueはモーション値
+        {
+            //GManager.instance.isDamage = true;
+            //useEquip.hitLimmit--;
+            //mValueはモーション値
 
-			Equip useEquip;
-			bool isShield = GManager.instance.useAtValue.isShield;
+            Equip useEquip;
+            bool isShield = GManager.instance.useAtValue.isShield;
 
 
             if (isShield)
             {
-				useEquip = GManager.instance.equipShield;
-				
+                useEquip = GManager.instance.equipShield;
+
             }
             else
             {
-				useEquip = GManager.instance.equipWeapon;
+                useEquip = GManager.instance.equipWeapon;
             }
-			
+
+            _damage._attackData._attackType = GManager.instance.useAtValue.mainElement;
+            _damage._attackData.phyType = GManager.instance.useAtValue.phyElement;
+
+            if (useEquip.phyAtk > 0)
+            {
+                _damage._attackData.phyAtk = useEquip.phyAtk * attackFactor;
 
 
-			if (useEquip.phyAtk > 0)
-			{
-				_damage._attackData.phyAtk = useEquip.phyAtk * attackFactor;
+                //						Debug.Log("皿だ");
+                if (GManager.instance.useAtValue.z >= 40)
+                {
+                    _damage._attackData.isHeavy = true;
+                }
+                else
+                {
+                    _damage._attackData.isHeavy = false;
+                }
+            }
+            //神聖
+            if (useEquip.holyAtk > 0)
+            {
+                _damage._attackData.holyAtk = useEquip.holyAtk * holyATFactor;
+
+            }
+            //闇
+            if (useEquip.darkAtk > 0)
+            {
+                _damage._attackData.darkAtk = useEquip.darkAtk * darkATFactor;
+
+            }
+            //炎
+            if (useEquip.fireAtk > 0)
+            {
+                _damage._attackData.fireAtk = useEquip.fireAtk * fireATFactor;
+
+            }
+            //雷
+            if (useEquip.thunderAtk > 0)
+            {
+                _damage._attackData.thunderAtk = useEquip.thunderAtk * thunderATFactor;
+
+            }
+
+            _damage._attackData.shock = GManager.instance.useAtValue.z;
 
 
-				//						Debug.Log("皿だ");
-				if (GManager.instance.useAtValue.z >= 40)
-				{
-					_damage._attackData.isHeavy = true;
-				}
-				else
-				{
-					_damage._attackData.isHeavy = false;
-				}
-			}
-			//神聖
-			if (useEquip.holyAtk > 0)
-			{
-				_damage._attackData.holyAtk = useEquip.holyAtk * holyATFactor;
-
-			}
-			//闇
-			if (useEquip.darkAtk > 0)
-			{
-				_damage._attackData.darkAtk = useEquip.darkAtk * darkATFactor;
-
-			}
-			//炎
-			if (useEquip.fireAtk > 0)
-			{
-				_damage._attackData.fireAtk = useEquip.fireAtk * fireATFactor;
-
-			}
-			//雷
-			if (useEquip.thunderAtk > 0)
-			{
-				_damage._attackData.thunderAtk = useEquip.thunderAtk * thunderATFactor;
-
-			}
-
-		_damage._attackData.attackBuff = attackBuff;
-
-	}
+            _damage._attackData.attackBuff = attackBuff;
+            //	_damage._attackData.disParry = GManager.instance.useAtValue.disParry;
+            _damage._attackData.mValue = GManager.instance.useAtValue.x;
+            _damage._attackData.isBlow = GManager.instance.useAtValue.isBlow;
+            _damage._attackData.isLight = GManager.instance.useAtValue.isLight;
+            _damage._attackData.blowPower.Set(GManager.instance.useAtValue.blowPower.x, GManager.instance.useAtValue.blowPower.y);
+        }
 
         /// <summary>
         /// 自分のダメージ中フラグ立ててこちらの防御力を教えてあげるの
@@ -662,18 +650,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         public override void GuardReport()
         {
-			_health._defData.isGuard = _movement.CurrentState == CharacterStates.MovementStates.Guard ? true : false;
-		}
+            _health._defData.isGuard = _movement.CurrentState == CharacterStates.MovementStates.Guard ? true : false;
+        }
 
 
-		/// <summary>
-		/// 全てのアビリティをキャンセル
-		/// </summary>
-		public void MoveReset()
+        /// <summary>
+        /// 全てのアビリティをキャンセル
+        /// </summary>
+        public void MoveReset()
         {
-		//	Debug.Log("oooooo");
-			_attack.AttackEnd();
-			_guard.GuardEnd();
+            //	Debug.Log("oooooo");
+            _attack.AttackEnd();
+            _guard.GuardEnd();
 
         }
 
@@ -698,34 +686,27 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <summary>
         /// バフの数値を与える
         /// 弾丸から呼ぶ
-		/// ダメージオンタッチから直接行くか？
         /// </summary>
         public override void BuffCalc(FireBullet _fire)
         {
-		  _fire.attackFactor = attackFactor;
-		  _fire.fireATFactor = fireATFactor;
-		  _fire.thunderATFactor = thunderATFactor;
-		  _fire.darkATFactor = darkATFactor;
-		  _fire.holyATFactor = holyATFactor;
-     	}
+            _fire.attackFactor = attackFactor;
+            _fire.fireATFactor = fireATFactor;
+            _fire.thunderATFactor = thunderATFactor;
+            _fire.darkATFactor = darkATFactor;
+            _fire.holyATFactor = holyATFactor;
+        }
 
+        public void SetLayer(int layerNumber)
+        {
 
+            this.gameObject.layer = layerNumber;
 
+        }
 
-
-
-
-		public void SetLayer(int layerNumber)
-		{
-
-			this.gameObject.layer = layerNumber;
-
-		}
-
-		/// <summary>
-		/// スタミナ切れた時のアビリティ無効化
-		/// </summary>
-		public void StaminaExhaust()
+        /// <summary>
+        /// スタミナ切れた時のアビリティ無効化
+        /// </summary>
+        public void StaminaExhaust()
         {
             if (GManager.instance.isEnable)
             {
@@ -733,39 +714,39 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
             else
             {
-				_rolling.AbilityPermitted = false;
+                _rolling.AbilityPermitted = false;
 
-				_running.AbilityPermitted = false;
+                _running.AbilityPermitted = false;
 
-				//_flying.AbilityPermitted = false;
+                //_flying.AbilityPermitted = false;
 
-				_guard.AbilityPermitted = false;
+                _guard.AbilityPermitted = false;
 
-				_jump.AbilityPermitted = false;
+                _jump.AbilityPermitted = false;
 
-				_weapon.AbilityPermitted = false;
+                _weapon.AbilityPermitted = false;
 
-				_wakeup.AbilityPermitted = false;
+                _wakeup.AbilityPermitted = false;
 
-				_attack.AbilityPermitted = false;
-			}
+                _attack.AbilityPermitted = false;
+            }
         }
 
         #endregion
 
-		/// <summary>
-		/// いやインスペクタでやれよ
-		/// </summary>
+        /// <summary>
+        /// いやインスペクタでやれよ
+        /// </summary>
         public void SetComponennt()
         {
-			_jump = _character.FindAbility<PlayerJump>();
-			_running = _character.FindAbility<PlayerRunning>();
-			_rolling  = _character.FindAbility<PlayerRoll>();
-			_attack = _character.FindAbility<WeaponAbillity>();
-			_guard = _character.FindAbility<GuardAbillity>();
-			_wakeup = _character.FindAbility<MyWakeUp>();
-			_damage = GetComponentInParent<MyDamageOntouch>();
-		}
+            _jump = _character.FindAbility<PlayerJump>();
+            _running = _character.FindAbility<PlayerRunning>();
+            _rolling = _character.FindAbility<PlayerRoll>();
+            _attack = _character.FindAbility<WeaponAbillity>();
+            _guard = _character.FindAbility<GuardAbillity>();
+            _wakeup = _character.FindAbility<MyWakeUp>();
+            _damage = GetComponentInParent<MyDamageOntouch>();
+        }
 
 
         #region アーマー関連
@@ -987,55 +968,55 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //
         public bool AttackCheck()
         {
-			return _movement.CurrentState == CharacterStates.MovementStates.Attack;
+            return _movement.CurrentState == CharacterStates.MovementStates.Attack;
         }
 
         public void WeaponChange()
-		{
+        {
 
-			if (_inputManager.WeaponChangeButton.State.CurrentState == MMInput.ButtonStates.ButtonDown && _condition.CurrentState == CharacterStates.CharacterConditions.Normal)
-			{
-				//_weapon.AttackEnd();
-				_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
-				//このフラグは武器切り替えか両手持ち切り替えかで区別するもの
-				//武器切り替え後は一回だけボタン離しても持ち手変更が反応しないようにする
+            if (_inputManager.WeaponChangeButton.State.CurrentState == MMInput.ButtonStates.ButtonDown && _condition.CurrentState == CharacterStates.CharacterConditions.Normal)
+            {
+                //_weapon.AttackEnd();
+                _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+                //このフラグは武器切り替えか両手持ち切り替えかで区別するもの
+                //武器切り替え後は一回だけボタン離しても持ち手変更が反応しないようにする
 
-			}
+            }
             else
             {
 
-				return;
+                return;
             }
 
-			//武器入れ替え
-			if (_inputManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
-			{
-				GManager.instance.EquipSwap(1);
-			}
-			//盾入れ替え
-			else if (_inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
-			{
-				GManager.instance.EquipSwap(2);
-			}
-			//両手持ち切り替え
+            //武器入れ替え
+            if (_inputManager.sAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
+            {
+                GManager.instance.EquipSwap(1);
+            }
+            //盾入れ替え
+            else if (_inputManager.bAttackButton.State.CurrentState == MMInput.ButtonStates.ButtonPressed)
+            {
+                GManager.instance.EquipSwap(2);
+            }
+            //両手持ち切り替え
             else
             {
-				GManager.instance.EquipSwap(0);
+                GManager.instance.EquipSwap(0);
             }
-			if (_condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
-			{
-				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
-			}
+            if (_condition.CurrentState != CharacterStates.CharacterConditions.Stunned)
+            {
+                _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+            }
 
 
-		}
+        }
 
-		/// <summary>
-		/// パリィモーション開始
-		/// </summary>
-		/// <param name="isBreake"></param>
-		public override void ParryStart(bool isBreake)
-		{
+        /// <summary>
+        /// パリィモーション開始
+        /// </summary>
+        /// <param name="isBreake"></param>
+        public override void ParryStart(bool isBreake)
+        {
 
             if (!GManager.instance.equipWeapon.twinHand)
             {
@@ -1046,8 +1027,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 GManager.instance.stamina += GManager.instance.equipWeapon.parryRecover;
             }
             _parry.ParryStart(isBreake);
-			_guard.GuardEnd();
-		}
+            _guard.GuardEnd();
+        }
 
 
 
@@ -1060,24 +1041,24 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void AtackContinue()
         {
 
-			_weapon.Continue();
+            _weapon.Continue();
 
         }
 
         #endregion
 
-		//プレイヤー制御
+        //プレイヤー制御
         #region
 
-		/// <summary>
-		/// 重力設定
-		/// </summary>
-		/// <param name="gravity"></param>
-		public void GravitySet(float gravity)
-		{
-			//rb.gravityScale = gravity;
-			_controller.DefaultParameters.Gravity = -gravity;
-		}
+        /// <summary>
+        /// 重力設定
+        /// </summary>
+        /// <param name="gravity"></param>
+        public void GravitySet(float gravity)
+        {
+            //rb.gravityScale = gravity;
+            _controller.DefaultParameters.Gravity = -gravity;
+        }
 
         /// <summary>
         /// 外側から向きを変える。
@@ -1085,47 +1066,47 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         public void PlayerFlip()
         {
-			_character.Flip();
+            _character.Flip();
         }
 
-		/// <summary>
-		/// trueでロック、falseで解除
-		/// </summary>
-		public void EventLock(bool Lock)
+        /// <summary>
+        /// trueでロック、falseで解除
+        /// </summary>
+        public void EventLock(bool Lock)
         {
             if (Lock)
             {
 
-				_characterHorizontalMovement.SetHorizontalMove(0);
-				_controller.SetForce(Vector2.zero);
-				if(_movement.CurrentState == CharacterStates.MovementStates.Attack)
+                _characterHorizontalMovement.SetHorizontalMove(0);
+                _controller.SetForce(Vector2.zero);
+                if (_movement.CurrentState == CharacterStates.MovementStates.Attack)
                 {
-					return;
+                    return;
                 }
 
-				if (_controller.State.IsGrounded)
-				{
-					_movement.ChangeState(CharacterStates.MovementStates.Idle);
-				}
+                if (_controller.State.IsGrounded)
+                {
+                    _movement.ChangeState(CharacterStates.MovementStates.Idle);
+                }
                 else
                 {
-					_movement.ChangeState(CharacterStates.MovementStates.Falling);
-				}
-				_condition.ChangeState(CharacterStates.CharacterConditions.Moving);
+                    _movement.ChangeState(CharacterStates.MovementStates.Falling);
+                }
+                _condition.ChangeState(CharacterStates.CharacterConditions.Moving);
             }
             else
             {
-				_condition.ChangeState(CharacterStates.CharacterConditions.Normal);
-			}
-			
+                _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
+            }
+
         }
 
-		/// <summary>
-		/// プレイヤーを停止させる
-		/// </summary>
-		public void PlayerStop()
+        /// <summary>
+        /// プレイヤーを停止させる
+        /// </summary>
+        public void PlayerStop()
         {
-			_controller.SetForce(Vector2.zero);
+            _controller.SetForce(Vector2.zero);
         }
 
 
@@ -1145,87 +1126,124 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         //真なら停止中
         public float NowSpeed()
         {
-			return _controller.Speed.x;
+            return _controller.Speed.x;
         }
 
-		public bool CheckPLayerNeutral()
+        public bool CheckPLayerNeutral()
         {
             if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal && _controller.State.IsGrounded)
             {
-				return true;
+                return true;
             }
             else
             {
-				return false;
+                return false;
             }
         }
 
-		/// <summary>
-		/// 体力が何割あるか知らせる
-		/// </summary>
-		/// <returns></returns>
-		public float HPRatio()
+        /// <summary>
+        /// 体力が何割あるか知らせる
+        /// </summary>
+        /// <returns></returns>
+        public float HPRatio()
         {
-		    return _health.CurrentHealth / _health.MaximumHealth;
-		}
+            return _health.CurrentHealth / _health.MaximumHealth;
+        }
 
 
-		#endregion
+        #endregion
 
-		//アニメイベント
-		//音とエフェクト
-		#region
-
-
-		public void attackEffect()
-		{
-		//	if (!string.IsNullOrEmpty(GManager.instance.useAtValue.attackEffect.AssetGUID))
-		//	{
-
-		//		Addressables.InstantiateAsync(GManager.instance.useAtValue.attackEffect, eController.transform);
-		//	}
-		}
+        //アニメイベント
+        //音とエフェクト
+        #region
 
 
+        public void attackEffect()
+        {
+            //	if (!string.IsNullOrEmpty(GManager.instance.useAtValue.attackEffect.AssetGUID))
+            //	{
 
+            //		Addressables.InstantiateAsync(GManager.instance.useAtValue.attackEffect, eController.transform);
+            //	}
+        }
 
 
 
-		public override void GuardSound()
-		{
 
 
-			if (GManager.instance.twinHand)
-			{
-				MyCode.SoundManager.instance.GuardSound(GManager.instance.equipWeapon.isMetal,GManager.instance.equipWeapon.shieldType,transform.position);
-			}
+
+        public override void GuardSound()
+        {
+
+
+            if (GManager.instance.twinHand)
+            {
+                MyCode.SoundManager.instance.GuardSound(GManager.instance.equipWeapon.isMetal, GManager.instance.equipWeapon.shieldType, transform.position);
+            }
             else
             {
-				MyCode.SoundManager.instance.GuardSound(GManager.instance.equipShield.isMetal, GManager.instance.equipShield.shieldType, transform.position);
-			}
-		}
+                MyCode.SoundManager.instance.GuardSound(GManager.instance.equipShield.isMetal, GManager.instance.equipShield.shieldType, transform.position);
+            }
+        }
 
 
-		/// <summary>
-		/// 燃えてる剣だったりして音が聞こえる場合
-		/// </summary>
-		/// <param name="useSoundNum"></param>
-		/// <param name="isChase"></param>
-		public void LeftSound(int useSoundNum, bool isChase = false)
-		{
+        /// <summary>
+        /// 燃えてる剣だったりして音が聞こえる場合
+        /// </summary>
+        /// <param name="useSoundNum"></param>
+        /// <param name="isChase"></param>
+        public void LeftSound(int useSoundNum, bool isChase = false)
+        {
 
-		}
+        }
+
+        public override void TargetDataUpdate(int num)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void TargetDataAdd(int newID)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        /// <summary>
+        /// ターゲットリストから削除されたエネミーを消し去る
+        /// そしてヘイトリストやらを調整
+        /// プレイヤーはなんか別の処理入れてもいいかもな
+        /// あと敵の死を通知するメソッドとしても使える
+        /// </summary>
+        public override void TargetListChange(int deletEnemy, int deadID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int ReturnID()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CommandEvent(EnemyStatus.TargetingEvent _event, int level, int targetNum, int commanderID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void DamageEvent(bool isStunn, GameObject enemy, int damage, bool back)
+        {
+            throw new NotImplementedException();
+        }
 
 
 
-		#endregion
-
-
-
-	
+        #endregion
 
 
 
 
-	}
+
+
+
+
+    }
 }

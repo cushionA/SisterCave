@@ -6,6 +6,7 @@ using MoreMountains.Feedbacks;
 using UnityEngine.AddressableAssets;
 using Rewired.Integration.CorgiEngine;
 using DarkTonic.MasterAudio;
+using System;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -79,8 +80,27 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         {
             InternalHandleInput();
 
+            JustGround();
+        }
+
+        /// <summary>
+        /// ちょうど地面についたときに呼ばれる処理
+        /// </summary>
+        protected virtual void JustGround()
+        {
 
         }
+
+        /// <summary>
+        /// 主にスタンした時に呼ばれるメソッド
+        /// 行動中止処理を入れておく
+        /// </summary>
+        public  void StopAbillity()
+        {
+
+        }
+
+
 
 
         /// <summary>
@@ -184,5 +204,10 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 _character._animatorParameters.Add(parameter);
             }
         }
+
+
+
+
+
     }
 }

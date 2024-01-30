@@ -16,6 +16,8 @@ namespace MoreMountains.CorgiEngine
 	///ルートオブジェクトにつけて
 	///簡単に言うと攻撃中前進する機能、衝突する状態で他人や自分を停止させるコードがある、といった感じ
 	///
+	/// これ壁検出はコーギーエンジンで見つけたやつでいいだろ
+	///
 	[AddComponentMenu("Corgi Engine/Character/Abilities/MyAttackMove")]
 	public class MyAttackMove : MyAbillityBase
 	{
@@ -514,6 +516,12 @@ namespace MoreMountains.CorgiEngine
 		/// <param name="startTime">移動を開始するまでの時間</param>
 		public void RushStart(float duration, float distance, AttackContactType _type,bool fallAttack = false, float startTime = 0,bool isBack = false)
         {
+			//動かないなら戻る
+			if(distance == 0)
+			{
+				return;
+			}
+
 			backAttack = isBack;
 			if (!fallAttack)
 			{

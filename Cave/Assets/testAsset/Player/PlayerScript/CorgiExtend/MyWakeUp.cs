@@ -6,6 +6,7 @@ using MoreMountains.Feedbacks;
 using UnityEngine.AddressableAssets;
 using Rewired.Integration.CorgiEngine;
 using DarkTonic.MasterAudio;
+using static DefenseData;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -239,11 +240,17 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void StartStunn(StunnType type)
         {
 
+            //スタン開始なので他のアビリティ止める
+            _character.StunStopAbillity();
+
                 _movement.ChangeState(CharacterStates.MovementStates.Idle);
                 _condition.ChangeState(CharacterStates.CharacterConditions.Stunned);
                 _characterHorizontalMovement.SetHorizontalMove(0);
-                
-                _characterHorizontalMovement.ReadInput = false;
+
+            //スタン被ダメージ増大開始
+            _health.HealthStateChange(false, DefState.被ダメージ増大);
+
+            _characterHorizontalMovement.ReadInput = false;
                 if (type == StunnType.Falter)
                 {
                     nowType = 1;
@@ -372,6 +379,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //  (_currentStateName);
         }
 
+
+        /// <summary>
+        /// スタン状態からの回復
+        /// </summary>
+        /// <param name="cancel"></param>
         void Recover(bool cancel = false)
         {
 
@@ -380,6 +392,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //アーマーリセットしてな
             _characterHorizontalMovement.ReadInput = true;
             _health.ArmorReset();
+
+
+            //スタン被ダメージ増大終了
+            _health.HealthStateChange(true, DefState.被ダメージ増大);
+
             if (!cancel)
             { _condition.ChangeState(CharacterStates.CharacterConditions.Normal);
                 _movement.ChangeState(CharacterStates.MovementStates.Idle);

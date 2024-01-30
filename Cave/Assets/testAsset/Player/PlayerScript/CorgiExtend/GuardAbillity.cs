@@ -6,6 +6,7 @@ using MoreMountains.Feedbacks;
 using UnityEngine.AddressableAssets;
 using Rewired.Integration.CorgiEngine;
 using DarkTonic.MasterAudio;
+using static DefenseData;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -106,11 +107,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             }
 
             _movement.ChangeState(CharacterStates.MovementStates.Guard);
-            if (isPlayer)
-            {
-                //ガード中に
-                GManager.instance.isGuard = true;
-            }
+
+            //ガード状態に
+            _health.HealthStateChange(false, DefState.ガード中);
 
             //普通移動の速度でいいわ
             /*
@@ -194,11 +193,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             if (_movement.CurrentState == CharacterStates.MovementStates.Guard || _movement.CurrentState == CharacterStates.MovementStates.GuardMove)
             {
                 _movement.ChangeState(CharacterStates.MovementStates.Idle);
-                if (isPlayer)
-                {
-                    //ガード終わらせる
-                    GManager.instance.isGuard = false;
-                }
+                //ガード終了
+                _health.HealthStateChange(true,DefState.ガード中);
             }
         } 
 

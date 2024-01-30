@@ -10,6 +10,7 @@ using Rewired;
 using Rewired.Integration.UnityUI;
 using TMPro;
 using MoreMountains.Feedbacks;
+using static MoreMountains.CorgiEngine.ConditionAndEffectControllAbility;
 
 public class MainUICon : MonoBehaviour
 {
@@ -69,6 +70,17 @@ public class MainUICon : MonoBehaviour
     [HideInInspector]
     public bool isConversation;
 
+
+    /// <summary>
+    /// アイコン画像が収まるところ
+    /// </summary>
+    public Image[] iconArray;
+
+    /// <summary>
+    /// アイコン画像が集まるやつ
+    /// </summary>
+    [SerializeField]
+    Dictionary<UniqueEffect, Sprite> iconDictionary;
 
 
     ///<summary>
@@ -648,6 +660,58 @@ public class MainUICon : MonoBehaviour
         startPoint.selectOnUp = _windowSelecter;
         startButton[i].navigation = startPoint;
     }
+
+
+
+
+    #region アイコン関連
+
+
+    /// <summary>
+    /// 状態に応じてアイコンをセットするメソッド
+    /// ディクショナリーに入れたアイコンリストを
+    /// 表示窓スロットに入れていく
+    /// 
+    /// アビリティから繰り返し呼ばれるようにする
+    /// 
+    /// </summary>
+    public bool ConditionIconSet(int nowPosition,int count)
+    {
+
+        //もう効果がないなら
+        //全部空っぽにして終わり
+        if(nowPosition == -1)
+        {
+            //アイコンは八個までとする
+            //ここから先全て空っぽに
+            for (int i = count; i < 8; i++)
+            {
+                if (iconArray[count].sprite != null)
+                {
+                    iconArray[count].sprite = null;
+                }
+                //この先もうアイコンがないなら中止
+                else
+                {
+                    break;
+                }
+
+            }
+                return false;
+        }
+        //まだ効果があるなら
+        //アイコンつけて真を返す
+        else
+        {
+            iconArray[count].sprite = iconDictionary[(UniqueEffect)(1 << nowPosition)];
+            return true;
+        }
+
+    }
+
+
+    #endregion
+
 
 }
 

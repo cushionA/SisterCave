@@ -104,7 +104,7 @@ namespace MoreMountains.CorgiEngine
                 isRight = basePosition < enemyPosi;
 
                 back = true;
-                _attackData.shock *= 1.05f;
+                _attackData.actionData.shock *= 1.05f;
             }
             else
             {
@@ -114,7 +114,7 @@ namespace MoreMountains.CorgiEngine
             }
 
             //アーマー削りを整数に
-            _attackData.shock = Mathf.Floor(_attackData.shock);
+            _attackData.actionData.shock = Mathf.Floor(_attackData.actionData.shock);
             
             
             
@@ -296,7 +296,7 @@ namespace MoreMountains.CorgiEngine
                 return;
             }
 
-            if (_restoreCount[collideNum] >= _attackData._hitLimit)
+            if (_restoreCount[collideNum] >= _attackData.actionData._hitLimit)
             {
                 Debug.Log($"{this.gameObject.name}が{collider.transform.gameObject.name}");
                 return;
@@ -332,7 +332,7 @@ namespace MoreMountains.CorgiEngine
         protected virtual MyWakeUp.StunnType ApplyDamageCausedKnockback(bool isBack,bool isRight)
         {//
             _colliderCorgiController.SetForce(Vector2.zero);
-            MyWakeUp.StunnType result = _colliderHealth.ArmorCheck(_attackData.shock,_attackData.isBlow, isBack);
+            MyWakeUp.StunnType result = _colliderHealth.ArmorCheck(_attackData.actionData.shock,_attackData.actionData.blowPower != Vector2.zero, isBack);
 
             bool isAirDown = false;
 
@@ -350,9 +350,9 @@ namespace MoreMountains.CorgiEngine
 
                 if (!isAirDown)
                 {
-                    float blowDire = isRight ? _attackData.blowPower.x : _attackData.blowPower.x * -1;
+                    float blowDire = isRight ? _attackData.actionData.blowPower.x : _attackData.actionData.blowPower.x * -1;
 
-                    DamageCausedKnockbackForce.Set(blowDire, _attackData.blowPower.y);
+                    DamageCausedKnockbackForce.Set(blowDire, _attackData.actionData.blowPower.y);
                 }
                 else
                 {

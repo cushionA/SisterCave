@@ -107,7 +107,6 @@ namespace MoreMountains.CorgiEngine
 
 				if (_horizontalInput != 0)
 				{
-					Debug.Log("‚¨‚É‚­");
 					RunStart();
 				}
 				

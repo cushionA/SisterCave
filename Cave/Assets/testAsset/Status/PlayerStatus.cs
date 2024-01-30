@@ -35,6 +35,8 @@ public class PlayerStatus : CharacterStatus
     //[HideInInspector]
     public float stamina = 60;
 
+
+
     //生命力
     public float Vitality = 1;
     //持久力

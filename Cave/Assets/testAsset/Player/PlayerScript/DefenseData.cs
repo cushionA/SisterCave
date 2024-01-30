@@ -1,48 +1,92 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static CharacterStatus;
+using static Equip;
 
-public class DefenseData
+public struct DefenseData
 {
 
-
-    public float phyCut;//ƒJƒbƒg—¦
-	public float holyCut;//ŒõB
-	public float darkCut;//ˆÅB
-	public float fireCut;//–‚—Í
-	public float thunderCut;//–‚—Í
-
-	public float guardPower;//ó‚¯’l
-
-    //@–³‘®«–hŒä—ÍB‘Ì—Í‚Åã‚ª‚é
-    public float Def = 70;
-    //h“Ë–hŒäB‹Ø—Í‚Åã‚ª‚é
-    public float pierDef = 70;
-    //‘ÅŒ‚–hŒäA‹Z—Ê‚Åã‚ª‚é
-    public float strDef = 70;
-    //_¹–hŒäA‹Ø‚ÆŒ«‚³‚Åã‚ª‚éB
-    public float holyDef = 70;
-    //ˆÅ–hŒäBŒ«‚³‚Åã‚ª‚é
-    public float darkDef = 70;
-    //‰Š–hŒäBŒ«‚³‚Æ¶–½‚Åã‚ª‚é
-    public float fireDef = 70;
-    //—‹–hŒäBŒ«‚³‚Æ‹v‚Åã‚ª‚éB
-    public float thunderDef = 70;
+    #region å®šç¾©
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚Ì‚İ‚©‚È
+    /// é˜²å¾¡çŠ¶æ…‹
+    /// ã™ãå¤‰ã‚ã‚‹ã‚‚ã®ã‚’é›†ã‚ã‚‹
+    /// </summary>
+    public enum DefState
+    {
+        æ”»æ’ƒä¸­ = 1 << 0,
+        ã‚¢ãƒ¼ãƒãƒ¼ä»˜ã = 1 << 1,
+        ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¢ãƒ¼ãƒãƒ¼ = 1 << 2,
+        è¢«ãƒ€ãƒ¡ãƒ¼ã‚¸å¢—å¤§ = 1 << 3,
+        ã‚¬ãƒ¼ãƒ‰ä¸­ = 1 << 4,
+    }
+
+    /// <summary>
+    /// é˜²å¾¡å€ç‡è¨ˆç®—ã«ä½¿ã†æ•°å€¤
+    /// </summary>
+    public struct DefMultipler
+    {
+        /// <summary>
+        /// å…¨é˜²å¾¡ã«å¯¾ã™ã‚‹å€ç‡
+        /// </summary>
+        public float allDefMultipler;
+
+        /// <summary>
+        /// é˜²å¾¡å€ç‡
+        /// </summary>
+        public float phyDefMultipler;
+
+
+
+        /// <summary>
+        /// è–é˜²å¾¡å€ç‡
+        /// </summary>
+        public float holyDefMultipler;
+        /// <summary>
+        /// é—‡é˜²å¾¡å€ç‡
+        /// </summary>
+        public float darkDefMultipler;
+        /// <summary>
+        /// ç‚é˜²å¾¡å€ç‡
+        /// </summary>
+        public float fireDefMultipler;
+
+        /// <summary>
+        /// é›·é˜²å¾¡å€ç‡
+        /// </summary>
+        public float thunderDefMultipler;
+    }
+    #endregion
+
+    /// <summary>
+    /// é˜²å¾¡åŠ›
+    /// </summary>
+    [HideInInspector]
+    public DefStatus status;
+
+    /// <summary>
+    /// é˜²å¾¡å€ç‡
+    /// </summary>
+    [HideInInspector]
+    public DefMultipler multipler;
+
+    /// <summary>
+    /// ã‚¬ãƒ¼ãƒ‰ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+    /// </summary>
+    [HideInInspector]
+    public GuardStatus guardStatus;
+    
+    
+    /// <summary>
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã¿ã‹ãª
     /// </summary>
     public bool nowParry;
 
-    public bool isGuard;
-
     /// <summary>
-    /// true‚ÌUŒ‚‚ğó‚¯‚é‚Æƒ_ƒ[ƒW‚ª‘½‚­‚È‚éB
-    /// Šeå‘Ì‚Ìcalc‚ÅŒˆ’è‚·‚éB
+    /// é˜²å¾¡é–¢é€£ã®çŠ¶æ…‹
+    /// é »ç¹«ã«ç§»ã‚Šå¤‰ã‚ã‚‹
     /// </summary>
-    public bool isDangerous;
+    public DefState state;
 
-    public bool attackNow;
-
-    public float nowArmor;
 }
