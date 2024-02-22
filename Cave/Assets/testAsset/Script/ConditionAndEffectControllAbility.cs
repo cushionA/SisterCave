@@ -10,6 +10,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using static UnityEngine.Rendering.DebugUI;
 using Micosmo.SensorToolkit.Example;
+using MyCode;
 
 namespace MoreMountains.CorgiEngine // you might want to use your own namespace here
 {
@@ -113,6 +114,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// ・エフェクト出すのはユニークエフェクトだけでいい？
         /// ・エフェクトはシェーダーで作ったやつをキャラにつけてenable切り替えで表示する感じで
         /// 
+        /// 
+        /// エフェクト出す（エフェクト要請）、スプライトエフェクトを出す（スプライト切り替え）
+        /// この二つに分けるか
+        /// エフェクト要請は回復とか状態異常発症とかそういうの？
+        /// あとは凍結とかはオーバーレイスプライトで対処するか？
+        /// 
+        /// 武器ごとにエフェクトのスケールつけてエフェクトを纏わせるようにする？
+        /// この武器は1.2と2.8とかで
+        /// 
+        /// 攻撃時回復とかの効果は重複できた方が嬉しいよね
+        /// 攻撃時回復効果魔法と、攻撃時回復アクセが一緒だと嬉しい
+        /// なんでアクション時の回復とかバフとかの効果は数値にしよ
+        /// あと出血ダメージとかは発症時処理でやろう
+        /// 回復とかそういう即時効果のやつのエフェクト出すのは別の機能でやろう
+        /// ヘルス経由で？
+        /// 
+        /// 
         /// ///
 
 
@@ -195,7 +213,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             /// どこで使用するかで区分分けようね
             /// ヘルスで使うやつとかはある程度まとめてビット投げれるようにしよう
             /// 
-
+            HPMP変動,//リジェネとかHP回復とか毒ダメージとか
             基礎ステータス効果,//体力、最大体力、スタミナ、アーマー
             プレイヤーステータス効果,
             シスターステータス効果,
@@ -207,10 +225,12 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             アクション変化,
             トリガーイベント,//攻撃時、ガード時、パリィ時、回復時、回避時などの特殊トリガーのイベント
             アイテム効果変動,
-            特殊バフ,//音消滅、バリア召喚、バフ効果時間延長、復活など。カウンター攻撃倍率とかもこれにするか
+            特殊バフ,//音消滅、バフ効果時間延長、復活など。カウンター攻撃倍率とかもこれにするか
             特殊デバフ,//停止とか。停止はスタンの終わりをアニメの終わりではなく状態異常の終わりまでとする。魔法禁止も？
             状態異常蓄積,//毒とかそういうのがたまっていく過程
-            状態異常解除
+            バリア,
+            エンチャント,
+            イベント解除
 
         }
 
@@ -227,7 +247,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         public enum BaseStatusChangeSelect
         {
-            HP変動,//乗算加算含む
+            HP変動,//乗算加算含む。でも最大じゃないなら乗算する意味ある？
             MP変動,
             MP回復速度変動,//これはシスターさんかな
             最大HP変動,
@@ -312,11 +332,31 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
 
         /// <summary>
         /// 何らかの特殊なきっかけで発動するイベント
+        /// いや、回復やMP回復などのイベントをこちらに入れて
+        /// 撃破や攻撃ヒットなどの条件をイベントタイプにする？
+        /// いや、撃破回復などのそれぞれのイベント時に対応するイベント状態があるかを確認して呼び出したほうがいい
         /// </summary>
         public enum TriggerEvent
         {
             攻撃回復,
             撃破回復,
+        }
+
+
+        /// <summary>
+        /// 状態解除
+        /// バフもデバフも
+        /// </summary>
+        public enum EventCancelCondition
+        {
+            全て,
+            バフ,
+            デバフ,
+            毒,
+            猛毒,
+            毒系統,
+
+
         }
 
 
@@ -417,7 +457,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             防御力上昇 = 1 << 8,
             特殊強化 = 1 << 3,//アクションや移動速度系
             アイテム効果向上 = 1 << 1,
-
+            バリア = 1 << 29,
+            エンチャント = 1 << 30,
 
             なし = 0
         }
@@ -477,15 +518,15 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             /// 使用回数、あるいは継続時間など
             /// 終了条件によっては使わない
             /// 
-            /// 蓄積系の場合、ここに蓄積値を入れる
+            /// 毒蓄積とか蓄積数値系はここに何秒に一回減るかを入れる
             /// </summary>
             [Header("効果終了する制限。あるいは数値蓄積量")]
             public float effectLimit;
 
             /// <summary>
             /// 制限を数える
-            /// 毒蓄積とか蓄積数値系は蓄積をこれに数えて
-            /// 0か100で効果終了。100なら毒に変化
+            /// 何個まで同じ効果重複できるかとか
+            /// 蓄積系の場合、ここに蓄積値を入れる
             /// </summary>
             [HideInInspector]
             public float limitCounter;
@@ -897,7 +938,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 //攻撃とガードを上げるような効果でも、攻撃アップ部分にだけユニークイベントを持たせる
                 if (data.uniqueType != UniqueEffect.なし)
                 {
-                    myConditionAbility.EffectAndIconAdd(data.uniqueType);
+                    myConditionAbility.EffectAndIconAdd(data.uniqueType, data.selectCondition);
                 }
 
 
@@ -985,7 +1026,23 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 }
             }
 
-
+            /// <summary>
+            /// 特定の効果を一気に削除する
+            /// デバフとかバフとか
+            /// useBitの指定がなければ全てを全削除
+            /// </summary>
+            /// <param name="useBit">使うビット。デバフとかいろいろ設定可能</param>
+            public void AllCancell(int useBit)
+            {
+                for (int i = 0; i < eventCount; i++)
+                {
+                    //ユニークイベントが削除対象か指定がないか
+                    if (useBit == 0 || (((int)events[i].uniqueType & useBit) > 0))
+                    {
+                        EventEnd(events[i]);
+                    }
+                }
+            }
 
             #endregion
 
@@ -996,7 +1053,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             /// 蓄積イベントの発症などはここではやらないことになった
             /// </summary>
             /// <param name="data"></param>
-              public void EventEnd(ConditionDataValue data)
+            public void EventEnd(ConditionDataValue data)
             {
                 //データが削除された状態にする
                 data.isDelete = true;
@@ -1228,9 +1285,11 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 //ユニークイベントがあるなら追加する
                 //ユニークイベントは各魔法や武器が含む効果の中で象徴的な一つにだけつけるように
                 //攻撃とガードを上げるような効果でも、攻撃アップ部分にだけユニークイベントを持たせる
+                //やっぱり全部に持たせていい。大体次のインデックスにユニークあるから
+                //他のユニーク効果をまとめて消せるような管理上のメリットのがでかい
                 if(data.uniqueType != UniqueEffect.なし)
                 {
-                    myConditionAbility.EffectAndIconAdd(data.uniqueType);
+                    myConditionAbility.EffectAndIconAdd(data.uniqueType,data.selectCondition);
                 }
 
 
@@ -1316,6 +1375,28 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             ///　攻撃時とかに使用時とかのイベント飛ばすのはイベントタイプごとにする
             ///　使用、付与、などは個別で使用先から通知
             ///　時間と蓄積に関しては頑張る
+            ///　
+
+
+
+            /// <summary>
+            /// 特定の効果を一気に削除する
+            /// デバフとかバフとか
+            /// useBitの指定がなければ全てを全削除
+            /// </summary>
+            /// <param name="useBit">使うビット。デバフとかいろいろ設定可能</param>
+            public void AllCancell(int useBit)
+            {
+                for (int i = 0; i < eventCount; i++)
+                {
+                    //ユニークイベントが削除対象か指定がないか
+                    if (useBit == 0 || (((int)events[i].uniqueType & useBit) > 0))
+                    {
+                        EventEnd(events[i]);
+                    }
+                }
+            }
+
 
 
             #endregion
@@ -1656,8 +1737,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         readonly int uniqueEffectCount = 28;
 
+        /// <summary>
+        /// いま最も優先度が高く表示されているエフェクト
+        /// </summary>
         UniqueEffect nowMainEffect;
 
+
+        /// <summary>
+        /// いま最も優先度が高く表示されているエフェクト
+        /// </summary>
+        UniqueEffect positiveEffect;
+
+        /// <summary>
+        /// いま最も優先度が高く表示されているエフェクト
+        /// </summary>
+        UniqueEffect negativeEffect;
 
 
         #endregion
@@ -1687,6 +1781,18 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //そもそもそのホルダーがあるかどうかのチェックとかも
             //あとデータ削除時そのデータをもとに戻すやつとかもやらないと
 
+        /// 
+        /// HPやMPの回復、アイテム効果発動などは発動エフェクトが必要
+        /// あとHPやMPの回復はリジェネじゃないなら別処理にする？
+        /// これはエフェクトマネ―ジャーが必要？
+        /// あとサウンドも必要だよね
+        /// 音系統はエフェクトの音みたいなのをマネージャーに持たせておいて、エフェクト（スプライト含む）
+        /// 発動時に引き出す感じでいいか
+        /// 
+        /// ///
+
+
+
         #region コンディション追加
 
         /// <summary>
@@ -1701,10 +1807,14 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <param name="efectLimit"></param>
         /// <param name="value"></param>
         /// <param name="isAdd"></param>
-        public void ConditionSetting(UniqueEffect uniqueType,EventType eventType,int selectCondition, EventEndJudge[] endCondition,float effectLimit)//,float value,bool isAdd)
+        public void ConditionSetting(UniqueEffect uniqueType,EventType eventType,int selectCondition, EventEndJudge[] endCondition)//,float value,bool isAdd)
         {
 
-
+            if(eventType == EventType.イベント解除)
+            {
+                EventCancel(selectCondition);
+                return;
+            }
 
             ConditionDataBase data = new ConditionDataBase(uniqueType,eventType,selectCondition,endCondition);
 
@@ -1714,9 +1824,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //終了条件に徐々に数値が減るやつが含まれてるなら
             if (endCondition[0].endCondition == EventEndCondition.数値減少)
             {
-                if (valueEvents[eventType].SetRestoreCondition(data))
+                if (booleanEvents[eventType].SetRestoreCondition(data))
                 {
-                    EffectValueDecrease(data);
+                    EffectValueDecrease(data, MyCode.SoundManager.instance.restoreDicreaceDict[(RestoreEffect)data.selectCondition], false).Forget();
                 }
                 return;
             }
@@ -1745,13 +1855,21 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         public void ConditionSetting(UniqueEffect uniqueType, EventType eventType, int selectCondition, EventEndJudge[] endCondition,float value,bool isAdd)
         {
 
+
+            if (eventType == EventType.イベント解除)
+            {
+                EventCancel(selectCondition);
+                return;
+            }
+
+
             ConditionDataValue data = new ConditionDataValue(uniqueType, eventType, selectCondition, endCondition,value,isAdd);
 
             if (endCondition[0].endCondition == EventEndCondition.数値減少)
             {
                 if (valueEvents[eventType].SetRestoreCondition(data))
                 {
-                    EffectValueDecrease(data);
+                    EffectValueDecrease(data, MyCode.SoundManager.instance.restoreDicreaceDict[(RestoreEffect)data.selectCondition], false).Forget();
                 }
                 return;
             }
@@ -1766,6 +1884,63 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             valueEvents[eventType].SetValue(data);
         }
 
+
+
+        
+
+
+
+        /// <summary>
+        /// イベントタイプ状態異常解除で発生
+        /// フラグタイプのイベントで発生して、バリューとブール両方の
+        /// 
+        /// ここでイベントキャンセルエフェクトやキャンセル音も出す
+        /// </summary>
+        void EventCancel(int selectCondition)
+        {
+            if (selectCondition == (int)EventCancelCondition.全て)
+            {
+                EventCancelExe(0,0);
+            }
+            else if (selectCondition == (int)EventCancelCondition.バフ)
+            {
+                EventCancelExe((int)positiveEffect, 0);
+            }
+            else if(selectCondition == (int)EventCancelCondition.デバフ)
+            {
+                EventCancelExe((int)negativeEffect, 0);
+            }
+        }
+
+        /// <summary>
+        /// イベントタイプ解除の実行
+        /// 指定のビットに当てはまるイベントを全て消す
+        /// 攻撃力上昇削除とかステータス上昇削除とかは数値だけでいいのでselectTypeで指定な
+        /// </summary>
+        /// <param name="useBit">使用するビット</param>
+        /// <param name="selectType">どんなふうに照会するか。0なら両方、1なら数値、2ならboolだけ</param>
+        void EventCancelExe(int useBit,int selectType)
+        {
+            if (selectType == 0 || selectType == 1)
+            {
+                foreach (ValueEventHolder events in valueEvents.Values)
+                {
+                    events.AllCancell(useBit);
+                }
+            }
+
+            if (selectType == 0 || selectType == 2)
+            {
+                foreach (BooleanEventHolder events in booleanEvents.Values)
+                {
+                    events.AllCancell(useBit);
+                }
+            }
+
+
+        }
+
+
         #endregion
 
 
@@ -1778,13 +1953,49 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// エフェクトはディクショナリーで管理
         /// アイコンはisPlayerなら起動
         /// UIスクリプトにUniqueEventを渡して決定
+        /// 
+        /// 
+        /// 
         /// </summary>
-        void EffectAndIconAdd(UniqueEffect addEffect)
+        void EffectAndIconAdd(UniqueEffect addEffect, int selectCondition)
         {
-            //エフェクトがなしか、既に含まれているなら
-            if(((int)addEffect & uniqueSetChecker) > 0)
+
+            //エンチャントを消す
+            //エンチャがあるかどうかはそのほかのエフェクトの状態に何ら影響を与えない
+            //あとエンチャとバリアはアイコン出さない、見ればわかるので
+            if (addEffect == UniqueEffect.エンチャント)
             {
-                return;
+                //ここでエンチャントディクショナリから引きだす感じ？
+                //エンチャント処理は武器参照したりあるよね
+                //ただ武器にかぶせてるテクスチャへの参照を持たせる？
+
+            }
+            //バリア召喚
+            //バリアもプールするか？
+            //魔法エフェクトプールに含むか
+            //バリアは魔法エフェクト出現で出てくるのよ
+            //そして効果時間満了で勝手に消えるわけ
+            //ならだよ、魔法の方に出現後ターゲットの子オブジェクトになるオプション入れるか
+            //バリアの音は魔法の発生音でいい
+            //エンチャには同じことできるかな？
+            //少なくとも音は魔法発生の音でいい
+            else if (addEffect == UniqueEffect.バリア)
+            {
+
+            }
+            else
+            {
+
+                //ここで音鳴らす
+                MyCode.SoundManager.instance.ConditionEffectSound(addEffect, );
+
+
+                //エフェクトが既に含まれているなら
+                if (((int)addEffect & uniqueSetChecker) > 0)
+                {
+                    return;
+                }
+
             }
 
             //エフェクトを追加
@@ -1794,6 +2005,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
             //結局アイコン更新で全部見るから処理は共通でいい
             //その時の一番優先度が高いやつとか見なくていい
             EffectAndIconSet();
+
 
         }
 
@@ -1813,8 +2025,22 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// 
         /// イべントを消した後、同じユニークイベントがなければこれ呼んで削除する
         /// </summary>
-        void ConditionDelete(UniqueEffect deleteEffect)
+        void ConditionDelete(UniqueEffect deleteEffect, int selectCondition)
         {
+
+            //エンチャントを消す
+            //エンチャがあるかどうかはそのほかのエフェクトの状態に何ら影響を与えない
+            //あとエンチャとバリアはアイコン出さない、見ればわかるので
+            //音の処理も個別にするか
+            if(deleteEffect == UniqueEffect.エンチャント)
+            {
+
+            }
+            else if (deleteEffect == UniqueEffect.バリア)
+            {
+
+            }
+
 
 
             //反転ビットでエフェクトを削除
@@ -1834,6 +2060,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         void EffectAndIconSet()
         {
+
             int maxBitPoint;
 
             //ユニークエフェクトがなしじゃないなら
@@ -1873,6 +2100,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                     break;
                 }
             }
+
+
         }
 
 
@@ -1882,7 +2111,8 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// </summary>
         void EffectSetExe(UniqueEffect effect)
         {
-            if(effect == nowMainEffect)
+            //今のメインと同じか、対応するエフェクトがないなら戻る
+            if(effect == nowMainEffect || !effectDictionary.ContainsKey(effect))
             {
                 return;
             }
@@ -2048,6 +2278,7 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
         /// <summary>
         /// なんで数値データだけなのか
         /// それは、時限効果で何度も使って意味があるのは数値データしかないから
+        /// 一定時間ごとに効果発生するのを待つ
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -2066,6 +2297,9 @@ namespace MoreMountains.CorgiEngine // you might want to use your own namespace 
                 return;
 
             }
+
+            //ここで効果発生
+            //リジェネとかどうしようか
 
             //再帰呼び出し
             EffectTimeWait(data).Forget();

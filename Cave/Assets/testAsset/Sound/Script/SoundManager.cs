@@ -7,6 +7,7 @@ using static MoreMountains.CorgiEngine.EffectControllAbility;
 using MoreMountains.CorgiEngine;
 using RenownedGames.Apex;
 using RenownedGames.Apex.Serialization.Collections.Generic;
+using static UnityEditor.PlayerSettings;
 
 /// <summary>
 /// エフェクトのサイズ倍率で体格表現可能
@@ -96,6 +97,13 @@ namespace MyCode
         /// 汎用
         /// </summary>
         public MyParticles particles = new MyParticles();
+
+
+        /// <summary>
+        /// 蓄積の減少速度を記録したディクショナリ
+        /// </summary>
+        public Dictionary<ConditionAndEffectControllAbility.RestoreEffect, float> restoreDicreaceDict;
+
 
 
 
@@ -454,11 +462,23 @@ namespace MyCode
         #endregion
 
 
-        #endregion
+
+        #region 効果サウンド
+
+        [SerializeField, Header("特殊効果の音")]
+        [Foldout("効果サウンド")]
+        [Header("特殊効果の音")]//smallはひたひたって感じにする？
+        [SoundGroup]
+        Dictionary<ConditionAndEffectControllAbility.UniqueEffect,string> conditionSound;
 
         #endregion
 
-        public bool isis;
+
+        #endregion
+
+        #endregion
+
+
 
         void Awake()
         {
@@ -1014,7 +1034,7 @@ namespace MyCode
 
 
 
-        public void GuardSound(bool isMetal, Equip.GuardType type,Vector3 pos)
+        public void GuardSound(bool isMetal, Equip.GuardType type,in Vector3 pos)
         {
             if (isMetal)
             {
@@ -1072,7 +1092,7 @@ namespace MyCode
         /// 死の音とエフェクト
         /// </summary>
         /// <param name="pos"></param>
-        public void DeathEffect(Vector3 pos)
+        public void DeathEffect(in Vector3 pos)
         {
             _generalPool.Spawn(particles["Death"],pos, particles["Death"].transform.rotation);
             
@@ -1608,5 +1628,26 @@ namespace MyCode
 
         #endregion
 
+
+        #region 効果サウンド
+
+        /// <summary>
+        /// 状態変化の音を鳴らす
+        /// 
+        /// </summary>
+        /// <param name="effect"></param>
+        /// <param name="pos"></param>
+        public void ConditionEffectSound(ConditionAndEffectControllAbility.UniqueEffect effect,in Vector3 pos)
+        {
+
+            if (conditionSound.ContainsKey(effect))
+            {
+                GManager.instance.PlaySound(conditionSound[effect], pos);
+            }
+
+        }
+
+
+        #endregion
     }
 }
